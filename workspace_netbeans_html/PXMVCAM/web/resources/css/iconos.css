@@ -1,0 +1,137 @@
+.prx-icon-search {
+  background-image: url("../img/botones/search.png");
+}
+.prx-icon-filter {
+  background-image: url("../img/botones/filter.png");
+}
+.prx-icon-excel {
+  background-image: url("../img/botones/excel.png");
+}
+.prx-icon-plainText {
+  background-image: url("../img/botones/text.png");
+}
+.prx-icon-clear {
+  background-image: url("../img/botones/clear.png");
+}
+.prx-icon-add {
+  background-image: url("../img/botones/add.png");
+}
+.prx-icon-back {
+  background-image: url("../img/botones/back.png");
+}
+.prx-icon-edit {
+  background-image: url("../img/botones/1326498593_018.png");
+}
+.prx-icon-detail {
+  background-image: url("../img/botones/detail.png");
+}
+.prx-icon-check {
+  background-image: url("../img/icon/16x16/check.png");
+}
+.prx-icon-save {
+  background-image: url("../img/botones/24x24/1337982029_3floppy_unmount.png");
+}
+.prx-icon-update {
+  background-image: url("../img/botones/24x24/1337982080_system-software-update.png");
+}
+.prx-icon-refresh {
+  background-image: url("../img/botones/refresh.png");
+}
+.prx-icon-delete {
+  background-image: url("../img/botones/24x24/1376621085_gnome-panel-force-quit.png");
+}
+.prx-icon-cancel {
+  background-image: url("../img/botones/24x24/1337982061_001_05.gif");
+}
+.prx-icon-pagination-first {
+  background-image: url("../img/paginacion/first1.png");
+
+}
+.prx-icon-pagination-previous {
+  background-image: url("../img/paginacion/prev1.png");
+ 
+}
+.prx-icon-pagination-next {
+  background-image: url("../img/paginacion/next1.png");
+
+}
+.prx-icon-pagination-last {
+  background-image: url("../img/paginacion/last1.png");
+
+}
+.prx-icon-image-view {
+  background-image: url("../img/botones/image_view.png");
+}
+.prx-icon-image-file {
+  background-image: url("../img/botones/file.png");
+}
+.prx-icon-image-log {
+  background-image: url("../img/botones/log.png");
+}
+.prx-icon-image-trash {
+  background-image: url("../img/icon/trash.png");
+}
+.prx-icon-image-process {
+  background-image: url("../img/botones/process.png");
+}
+.prx-icon-image-update {
+  background-image: url("../img/icon/save.png");
+}
+.prx-icon-process-send {
+  background-image: url("../img/botones/24x24/Forward.png");
+}
+.prx-icon-process-fin {
+  background-image: url("../img/botones/24x24/clock_complete-512.png");
+}
+.prx-icon-process-error {
+  background-image: url("../img/botones/24x24/time_clock_error.png");
+}
+.prx-icon-docum {
+  background-image: url("../img/icon/16x16/search_docum.png");
+}
+.prx-icon-104-ticket {
+ background-image: url("../img/botones/1400098721_cv.png");
+}
+.prx-icon-pdf {
+ background-image: url("../img/botones/16x16/pdf.png");
+}
+.prx-icon-prorrate {
+ background-image: url("../img/botones/prorrate.png");
+}
+.prx-icon-download {
+ background-image: url("../img/botones/download.png");
+}
+.prx-icon-1400209639_24 {
+ background-image: url("../img/botones/1400209639_24.png");
+}
+.prx-icon-image-off {
+  background-image: url("../img/icon/off_pri.png");
+}
+.prx-icon-complete {
+  background-image: url("../img/botones/check.png");
+}
+.prx-icon-incomplete {
+  background-image: url("../img/botones/restricted_folder_symbol_stop-16.png");
+}
+.prx-icon-processing {
+  background-image: url("../img/botones/16x16/Processing_1.png");
+}
+.prx-icon-polizas {
+  background-image: url("../img/botones/16x16/img_polizas.png");
+}
+.prx-icon-panel {
+  background-image: url("../img/botones/16x16/panel.png");
+}
+.prx-icon-image-facsimil {
+  background-image: url("../img/botones/facsimil.png");
+}
+.prx-icon-base-column {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.prx-icon-graph-pie {
+  background-image: url("../img/icon/graph_pie.png");
+  
+}

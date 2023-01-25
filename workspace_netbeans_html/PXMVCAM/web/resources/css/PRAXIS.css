@@ -1,0 +1,1613 @@
+/* CSS file */
+/*@font-face
+{
+	fontFamily: "Arial Narrow";
+	fontWeight: normal;
+	fontStyle: normal;
+	src: local("Arial Narrow");
+}*/
+
+
+ToolTip {
+    fontFamily: "Arial";
+    fontSize: 12;
+    fontStyle: "italic";
+    color: #000000;
+    backgroundColor: #FFD436;
+}
+
+Alert{
+    background-color:#E3E3E3;
+    background-alpha: 0.8;
+    color: #323232;
+    border-color: #000000;
+    border-alpha: 0.7;
+    header-height:20;
+    theme-color: #848484;
+    titleStyleName:"CSS0061AlertTitle";
+}
+
+Button, TextInput, Label {
+    fontSize: 12;
+}
+
+.CSS0061AlertTitle{
+    color:#ffffff;
+    font-Wwight:bold;
+}
+
+.CSS0001Application {
+    background-gradient-colors: #0B3B6F, #FFFFFF;
+    color: #323232;
+    font-size: 12;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    horizontal-align: left;
+    vertical-gap: 0px;
+}
+
+.CSS0002ApplicationControlBar {
+    fillAlphas: 1.0, 1.0;
+    fillColors: #1B1C1D, #1B1C1D;
+    color: #323232;
+	cornerRadius: 0;
+	dropShadowEnabled: false;
+}
+
+.CSS0003Panel {
+	background-color: #EEEEEE;
+   borderColor: #343d45;
+   roundedBottomCorners: false;
+   titleStyleName: "CSS0003PanelTitle";
+   font-size: 12;
+}
+
+.CSS0003PanelTitle {
+   color: #ffffff;
+   fontFamily: Arial;
+   fontSize: 12;
+}
+
+.CSS0005DataGrid {
+   backgroundAlpha: 1;
+   backgroundColor: #ffffff;
+   alternatingItemColors: #ffffff, #ffffff;
+   headerColors: #014d6d, #014d6d;
+   horizontalGridLines: true;
+   letterSpacing: 0;
+   horizontalGridLineColor: #4684b5;
+   verticalGridLines: true;
+   verticalGridLineColor: #4684b5;
+   rollOverColor: #cbe2ed;
+   borderThickness: 1;
+   borderColor: #4684b5;
+   iconColor: #012f43;
+   selectionColor: #C5D5E1;
+   textSelectedColor: #0b333c;
+   textIndent: 0;
+   dropShadowEnabled: true;
+   shadowDistance: 2;
+   dropShadowColor: #cccccc;
+   fontFamily: Arial;
+   fontSize: 12;
+   headerStyleName: "CSS0005DataGridHeaderStyle";
+}
+
+.CSS0005DataGridHeaderStyle {
+   color: #ffffff;
+   fontFamily: Arial;
+   fontWeight: normal;
+   fontSize: 12;
+   fontStyle: normal;
+   textDecoration: none;
+   letterSpacing: 0;
+   textAlign: left;
+}
+
+.CSS0006AdvancedDataGrid {
+   backgroundAlpha: 1.0;
+   backgroundColor: #ffffff;
+   alternatingItemColors: #ffffff, #E7ECEF;
+   headerColors: #014d6d, #014d6d;
+   horizontalGridLines: true;
+   letterSpacing: 0;
+   horizontalGridLineColor: #4684b5;
+   verticalGridLines: true;
+   verticalGridLineColor: #4684b5;
+   rollOverColor: #cbe2ed;
+   borderThickness: 1;
+   borderColor: #4684b5;
+   iconColor: #FFFFFF;
+   selectionColor: #C5D5E1;
+   textSelectedColor: #0b333c;
+   textIndent: 0;
+   dropShadowEnabled: true;
+   shadowDistance: 2;
+   dropShadowColor: #cccccc;
+   fontFamily: Arial;
+   fontSize: 12;
+   headerStyleName: "CSS0006AdvancedDataGridHeaderStyle";
+	sortFontSize: 0;
+}
+
+.CSS0006AdvancedDataGridHeaderStyle {
+   color: #ffffff;
+   fontFamily: Arial;
+   fontWeight: normal;
+   fontSize: 12;
+   fontStyle: normal;
+   textDecoration: none;
+   letterSpacing: 0;
+   textAlign: left;
+	rollOverColor: #367B98;
+}
+
+.CSS0007AdvancedDataGrid {
+   backgroundAlpha: 1.0;
+   backgroundColor: #ffffff;
+   alternatingItemColors: #ffffff, #ffffff;
+   headerColors: #014d6d, #014d6d;
+   horizontalGridLines: true;
+   letterSpacing: 0;
+   horizontalGridLineColor: #4684b5;
+   verticalGridLines: true;
+   verticalGridLineColor: #4684b5;
+   rollOverColor: #cbe2ed;
+   borderThickness: 1;
+   borderColor: #4684b5;
+   iconColor: #012f43;
+   selectionColor: #C5D5E1;
+   textSelectedColor: #0b333c;
+   textIndent: 0;
+   dropShadowEnabled: true;
+   shadowDistance: 2;
+   dropShadowColor: #cccccc;
+   fontFamily: Arial;
+   fontSize: 12;
+   headerStyleName: "CSS0007AdvancedDataGridHeaderStyle";
+	sortFontSize: 0;
+	/*headerSortSeparatorSkin: Embed(source="../assets/img/AdvancedDataGridColumnSeparator1.jpg");*/
+}
+
+.CSS0007AdvancedDataGridHeaderStyle {
+   color: #ffffff;
+   fontFamily: Arial;
+   fontWeight: normal;
+   fontSize: 12;
+   fontStyle: normal;
+   textDecoration: none;
+   letterSpacing: 0;
+   textAlign: left;
+	rollOverColor: #367B98;
+}
+
+.CSS0008TabNavigator {
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:5px;
+	padding-bottom:5px;
+   tabStyleName: "CSS0008TabNavigatorTabs";
+   firstTabStyleName: "CSS0008TabNavigatorTabs";
+   lastTabStyleName: "CSS0008TabNavigatorTabs";
+   selectedTabTextStyleName: "CSS0008TabNavigatorSelectedTabs";
+}
+
+.CSS0008TabNavigatorTabs {
+   color: #0b333c;
+   font-size: 12;
+   header-height: 10;
+   corner-radius: 0;
+}
+
+.CSS0008TabNavigatorSelectedTabs {
+   color: #0b333c;
+   corner-radius: 0;
+}
+
+.CSS0009DateField {
+	color: #0B333C;
+	date-chooser-style-name: "CSS0015DateChooser";
+}
+
+.CSS0010DateField {
+   borderStyle: solid;
+   borderColor: #aeeeed;
+   borderThickness: 1;
+   cornerRadius: 4;
+   backgroundColor: #8D8C8C;
+   color: #ffffff;
+   fontFamily: Arial;
+   fontSize: 14;
+   date-chooser-style-name: "CSS0015DateChooser";
+}
+
+TextInput.CSS0011TextInput {
+   borderStyle: solid;
+   borderColor: #aeeeed;
+   borderThickness: 1;
+   cornerRadius: 4;
+   backgroundColor: #8D8C8C;
+   color: #ffffff;
+   fontFamily: Arial;
+   fontSize: 14;
+}
+
+TextInput.CSS0012TextInput {
+   borderStyle: none;
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 12;
+}
+
+.CSS0015Tile{
+	horizontalGap: 5px;
+	verticalGap: 20px;
+	direction:horizontal;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.CSS0013AdvancedDataGridColumnHeaderStyle {
+	textAlign: center;
+	paddingLeft: 0;
+	paddingTop: 0;
+	paddingBottom: 0;
+	paddingRight: 0;
+	verticalAlign: middle;
+	verticalScrollBarStyleName: "CSS0013AdvancedDataGridColumnHeaderStyleVerticalScrollBar";
+}
+
+.CSS0013AdvancedDataGridColumnHeaderStyleVerticalScrollBar{
+}
+
+.CSS0014ComboBox {
+   color: #ffffff;
+   dropdownStyleName: "CSS0014ComboBoxDropDowns";
+}
+
+.CSS0014ComboBoxDropDowns {
+   color: #0b333c;
+   font-weight: normal;
+}
+
+.CSS0015DateChooser {
+   cornerRadius: 0;
+   headerColors: #e1e5eb, #f4f5f7;
+   fillColors: #ffffff, #cccccc, #ffffff, #eeeeee;
+   todayColor: #818181;
+   rollOverColor: #aadeff;
+   selectionColor: #009dff;
+   color: #FFFFFF;
+   borderColor: #aab3b3;
+   iconColor: #111111;
+   backgroundColor: #999999;
+   themeColor: #009dff;
+   dropShadowEnabled: true;
+   dropShadowColor: #000000;
+   fontFamily: Verdana;
+   fontSize: 11;
+   fontWeight: normal;
+   headerStyleName: "CSS0015DateChooserHeaderStyle";
+   weekDayStyleName: "CSS0015DateChooserWeekDayStyle";
+   todayStyleName: "CSS0015DateChooserTodayStyle";
+}
+
+.CSS0015DateChooserHeaderStyle {
+   color: #000000;
+   fontFamily: Verdana;
+   fontWeight: bold;
+   fontSize: 11;
+   fontStyle: normal;
+   textDecoration: none;
+}
+
+.CSS0015DateChooserWeekDayStyle {
+   color: #000000;
+   fontFamily: Verdana;
+   fontWeight: bold;
+   fontSize: 11;
+   fontStyle: normal;
+   textDecoration: none;
+}
+
+.CSS0015DateChooserTodayStyle {
+   color: #ffffff;
+   fontFamily: Verdana;
+   fontWeight: bold;
+   fontSize: 11;
+   fontStyle: normal;
+   textDecoration: none;
+}
+.CSS0016CheckBox {
+   iconColor: #ffffff;
+   color: #ffffff;
+   textSelectedColor: #ffffff;
+   textRollOverColor: #ffffff;
+   fontFamily: Arial;
+   fontSize: 14;
+   fontWeight: normal;
+}
+
+TextInput.CSS0017TextInput {
+   borderStyle: solid;
+   borderColor: #FFFFFF;
+   borderThickness: 1;
+   cornerRadius: 0;
+   backgroundColor: #375977;
+   color: #ffffff;
+   fontFamily: "Courier New";
+   fontSize: 14;
+	backgroundDisabledColor: #DDDDDD;
+	fontWeight: bold;
+	disabledColor: #504F4F;
+}
+
+TextInput.CSS0018TextInput {
+   borderStyle: solid;
+   borderColor: #FFFFFF;
+   borderThickness: 1;
+   cornerRadius: 0;
+   backgroundColor: #3C7737;
+   color: #ffffff;
+   fontFamily: "Courier New";
+   fontSize: 14;
+	backgroundDisabledColor: #DDDDDD;
+	fontWeight: bold;
+	disabledColor: #504F4F;
+}
+
+.CSS0020DateField {
+   date-chooser-style-name: "CSS0015DateChooser";
+}
+
+DateField.CSS0021DateField {
+   borderStyle: solid;
+   borderColor: #aeeeed;
+   borderThickness: 1;
+   cornerRadius: 4;
+   backgroundColor: #8D8C8C;
+   color: #ffffff;
+   fontFamily: Arial;
+   fontSize: 14;
+   date-chooser-style-name: "CSS0015DateChooser";
+}
+
+.CSS0022Grid{
+	 horizontal-gap: 4px;
+	 vertical-gap: 2px;
+}
+
+.CSS0023LinkButton{
+	color: #eeeeee;
+}
+
+.CSS0024GridRow{
+	background-color: #D1D8DC;
+}
+
+.CSS0025GridRow{
+	background-color: #FEE2BC;
+}
+
+TextInput.CSS0026TextInput{
+	font-family: "Monospace";
+}
+
+.CSS0029DataGrid {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    /*headerColors: #a0bfd3, #a0bfd3;*/
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    /*selectionColor: #8c9fc5;
+    textSelectedColor: #2b4d72;
+    rollOverColor: #b6c4e0;
+    textRollOverColor: #2b4d72;*/
+    /*color: #2b4d72;*/
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+    /*corner-radius:8;
+    border-bottom-right-radius:1;
+    border-bottom-left-radius:1;*/
+    headerStyleName: "CSS0029DataGridHeaderStyle";
+}
+.CSS0029DataGridReception {
+	
+    alternatingItemColors: #ffffff, #ffffff;
+   
+    headerColors: #2B4D72, #2B4D72;
+    border-style:solid;
+    horizontalGridLines: true;
+    horizontalGridLineColor: #CDCDD1;
+    verticalGridLineColor: #CDCDD1;
+    fontFamily: Arial;
+    fontSize: 13;
+    fontWeight: bold;
+    
+    
+	/*header-colors: #ffffff;
+	backgroundAlpha: 1;
+    letterSpacing: 0;
+    borderColor: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontWeight: bold;*/
+}
+.CSS0029DataGridHeaderStyle {
+    color: #ffffff;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:bold;
+}
+
+.CSS0031DataGrid {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 12;
+    /*font-weight:bold;*/
+    headerStyleName: "CSS0029DataGridHeaderStyle";
+}
+
+.CSS0034DataGrid {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    text-align:center;
+    fontSize: 11;
+    /*font-weight:bold;*/
+    headerStyleName: "CSS0029DataGridHeaderStyle";
+}
+
+.CSS0035DataGrid {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    text-align:center;
+    fontSize: 11;
+    background-color:#a0bfd3;
+    /*font-weight:bold;*/
+    headerStyleName: "CSS0035DataGridHeaderStyle";
+}
+
+.CSS0035DataGridHeaderStyle {
+    color: #ffffff;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:bold;
+}
+
+
+.CSS0036DataGrid {
+	backgroundAlpha: 1;
+    /*alternatingItemColors: #e6f4ff, #ffffff;*/
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    text-align:center;
+    fontSize: 11;
+    background-color:#a0bfd3;
+    /*font-weight:bold;*/
+    headerStyleName: "CSS0035DataGridHeaderStyle";
+}
+
+.CSS0036DataGridHeaderStyle {
+    color: #ffffff;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:bold;
+}
+
+.CSS0032DataGrid {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 11;
+    /*font-weight:bold;*/
+    headerStyleName: "CSS0032DataGridHeaderStyle";
+}
+
+.CSS0033DataGrid {
+	backgroundAlpha: 1;
+    alternatingItemColors: #a0bfd3, #a0bfd3;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 12;
+    /*font-weight:bold;*/
+    headerStyleName: "CSS0029DataGridHeaderStyle";
+}
+
+.CSS0032DataGridHeaderStyle {
+    color: #ffffff;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:normal;
+}
+
+.CSS0031DataGridNew {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 12;
+    /*font-weight:normal;*/
+    headerStyleName: "CSS0029DataGridHeaderStyle";
+}
+
+.CSS0031DataGriFooter {
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #7F98A8, #7F98A8;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    color: #244066;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 12;
+    headerStyleName: "CSS0029DataGridHeaderStyleFooter";
+}
+
+.CSS0029DataGridHeaderStyleFooter {
+    color: #ffffff;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:bold;
+}
+
+
+.CSS0031DataGridHeaderStyle {
+    color: #ffffff;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:bold;
+}
+
+.CSS0030TextBlue {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #01396D;
+    background-color: #ffffff;
+}
+
+.CSSMAINTITTLE {
+	fontFamily: Arial;
+    /*font-family: "Times New Roman";*/
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.CSSMAINTITTLELIT {
+	fontFamily: Arial;
+    /*font-family: "Times New Roman";*/
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.STY0031MenuBar {
+   backgroundAlpha: 1;
+   backgroundColor: #A9BCCD;
+   borderColor: #A9BCCD;
+   fillColors: #A9BCCD, #A9BCCD;
+   rollOverColor: #ffcc33;
+   selectionColor: #ff9900;
+   themeColor: #cc3300;
+   fontFamily: "Arial Narrow";
+   fontSize: 14;
+   font-weight: normal;
+   color: #4E6B87;
+   menuStyleName: "STY0032Menu";
+}
+
+.STY0032Menu {
+   borderColor: #f2f4f7;
+   color: #f2f4f7;
+   background-color: #7A97B1;
+   font-weight: normal;
+}
+.CSS0031TextBackBlue {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #238ECF;
+}
+
+.CSS0032TextGreen {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    color: #000000;
+    background-color: #C5D5E1;
+    text-decoration: none;
+}
+
+TextInput.CSS0033TextInput {
+   background-color: #FFFFFF;
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 10px;
+   border-style:solid;
+   border-thickness:1px;
+   border-color:#2c6b97;
+   /*color: #3864A0;*/
+   color: #244066;
+}
+
+TextInput.CSS0001TextInput {
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 11px;
+   border-style:solid;
+   border-thickness:1px;
+   border-color:#6CB6E7;
+   disabled-color:#074066;
+   background-disabled-color:#CAE2F2;
+}
+
+TextInput.CSS0001TextInput2 {
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 11px;
+   border-style:solid;
+   border-thickness:1px;
+   border-color:#2c6b97;
+   disabled-color:#074066;
+   background-disabled-color:#FFFFFF;
+}
+
+/*.CSS0034ComboBox {
+   color: #0b333c;
+   font-weight: normal;
+   fill-alphas: 0.8, 0.8;
+   dropdownStyleName: "CSS0035ComboBoxDropDowns";
+}*/
+
+.CSS0034ComboBox {
+	border-color: #6CB6E7;
+	border-style: solid;
+	border-width: 1px;
+	font-weight: normal;
+	font-size: 11px;
+	font-style: normal;
+	font-family: arial, verdana, helvetica, sans-serif;
+	background-color: #FFFFFF;
+	corner-radius: 1;
+}
+
+.CSS0035ComboBox {
+	border-color: #6CB6E7;
+	font-weight: normal;
+	font-size: 10;
+	font-style: normal;
+	font-family: arial, verdana, helvetica, sans-serif;
+	background-color: #FFFFFF;
+	corner-radius: 1;
+}
+
+.CSS0035ComboBoxDropDowns {
+   color: #0b333c;
+   font-weight: normal;
+}
+
+.CSS0034AdvancedDataGrid2 {
+   backgroundAlpha: 1.0;
+   backgroundColor: #ffffff;
+   alternatingItemColors: #ffffff, #ffffff;
+   headerColors: #014d6d, #014d6d;
+   horizontalGridLines: true;
+   letterSpacing: 0;
+   horizontalGridLineColor: #4684b5;
+   verticalGridLines: true;
+   verticalGridLineColor: #4684b5;
+   rollOverColor: #cbe2ed;
+   borderThickness: 1;
+   borderColor: #4684b5;
+   iconColor: #012f43;
+   selectionColor: #C5D5E1;
+   textSelectedColor: #0b333c;
+   textIndent: 0;
+   dropShadowEnabled: true;
+   shadowDistance: 2;
+   dropShadowColor: #cccccc;
+   fontFamily: Arial;
+   fontSize: 12;
+   headerStyleName: "CSS0035myAdvancedDataGridHeaderStyle2";
+	sortFontSize: 0;
+	/*headerSortSeparatorSkin: Embed(source="../assets/img/AdvancedDataGridColumnSeparator1.jpg");*/
+}
+
+.CSS0035myAdvancedDataGridHeaderStyle2 {
+   color: #ffffff;
+   fontFamily: Arial;
+   fontWeight: normal;
+   fontSize: 12;
+   fontStyle: normal;
+   textDecoration: none;
+   letterSpacing: 0;
+   textAlign: left;
+	rollOverColor: #367B98;
+}
+
+.CSS0036TextInput {
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 12;
+   border-style:solid;
+   border-thickness:1px;
+   border-color:#2c6b97;
+   color: #0b333c;
+}
+
+.CSS0037GridRow{
+	border-color:#014D6D;
+	border-thickness:1px;
+	border-style:solid;
+}
+.CSS0038GridItem{
+	border-color:#014D6D;
+	border-thickness:1px;
+	border-style:solid;
+}
+.CSS0039TitleWindow{
+	background-color: #EEEEEE;
+	font-size: 12;
+	close-button-skin: Embed('../assets/icons/24x24/1319643005_Close.png');
+    border-color: #343d45;
+    corner-radius: 3;  
+    closeButtonDisabledSkin: ClassReference(null);
+    closeButtonDownSkin: ClassReference(null);
+    closeButtonOverSkin: ClassReference(null);
+    closeButtonUpSkin: ClassReference(null);
+}
+.CSS0046LinkBar {
+   borderStyle: none;
+   horizontalGap: 20;
+   separatorWidth: 0;
+   cornerRadius: 0;
+   disabledColor: #ffffff;
+   dropShadowEnabled: false;
+   shadowDirection: center;
+   dropShadowColor: #ffffff;
+}
+.CSS0048Label{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFE14F;
+	font-size: 12px;
+	font-weight:bold;
+}
+.CSS0049Label{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #C1D1DC;
+	font-size: 12px;
+	font-weight:bold;
+}
+.CSS0050LinkButton{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight:normal;
+}
+.CSS0051LinkButton{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #C1D1DC;
+	font-size: 12px;
+	font-weight:normal;
+}
+.CSS0052LinkButton {
+   cornerRadius: 0;
+   paddingLeft: 5;
+   paddingRight: 5;
+   /*rollOverColor: #666666;
+   selectionColor: #999999;*/
+   rollOverColor: #001C3B;
+   selectionColor: #3280CC;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #ffffff;
+   fontSize: 12;
+   fontWeight: bold;
+   letterSpacing: 0;
+   /*color: #cccccc;*/
+   color: #FFFFFF;
+}
+.STY0003{
+	background-color: #313131;
+}
+.STY0012{
+	background-color: #4F606E;
+	font-family: Tahoma;
+	font-size: 10px;
+	color: #E2E2E2;
+}
+.STY0013 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #003559;
+}
+.STY0014 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #E2E3ED;
+}
+.CSS0055Tree {
+	background-color: ClassReference(null);
+   useRollOver: true;
+   rollOverColor: #001C3B;/*#205889*/
+   textRollOverColor: #ffffff;
+   selectionColor: #001C3B;/* #3A3A3A*/
+   textSelectedColor: #ffffff;
+   borderStyle: none;
+   borderThickness: 0;
+   color: #FFFFFF;
+   dropShadowEnabled: false;
+   fontFamily: Arial;
+   fontSize: 12;
+   fontWeight: bold;
+   /*fontWeight: normal;*/
+   padding-left:10px;
+   padding-right:10px;
+}
+
+.CSS0042Panel {
+   borderColor: #e5ecef;
+   borderThicknessLeft: 0;
+   borderThicknessTop: 0;
+   borderThicknessBottom: 0;
+   borderThicknessRight: 0;
+   roundedBottomCorners: false;
+   cornerRadius: 0;
+   borderAlpha: 1;
+   backgroundAlpha: 1;
+   highlightAlphas: 0.3, 0;
+   headerHeight: 28;
+   headerColors: #1E3651, #1E3651;
+   backgroundColor: #e2e3ed;
+   dropShadowEnabled: true;
+   shadowDistance: 2;
+   shadowDirection: right;
+   dropShadowColor: #000000;
+   titleStyleName: "CSS0042PanelTitle";
+}
+
+.CSS0042PanelTitle {
+   color: #ffffff;
+   textAlign: left;
+   fontFamily: Arial;
+   fontSize: 12;
+   fontWeight: bold;
+}
+.CSS0063Tree {
+	background-color: ClassReference(null);
+   useRollOver: true;
+   rollOverColor: #205889;
+   textRollOverColor: #002256;
+   selectionColor: #205889; /*#3A3A3A*/
+   textSelectedColor: #002256;
+   borderStyle: none;
+   borderThickness: 0;
+   color: #014D6D;
+   dropShadowEnabled: false;
+   fontFamily: Arial;
+   fontSize: 12;
+   fontWeight: normal;
+   padding-left:10px;
+   padding-right:10px;
+}
+Button.CSS0064Button {
+   cornerRadius: 0;
+   highlightAlphas: 0, 0;
+   fillAlphas: 1.0, 1.0, 1.0, 1.0;
+   fillColors: #02507A, #02507A, #D8F0FF, #9BD7FF;
+   color: #ffffff;
+   text-align:left;
+	borderColor: #0076C1;
+}
+.CSS0004Box{
+	background-image: Embed("../assets/img/IPAD_BG.jpg");
+	background-repeat: repeat;
+	borderSkin: ClassReference("com.degrafa.skins.CSSSkin");
+}
+.CSS0019Box{
+	background-image: Embed("../assets/img/top2.png");
+	background-repeat: repeat;
+	borderSkin: ClassReference("com.degrafa.skins.CSSSkin");
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 15px;
+	color:#ffffff;
+	border-style:none;
+}
+.CSS0027Box{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #002256;
+	font-size: 12px;
+	background-color: #E5ECEF;
+	corner-radius: 8;
+	border-style: solid;
+	vertical-align: middle;
+	horizontal-align: left;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	horizontal-gap: 4px;
+	borderThickness: 0;
+}
+.CSS0028Box{
+	background-color: #e3eaf9;
+	corner-radius: 0;
+	border-style: solid;
+	vertical-align: middle;
+	horizontal-align: left;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	horizontal-gap: 8px;
+	borderThickness: 1;
+}
+.CSS0047Box{
+	background-image: Embed("../assets/img/ControlBarMenuBg_r2_c2.jpg");
+    background-repeat: repeat;
+    borderSkin: ClassReference("com.degrafa.skins.CSSSkin");
+	horizontal-align: center;
+	vertical-align: middle;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.CSS0053Box{
+	
+}
+.CSS0054Box{
+	background-image: Embed("../assets/img/top.png");
+    background-repeat: repeat;
+    borderSkin: ClassReference("com.degrafa.skins.CSSSkin");
+}
+.CSS0065Box{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #4978B0;
+	vertical-align: middle;
+	horizontal-align: center;
+	vertical-gap: 5px;
+}
+.CSS0066Box{
+	padding-top: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 20px;
+}
+.CSS0001Box{
+	/*
+	background-image: "../assets/img/IPAD_BG.png";
+    background-repeat: repeat;
+    borderSkin: ClassReference("com.degrafa.skins.CSSSkin");
+    */
+	horizontal-align: center;
+	vertical-align: middle;
+	vertical-gap: 0px;
+}
+.CSS0002Box{
+	background-color: #000000;
+	vertical-align:bottom;
+	horizontal-align:center;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+.CSS0003Box{
+	background-color: #000000;
+}
+.CSS0007Box{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.CSS0068Box{
+	background-color: #a0bfd3;
+	border-bottom-color: #155D8C;
+	border-thickness-bottom: 2px;
+	border-thickness-left: 0px;
+	border-thickness-right: 0px;
+	border-thickness-top: 0px;
+	border-style: solid;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.CSS0069Box{
+	background-color: #e6f4ff;
+	border-thickness: 2px;
+	border-color: #155D8C;
+	border-style: solid;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	horizontal-gap: 0px;
+	vertical-gap: 0px;
+}
+
+.CSS0070Box{
+	border-color: #155D8C;
+	border-thickness: 1px;
+	border-style: solid;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.CSS0005Box{
+	background-color: #e3eaf9;
+}
+.CSS0006Box{
+	background-color: #1E3651;
+}
+
+.CSS0071Box{
+	background-color: #FFFFFF; /*F5E6FF*/
+	border-thickness: 2px;
+	border-color: #155D8C;
+	border-style: solid;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	horizontal-gap: 0px;
+	vertical-gap: 0px;
+}
+
+.CSS0072Box{
+	background-color: #A0D3B6;
+	border-bottom-color: #155D8C;
+	border-thickness-bottom: 2px;
+	border-thickness-left: 0px;
+	border-thickness-right: 0px;
+	border-thickness-top: 0px;
+	border-style: solid;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.CSS0040Box{
+	background-color:#ffffff;
+	font-size: 12;
+	vertical-gap: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-style:none;
+	horizontal-align: center;
+}
+.CSS0041Box{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #002256;
+	font-size: 12px;
+	background-color: #E2E3ED;
+	corner-radius: 0;
+	border-style: solid;
+	vertical-align: middle;
+	horizontal-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	horizontal-gap: 4px;
+	borderThickness: 2;
+	borderColor: #9B9AB3;
+}
+.CSS0042Box{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #ffffff;
+	font-size: 12px;
+	corner-radius: 0;
+	border-style: none;
+	vertical-align: middle;
+	horizontal-align: right;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	horizontal-gap: 0px;
+}
+.CSS0043Box{
+	
+}
+.CSS0044Box{
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	horizontal-gap: 10px;
+}
+.CSS0045Box{
+	horizontal-gap: 0px;
+	horizontal-align: center;
+}
+.CSS0056Box{
+	vertical-align:top;
+	vertical-gap:0px;
+}
+.CSS0057Box{
+	vertical-align:top;
+	horizontal-align:center;
+	padding-top: 0px;
+}
+/*
+@font-face
+{
+	src: local("MicrogrammaDBolExt");
+	fontFamily: myMicrogrammaDBolExt;
+	font-weight:bold;
+	advancedAntiAliasing: true;
+}
+*/
+.CSS0058Box{
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	vertical-align:middle;
+	horizontal-align:center;
+	horizontal-gap: 25px;
+}
+.CSS0059Box{
+	vertical-align:top;
+	horizontal-align:center;
+	horizontal-gap:0px;
+}
+.CSS0060Box{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #ffffff;
+	font-size: 12px;
+	corner-radius: 0;
+	border-style: none;
+	vertical-align: middle;
+	horizontal-align: left;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	vertical-gap: 0px;
+}
+.CSS0067TabNavigator {
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+    tabStyleName: "CSS0067TabNavigatorTabs";
+    firstTabStyleName: "CSS0067TabNavigatorTabs";
+    lastTabStyleName: "CSS0067TabNavigatorTabs";
+    selectedTabTextStyleName: "CSS0067TabNavigatorSelectedTabs";
+	backgroundColor: #E3EAF9;
+}
+.CSS0067TabNavigatorTabs {
+   color: #0b333c;
+   font-size: 11;
+   background-color: #00D800;/*#86B990*/
+   header-height: 10;
+   corner-radius: 8;
+}
+
+.CSS0067TabNavigatorSelectedTabs {
+   color: #0b333c;
+   background-color: #ffffff;
+   corner-radius: 8;
+}
+.CSS0001Label{
+	font-family: ttfArialBold;
+	font-size: 12px;
+}
+.CSS0002Label{
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: normal;
+	text-align:right;
+}
+.CSS0003Label{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 9px;
+}
+.CSS0004Label{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 10px;
+	background-color: #FFFFFF;
+	borderColor: #2c6b97;
+}
+.CSS0001GridItem{
+	horizontal-align: center;
+	vertical-align: middle;
+	background-color: #FFFFFF;
+}
+.CSS0002GridItem{
+	horizontal-align: center;
+	vertical-align: middle;
+}
+.CSS0003GridItem{
+	horizontal-align: right;
+	vertical-align: middle;
+}
+.CSS0004GridItem{
+	horizontal-align: right;
+	vertical-align: middle;
+	background-color: #00FF00;
+}
+.CSS0005GridItem{
+	horizontal-align: left;
+	vertical-align: bottom;
+	background-color: #FFFFFF;
+}
+.CSS0006GridItem{
+	horizontal-align: right;
+	vertical-align: middle;
+	background-color: #FF0000;
+}
+.CSS0007GridItem{
+	horizontal-align: right;
+	vertical-align: middle;
+	background-color: #80BFFF;
+}
+.CSS0008GridItem{
+	horizontal-align: right;
+	vertical-align: middle;
+	background-color: #00A000;
+}
+.CSS0030DataGrid {	
+	backgroundAlpha: 1;
+    alternatingItemColors: #e6f4ff, #ffffff;
+    headerColors: #a0bfd3, #a0bfd3;
+    horizontalGridLines: true;
+    letterSpacing: 0;
+    horizontalGridLineColor: #2b4d72;
+    verticalGridLineColor: #2b4d72;
+    borderThickness: 1;
+    borderColor: #2b4d72;
+    iconColor: #2b4d72;
+    /*selectionColor: #8c9fc5;
+    textSelectedColor: #2b4d72;
+    rollOverColor: #b6c4e0;
+    textRollOverColor: #2b4d72;*/    
+    /*color: #2b4d72;*/
+    color: #07213E;
+    textIndent: 0;
+    fontFamily: Arial;
+    fontSize: 10px;
+    fontWeight: bold;
+    /*corner-radius:8;
+    border-bottom-right-radius:1;
+    border-bottom-left-radius:1;*/
+    headerStyleName: "CSS0030DataGridHeaderStyle";/*CSS0029DataGridHeaderStyle*/
+}
+
+.CSS0030DataGridHeaderStyle {
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 9px;
+    fontFamily: Arial;
+    fontStyle: normal;
+    textDecoration: none;
+    font-weight:bold;
+}
+
+TextInput.CSS0034TextInput {
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 9px;
+   border-style:none;
+   border-thickness:0px;
+}
+
+Label.CSS0035Label{
+	color: #339900;
+	font-weight:bold;
+}
+
+Label.CSS0036Label{
+	color: #FF0000;
+	font-weight:bold;
+}
+
+.CSS0037LinkButton{
+	color: #057ECB;
+	font-weight:bold;
+}
+
+Button.CSS0038Button{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #22CE0B, #22CE0B;
+	color: #FFFFFF;
+}
+Button.CSS0039Button{
+	cornerRadius: 0;
+	fontFamily: "Arial";
+}
+RadioButton.CSS0040RadioButton{
+	fontFamily: "Arial";
+	fontWeight: bold;
+	color: #2C6B97;
+	
+}
+DateField.CSS0041DateField{
+	background-color: #f0de9f;
+	textAlign: center;
+	fontFamily: Arial;
+	fontSize: 10px;
+	border-style:solid;
+	border-thickness:1px;
+	border-color:#2c6b97;
+	/*color: #3864A0;*/
+	color: #244066;
+	date-chooser-style-name: "CSS0015DateChooser";
+}
+LinkBar.CSS0042LinkBar{
+	link-button-style-name: "CSS0042LinkButton";
+}
+LinkButton.CSS0042LinkButton{
+	fontSize: 11;
+	fontWeight: normal;
+	fontFamily: Georgia;
+}
+
+.CSS0043Box {
+	background-color: #7F98A8;
+    color: #FFFFFF;
+    borderColor: #2b4d72;
+	border-style: solid;
+	borderThickness: 1;
+    fontFamily: Arial;
+    fontSize: 12;
+    fontWeight: bold;
+}
+
+.TexfieldValidator{
+	textAlign: center;
+	fontFamily: Arial;
+   	fontSize: 11px;
+   	border-style:solid;
+   	border-thickness:1px;
+   	border-color:#6CB6E7;
+   	disabled-color:#074066;
+   	background-disabled-color:#CAE2F2;
+	background-color: #FFFF00;
+}
+.cssBoxBorde{
+	
+	border-color:#B2B2BD;
+	border-style:solid;
+	border-bottom-width:5px;
+	border-left-width:5px;
+	border-top-width:5px;
+	border-right-width:5px;
+	border-top-left-radius:-1px;
+	border-top-right-radius:-1px;
+	border-bottom-left-radius:-1px;
+	border-bottom-right-radius:-1px;
+}
+
+Label.CSS0044Label{
+	color: #FF0000;
+	font-weight:bold;
+}
+
+Label.CSS0045Label{
+	color: #CC9900;
+	font-weight:bold;
+}
+
+Label.CSS0046Label{
+	color: #339900;
+	font-weight:bold;
+}
+Label.CSS0047Label{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 11px;
+}
+Button.CSS0048Button{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #02507A, #02507A;
+	color: #FFFFFF;
+	textRollOverColor: #FFFFFF;
+	disabledColor: #FFFFFF;
+	cornerRadius: 0;
+}
+.CSS0049Box{
+	paddingLeft:2px;
+	paddingRight:4px;
+	paddingTop:2px;
+	paddingBottom:4px;
+	background-color:#7F98A8;
+}
+.CSS0050Box{
+	background-color:#ffffff;
+}
+Label.CSS0051Label{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 12px;
+}
+CheckBox.CSS0052CheckBox{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 11px;
+}
+CheckBox.CSS0053CheckBox {
+	textIndent: 0;
+	letterSpacing: 0;
+	highlightAlphas: 0, 0;
+	fillAlphas: 0, 0, 0, 0;
+	fillColors: #ffffff, #ffffff, #ffffff, #ffffff;
+	borderColor: #ffffff;
+	iconColor: #0b333c;
+	disabledIconColor: #0b333c;
+	color: #ffffff;
+	themeColor: #ffffff;
+}
+TextArea.CSS0054TextArea{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 12px;
+}
+Label.CSSErrorLabel{
+	background-color: orange;
+	font-family: arial;
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 9px;
+}
+LinkButton.CSS0055LinkButton{
+	color: #0071C6;
+	fontSize: 11;
+	fontWeight: normal;
+	cornerRadius: 0;
+	textRollOverColor: #0071C6;
+	textSelectedColor: #0071C6;
+	paddingRight: 0;
+	paddingLeft: 0;
+	paddingBottom: 0;
+	paddingTop: 0;
+}
+TextArea.CSS0056TextArea{
+	color: #0b333c;
+	font-weight:bold;
+	font-size: 14px;
+	font-family: "Courier New";
+}
+Label.CSS0057Label{
+	color: #FFCC00;
+	font-weight:bold;
+}
+Label.CSS0058Label{
+	color: #CC9900;
+	font-weight:bold;
+}
+Label.CSS0059Label{
+	color: #CC6600;
+	font-weight:bold;
+}
+
+TextInput.CSS0001TextError {
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 11px;
+   border-style:solid;
+   border-thickness:1px;
+   border-color:#6CB6E7;
+   disabled-color:#074066;
+   background-disabled-color:#e2b2b3; /*d99294;*/
+   background-color: #e2b2b3;
+}
+
+TextInput.CSS0001TextArea {
+   textAlign: center;
+   fontFamily: Arial;
+   fontSize: 7px;
+   border-style:solid;
+   border-thickness:1px;
+   border-color:#6CB6E7;
+   disabled-color:#074066;
+   background-disabled-color:#CAE2F2;
+}

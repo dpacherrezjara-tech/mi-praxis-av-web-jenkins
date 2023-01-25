@@ -1,0 +1,30 @@
+Ext.define('Ext.Praxis.model.flown.DOT.GridDataDetailTKT', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name :'RN' , type: 'string'},
+        {name :'TICKET' , type: 'string'},
+        {name :'strSQL' , type: 'string'},
+        {name :'FARE' , type: 'string'},
+        {name :'PASSCOUN' , type: 'string'},
+        {name :'strCity01' , type: 'string'},
+        {name :'strCity02' , type: 'string'},
+        {name :'strCity03' , type: 'string'},
+        {name :'strCity04' , type: 'string'},
+        {name :'strCity05' , type: 'string'},
+        {name :'strCity06' , type: 'string'},
+        {name :'strCity07' , type: 'string'},
+        {name :'strCity08' , type: 'string'},
+        {name :'strCity09' , type: 'string'},
+        {name :'strCity10' , type: 'string'},
+        {name :'strCity11' , type: 'string'},
+        {name :'strCity12' , type: 'string'},
+        {name :'strCity13' , type: 'string'},
+        {name :'strCity14' , type: 'string'},
+        {name :'strCity15' , type: 'string'},
+        {name :'strCity16' , type: 'string'},
+        {name :'strCity17' , type: 'string'},
+        {name :'strCity18' , type: 'string'},
+        {name :'strCity19' , type: 'string'},
+        {name :'strCity20' , type: 'string'}
+    ]
+});

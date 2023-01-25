@@ -1,0 +1,30 @@
+    Ext.define('Ext.Praxis.model.sales.CommissionBSPASR.GridDataTkt', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'A1776FUENT', type: 'string'},
+        {name: 'A1776IATA', type: 'string'},
+        {name: 'TKT', type: 'string'},
+        {name: 'A1776CUPON', type: 'string'},
+        {name: 'A1776FECVT', type: 'string'},
+        {name: 'A1776TRNCU', type: 'string'},
+        {name: 'A1776ORIG', type: 'string'},
+        {name: 'A1776DEST', type: 'string'},
+        {name: 'A1776CARR', type: 'string'},
+        {name: 'A1776NVLO', type: 'string'},
+        {name: 'A1776FBAS', type: 'string'},
+        {name: 'A1776CLAS', type: 'string'},
+        {name: 'A1776CODIT', type: 'string'},
+        {name: 'A1776MDALC', type: 'string'},
+        {name: 'FARE_ON', type: 'string'},
+        {name: 'FARE_OFF', type: 'string'},
+        {name: 'A1776CHON', type: 'string'},
+        {name: 'A1776CHOFF', type: 'string'},
+        {name: 'A1776PCSC', type: 'string'},
+        {name: 'A1776GTCAM', type: 'string'},
+        {name: 'A1776GPAGC', type: 'string'},
+        {name: 'A1776GMDAP', type: 'string'},
+        {name: 'A1776CFOP', type: 'string'},
+        {name: 'A1776APLIC', type: 'string'},
+        {name: 'A1776INDI', type: 'string'}
+    ]
+});

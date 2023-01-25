@@ -1,0 +1,131 @@
+Ext.define('Ext.Praxis.view.flown.FlightConciliationForm.DataEntryExport', {
+    extend: 'Ext.window.Window',
+    alias: 'widget.DataEntryExportFlightConciliationForm',
+    requires: [
+        'Ext.Praxis.controller.flown.FlightConciliation.DataEntryExportFlightConciliationController'
+    ],
+    controller: 'DataEntryExportFlightConciliationController',
+    title: 'Download File Flight Manifest',
+    header: true,
+    height: 170,
+    width: 425,
+    border: false,
+    resizable: false,
+    layout: 'fit',
+    modal: true,
+    defaults: {
+        border: false
+    },
+    items: [
+        {
+            xtype: 'form',
+            defaults: {
+                style: 'margin: 3px;',
+                border: false
+            },
+            items: [
+                {
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: 'File Type:',
+                            style: 'font-size:13px;',
+                            padding: '4 0'
+                        },
+                        {xtype: 'tbspacer', width: 15},
+                        {
+                            xtype: 'label',
+                            text: 'TXT',
+                            style: 'font-size:13px;',
+                            padding: '4 0'
+                        },
+                        {xtype: 'tbspacer', width: 77},
+                        {
+                            xtype: 'label',
+                            text: 'Date:',
+                            style: 'font-size:13px;',
+                            padding: '4 0'
+                        },
+                        {xtype: 'tbspacer', width: 15},
+                        {
+                            xtype: 'textfield',
+                            id:prototype.id+'-txtDate',
+                            fieldStyle: 'text-align:center;background:white;color:#2E486C;',
+                            readOnly: true,
+                            value: '',
+                            width: 80
+                        },
+                        {xtype: 'tbspacer', width: 7},
+                    ]
+                },
+                // <editor-fold defaultstate="collapsed" desc="gridFileNames">
+                {
+                    xtype: 'grid',
+                    id: prototype.id + '-gridFileNames',
+                    border: true,
+                    width: '100%',
+                    height: 45,
+                    columnLines: true,
+                    columns: {
+                        defaults: {
+                            menuDisabled: true,
+                            sortable: false,
+                            align: 'center'
+                        },
+                        items: [
+                            {
+                                text: 'Name File', dataIndex: 'strFormatDate', flex: 1,//width: 400,
+                                listeners: {
+                                    click: 'btnExport_clickHandler'
+                                },
+                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                    metaData.style = "text-align:left;";
+                                    value = '<b>' + value + '</b>';
+                                    return '<a href="#flown-flight-conciliation-form" style="color:#057ECB;text-decoration:none;">' + value + '</a>';
+                                }
+                            }
+                        ]
+                    }
+                }
+                // </editor-fold>
+            ]
+        }
+    ],
+    dockedItems: [
+        {
+            xtype: 'toolbar',
+            dock: 'bottom',
+            ui: 'footer',
+            padding: '0',
+            margin: '12 0',
+            layout: {
+                pack: 'center'
+            },
+            fieldStyle: 'text-align:center;',
+            defaults: {
+                scale: 'medium'
+            },
+            items: [
+                {
+                    id: prototype.id + '-btnCancel',
+                    html: '<strong style:"font-weight:bold;color:#000;">Cancel</strong>',
+                    listeners: {
+                        click: 'btnCancel_clickHandler'
+                    }
+                },
+                {xtype: 'tbspacer', width: 5},
+                {
+                    id: prototype.id + '-btnDownload',
+                    style: 'font-weight:bold;background:#27CF10;',
+                    html: '<strong style="background:#27CF10;color:white;">Download</strong>',
+                    hidden: true,
+                    listeners: {
+                        click: 'btnDownload_cliclHandler'
+                    }
+                }
+            ]
+        }
+    ]
+});

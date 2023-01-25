@@ -1,0 +1,251 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+Ext.define('Ext.Praxis.view.interline.FrequentFlyerForm.Filters', {
+    extend: 'Ext.form.Panel',
+    alias: 'widget.' + prototype.id + '-filters',
+    border: true,
+    bodyStyle: 'background-color: #E3EAF9;',
+    padding: '2px 0px 1px 0px',
+    layout: 'column',
+    items: [
+        {
+            xtype: 'form',
+            border: false,
+            bodyStyle: 'background: transparent',
+            padding: '0px 5px 1px 0px',
+            layout: 'vbox',
+            defaults: {
+                labelStyle: 'font-weight:bold;',
+                fieldStyle: 'text-align: center;',
+                padding: '0px 1px 0px 0px',
+                anchor: '100%',
+                width: 1550
+            },
+            items: [
+                /**
+                 *  Panel 01
+                 * */
+                {
+                    xtype: 'panel',
+                    bodyStyle: 'background: transparent',
+                    id: prototype.id + '-panelFilters1',
+                    border: false,
+                    style: 'border-bottom: 2px #ffffff solid;',
+                    layout: 'hbox',
+                    defaults: {
+                        //labelStyle: 'font-weight:bold;',
+                        fieldStyle: 'text-align: center;',
+                        padding: '8px 5px 8px 5px',
+                        anchor: '100%'
+                    },
+                    items: [
+//                        {
+//                            xtype: 'label',
+//                            text: 'Search By',
+//                            style: 'font-weight:bold;',
+//                            padding: '10 5 5 5'
+//
+//                        }
+                        {xtype: 'tbspacer', width: 60},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbFecha',
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: '',
+                            width: 120,
+                            labelWidth: 0,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name'
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDateFromYear',
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: 'From',
+                            width: 110,
+                            labelWidth: 40,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name',
+                            maxLength: 4,
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDateFromMonth',
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: '',
+                            width: 60,
+                            labelWidth: 0,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name',
+                            maxLength: 3,
+                            enforceMaxLength: true
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDateToYear',
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: 'To',
+                            width: 100,
+                            labelWidth: 30,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name',
+                            maxLength: 4,
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDateToMonth',
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: '',
+                            width: 60,
+                            labelWidth: 0,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name',
+                            maxLength: 3,
+                            enforceMaxLength: true
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbAerolinea',
+                            fieldStyle: 'text-align: left;',
+                            disabled: false,
+                            fieldLabel: 'Airline',
+                            width: 300,
+                            labelWidth: 60,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'A005KEY',
+                            displayField: 'A005KEY2'
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbPeriod',
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: 'Period',
+                            width: 130,
+                            labelWidth: 60,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name'
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbStatus',
+                            hidden: true,
+                            fieldStyle: 'text-align: center;',
+                            disabled: false,
+                            fieldLabel: 'Status',
+                            width: 120,
+                            labelWidth: 60,
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'code',
+                            displayField: 'name'
+                        },
+                        {
+                            xtype: 'checkboxfield',
+                            id: prototype.id + '-btnADM',
+                            hidden: true,
+                            margin: '8 0 0 30',
+                            width: 150,
+                            boxLabel: 'F.F. vs Interline',
+                            inputValue: '1'
+                        }
+                    ]
+                },
+                {
+                    xtype: 'panel',
+                    bodyStyle: 'background: transparent',
+                    id: prototype.id + '-panelFilters2',
+                    border: false,
+                    layout: 'column',
+                    defaults: {
+                        // labelStyle: 'font-weight:bold;',
+                        fieldStyle: 'text-align: center;',
+                        padding: '8px 7px 8px 10px',
+                        anchor: '100%'
+                    },
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: 'Ticket',
+                            width: 55,
+                            style: 'font-weight:bold;',
+                            padding: '10 5 5 5'
+
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtTKT',
+                            required: true,
+                            readOnly: false,
+                            fieldLabel: '',
+                            width: 120,
+                            labelWidth: 0,
+                            fieldStyle: 'text-align: center;',
+                            labelAlign: 'left',
+                            maxLength: 13,
+                            enforceMaxLength: true,
+                            enableKeyEvents: true,
+                            maskRe: /[0-9]/,
+                            listeners: {
+                                keypress: 'BuscarTKT_keyDownHandler'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtIATA',
+                            required: true,
+                            readOnly: false,
+                            fieldLabel: 'IATA',
+                            width: 150,
+                            labelWidth: 40,
+                            fieldStyle: 'text-align: center;',
+                            labelAlign: 'left',
+                            maxLength: 8,
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            hidden: true
+                        }
+
+                    ]
+                }
+            ]
+        }
+    ]
+});
+
+
+

@@ -1,0 +1,31 @@
+Ext.define('Ext.Praxis.model.sales.InplantCommissions.GridData', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'A1738CIA', type: 'string'},
+        {name: 'DOCUMENT', type: 'string'},
+        {name: 'A1738CUPON', type: 'string'},
+        {name: 'A1738CORRL', type: 'string'},
+        {name: 'A1738NLOTE', type: 'string'},
+        {name: 'A1738TRNCU', type: 'string'},
+        {name: 'A1738FVTA', type: 'string'},
+        {name: 'A720RUTA', type: 'string'},
+        {name: 'A1738NVLO', type: 'string'},
+        {name: 'A1738CARR', type: 'string'},
+        {name: 'A1738CLAS', type: 'string'},
+        {name: 'A1738FBAS', type: 'string'},
+        {name: 'A1738DESIG', type: 'string'},
+        {name: 'A1738VCPLC', type: 'string'},
+        {name: 'A1738MDALC', type: 'string'},
+        {name: 'A1738ADC', type: 'string'},
+        {name: 'A1738TOUR', type: 'string'},
+        {name: 'A1738IATA', type: 'string'},
+        {name: 'A1738PAX', type: 'string'},
+        {name: 'A1738FOP', type: 'string'},
+        {name: 'A1738NTARJ', type: 'string'},
+        {name: 'A1738TCRUC', type: 'string'},
+        {name: 'A1738FCRUC', type: 'string'},
+        {name: 'A1738STPRO', type: 'string'},
+        {name: 'A1738STVTA', type: 'string'},
+        {name: 'A1738ERROR', type: 'string'}
+    ]
+});

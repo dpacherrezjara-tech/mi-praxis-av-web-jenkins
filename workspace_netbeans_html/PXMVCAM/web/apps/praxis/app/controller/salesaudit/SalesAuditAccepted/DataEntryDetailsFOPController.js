@@ -1,0 +1,83 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/*
+ * Desarrollado por: Zenobio Perez
+ * -------------------------------
+ * Migrado por: Zenobio Perez
+ */
+Ext.define('Ext.Praxis.controller.salesaudit.SalesAuditAccepted.DataEntryDetailsFOPController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.DataEntryDetailsFOPController',
+    BeanReason: {},
+    urlWin01:  CONTEXTPATH + '/SalesAuditAccepted',
+    init: function (view) {
+        var me = this;
+        //this.urlWin01 = Ext.String.trim(this.view.params.url01);
+    },
+    /**
+     * Se ejecuta luego de haber cargado todos los componentes
+     */
+    afterRender: function () {
+        // console.log(this.view.params)
+
+        this.setStoresGrids();
+        this.cargaDatos();
+    },
+    cargaDatos: function () {
+        var me = this;
+        rec = me.view.params.rec;
+        this.BeanReason.VP_CIA = rec.data.A1672CCUST;
+        this.BeanReason.VP_FRMSRIE = rec.data.A1672CCUST+""+ rec.data.A1672FORMA + "" + rec.data.A1672SERIE;
+        this.BeanReason.VP_SEQ = rec.data.A1672SEQ;
+        this.BeanReason.VP_CUPON = rec.data.A1672CUPON;
+        this.BeanReason.VP_TRNCU = rec.data.A1672TRNCU;
+        Ext.getCmp(prototype.id6 + '-griddata').getStore().removeAll();
+        var mask = new Ext.LoadMask(Ext.getCmp(prototype.id6 + '-form'), {
+            msg: 'Please Wait....'
+        });
+        mask.show();
+        Ext.Ajax.request({
+            url: this.urlWin01 + '/searchLstFOP',
+            params: {beanString: JSON.stringify(this.BeanReason)},
+            success: function (records, operation, success) {
+                mask.hide();
+                var res = Ext.decode(records.responseText);
+                if (res.data.length > 0) {
+                    Ext.getCmp(prototype.id6 + '-griddata').getStore().loadData(res.data);
+                } else {
+                    global.Msg({msg: "Data not found.", icon: 2, fn: function () {
+                        }});
+                }
+
+
+                //Ext.getCmp(prototype.id6 + '-gridDocumRel').getStore().loadData(res.data);
+            }
+        });
+    },
+    setStoresGrids: function () {
+        var grid01 = Ext.getCmp(prototype.id6 + '-griddata');
+
+        var store01 = Ext.create('Ext.data.Store', {
+            storeId: prototype.id6 + '-store-grid01'
+        });
+
+        grid01.setStore(store01);
+    },
+    onRendererColumnAttr: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        metaData.tdAttr = 'data-qtip="' + value + '"';
+        return value;
+    },
+    onColumnAmountRenderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        metaData.style = "background:#D5F4D5 !important";
+        return Ext.util.Format.number(value, '0,000.00');
+    },
+    onCancelClick: function (btn) {
+        this.view.close();
+    }
+});
+
+
+

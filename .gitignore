@@ -1,0 +1,5 @@
+workspace_netbeans_html/PXMVCAM/dist/
+workspace_netbeans_html/PXMVCAM/build/
+workspace_netbeans_html/BEANS/dist/
+workspace_netbeans_html/BEANS/build/
+*.class

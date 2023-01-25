@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
+  <jsp-descriptor>
+    <keepgenerated>true</keepgenerated>
+    <debug>true</debug>
+  </jsp-descriptor>
+  <context-root>/AEROMEXICO</context-root>
+  <virtual-directory-mapping>
+    <local-path>C:/Dumps/</local-path>
+    <url-pattern>*.pdf</url-pattern>
+    <url-pattern>*.txt</url-pattern>
+    <url-pattern>*.zip</url-pattern>
+    <url-pattern>*.png</url-pattern>
+    <url-pattern>*.jpg</url-pattern>
+    <url-pattern>*.xls</url-pattern>
+    <url-pattern>*.xlsx</url-pattern>
+    <url-pattern>*.doc</url-pattern>
+    <url-pattern>*.docx</url-pattern>
+    <url-pattern>*.html</url-pattern>
+    <url-pattern>*.htm</url-pattern>
+    <url-pattern>/docs/*</url-pattern>
+  </virtual-directory-mapping>
+  <!--session-descriptor>
+   <persistent-store-type>replicated_if_clustered</persistent-store-type>
+  </session-descriptor-->
+</weblogic-web-app>

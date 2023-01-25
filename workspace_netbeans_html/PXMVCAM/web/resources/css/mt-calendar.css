@@ -1,0 +1,133 @@
+.mt-calendar {
+  background-color: #e3eaf9;
+  border: 0px solid #000;
+  margin: 5px;
+  overflow: hidden;
+  width: 810px;
+}
+.mt-calendar .mt-header {
+  background-color: #e5ecef;
+  border: 1px solid #6cb6e7;
+  margin: 0px;
+  padding: 0;
+}
+.mt-calendar .mt-header span {
+  border: 0px solid #000;
+  font-size: 12px;
+  margin: 0px;
+  text-align: center;
+  margin-left: 110px;
+}
+.mt-calendar .mt-header div {
+  border: 0px solid #000;
+  font-size: 1px;
+  letter-spacing: -1px;
+}
+.mt-calendar .mt-header div div {
+  border: 0px solid #000;
+  display: inline-block;
+  font-size: 12px;
+  height: 20px;
+  letter-spacing: normal;
+  line-height: 20px;
+  margin: 0px 1px 0px 1px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal;
+  word-spacing: normal;
+}
+.mt-calendar .mt-header div .mt-bg-day {
+  background-color: #fff;
+  border-left: 1px solid #6cb6e7;
+  border-right: 1px solid #6cb6e7;
+  border-top: 1px solid #6cb6e7;
+  font-size: 1px;
+  letter-spacing: -1px;
+  margin: 0px;
+  padding: 0;
+}
+.mt-calendar .mt-header div .mt-bg-day div {
+  border: 0px solid #000;
+  display: inline-block;
+  font-size: 12px;
+  height: 20px;
+  letter-spacing: normal;
+  line-height: 20px;
+  margin: 0px 1px 0px 1px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal;
+  word-spacing: normal;
+}
+.mt-calendar .mt-content {
+  background-color: #e5ecef;
+  border: 1px solid #6cb6e7;
+  font-size: 1px;
+  margin: 0px;
+}
+.mt-calendar .mt-content .mt-items01 {
+  border: 0px solid #6cb6e7;
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: normal;
+  margin: 0px;
+  text-align: center;
+  white-space: normal;
+  word-spacing: normal;
+}
+.mt-calendar .mt-content .mt-items02 {
+  border: 0px solid #6cb6e7;
+  display: inline-block;
+  font-size: 1px;
+  margin: 0px;
+  text-align: center;
+  vertical-align: middle;
+}
+.mt-calendar .mt-content .mt-items02 div {
+  background-color: #fff;
+  border: 1px solid #6cb6e7;
+  display: block;
+  margin: 0px;
+  text-align: center;
+}
+.mt-calendar .mt-content .mt-items02 div div {
+  border: 0px solid #000;
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: normal;
+  margin: 0px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal;
+  word-spacing: normal;
+}
+.mt-calendar .mt-content .mt-items02 div div div {
+  border: 0px solid #000;
+  display: block;
+  font-size: 1px;
+  margin: 0px;
+  text-align: center;
+}
+.mt-calendar .mt-content .mt-items02 div div div span {
+  border: 0px solid #000;
+  font-size: 12px;
+  letter-spacing: normal;
+  line-height: 20px;
+  white-space: normal;
+  word-spacing: normal;
+}
+.mt-calendar .mt-content .mt-items02 div div div div {
+  border: 0px solid #000;
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: normal;
+  line-height: 20px;
+  margin: 0px 1px 0px 1px;
+  text-align: center;
+  white-space: normal;
+  word-spacing: normal;
+  font-weight: bold;
+}
+.mt-calendar .mt-content .mt-items02 div div div div a:link {
+  text-decoration: none;
+}

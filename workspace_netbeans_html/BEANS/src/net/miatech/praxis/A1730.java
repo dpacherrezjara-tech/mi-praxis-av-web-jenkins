@@ -1,0 +1,124 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.miatech.praxis;
+
+/**
+ *
+ * @author jmeiggs
+ */
+public class A1730 {
+    public String A1730CCUST = "";
+    public String A1730CI720 = "";
+    public String A1730FO720 = "";
+    public String A1730SE720 = "";
+    public String A1730SQ720 = "";
+    public String A1730FLAG = "";
+    public String A1730CIA = "";
+    public String A1730FORMA = "";
+    public String A1730SERIE = "";
+    public String A1730MDAOR = "";
+    public String A1730CORRL = "";
+    public String A1730FCAMB = "";
+    public double A1730TCAMB = 0.00;
+    public String A1730MDALC = "";
+    public String A1730MDARV = "";
+    public double A1730VFAR = 0.00;
+    public double A1730VFARR = 0.00;
+    public double A1730VCOM = 0.00;
+    public double A1730VCOMR = 0.00;
+    public double A1730VSCM = 0.00;
+    public double A1730VSCMR = 0.00;
+    public double A1730VTXC = 0.00;
+    public double A1730VTXCR = 0.00;
+    public String A1730CTX1 = "";
+    public String A1730ATX1 = "";
+    public double A1730VTX1 = 0.00;
+    public double A1730RTX1 = 0.00;
+    public double A1730VTR1 = 0.00;
+    public String A1730CTX2 = "";
+    public String A1730ATX2 = "";
+    public double A1730VTX2 = 0.00;
+    public double A1730RTX2 = 0.00;
+    public double A1730VTR2 = 0.00;
+    public String A1730CTX3 = "";
+    public String A1730ATX3 = "";
+    public double A1730VTX3 = 0.00;
+    public double A1730RTX3 = 0.00;
+    public double A1730VTR3 = 0.00;
+    public String A1730CTX4 = "";
+    public String A1730ATX4 = "";
+    public double A1730VTX4 = 0.00;
+    public double A1730RTX4 = 0.00;
+    public double A1730VTR4 = 0.00;
+    public String A1730CTX5 = "";
+    public String A1730ATX5 = "";
+    public double A1730VTX5 = 0.00;
+    public double A1730RTX5 = 0.00;
+    public double A1730VTR5 = 0.00;
+    public String A1730CTX6 = "";
+    public String A1730ATX6 = "";
+    public double A1730VTX6 = 0.00;
+    public double A1730RTX6 = 0.00;
+    public double A1730VTR6 = 0.00;
+    public String A1730CTX7 = "";
+    public String A1730ATX7 = "";
+    public double A1730VTX7 = 0.00;
+    public double A1730RTX7 = 0.00;
+    public double A1730VTR7 = 0.00;
+    public String A1730CTX8 = "";
+    public String A1730ATX8 = "";
+    public double A1730VTX8 = 0.00;
+    public double A1730RTX8 = 0.00;
+    public double A1730VTR8 = 0.00;
+    public String A1730CTX9 = "";
+    public String A1730ATX9 = "";
+    public double A1730VTX9 = 0.00;
+    public double A1730RTX9 = 0.00;
+    public double A1730VTR9 = 0.00;
+    public String A1730CTX10 = "";
+    public String A1730ATX10 = "";
+    public double A1730VTX10 = 0.00;
+    public double A1730RTX10 = 0.00;
+    public double A1730VTR10 = 0.00;
+    public String A1730CTX11 = "";
+    public String A1730ATX11 = "";
+    public double A1730VTX11 = 0.00;
+    public double A1730RTX11 = 0.00;
+    public double A1730VTR11 = 0.00;
+    public String A1730CTX12 = "";
+    public String A1730ATX12 = "";
+    public double A1730VTX12 = 0.00;
+    public double A1730RTX12 = 0.00;
+    public double A1730VTR12 = 0.00;
+    public String A1730CTX13 = "";
+    public String A1730ATX13 = "";
+    public double A1730VTX13 = 0.00;
+    public double A1730RTX13 = 0.00;
+    public double A1730VTR13 = 0.00;
+    public String A1730CTX14 = "";
+    public String A1730ATX14 = "";
+    public double A1730VTX14 = 0.00;
+    public double A1730RTX14 = 0.00;
+    public double A1730VTR14 = 0.00;
+    public String A1730CTX15 = "";
+    public String A1730ATX15 = "";
+    public double A1730VTX15 = 0.00;
+    public double A1730RTX15 = 0.00;
+    public double A1730VTR15 = 0.00;
+    public String A1730CTX16 = "";
+    public String A1730ATX16 = "";
+    public double A1730VTX16 = 0.00;
+    public double A1730RTX16 = 0.00;
+    public double A1730VTR16 = 0.00;
+    public String A1730IND = "";
+    public String A1730GRUPO = "";
+    public String A1730IDFIL = "";
+    public String A1730USRIN = "";
+    public String A1730FECIN = "";
+    public String A1730HORIN = "";    
+    public String A1730USRAC = "";
+    public String A1730FECAC = "";
+    public String A1730HORAC = "";
+}
