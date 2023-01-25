@@ -1,5 +1,16 @@
 workspace_netbeans_html/PXMVCAM/dist/
+workspace_netbeans_html/PXMVCAM/nbproject/
 workspace_netbeans_html/PXMVCAM/build/
 workspace_netbeans_html/BEANS/dist/
 workspace_netbeans_html/BEANS/build/
+workspace_netbeans_html/BEANS/nbproject/
 *.class
+*.properties
+workspace_netbeans_html/BEANS/nbproject/private/private.properties
+workspace_netbeans_html/PXMVCAM/nbproject/build-impl.xml
+workspace_netbeans_html/PXMVCAM/nbproject/genfiles.properties
+workspace_netbeans_html/PXMVCAM/nbproject/private/private.properties
+workspace_netbeans_html/PXMVCAM/nbproject/private/private.xml
+workspace_netbeans_html/PXMVCAM/nbproject/project.properties
+workspace_netbeans_html/PXMVCAM/nbproject/project.xml
+workspace_netbeans_html/PXMVCAM/web/WEB-INF/configs/CFGI0001.properties
