@@ -519,7 +519,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                                 modulo = 'CONCILIATION';
                             }
                             modulo = '<span style="font-size: 11pt; font-family: Arial; font-weight: bold;">' + modulo + '</span>';
-                            var title_module = '<h2 class="label-praxis-module">PRAXIS</h2>';
+                            var title_module = '<h2 class="label-praxis-module">REFUND</h2>';
 
                             if (nprog !== '') {
                                 if (view !== '#' && view !== '') {
@@ -562,7 +562,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                                 modulo = 'CONCILIATION';
                             }
                             modulo = '<span style="font-size: 11pt; font-family: Arial; font-weight: bold;">' + modulo + '</span>';
-                            var title_module = '<h2 class="label-praxis-module">PRAXIS</h2>';
+                            var title_module = '<h2 class="label-praxis-module">REFUND</h2>';
 
                             if (nprog !== '') {
                                 if (view !== '#' && view !== '') {

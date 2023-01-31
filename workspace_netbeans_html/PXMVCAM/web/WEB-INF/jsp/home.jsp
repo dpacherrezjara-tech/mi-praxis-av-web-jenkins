@@ -4,7 +4,7 @@
 <html manifest="">
 <head>
     <meta charset="UTF-8">
-    <title>Praxis</title>
+    <title>Home</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/js/ext-6.5.3/packages/theme-gray/resources/theme-gray-all.css" />">
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/js/ext-6.5.3/packages/charts/classic/classic/resources/charts-all.css" />">
 

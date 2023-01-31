@@ -121,22 +121,22 @@
 }
 
 #tabbar-1012-innerCt{
-    background-image:-webkit-linear-gradient(top, #4978B0 0%, #4978B0 100%);
-    background-image:-moz-linear-gradient(top, #4978B0 0%, #4978B0 100%);
-    background-image:-o-linear-gradient(top, #4978B0 0%, #4978B0 100%);
-    background-image:-ms-linear-gradient(top, #4978B0 0%, #4978B0 100%);
-    background-image:linear-gradient(to bottom, #4978B0 0%, #4978B0 100%);
+    background-image:-webkit-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:-moz-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:-o-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:-ms-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:linear-gradient(bottom, #001c3b 0%, #e31c24 100%);
 }
 
 #tabbar-1037-targetEl{
     background-color: red;
 }
 .stlmenu{
-    background-image:-webkit-linear-gradient(top, #004376 0%, #005b9b 100%);
-    background-image:-moz-linear-gradient(top, #004376 0%, #005b9b 100%);
-    background-image:-o-linear-gradient(top, #004376 0%, #005b9b 100%);
-    background-image:-ms-linear-gradient(top, #004376 0%, #005b9b 100%);
-    background-image:linear-gradient(to bottom, #004376 0%, #005b9b 100%);
+    background-image:-webkit-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:-moz-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:-o-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:-ms-linear-gradient(top, #001c3b 0%, #e31c24 100%);
+    background-image:linear-gradient(bottom, #001c3b 0%, #e31c24 100%);
     top: 32px !important;
 }
 .navpanel{
