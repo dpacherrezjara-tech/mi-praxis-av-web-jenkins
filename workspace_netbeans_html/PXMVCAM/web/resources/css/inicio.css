@@ -351,7 +351,7 @@
     background-image: linear-gradient(top,#fff,#eaeaea);
 }
 .stlmenu .x-tab.x-tab-active.x-tab-default {
-    /* background-color: #eaeaea; */
+    background-color: #001C3B !important;
 }
 .stlmenu .x-tab-default-top.x-tab.x-tab-active {
     -webkit-box-shadow: white 0 0px 0 0 inset,white 0px 0 0 0 inset,white 0px 0 0 0 inset;

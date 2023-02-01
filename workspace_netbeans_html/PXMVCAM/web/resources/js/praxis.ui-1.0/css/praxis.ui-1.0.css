@@ -141,13 +141,13 @@ body {
 .page-menu-bar li a{ 
     color: #001c3b;
     font-family: Verdana;
-    font-size: 8pt;
+    font-size: 9pt;
     font-weight: 500;
     display: block;
     text-align: center;
     padding: 8px;
     text-decoration: none;
-    margin: 0px 1px;
+    margin: 0px 0px;
 }
 
 .page-menu-bar li a:hover, .menuSelected{
@@ -747,17 +747,17 @@ input,textarea{ font-family:'Arial'; }
 /*Estilos del Menu*/
 #menu {
     /*text-align: center;*/
-    background: #2d6294;
-    background: -moz-linear-gradient(top, #02416c 0%, #5582bd 100%);
-    background: -webkit-linear-gradient(top, #02416c 0%,#5582bd 100%);
-    background: linear-gradient(to bottom, #02416c 0%, #2d6294 15%, #5582bd 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#02416c', endColorstr='#5582bd',GradientType=0 );
+    background: #6f1c2f;
+    background: -moz-linear-gradient(top, #1c1c3b 0%, #c91c26 100%);
+    background: -webkit-linear-gradient(top, #1c1c3b 0%,#c91c26 100%);
+    background: linear-gradient(to bottom, #1c1c3b 0%, #6f1c2f 40%, #c91c26 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1c1c3b', endColorstr='#c91c26',GradientType=0 );
     height:295px;
     z-index:100;
     width:100%;
     position:absolute;
     display:none;
-    border-bottom:1px solid #0d2c4e;
+    border-bottom:1px solid #c91c26;
 }
 
 #menu ul {
@@ -771,6 +771,7 @@ input,textarea{ font-family:'Arial'; }
 
 #menu ul li:hover{
     background:#001c3b;
+    color: #FFF;
 }
 
 #menu li {
@@ -793,7 +794,7 @@ input,textarea{ font-family:'Arial'; }
 .menu-column {
     float:left;
     display:inline-block;
-    border:0px dotted blue;
+    border:0px dotted red;
 }
 
 .menu-column a{
@@ -838,7 +839,7 @@ input,textarea{ font-family:'Arial'; }
     /*text-align:center;*/
     overflow: auto;
     height: 270px;
-    border-bottom: 1px solid rgb(13, 44, 78);
+    border-bottom: 1px solid rgb(78, 13, 13);
 }
 
 .panel-slider{
@@ -856,14 +857,14 @@ input,textarea{ font-family:'Arial'; }
 .close-menu{
     cursor:pointer;
     display: block;
-    font-size: 9pt;
+    font-size: 13.9pt;
     font-family:Verdana;
-    color:#FFFFFF;
-    border-top:1px solid rgb(126, 162, 208);
+    color:#050505;
+    background-color:#FFF ;
+    border-top:1px solid rgb(255, 252, 252);
 }
 
 #menuCommands{
-    color:#FFFFFF;
     float:right;
     margin-top:2px;
     width:auto;
