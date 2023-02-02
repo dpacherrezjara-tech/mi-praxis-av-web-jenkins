@@ -151,8 +151,13 @@ body {
 }
 
 .page-menu-bar li a:hover, .menuSelected{
+    color: #FFF;
     background:#001c3b;
-    color: #FFFFFF;
+}
+
+.page-menu-bar li .menuSelected{
+    color: #FFF;
+    background:#001c3b;
 }
 
 .page-left-bar{
