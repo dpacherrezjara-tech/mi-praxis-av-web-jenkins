@@ -83,7 +83,7 @@ body {
 .page-menu-bar{
     background-color: #FFFFFF;
     height: 32px;
-    border-bottom: 1px solid #0F2E48;
+    border-bottom: 1px solid #1c1c3b;
     z-index: 15;
     position: relative;
     overflow: hidden;
@@ -98,7 +98,7 @@ body {
     border-bottom: 1px solid #000;
     width: 100%;
     z-index:20;
-    background-color: rgb(73, 120, 176);
+    background-color: rgb(176, 73, 73);
     color:#FFF;
     vertical-align: middle;
     padding:3px;
@@ -1094,7 +1094,8 @@ label.mandatory span{
 /****************************************/
 /*===============DAHSBOARD==============*/
 body{
-    background-image: url('../img/menu/prueba2.jpg');
+    /*background-image: url('../img/menu/prueba2.jpg');*/
+   background: #003E71 !important;
     background-size: 125%;
     background-position: -100px -175px;
 }
