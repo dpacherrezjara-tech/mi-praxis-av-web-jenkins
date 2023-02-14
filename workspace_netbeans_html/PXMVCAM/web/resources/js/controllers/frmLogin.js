@@ -1,37 +1,48 @@
 
-$(document).ready(function() {
+$(document).ready(function () {
     var myInput1 = document.getElementById('txtAuthName');
-    myInput1.onpaste = function(e) {
-      e.preventDefault();
+    myInput1.onpaste = function (e) {
+        e.preventDefault();
     };
-    
+
     var myInput2 = document.getElementById('txtAuthPass');
-    myInput2.onpaste = function(e) {
-      e.preventDefault();
+    myInput2.onpaste = function (e) {
+        e.preventDefault();
     };
-    
+
     var myInput3 = document.getElementById('txtNewPass');
-    myInput3.onpaste = function(e) {
-      e.preventDefault();
+    myInput3.onpaste = function (e) {
+        e.preventDefault();
     };
-    
+
     var myInput4 = document.getElementById('txtConfirmPass');
-    myInput4.onpaste = function(e) {
-      e.preventDefault();
-    };    
-    
-    
-    $('#txtAuthName').keyup(function(e) {
+    myInput4.onpaste = function (e) {
+        e.preventDefault();
+    };
+
+    var myInput5 = document.getElementById('selCustomer');
+    myInput5.onpaste = function (e) {
+        e.preventDefault();
+    };
+
+    $('#txtAuthName').keyup(function (e) {
         if (e.keyCode === 13) {
             $('#txtAuthPass').select();
-            
+
         }
     });
-    $('#txtAuthPass').keypress(function(e) {
+    $('#txtAuthPass').keypress(function (e) {
         if (e.keyCode === 13) {
             fnLogin();
         }
     });
+
+    $('#selCustomer').keypress(function (e) {
+        if (e.keyCode === 13) {
+            fnLogin();
+        }
+    });
+
     $('#Submit').click(fnLogin);
     $('#ChangePassword').click(fnChangePassword);
     $("#txtAuthName").focus();
@@ -40,12 +51,13 @@ $(document).ready(function() {
 });
 
 function validateAlphanumeric(e) { // 1
-        tecla = (document.all) ? e.keyCode : e.which; // 2
-        //console.log(tecla);
-        if (tecla === 8 || tecla === 0) return true; // 3
-        patron =/\w/; // Acepta números y letras
-        te = String.fromCharCode(tecla); // 5
-        return patron.test(te); // 6
+    tecla = (document.all) ? e.keyCode : e.which; // 2
+    //console.log(tecla);
+    if (tecla === 8 || tecla === 0)
+        return true; // 3
+    patron = /\w/; // Acepta números y letras
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
 }
 
 function pageLoad()
@@ -56,94 +68,94 @@ function pageLoad()
 //    document.getElementById('txtAuthName').focus();
 }
 
-function showMessage(strMsg){ 
-    
-    if($('#pnlAlertMessage') !== null){
-    $('#lblMessage').html(strMsg);
-    $('#pnlAlertMessage')
-            .modal(
-            { 
-                backdrop : true,
-                show: true,
-                keyboard: true
-            }); 
-     $("#btnCloseAlert").focus();       
+function showMessage(strMsg) {
+
+    if ($('#pnlAlertMessage') !== null) {
+        $('#lblMessage').html(strMsg);
+        $('#pnlAlertMessage')
+                .modal(
+                        {
+                            backdrop: true,
+                            show: true,
+                            keyboard: true
+                        });
+        $("#btnCloseAlert").focus();
     }
-    
+
 }
 
-function fnLogin(){
+function fnLogin() {
     if ($('#txtAuthName').val().length === 0 || $('#txtAuthPass').val().length === 0) {
         showMessage('You must enter Username and Password.');
-    } else {    
+    } else {
         AsyncLogin();
     }
 }
 
 function fnChangePassword() {
-    if ($('#txtAuthName').val().length === 0 || $('#txtAuthPass').val().length === 0 || $('#txtNewPass').val() .length < 8 || $('#txtConfirmPass').val().length < 8) {
+    if ($('#txtAuthName').val().length === 0 || $('#txtAuthPass').val().length === 0 || $('#txtNewPass').val().length < 8 || $('#txtConfirmPass').val().length < 8) {
         showMessage('The following fields are mandatories:<br/>User.<br/>Password.<br/>New Password (Alphanumeric between 8 and 11 characters).<br/>Confirm Password.<br/>Do not use old passwords');
         //alert('You must enter a Username/Password.');
     } else {
-        if($('#txtNewPass').val() !==  $('#txtConfirmPass').val()){
+        if ($('#txtNewPass').val() !== $('#txtConfirmPass').val()) {
             //alert('Password and New Password are differents.');
             showMessage('New Password and Confirm Password are differents.');
         } else {
             AsyncChangePassword();//$('#frmLogin').submit();
-        }                
+        }
     }
 }
 
-function cambiarVista(element,style){
+function cambiarVista(element, style) {
     objectDOM = document.getElementById(element);
     objectDOM.style.display = style;
 }
 
-function changePwd(){
+function changePwd() {
     //Mostrar elementos para cambiar password
-    cambiarVista('tnewpass','table-row');
-    cambiarVista('tconfpass','table-row');
-    cambiarVista('Submit','none');
-    cambiarVista('lnkChangePwd','none');
-    cambiarVista('ChangePassword','inline');
-    cambiarVista('CancelPassword','inline');
+    cambiarVista('tnewpass', 'table-row');
+    cambiarVista('tconfpass', 'table-row');
+    cambiarVista('Submit', 'none');
+    cambiarVista('lnkChangePwd', 'none');
+    cambiarVista('ChangePassword', 'inline');
+    cambiarVista('CancelPassword', 'inline');
     document.getElementById('txtNewPass').value = '';
-    document.getElementById('txtConfirmPass').value = '';                
+    document.getElementById('txtConfirmPass').value = '';
     //document.getElementById('txtNewPass').focus();
 }
 
-function cancelChangePwd(){
+function cancelChangePwd() {
     //Ocultar elementos para cambiar password
-    cambiarVista('tnewpass','none');
-    cambiarVista('tconfpass','none');
-    cambiarVista('Submit','inherit');
-    cambiarVista('lnkChangePwd','inherit');
-    cambiarVista('ChangePassword','none');
-    cambiarVista('CancelPassword','none');
+    cambiarVista('tnewpass', 'none');
+    cambiarVista('tconfpass', 'none');
+    cambiarVista('Submit', 'inherit');
+    cambiarVista('lnkChangePwd', 'inherit');
+    cambiarVista('ChangePassword', 'none');
+    cambiarVista('CancelPassword', 'none');
     document.getElementById('txtAuthName').focus();
 }
 
 function AsyncLogin() {
-        //document.forms[0].submit();
+    //document.forms[0].submit();
     $.ajax({
-        url: $('#txtContextPath').val() +'/Login/',
+        url: $('#txtContextPath').val() + '/Login/',
         type: 'POST',
-        async: false,    
+        async: false,
         data: {txtAuthName: $('#txtAuthName').val().toUpperCase(), txtAuthPass: $('#txtAuthPass').val()},
-        success: function(status) {
+        success: function (status) {
             if (status === 'success') {
-                    //showMessage('You have logged in successfully.');
-                    document.forms[0].submit();
-                    //strHtmlAplication = data.substring(count_customer + 7, count_application);
-                
+                //showMessage('You have logged in successfully.');
+                document.forms[0].submit();
+                //strHtmlAplication = data.substring(count_customer + 7, count_application);
+
             } else {
                 //alert('There was a problem with the request. Error: ' + xhr);
                 //showMessage('Username or Password is incorrect');
                 showMessage(status);
             }
         },
-        error: function(throwError) {
-                showMessage('Username or Password is incorrect');
+        error: function (throwError) {
+            showMessage('Username or Password is incorrect');
         },
         cache: false
     });
@@ -153,21 +165,21 @@ function AsyncChangePassword() {
     $.ajax({
         url: $('#txtContextPath').val() + '/changePassword/',
         type: 'POST',
-        async: false,    
+        async: false,
         data: {txtAuthName: $('#txtAuthName').val().toUpperCase(), txtAuthPass: $('#txtAuthPass').val(), txtNewPass: $('#txtNewPass').val()},
-        success: function(status) {
+        success: function (status) {
             if (status === '') {
                 //if (data.indexOf("changed", 0) !== -1) {
-                    //alert('Your password has been successfully changed.');
-                    showMessage('Your password has been successfully changed.');
-                    cancelChangePwd();
-                    document.getElementById('txtAuthPass').value = '';
-                    document.getElementById('txtNewPass').value = '';
-                    document.getElementById('txtConfirmPass').value = '';
-                    //strHtmlAplication = data.substring(count_customer + 7, count_application);
+                //alert('Your password has been successfully changed.');
+                showMessage('Your password has been successfully changed.');
+                cancelChangePwd();
+                document.getElementById('txtAuthPass').value = '';
+                document.getElementById('txtNewPass').value = '';
+                document.getElementById('txtConfirmPass').value = '';
+                //strHtmlAplication = data.substring(count_customer + 7, count_application);
                 //} else {
-                    //alert(data);
-                    //showMessage(data);
+                //alert(data);
+                //showMessage(data);
                 //}
                 //$("#divMensajeError").append(strHtmlMensajeError);
             } else {
@@ -176,10 +188,58 @@ function AsyncChangePassword() {
                 showMessage(status);
             }
         },
-        error: function(throwError) {
-                //showMessage('The following 2 fields are mandatories:<br/>User.<br/>Password.<br/>New Password (Alphanumeric between 8 and 10 characters).<br/>Confirm Password.<br/>Do not use old passwords.');
-                showMessage('There was a problem with the request. Try again.');
+        error: function (throwError) {
+            //showMessage('The following 2 fields are mandatories:<br/>User.<br/>Password.<br/>New Password (Alphanumeric between 8 and 10 characters).<br/>Confirm Password.<br/>Do not use old passwords.');
+            showMessage('There was a problem with the request. Try again.');
         },
         cache: false
     });
+}
+
+function onBlurUser(){
+//    alert($("#vUser").val());
+//    alert($("#txtAuthName").val());
+    
+    if($("#txtAuthName").val().toUpperCase()!==""  ){
+        
+        if( $('#selCustomer > option').length === 0  
+                || $("#txtAuthName").val().toUpperCase()!== $("#vUser").val().toUpperCase()){
+
+            $("#vUser").val($("#txtAuthName").val());
+//            alert("entro");
+    //        $("#selCustomer option[value=134]").attr('selected', 'selected');
+
+        //         $("selCustomer").val("134").change();
+        
+            $('#selCustomer').empty();
+            $( "#txtAuthPass" ).focus();
+
+
+
+            $.ajax({
+                url: $("#txtContextPath").val() + '/searchClientByUser',
+                type: 'POST',
+                dataType: 'json', 
+                data: {user: $('#txtAuthName').val().toUpperCase()},
+    //           contentType: 'application/json; charset=utf-8',
+                success: function(data, status, xhr) {
+                    if (status === 'success') {
+                        
+    //                     var res = Ext.JSON.decode(response.responseText);
+                        for (var i = 0; i < data.data.length; i++) {
+                            console.log(data.data[i].CCUST);
+                            $("#selCustomer").append(new Option(data.data[i].SIATA, data.data[i].CCUST));
+                        }
+                    } else {
+                        //alert('There was a problem with the request. Error: ' + xhr);
+                        alert('There was a problem with the request. Error: ' + xhr);
+                    }
+                },
+                cache: false
+            });
+
+
+        }
+        
+    }
 }

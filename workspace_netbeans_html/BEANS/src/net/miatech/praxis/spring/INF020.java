@@ -21,4 +21,5 @@ public class INF020 implements Serializable{
     public String USUP = "";
     public String DTUP = "";
     public String STAT = "";
+    public String SIATA = "";
 }

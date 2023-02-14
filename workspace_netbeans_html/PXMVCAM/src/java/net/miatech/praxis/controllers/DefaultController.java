@@ -43,6 +43,7 @@ import net.miatech.praxis.persistence.facade.UserFacade;
 import net.miatech.praxis.persistence.facadeimpl.UserFacadeImpl;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
+import net.miatech.praxis.logic.master.MasterLogic;
 
 /**
  *
@@ -53,6 +54,7 @@ import org.apache.log4j.Logger;
 public class DefaultController extends BaseController {
 
     private static final Logger logError = Logger.getLogger("errorLog");
+    private MasterLogic logMaster;
 
     @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     public @ResponseBody
@@ -120,8 +122,7 @@ public class DefaultController extends BaseController {
         boolean bValidacion = false;
         String strUser = "";
         String strResponse = "";
-        
-        
+
         try {
             App app = new App(serverSession.getPropertySession());
             GeneralResponse resp = new GeneralResponse();
@@ -272,20 +273,15 @@ public class DefaultController extends BaseController {
                 strResponse = String.valueOf(result[1]);
                 //bValidacion = UserLogic.autentificateUser(user);
 
-                if (bValidacion) 
-                {
-                    if(strResponse.startsWith("Your password will expire"))
-                    {
-                        strResponse="Your password has expired. Please change it for log in to the system";
+                if (bValidacion) {
+                    if (strResponse.startsWith("Your password will expire")) {
+                        strResponse = "Your password has expired. Please change it for log in to the system";
                         return strResponse;
-                    }
-                    else
-                    {
+                    } else {
                         app.assignAuthentication(user);
                         app.defaultValidation(resp, fileINF020);
 
-                        if (app.getServerSession().getACCCNX()) 
-                        { //Si existe conexión.
+                        if (app.getServerSession().getACCCNX()) { //Si existe conexión.
                             System.out.println("Obtiene la conexion y verificara el usuario");
                             request.setAttribute("user", user.USR);
                             request.setAttribute("password", user.TOKEN);
@@ -300,27 +296,18 @@ public class DefaultController extends BaseController {
                             //map.put("usr_login", serverSession.getServerSession().getUserView().getUserInfo().USR);
                             //map.put("anio_actual", anio_actual());
                             return "success";
-                        } 
-                        else 
-                        {
-                            if(strResponse.equals("Password is expired."))
-                            {                         
-                                strResponse+=" Please change your password.";
-                                return strResponse;
-                            }
-                            else
-                            {
-                                return strResponse;
-                            }
+                        } else if (strResponse.equals("Password is expired.")) {
+                            strResponse += " Please change your password.";
+                            return strResponse;
+                        } else {
+                            return strResponse;
                         }
                     }
-                } 
-                else 
-                {
+                } else {
                     return strResponse;
                 }
             } else {
-                strResponse="Username or Password is incorrect.";
+                strResponse = "Username or Password is incorrect.";
                 return strResponse;
                 //return "-1";
             }
@@ -330,10 +317,10 @@ public class DefaultController extends BaseController {
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             sw.toString();
-            log.error("Message: " + (e.getMessage() == null ? "No Message" : e.getMessage()) + " Stacktrace: " + sw.toString());            
+            log.error("Message: " + (e.getMessage() == null ? "No Message" : e.getMessage()) + " Stacktrace: " + sw.toString());
             return "Please, refresh the page and try again.";
             //return "Message: " + (e.getMessage() == null ? "No Message" : e.getMessage()) + " Stacktrace: " + sw.toString();
-            
+
         }
     }
 
@@ -371,26 +358,26 @@ public class DefaultController extends BaseController {
     public @ResponseBody
     String changePassword(ModelMap map, HttpServletRequest request, HttpSession session) throws Exception {
 
-        
         if (serverSession.getServerSession() == null) {
-                this.InitialSession(request.getSession());
+            this.InitialSession(request.getSession());
         }
-        
+
         App app = new App(serverSession.getPropertySession());
-        if(app.getServerSession()!=null)
+        if (app.getServerSession() != null) {
             serverSession.setServerSession(app.getServerSession());
-        
+        }
+
         String msg = "";
         try {
             INF001 user = new INF001();
             String USR = request.getParameter("txtAuthName");
             String TOKEN = request.getParameter("txtAuthPass");
             String NEWTOKEN = request.getParameter("txtNewPass");
-            
+
             UserLogic logic = new UserLogic();
             logic.setSession(this.serverSession.getServerSession());
             //logic.SQP02491(USR);
-            
+
             if (app.changePassword(USR, TOKEN, NEWTOKEN)) {
                 msg = app.getMsgLogin();
                 if ("".equals(msg)) {
@@ -430,7 +417,7 @@ public class DefaultController extends BaseController {
     String getCustomerInfo(HttpServletRequest request, HttpSession session) throws Exception {
         return new Gson().toJson(getCustomerInfo());
     }
-    
+
     @RequestMapping(value = "getTables")
     public @ResponseBody
     String getTables(ModelMap map, HttpServletRequest request) {
@@ -441,7 +428,7 @@ public class DefaultController extends BaseController {
         logic.setSession(this.serverSession.getServerSession());
         List<A1007> lstCiudades;
         List<A006> lstPaises;
-        
+
         List<A003> lstAM = new ArrayList<>(0);
         A003 filter = new A003();
         filter.page.TOTROW = -1;
@@ -454,7 +441,7 @@ public class DefaultController extends BaseController {
         filter.page.PAGROW = 20;
         filter.page.PAGNUM = 1;
         filter.intCurrentPg = filter.page.PAGNUM;
-        filter.strExcel = "FALSE";        
+        filter.strExcel = "FALSE";
 
         List<PX019S01A721Filter> lstFB = new ArrayList<>(0);
         PX019S01A721Filter filterFB = new PX019S01A721Filter();
@@ -469,7 +456,7 @@ public class DefaultController extends BaseController {
         filterFB.page.PAGROW = 20;
         filterFB.page.TOTPAG = -1;
         filterFB.page.TOTROW = -1;
-        
+
         try {
             lstCiudades = logic.loadCiudades3();
             lstPaises = logic.loadPaises();
@@ -477,17 +464,17 @@ public class DefaultController extends BaseController {
             logicFB.setSession(this.serverSession.getServerSession());
             lstFB = logicFB.loadPX019S01A721(filterFB);
             lstAM = logic.loadAgentReport(filter);
-            
+
             map.put("dataPaises", lstPaises);
-            map.put("dataCity", lstCiudades);            
-            
+            map.put("dataCity", lstCiudades);
+
             if (serverSession.getServerSession() != null) {
                 serverSession.setPaises(lstPaises);
                 serverSession.setCiudades(lstCiudades);
                 serverSession.setFareBasis(lstFB);
                 serverSession.setAgentMasterFile(lstAM);
-            }            
-            
+            }
+
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(AgentsMasterFileController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -546,53 +533,48 @@ public class DefaultController extends BaseController {
 
         return new Gson().toJson(oMap);
     }
-    
-    @RequestMapping(value = "/getAccessUser", method = RequestMethod.POST) 
+
+    @RequestMapping(value = "/getAccessUser", method = RequestMethod.POST)
     public @ResponseBody
     String getAccessUser(ModelMap map, HttpServletRequest request) throws Exception {
         System.out.println("-------------- getAccessUser : Controller-------------");
         map.put("success", true);
-        
+
         PX041S01INF001Filter objUsuario = new PX041S01INF001Filter();
         objUsuario.VP_USR = getCustomerInfo().USR;
         UserLogic logic = new UserLogic();
         logic.setSession(serverSession.getServerSession());
         List<PX041S01INF001Filter> accessUser = logic.accessUser(objUsuario);
         request.setAttribute("accessUser", accessUser);
-        
+
         map.put("data", accessUser);
         return new Gson().toJson(map);
 
     }
-    
-    @RequestMapping(value = "/validaSesion", method = RequestMethod.POST) 
+
+    @RequestMapping(value = "/validaSesion", method = RequestMethod.POST)
     public @ResponseBody
     String validaSesion(ModelMap map, HttpServletRequest request) throws Exception {
         System.out.println("-------------- validaSesion : Controller-------------");
-        
-        if(serverSession.getServerSession()==null) 
-        {
+
+        if (serverSession.getServerSession() == null) {
             map.put("success", false); // SESION EXPIRADA
             map.put("sesion", SESSION_CONTROL);
-        }
-        else 
+        } else {
             map.put("success", true); // SESION ACTIVA
-            
+        }
         return new Gson().toJson(map);
 
     }
 
     @RequestMapping(value = "/logAccessProgram", method = RequestMethod.POST)
     public @ResponseBody
-    String logAccessProgram(ModelMap map, HttpServletRequest request) throws Exception {        
-        
-        if(serverSession.getServerSession()==null) 
-        {
+    String logAccessProgram(ModelMap map, HttpServletRequest request) throws Exception {
+
+        if (serverSession.getServerSession() == null) {
             map.put("success", false); // SESION EXPIRADA
             map.put("sesion", SESSION_CONTROL);
-        }
-        else 
-        {
+        } else {
             UserFacade logic = new UserFacadeImpl(); //(UserFacade) ic.lookup(strUserFacade);
             logic.setSession(serverSession.getServerSession());
 
@@ -602,9 +584,33 @@ public class DefaultController extends BaseController {
             obj.USR = serverSession.getServerSession().getUserView().getUserInfo().USR;
 
             logic.logAccessProgram(obj);
-            
+
             map.put("success", true); // SESION ACTIVA
-        }   
+        }
         return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "/searchClientByUser", method = RequestMethod.POST)
+    public @ResponseBody
+    String searchClientByUser(HttpServletRequest request) {
+        System.out.println("AviancaPC : searchClientByUser");
+        logMaster = new MasterLogic();
+        List<INF020> lstData = new ArrayList<INF020>(0);
+        HashMap m = new HashMap();
+        try {
+
+            String user = request.getParameter("user");
+
+            lstData = logMaster.loadSQP03628(user);
+
+            m.put("success", true);
+        } catch (Exception e) {
+            m.put("success", false);
+            throw new SpringException(e);
+        }
+
+        m.put("data", lstData);
+
+        return new Gson().toJson(m);
     }
 }

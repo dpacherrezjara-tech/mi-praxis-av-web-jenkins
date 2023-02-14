@@ -101,7 +101,7 @@
                                                         <td width="30" align="left">&nbsp;</td>
                                                         <td width="180" align="right" class="titlelogin">&nbsp;User :</td>
                                                         <td width="140" align="right">&nbsp;<!--TextLogin-->
-                                                            <input type="text" size="15" name="txtAuthName" onkeypress="return validateAlphanumeric(event);" class="css_alpha" maxlength="10" id="txtAuthName" required="">
+                                                            <input type="text" size="15" name="txtAuthName" onblur="onBlurUser()" onkeypress="return validateAlphanumeric(event);" class="css_alpha" maxlength="10" id="txtAuthName" required>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -124,7 +124,22 @@
                                                         <td align="right">&nbsp;
                                                             <input type="password" size="15" name="txtConfirmPass" maxlength="15" id="txtConfirmPass" onkeypress="return validateAlphanumeric(event);" class="css_alpha">
                                                         </td>
-                                                    </tr>                                                    
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left">&nbsp;</td>
+                                                        <td align="right" class="titlelogin">&nbsp;Customer :</td>
+                                                        <td align="right" class="titlelogin">&nbsp;
+                                                            <select name="selCustomer" id="selCustomer" class="css_alpha" style="width: 130px;" onkeypress="return validateAlphanumeric(event);">
+<!--                                                                <option value="045" selected="true">LAN Chile</option>
+                                                                <option value="462">LAN Ecuador</option>
+                                                                <option value="469">LAN Argentina</option>
+                                                                <option value="544">LATAM PASS</option>
+                                                                <option value="957">TAM Airlines</option>
+                                                                <option value="692">TAM Transportes</option>
+                                                                <option value="134">AVIANCA</option>-->
+                                                            </select>
+                                                        </td>
+                                                    </tr>    
                                                     <tr>
                                                         <td colspan="3" align="" valign="middle" height="40"><!--buttonLogin-->
                                                             <div style="float:right">

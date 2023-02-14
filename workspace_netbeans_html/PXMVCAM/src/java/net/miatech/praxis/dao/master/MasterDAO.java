@@ -5,6 +5,7 @@ import static com.ibm.as400.data.PcmlMessageLog.logError;
 import static com.sun.corba.se.impl.activation.ServerMain.logError;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,6 +27,7 @@ import net.miatech.praxis.payment.A2280;
 import net.miatech.praxis.payment.A2287;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2357Filter;
+import net.miatech.praxis.spring.INF020;
 import static net.miatech.utils.Functions.pasarGarbageCollector;
 import org.apache.log4j.Logger;
 // </editor-fold>
@@ -46,11 +48,11 @@ public class MasterDAO {
 
     public MasterDAO() {
     }
-    
+
     public MasterDAO(IServerSession ss) {
         this.session = ss;
     }
-    
+
     public void setSession(IServerSession ss) {
         this.session = ss;
     }
@@ -231,7 +233,7 @@ public class MasterDAO {
 
     }
 
-     public List<A005> loadAirlines() throws Exception {
+    public List<A005> loadAirlines() throws Exception {
 
         List<A005> lista = new ArrayList<>();
         A005 record;
@@ -265,6 +267,7 @@ public class MasterDAO {
 
         return lista;
     }
+
     public HashMap<String, String> loadAirlinesHash() {
 
         HashMap<String, String> hmAerolineas = new HashMap<String, String>();
@@ -893,7 +896,7 @@ public class MasterDAO {
 
         return listaSource;
     }
-    
+
     public List<A1852Filter> loadSource2() throws Exception {
 
         //Connection con = null;
@@ -977,7 +980,7 @@ public class MasterDAO {
 
         return listaPaises;
     }
-    
+
     public List<A1852Filter> loadSOURCE(byte flag) throws Exception {
 
         //Connection con = null;
@@ -1163,7 +1166,7 @@ public class MasterDAO {
                 objRtn = new A2280Filter();
                 objRtn.CODEBANK = rs01.getString("CODEBANK");
                 objRtn.NAMEBANK = rs01.getString("NAMEBANK");
-                objRtn.IN_CODE_IN_NAME = objRtn.CODEBANK +" - " + objRtn.NAMEBANK;
+                objRtn.IN_CODE_IN_NAME = objRtn.CODEBANK + " - " + objRtn.NAMEBANK;
                 lstRtn.add(objRtn);
             }
         } catch (Exception e) {
@@ -1189,7 +1192,7 @@ public class MasterDAO {
 
         return lstRtn;
     }
-    
+
     public List<A2280> loadTarjetas() {
 
         //Connection con = null;
@@ -1203,7 +1206,6 @@ public class MasterDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
 
             strSQL = "SELECT CODECAR, NAMECAR FROM PRAXIS.A2280A GROUP BY CODECAR, NAMECAR ORDER BY CODECAR";
-            
 
             //con = Proveedor.getConnectionIS(user);
             stmt = cnx.createStatement();
@@ -1216,7 +1218,7 @@ public class MasterDAO {
             while (rst.next()) {
                 tarjetas = new A2280();
                 tarjetas.CODE = rst.getString("CODECAR").trim();
-                tarjetas.NAME = tarjetas.CODE+" - "+rst.getString("NAMECAR").trim();
+                tarjetas.NAME = tarjetas.CODE + " - " + rst.getString("NAMECAR").trim();
 
                 listaTarjetas.add(tarjetas);
             }
@@ -1247,7 +1249,7 @@ public class MasterDAO {
 
         return listaTarjetas;
     }
-    
+
     public List<A2287> loadRejections() {
 
         //Connection con = null;
@@ -1274,7 +1276,7 @@ public class MasterDAO {
                 rejection = new A2287();
                 rejection.CODEREJ = rst.getString("CODEREJ").trim();
 //                rejection.DESCREJ = rst.getString("DESCREJ").trim();
-                rejection.DESCREJ = rejection.CODEREJ+ " - " +rst.getString("DESCREJ").trim();
+                rejection.DESCREJ = rejection.CODEREJ + " - " + rst.getString("DESCREJ").trim();
                 listaRejections.add(rejection);
             }
 
@@ -1303,7 +1305,7 @@ public class MasterDAO {
 
         return listaRejections;
     }
-    
+
     public HashMap<String, String> loadErrorHash() {
 
         //Connection con = null;
@@ -1314,7 +1316,7 @@ public class MasterDAO {
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            
+
             strSQL = "SELECT CODEM, DESCR FROM PRAXIS.A2353 ORDER BY CODEM";
 
             stmt = cnx.createStatement();
@@ -1349,7 +1351,7 @@ public class MasterDAO {
 
         return hmDescError;
     }
-    
+
     public HashMap<String, String> loadCardHash() {
 
         //Connection con = null;
@@ -1360,7 +1362,7 @@ public class MasterDAO {
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            
+
             strSQL = "SELECT CODECAR, NAMECAR FROM PRAXIS.A2280 GROUP BY CODECAR, NAMECAR ORDER BY CODECAR";
 
             stmt = cnx.createStatement();
@@ -1395,7 +1397,7 @@ public class MasterDAO {
 
         return hmDescCard;
     }
-    
+
     /*
     public List<A1852Filter> loadSource() {
 
@@ -1425,8 +1427,6 @@ public class MasterDAO {
 
         return listaSource;
     }*/
-
-
     public List<A2357Filter> loadPX382SQP03189() throws SQLException, Exception {
 
         List<A2357Filter> lstRtn = new ArrayList<>();
@@ -1476,8 +1476,76 @@ public class MasterDAO {
 
         return lstRtn;
     }
-    
-    
+
+    public List<INF020> loadSQP03628(String USERW) throws Exception {
+
+//        cs = null;
+//        rst = null;
+//        cnx = null;
+        INF020 record = null;
+        List<INF020> lista = new ArrayList<INF020>();
+
+        //String SQLCLL01 = "{CALL LIBRFND.SQP03628(?)}";
+        String SQLCLL01 = "{CALL PRAXIS.SQP03628(?)}";
+
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        Connection cnx = null;
+
+        try {
+
+            cnx = getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, USERW);
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+
+            //Obteniendo los Totales ===========================================
+            while (rs01.next()) {
+                record = new INF020();
+                //record.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                record.CCUST = rs01.getString("CCUST");
+                record.SIATA = rs01.getString("descrip");
+
+                lista.add(record);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs01.close();
+                cstmt01.close();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        return lista;
+
+    }
+
+    public Connection getIBMDB2Connection() {
+        //Connection cnx;    
+
+        String url = "jdbc:as400://10.0.0.47/LIBRFND;libraries=LIBMIATEC";
+
+        try {
+            Class.forName("com.ibm.as400.access.AS400JDBCDriver");
+            DriverManager.setLoginTimeout(60 * 10); // 10min
+            return DriverManager.getConnection(url, "SAP48", "T3S6T2P8");
+            /*Context ctx = (Context) new InitialContext(); //.lookup("java:comp/env");
+             return ((DataSource) ctx.lookup("jdbc/praxisDB")).getConnection();*/
+        } catch (Exception ex) {
+            return null;
+        }
+        //return cnx ;
+    }
+
     private void setClose() {
         if (rst != null) {
             try {
