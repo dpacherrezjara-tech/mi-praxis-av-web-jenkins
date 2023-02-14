@@ -239,16 +239,17 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             listeners:{
                             }
                         },
-                        {xtype: 'tbspacer', width: 30},
-                        {
-                            xtype: 'label',
-                            text: 'ACCB Type:',
-                            padding: '3 0',
-                            width: 94
-                        },
+//                        {xtype: 'tbspacer', width: 30},
+//                        {
+//                            xtype: 'label',
+//                            text: 'ACCB Type:',
+//                            padding: '3 0',
+//                            width: 94
+//                        },
                         {
                             xtype:'combo',
                             id: prototype.id+'-cmbAFTE',
+                            hidden:true,
                             store: new Ext.data.SimpleStore({
                                 fields: ['code', 'name'],
                                 data: [

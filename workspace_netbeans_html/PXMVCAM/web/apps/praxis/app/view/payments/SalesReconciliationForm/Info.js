@@ -79,7 +79,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridData',
-                                                    width: 1210,
+                                                    width: 1250,
                                                     columnLines: true,
                                                     features: [{
                                                             ftype: 'summary'
@@ -190,7 +190,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Accb', dataIndex: 'lngQSALES', width: 70,
+                                                                                text: 'w/o Reconcili.', dataIndex: 'lngQSALES', width: 90,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountryS_clickHandler'
                                                                                 },
@@ -208,7 +208,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Accb',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -216,7 +216,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Sales', dataIndex: 'lngQACCB', width: 70, id: prototype.id + '-label_3',
+                                                                                text: 'w/o Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_3',
                                                                                 listeners: {
                                                                                     click: 'gridDetCountryS_clickHandler'
                                                                                 },
@@ -1011,7 +1011,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'without Accb', dataIndex: 'lngQSALES', width: 90,
+                                                                                text: 'w/o Reconcili.', dataIndex: 'lngQSALES', width: 90,
                                                                                 listeners: {
                                                                                     click: 'gridDetDayMainS_clickHandler',
                                                                                 },
@@ -1029,7 +1029,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Accb',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -1037,7 +1037,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'without Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_5',
+                                                                                text: 'w/o Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_5',
                                                                                 listeners: {
                                                                                     click: 'gridDetDayMainS_clickHandler',
                                                                                 },
@@ -1477,7 +1477,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'without Accb', dataIndex: 'lngQSALES', width: 90,
+                                                                                text: 'w/o Reconcili.', dataIndex: 'lngQSALES', width: 90,
                                                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     return Ext.util.Format.number(value, '0,000');
@@ -1491,7 +1491,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Accb',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -1499,7 +1499,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'without Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_7',
+                                                                                text: 'w/o Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_7',
                                                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     Ext.util.Format.number(value, '0,000');
@@ -1770,7 +1770,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'without Accb', dataIndex: 'lngQSALES', width: 100,
+                                                                                text: 'w/o Reconcili.', dataIndex: 'lngQSALES', width: 100,
                                                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     return Ext.util.Format.number(value, '0,000');
@@ -1784,7 +1784,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Accb',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -1792,7 +1792,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'without Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_9',
+                                                                                text: 'w/o Sales', dataIndex: 'lngQACCB', width: 90, id: prototype.id + '-label_9',
                                                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     Ext.util.Format.number(value, '0,000');
