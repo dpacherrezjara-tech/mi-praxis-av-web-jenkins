@@ -7,7 +7,7 @@
         <meta http-equiv="pragma" content="no-cache">
         <meta http-equiv="Cache-Control" content="no-store">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Refund Login</title>
+        <title>Praxis Login</title>
         <link href="<c:url value="/resources/css/estilos.css" />" rel="stylesheet" type="text/css">
         <link href="<c:url value="/resources/css/modal.css" />" rel="stylesheet" type="text/css">
         
@@ -76,7 +76,7 @@
                                             <div id="theader_iata"></div>
                                             <div id="theader_miatech"></div>
                                         </div>
-                                        <center><h3 class="instancia">Refund System</h3></center>
+                                        <center><h3 class="instancia">Praxis System</h3></center>
                                         <div id="theader_body">
                                             <div id="theader_revenue"></div>
                                         </div>

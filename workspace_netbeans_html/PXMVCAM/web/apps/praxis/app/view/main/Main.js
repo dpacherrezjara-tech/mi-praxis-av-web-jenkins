@@ -5,7 +5,7 @@
  * @author: remicioluis
  */
 
-var title_initial = '<div id="divTitle"><h2 class="label-praxis-module">REFUND </h2></div>';
+var title_initial = '<div id="divTitle"><h2 class="label-praxis-module">PRAXIS </h2></div>';
 var title_module = '<div id="divTitle"><h2 class="label-praxis-module">MENU MODULE<br>Option</h2></div>';
 
 var html_header = '' +
