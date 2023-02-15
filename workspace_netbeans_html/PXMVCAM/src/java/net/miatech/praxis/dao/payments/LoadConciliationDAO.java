@@ -3287,15 +3287,15 @@ public class LoadConciliationDAO {
                 //ACCB
                 beanTkt.AFTE = rst.getString("AFTE").trim();
                 if (rst.getString("AFTE").trim().equals("B")) {
-                    beanTkt.strDescAFTE = "ACCB Billed";
+                    beanTkt.strDescAFTE = "Reconciliation Billed";
                 } else if (rst.getString("AFTE").trim().equals("N")) {
-                    beanTkt.strDescAFTE = "ACCB Not Billed";
+                    beanTkt.strDescAFTE = "Reconciliation Not Billed";
                 } else if (rst.getString("AFTE").trim().equals("L")) {
-                    beanTkt.strDescAFTE = "ACCB Local";
+                    beanTkt.strDescAFTE = "Reconciliation Local";
                 } else if (rst.getString("AFTE").trim().equals("X")) {
-                    beanTkt.strDescAFTE = "ACCB BSP";
+                    beanTkt.strDescAFTE = "Reconciliation BSP";
                 } else if (rst.getString("AFTE").trim().equals("A")) {
-                    beanTkt.strDescAFTE = "ACCB ARC";
+                    beanTkt.strDescAFTE = "Reconciliation ARC";
                 } else if (rst.getString("AFTE").trim().equals("")) {
                     beanTkt.strDescAFTE = "(Empty)";
                 }

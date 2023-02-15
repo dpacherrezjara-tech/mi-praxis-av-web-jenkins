@@ -166,8 +166,8 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                 data: [
                                     [null, "&nbsp;"],
                                     ["1", "Match"],
-                                    ["2", "Sales without ACCB"],
-                                    ["3", "ACCB without Sales"],
+                                    ["2", "Sales without Reconcili."],
+                                    ["3", "Reconcili. without Sales"],
                                     ["4", "Match with Differences"],
                                     ["5", "Match Manual"]
                                 ]
@@ -623,7 +623,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                     ]
                 },
                 //</editor-fold>
-                //<editor-fold defaultstate="collapsed" desc="ACCB Information">
+                //<editor-fold defaultstate="collapsed" desc="Reconciliation Information">
                 {
                     xtype: 'panel',
                     layout: 'column',
@@ -641,7 +641,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     id: prototype.id+'-2-lblACCBTitulo',
                                     padding: '0px 120px 0px 0px',
-                                    html: '<strong style="color:#121E31; text-decoration: underline; ">ACCB Information</strong>'
+                                    html: '<strong style="color:#121E31; text-decoration: underline; ">Reconciliation Information</strong>'
                                 }
                             ]
                         },
