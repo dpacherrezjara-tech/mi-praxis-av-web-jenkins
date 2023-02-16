@@ -1960,7 +1960,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDetTicket',
                                                     bodyStyle: 'background: transparent;',
-                                                    width: '100%',
+                                                    width: 1270,
                                                     titleAlign: 'center',
                                                     columnLines: true,
                                                     enableColumnMove: false,
@@ -1973,7 +1973,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                         },
                                                         items: [
                                                             {
-                                                                text: 'Ticket', flex: 1,
+                                                                text: 'Ticket',
                                                                 defaults: {
                                                                     menuDisabled: true,
                                                                     sortable: false,
@@ -1983,7 +1983,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                                 columns: [
                                                                     {
-                                                                        text: 'Number', flex: 1, /*width: 120,*/ dataIndex: 'strTicket',
+                                                                        text: 'Number', width: 120, dataIndex: 'strTicket',
                                                                         renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             metaData.style = 'color:#057ECB;text-align:center;background-color:#d5f4d5;';
@@ -2006,7 +2006,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Status', dataIndex: 'STVAL', width: 120,
+                                                                text: 'Status', dataIndex: 'STVAL', width: 140,
                                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
@@ -2105,7 +2105,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Number', width: 120, dataIndex: 'strSCARDN',
+                                                                        text: 'Number', width: 130, dataIndex: 'strSCARDN',
                                                                         renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';

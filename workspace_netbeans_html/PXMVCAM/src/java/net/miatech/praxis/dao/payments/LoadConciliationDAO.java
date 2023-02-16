@@ -321,8 +321,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -863,8 +863,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -1362,8 +1362,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -1978,7 +1978,7 @@ public class LoadConciliationDAO {
                     if (rst.getString("SCOUNTRY").trim().isEmpty()) {
                         //Venta sin ACCB
                         beanTkt.SCOUNTRY = "**";
-                        beanTkt.strDescCountry = "(Sales without ACCB)";
+                        beanTkt.strDescCountry = "(Sales without Reconcili.)";
                     } else {
                         beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                         /*if (hmPaises.containsKey(rst.getString("ACOUNTRY").trim().toUpperCase())) {
@@ -2150,7 +2150,7 @@ public class LoadConciliationDAO {
                     if (rst.getString("ACARCOD").trim().isEmpty()) {
                         //Venta sin ACCB
                         beanTkt.SCARCOD = "**";
-                        beanTkt.strDescCard = "(Sales without ACCB)";
+                        beanTkt.strDescCard = "(Sales without Reconcili.)";
                     } else {
                         beanTkt.SCARCOD = rst.getString("ACARCOD").trim();
                         beanTkt.strDescCard = rst.getString("NAMECAR").trim();
@@ -2394,8 +2394,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -3204,9 +3204,9 @@ public class LoadConciliationDAO {
         if (filter.STVAL.trim().length() > 1) {
             if (filter.STVAL.trim().equals("Match")) {
                 filter.STVAL = "1";
-            } else if (filter.STVAL.trim().equals("Sales without ACCB") || filter.STVAL.trim().equals("Refund without ACCB")) {
+            } else if (filter.STVAL.trim().equals("Sales without Reconcili.") || filter.STVAL.trim().equals("Refund without Reconcili.")) {
                 filter.STVAL = "2";
-            } else if (filter.STVAL.trim().equals("ACCB without Sales") || filter.STVAL.trim().equals("ACCB without Refund")) {
+            } else if (filter.STVAL.trim().equals("Reconcili. without Sales") || filter.STVAL.trim().equals("Reconcili. without Refund")) {
                 filter.STVAL = "3";
             } else if (filter.STVAL.trim().equals("Match with Differences")) {
                 filter.STVAL = "4";
@@ -3392,8 +3392,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -3668,8 +3668,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -3745,7 +3745,7 @@ public class LoadConciliationDAO {
 
                     if (rst.getString("COUNTRY").trim().isEmpty()) {
                         beanTkt.SCOUNTRY = "**";
-                        beanTkt.strDescCountry = "(Sales without ACCB)";
+                        beanTkt.strDescCountry = "(Sales without Reconcili.)";
                     } else {
                         beanTkt.SCOUNTRY = rst.getString("COUNTRY").trim();
                         /*if (hmPaises.containsKey(rst.getString("COUNTRY").trim().toUpperCase())) {
@@ -3924,8 +3924,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -4006,7 +4006,7 @@ public class LoadConciliationDAO {
 
                     if (rst.getString("CARD").trim().isEmpty()) {
                         beanTkt.SCARCOD = "**";
-                        beanTkt.strDescCard = "(Sales without ACCB)";
+                        beanTkt.strDescCard = "(Sales without Reconcili.)";
                     } else {
                         beanTkt.SCARCOD = rst.getString("CARD").trim();
                         /*if (hmDescCard.containsKey(rst.getString("CARD").trim().toUpperCase())) {
@@ -4085,8 +4085,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -4239,8 +4239,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 
@@ -4341,8 +4341,8 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without ACCB");
-        hmDescEstados.put("3", "ACCB without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
 

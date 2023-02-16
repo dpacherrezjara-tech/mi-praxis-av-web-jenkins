@@ -639,8 +639,8 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             items: [
                                 {
                                     xtype: 'label',
-                                    id: prototype.id+'-2-lblACCBTitulo',
-                                    padding: '0px 120px 0px 0px',
+//                                    id: prototype.id+'-2-lblACCBTitulo',
+                                    padding: '0px 65px 0px 0px',
                                     html: '<strong style="color:#121E31; text-decoration: underline; ">Reconciliation Information</strong>'
                                 }
                             ]
@@ -652,18 +652,18 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             border: false,
                             bodyStyle: 'background: #EFE9E5',
                             items: [
-                                {
-                                    xtype: 'label',
-                                    id: prototype.id+'-2-lblAFTE',
-                                    text: '',
-                                    style: 'font-weight:bold;color:#121E31;',
-                                    width: 150,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'ACCB Type'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    id: prototype.id+'-2-lblAFTE',
+//                                    text: '',
+//                                    style: 'font-weight:bold;color:#121E31;',
+//                                    width: 150,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'ACCB Type'
+//                                    }
+//                                },
                                 {
                                     xtype: 'label',
                                     text: 'Card Code',
@@ -671,6 +671,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     width: 100,
                                     padding: '4 0'
                                 },
+                                
                                 {xtype: 'tbspacer', width: 3},
                                 {
                                     xtype: 'label',

@@ -199,32 +199,32 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtSPNR", this.bean.SPNR.trim());
         win.setValue("2-txtTRNCU", this.bean.TRNCU.trim());
         //ACCB ===================================
-        if(this.bean.AFTE.trim() === 'X'){
-            win.setText('2-lblACCBTitulo', 'Reconciliation BSP Information');
-            Ext.create('Ext.tip.ToolTip', {
-                target: prototype.id+'-2-lblAFTE',
-                html: "Reconciliation BSP Type"
-            });
-	}else if(this.bean.AFTE.trim() === 'A'){
-            win.setText('2-lblACCBTitulo', 'Reconciliation ARC Information');
-            Ext.create('Ext.tip.ToolTip', {
-                target: prototype.id+'-2-lblAFTE',
-                html: "Reconciliation ARC Type"
-            });
-	}else if(this.bean.AFTE.trim() === 'B' || this.bean.AFTE.trim() === 'N' || this.bean.AFTE.trim() === 'L'){
-            win.setText('2-lblACCBTitulo', 'Reconciliation ASR Information');
-            Ext.create('Ext.tip.ToolTip', {
-                target: prototype.id+'-2-lblAFTE',
-                html: "Reconciliation ASR Type"
-            });
-	}else{
-            win.setText('2-lblACCBTitulo', 'Reconciliation Information');
-            Ext.create('Ext.tip.ToolTip', {
-                target: prototype.id+'-2-lblAFTE',
-                html: "Reconciliation Type"
-            });
-	}
-        win.setText('2-lblAFTE', this.bean.strDescAFTE.trim());
+//        if(this.bean.AFTE.trim() === 'X'){
+//            win.setText('2-lblACCBTitulo', 'Reconciliation BSP Information');
+//            Ext.create('Ext.tip.ToolTip', {
+//                target: prototype.id+'-2-lblAFTE',
+//                html: "Reconciliation BSP Type"
+//            });
+//	}else if(this.bean.AFTE.trim() === 'A'){
+//            win.setText('2-lblACCBTitulo', 'Reconciliation ARC Information');
+//            Ext.create('Ext.tip.ToolTip', {
+//                target: prototype.id+'-2-lblAFTE',
+//                html: "Reconciliation ARC Type"
+//            });
+//	}else if(this.bean.AFTE.trim() === 'B' || this.bean.AFTE.trim() === 'N' || this.bean.AFTE.trim() === 'L'){
+//            win.setText('2-lblACCBTitulo', 'Reconciliation ASR Information');
+//            Ext.create('Ext.tip.ToolTip', {
+//                target: prototype.id+'-2-lblAFTE',
+//                html: "Reconciliation ASR Type"
+//            });
+//	}else{
+//            win.setText('2-lblACCBTitulo', 'Reconciliation Information');
+//            Ext.create('Ext.tip.ToolTip', {
+//                target: prototype.id+'-2-lblAFTE',
+//                html: "Reconciliation Type"
+//            });
+//	}
+//        win.setText('2-lblAFTE', this.bean.strDescAFTE.trim());
         win.setValue('2-txtADATEL', this.bean.ADATEL.trim());
         win.setValue('2-cmbAFLOAD', this.bean.AFLOAD==="M"?this.bean.AFLOAD:"A");
         win.setValue('2-txtACOUNTRY', this.bean.ACOUNTRY.trim());
