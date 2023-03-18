@@ -141,7 +141,7 @@ function AsyncLogin() {
         url: $('#txtContextPath').val() + '/Login/',
         type: 'POST',
         async: false,
-        data: {txtAuthName: $('#txtAuthName').val().toUpperCase(), txtAuthPass: $('#txtAuthPass').val()},
+        data: {txtAuthName: $('#txtAuthName').val().toUpperCase(), txtAuthPass: $('#txtAuthPass').val(), selCustomer: $('#selCustomer').val()},
         success: function (status) {
             if (status === 'success') {
                 //showMessage('You have logged in successfully.');

@@ -259,7 +259,7 @@ public class DefaultController extends BaseController {
                 System.out.println("Entro al if");
                 INF001 user = new INF001();
                 INF020 fileINF020 = new INF020();
-                fileINF020.CCUST = "139";
+                fileINF020.CCUST = request.getParameter("selCustomer");
                 fileINF020.APLICA = "PX";
                 user.USR = request.getParameter("txtAuthName");
                 user.TOKEN = request.getParameter("txtAuthPass");
