@@ -710,5 +710,65 @@ public class InputsController extends BaseController {
             throw new SpringException(e);
         }
     }
+    
+    @RequestMapping(value = "/obtainDataComboLog")
+    public @ResponseBody
+    String obtainDataComboLog(ModelMap map, HttpServletRequest request) {
+        
+        A1686Filter filter = new A1686Filter();
+        String beanString = "";
+        Gson gson = new Gson();
+        
+        try {
+            logic = new InputsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A1686Filter.class);
+            
+            List<A1686Filter> listaData = logic.loadPX264SQP04615Log(filter);
 
+            map.put("success", true);
+            map.put("lstProgramas", listaData);
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "searchLOGSA1910")
+    public @ResponseBody
+    String searchLOGSA1910(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- InputsControl : searchLOGSA1910-------------");
+
+        map.put("success", true);
+        List<A1686Filter> lst = this.getListAgent(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A1686Filter> getListAgent(HttpServletRequest request, Boolean bExcel) {
+
+        List<A1686Filter> lst = new ArrayList<>(0);
+        A1686Filter filter = new A1686Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new InputsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A1686Filter.class);
+                
+            lst = logic.loadPX264SQP04615(filter);
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 }

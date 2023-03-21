@@ -412,7 +412,7 @@ Ext.define('Ext.Praxis.controller.flown.InputsControl.InputsControlController', 
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
                 
-                if(res.User === 'SAP01' || res.User === 'SAP43' || res.User === 'SAP48' || res.User === 'SAP07' || res.User === 'SAP12'
+                if(res.User === 'SAP01D' || res.User === 'SAP43D' || res.User === 'SAP48D' || res.User === 'SAP07D' || res.User === 'SAP12D' || res.User === 'SAP52D'
                 || res.User === 'ADM2' || res.User === 'OPER2' || res.User === 'OPER3' || res.User === 'OPER6' || res.User === 'OPER7' || res.User === 'OPER9'){
                     Ext.getCmp(prototype.id + '-chkLOG').show();
                 }else{
