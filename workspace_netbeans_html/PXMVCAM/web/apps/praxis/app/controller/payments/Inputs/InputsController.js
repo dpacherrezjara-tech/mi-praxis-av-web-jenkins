@@ -306,6 +306,16 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     },
     btnSearch_click: function (obj, e) {
 
+        var user = $('#menuUser').text();
+        console.log(user);
+        if (user === 'SAP01D' || user === 'SAP12D' || user === 'SAP07D' || user === 'SAP48D' || user === 'SAP52D' ||
+                user === 'ADM2' || user === 'OPER2' || user === 'OPER3' || user === 'OPER6' ||
+                user === 'OPER7' || user === 'OPER9') {
+            Ext.getCmp(prototype.id + '-chkLOG').show();
+        } else {
+            Ext.getCmp(prototype.id + '-chkLOG').hide();
+        }
+
         var chkCITY = Ext.getCmp(prototype.id + '-chkCITY').getValue();
         var chkLOG = Ext.getCmp(prototype.id + '-chkLOG').getValue();
         var cmbVISTA = Ext.getCmp(prototype.id + '-cmbVISTA').getValue();
@@ -401,14 +411,6 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                         } else {
                             var data = obj.data.items[0].data;
                             console.log(data);
-                            var user = data.USERAC.trim();
-                            if (user === 'SAP01D' || user === 'SAP12D' || user === 'SAP07D' || user === 'SAP48D' || user === 'SAP52D' || 
-                                user === 'ADM2'   || user === 'OPER2' || user === 'OPER3' || user === 'OPER6' ||
-                                user === 'OPER7'  || user === 'OPER9') {
-                                Ext.getCmp(prototype.id + '-chkLOG').show();
-                            } else {
-                                Ext.getCmp(prototype.id + '-chkLOG').hide();
-                            }
                         }
                     }
                 }
