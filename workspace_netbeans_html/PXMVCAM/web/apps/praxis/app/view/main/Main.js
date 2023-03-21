@@ -20,6 +20,9 @@ var html_header = '' +
         '<div id="menuCommands">' +
         '<div class="menuCommandPanel">' +
         '<div class="menuCommand">' +
+        '<span id="menuCustomer"></span>' +
+        '</div>' +
+        '<div class="menuCommand">' +
         '<span id="menuUser"></span>' +
         '<span id="menuDate"></span>' +
         '</div>' +

@@ -266,6 +266,7 @@ public class UserDaoImpl implements BaseDao, UserDao {
 
                 file.fileA005.A005KEY1 = rs01.getString("A005KEY1");
                 file.fileA005.A005KEY2 = rs01.getString("A005KEY2");
+                file.fileINF020.CUSTOMER = rs01.getString("A005KEY2");
             }
         } finally {
             if (rs01 != null) {

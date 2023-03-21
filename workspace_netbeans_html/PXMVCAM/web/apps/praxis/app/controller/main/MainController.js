@@ -595,6 +595,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                 }
 
                 var user = '';
+                var customer = '';
 
                 $.ajax({
                     url: CONTEXTPATH + '/getUser',
@@ -603,7 +604,9 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                     success: function(data) {
                         // console.log(data);
                         user = data.user.USR.trim();//;
+                        customer = data.user.CUSTOMER.trim();//;
                         $('#menuUser').html(user);
+                        $('#menuCustomer').html(customer);
                         gloUsr = user;
                     },
                     error: function(err) {

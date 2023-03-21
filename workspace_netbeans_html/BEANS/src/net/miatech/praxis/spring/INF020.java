@@ -22,4 +22,5 @@ public class INF020 implements Serializable{
     public String DTUP = "";
     public String STAT = "";
     public String SIATA = "";
+    public String CUSTOMER = "";
 }

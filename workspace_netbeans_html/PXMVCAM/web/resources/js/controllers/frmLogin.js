@@ -87,6 +87,8 @@ function showMessage(strMsg) {
 function fnLogin() {
     if ($('#txtAuthName').val().length === 0 || $('#txtAuthPass').val().length === 0) {
         showMessage('You must enter Username and Password.');
+    } else if ($('#selCustomer').val().length === 0) {
+        showMessage('You must select a customer.');
     } else {
         AsyncLogin();
     }
