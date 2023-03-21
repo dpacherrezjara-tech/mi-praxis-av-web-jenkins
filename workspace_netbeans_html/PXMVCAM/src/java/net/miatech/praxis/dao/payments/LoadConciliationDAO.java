@@ -188,6 +188,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -285,6 +287,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -827,6 +831,8 @@ public class LoadConciliationDAO {
             hmResultado.put("TKT", lstTkts);
             hmResultado.put("ERROR", lstError);
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -1864,6 +1870,8 @@ public class LoadConciliationDAO {
             hmResultado.put("TKT", lstTkts);
             hmResultado.put("ERROR", lstError);
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -2034,6 +2042,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -2196,6 +2206,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -2359,6 +2371,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -2625,12 +2639,10 @@ public class LoadConciliationDAO {
 
                         if (beanTkt.strFecFiltro.equals("DATEC")) {
                             beanTkt.strTitulo = "Conciliation Date : ";
+                        } else if (beanTkt.IN_TDOC.equals("R")) {
+                            beanTkt.strTitulo = "Refund Date : ";
                         } else {
-                            if (beanTkt.IN_TDOC.equals("R")) {
-                                beanTkt.strTitulo = "Refund Date : ";
-                            } else {
-                                beanTkt.strTitulo = "Sales Date : ";
-                            }
+                            beanTkt.strTitulo = "Sales Date : ";
                         }
                         beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + beanTkt.strDescCountry + " - Card : " + beanTkt.SCARCOD + " : " + beanTkt.strDescCard;
 
@@ -2781,12 +2793,10 @@ public class LoadConciliationDAO {
 
                         if (beanTkt.strFecFiltro.equals("DATEC")) {
                             beanTkt.strTitulo = "Conciliation Date : ";
+                        } else if (beanTkt.IN_TDOC.equals("R")) {
+                            beanTkt.strTitulo = "Refund Date : ";
                         } else {
-                            if (beanTkt.IN_TDOC.equals("R")) {
-                                beanTkt.strTitulo = "Refund Date : ";
-                            } else {
-                                beanTkt.strTitulo = "Sales Date : ";
-                            }
+                            beanTkt.strTitulo = "Sales Date : ";
                         }
                         beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + beanTkt.strDescCountry + " - Card : " + beanTkt.SCARCOD + " : " + beanTkt.strDescCard;
 
@@ -2936,12 +2946,10 @@ public class LoadConciliationDAO {
 
                         if (beanTkt.strFecFiltro.equals("DATEC")) {
                             beanTkt.strTitulo = "Conciliation Date : ";
+                        } else if (beanTkt.IN_TDOC.equals("R")) {
+                            beanTkt.strTitulo = "Refund Date : ";
                         } else {
-                            if (beanTkt.IN_TDOC.equals("R")) {
-                                beanTkt.strTitulo = "Refund Date : ";
-                            } else {
-                                beanTkt.strTitulo = "Sales Date : ";
-                            }
+                            beanTkt.strTitulo = "Sales Date : ";
                         }
                         beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + beanTkt.strDescCountry + " - Card : " + beanTkt.SCARCOD + " : " + beanTkt.strDescCard;
 
@@ -2963,6 +2971,8 @@ public class LoadConciliationDAO {
 
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -3068,6 +3078,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -3174,6 +3186,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -3359,6 +3373,8 @@ public class LoadConciliationDAO {
             }
             rst.close();
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -3632,6 +3648,8 @@ public class LoadConciliationDAO {
             }
             rst.close();
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -3772,12 +3790,10 @@ public class LoadConciliationDAO {
 
                     if (beanTkt.strFecFiltro.equals("DATEC")) {
                         beanTkt.strTitulo = "Conciliation Date : ";
+                    } else if (beanTkt.IN_TDOC.equals("R")) {
+                        beanTkt.strTitulo = "Refund Date : ";
                     } else {
-                        if (beanTkt.IN_TDOC.equals("R")) {
-                            beanTkt.strTitulo = "Refund Date : ";
-                        } else {
-                            beanTkt.strTitulo = "Sales Date : ";
-                        }
+                        beanTkt.strTitulo = "Sales Date : ";
                     }
                     beanTkt.strTitulo += beanTkt.strFormatDate + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
 
@@ -3791,6 +3807,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -3887,6 +3905,8 @@ public class LoadConciliationDAO {
             }
             rst.close();
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -4025,12 +4045,10 @@ public class LoadConciliationDAO {
 
                     if (beanTkt.strFecFiltro.equals("DATEC")) {
                         beanTkt.strTitulo = "Conciliation Date : ";
+                    } else if (beanTkt.IN_TDOC.equals("R")) {
+                        beanTkt.strTitulo = "Refund Date : ";
                     } else {
-                        if (beanTkt.IN_TDOC.equals("R")) {
-                            beanTkt.strTitulo = "Refund Date : ";
-                        } else {
-                            beanTkt.strTitulo = "Sales Date : ";
-                        }
+                        beanTkt.strTitulo = "Sales Date : ";
                     }
                     if (beanTkt.IN_SDATE.trim().length() == 8) {
                         beanTkt.strTitulo += beanTkt.IN_SDATE + " - Country : " + beanTkt.strDescCountry + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
@@ -4048,6 +4066,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -4179,12 +4199,10 @@ public class LoadConciliationDAO {
 
                     if (beanTkt.strFecFiltro.equals("DATEC")) {
                         beanTkt.strTitulo = "Conciliation Date : ";
+                    } else if (beanTkt.IN_TDOC.equals("R")) {
+                        beanTkt.strTitulo = "Refund Date : ";
                     } else {
-                        if (beanTkt.IN_TDOC.equals("R")) {
-                            beanTkt.strTitulo = "Refund Date : ";
-                        } else {
-                            beanTkt.strTitulo = "Sales Date : ";
-                        }
+                        beanTkt.strTitulo = "Sales Date : ";
                     }
                     if (!beanTkt.SCARCOD.trim().isEmpty()) {
                         beanTkt.strTitulo += beanTkt.strFormatDate + " - Country : " + beanTkt.strDescCountry + " - Card : "
@@ -4204,6 +4222,8 @@ public class LoadConciliationDAO {
                 rst.close();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -4304,7 +4324,7 @@ public class LoadConciliationDAO {
             rst.close();
 
         } catch (Exception e) {
-            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -4560,12 +4580,10 @@ public class LoadConciliationDAO {
                         //Armando Título del Detalle
                         if (beanTkt.strFecFiltro.equals("DATEC")) {
                             beanTkt.strTitulo = "Conciliation Date : ";
+                        } else if (beanTkt.IN_TDOC.equals("R")) {
+                            beanTkt.strTitulo = "Refund Date : ";
                         } else {
-                            if (beanTkt.IN_TDOC.equals("R")) {
-                                beanTkt.strTitulo = "Refund Date : ";
-                            } else {
-                                beanTkt.strTitulo = "Sales Date : ";
-                            }
+                            beanTkt.strTitulo = "Sales Date : ";
                         }
                         try {
                             beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
@@ -4712,12 +4730,10 @@ public class LoadConciliationDAO {
                         //Armando Título del Detalle
                         if (beanTkt.strFecFiltro.equals("DATEC")) {
                             beanTkt.strTitulo = "Conciliation Date : ";
+                        } else if (beanTkt.IN_TDOC.equals("R")) {
+                            beanTkt.strTitulo = "Refund Date : ";
                         } else {
-                            if (beanTkt.IN_TDOC.equals("R")) {
-                                beanTkt.strTitulo = "Refund Date : ";
-                            } else {
-                                beanTkt.strTitulo = "Sales Date : ";
-                            }
+                            beanTkt.strTitulo = "Sales Date : ";
                         }
                         beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
                                 + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
@@ -4866,12 +4882,10 @@ public class LoadConciliationDAO {
                         //Armando Título del Detalle
                         if (beanTkt.strFecFiltro.equals("DATEC")) {
                             beanTkt.strTitulo = "Conciliation Date : ";
+                        } else if (beanTkt.IN_TDOC.equals("R")) {
+                            beanTkt.strTitulo = "Refund Date : ";
                         } else {
-                            if (beanTkt.IN_TDOC.equals("R")) {
-                                beanTkt.strTitulo = "Refund Date : ";
-                            } else {
-                                beanTkt.strTitulo = "Sales Date : ";
-                            }
+                            beanTkt.strTitulo = "Sales Date : ";
                         }
                         beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
                                 + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
@@ -4914,6 +4928,8 @@ public class LoadConciliationDAO {
             hmResultado.put("TKT", lstTkts);
             hmResultado.put("ERROR", lstError);
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
