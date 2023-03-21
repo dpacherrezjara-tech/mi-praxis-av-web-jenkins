@@ -113,9 +113,9 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         var storeComboDataYear = win.getStoreYear(false);
         var storeComboDataMonth = win.getStoreMonth(true);
         var storeComboDataDay = win.getStoreDays(true);
-        
+
         var month = this.fecha.getMonth() + 1;
-        
+
         if (month < 10) {
             month = '0' + month;
         }
@@ -192,6 +192,78 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             }
         });
     },
+    ChangechkLOG: function (checkboxfield, newValue, oldValue, eOpts) {
+
+        if (newValue) {
+            Ext.getCmp(prototype.id + '-cmbPrograma').show();
+            this.obtainDataComboLog();
+        } else {
+            Ext.getCmp(prototype.id + '-cmbPrograma').hide();
+            this.btnSearch_click();
+        }
+
+    },
+    obtainDataComboLog: function () {
+
+        var yearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        var yearTo = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        var monthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        var monthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        var dayFrom = Ext.getCmp(prototype.id + '-cmbDateFromDay');
+        var dayTo = Ext.getCmp(prototype.id + '-cmbDateToDay');
+
+
+        if (dayFrom.getValue() === null || dayFrom.getValue() === '') {
+            dayFrom.setValue('');
+            dayTo.setValue('');
+        } else {
+            if (dayTo.getValue() === null || dayTo.getValue() === '') {
+                dayTo.setValue(31);
+            }
+        }
+
+        me.bean = {}
+        me.bean.IN_FECHA_FROM = yearFrom.getValue() + monthFrom.getValue() + dayFrom.getValue();
+        me.bean.IN_FECHA_TO = yearTo.getValue() + monthTo.getValue() + dayTo.getValue();
+
+        var programas = new Array()
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainDataComboLog',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(me.bean)},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+
+                    var lstProgramas = res.lstProgramas;
+                    programas.push({FUENTE: 'All'});
+
+                    lstProgramas.forEach(function callback(currentValue, index, array) {
+                        programas.push({FUENTE: currentValue.FUENTE});
+                    });
+
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: programas,
+                        autoLoad: true,
+                        fields: ['code', 'name']
+                    });
+
+                    Ext.getCmp(prototype.id + '-cmbPrograma').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbPrograma').setValue('All');
+
+                } else {
+                    global.Msg({msg: res.sesion});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+
+        this.btnSearch_click();
+
+    },
     setFormatParameter1: function () {
 
         me.beanCity = {};
@@ -238,6 +310,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         var chkLOG = Ext.getCmp(prototype.id + '-chkLOG').getValue();
         var cmbVISTA = Ext.getCmp(prototype.id + '-cmbVISTA').getValue();
         var FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
+        var cmbPrograma = Ext.getCmp(prototype.id + '-cmbPrograma').getValue();
 //        console.log(FUENTE);
 
         if (chkCITY) {
@@ -252,10 +325,24 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                 Ext.getCmp(prototype.id + '-chkCITY').setVisible(false);
             }
 
+            if (cmbPrograma === 'All') {
+                cmbPrograma = '';
+            }
+
             if (chkLOG) {
-                me.bean.MENSA = Ext.getCmp(prototype.id + '-cmbPrograma').getValue();
-                this.setGridDataLOGSA2270();
+                me.bean.MENSA = cmbPrograma;
+
+                var beanString = JSON.stringify(me.bean);
+                searchParams = {
+                    bean: me.bean,
+                    beanString: beanString
+                };
+
+                console.log(searchParams);
+
+                this.searchLOGSA1910(me.bean);
             } else {
+                me.bean.MENSA = '';
                 var beanString = JSON.stringify(me.bean);
                 searchParams = {
                     bean: me.bean,
@@ -314,6 +401,14 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                         } else {
                             var data = obj.data.items[0].data;
                             console.log(data);
+                            var user = data.USERAC.trim();
+                            if (user === 'SAP01D' || user === 'SAP12D' || user === 'SAP07D' || user === 'SAP48D' || user === 'SAP52D' || 
+                                user === 'ADM2'   || user === 'OPER2' || user === 'OPER3' || user === 'OPER6' ||
+                                user === 'OPER7'  || user === 'OPER9') {
+                                Ext.getCmp(prototype.id + '-chkLOG').show();
+                            } else {
+                                Ext.getCmp(prototype.id + '-chkLOG').hide();
+                            }
                         }
                     }
                 }
@@ -322,6 +417,33 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             Ext.getCmp(prototype.id + '-gridMainDataAll').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
         }
+    },
+    searchLOGSA1910: function (obj, val) {
+        win.lblUser_toolTip("Estructura: A1910");
+//        this.hideAllGrid();
+        Ext.getCmp(prototype.id + '-gridDataLOG').show();
+        me.panelActual = '-boxDataLog';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchLOGSA1910'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = searchParams;
+                },
+                load: function (obj) {
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                    } else {
+
+//                        console.log(obj.data);
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataLOG').bindStore(storeGridDatas);
     },
     searchDetAll_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var beanDetAll = rowData.data;
@@ -540,7 +662,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     },
     initCalendar2: function () {
         console.log('initCalendar2');
-        
+
         var anio = Ext.getCmp(prototype.id + '-cmbYear').getValue();
         var dias = ["7", "1", "2", "3", "4", "5", "6"];
         var mes;
@@ -550,7 +672,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
 
         for (var m = 1; m <= 12; m++) {
 //            console.log('mex: ' + m );
-            var panelmes = Ext.getCmp(prototype.id +'panel'+ (m < 10 ? '0' : '') + m);
+            var panelmes = Ext.getCmp(prototype.id + 'panel' + (m < 10 ? '0' : '') + m);
             panelmes.removeAll(true);
         }
         console.log('comienza cracion');
@@ -565,8 +687,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             init = dias[dt2.getUTCDay()];
             fin = parseInt(totalDays) + parseInt(init);
             day = 1;
-            
-            var panelmes = Ext.getCmp(prototype.id +'panel'+ (i < 10 ? '0' : '') + i);
+
+            var panelmes = Ext.getCmp(prototype.id + 'panel' + (i < 10 ? '0' : '') + i);
             panelmes.suspendLayout = true;
             for (var n = init; n < fin; n++) {
 //                if (n % 7 === 1) {
@@ -582,36 +704,36 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
 //                Ext.getCmp(prototype.id + '-lblDay_' + i + '_' + (parseInt(n))).setStyle('backgroundColor', '#ffffff');
 //                Ext.getCmp(prototype.id + '-lblDay_' + i + '_' + (parseInt(n))).setStyle('color', '#000000');
 //                Ext.getCmp(prototype.id + 'gdiFlag_' + i + '_' + (parseInt(n))).setStyle('backgroundColor', colorFlag);
-                
-                    
-                    
-                    if(n === init){
-                        for (var c = 1; c < init; c++) {
-                            var v_label2 = new Ext.form.Label({text: '',backgroundColor:'#D6D6D6'});
-                            panelmes.add( v_label2);
-                        }
-                        
+
+
+
+                if (n === init) {
+                    for (var c = 1; c < init; c++) {
+                        var v_label2 = new Ext.form.Label({text: '', backgroundColor: '#D6D6D6'});
+                        panelmes.add(v_label2);
                     }
-                    
-                    var fday = (day < 10 ? '0' : '') + day;
-                    var v_id = 'lbl'+anio+''+mes+''+ fday ;
-                    var v_label = new Ext.form.Label({
-                                        id:v_id , text: day,backgroundColor:'#ffffff',color:'#000000',backgroundColor:colorFlag
-                                    });
-                    panelmes.add( v_label);
-                
+
+                }
+
+                var fday = (day < 10 ? '0' : '') + day;
+                var v_id = 'lbl' + anio + '' + mes + '' + fday;
+                var v_label = new Ext.form.Label({
+                    id: v_id, text: day, backgroundColor: '#ffffff', color: '#000000', backgroundColor: colorFlag
+                });
+                panelmes.add(v_label);
+
 //                    console.log('mex: ' + i + ' dia : ' + n);
                 day++;
             }
         }
         console.log('termina cracion-----------****');
-        Ext.getCmp(prototype.id +'panel05').suspendLayout = false;
-        Ext.getCmp(prototype.id +'panel05').updateLayout();
+        Ext.getCmp(prototype.id + 'panel05').suspendLayout = false;
+        Ext.getCmp(prototype.id + 'panel05').updateLayout();
     },
-    
+
     setCalendar2: function () {
 //        console.log("setCalendar2");
-        
+
 //        this.initCalendar2();
 
         var aux = true;
@@ -619,7 +741,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         me.beanCalendar.IN_FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
         me.beanCalendar.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbYear').getValue();
         var beanString = JSON.stringify(me.beanCalendar);
-        
+
         Ext.getCmp(prototype.id + '-lbl-year').setText(me.beanCalendar.IN_FECHA_FROM);
 
         Ext.Ajax.request({
@@ -638,7 +760,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                     var dias = ["7", "1", "2", "3", "4", "5", "6"];
                     var colorFlag;
                     var dia, mes, anio, mesf;
-                    
+
                     for (var i = 0; i < res.length; i++) {
                         dia = res[i].fecha.substring(6, 8);
                         mes = res[i].fecha.substring(4, 6);
@@ -648,20 +770,20 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                         var dt = new Date(mes + ' ' + dia + ', ' + anio + ' 12:00:00');
                         var color = '';
                         //var color = res[i].strFormatDate === 'ROJO' ? '#ff0000' : '#00ff00';
-                        
-                        
+
+
                         if (dt.getDay() === 0 || dt.getDay() === 6) {   // Domingo y Sabado
-                            if(me.beanCalendar.IN_FUENTE === 'AXPLUSGR-D' || me.beanCalendar.IN_FUENTE === 'AXLIGATB-D'){
+                            if (me.beanCalendar.IN_FUENTE === 'AXPLUSGR-D' || me.beanCalendar.IN_FUENTE === 'AXLIGATB-D') {
                                 color = res[i].strFormatDate === 'AMBAR' ? '#ff4d00' : '#00ff00';
-                            }else{
+                            } else {
                                 color = '#FFFFFF'
                             }
-                        } else if(res[i].strFormatDate === 'YELLOW' ){
+                        } else if (res[i].strFormatDate === 'YELLOW') {
                             color = '#D8FF02'
-                        } else{
+                        } else {
                             color = res[i].strFormatDate === 'AMBAR' ? '#ff4d00' : '#00ff00';
                         }
-                        
+
 
                         if (mesf % 2 !== 0) {
                             colorFlag = '#65C3E5';
@@ -669,12 +791,12 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                             colorFlag = '#2e6bf4';
                             //colorFlag = '#ffffff';
                         }
-                        
+
 //                        console.log('fecha : ' + res[i].fecha + ' date: ' + dt +  ' getUTC : ' + dias[dt.getUTCDay()] );
-                        
+
                         Ext.getCmp('lbl' + res[i].fecha).setStyle('backgroundColor', color);
                         Ext.getCmp('lbl' + res[i].fecha).setStyle('color', '#000000');
-                        
+
 //                        if (dia === '01') {
 //                            dato = dias[dt.getUTCDay()];
 //
@@ -701,10 +823,10 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
 //        console.log("Salimos de SetCalendar");
 
     },
-    
+
     searchDelivery_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var beanDeliv = rowData.data;
-        beanDeliv.IN_FECRFILE = rowData.data.strFormatDate.replaceAll('-','');
+        beanDeliv.IN_FECRFILE = rowData.data.strFormatDate.replaceAll('-', '');
         switch (columnNum) {
             case 1:
                 beanDeliv.IN_ERROR = '';

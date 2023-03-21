@@ -64,6 +64,6 @@ public class A1686Filter extends A1686 {
     public int QCONN = 0;
     
     public int QTYRECEI = 0;
-
+    public String USERAC = "";
     public Pagination page = new Pagination();
 }

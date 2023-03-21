@@ -187,10 +187,33 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                 {
                     xtype: 'checkboxfield',
                     id: prototype.id + '-chkLOG',
-                    width: 200,
-                    boxLabel: '<b>Log</b>',
+                    labelStyle: 'font-weight:bold;',
+                    margin: '0 20 0 53',
+                    width: 80,
+                    boxLabel: '<b>Logs</b>',
                     hidden: true,
-                    inputValue: '0'
+                    inputValue: '1',
+                    listeners:{
+                        change: 'ChangechkLOG'
+                    }
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: '',
+                    id: prototype.id+'-cmbPrograma',
+                    fieldStyle: 'text-align: left;',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    valueField: 'FUENTE',
+                    displayField: 'FUENTE',
+                    emptyText: 'All',
+                    width: 90,
+                    labelWidth: 80,
+                    hidden: true,
+                    hiddenLabel: false,
+                    listeners:{
+                        change: 'btnSearch_click'
+                    }
                 }
             ]
         },
