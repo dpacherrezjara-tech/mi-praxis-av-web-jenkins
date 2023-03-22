@@ -33,7 +33,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['code', 'name'],
                                 data: [
-                                    ["ADATE", "Sales Date"], ["DATEC", "Reconciliation Date"]
+                                    ["SDATE", "Sales Date"], ["DATEC", "Reconciliation Date"]
                                 ]
                             }),
                             queryMode: 'local',
@@ -44,7 +44,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             autoSelect: true,
                             editable: true,
                             width: 100,
-                            value: "ADATE",
+                            value: "SDATE",
                             typeAhead: true,
                             valueField: 'code', displayField: 'name',
                             listConfig: {minWidth: 130},
@@ -497,12 +497,13 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             id: prototype.id+'-chkADYEN',
                             boxLabel: '<b>ADYEN</b>',
                             checked: false,
+                            hidden:true,
                             width: 90,
                             listeners:{
                                 change: 'btnSearch_click'
                             }
                         },                        
-                        {xtype: 'tbspacer', width: 10},
+                        {xtype: 'tbspacer', width: 10, hidden:true},
                         {
                             xtype: 'radiogroup',
                             id:prototype.id+'-rbgType',

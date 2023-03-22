@@ -74,7 +74,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         switch (selectedValue) {
             case 'Sales':
                 var cbxFecFiltroAC = new Array();
-                cbxFecFiltroAC.push({name: "Sales Date", code: 'ADATE'});
+                cbxFecFiltroAC.push({name: "Sales Date", code: 'SDATE'});
                 cbxFecFiltroAC.push({name: "Reconciliation Date", code: 'DATEC'});
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').bindStore(cbxFecFiltroAC);
 
@@ -82,7 +82,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 break;
             case 'Refund':
                 var cbxFecFiltroAC = new Array();
-                cbxFecFiltroAC.push({name: "Refund Date", code: 'ADATE'});
+                cbxFecFiltroAC.push({name: "Refund Date", code: 'SDATE'});
                 cbxFecFiltroAC.push({name: "Reconciliation Date", code: 'DATEC'});
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').bindStore(cbxFecFiltroAC);
 
