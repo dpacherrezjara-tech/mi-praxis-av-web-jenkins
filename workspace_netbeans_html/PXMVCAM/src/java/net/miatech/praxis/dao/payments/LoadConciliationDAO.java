@@ -3300,6 +3300,9 @@ public class LoadConciliationDAO {
                 beanTkt.SIDATE = rst.getString("SIDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
                 beanTkt.SPNRSP = rst.getString("SPNRSP").trim();
+                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
                 //ACCB
                 beanTkt.AFTE = rst.getString("AFTE").trim();
                 if (rst.getString("AFTE").trim().equals("B")) {

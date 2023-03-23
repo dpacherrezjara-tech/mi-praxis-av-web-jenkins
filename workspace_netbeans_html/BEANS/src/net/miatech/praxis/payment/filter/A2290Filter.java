@@ -401,7 +401,10 @@ public class A2290Filter extends A2290 {
     public String color = "";
     public String weight = "";
     public String select = "";
-
+    public String SVFOPINST = "";
+    public String INSTPAY = "";
+    public String INSTPLA = "";
+    
     public Pagination page = new Pagination();
 
     public String bufferToString(String ccust) {

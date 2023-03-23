@@ -191,6 +191,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtSTCNTR", this.bean.STCNTR.trim());
         win.setValue('2-txtSVFOP', win.formatDblNumber(this.bean.SVFOP));
         win.setValue('2-txtSCURRENCY', this.bean.SCURRENCY.trim());
+        win.setValue('2-txtSVFOPINST', this.bean.SVFOPINST.trim());
+        win.setValue('2-txtINSTPAY', this.bean.INSTPAY.trim());
+        win.setValue('2-txtINSTPLA', this.bean.INSTPLA.trim());
         win.setValue('2-txtSCARDN', this.bean.strSCARDN.trim());
         win.setValue('2-txtSDATEXP', this.bean.SDATEXP.trim());
         win.setValue("2-txtSAUTHOC", this.bean.SAUTHOC.trim());

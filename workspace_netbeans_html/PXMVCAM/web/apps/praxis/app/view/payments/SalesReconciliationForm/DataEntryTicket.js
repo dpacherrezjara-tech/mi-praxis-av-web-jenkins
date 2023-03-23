@@ -338,6 +338,41 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     readOnly: true,
                                     margin: '0 0 0 3',
                                     width: 100
+                                },
+                                {
+                                    xtype: 'label',
+                                    text: 'Invoice',
+                                    style: 'font-weight:bold;color:#121E31;',
+                                    margin: '0 0 0 7',
+                                    width: 137,
+                                    padding: '3 0'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-2-txtSINVN',
+                                    fieldStyle: 'text-align:left',
+                                    enforceMaxLength: true,
+                                    maxLength: 14,
+                                    readOnly: true,
+                                    width: 100
+                                },
+                                {
+                                    xtype: 'label',
+                                    text: 'Invoice Date',
+                                    style: 'font-weight:bold;color:#121E31;',
+                                    margin: '0 0 0 7',
+                                    width: 126,
+                                    padding: '3 0'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-2-txtSIDATE',
+                                    fieldStyle: 'text-align:left',
+                                    enforceMaxLength: true,
+                                    maxLength: 8,
+                                    readOnly: true,
+                                    width: 100,
+                                    margin: '0 0 0 3',
                                 }
                             ]
                         },
@@ -411,8 +446,9 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Contracting Card',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 135,
                                     margin: '0 0 0 7',
+                                    width: 137,
+                                    padding: '3 0'
                                 },
                                 {
                                     xtype: 'textfield',
@@ -422,7 +458,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     maxLength: 4,
                                     readOnly: true,
 //                                    margin: '0 0 0 3',
-                                    width: 103
+                                    width: 100
                                 }
                             ]
                         },
@@ -437,20 +473,20 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Card Code',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 84,
                                     margin: '0 0 0 7',
+                                    width: 102,
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 18,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 18,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtSCARCOD',
@@ -464,20 +500,20 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     text: 'Card Nbr',
                                     style: 'font-weight:bold;color:#121E31;',
                                     margin: '0 0 0 7',
-                                    width: 105,
-                                    padding: '3 0'
+                                    width: 123,
+                                    padding: '3 0',
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 18,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 18,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtSCARDN',
@@ -493,24 +529,25 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Auth. Code',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 112,
                                     margin: '0 0 0 7',
+                                    width: 137,
+                                    padding: '3 0',
                                     autoEl: {
                                         tag: 'label',
                                         'data-qtip': 'Authorization Code'
                                     }
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 22,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 22,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtSAUTHOC',
@@ -518,8 +555,8 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     enforceMaxLength: true,
                                     maxLength: 6,
                                     readOnly: true,
-                                    width: 101,
-                                    margin: '0 0 0 3',
+                                    width: 100,
+//                                    margin: '0 0 0 3',
                                 },
                                 {
                                     xtype: 'label',
@@ -570,20 +607,20 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Amount',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 84,
-                                    margin: '0 0 0 7'
+                                    margin: '0 0 0 7',
+                                    width: 102,
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 18,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 18,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtSVFOP',
@@ -607,38 +644,58 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                 },
                                 {
                                     xtype: 'label',
-                                    text: 'Invoice',
+                                    text: 'Balance',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    margin: '0 0 0 3',
-                                    width: 87,
+                                    margin: '0 0 0 7',
+                                    width: 80,
                                     padding: '3 0'
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-2-txtSINVN',
-                                    fieldStyle: 'text-align:left',
+                                    id: prototype.id + '-2-txtSVFOPINST',
+                                    fieldStyle: 'text-align:right',
                                     enforceMaxLength: true,
-                                    maxLength: 14,
+                                    maxLength: 15,
+                                    margin: '0 0 0 3',
                                     readOnly: true,
                                     width: 100
                                 },
                                 {
                                     xtype: 'label',
-                                    text: 'Invoice Date',
+                                    text: 'Installment Payment',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 138,
+                                    margin: '0 0 0 7',
+                                    width: 137,
                                     padding: '3 0',
-                                    margin: '0 0 0 7'
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-2-txtSIDATE',
-                                    fieldStyle: 'text-align:left',
+                                    id: prototype.id + '-2-txtINSTPAY',
+                                    fieldStyle: 'text-align:right',
                                     enforceMaxLength: true,
-                                    maxLength: 8,
+                                    maxLength: 15,
+//                                    margin: '0 0 0 3',
                                     readOnly: true,
-                                    width: 100
-                                }
+                                    width: 35
+                                },
+                                {
+                                    xtype: 'label',
+                                    text: 'Installment Plan',
+                                    style: 'font-weight:bold;color:#121E31;',
+                                    margin: '0 0 0 72',
+                                    width: 126,
+                                    padding: '3 0'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-2-txtINSTPLA',
+                                    fieldStyle: 'text-align:right',
+                                    enforceMaxLength: true,
+                                    maxLength: 15,
+                                    margin: '0 0 0 3',
+                                    readOnly: true,
+                                    width: 35
+                                },
                             ]
                         }
                     ]
@@ -689,28 +746,29 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Card Code',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 103,
-                                    padding: '4 0'
+                                    margin: '0 0 0 7',
+                                    width: 124,
+                                    padding: '3 0'
                                 },
-                                {xtype: 'tbspacer', width: 3},
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 25,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 3},
+//                                {xtype: 'tbspacer', width: 3},
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 25,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 3},
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtACARCOD',
                                     fieldStyle: 'text-align:left',
                                     readOnly: true,
-                                    width: 347
+                                    width: 344
                                 }
                             ]
                         },
@@ -802,7 +860,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     text: 'Agent',
                                     style: 'font-weight:bold;color:#121E31;',
                                     margin: '0 0 0 7',
-                                    width: 127,
+                                    width: 130,
                                     padding: '3 0'
                                 },
                                 {xtype: 'tbspacer', width: 3},
@@ -862,25 +920,25 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Authoriz. Code',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 115,
-                                    padding: '3 0',
                                     margin: '0 0 0 7',
+                                    width: 137,
+                                    padding: '3 0',
                                     autoEl: {
                                         tag: 'label',
                                         'data-qtip': 'Authorization Code'
                                     }
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 22,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 22,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtAAUTHOC',
@@ -919,20 +977,20 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Card Nbr',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 84,
-                                    margin: '0 0 0 7'
+                                    margin: '0 0 0 7',
+                                    width: 102,
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 18,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 18,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtACARDN',
@@ -995,20 +1053,20 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     xtype: 'label',
                                     text: 'Amount',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 84,
-                                    margin: '0 0 0 7'
+                                    margin: '0 0 0 7',
+                                    width: 102,
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: '(*)',
-                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
-                                    width: 18,
-                                    padding: '4 0',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Mandatory Field'
-                                    }
-                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:#9C1717;font-size:9px;',
+//                                    width: 18,
+//                                    padding: '4 0',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
                                 {
                                     xtype: 'textfield',
                                     id: prototype.id + '-2-txtAVFOP',
