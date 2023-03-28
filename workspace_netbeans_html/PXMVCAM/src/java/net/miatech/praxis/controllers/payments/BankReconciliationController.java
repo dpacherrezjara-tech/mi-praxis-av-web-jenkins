@@ -116,7 +116,7 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchByPNR")
     public @ResponseBody
     String searchByPNR(ModelMap map, HttpServletRequest request) {
@@ -601,6 +601,7 @@ public class BankReconciliationController extends BaseController {
 //
 //        return resp;
 //    }
+
     @RequestMapping(value = "searchBeanAMDP")
     public @ResponseBody
     String searchBeanAMDP(ModelMap map, HttpServletRequest request) {
@@ -627,7 +628,7 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "executeOption")
     public @ResponseBody
     String executeOption(ModelMap map, HttpServletRequest request) {
@@ -1017,7 +1018,7 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "/searchDetDayByStvalWithErrorsList")
     public @ResponseBody
     String searchDetDayByStvalWithErrorsList(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
@@ -1041,11 +1042,11 @@ public class BankReconciliationController extends BaseController {
                 filter.page.PAGROW = -1;
                 filter.page.PAGNUM = 1;
             }
-            
+
             BankReconciliationLogic logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
             List<A2290Filter> listaData = logic.loadPX269SQP03984(filter);
-            
+
             if (dw_excel) {
                 ExportUtil.exportFields(request, response, listaData);
 //                map.put("nameExcel", nameExcel);
@@ -1059,7 +1060,7 @@ public class BankReconciliationController extends BaseController {
                 map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
                 map.put("lstDetError", listaError);
             }
-            
+
         } catch (SQLException e) {
             map.put("success", false);
             map.put("sesion", SESSION_CONTROL);
@@ -1067,7 +1068,7 @@ public class BankReconciliationController extends BaseController {
             map.put("success", false);
             map.put("sesion", SESSION_CONTROL);
         }
-        return (dw_excel)?null:(new Gson().toJson(map));
+        return (dw_excel) ? null : (new Gson().toJson(map));
     }
 
 //    public JavaToFlexResponse searchDetCardCodeByStval(A2290Filter filter) {
@@ -1164,7 +1165,6 @@ public class BankReconciliationController extends BaseController {
 //        return resp;
 //    }
 
-    
     @RequestMapping(value = "/searchDetTktByStval")
     public @ResponseBody
     String searchDetTktByStval(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
@@ -1216,7 +1216,7 @@ public class BankReconciliationController extends BaseController {
         }
         return (dw_excel) ? null : (new Gson().toJson(map));
     }
-    
+
     @RequestMapping(value = "searchDetCardNbrByStval")
     public @ResponseBody
     String searchDetCardNbrByStval(ModelMap map, HttpServletRequest request) {
@@ -1562,7 +1562,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -1603,7 +1603,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -1652,7 +1652,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 10));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 11, 11));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 3 ==========
             Row row3 = sheet.createRow(vj);
@@ -1798,7 +1798,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -1831,7 +1831,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -1944,7 +1944,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -2013,7 +2013,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -2186,7 +2186,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -2283,7 +2283,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -2348,7 +2348,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 13, 13));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 16));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -2522,7 +2522,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -2579,7 +2579,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 12, 12));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -2725,7 +2725,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -2746,12 +2746,10 @@ public class BankReconciliationController extends BaseController {
             String tit_IN_TDOC = "";
             if (listaData.get(0).strFecFiltro.equals("BDATEP")) {
                 tit_IN_TDOC = "Reconciliation";
+            } else if (listaData.get(0).IN_TDOC.equals("R")) {
+                tit_IN_TDOC = "Refund";
             } else {
-                if (listaData.get(0).IN_TDOC.equals("R")) {
-                    tit_IN_TDOC = "Refund";
-                } else {
-                    tit_IN_TDOC = "Sales";
-                }
+                tit_IN_TDOC = "Sales";
             }
 
             CH1_0.setCellValue(tit_IN_TDOC);
@@ -2781,7 +2779,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 12));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -2840,7 +2838,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 11, 11));
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 12, 12));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 3 ==========
             Row row3 = sheet.createRow(vj);
@@ -2989,7 +2987,7 @@ public class BankReconciliationController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-             // ====== CREANDO TITULOS ======================================
+            // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
             Row row1 = sheet.createRow(vj);
@@ -3010,12 +3008,10 @@ public class BankReconciliationController extends BaseController {
             String tit_IN_TDOC = "";
             if (listaData.get(0).strFecFiltro.equals("BDATEP")) {
                 tit_IN_TDOC = "Reconciliation";
+            } else if (listaData.get(0).IN_TDOC.equals("R")) {
+                tit_IN_TDOC = "Refund";
             } else {
-                if (listaData.get(0).IN_TDOC.equals("R")) {
-                    tit_IN_TDOC = "Refund";
-                } else {
-                    tit_IN_TDOC = "Sales";
-                }
+                tit_IN_TDOC = "Sales";
             }
 
             CH1_0.setCellValue(tit_IN_TDOC);
@@ -3045,7 +3041,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 12));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 2 ==========
             Row row2 = sheet.createRow(vj);
@@ -3104,7 +3100,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 11, 11));
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 12, 12));
             ++vj;
-             //============================================
+            //============================================
 
             // ======  Nivel 3 ==========
             Row row3 = sheet.createRow(vj);
@@ -3210,6 +3206,40 @@ public class BankReconciliationController extends BaseController {
         } catch (IOException e) {
             throw new SpringException(e);
         }
+    }
+
+    @RequestMapping(value = "searchBeanAMDP_DETAIL")
+    public @ResponseBody
+    String searchBeanAMDP_DETAIL(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanAMDP_DETAIL-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListAMDP_DETAIL(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListAMDP_DETAIL(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            
+            lst = logic.loadPX269SQP00833_MDP_DETAIL(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
     }
 
 }

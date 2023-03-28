@@ -53,7 +53,7 @@ public class BankReconciliationLogic {
     public A2290Filter loadPX269SQP00833(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833(filter);
     }
-    
+
     public A2290Filter loadPX269SQPXXX(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQPXXX(filter);
     }
@@ -141,5 +141,9 @@ public class BankReconciliationLogic {
 
     public HashMap<String, List<A2290Filter>> loadPX263SQP03989(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX263SQP03989(filter);
+    }
+
+    public List<A2290Filter> loadPX269SQP00833_MDP_DETAIL(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_MDP_DETAIL(filter);
     }
 }

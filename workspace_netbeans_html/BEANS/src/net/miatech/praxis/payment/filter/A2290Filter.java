@@ -463,6 +463,19 @@ public class A2290Filter extends A2290 {
     public String CODADJU = "";
     public String DES_CODADJU = "";
     public String FSELEC = "";
+    
+    //Campos de desglose
+    public String A1531TKT = "";
+    public String FDESGLOSE = "";
+    public String A1531TTARJ = "";
+    public String A1531NREF = "";
+    public String A1531CAPL = "";
+    public String A1531MFOP = "";
+    public double A1531VFOP = 0;
+    public double tot_VFOP = 0;
+    public String A720FECVTA = "";
+    public String A720PNR = "";
+    public String A720AGENTE = "";
 
     public String bufferToString(String ccust) {
 

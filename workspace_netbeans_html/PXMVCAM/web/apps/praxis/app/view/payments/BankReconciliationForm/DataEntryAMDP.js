@@ -380,7 +380,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtCERRORHST',
+                                            id: prototype.id + '-de-txtCERRORHST',
                                             fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -396,7 +396,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtCERROIN',
+                                            id: prototype.id + '-de-txtCERROIN',
                                             fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -412,7 +412,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtDES_CERROIN',
+                                            id: prototype.id + '-de-txtDES_CERROIN',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -438,7 +438,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtFLAG',
+                                            id: prototype.id + '-de-txtFLAG',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -447,7 +447,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            id: prototype.id + '-txtFromDateCERROR',
+                                            id: prototype.id + '-de-txtFromDateCERROR',
                                             text: 'Sett. vs Sales',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
@@ -455,7 +455,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtCERROR',
+                                            id: prototype.id + '-de-txtCERROR',
                                             fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -471,7 +471,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtDES_CERROR',
+                                            id: prototype.id + '-de-txtDES_CERROR',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -502,7 +502,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {
                                             xtype: 'label',
                                             text: 'Sales Date',
-                                            id: prototype.id + '-txtFromDateBSUMDATE',
+                                            id: prototype.id + '-de-txtFromDateBSUMDATE',
                                             textAlign: 'center',
                                             paddingLeft: 3,
                                             style: 'font-weight:bold;color:#0B333C;',
@@ -675,7 +675,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtSTVAL',
+                                            id: prototype.id + '-de-txtSTVAL',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -791,7 +791,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            id: prototype.id + '-txtFromDateSVFOPS',
+                                            id: prototype.id + '-de-txtFromDateSVFOPS',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             text: 'Sales Amount',
                                             width: 120
@@ -897,7 +897,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelScan',
                                     layout: 'hbox',
-                                    hidden: false,
+                                    hidden: true,
                                     border: false,
                                     margin: '0 2 0 100',
                                     bodyStyle: 'background:#efe5e5;',
@@ -1047,7 +1047,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelScanCard',
                                     layout: 'hbox',
-                                    hidden: false,
+                                    hidden: true,
                                     border: false,
                                     margin: '0 2 0 50',
                                     bodyStyle: 'background:#efe5e5;',
