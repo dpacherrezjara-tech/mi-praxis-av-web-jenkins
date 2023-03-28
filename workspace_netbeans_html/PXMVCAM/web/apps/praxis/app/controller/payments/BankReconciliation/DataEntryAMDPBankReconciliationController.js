@@ -121,9 +121,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 //            this.setValue('de-cmbTDOC', 'S');
 //        }
         console.log(this.bean);
-        //this.setValue('de-txtPRDA', this.bean.PRDA);
+        this.setValue('de-txtPRDA', this.bean.PRDA);
         this.setValue('de-txtSAGENT', this.bean.SAGENT);
-        //this.setValue('de-txtMERCHID', this.bean.MERCHID);
+        this.setValue('de-txtMERCHID', this.bean.MERCHNC);
         //this.setValue('de-txtSMERCHID', this.bean.SMERCHID);
         //this.setValue('de-txtIDITEMS', this.bean.IDITEMS);
         //this.setValue('de-txtIDITEMT', this.bean.IDITEMT);

@@ -426,6 +426,7 @@ public class A2290Filter extends A2290 {
     public String descSTCONL = "";
     public String FREGLA = "";
     public String descFREGLA = "";
+    public String MERCHNC = "";
     public String PASSED_DAYS = "";
     public String FCONTL = "";
     public String IDCONL = "";
