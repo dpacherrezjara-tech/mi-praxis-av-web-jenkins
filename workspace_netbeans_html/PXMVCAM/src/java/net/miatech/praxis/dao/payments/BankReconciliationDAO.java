@@ -1454,6 +1454,7 @@ public class BankReconciliationDAO {
             while (rs01.next()) {
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SAGENT = rs01.getString("SAGENT");
+                objRtn.SDATE = rs01.getString("SDATE");
                 objRtn.TDOC = rs01.getString("TDOC");
                 if (rs01.getString("TDOC").trim().equals("R")) {
                     objRtn.strPEM = "Refund";
