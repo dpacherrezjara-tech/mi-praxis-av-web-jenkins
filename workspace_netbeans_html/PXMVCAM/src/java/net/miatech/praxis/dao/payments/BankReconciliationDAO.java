@@ -4581,9 +4581,13 @@ public class BankReconciliationDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
-                
+
                 beanTkt.FDESGLOSE = "1";
-                beanTkt.descTDOC = rst.getString("TDOC").trim();
+                if (rst.getString("TDOC").trim().equals("R")) {
+                    beanTkt.descTDOC = "Refund";
+                } else {
+                    beanTkt.descTDOC = "Sales";
+                }
                 beanTkt.A1531TTARJ = rst.getString("SCARCOD").trim();
                 beanTkt.A1531NREF = rst.getString("SCARDN").trim();
                 beanTkt.A1531CAPL = rst.getString("SAUTHOC").trim();
