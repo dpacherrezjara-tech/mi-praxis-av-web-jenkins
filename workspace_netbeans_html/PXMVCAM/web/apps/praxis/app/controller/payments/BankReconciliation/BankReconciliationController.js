@@ -1516,8 +1516,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     winDataEntry: function(action, beanCons) {
         action = action === null || action === undefined ? 'U' : action;
 
-        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntry', {
-            id: prototype.id + '-dataEntry',
+        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
+            id: prototype.id + '-dataEntryAMDP',
             params: {
                 action: action,
                 lstCountry: me.lstCountry,

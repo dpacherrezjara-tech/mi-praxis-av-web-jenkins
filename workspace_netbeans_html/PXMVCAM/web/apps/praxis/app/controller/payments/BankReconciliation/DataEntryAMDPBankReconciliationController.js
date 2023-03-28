@@ -1,0 +1,529 @@
+Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankReconciliationController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.DataEntryAMDPBankReconciliationController',
+    // <editor-fold defaultstate="collapsed" desc="Variables Globales">
+    meDe: '',
+    actionCode: '',
+    bean: {},
+    lstA1852: {},
+    dataObtain: {},
+    // </editor-fold>
+    init: function(view) {
+        meDe = this;
+        this.p = this.view.params;
+        this.actionCode = this.p.action;
+        this.bean = this.p.beanCons;
+        this.lstCard = this.p.lstCard;
+        this.lstBank = this.p.lstBank;
+        this.lstCountry = this.p.lstCountry;
+        console.log(this.bean.TDOC);
+        this.obtainData();
+    },
+    afterRender: function() {
+
+        switch (this.actionCode) {
+            case 'I':
+                this.habilitarCampos();
+                Ext.getCmp(prototype.id + '-btn-save').show();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+//                Ext.getCmp(prototype.id + '-btn-delete').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+            case 'U':
+//                this.habilitarCampos();
+//                this.limpiarData();
+                this.onSearchCompleteDetail();
+                Ext.getCmp(prototype.id + '-btn-save').hide();
+                Ext.getCmp(prototype.id + '-btn-update').show();
+//                Ext.getCmp(prototype.id + '-btn-delete').show();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+            case 'S':
+                this.deshabilitarCampos();
+                this.limpiarData();
+                this.onSearchCompleteDetail();
+                Ext.getCmp(prototype.id + '-btn-save').hide();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+//                Ext.getCmp(prototype.id + '-btn-delete').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+        }
+    },
+    obtainData: function() {
+
+//        var cmbDocumentType = Ext.getCmp(prototype.id + '-de-cmbTDOC');
+//        cmbDocumentType.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["S", "Sales"],
+//                ["R", "Refund"]
+//            ]
+//        }));
+//        cmbDocumentType.setValue("S");
+
+        var storeData = Ext.create('Ext.data.Store', {
+            data: this.lstCard,
+            autoLoad: true
+        });
+
+        var storeData2 = Ext.create('Ext.data.Store', {
+            data: this.lstBank,
+            autoLoad: true
+        });
+
+        var storeData3 = Ext.create('Ext.data.Store', {
+            data: this.lstCountry,
+            autoLoad: true
+        });
+
+    },
+    onSearchCompleteDetail: function() {
+
+        var paramDetail = {};
+        paramDetail.beanString = JSON.stringify(meDe.bean.data);
+        console.log(paramDetail);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDP',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramDetail,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function(response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    meDe.bean = res.result;
+                    meDe.mostrarData();
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function(response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+        meDe.bean = meDe.beanCons;
+//        meDe.mostrarData();
+    },
+    mostrarData: function() {
+//        this.setValue('de-txtSDATE', meDe.bean.SDATE);
+//        if (meDe.bean.TDOC === 'R') {
+//            this.setValue('de-cmbTDOC', 'R');
+//        } else if (meDe.bean.STVAL === 'S') {
+//            this.setValue('de-cmbTDOC', 'S');
+//        }
+        this.setValue('de-txtPRDA', meDe.bean.PRDA);
+        this.setValue('de-txtSAGENT', meDe.bean.SAGENT);
+        this.setValue('de-txtMERCHID', meDe.bean.MERCHID);
+        this.setValue('de-txtSMERCHID', meDe.bean.SMERCHID);
+        this.setValue('de-txtIDITEMS', meDe.bean.IDITEMS);
+        this.setValue('de-txtIDITEMT', meDe.bean.IDITEMT);
+        this.setValue('de-txtINSTPLA', meDe.bean.INSTPLA);
+        this.setValue('de-txtINSTPAY', meDe.bean.INSTPAY);
+        this.setValue('de-txtINVORNBR', meDe.bean.INVORNBR);
+        this.setValue('de-txtZONE', meDe.bean.ZONE);
+        this.setValue('de-txtCOUNTRY', meDe.bean.COUNTRY);
+        this.setValue('de-txtINSTANBR', meDe.bean.INSTANBR);
+        this.setValue('de-txtSTCONL', meDe.bean.STCONL);
+        this.setValue('de-txtFCONTL', meDe.bean.FCONTL);
+        this.setValue('de-txtIDCONL', meDe.bean.IDCONL);
+        this.setValue('de-txtCERRORHST', meDe.bean.CERRORHST);
+        this.setValue('de-txtCERROIN', meDe.bean.CERROIN);
+        this.setValue('de-txtDES_CERROIN', meDe.bean.DES_CERROIN);
+        this.setValue('de-txtFLAG', meDe.bean.FLAG);
+        this.setValue('de-txtCERROR', meDe.bean.CERROR);
+        this.setValue('de-txtDES_CERROR', meDe.bean.DES_CERROR);
+        this.setValue('de-txtFromDateBSUMDATE', meDe.bean.FromDateBSUMDATE);
+        this.setValue('de-txtBSUMDATE', meDe.bean.BSUMDATE);
+        this.setValue('de-txtTDOC', meDe.bean.TDOC);
+        this.setValue('de-txtSPNR', meDe.bean.SPNR);
+        this.setValue('de-txtISREFNBR', meDe.bean.ISREFNBR);
+        this.setValue('de-txtPAYDATE', meDe.bean.PAYDATE);
+        this.setValue('de-txtSCARCODE', meDe.bean.SCARCODE);
+        this.setValue('de-txtSCARDN', meDe.bean.SCARDN);
+        this.setValue('de-txtSAUTHOC', meDe.bean.SAUTHOC);
+        this.setValue('de-txtSTVAL', meDe.bean.STVAL);
+        this.setValue('de-txtQTYTKT', meDe.bean.QTYTKT);
+        this.setValue('de-txtPCURRENCY', meDe.bean.PCURRENCY);
+        this.setValue('de-txtTGROSAMOUN', Ext.util.Format.number(meDe.bean.TGROSAMOUN, '0,000.00'));
+        this.setValue('de-txtdescFREGLA', meDe.bean.descFREGLA);
+        this.setValue('de-txtCONCIDATE', meDe.bean.CONCIDATE);
+        this.setValue('de-txtVOID', meDe.bean.VOID);
+        this.setValue('de-txtSVFOP', Ext.util.Format.number(meDe.bean.SVFOP, '0,000.00'));
+        this.setValue('de-txtFADM', meDe.bean.FADM);
+        this.setValue('de-txtFREVERSA', meDe.bean.FREVERSA);
+        this.setValue('de-txtFREVADM', meDe.bean.FREVADM);
+        this.setValue('de-txtDIFF_AMOUNT', Ext.util.Format.number(meDe.bean.DIFF_AMOUNT, '0,000.00'));
+        
+        this.setValue('de-txtUSCR', meDe.bean.USCR);
+        this.setValue('de-txtFECR', meDe.bean.FECR);
+        this.setValue('de-txtHOCR', meDe.bean.HOCR);
+        this.setValue('de-txtUSUP', meDe.bean.USUP);
+        this.setValue('de-txtFEUP', meDe.bean.FEUP);
+        this.setValue('de-txtHOUP', meDe.bean.HOUP);
+
+    },
+//<editor-fold defaultstate="collapsed" desc="llenarData">
+    llenarData: function() {
+        var bean = {};
+        
+        bean.origSDATE = meDe.bean.origSDATE;
+       
+        bean.BDATEP = Ext.util.Format.date(this.getValue("de-txtBDATEP"), 'Ymd');
+        
+        return bean;
+
+    },
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="limpiarData">
+    limpiarData: function() {
+        this.setValue('de-txtPRDA', '');
+        this.setValue('de-txtSAGENT', '');
+        this.setValue('de-txtMERCHID', '');
+        this.setValue('de-txtSMERCHID', '');
+        this.setValue('de-txtIDITEMS', '');
+        this.setValue('de-txtIDITEMT', '');
+        this.setValue('de-txtINSTPLA', '');
+        this.setValue('de-txtINSTPAY', '');
+        this.setValue('de-txtINVORNBR', '');
+        this.setValue('de-txtZONE', '');
+        this.setValue('de-txtCOUNTRY', '');
+        this.setValue('de-txtINSTANBR', '');
+        this.setValue('de-txtSTCONL', '');
+        this.setValue('de-txtFCONTL', '');
+        this.setValue('de-txtIDCONL', '');
+        this.setValue('de-txtCERRORHST', '');
+        this.setValue('de-txtCERROIN', '');
+        this.setValue('de-txtDES_CERROIN', '');
+        this.setValue('de-txtFLAG', '');
+        this.setValue('de-txtCERROR', '');
+        this.setValue('de-txtDES_CERROR', '');
+        this.setValue('de-txtFromDateBSUMDATE', '');
+        this.setValue('de-txtBSUMDATE', '');
+        this.setValue('de-txtTDOC', '');
+        this.setValue('de-txtSPNR', '');
+        this.setValue('de-txtISREFNBR', '');
+        this.setValue('de-txtSCARCODE', '');
+        this.setValue('de-txtSCARDN', '');
+        this.setValue('de-txtSAUTHOC', '');
+        this.setValue('de-txtSTVAL', '');
+        this.setValue('de-txtQTYTKT', '');
+        this.setValue('de-txtPCURRENCY', '');
+        this.setValue('de-txtTGROSAMOUN', '0');
+        this.setValue('de-txtdescFREGLA', '');
+        this.setValue('de-txtVOID', '');
+        this.setValue('de-txtSVFOP', '0');
+        this.setValue('de-txtFADM', '');
+        this.setValue('de-txtFREVERSA', '');
+        this.setValue('de-txtFREVADM', '');
+        this.setValue('de-txtDIFF_AMOUNT', '0');
+        
+        this.setValue('de-txtUSCR', '');
+        this.setValue('de-txtFECR', '');
+        this.setValue('de-txtHOCR', '');
+        this.setValue('de-txtUSUP', '');
+        this.setValue('de-txtFEUP', '');
+        this.setValue('de-txtHOUP', '');
+    },
+    //</editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Botones">
+    onSaveClick: function(btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to insert ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    this.llenarData(beanTemp);
+                    var msjResult = this.validacionInsert(beanTemp);
+                    if (msjResult === '') {
+                        beanTemp.option = 'I';
+                        this.MaintenanceA2357(beanTemp);
+                    } else {
+                        global.Msg({msg: msjResult});
+                    }
+                }
+            }
+        });
+    },
+    onUpdateClick: function(btn) {
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to Update?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+//            animateTarget: btn,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    beanTemp = this.llenarData();
+                    var msjResult = this.validacionUpdate(beanTemp);
+                    console.log(msjResult);
+                    var comentario = this.getValue("de-txtComment").trim();
+                    console.log(comentario);
+                    if (msjResult === '') {
+                        if (comentario !== '') {
+                            if (meDe.bean.STVAL !== '1' && meDe.bean.STVAL !== '4') {
+//                                beanTemp.option = 'U';
+                                this.executeOption(beanTemp, 'U');
+                            } else {
+                                global.Msg({
+                                    msg: 'Update can not be applied.'
+                                });
+                            }
+                        } else {
+                            global.Msg({
+                                msg: 'Comment field is required.'
+                            });
+                        }
+                    } else {
+                        global.Msg({
+                                msg: msjResult
+                            });
+                    }
+                }
+            }
+        });
+    },
+    onDeleteClick: function(btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to delete ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    beanTemp.option = 'D';
+                    beanTemp.beanString = JSON.stringify(meDe.bean);
+                    this.MaintenanceA2357(beanTemp);
+                }
+            }
+        });
+    },
+    onCancelClick: function(btn) {
+        this.view.close();
+    },
+    // </editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="executeOption">
+    executeOption: function(beanTemp, option) {
+        console.log(beanTemp);
+        Ext.Ajax.request({
+            url: prototype.url + '/executeOption',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(beanTemp), option: option},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function(response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+
+                    global.Msg({
+                        msg: res.Mensaje,
+//                        title: '',
+                        icon: 1,
+                        fn: function() {
+                            //exito
+                            Ext.getCmp(prototype.id + '-dataEntry').close();
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function(response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+    },
+    //</editor-fold>
+
+    validacionInsert: function(beanTemp) {
+        var msjResult = '';
+        if (this.getValue("de-txtCODDES") === '') {
+            msjResult = "You must enter the required field.";
+        }
+        return msjResult;
+    },
+    validacionUpdate: function(beanTemp) {
+        var msjResult = '';
+        //================== VALIDACIÓN =========================================
+        //=======================================================================
+        //Comprobando que los campos obligatorios sean ingresados
+        console.log(beanTemp.SDATE);
+        console.log(beanTemp.SCOUNTRY);
+        console.log(beanTemp.TDOC);
+        console.log(beanTemp.CBANK);
+        console.log(beanTemp.SCARCOD);
+        console.log(beanTemp.IN_CARDN1);
+        console.log(beanTemp.IN_CARDN2);
+        console.log(beanTemp.SAUTHOC);
+        console.log(beanTemp.SVFOP);
+        console.log(beanTemp.SCURRENCY);
+        console.log(beanTemp.SEQNUM);
+        console.log(beanTemp.MERCHN);
+        console.log(beanTemp.TDATE);
+        console.log(beanTemp.BDATEP);
+
+
+        if (beanTemp.SDATE !== '' && beanTemp.SCOUNTRY !== ''
+                && beanTemp.TDOC !== '' && beanTemp.CBANK !== ''
+                && beanTemp.SCARCOD !== '' && beanTemp.IN_CARDN1 !== ''
+                && beanTemp.IN_CARDN2 !== '' && beanTemp.SAUTHOC !== ''
+                && beanTemp.SVFOP > 0 && beanTemp.SCURRENCY !== ''
+                && beanTemp.SEQNUM !== '' && beanTemp.MERCHN !== ''
+                && beanTemp.TDATE !== '' && beanTemp.BDATEP !== '') {
+            if (Ext.getCmp(prototype.id + '-de-txtSAGENT').getErrors().length > 0) {
+                msjResult = 'Invalid Agent Code.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtSAUTHOC').getErrors().length > 0) {
+                msjResult = 'Invalid Authorization Code.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtSVFOP').getErrors().length > 0) {
+                msjResult = 'Invalid Local Amount.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getErrors().length > 0) {
+                msjResult = 'Invalid Currency.';
+            }
+//            else if (Ext.getCmp(prototype.id + '-de-txtSDATE').getErrors().length > 0) {
+//                msjResult = 'Invalid Sales Date.';
+//            }
+            else if (Ext.getCmp(prototype.id + '-de-txtLDATE').getErrors().length > 0) {
+                msjResult = 'Invalid Load Date.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtTDATE').getErrors().length > 0) {
+                msjResult = 'Invalid Transaction Date.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtDATEF').getErrors().length > 0) {
+                msjResult = 'Invalid TEF Date.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtBDATEP').getErrors().length > 0) {
+                msjResult = 'Invalid Process Date.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtQTYDOC').getErrors().length > 0) {
+                msjResult = 'Invalid Quantity Tickets.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtSEQNUM').getErrors().length > 0) {
+                msjResult = 'Invalid Sequence Number.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-txtMERCHN').getErrors().length > 0) {
+                msjResult = 'Invalid Merchant Number.';
+            }
+            else if (Ext.getCmp(prototype.id + '-de-cmbSCARCOD').getErrors().length > 0) {
+                msjResult = 'Invalid Card Code.';
+            }
+        } else {
+            msjResult = 'You must enter all required fields.';
+
+        }
+        return msjResult;
+    },
+    deshabilitarCampos1: function() {
+//        Ext.getCmp(prototype.id + '-de-txtSDATE').setReadOnly(true);
+//        Ext.getCmp(prototype.id + '-de-cmbTDOC').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbCODEBANK').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbSCARCOD').disable(true);
+        Ext.getCmp(prototype.id + '-de-txtSAUTHOC').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtPNR').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtCard1').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtCard2').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtSVFOP').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtSCURRENCY').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtSEQNUM').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtMERCHN').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-cmbTRNXCODE').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbBSTVAL').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbTIPOTAR').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbPEM').disable(true);
+        Ext.getCmp(prototype.id + '-de-txtSAGENT').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-cmbFLOAD').disable(true);
+        Ext.getCmp(prototype.id + '-de-txtLDATE').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtREASONREJ').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtDESREJ').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtTDATE').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtDATEF').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-cmbSORIG').disable(true);
+        Ext.getCmp(prototype.id + '-de-txtBDATEP').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtQTYDOC').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtBAID').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtComment').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(true);
+    },
+    habilitarCampos1: function() {
+//        Ext.getCmp(prototype.id + '-de-txtSDATE').setReadOnly(false);
+//        Ext.getCmp(prototype.id + '-de-cmbTDOC').disable(false);
+//        Ext.getCmp(prototype.id + '-de-cmbCODEBANK').disable(false);
+//        Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').disable(false);
+//        Ext.getCmp(prototype.id + '-de-cmbSCARCOD').disable(false);
+        Ext.getCmp(prototype.id + '-de-txtSAUTHOC').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtPNR').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtCard1').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtCard2').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtSVFOP').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtSCURRENCY').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtSEQNUM').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtMERCHN').setReadOnly(false);
+//        Ext.getCmp(prototype.id + '-de-cmbTRNXCODE').disable(false);
+//        Ext.getCmp(prototype.id + '-de-cmbBSTVAL').disable(false);
+//        Ext.getCmp(prototype.id + '-de-cmbTIPOTAR').disable(false);
+//        Ext.getCmp(prototype.id + '-de-cmbPEM').disable(false);
+        Ext.getCmp(prototype.id + '-de-txtSAGENT').setReadOnly(false);
+//        Ext.getCmp(prototype.id + '-de-cmbFLOAD').disable(false);
+        Ext.getCmp(prototype.id + '-de-txtLDATE').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtREASONREJ').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtDESREJ').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtTDATE').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtDATEF').setReadOnly(false);
+//        Ext.getCmp(prototype.id + '-de-cmbSORIG').disable(false);
+        Ext.getCmp(prototype.id + '-de-txtBDATEP').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtQTYDOC').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtBAID').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtComment').setReadOnly(false);
+//        Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(false);
+
+    },
+    tarjeta_keyDownHandler: function(e, eOpts) {
+        if (eOpts.getKey() !== 9 && eOpts.getKey() !== 16) {
+            if (Ext.getCmp(prototype.id + '-de-txtCard1').getValue().length === 6) {
+                Ext.getCmp(prototype.id + '-de-txtCard2').focus();
+            }
+        }
+    },
+    // <editor-fold defaultstate="collapsed" desc="Utilitarios">
+    getValue: function(id) {
+        return Ext.getCmp(prototype.id + '-' + id).getValue();
+    },
+    focus: function(id) {
+        Ext.getCmp(prototype.id + '-' + id).focus();
+    },
+    setValue: function(id, txt) {
+        Ext.getCmp(prototype.id + '-' + id).setValue(txt);
+    },
+    onUpperValue: function(field, newValue, oldValue) {
+        field.setValue(newValue.toUpperCase());
+    },
+    onTextKeypress: function(obj, e, eOpts) {
+        if (e.getKey() === e.ENTER) {
+//            this.btnSearch_click();
+        }
+    }
+// </editor-fold>
+});
+

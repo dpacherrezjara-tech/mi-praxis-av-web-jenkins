@@ -601,7 +601,33 @@ public class BankReconciliationController extends BaseController {
 //
 //        return resp;
 //    }
+    @RequestMapping(value = "searchBeanAMDP")
+    public @ResponseBody
+    String searchBeanAMDP(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanAMDP-------------");
+        map.put("success", true);
 
+        A2290Filter result = new A2290Filter();
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            result = logic.loadPX269SQPXXX(filter);
+            map.put("result", result);
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "executeOption")
     public @ResponseBody
     String executeOption(ModelMap map, HttpServletRequest request) {
