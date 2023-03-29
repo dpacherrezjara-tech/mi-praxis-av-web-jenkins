@@ -190,14 +190,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Inst. Payment',
+                                            text: 'Country',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtINSTPAY',
+                                            id: prototype.id + '-de-txtCOUNTRY',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -248,36 +248,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Country',
+                                            text: 'Inst. Payment',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCOUNTRY',
+                                            id: prototype.id + '-de-txtINSTPAY',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 30},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Inst. Number',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtINSTANBR',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 5}
+                                        {xtype: 'tbspacer', width: 265},                                        
                                     ]
                                 },
                                 {

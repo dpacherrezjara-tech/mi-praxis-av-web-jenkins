@@ -132,7 +132,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         //this.setValue('de-txtINVORNBR', this.bean.INVORNBR);
         //this.setValue('de-txtZONE', this.bean.ZONE);
         this.setValue('de-txtCOUNTRY', this.bean.SCOUNTRY);
-        //this.setValue('de-txtINSTANBR', this.bean.INSTANBR);
         //this.setValue('de-txtSTCONL', this.bean.STCONL);
         //this.setValue('de-txtFCONTL', this.bean.FCONTL);
         //this.setValue('de-txtIDCONL', this.bean.IDCONL);
@@ -198,7 +197,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtINVORNBR', '');
         this.setValue('de-txtZONE', '');
         this.setValue('de-txtCOUNTRY', '');
-        this.setValue('de-txtINSTANBR', '');
         this.setValue('de-txtSTCONL', '');
         this.setValue('de-txtFCONTL', '');
         this.setValue('de-txtIDCONL', '');

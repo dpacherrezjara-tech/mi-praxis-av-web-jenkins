@@ -1602,6 +1602,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
+                                                        text: 'Author.',
+                                                        columns: [
+                                                            {
+                                                                text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
                                                         text: 'Seq', dataIndex: 'SEQNUM', width: 35, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
@@ -1614,18 +1626,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:left;background-color:#d5f4d5;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
-                                                            return value;
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                text: 'Author.',
-                                                columns: [
-                                                    {
-                                                        text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
                                                             return value;
                                                         }
                                                     }
