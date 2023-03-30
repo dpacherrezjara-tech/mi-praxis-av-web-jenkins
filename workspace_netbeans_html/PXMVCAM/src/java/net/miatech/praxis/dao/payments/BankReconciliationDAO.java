@@ -1475,6 +1475,7 @@ public class BankReconciliationDAO {
                 objRtn.FREGLA = rs01.getString("FREGLA");
                 objRtn.MERCHNC = rs01.getString("MERCHNC");
                 objRtn.PRDA = rs01.getString("PRDA");
+                objRtn.PAYDATE = rs01.getString("PAYDATE");
                 if (hmDescReglas.containsKey(rs01.getString("FREGLA").trim())) {
                     objRtn.descFREGLA = hmDescReglas.get(rs01.getString("FREGLA").trim()).toString();
                 } else {

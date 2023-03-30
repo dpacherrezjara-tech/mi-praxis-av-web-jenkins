@@ -419,6 +419,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'checkboxfield',
                             id: prototype.id + '-chkADYEN',
+                            hidden: true,
                             boxLabel: '<b>ADYEN</b>',
                             checked: false,
                             width: 90,
