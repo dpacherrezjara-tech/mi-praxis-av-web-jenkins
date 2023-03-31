@@ -32,6 +32,10 @@ public class A2290 {
     public String SCARCOD = "";
     public String STCNTR = "";
     public double SVFOP = 0;
+    public double AFARE = 0;
+    public double AIVA = 0;
+    public double ATAX = 0;
+    public double TOTAL = 0;
     public String SCURRENCY = "";
     public String SCARDN = "";
     public String SDATEXP = "";
@@ -107,7 +111,9 @@ public class A2290 {
     public String USCR = "";
     public String FECR = "";
     public String HOCR = "";
+    public String PGMCR = "";
     public String USUP = "";
     public String FEUP = "";
     public String HOUP = "";
+    public String PGMUP = "";
 }
