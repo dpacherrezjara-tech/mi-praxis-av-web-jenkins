@@ -104,9 +104,11 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
                 url: prototype.url + '/search'
             }, listeners: {
                 beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-regionCenterGrid01').mask('Loading...');
                     obj.proxy.extraParams = searchParams;
                 },
                 load: function (obj) {
+                    Ext.getCmp(prototype.id + '-regionCenterGrid01').unmask();  
                     if (obj.data.length == 1) {
                         var bean = obj.data.items[0].data;
                         //Ext.getCmp(prototype.id + '-txtTICKET').setValue(Ext.util.Format.number(bean.TICKET, '0,000'));
@@ -143,13 +145,17 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
                         Ext.getCmp(prototype.id + '-txtHOUP').setValue(bean.HOUP);
                         Ext.getCmp(prototype.id + '-txtPGMUP').setValue(bean.PGMUP);
                     } else {
-                        if (obj.data.length == 1) {
+                        if (obj.data.length <= 0) {
                             global.Msg({
                                 msg: 'Data not found.'
                             });
                         } else if (obj.data.length > 1) {
                             global.Msg({
                                 msg: 'Too many Tickets.'
+                            });
+                        } else {
+                            global.Msg({
+                                msg: 'Error'
                             });
                         }
 
