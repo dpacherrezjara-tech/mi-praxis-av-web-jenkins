@@ -235,6 +235,67 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 
     },
+    onGridDetDaySummary: function (column, e, row, column, x, rowData) {
+        
+        var data = x.record.data;
+        me.bean = {};
+        me.bean.IN_FECHA = data.strFecFiltro;
+        me.bean.IN_DATETYPE = data.IN_DATETYPE;
+        
+        console.log(me.bean);
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+        this.setGridDataDaySummary(searchParams);
+    },
+    setGridDataDaySummary: function (searchParams) {
+        win.lblUser_toolTip("Estructura: MPF102");
+        
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDaySummary';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDaySummary'
+            }, listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = searchParams;
+                },
+                load: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+
+                    var pag = Ext.getCmp(prototype.id + '-paggin2');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                    } else {
+                        var data = obj.data.items[0].data;
+//                        console.log(obj);
+                        if (data.IN_DATETYPE === "PAYDATE") {
+                            Ext.getCmp(prototype.id + '-msDateDay').setText('Payment');
+                        } else {
+                            Ext.getCmp(prototype.id + '-msDateDay').setText('Processing');
+                        }
+
+                    }
+                    me.setWidthPie();
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDaySummary').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-gridDataDaySummary').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
+
+    },
     validateFields: function () {
         var msj = '';
         var bean = searchParams.bean;
@@ -300,7 +361,10 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
         switch (me.panelActual) {
             case  '-boxMainSummary':
                 global.getFile(prototype.url + '/getXLSXMainSummary?beanString=' + searchParams.beanString);
-                break;            
+                break;
+            case  '-boxDaySummary':
+                global.getFile(prototype.url + '/getXLSXDaySummary?beanString=' + searchParams.beanString);
+                break;   
         }
     },    
     btnFilter_click: function (obj) {
@@ -314,7 +378,7 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
     setWidthPie: function () {
 
         console.log(me.panelActual);
-        if (me.panelActual === '-boxMainSummary') {
+        if (me.panelActual === '-boxMainSummary' || me.panelActual === '-boxMainSummary'){
             var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
             Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
             Ext.getCmp(prototype.id + '-pie').setVisible(true);
@@ -327,7 +391,10 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
         switch (me.panelActual) {            
             case '-boxMainSummary':
                 me.pagginActual = '-paggin';
-                break;            
+                break;
+            case '-boxDaySummary':
+                me.pagginActual = '-paggin2';
+                break;
         }
     },
     selectComboFromYear: function (obj) {
