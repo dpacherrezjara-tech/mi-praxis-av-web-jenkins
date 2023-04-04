@@ -146,4 +146,8 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00833_MDP_DETAIL(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_MDP_DETAIL(filter);
     }
+
+    public List<A2290Filter> loadPX269SQP00833_MDP_SCAN(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_MDP_SCAN(filter);
+    }
 }

@@ -1031,9 +1031,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelScanCard',
                                     layout: 'hbox',
-                                    hidden: true,
+                                    hidden: false,
                                     border: false,
-                                    margin: '0 2 0 50',
+                                    margin: '0 2 0 10',
                                     bodyStyle: 'background:#efe5e5;',
                                     items: [
                                         {xtype: 'tbspacer', width: 7},
@@ -1048,7 +1048,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 5},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-input-txtTKTScan',
+                                            id: prototype.id + '-input-txtTKTScan1',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
                                             width: 100,
@@ -1068,7 +1068,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 5},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtCard1',
+                                            id: prototype.id + '-txtCard11',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             maskRe: /[0-9]/,
@@ -1089,7 +1089,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         },
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-txtCard2',
+                                            id: prototype.id + '-txtCard22',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             maskRe: /[0-9]/,

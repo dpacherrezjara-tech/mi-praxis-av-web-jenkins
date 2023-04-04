@@ -21,6 +21,8 @@ public class A2290 {
     public String TRNCU = "";
     public String NUMREF = "";
     public String TICKET = "";    
+    public String CARD1 = "";    
+    public String CARD2 = "";    
     //Datos de la Venta
     public String SDATEL = "";
     public String SFLOAD = "";

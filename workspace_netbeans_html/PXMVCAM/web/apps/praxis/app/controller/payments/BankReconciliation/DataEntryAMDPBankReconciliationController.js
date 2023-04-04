@@ -6,6 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     actionCode: '',
     bean: {},
     bean_detail: {},
+    bean_scan: {},
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
@@ -46,10 +47,50 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 this.onSearchCompleteDetail();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
-//                Ext.getCmp(prototype.id + '-btn-delete').hide();
+                Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
+    },
+    addCreditCard_keyDownHandler: function () {
+        var fecha_a_validar = "";
+        this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScan1').getValue();
+        this.bean_scan.CARD1 = Ext.getCmp(prototype.id + '-txtCard11').getValue();
+        this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
+        this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
+        this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null ) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');        
+        
+        var paramScan = {};
+
+        paramScan.beanString = JSON.stringify(this.bean_scan);
+        console.log(paramScan);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDP_SCAN',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramScan,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    meDe.bean_detail = res.result;
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
     },
     obtainData: function () {
 
