@@ -533,6 +533,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
                                             enforceMaxLength: true,
+                                            readOnly: true,
                                             maxLength: 6,
                                             width: 100,
                                         },
@@ -552,6 +553,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             fieldStyle: 'text-align:center;',
                                             width: 100,
                                             maskRe: /[0-9]/,
+                                            readOnly: true,
                                             enforceMaxLength: true,
                                             maxLength: 15
                                         },
@@ -1339,6 +1341,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 
                                                             if (record.data.FDESGLOSE === '1') {
                                                                 value = 'Concil.'
+                                                            } else if (record.data.FDESGLOSE === '2') {
+                                                                value = 'Open'
                                                             }
                                                             return value;
                                                         }

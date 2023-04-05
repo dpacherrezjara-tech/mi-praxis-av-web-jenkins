@@ -8,6 +8,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     bean_detail: {},
     bean_scan: {},
     lstA1852: {},
+    lstSendManual: [],
+    lstBlocked: [],
+    lstAdjustment: [],
+    sumAmount:0,
+    sumAmountBlocked: 0,
     dataObtain: {},
     // </editor-fold>
     init: function (view) {
@@ -46,7 +51,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 this.mostrarData();
                 this.onSearchCompleteDetail();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-update').show();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
@@ -82,6 +87,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    meDe.calcularMontos();
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
@@ -144,6 +150,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    meDe.calcularMontos();
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
@@ -172,7 +179,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         //this.setValue('de-txtINSTPAY', this.bean.INSTPAY);
         //this.setValue('de-txtINVORNBR', this.bean.INVORNBR);
         //this.setValue('de-txtZONE', this.bean.ZONE);
-        this.setValue('de-txtCOUNTRY', this.bean.SCOUNTRY);
+        this.setValue('de-txtCOUNTRY', this.bean.DESC_SCOUNTRY);
         //this.setValue('de-txtSTCONL', this.bean.STCONL);
         //this.setValue('de-txtFCONTL', this.bean.FCONTL);
         //this.setValue('de-txtIDCONL', this.bean.IDCONL);
@@ -212,13 +219,30 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('txtHOUP', this.bean.HOUP);
 
     },
-//<editor-fold defaultstate="collapsed" desc="llenarData">
+    calcularMontos: function () {
+        this.sumAmount = 0;
+        this.lstSendManual = [];
+        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
+        for (var i = 0; i < store_gridInfoScan.data.length; i++) {
+            var dataRow1 = store_gridInfoScan.data.items[i];
+            this.lstSendManual.push(dataRow1.data);
+            if (dataRow1.data.STMANUAL !== 'Blocked') {
+                this.sumAmount = this.sumAmount + dataRow1.data.A1531VFOP; //+ dataRow1.data.SADJUST;
+            }
+        }
+
+//        for (var i = 0; i < this.lstAdjustment.length; i++) {
+//            this.sumAmount = this.sumAmount + parseFloat(this.lstAdjustment[i].A1531VFOP);
+//        }
+
+        this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
+    },
+    //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function () {
         var bean = {};
 
-        bean.origSDATE = meDe.bean.origSDATE;
-
-        bean.BDATEP = Ext.util.Format.date(this.getValue("de-txtBDATEP"), 'Ymd');
+        //bean.BDATEP = Ext.util.Format.date(this.getValue("de-txtBDATEP"), 'Ymd');
 
         return bean;
 
@@ -313,30 +337,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 if (btn === 'yes') {
                     var beanTemp = {};
                     beanTemp = this.llenarData();
-                    var msjResult = this.validacionUpdate(beanTemp);
-                    console.log(msjResult);
-                    var comentario = this.getValue("de-txtComment").trim();
-                    console.log(comentario);
-                    if (msjResult === '') {
-                        if (comentario !== '') {
-                            if (meDe.bean.STVAL !== '1' && meDe.bean.STVAL !== '4') {
-//                                beanTemp.option = 'U';
-                                this.executeOption(beanTemp, 'U');
-                            } else {
-                                global.Msg({
-                                    msg: 'Update can not be applied.'
-                                });
-                            }
-                        } else {
-                            global.Msg({
-                                msg: 'Comment field is required.'
-                            });
-                        }
-                    } else {
-                        global.Msg({
-                            msg: msjResult
-                        });
-                    }
                 }
             }
         });

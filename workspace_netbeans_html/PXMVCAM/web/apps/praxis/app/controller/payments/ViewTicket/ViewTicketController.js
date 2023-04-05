@@ -182,7 +182,11 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
 
     },
     btnBack_click: function (obj, e) {
-        global.showMenu();
+        if (this.params.back === undefined) {
+            global.showMenu();
+        } else {
+            win.backPrograma(this.params.back);
+        }
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbDate').setValue("1");

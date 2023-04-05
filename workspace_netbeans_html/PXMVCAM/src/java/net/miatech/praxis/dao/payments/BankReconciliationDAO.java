@@ -1468,6 +1468,7 @@ public class BankReconciliationDAO {
                     objRtn.descSTVAL = rs01.getString("STVAL").trim();
                 }
                 objRtn.SCOUNTRY = rs01.getString("SCOUNTRY");
+                objRtn.DESC_SCOUNTRY = rs01.getString("DESC_SCOUNTRY");
                 objRtn.SPNR = rs01.getString("SPNR");
                 objRtn.SCARCOD = rs01.getString("SCARCOD");
                 objRtn.SCARDN = rs01.getString("SCARDN");
@@ -4682,7 +4683,7 @@ public class BankReconciliationDAO {
                 beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
 
-                beanTkt.FDESGLOSE = "1"; //REVISAR
+                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
                 if (rst.getString("TDOC").trim().equals("R")) {
                     beanTkt.descTDOC = "Refund";
                 } else {

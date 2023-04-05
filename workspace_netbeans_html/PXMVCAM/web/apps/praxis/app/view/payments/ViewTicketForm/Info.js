@@ -435,7 +435,7 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Info', {
                                     width: 250,
                                     labelWidth: 120,
                                     readOnly: true,
-                                    fieldStyle: 'text-align: center;',
+                                    fieldStyle: 'text-align: right;',
                                     labelAlign: 'left'
                                 },
                                 {
@@ -447,7 +447,7 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Info', {
                                     width: 250,
                                     labelWidth: 120,
                                     readOnly: true,
-                                    fieldStyle: 'text-align: left;',
+                                    fieldStyle: 'text-align: right;',
                                     labelAlign: 'left'
                                 },
                                 {
@@ -459,7 +459,7 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Info', {
                                     width: 250,
                                     labelWidth: 120,
                                     readOnly: true,
-                                    fieldStyle: 'text-align: center;',
+                                    fieldStyle: 'text-align: right;',
                                     labelAlign: 'left'
                                 },
                                 {
@@ -471,7 +471,7 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Info', {
                                     width: 250,
                                     labelWidth: 120,
                                     readOnly: true,
-                                    fieldStyle: 'text-align: center;',
+                                    fieldStyle: 'text-align: right;',
                                     labelAlign: 'left'
                                 },
                             ]
