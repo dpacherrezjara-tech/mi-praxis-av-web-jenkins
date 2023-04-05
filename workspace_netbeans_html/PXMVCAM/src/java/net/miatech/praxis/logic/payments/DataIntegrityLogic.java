@@ -30,5 +30,13 @@ public class DataIntegrityLogic {
     public List<MPF100Filter> loadPX615SQP04910(MPF100Filter filter) throws SQLException, Exception {
         return DataIntegrityDAO.loadPX615SQP04910(filter);
     }
+    
+    public List<MPF100Filter> loadPX615SQP04907(MPF100Filter filter) throws SQLException, Exception {
+        return DataIntegrityDAO.loadPX615SQP04907(filter);
+    }
+    
+    public List<MPF100Filter> loadPX615SQP04908(MPF100Filter filter) throws SQLException, Exception {
+        return DataIntegrityDAO.loadPX615SQP04908(filter);
+    }
 
 }

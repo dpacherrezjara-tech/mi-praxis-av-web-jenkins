@@ -121,7 +121,7 @@ public class DataIntegrityController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchDaySummary")
     public @ResponseBody
     String searchDaySummary(ModelMap map, HttpServletRequest request) {
@@ -172,4 +172,103 @@ public class DataIntegrityController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "searchDaySummaryMPF101")
+    public @ResponseBody
+    String searchDaySummaryMPF101(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DataIntegrity : searchDaySummaryMPF101-------------");
+
+        map.put("success", true);
+        List<MPF100Filter> lst = this.getListDaySummaryMPF101(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF100Filter> getListDaySummaryMPF101(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF100Filter> lst = new ArrayList<>(0);
+        MPF100Filter filter = new MPF100Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DataIntegrityLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX615SQP04907(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchDaySummaryMerchant")
+    public @ResponseBody
+    String searchDaySummaryMerchant(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DataIntegrity : searchDaySummaryMerchant-------------");
+
+        map.put("success", true);
+        List<MPF100Filter> lst = this.getListDaySummaryMerchant(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF100Filter> getListDaySummaryMerchant(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF100Filter> lst = new ArrayList<>(0);
+        MPF100Filter filter = new MPF100Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DataIntegrityLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX615SQP04908(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 }

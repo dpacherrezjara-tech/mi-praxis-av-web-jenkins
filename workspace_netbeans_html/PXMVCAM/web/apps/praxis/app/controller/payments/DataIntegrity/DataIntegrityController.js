@@ -175,11 +175,11 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
     },
     setFormatParameter: function () {
         me.bean = {};
-        
+
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue(); //+ Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();// + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         me.bean.IN_DATETYPE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
-        
+
         console.log(me.bean);
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -236,12 +236,14 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
 
     },
     onGridDetDaySummary: function (column, e, row, column, x, rowData) {
-        
+
         var data = x.record.data;
         me.bean = {};
         me.bean.IN_FECHA = data.strFecFiltro;
         me.bean.IN_DATETYPE = data.IN_DATETYPE;
-        
+        me.bean.SCOUNTRY = data.SCOUNTRY;
+        me.bean.SCURRENCY = data.SCURRENCY;
+
         console.log(me.bean);
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -252,7 +254,7 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
     },
     setGridDataDaySummary: function (searchParams) {
         win.lblUser_toolTip("Estructura: MPF102");
-        
+
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDaySummary';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -296,6 +298,133 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
         Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
 
     },
+    onGridDetSummaryMPF101: function (column, e, row, column, x, rowData) {
+
+        var data = x.record.data;
+        me.bean = {};
+        me.bean.IN_FECHA = data.strFecFiltro;
+        me.bean.IN_DATETYPE = data.IN_DATETYPE;
+        me.bean.SCOUNTRY = data.SCOUNTRY;
+        me.bean.SCURRENCY = data.SCURRENCY;
+
+        console.log(me.bean);
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+        this.setGridDataDaySummaryMPF101(searchParams);
+    },
+    setGridDataDaySummaryMPF101: function (searchParams) {
+        win.lblUser_toolTip("Estructura: MPF101");
+
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDaySummaryMPF101';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDaySummaryMPF101'
+            }, listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = searchParams;
+                },
+                load: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+
+                    var pag = Ext.getCmp(prototype.id + '-paggin3');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                    } else {
+                        var data = obj.data.items[0].data;
+//                        console.log(obj);
+                        if (data.IN_DATETYPE === "PAYDATE") {
+                            Ext.getCmp(prototype.id + '-msDateDayMPF101').setText('Payment');
+                        } else {
+                            Ext.getCmp(prototype.id + '-msDateDayMPF101').setText('Processing');
+                        }
+
+                    }
+                    me.setWidthPie();
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-gridDataDaySummary').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+
+    },
+    onGridDetSummaryMerchant: function (column, e, row, column, x, rowData) {
+
+        var data = x.record.data;
+        me.bean = {};
+        me.bean.IN_FECHA = data.strFecFiltro;
+        me.bean.IN_DATETYPE = data.IN_DATETYPE;
+        me.bean.SCOUNTRY = data.SCOUNTRY;
+        me.bean.SCURRENCY = data.SCURRENCY;
+        me.bean.MERCHNC = data.MERCHNC;
+
+        console.log(me.bean);
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+        this.setGridDataDaySummaryMerchant(searchParams);
+    },
+    setGridDataDaySummaryMerchant: function (searchParams) {
+        win.lblUser_toolTip("Estructura: MPF101");
+
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDaySummaryMerchant';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDaySummaryMerchant'
+            }, listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = searchParams;
+                },
+                load: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+
+                    var pag = Ext.getCmp(prototype.id + '-paggin4');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                    } else {
+                        var data = obj.data.items[0].data;
+//                        console.log(obj);
+                        if (data.IN_DATETYPE === "PAYDATE") {
+                            Ext.getCmp(prototype.id + '-msDateDayMerchant').setText('Payment');
+                        } else {
+                            Ext.getCmp(prototype.id + '-msDateDayMerchant').setText('Processing');
+                        }
+
+                    }
+                    me.setWidthPie();
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-gridDataDaySummary').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
+
+    },
     validateFields: function () {
         var msj = '';
         var bean = searchParams.bean;
@@ -303,8 +432,8 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
         return msj;
     },
     btnAdd_click: function () {
-        
-    },    
+
+    },
     btnBack_click: function (obj, e) {
         if (me.drillDown.length > 0) {
             me.panelActual = me.drillDown.pop();
@@ -330,7 +459,7 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
          Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
          Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
          Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');*/
-       
+
     },
     btnExcel_click: function (obj, e) {
 
@@ -364,9 +493,9 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
                 break;
             case  '-boxDaySummary':
                 global.getFile(prototype.url + '/getXLSXDaySummary?beanString=' + searchParams.beanString);
-                break;   
+                break;
         }
-    },    
+    },
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible()) {
@@ -378,22 +507,28 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
     setWidthPie: function () {
 
         console.log(me.panelActual);
-        if (me.panelActual === '-boxMainSummary' || me.panelActual === '-boxMainSummary'){
+        if (me.panelActual === '-boxMainSummary' || me.panelActual === '-boxDaySummary' || me.panelActual === '-boxDaySummaryMPF101' || me.panelActual === '-boxDaySummaryMerchant') {
             var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
             Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
             Ext.getCmp(prototype.id + '-pie').setVisible(true);
         } else {
             Ext.getCmp(prototype.id + '-pie').setVisible(false);
         }
-    },   
+    },
     getPaggin: function () {
         me.pagginActual = '';
-        switch (me.panelActual) {            
+        switch (me.panelActual) {
             case '-boxMainSummary':
                 me.pagginActual = '-paggin';
                 break;
             case '-boxDaySummary':
                 me.pagginActual = '-paggin2';
+                break;
+            case '-boxDaySummaryMPF101':
+                me.pagginActual = '-paggin3';
+                break;
+            case '-boxDaySummaryMerchant':
+                me.pagginActual = '-paggin4';
                 break;
         }
     },
