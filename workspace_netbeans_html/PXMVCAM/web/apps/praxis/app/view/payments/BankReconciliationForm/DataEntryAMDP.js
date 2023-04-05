@@ -1445,10 +1445,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     {text: 'Ticket', dataIndex: 'A1531TKT', width: 112,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         listeners: {
-                                                            click: 'viewTicket'
+                                                            click: 'onGridData_VIEWTKT_clickHandler'
                                                         },
                                                         //editor: {xtype: 'textfield', editable: false},
                                                     },
@@ -1921,10 +1921,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     {text: 'Ticket', dataIndex: 'A1531TKT', width: 120,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         listeners: {
-                                                            click: 'viewTicket'
+                                                            click: 'onGridData_VIEWTKT_clickHandler'
                                                         },
                                                     },
                                                     {text: 'Agent', dataIndex: 'A720AGENTE', width: 80,

@@ -210,6 +210,21 @@ win = {
         this.showModule(params, new Function("me.startDisplay()"));
         global.clear();
     },
+    displayCustomViewTicket: function (controller, action, bean) {
+        optionSelect = 'PX00000614';
+        var params = {};
+        params.view = 'payments-view-ticket-form';
+        params.nprog = 'PX00000614';
+        params.title = 'View Ticket';
+        params.modulo = '';
+        params.back = controller;
+
+        params.actionCode = action;
+        params.bean = bean;
+
+        this.showModule(params, new Function("me.startDisplay()"));
+        global.clear();
+    },
     displaySalesReportTkt:function (cia,documento,seq,use){
         console.log('prototype.id: '+prototype.id);
         console.log(Ext.getCmp(prototype.id + '-dataEntryTkt'));

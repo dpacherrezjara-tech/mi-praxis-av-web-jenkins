@@ -58,8 +58,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.bean_scan.CARD1 = Ext.getCmp(prototype.id + '-txtCard11').getValue();
         this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
         this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
-        this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null ) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');        
-        
+        this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
+
         var paramScan = {};
 
         paramScan.beanString = JSON.stringify(this.bean_scan);
@@ -150,7 +150,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             },
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
             }
         });
     },
@@ -534,12 +534,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 //        Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(false);
 
     },
-    tarjeta_keyDownHandler: function (e, eOpts) {
-        if (eOpts.getKey() !== 9 && eOpts.getKey() !== 16) {
-            if (Ext.getCmp(prototype.id + '-de-txtCard1').getValue().length === 6) {
-                Ext.getCmp(prototype.id + '-de-txtCard2').focus();
-            }
-        }
+    onGridData_VIEWTKT_clickHandler: function (column, e, row, column, x, rowData) {
+        Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+        var data = x.record.data;
+        var strTkt = data.A1531TKT;
+        var beanProMasterTicket = {};
+//        
+        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
+        beanProMasterTicket.IN_FORMA = strTkt.substr(3, 4);
+        beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
+        beanProMasterTicket.IN_SEQ = '00';
+
+//        console.log(beanProMasterTicket);
+        prototypeProgram.view = 'payments-bank-reconciliation-form';
+        prototypeProgram.nprog = 'PX00000269';
+        prototypeProgram.title = 'Bank Reconciliation';
+        prototypeProgram.modulo = '';
+
+        win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {

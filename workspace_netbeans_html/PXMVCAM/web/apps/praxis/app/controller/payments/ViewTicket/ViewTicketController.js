@@ -10,6 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
     fecha: new Date(),
     paginTem: '',
     paginActual: '',
+    params: {},
     drillDown: [],
     gridActual: '',
     strTipo: '',
@@ -53,6 +54,13 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
                 change: this.onChangeSource
             }
         });
+    },
+    startDisplay: function() {
+        var bean = {};
+        bean = this.params.bean;
+        Ext.getCmp(prototype.id + '-txtCia').setValue(bean.IN_CIA);
+        Ext.getCmp(prototype.id + '-txtTicket').setValue(bean.IN_FORMA + bean.IN_SERIE);
+        this.btnSearch_click();
     },
     xpanel_afterrender: function (obj, e) {
         this.setStoreData();
