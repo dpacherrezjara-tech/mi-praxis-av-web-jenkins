@@ -246,13 +246,13 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
 
         console.log(me.bean);
         var beanString = JSON.stringify(me.bean);
-        searchParams = {
+        searchParamsDaySummary = {
             beanString: beanString,
             bean: me.bean
         };
-        this.setGridDataDaySummary(searchParams);
+        this.setGridDataDaySummary(searchParamsDaySummary);
     },
-    setGridDataDaySummary: function (searchParams) {
+    setGridDataDaySummary: function (searchParamsDaySummary) {
         win.lblUser_toolTip("Estructura: MPF102");
 
         me.drillDown.push(me.panelActual);
@@ -265,7 +265,7 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
             }, listeners: {
                 beforeload: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    obj.proxy.extraParams = searchParams;
+                    obj.proxy.extraParams = searchParamsDaySummary;
                 },
                 load: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -309,13 +309,13 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
 
         console.log(me.bean);
         var beanString = JSON.stringify(me.bean);
-        searchParams = {
+        searchParamsSummaryMPF101 = {
             beanString: beanString,
             bean: me.bean
         };
-        this.setGridDataDaySummaryMPF101(searchParams);
+        this.setGridDataDaySummaryMPF101(searchParamsSummaryMPF101);
     },
-    setGridDataDaySummaryMPF101: function (searchParams) {
+    setGridDataDaySummaryMPF101: function (searchParamsSummaryMPF101) {
         win.lblUser_toolTip("Estructura: MPF101");
 
         me.drillDown.push(me.panelActual);
@@ -328,7 +328,7 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
             }, listeners: {
                 beforeload: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    obj.proxy.extraParams = searchParams;
+                    obj.proxy.extraParams = searchParamsSummaryMPF101;
                 },
                 load: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -373,13 +373,13 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
 
         console.log(me.bean);
         var beanString = JSON.stringify(me.bean);
-        searchParams = {
+        searchParamsSummaryMerchant = {
             beanString: beanString,
             bean: me.bean
         };
-        this.setGridDataDaySummaryMerchant(searchParams);
+        this.setGridDataDaySummaryMerchant(searchParamsSummaryMerchant);
     },
-    setGridDataDaySummaryMerchant: function (searchParams) {
+    setGridDataDaySummaryMerchant: function (searchParamsSummaryMerchant) {
         win.lblUser_toolTip("Estructura: MPF101");
 
         me.drillDown.push(me.panelActual);
@@ -392,7 +392,7 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
             }, listeners: {
                 beforeload: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    obj.proxy.extraParams = searchParams;
+                    obj.proxy.extraParams = searchParamsSummaryMerchant;
                 },
                 load: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -492,7 +492,13 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
                 global.getFile(prototype.url + '/getXLSXMainSummary?beanString=' + searchParams.beanString);
                 break;
             case  '-boxDaySummary':
-                global.getFile(prototype.url + '/getXLSXDaySummary?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSXDaySummary?beanString=' + searchParamsDaySummary.beanString);
+                break;
+            case  '-boxDaySummaryMPF101':
+                global.getFile(prototype.url + '/getXLSXDaySummaryMPF101?beanString=' + searchParamsSummaryMPF101.beanString);
+                break;
+            case  '-boxDaySummaryMerchant':
+                global.getFile(prototype.url + '/getXLSXDaySummaryMerchant?beanString=' + searchParamsSummaryMerchant.beanString);
                 break;
         }
     },

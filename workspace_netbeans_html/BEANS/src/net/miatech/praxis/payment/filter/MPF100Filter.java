@@ -516,5 +516,11 @@ public class MPF100Filter extends MPF100 {
     public String A720FECVTA = "";
     public String A720PNR = "";
     public String A720AGENTE = "";
+    public double COMPAMO = 0;
+    public double COMPAMOC = 0;
+    public double DIFF_COMPAMO = 0;
+    public double TOT_COMPAMO = 0;
+    public double TOT_COMPAMOC = 0;
+    public double TOT_DIFF_COMPAMO = 0;
 
 }

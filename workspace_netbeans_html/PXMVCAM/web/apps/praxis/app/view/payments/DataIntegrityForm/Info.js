@@ -88,444 +88,529 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                             {text: 'Curr.', dataIndex: 'SCURRENCY', width: 60},
                                             //Montos
                                             {
-                                                text: 'TCONAMO', dataIndex: 'TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'COMMAMO', dataIndex: 'COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Audit Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'IVAAMOU', dataIndex: 'IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Differences',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMO', dataIndex: 'PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMO', dataIndex: 'RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMO', dataIndex: 'RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMO', dataIndex: 'RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMO', dataIndex: 'NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'TCONAMOC', dataIndex: 'TCONAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'COMMAMOC', dataIndex: 'COMMAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'IVAAMOUC', dataIndex: 'IVAAMOUC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMOC', dataIndex: 'PROPAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMOC', dataIndex: 'RIVAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMOC', dataIndex: 'RICAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMOC', dataIndex: 'RFTEAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMOC', dataIndex: 'NETOAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_TCONAMO', dataIndex: 'DIFF_TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_TCONAMO <= -1) {
-                                                    if (record.data.DIFF_TCONAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_COMMAMO', dataIndex: 'DIFF_COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_COMMAMO <= -1) {
-                                                    if (record.data.DIFF_COMMAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_IVAAMOU', dataIndex: 'DIFF_IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_IVAAMOU <= -1) {
-                                                    if (record.data.DIFF_IVAAMOU === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_PROPAMO', dataIndex: 'DIFF_PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_PROPAMO <= -1) {
-                                                    if (record.data.DIFF_PROPAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RIVAAMO', dataIndex: 'DIFF_RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RIVAAMO <= -1) {
-                                                    if (record.data.DIFF_RIVAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RICAAMO', dataIndex: 'DIFF_RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RICAAMO <= -1) {
-                                                    if (record.data.DIFF_RICAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RFTEAMO', dataIndex: 'DIFF_RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RFTEAMO <= -1) {
-                                                    if (record.data.DIFF_RFTEAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_NETOAMO', dataIndex: 'DIFF_NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_NETOAMO <= -1) {
-                                                    if (record.data.DIFF_NETOAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             if (record.data.DIFF_COMPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_TCONAMO <= -1) {
+                                                            if (record.data.DIFF_TCONAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_COMMAMO <= -1) {
+                                                            if (record.data.DIFF_COMMAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_IVAAMOU <= -1) {
+                                                            if (record.data.DIFF_IVAAMOU === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_PROPAMO <= -1) {
+                                                            if (record.data.DIFF_PROPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RIVAAMO <= -1) {
+                                                            if (record.data.DIFF_RIVAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RICAAMO <= -1) {
+                                                            if (record.data.DIFF_RICAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RFTEAMO <= -1) {
+                                                            if (record.data.DIFF_RFTEAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_NETOAMO <= -1) {
+                                                            if (record.data.DIFF_NETOAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainSummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                         ]
                                     }
@@ -586,444 +671,529 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                             {text: 'Curr.', dataIndex: 'SCURRENCY', width: 60},
                                             //Montos
                                             {
-                                                text: 'TCONAMO', dataIndex: 'TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'COMMAMO', dataIndex: 'COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Audit Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'IVAAMOU', dataIndex: 'IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Differences',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMO', dataIndex: 'PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMO', dataIndex: 'RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMO', dataIndex: 'RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMO', dataIndex: 'RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMO', dataIndex: 'NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'TCONAMOC', dataIndex: 'TCONAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'COMMAMOC', dataIndex: 'COMMAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'IVAAMOUC', dataIndex: 'IVAAMOUC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMOC', dataIndex: 'PROPAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMOC', dataIndex: 'RIVAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMOC', dataIndex: 'RICAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMOC', dataIndex: 'RFTEAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMOC', dataIndex: 'NETOAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_TCONAMO', dataIndex: 'DIFF_TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_TCONAMO <= -1) {
-                                                    if (record.data.DIFF_TCONAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_COMMAMO', dataIndex: 'DIFF_COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_COMMAMO <= -1) {
-                                                    if (record.data.DIFF_COMMAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_IVAAMOU', dataIndex: 'DIFF_IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_IVAAMOU <= -1) {
-                                                    if (record.data.DIFF_IVAAMOU === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_PROPAMO', dataIndex: 'DIFF_PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_PROPAMO <= -1) {
-                                                    if (record.data.DIFF_PROPAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RIVAAMO', dataIndex: 'DIFF_RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RIVAAMO <= -1) {
-                                                    if (record.data.DIFF_RIVAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RICAAMO', dataIndex: 'DIFF_RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RICAAMO <= -1) {
-                                                    if (record.data.DIFF_RICAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RFTEAMO', dataIndex: 'DIFF_RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RFTEAMO <= -1) {
-                                                    if (record.data.DIFF_RFTEAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_NETOAMO', dataIndex: 'DIFF_NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_NETOAMO <= -1) {
-                                                    if (record.data.DIFF_NETOAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             if (record.data.DIFF_COMPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_TCONAMO <= -1) {
+                                                            if (record.data.DIFF_TCONAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_COMMAMO <= -1) {
+                                                            if (record.data.DIFF_COMMAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_IVAAMOU <= -1) {
+                                                            if (record.data.DIFF_IVAAMOU === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_PROPAMO <= -1) {
+                                                            if (record.data.DIFF_PROPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RIVAAMO <= -1) {
+                                                            if (record.data.DIFF_RIVAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RICAAMO <= -1) {
+                                                            if (record.data.DIFF_RICAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RFTEAMO <= -1) {
+                                                            if (record.data.DIFF_RFTEAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_NETOAMO <= -1) {
+                                                            if (record.data.DIFF_NETOAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummary').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                         ]
                                     }
@@ -1068,10 +1238,10 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Date', dataIndex: 'strFecFiltro', width: 90,                                                        
+                                                        text: 'Date', dataIndex: 'strFecFiltro', width: 90,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return value;                                                            
+                                                            return value;
                                                         }
                                                     }
                                                 ]
@@ -1090,444 +1260,529 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                             },
                                             //Montos
                                             {
-                                                text: 'TCONAMO', dataIndex: 'TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'COMMAMO', dataIndex: 'COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Audit Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'IVAAMOU', dataIndex: 'IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Differences',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMO', dataIndex: 'PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMO', dataIndex: 'RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMO', dataIndex: 'RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMO', dataIndex: 'RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMO', dataIndex: 'NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'TCONAMOC', dataIndex: 'TCONAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'COMMAMOC', dataIndex: 'COMMAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'IVAAMOUC', dataIndex: 'IVAAMOUC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMOC', dataIndex: 'PROPAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMOC', dataIndex: 'RIVAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMOC', dataIndex: 'RICAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMOC', dataIndex: 'RFTEAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMOC', dataIndex: 'NETOAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_TCONAMO', dataIndex: 'DIFF_TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_TCONAMO <= -1) {
-                                                    if (record.data.DIFF_TCONAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_COMMAMO', dataIndex: 'DIFF_COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_COMMAMO <= -1) {
-                                                    if (record.data.DIFF_COMMAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_IVAAMOU', dataIndex: 'DIFF_IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_IVAAMOU <= -1) {
-                                                    if (record.data.DIFF_IVAAMOU === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_PROPAMO', dataIndex: 'DIFF_PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_PROPAMO <= -1) {
-                                                    if (record.data.DIFF_PROPAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RIVAAMO', dataIndex: 'DIFF_RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RIVAAMO <= -1) {
-                                                    if (record.data.DIFF_RIVAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RICAAMO', dataIndex: 'DIFF_RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RICAAMO <= -1) {
-                                                    if (record.data.DIFF_RICAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RFTEAMO', dataIndex: 'DIFF_RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RFTEAMO <= -1) {
-                                                    if (record.data.DIFF_RFTEAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_NETOAMO', dataIndex: 'DIFF_NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_NETOAMO <= -1) {
-                                                    if (record.data.DIFF_NETOAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             if (record.data.DIFF_COMPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_TCONAMO <= -1) {
+                                                            if (record.data.DIFF_TCONAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_COMMAMO <= -1) {
+                                                            if (record.data.DIFF_COMMAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_IVAAMOU <= -1) {
+                                                            if (record.data.DIFF_IVAAMOU === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_PROPAMO <= -1) {
+                                                            if (record.data.DIFF_PROPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RIVAAMO <= -1) {
+                                                            if (record.data.DIFF_RIVAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RICAAMO <= -1) {
+                                                            if (record.data.DIFF_RICAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RFTEAMO <= -1) {
+                                                            if (record.data.DIFF_RFTEAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_NETOAMO <= -1) {
+                                                            if (record.data.DIFF_NETOAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMPF101').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                         ]
                                     }
@@ -1572,10 +1827,10 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Date', dataIndex: 'strFecFiltro', width: 90,                                                        
+                                                        text: 'Date', dataIndex: 'strFecFiltro', width: 90,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return value;                                                            
+                                                            return value;
                                                         }
                                                     }
                                                 ]
@@ -1590,24 +1845,24 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Code', dataIndex: 'SCARCOD', width: 60,                                                        
+                                                        text: 'Code', dataIndex: 'SCARCOD', width: 60,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return value;                                                            
+                                                            return value;
                                                         }
                                                     },
                                                     {
-                                                        text: 'Number', dataIndex: 'SCARDN', width: 120,                                                        
+                                                        text: 'Number', dataIndex: 'SCARDN', width: 120,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return value;                                                            
+                                                            return value;
                                                         }
                                                     },
                                                     {
-                                                        text: 'Auth.', dataIndex: 'SAUTHOC', width: 60,                                                        
+                                                        text: 'Auth.', dataIndex: 'SAUTHOC', width: 60,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            return value;                                                            
+                                                            return value;
                                                         }
                                                     }
                                                 ]
@@ -1621,444 +1876,529 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
 //                                            },
                                             //Montos
                                             {
-                                                text: 'TCONAMO', dataIndex: 'TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'COMMAMO', dataIndex: 'COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Audit Settlement',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B2FAC6";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                             {
-                                                text: 'IVAAMOU', dataIndex: 'IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
+                                                text: 'Differences',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMO', dataIndex: 'PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMO', dataIndex: 'RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMO', dataIndex: 'RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMO', dataIndex: 'RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMO', dataIndex: 'NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2DAFA";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'TCONAMOC', dataIndex: 'TCONAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_TCONAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'COMMAMOC', dataIndex: 'COMMAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_COMMAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'IVAAMOUC', dataIndex: 'IVAAMOUC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_IVAAMOUC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'PROPAMOC', dataIndex: 'PROPAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_PROPAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RIVAAMOC', dataIndex: 'RIVAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RIVAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RICAAMOC', dataIndex: 'RICAAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RICAAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'RFTEAMOC', dataIndex: 'RFTEAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_RFTEAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'NETOAMOC', dataIndex: 'NETOAMOC', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#B2FAC6";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_NETOAMOC, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_TCONAMO', dataIndex: 'DIFF_TCONAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_TCONAMO <= -1) {
-                                                    if (record.data.DIFF_TCONAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_COMMAMO', dataIndex: 'DIFF_COMMAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_COMMAMO <= -1) {
-                                                    if (record.data.DIFF_COMMAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_IVAAMOU', dataIndex: 'DIFF_IVAAMOU', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_IVAAMOU <= -1) {
-                                                    if (record.data.DIFF_IVAAMOU === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_PROPAMO', dataIndex: 'DIFF_PROPAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_PROPAMO <= -1) {
-                                                    if (record.data.DIFF_PROPAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RIVAAMO', dataIndex: 'DIFF_RIVAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RIVAAMO <= -1) {
-                                                    if (record.data.DIFF_RIVAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RICAAMO', dataIndex: 'DIFF_RICAAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RICAAMO <= -1) {
-                                                    if (record.data.DIFF_RICAAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_RFTEAMO', dataIndex: 'DIFF_RFTEAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_RFTEAMO <= -1) {
-                                                    if (record.data.DIFF_RFTEAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'DIFF_NETOAMO', dataIndex: 'DIFF_NETOAMO', width: 110,
-                                                listeners: {
-                                                    //                                                    click: 'onGridDetBankS'
-                                                },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //if (record.data.DIFF_NETOAMO <= -1) {
-                                                    if (record.data.DIFF_NETOAMO === 0) {
-                                                        metaData.style = "text-align:right;background-color:#f7f7f5;";
-                                                    } else {
-                                                        metaData.style = "text-align:right;background-color:#fc8686;";
-                                                    }
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                    //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
-                                                }
+                                                columns: [
+                                                    {
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             if (record.data.DIFF_COMPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_TCONAMO <= -1) {
+                                                            if (record.data.DIFF_TCONAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_TCONAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_COMMAMO <= -1) {
+                                                            if (record.data.DIFF_COMMAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_COMMAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_IVAAMOU <= -1) {
+                                                            if (record.data.DIFF_IVAAMOU === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_IVAAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_PROPAMO <= -1) {
+                                                            if (record.data.DIFF_PROPAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_PROPAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RIVAAMO <= -1) {
+                                                            if (record.data.DIFF_RIVAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RIVAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RICAAMO <= -1) {
+                                                            if (record.data.DIFF_RICAAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RICAAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_RFTEAMO <= -1) {
+                                                            if (record.data.DIFF_RFTEAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_RFTEAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        listeners: {
+                                                            //                                                    click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //if (record.data.DIFF_NETOAMO <= -1) {
+                                                            if (record.data.DIFF_NETOAMO === 0) {
+                                                                metaData.style = "text-align:right;background-color:#f7f7f5;";
+                                                            } else {
+                                                                metaData.style = "text-align:right;background-color:#fc8686;";
+                                                            }
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                            //                                                    return '<a href="#payments-sales-reconcili-amex-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDaySummaryMerchant').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.TOT_DIFF_NETOAMO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                ]
                                             },
                                         ]
                                     }

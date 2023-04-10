@@ -56,6 +56,7 @@ public class DataIntegrityDAO {
         double TOT_TCONAMO = 0, TOT_COMMAMO = 0, TOT_IVAAMOU = 0, TOT_PROPAMO = 0, TOT_RIVAAMO = 0, TOT_RICAAMO = 0;
         double TOT_RFTEAMO = 0, TOT_NETOAMO = 0;
 
+        double TOT_COMPAMO = 0, TOT_COMPAMOC = 0, TOT_DIFF_COMPAMO = 0;
         double TOT_TCONAMOC = 0, TOT_COMMAMOC = 0;
         double TOT_IVAAMOUC = 0, TOT_PROPAMOC = 0;
         double TOT_RIVAAMOC = 0, TOT_RICAAMOC = 0, TOT_RFTEAMOC = 0, TOT_NETOAMOC = 0;
@@ -104,6 +105,7 @@ public class DataIntegrityDAO {
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
+                TOT_COMPAMO = rst.getDouble("COMPAMO");
                 TOT_TCONAMO = rst.getDouble("TCONAMO");
                 TOT_COMMAMO = rst.getDouble("COMMAMO");
                 TOT_IVAAMOU = rst.getDouble("IVAAMOU");
@@ -113,6 +115,7 @@ public class DataIntegrityDAO {
                 TOT_RFTEAMO = rst.getDouble("RFTEAMO");
                 TOT_NETOAMO = rst.getDouble("NETOAMO");
 
+                TOT_COMPAMOC = rst.getDouble("COMPAMOC");
                 TOT_TCONAMOC = rst.getDouble("TCONAMOC");
                 TOT_COMMAMOC = rst.getDouble("COMMAMOC");
                 TOT_IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -123,6 +126,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
+                TOT_DIFF_COMPAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;
@@ -145,6 +149,7 @@ public class DataIntegrityDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                     beanTkt.strFecFiltro = rst.getString(filter.IN_DATETYPE.trim());
 
+                    beanTkt.COMPAMO = rst.getDouble("COMPAMO");
                     beanTkt.TCONAMO = rst.getDouble("TCONAMO");
                     beanTkt.COMMAMO = rst.getDouble("COMMAMO");
                     beanTkt.IVAAMOU = rst.getDouble("IVAAMOU");
@@ -153,6 +158,7 @@ public class DataIntegrityDAO {
                     beanTkt.RICAAMO = rst.getDouble("RICAAMO");
                     beanTkt.RFTEAMO = rst.getDouble("RFTEAMO");
                     beanTkt.NETOAMO = rst.getDouble("NETOAMO");
+                    beanTkt.COMPAMOC = rst.getDouble("COMPAMOC");
                     beanTkt.TCONAMOC = rst.getDouble("TCONAMOC");
                     beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
                     beanTkt.IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -163,6 +169,7 @@ public class DataIntegrityDAO {
                     beanTkt.NETOAMOC = rst.getDouble("NETOAMOC");
 
                     //DIFERENCIAS
+                    beanTkt.DIFF_COMPAMO = beanTkt.COMPAMO - beanTkt.COMPAMOC;
                     beanTkt.DIFF_TCONAMO = beanTkt.TCONAMO - beanTkt.TCONAMOC;
                     beanTkt.DIFF_COMMAMO = beanTkt.COMMAMO - beanTkt.COMMAMOC;
                     beanTkt.DIFF_IVAAMOU = beanTkt.IVAAMOU - beanTkt.IVAAMOUC;
@@ -173,6 +180,7 @@ public class DataIntegrityDAO {
                     beanTkt.DIFF_NETOAMO = beanTkt.NETOAMO - beanTkt.NETOAMOC;
 
                     //TOTALES
+                    beanTkt.TOT_COMPAMO = TOT_COMPAMO;
                     beanTkt.TOT_TCONAMO = TOT_TCONAMO;
                     beanTkt.TOT_COMMAMO = TOT_COMMAMO;
                     beanTkt.TOT_IVAAMOU = TOT_IVAAMOU;
@@ -182,6 +190,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_RFTEAMO = TOT_RFTEAMO;
                     beanTkt.TOT_NETOAMO = TOT_NETOAMO;
 
+                    beanTkt.TOT_COMPAMOC = TOT_COMPAMOC;
                     beanTkt.TOT_TCONAMOC = TOT_TCONAMOC;
                     beanTkt.TOT_COMMAMOC = TOT_COMMAMOC;
                     beanTkt.TOT_IVAAMOUC = TOT_IVAAMOUC;
@@ -192,6 +201,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_NETOAMOC = TOT_NETOAMOC;
 
                     //DIFERENCIA DE TOTALES
+                    beanTkt.TOT_DIFF_COMPAMO = TOT_DIFF_COMPAMO;
                     beanTkt.TOT_DIFF_TCONAMO = TOT_DIFF_TCONAMO;
                     beanTkt.TOT_DIFF_COMMAMO = TOT_DIFF_COMMAMO;
                     beanTkt.TOT_DIFF_IVAAMOU = TOT_DIFF_IVAAMOU;
@@ -242,6 +252,7 @@ public class DataIntegrityDAO {
         double TOT_TCONAMO = 0, TOT_COMMAMO = 0, TOT_IVAAMOU = 0, TOT_PROPAMO = 0, TOT_RIVAAMO = 0, TOT_RICAAMO = 0;
         double TOT_RFTEAMO = 0, TOT_NETOAMO = 0;
 
+        double TOT_COMPAMO = 0, TOT_COMPAMOC = 0, TOT_DIFF_COMPAMO = 0;
         double TOT_TCONAMOC = 0, TOT_COMMAMOC = 0;
         double TOT_IVAAMOUC = 0, TOT_PROPAMOC = 0;
         double TOT_RIVAAMOC = 0, TOT_RICAAMOC = 0, TOT_RFTEAMOC = 0, TOT_NETOAMOC = 0;
@@ -289,6 +300,7 @@ public class DataIntegrityDAO {
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
+                TOT_COMPAMO = rst.getDouble("COMPAMO");
                 TOT_TCONAMO = rst.getDouble("TCONAMO");
                 TOT_COMMAMO = rst.getDouble("COMMAMO");
                 TOT_IVAAMOU = rst.getDouble("IVAAMOU");
@@ -298,6 +310,7 @@ public class DataIntegrityDAO {
                 TOT_RFTEAMO = rst.getDouble("RFTEAMO");
                 TOT_NETOAMO = rst.getDouble("NETOAMO");
 
+                TOT_COMPAMOC = rst.getDouble("COMPAMOC");
                 TOT_TCONAMOC = rst.getDouble("TCONAMOC");
                 TOT_COMMAMOC = rst.getDouble("COMMAMOC");
                 TOT_IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -329,7 +342,8 @@ public class DataIntegrityDAO {
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY");
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                     beanTkt.strFecFiltro = rst.getString(filter.IN_DATETYPE.trim());
-
+                    
+                    beanTkt.COMPAMO = rst.getDouble("COMPAMO");
                     beanTkt.TCONAMO = rst.getDouble("TCONAMO");
                     beanTkt.COMMAMO = rst.getDouble("COMMAMO");
                     beanTkt.IVAAMOU = rst.getDouble("IVAAMOU");
@@ -338,6 +352,7 @@ public class DataIntegrityDAO {
                     beanTkt.RICAAMO = rst.getDouble("RICAAMO");
                     beanTkt.RFTEAMO = rst.getDouble("RFTEAMO");
                     beanTkt.NETOAMO = rst.getDouble("NETOAMO");
+                    beanTkt.COMPAMOC = rst.getDouble("COMPAMOC");
                     beanTkt.TCONAMOC = rst.getDouble("TCONAMOC");
                     beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
                     beanTkt.IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -348,6 +363,7 @@ public class DataIntegrityDAO {
                     beanTkt.NETOAMOC = rst.getDouble("NETOAMOC");
 
                     //DIFERENCIAS
+                    beanTkt.DIFF_COMPAMO = beanTkt.COMPAMO - beanTkt.COMPAMOC;
                     beanTkt.DIFF_TCONAMO = beanTkt.TCONAMO - beanTkt.TCONAMOC;
                     beanTkt.DIFF_COMMAMO = beanTkt.COMMAMO - beanTkt.COMMAMOC;
                     beanTkt.DIFF_IVAAMOU = beanTkt.IVAAMOU - beanTkt.IVAAMOUC;
@@ -358,6 +374,7 @@ public class DataIntegrityDAO {
                     beanTkt.DIFF_NETOAMO = beanTkt.NETOAMO - beanTkt.NETOAMOC;
 
                     //TOTALES
+                    beanTkt.TOT_COMPAMO = TOT_COMPAMO;
                     beanTkt.TOT_TCONAMO = TOT_TCONAMO;
                     beanTkt.TOT_COMMAMO = TOT_COMMAMO;
                     beanTkt.TOT_IVAAMOU = TOT_IVAAMOU;
@@ -367,6 +384,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_RFTEAMO = TOT_RFTEAMO;
                     beanTkt.TOT_NETOAMO = TOT_NETOAMO;
 
+                    beanTkt.TOT_COMPAMOC = TOT_COMPAMOC;
                     beanTkt.TOT_TCONAMOC = TOT_TCONAMOC;
                     beanTkt.TOT_COMMAMOC = TOT_COMMAMOC;
                     beanTkt.TOT_IVAAMOUC = TOT_IVAAMOUC;
@@ -377,6 +395,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_NETOAMOC = TOT_NETOAMOC;
 
                     //DIFERENCIA DE TOTALES
+                    beanTkt.TOT_DIFF_COMPAMO = TOT_DIFF_COMPAMO;
                     beanTkt.TOT_DIFF_TCONAMO = TOT_DIFF_TCONAMO;
                     beanTkt.TOT_DIFF_COMMAMO = TOT_DIFF_COMMAMO;
                     beanTkt.TOT_DIFF_IVAAMOU = TOT_DIFF_IVAAMOU;
@@ -427,6 +446,7 @@ public class DataIntegrityDAO {
         double TOT_TCONAMO = 0, TOT_COMMAMO = 0, TOT_IVAAMOU = 0, TOT_PROPAMO = 0, TOT_RIVAAMO = 0, TOT_RICAAMO = 0;
         double TOT_RFTEAMO = 0, TOT_NETOAMO = 0;
 
+        double TOT_COMPAMO = 0, TOT_COMPAMOC = 0, TOT_DIFF_COMPAMO = 0;
         double TOT_TCONAMOC = 0, TOT_COMMAMOC = 0;
         double TOT_IVAAMOUC = 0, TOT_PROPAMOC = 0;
         double TOT_RIVAAMOC = 0, TOT_RICAAMOC = 0, TOT_RFTEAMOC = 0, TOT_NETOAMOC = 0;
@@ -476,6 +496,7 @@ public class DataIntegrityDAO {
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
+                TOT_COMPAMO = rst.getDouble("COMPAMO");
                 TOT_TCONAMO = rst.getDouble("TCONAMO");
                 TOT_COMMAMO = rst.getDouble("COMMAMO");
                 TOT_IVAAMOU = rst.getDouble("IVAAMOU");
@@ -485,6 +506,7 @@ public class DataIntegrityDAO {
                 TOT_RFTEAMO = rst.getDouble("RFTEAMO");
                 TOT_NETOAMO = rst.getDouble("NETOAMO");
 
+                TOT_COMPAMOC = rst.getDouble("COMPAMOC");
                 TOT_TCONAMOC = rst.getDouble("TCONAMOC");
                 TOT_COMMAMOC = rst.getDouble("COMMAMOC");
                 TOT_IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -495,6 +517,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
+                TOT_DIFF_COMPAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;
@@ -518,6 +541,7 @@ public class DataIntegrityDAO {
                     beanTkt.MERCHNC = rst.getString("MERCHNC").trim();
                     beanTkt.strFecFiltro = rst.getString(filter.IN_DATETYPE.trim());
 
+                    beanTkt.COMPAMO = rst.getDouble("COMPAMO");
                     beanTkt.TCONAMO = rst.getDouble("TCONAMO");
                     beanTkt.COMMAMO = rst.getDouble("COMMAMO");
                     beanTkt.IVAAMOU = rst.getDouble("IVAAMOU");
@@ -526,6 +550,7 @@ public class DataIntegrityDAO {
                     beanTkt.RICAAMO = rst.getDouble("RICAAMO");
                     beanTkt.RFTEAMO = rst.getDouble("RFTEAMO");
                     beanTkt.NETOAMO = rst.getDouble("NETOAMO");
+                    beanTkt.COMPAMOC = rst.getDouble("COMPAMOC");
                     beanTkt.TCONAMOC = rst.getDouble("TCONAMOC");
                     beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
                     beanTkt.IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -536,6 +561,7 @@ public class DataIntegrityDAO {
                     beanTkt.NETOAMOC = rst.getDouble("NETOAMOC");
 
                     //DIFERENCIAS
+                    beanTkt.DIFF_COMPAMO = beanTkt.COMPAMO - beanTkt.COMPAMOC;
                     beanTkt.DIFF_TCONAMO = beanTkt.TCONAMO - beanTkt.TCONAMOC;
                     beanTkt.DIFF_COMMAMO = beanTkt.COMMAMO - beanTkt.COMMAMOC;
                     beanTkt.DIFF_IVAAMOU = beanTkt.IVAAMOU - beanTkt.IVAAMOUC;
@@ -546,6 +572,7 @@ public class DataIntegrityDAO {
                     beanTkt.DIFF_NETOAMO = beanTkt.NETOAMO - beanTkt.NETOAMOC;
 
                     //TOTALES
+                    beanTkt.TOT_COMPAMO = TOT_COMPAMO;
                     beanTkt.TOT_TCONAMO = TOT_TCONAMO;
                     beanTkt.TOT_COMMAMO = TOT_COMMAMO;
                     beanTkt.TOT_IVAAMOU = TOT_IVAAMOU;
@@ -555,6 +582,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_RFTEAMO = TOT_RFTEAMO;
                     beanTkt.TOT_NETOAMO = TOT_NETOAMO;
 
+                    beanTkt.TOT_COMPAMOC = TOT_COMPAMOC;
                     beanTkt.TOT_TCONAMOC = TOT_TCONAMOC;
                     beanTkt.TOT_COMMAMOC = TOT_COMMAMOC;
                     beanTkt.TOT_IVAAMOUC = TOT_IVAAMOUC;
@@ -565,6 +593,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_NETOAMOC = TOT_NETOAMOC;
 
                     //DIFERENCIA DE TOTALES
+                    beanTkt.TOT_DIFF_COMPAMO = TOT_DIFF_COMPAMO;
                     beanTkt.TOT_DIFF_TCONAMO = TOT_DIFF_TCONAMO;
                     beanTkt.TOT_DIFF_COMMAMO = TOT_DIFF_COMMAMO;
                     beanTkt.TOT_DIFF_IVAAMOU = TOT_DIFF_IVAAMOU;
@@ -614,7 +643,8 @@ public class DataIntegrityDAO {
         MPF100Filter beanTkt;
         double TOT_TCONAMO = 0, TOT_COMMAMO = 0, TOT_IVAAMOU = 0, TOT_PROPAMO = 0, TOT_RIVAAMO = 0, TOT_RICAAMO = 0;
         double TOT_RFTEAMO = 0, TOT_NETOAMO = 0;
-
+        
+        double TOT_COMPAMO = 0, TOT_COMPAMOC = 0, TOT_DIFF_COMPAMO = 0;
         double TOT_TCONAMOC = 0, TOT_COMMAMOC = 0;
         double TOT_IVAAMOUC = 0, TOT_PROPAMOC = 0;
         double TOT_RIVAAMOC = 0, TOT_RICAAMOC = 0, TOT_RFTEAMOC = 0, TOT_NETOAMOC = 0;
@@ -665,6 +695,7 @@ public class DataIntegrityDAO {
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
+                TOT_COMPAMO = rst.getDouble("COMPAMO");
                 TOT_TCONAMO = rst.getDouble("TCONAMO");
                 TOT_COMMAMO = rst.getDouble("COMMAMO");
                 TOT_IVAAMOU = rst.getDouble("IVAAMOU");
@@ -674,6 +705,7 @@ public class DataIntegrityDAO {
                 TOT_RFTEAMO = rst.getDouble("RFTEAMO");
                 TOT_NETOAMO = rst.getDouble("NETOAMO");
 
+                TOT_COMPAMOC = rst.getDouble("COMPAMOC");
                 TOT_TCONAMOC = rst.getDouble("TCONAMOC");
                 TOT_COMMAMOC = rst.getDouble("COMMAMOC");
                 TOT_IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -684,6 +716,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
+                TOT_DIFF_COMPAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;
@@ -710,6 +743,7 @@ public class DataIntegrityDAO {
                     beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
                     beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 
+                    beanTkt.COMPAMO = rst.getDouble("COMPAMO");
                     beanTkt.TCONAMO = rst.getDouble("TCONAMO");
                     beanTkt.COMMAMO = rst.getDouble("COMMAMO");
                     beanTkt.IVAAMOU = rst.getDouble("IVAAMOU");
@@ -718,6 +752,7 @@ public class DataIntegrityDAO {
                     beanTkt.RICAAMO = rst.getDouble("RICAAMO");
                     beanTkt.RFTEAMO = rst.getDouble("RFTEAMO");
                     beanTkt.NETOAMO = rst.getDouble("NETOAMO");
+                    beanTkt.COMPAMOC = rst.getDouble("COMPAMOC");
                     beanTkt.TCONAMOC = rst.getDouble("TCONAMOC");
                     beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
                     beanTkt.IVAAMOUC = rst.getDouble("IVAAMOUC");
@@ -728,6 +763,7 @@ public class DataIntegrityDAO {
                     beanTkt.NETOAMOC = rst.getDouble("NETOAMOC");
 
                     //DIFERENCIAS
+                    beanTkt.DIFF_COMPAMO = beanTkt.COMPAMO - beanTkt.COMPAMOC;
                     beanTkt.DIFF_TCONAMO = beanTkt.TCONAMO - beanTkt.TCONAMOC;
                     beanTkt.DIFF_COMMAMO = beanTkt.COMMAMO - beanTkt.COMMAMOC;
                     beanTkt.DIFF_IVAAMOU = beanTkt.IVAAMOU - beanTkt.IVAAMOUC;
@@ -738,6 +774,7 @@ public class DataIntegrityDAO {
                     beanTkt.DIFF_NETOAMO = beanTkt.NETOAMO - beanTkt.NETOAMOC;
 
                     //TOTALES
+                    beanTkt.TOT_COMPAMO = TOT_COMPAMO;
                     beanTkt.TOT_TCONAMO = TOT_TCONAMO;
                     beanTkt.TOT_COMMAMO = TOT_COMMAMO;
                     beanTkt.TOT_IVAAMOU = TOT_IVAAMOU;
@@ -747,6 +784,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_RFTEAMO = TOT_RFTEAMO;
                     beanTkt.TOT_NETOAMO = TOT_NETOAMO;
 
+                    beanTkt.TOT_COMPAMOC = TOT_COMPAMOC;
                     beanTkt.TOT_TCONAMOC = TOT_TCONAMOC;
                     beanTkt.TOT_COMMAMOC = TOT_COMMAMOC;
                     beanTkt.TOT_IVAAMOUC = TOT_IVAAMOUC;
@@ -757,6 +795,7 @@ public class DataIntegrityDAO {
                     beanTkt.TOT_NETOAMOC = TOT_NETOAMOC;
 
                     //DIFERENCIA DE TOTALES
+                    beanTkt.TOT_DIFF_COMPAMO = TOT_DIFF_COMPAMO;
                     beanTkt.TOT_DIFF_TCONAMO = TOT_DIFF_TCONAMO;
                     beanTkt.TOT_DIFF_COMMAMO = TOT_DIFF_COMMAMO;
                     beanTkt.TOT_DIFF_IVAAMOU = TOT_DIFF_IVAAMOU;
