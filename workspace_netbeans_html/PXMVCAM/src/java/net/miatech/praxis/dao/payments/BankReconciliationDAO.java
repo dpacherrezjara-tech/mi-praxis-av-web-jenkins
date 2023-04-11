@@ -1454,6 +1454,7 @@ public class BankReconciliationDAO {
             while (rs01.next()) {
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SAGENT = rs01.getString("SAGENT");
+                objRtn.DESAGENT = objRtn.SAGENT + " - " + rs01.getString("DESAGENT");
                 objRtn.SDATE = rs01.getString("SDATE");
                 objRtn.TDOC = rs01.getString("TDOC");
                 if (rs01.getString("TDOC").trim().equals("R")) {
@@ -1468,7 +1469,7 @@ public class BankReconciliationDAO {
                     objRtn.descSTVAL = rs01.getString("STVAL").trim();
                 }
                 objRtn.SCOUNTRY = rs01.getString("SCOUNTRY");
-                objRtn.DESC_SCOUNTRY = rs01.getString("DESC_SCOUNTRY");
+                objRtn.DESC_SCOUNTRY = objRtn.SCOUNTRY + " - " + rs01.getString("DESC_SCOUNTRY");
                 objRtn.SPNR = rs01.getString("SPNR");
                 objRtn.SCARCOD = rs01.getString("SCARCOD");
                 objRtn.SCARDN = rs01.getString("SCARDN");

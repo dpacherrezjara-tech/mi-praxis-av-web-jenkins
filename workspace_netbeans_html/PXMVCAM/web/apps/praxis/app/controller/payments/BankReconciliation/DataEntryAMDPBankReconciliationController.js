@@ -170,7 +170,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 //        }
         console.log(this.bean);
         this.setValue('de-txtPRDA', this.bean.PRDA);
-        this.setValue('de-txtSAGENT', this.bean.SAGENT);
+        this.setValue('de-txtSAGENT', this.bean.DESAGENT);
         this.setValue('de-txtMERCHID', this.bean.MERCHNC);
         //this.setValue('de-txtSMERCHID', this.bean.SMERCHID);
         //this.setValue('de-txtIDITEMS', this.bean.IDITEMS);

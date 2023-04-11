@@ -167,39 +167,6 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
 
-//    @RequestMapping(value = "search")
-//    public @ResponseBody
-//    String search(ModelMap map, HttpServletRequest request) {
-//        List<A2290Filter> listaData;
-//        A2290Filter filter = new A2290Filter();
-//        Gson gson = new Gson();
-//        try {
-//            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, BankReconciliationController.class.getCanonicalName() + " : search");
-//
-//            String beanString = request.getParameter("beanString");
-//            filter = gson.fromJson(beanString, A2290Filter.class);
-//
-//            BankReconciliationLogic logic = new BankReconciliationLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//            //filter.IN_TDOC = "S";
-//            listaData = logic.loadPX269SQP00698(filter);
-//
-//            map.put("success", true);
-//            map.put("data", listaData);
-//
-//        } catch (SQLException e) {
-//            map.put("success", false);
-//            map.put("sesion", SESSION_CONTROL);
-//            throw new SpringException(e);
-//        } catch (Exception e) {
-//            map.put("success", false);
-//            map.put("sesion", SESSION_CONTROL);
-//            throw new SpringException(e);
-//        }
-//        System.out.println("search TO : " + Functions.getHoraActual());
-//
-//        return new Gson().toJson(map);
-//    }
     public JavaToFlexResponse searchDetCardCode(A2290Filter filter) {
         JavaToFlexResponse resp = new JavaToFlexResponse();
 
@@ -375,29 +342,6 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-//    public JavaToFlexResponse searchDetDay(A2290Filter filter) {
-//        JavaToFlexResponse resp = new JavaToFlexResponse();
-//
-//        List<A2290Filter> listaData;
-//        try {
-//            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, BankReconciliationController.class.getCanonicalName() + " : searchDetDay");
-//
-//
-//            BankReconciliationLogic logic = new BankReconciliationLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//            listaData = logic.loadPX269SQP00700(filter);
-//            resp.vars.put("lstDetDay", listaData);
-//
-//        } catch (SQLException e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        } catch (Exception e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        }
-//
-//        return resp;
-//    }
 
     @RequestMapping(value = "searchDetCardNumber")
     public @ResponseBody
@@ -448,29 +392,6 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
 
-//    public JavaToFlexResponse searchDetCardNumber(A2290Filter filter) {
-//        JavaToFlexResponse resp = new JavaToFlexResponse();
-//
-//        List<A2290Filter> listaData;
-//        try {
-//
-//            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, BankReconciliationController.class.getCanonicalName() + " : searchDetCardNumber");
-//
-//            BankReconciliationLogic logic = new BankReconciliationLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//            listaData = logic.loadPX269SQP00717(filter);
-//            resp.vars.put("lstDetCardNbr", listaData);
-//
-//        } catch (SQLException e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        } catch (Exception e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        }
-//
-//        return resp;
-//    }
     @RequestMapping(value = "searchDetTicket")
     public @ResponseBody
     String searchDetTicket(ModelMap map, HttpServletRequest request) {
@@ -522,36 +443,6 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-//    public JavaToFlexResponse searchDetTicket(A2290Filter filter) {
-//        JavaToFlexResponse resp = new JavaToFlexResponse();
-//
-//        List<A2290Filter> listaData;
-//        try {
-//            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, BankReconciliationController.class.getCanonicalName() + " : searchDetTicket");
-//
-//
-//            BankReconciliationLogic logic = new BankReconciliationLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//            
-//            if(filter.FCONC.equals("X")){
-//                listaData = logic.loadPX269SQP02492(filter);
-//            }else{
-//                listaData = logic.loadPX269SQP00744(filter);
-//            }
-//            
-//            
-//            resp.vars.put("lstDetTicket", listaData);
-//
-//        } catch (SQLException e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        } catch (Exception e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        }
-//
-//        return resp;
-//    }
 
     @RequestMapping(value = "searchBean")
     public @ResponseBody
@@ -579,28 +470,6 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
-//    public JavaToFlexResponse searchBean(A2290Filter filter) {
-//        JavaToFlexResponse resp = new JavaToFlexResponse();
-//
-//        A2290Filter bean;
-//        try {
-//            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, BankReconciliationController.class.getCanonicalName() + " : searchBean");
-//
-//            BankReconciliationLogic logic = new BankReconciliationLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//            bean = logic.loadPX269SQP00833(filter);
-//            resp.vars.put("beanCons", bean);
-//
-//        } catch (SQLException e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        } catch (Exception e) {
-//            resp.info.add(e.getMessage());
-//            logError.error(e.getMessage());
-//        }
-//
-//        return resp;
-//    }
 
     @RequestMapping(value = "searchBeanAMDP")
     public @ResponseBody

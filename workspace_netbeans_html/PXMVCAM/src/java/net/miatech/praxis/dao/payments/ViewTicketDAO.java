@@ -92,7 +92,7 @@ public class ViewTicketDAO {
                 objRtn.MERCHN = rs01.getString("MERCHN").trim();
                 objRtn.SDATE = rs01.getString("SDATE").trim();
                 //objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
-                objRtn.SCOUNTRY = rs01.getString("DESC_SCOUNTRY").trim();
+                objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim() + " - " + rs01.getString("DESC_SCOUNTRY").trim();
                 objRtn.SPNR = rs01.getString("SPNR").trim();
                 
                 if (hmDescDocument.containsKey(rs01.getString("TDOC").trim().toUpperCase())) {

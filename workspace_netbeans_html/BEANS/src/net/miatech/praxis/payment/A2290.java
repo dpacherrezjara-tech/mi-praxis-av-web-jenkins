@@ -29,6 +29,7 @@ public class A2290 {
     public String SCOUNTRY = "";
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
+    public String DESAGENT = "";
     public String SDATE = "";
     public String SDATEVTA = "";
     public String SPAYMENT = "";
