@@ -83,22 +83,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Agent',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSAGENT',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100,
-                                        },
-                                        {xtype: 'tbspacer', width: 30},
-                                        {
-                                            xtype: 'label',
                                             text: 'Merchant ID',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
@@ -115,20 +99,35 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            id: prototype.id + '-txtFromDateSMERCHID',
-                                            text: 'Sales Merchant ID',
+                                            text: 'Agent',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSMERCHID',
+                                            id: prototype.id + '-de-txtSAGENT',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 360,
                                         },
+//                                        {
+//                                            xtype: 'label',
+//                                            id: prototype.id + '-txtFromDateSMERCHID',
+//                                            text: 'Sales Merchant ID',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            width: 120
+//                                        },
+//                                        {xtype: 'tbspacer', width: 10},
+//                                        {
+//                                            xtype: 'textfield',
+//                                            id: prototype.id + '-de-txtSMERCHID',
+//                                            fieldStyle: 'text-align:center',
+//                                            enforceMaxLength: true,
+//                                            readOnly: true,
+//                                            width: 100
+//                                        },
                                         {xtype: 'tbspacer', width: 5}
                                     ]
                                 },
