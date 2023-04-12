@@ -73,6 +73,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
             data: [
                 ["", "Select"],
                 ["1", "Ticket"],
+                ["2", "PNR"],
+                ["3", "Card"],
             ]
         }));
         cmbDate.setValue("1");
