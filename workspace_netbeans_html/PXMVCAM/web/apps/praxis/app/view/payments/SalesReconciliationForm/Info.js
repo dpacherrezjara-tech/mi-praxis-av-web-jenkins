@@ -3285,15 +3285,26 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     }
                                                                 ]
                                                             },
+//                                                            {
+//                                                                text: 'View', dataIndex: '', width: 40,
+//                                                                listeners: {
+//                                                                    click: 'viewDataEntry_clickHandler'
+//                                                                },
+//                                                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    var data = record.data;
+//                                                                    metaData.tdAttr = 'data-qtip="' + (Number(data.lngQOBS) > 1 ? 'View' : 'View') + '"';
+//                                                                    var src = Number(data.lngQOBS) > 1 ? 'resources/img/botones/16x16/warning.png' : 'resources/img/botones/16x16/Change.png';
+//                                                                    return '<a href="#payments-sales-reconciliation-form"><img src="' + src + '"></a>';
+//                                                                }
+//                                                            },
                                                             {
                                                                 text: 'View', dataIndex: '', width: 40,
                                                                 listeners: {
                                                                     click: 'viewDataEntry_clickHandler'
                                                                 },
                                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    var data = record.data;
-                                                                    metaData.tdAttr = 'data-qtip="' + (Number(data.lngQOBS) > 1 ? 'View' : 'View') + '"';
-                                                                    var src = Number(data.lngQOBS) > 1 ? 'resources/img/botones/16x16/warning.png' : 'resources/img/botones/16x16/Change.png';
+                                                                    metaData.tdAttr = 'data-qtip="View"';
+                                                                    var src = 'resources/img/botones/16x16/1326498593_018.png';
                                                                     return '<a href="#payments-sales-reconciliation-form"><img src="' + src + '"></a>';
                                                                 }
                                                             }

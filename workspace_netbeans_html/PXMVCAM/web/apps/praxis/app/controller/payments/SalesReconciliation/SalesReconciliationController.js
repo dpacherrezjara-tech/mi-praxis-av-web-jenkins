@@ -391,11 +391,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 flagWarn = '';
                 break;
         }
-        if (data.lngQOBS > 1 || flagWarn === "Y") {
-            this.searchWarnTkts(data);
-        } else {
-            this.searchBean(data, this.peek());
-        }
+//        if (data.lngQOBS > 1 || flagWarn === "Y") {
+//            this.searchWarnTkts(data);
+//        } else {
+//            this.searchBean(data, this.peek());
+//        }
+        this.searchBean(data, this.peek());
     },
     gridCashDetCountry_clickHandler: function(column, e, row, column, x, rowData) {
         var obj = x.record.data;

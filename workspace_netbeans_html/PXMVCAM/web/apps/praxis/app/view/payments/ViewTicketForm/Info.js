@@ -76,7 +76,7 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Info', {
                                     required: true,
                                     editable: true,
                                     fieldLabel: 'Agent',
-                                    width: 250,
+                                    width: 500,
                                     labelWidth: 120,
                                     readOnly: true,
                                     fieldStyle: 'text-align: left;',
