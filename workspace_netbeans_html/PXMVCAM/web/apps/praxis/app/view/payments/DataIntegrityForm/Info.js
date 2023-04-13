@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1800,
+                            width: 1439,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMainSummary',
-                                    width: 1800,
+                                    width: 1439,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -113,7 +113,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -130,7 +130,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -147,7 +147,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -164,7 +164,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -181,7 +181,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -198,7 +198,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -215,7 +215,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -232,7 +232,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -259,7 +259,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -276,7 +276,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -292,7 +292,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -308,7 +308,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -324,7 +324,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -340,7 +340,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -356,7 +356,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -372,7 +372,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -388,7 +388,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -414,7 +414,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -435,7 +435,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -457,7 +457,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -479,7 +479,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -501,7 +501,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -523,7 +523,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -545,7 +545,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -567,7 +567,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -589,7 +589,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -623,7 +623,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1800,
+                            width: 1439,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -633,7 +633,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDaySummary',
-                                    width: 1800,
+                                    width: 1439,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -679,7 +679,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -696,7 +696,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -713,7 +713,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -730,7 +730,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -747,7 +747,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -764,7 +764,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -781,7 +781,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -798,7 +798,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -815,7 +815,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -842,7 +842,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -859,7 +859,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -875,7 +875,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -891,7 +891,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -907,7 +907,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -923,7 +923,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -939,7 +939,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -955,7 +955,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -971,7 +971,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -997,7 +997,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1018,7 +1018,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1040,7 +1040,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1062,7 +1062,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1084,7 +1084,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1106,7 +1106,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1128,7 +1128,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1150,7 +1150,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 135, hidden: true,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1172,7 +1172,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1268,7 +1268,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1285,7 +1285,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1302,7 +1302,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1319,7 +1319,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1336,7 +1336,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1353,7 +1353,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1370,7 +1370,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1387,7 +1387,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1404,7 +1404,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1431,7 +1431,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1448,7 +1448,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1464,7 +1464,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1480,7 +1480,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1496,7 +1496,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1512,7 +1512,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1528,7 +1528,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1544,7 +1544,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1560,7 +1560,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1586,7 +1586,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1607,7 +1607,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1629,7 +1629,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1651,7 +1651,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1673,7 +1673,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1695,7 +1695,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1717,7 +1717,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1739,7 +1739,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1761,7 +1761,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1884,7 +1884,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1901,7 +1901,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1918,7 +1918,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1935,7 +1935,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOU', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1952,7 +1952,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1969,7 +1969,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 130,
+                                                        text: 'Valor Retencion IVA', dataIndex: 'RIVAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1986,7 +1986,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2003,7 +2003,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2020,7 +2020,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2047,7 +2047,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'COMPAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2064,7 +2064,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2080,7 +2080,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'COMMAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2096,7 +2096,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'IVAAMOUC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2112,7 +2112,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'PROPAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2128,7 +2128,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'RIVAAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2144,7 +2144,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'RICAAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2160,7 +2160,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 130,
+                                                        text: 'Valor Retencion Fte', dataIndex: 'RFTEAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2176,7 +2176,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'NETOAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2202,7 +2202,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 130,
+                                                        text: 'Valor Compras', dataIndex: 'DIFF_COMPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2223,7 +2223,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 130,
+                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2245,7 +2245,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 130,
+                                                        text: 'Valor Com.Estaleci', dataIndex: 'DIFF_COMMAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2267,7 +2267,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 130,
+                                                        text: 'Valor IVA', dataIndex: 'DIFF_IVAAMOU', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2289,7 +2289,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 130,
+                                                        text: 'Valor Propina', dataIndex: 'DIFF_PROPAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2311,7 +2311,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 130,
+                                                        text: 'Valor retencion IVA', dataIndex: 'DIFF_RIVAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2333,7 +2333,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 130,
+                                                        text: 'Valor retencion ICA', dataIndex: 'DIFF_RICAAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2355,7 +2355,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 130,
+                                                        text: 'Valor retencion Fte', dataIndex: 'DIFF_RFTEAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2377,7 +2377,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 130,
+                                                        text: 'Valor Neto Consigna', dataIndex: 'DIFF_NETOAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },

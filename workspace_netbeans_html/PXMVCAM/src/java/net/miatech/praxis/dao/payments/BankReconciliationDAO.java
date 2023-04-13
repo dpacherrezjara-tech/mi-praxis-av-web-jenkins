@@ -681,7 +681,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotCant = 0, lngQtyDoc = 0;
+        long lngTotCant = 0, lngQTYTKT = 0;
         double dblTotSVFOP = 0;
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Accepted");
@@ -751,7 +751,7 @@ public class BankReconciliationDAO {
 
             while (rst.next()) {
                 lngTotCant += rst.getLong("CANT");
-                lngQtyDoc += rst.getLong("QTYDOC");
+                lngQTYTKT += rst.getLong("QTYTKT");
                 dblTotSVFOP += rst.getDouble("SVFOP");
             }
             rst.close();
@@ -827,7 +827,7 @@ public class BankReconciliationDAO {
                     } else {
                         beanTkt.BSTVAL = rst.getString("BSTVAL").trim();
                     }
-                    beanTkt.lngQTYDOC = rst.getLong("QTYDOC");
+                    beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.strNUMREF = rst.getString("NUMREF").trim();
@@ -871,7 +871,7 @@ public class BankReconciliationDAO {
                     }
 
                     beanTkt.lngTotQACCB = lngTotCant;
-                    beanTkt.lngTotQTYDOC = lngQtyDoc;
+                    beanTkt.lngTotQTYTKT = lngQTYTKT;
                     beanTkt.dblTotSVFOP = dblTotSVFOP;
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -1340,7 +1340,7 @@ public class BankReconciliationDAO {
                 } else {
                     beanTkt.BDATEP = rst.getString("BDATEP").trim();
                 }
-                beanTkt.lngQTYDOC = rst.getLong("QTYDOC");
+                beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
                 beanTkt.BAID = rst.getString("BAID").trim();
                 beanTkt.FLOADE = rst.getString("FLOADE").trim();
                 beanTkt.LDATEE = rst.getString("LDATEE").trim();
@@ -1578,7 +1578,7 @@ public class BankReconciliationDAO {
             cstmt.setString(37, filter.SEQNUM.trim());
             cstmt.setString(38, filter.BDATEP.trim());
             cstmt.setString(39, filter.BAID.trim());
-            cstmt.setLong(40, filter.lngQTYDOC);
+            cstmt.setLong(40, filter.lngQTYTKT);
             cstmt.setString(41, filter.FLOADE.trim());
             cstmt.setString(42, filter.LDATEE.trim());
             cstmt.setString(43, filter.STATUSC.trim());
@@ -2563,7 +2563,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotCant = 0, lngQtyDoc = 0;
+        long lngTotCant = 0, lngQTYTKT = 0;
         double dblSVFOP = 0;
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Accepted");
@@ -2636,7 +2636,7 @@ public class BankReconciliationDAO {
 
             while (rst.next()) {
                 lngTotCant += rst.getLong("CANT");
-                lngQtyDoc += rst.getLong("QTYDOC");
+                lngQTYTKT += rst.getLong("QTYTKT");
                 dblSVFOP += rst.getDouble("SVFOP");
             }
             rst.close();
@@ -2719,7 +2719,7 @@ public class BankReconciliationDAO {
                     } else {
                         beanTkt.BSTVAL = rst.getString("BSTVAL").trim();
                     }
-                    beanTkt.lngQTYDOC = rst.getLong("QTYDOC");
+                    beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.strNUMREF = rst.getString("NUMREF").trim();
@@ -2787,7 +2787,7 @@ public class BankReconciliationDAO {
                     beanTkt.strTitulo = strTitulo;
 
                     beanTkt.lngTotQACCB = lngTotCant;
-                    beanTkt.lngTotQTYDOC = lngQtyDoc;
+                    beanTkt.lngTotQTYTKT = lngQTYTKT;
                     beanTkt.dblTotSVFOP = dblSVFOP;
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -2829,7 +2829,7 @@ public class BankReconciliationDAO {
         List<A2290Filter> lstTkts2 = new ArrayList<A2290Filter>(0);
         HashMap hm = new HashMap();
         A2290Filter beanTkt;
-        long lngTotCant = 0, lngQtyDoc = 0;
+        long lngTotCant = 0, lngQTYTKT = 0;
         double dblSVFOP = 0;
         String estado = "", strTitulo = "", tabla1 = "A720", tabla2 = "A1531";
 
@@ -3061,7 +3061,7 @@ public class BankReconciliationDAO {
 
         HashMap hm = new HashMap();
         A2290Filter beanTkt;
-        long lngTotCant = 0, lngQtyDoc = 0;
+        long lngTotCant = 0, lngQTYTKT = 0;
         double dblSVFOP = 0;
         String estado = "", strTitulo = "", tabla1 = "A720", tabla2 = "A1531";
 
@@ -3246,7 +3246,7 @@ public class BankReconciliationDAO {
         List<A2290Filter> lstTkts2 = new ArrayList<A2290Filter>(0);
         HashMap hm = new HashMap();
         A2290Filter beanTkt;
-        long lngTotCant = 0, lngQtyDoc = 0;
+        long lngTotCant = 0, lngQTYTKT = 0;
         double dblSVFOP = 0;
         String estado = "", strTitulo = "", tabla1 = "A720", tabla2 = "A1531";
 
@@ -3376,7 +3376,7 @@ public class BankReconciliationDAO {
 
      List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
      A2290Filter beanTkt;
-     long lngTotCant = 0, lngQtyDoc = 0;
+     long lngTotCant = 0, lngQTYTKT = 0;
      double dblSVFOP = 0;
 
      CallableStatement cstmt = null;
@@ -3514,7 +3514,7 @@ public class BankReconciliationDAO {
 
             cstmt.execute();
 
-            filter.lngQTYDOC = cstmt.getInt(14);
+            filter.lngQTYTKT = cstmt.getInt(14);
             strMsj = cstmt.getString(15);
 
             /*if (strMsj.trim().isEmpty()) {

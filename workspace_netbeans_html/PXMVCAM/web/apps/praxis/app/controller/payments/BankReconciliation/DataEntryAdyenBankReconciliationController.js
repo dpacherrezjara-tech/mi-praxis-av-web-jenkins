@@ -148,10 +148,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAdyenBank
         bean.DATEF = this.getValue("de-txtDATEF").trim();
         bean.strSORIG = String(this.getValue("de-cmbSORIG"));
         bean.BDATEP = this.getValue("de-txtBDATEP").trim();
-        if (this.getValue("de-txtQTYDOC").trim() !== '') {
-            bean.lngQTYDOC = Number(this.getValue("de-txtQTYDOC").trim().replace(',', ''));
+        if (this.getValue("de-txtQTYTKT").trim() !== '') {
+            bean.lngQTYTKT = Number(this.getValue("de-txtQTYTKT").trim().replace(',', ''));
         } else {
-            bean.lngQTYDOC = 0;
+            bean.lngQTYTKT = 0;
         }
         bean.BAID = this.getValue("de-txtBAID").trim();
         bean.FLOADE = String(this.getValue("de-cmbFLOADE"));
@@ -200,7 +200,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAdyenBank
         this.setValue('de-txtDATEF', '');
         this.setValue('de-cmbSORIG', '');
         this.setValue('de-txtBDATEP', '');
-        this.setValue('de-txtQTYDOC', '0');
+        this.setValue('de-txtQTYTKT', '0');
         this.setValue('de-cmbFLOADE', '');
         this.setValue('de-txtLDATEE', '');
         this.setValue('de-cmbSTATUSC', '');
@@ -376,7 +376,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAdyenBank
         Ext.getCmp(prototype.id + '-de-txtDATEF').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-cmbSORIG').disable(true);
         Ext.getCmp(prototype.id + '-de-txtBDATEP').setReadOnly(true);
-        Ext.getCmp(prototype.id + '-de-txtQTYDOC').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtQTYTKT').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtBAID').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtComment').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(true);
@@ -407,7 +407,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAdyenBank
         Ext.getCmp(prototype.id + '-de-txtDATEF').setReadOnly(false);
         Ext.getCmp(prototype.id + '-de-cmbSORIG').disable(false);
         Ext.getCmp(prototype.id + '-de-txtBDATEP').setReadOnly(false);
-        Ext.getCmp(prototype.id + '-de-txtQTYDOC').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtQTYTKT').setReadOnly(false);
         Ext.getCmp(prototype.id + '-de-txtBAID').setReadOnly(false);
         Ext.getCmp(prototype.id + '-de-txtComment').setReadOnly(false);
 //        Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(false);

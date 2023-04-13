@@ -1977,7 +1977,7 @@ public class BankReconciliationController extends BaseController {
                 rcell13.setCellValue(listaData.get(vi).BDATEP);
                 rcell14.setCellValue(listaData.get(vi).strBankDeposit);
                 rcell15.setCellValue(listaData.get(vi).FLAGC);
-                rcell16.setCellValue(listaData.get(vi).lngQTYDOC);
+                rcell16.setCellValue(listaData.get(vi).lngQTYTKT);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -2313,7 +2313,7 @@ public class BankReconciliationController extends BaseController {
                 rcell13.setCellValue(listaData.get(vi).BSTVAL);
                 rcell14.setCellValue(listaData.get(vi).FLAGC);
                 rcell15.setCellValue(listaData.get(vi).SAGENT);
-                rcell16.setCellValue(listaData.get(vi).lngQTYDOC);
+                rcell16.setCellValue(listaData.get(vi).lngQTYTKT);
                 iter.next();
                 ++vi;
                 ++vj;

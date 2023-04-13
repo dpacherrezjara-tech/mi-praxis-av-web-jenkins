@@ -1045,7 +1045,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntry', {
                                         {xtype: 'tbspacer', width: 4},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtQTYDOC',
+                                            id: prototype.id + '-de-txtQTYTKT',
                                             fieldStyle: 'text-align:left;',
                                             enableKeyEvents: true,
                                             enforceMaxLength: true,

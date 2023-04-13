@@ -454,7 +454,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 msjResult = 'Invalid TEF Date.';
             } else if (Ext.getCmp(prototype.id + '-de-txtBDATEP').getErrors().length > 0) {
                 msjResult = 'Invalid Process Date.';
-            } else if (Ext.getCmp(prototype.id + '-de-txtQTYDOC').getErrors().length > 0) {
+            } else if (Ext.getCmp(prototype.id + '-de-txtQTYTKT').getErrors().length > 0) {
                 msjResult = 'Invalid Quantity Tickets.';
             } else if (Ext.getCmp(prototype.id + '-de-txtSEQNUM').getErrors().length > 0) {
                 msjResult = 'Invalid Sequence Number.';
@@ -496,7 +496,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         Ext.getCmp(prototype.id + '-de-txtDATEF').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-cmbSORIG').disable(true);
         Ext.getCmp(prototype.id + '-de-txtBDATEP').setReadOnly(true);
-        Ext.getCmp(prototype.id + '-de-txtQTYDOC').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtQTYTKT').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtBAID').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtComment').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(true);
@@ -528,7 +528,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         Ext.getCmp(prototype.id + '-de-txtDATEF').setReadOnly(false);
 //        Ext.getCmp(prototype.id + '-de-cmbSORIG').disable(false);
         Ext.getCmp(prototype.id + '-de-txtBDATEP').setReadOnly(false);
-        Ext.getCmp(prototype.id + '-de-txtQTYDOC').setReadOnly(false);
+        Ext.getCmp(prototype.id + '-de-txtQTYTKT').setReadOnly(false);
         Ext.getCmp(prototype.id + '-de-txtBAID').setReadOnly(false);
         Ext.getCmp(prototype.id + '-de-txtComment').setReadOnly(false);
 //        Ext.getCmp(prototype.id + '-de-chkFADYEN').disable(false);

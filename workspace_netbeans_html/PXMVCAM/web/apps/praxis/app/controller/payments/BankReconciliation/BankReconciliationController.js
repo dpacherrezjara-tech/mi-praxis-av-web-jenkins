@@ -179,7 +179,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             fields: ['code', 'name'],
             data: [
                 ["SDATE", "Sales Date"],
-                ["BDATEP", "Reconciliation Date"]
+                //["BDATEP", "Reconciliation Date"]
             ]
         }));
         cmbFecFiltro.setValue("SDATE");
@@ -1202,7 +1202,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     //</editor-fold>
     onGridDetTicket: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        if (rowData.data.lngQTYDOC > 0) {
+        if (rowData.data.lngQTYTKT > 0) {
             if (rowData.data.IN_STVAL !== '' || rowData.data.IN_BSTVAL) {
                 me.flagStatus = 'S';
             } else {

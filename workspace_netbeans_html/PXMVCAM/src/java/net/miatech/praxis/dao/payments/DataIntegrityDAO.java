@@ -126,7 +126,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
-                TOT_DIFF_COMPAMO = TOT_TCONAMO - TOT_TCONAMOC;
+                TOT_DIFF_COMPAMO = TOT_COMPAMO - TOT_COMPAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;
@@ -321,6 +321,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
+                TOT_DIFF_COMPAMO = TOT_COMPAMO - TOT_COMPAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;
@@ -517,7 +518,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
-                TOT_DIFF_COMPAMO = TOT_TCONAMO - TOT_TCONAMOC;
+                TOT_DIFF_COMPAMO = TOT_COMPAMO - TOT_COMPAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;
@@ -716,7 +717,7 @@ public class DataIntegrityDAO {
                 TOT_NETOAMOC = rst.getDouble("NETOAMOC");
 
                 //Diferencias
-                TOT_DIFF_COMPAMO = TOT_TCONAMO - TOT_TCONAMOC;
+                TOT_DIFF_COMPAMO = TOT_COMPAMO - TOT_COMPAMOC;
                 TOT_DIFF_TCONAMO = TOT_TCONAMO - TOT_TCONAMOC;
                 TOT_DIFF_COMMAMO = TOT_COMMAMO - TOT_COMMAMOC;
                 TOT_DIFF_IVAAMOU = TOT_IVAAMOU - TOT_IVAAMOUC;

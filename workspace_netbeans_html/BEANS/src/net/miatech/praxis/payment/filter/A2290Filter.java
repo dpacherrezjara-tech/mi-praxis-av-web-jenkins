@@ -127,7 +127,9 @@ public class A2290Filter extends A2290 {
     public double totCOMISION = 0;
     public String EMISOR = "";
     public long lngQTYDOC = 0;
+    public long lngQTYTKT = 0;
     public long lngTotQTYDOC = 0;
+    public long lngTotQTYTKT = 0;
     public long lngQMATCH = 0;
     public long lngQMANUAL = 0;
     public long lngQSALES = 0;

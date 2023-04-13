@@ -1241,7 +1241,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Qty',
                                                 columns: [
                                                     {
-                                                        text: 'Tkts', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true,
+                                                        text: 'Tkts', dataIndex: 'lngQTYTKT', width: 50, align: 'center', menuDisabled: true,
                                                         listeners: {
                                                             click: 'onGridDetTicket'
                                                         },
@@ -1253,7 +1253,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataDetCardNbr').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYDOC, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYTKT, '0,000') + '<b>';
                                                         }
                                                     }
                                                 ]
@@ -1760,7 +1760,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Tkts', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true,
+                                                        text: 'Tkts', dataIndex: 'lngQTYTKT', width: 50, align: 'center', menuDisabled: true,
                                                         listeners: {
                                                             click: 'onGridDetTicket'
                                                         },
@@ -1772,7 +1772,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataDetCardNbrByS').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYDOC, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYTKT, '0,000') + '<b>';
                                                         }
                                                     }
                                                 ]
