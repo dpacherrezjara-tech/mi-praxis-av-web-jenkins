@@ -1041,7 +1041,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1308,
+                            width: 1348,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1051,7 +1051,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetCardNbr',
-                                    width: 1308,
+                                    width: 1348,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -1133,7 +1133,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Merchant',
                                                 columns: [
                                                     {
-                                                        text: 'Number', dataIndex: 'MERCHN', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Number', dataIndex: 'MERCHN', width: 120, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
@@ -1551,7 +1551,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1328,
+                            width: 1368,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1561,7 +1561,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetCardNbrByS',
-                                    width: 1328,
+                                    width: 1368,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -1717,7 +1717,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Sales',
                                                 columns: [
                                                     {
-                                                        text: 'Merchant', dataIndex: 'MERCHN', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Merchant', dataIndex: 'MERCHN', width: 120, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
@@ -2162,7 +2162,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataDetA1531TKT',
-                                            width: 724,
+                                            width: 764,
                                             height: 550,
                                             columnLines: true,
                                             features: [{
@@ -2228,7 +2228,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'Merchant',
                                                         columns: [
                                                             {
-                                                                text: 'Number', dataIndex: 'MERCHN', width: 80, align: 'center', menuDisabled: true,
+                                                                text: 'Number', dataIndex: 'MERCHN', width: 120, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     var data = record.data;
@@ -3115,7 +3115,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1133,
+                            width: 1173,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -3125,7 +3125,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetByPNR',
-                                    width: 1133,
+                                    width: 1173,
                                     columnLines: true,
                                     /*features: [{
                                      ftype: 'summary'
@@ -3162,7 +3162,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Merchant', dataIndex: 'MERCHN', width: 80,
+                                                text: 'Merchant', dataIndex: 'MERCHN', width: 120,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     return value;
                                                 }

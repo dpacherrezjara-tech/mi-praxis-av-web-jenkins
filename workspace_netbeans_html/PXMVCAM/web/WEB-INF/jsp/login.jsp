@@ -168,7 +168,7 @@
                             </tr>
                             <tr>
                                 <td width="766" align="center" id="tfooter" class="txtFooter" height="30">
-                                    2021 © Copyright Miami Technology Group,Inc. Rights reserved. v1.0
+                                    2023 © Copyright Miami Technology Group,Inc. Rights reserved. v1.0
                                 </td>
                             </tr>
                         </tbody></table>

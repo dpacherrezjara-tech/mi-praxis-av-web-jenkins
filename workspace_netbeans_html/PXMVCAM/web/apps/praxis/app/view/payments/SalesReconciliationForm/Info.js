@@ -1209,7 +1209,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDetByPNR',
                                                     bodyStyle: 'background: transparent;',
-                                                    width: 1285,
+                                                    width: 1325,
                                                     titleAlign: 'center',
                                                     columnLines: true,
                                                     enableColumnMove: false,
@@ -1270,7 +1270,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Number', dataIndex: 'SCARDN', width: 100,
+                                                                        text: 'Number', dataIndex: 'SCARDN', width: 140,
                                                                         renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             return value;
                                                                         }
