@@ -456,7 +456,7 @@ public class DataIntegrityController extends BaseController {
 
             CH2_0.setCellValue("Date");
             CH2_3.setCellValue("Valor Compras");
-            CH2_4.setCellValue("Valor Tot.Consignac");
+            CH2_4.setCellValue("Valor Tot.Liquidacion");
 //            CH2_5.setCellValue("Valor Com.Estaleci");
 //            CH2_6.setCellValue("Valor IVA");
 //            CH2_7.setCellValue("Valor Propina");
@@ -465,7 +465,7 @@ public class DataIntegrityController extends BaseController {
 //            CH2_10.setCellValue("Valor Retencion Fte");
             CH2_5.setCellValue("Valor Neto Consigna");
             CH2_6.setCellValue("Valor Compras");
-            CH2_7.setCellValue("Valor Tot.Consignac");
+            CH2_7.setCellValue("Valor Tot.Liquidacion");
 //            CH2_14.setCellValue("Valor Com.Estaleci");
 //            CH2_15.setCellValue("Valor IVA");
 //            CH2_16.setCellValue("Valor Propina");
@@ -474,7 +474,7 @@ public class DataIntegrityController extends BaseController {
 //            CH2_19.setCellValue("Valor Retencion Fte");
             CH2_8.setCellValue("Valor Neto Consigna");
             CH2_9.setCellValue("Valor Compras");
-            CH2_10.setCellValue("Valor Tot.Consignac");
+            CH2_10.setCellValue("Valor Tot.Liquidacion");
 //            CH2_23.setCellValue("Valor Com.Estaleci");
 //            CH2_24.setCellValue("Valor IVA");
 //            CH2_25.setCellValue("Valor Propina");
@@ -936,7 +936,7 @@ public class DataIntegrityController extends BaseController {
 
             CH2_0.setCellValue("Date");
             CH2_3.setCellValue("Valor Compras");
-            CH2_4.setCellValue("Valor Tot.Consignac");
+            CH2_4.setCellValue("Valor Tot.Liquidacion");
 //            CH2_5.setCellValue("Valor Com.Estaleci");
 //            CH2_6.setCellValue("Valor IVA");
 //            CH2_7.setCellValue("Valor Propina");
@@ -945,7 +945,7 @@ public class DataIntegrityController extends BaseController {
 //            CH2_10.setCellValue("Valor Retencion Fte");
             CH2_5.setCellValue("Valor Neto Consigna");
             CH2_6.setCellValue("Valor Compras");
-            CH2_7.setCellValue("Valor Tot.Consignac");
+            CH2_7.setCellValue("Valor Tot.Liquidacion");
 //            CH2_14.setCellValue("Valor Com.Estaleci");
 //            CH2_15.setCellValue("Valor IVA");
 //            CH2_16.setCellValue("Valor Propina");
@@ -954,7 +954,7 @@ public class DataIntegrityController extends BaseController {
 //            CH2_19.setCellValue("Valor Retencion Fte");
             CH2_8.setCellValue("Valor Neto Consigna");
             CH2_9.setCellValue("Valor Compras");
-            CH2_10.setCellValue("Valor Tot.Consignac");
+            CH2_10.setCellValue("Valor Tot.Liquidacion");
 //            CH2_23.setCellValue("Valor Com.Estaleci");
 //            CH2_24.setCellValue("Valor IVA");
 //            CH2_25.setCellValue("Valor Propina");
@@ -1439,7 +1439,7 @@ public class DataIntegrityController extends BaseController {
 
             CH2_0.setCellValue("Date");
             CH2_4.setCellValue("Valor Compras");
-            CH2_5.setCellValue("Valor Tot.Consignac");
+            CH2_5.setCellValue("Valor Tot.Liquidacion");
             CH2_6.setCellValue("Valor Com.Estaleci");
             CH2_7.setCellValue("Valor IVA");
             CH2_8.setCellValue("Valor Propina");
@@ -1448,7 +1448,7 @@ public class DataIntegrityController extends BaseController {
             CH2_11.setCellValue("Valor Retencion Fte");
             CH2_12.setCellValue("Valor Neto Consigna");
             CH2_13.setCellValue("Valor Compras");
-            CH2_14.setCellValue("Valor Tot.Consignac");
+            CH2_14.setCellValue("Valor Tot.Liquidacion");
             CH2_15.setCellValue("Valor Com.Estaleci");
             CH2_16.setCellValue("Valor IVA");
             CH2_17.setCellValue("Valor Propina");
@@ -1457,7 +1457,7 @@ public class DataIntegrityController extends BaseController {
             CH2_20.setCellValue("Valor Retencion Fte");
             CH2_21.setCellValue("Valor Neto Consigna");
             CH2_22.setCellValue("Valor Compras");
-            CH2_23.setCellValue("Valor Tot.Consignac");
+            CH2_23.setCellValue("Valor Tot.Liquidacion");
             CH2_24.setCellValue("Valor Com.Estaleci");
             CH2_25.setCellValue("Valor IVA");
             CH2_26.setCellValue("Valor Propina");
@@ -1960,7 +1960,7 @@ public class DataIntegrityController extends BaseController {
             CH2_3.setCellValue("Number");
             CH2_4.setCellValue("Auth.");
             CH2_6.setCellValue("Valor Compras");
-            CH2_7.setCellValue("Valor Tot.Consignac");
+            CH2_7.setCellValue("Valor Tot.Liquidacion");
             CH2_8.setCellValue("Valor Com.Estaleci");
             CH2_9.setCellValue("Valor IVA");
             CH2_10.setCellValue("Valor Propina");
@@ -1969,7 +1969,7 @@ public class DataIntegrityController extends BaseController {
             CH2_13.setCellValue("Valor Retencion Fte");
             CH2_14.setCellValue("Valor Neto Consigna");
             CH2_15.setCellValue("Valor Compras");
-            CH2_16.setCellValue("Valor Tot.Consignac");
+            CH2_16.setCellValue("Valor Tot.Liquidacion");
             CH2_17.setCellValue("Valor Com.Estaleci");
             CH2_18.setCellValue("Valor IVA");
             CH2_19.setCellValue("Valor Propina");
@@ -1978,7 +1978,7 @@ public class DataIntegrityController extends BaseController {
             CH2_22.setCellValue("Valor Retencion Fte");
             CH2_23.setCellValue("Valor Neto Consigna");
             CH2_24.setCellValue("Valor Compras");
-            CH2_25.setCellValue("Valor Tot.Consignac");
+            CH2_25.setCellValue("Valor Tot.Liquidacion");
             CH2_26.setCellValue("Valor Com.Estaleci");
             CH2_27.setCellValue("Valor IVA");
             CH2_28.setCellValue("Valor Propina");

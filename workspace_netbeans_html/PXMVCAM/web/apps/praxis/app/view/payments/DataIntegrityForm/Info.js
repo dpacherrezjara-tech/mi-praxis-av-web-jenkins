@@ -113,7 +113,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -276,7 +276,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -435,7 +435,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -696,7 +696,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -859,7 +859,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1018,7 +1018,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1285,7 +1285,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1448,7 +1448,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1607,7 +1607,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -1901,7 +1901,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2064,7 +2064,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'TCONAMOC', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'TCONAMOC', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
@@ -2223,7 +2223,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Valor Tot.Consignac', dataIndex: 'DIFF_TCONAMO', width: 135,
+                                                        text: 'Valor Tot.Liquidacion', dataIndex: 'DIFF_TCONAMO', width: 135,
                                                         listeners: {
                                                             //                                                    click: 'onGridDetBankS'
                                                         },
