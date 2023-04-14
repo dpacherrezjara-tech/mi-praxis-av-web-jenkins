@@ -1483,7 +1483,10 @@ public class BankReconciliationDAO {
                 } else {
                     objRtn.descFREGLA = rs01.getString("FREGLA").trim();
                 }
+                
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
+                objRtn.FAREO = rs01.getDouble("FAREO");
+                objRtn.FAREC = rs01.getDouble("FAREC");
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
 

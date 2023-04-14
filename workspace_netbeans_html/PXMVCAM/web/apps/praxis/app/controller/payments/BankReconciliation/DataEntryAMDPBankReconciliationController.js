@@ -201,6 +201,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
         this.setValue('de-txtPCURRENCY', this.bean.SCURRENCY);
         this.setValue('de-txtTGROSAMOUN', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
+        this.setValue('de-txtFAREO', Ext.util.Format.number(this.bean.FAREO, '0,000.00'));
+        this.setValue('de-txtFAREC', Ext.util.Format.number(this.bean.FAREC, '0,000.00'));
         this.setValue('de-txtdescFREGLA', this.bean.descFREGLA);
         //this.setValue('de-txtCONCIDATE', this.bean.CONCIDATE);
         //this.setValue('de-txtVOID', this.bean.VOID);
