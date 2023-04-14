@@ -480,7 +480,7 @@ public class LoadConciliationDAO {
                         beanTkt.strTitulo = "Sales Date : ";
                     }
                     //  }
-                    beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
+                    beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + beanTkt.strDescCountry.trim() + " - Card : "
                             + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " **" + hmDescEstados.get(rst.getString("STVAL").trim()).toString() + "** ";
 
                     if (rst.getString("TKVOID").trim().equals("V")) {
