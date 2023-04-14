@@ -1483,10 +1483,11 @@ public class BankReconciliationDAO {
                 } else {
                     objRtn.descFREGLA = rs01.getString("FREGLA").trim();
                 }
-                
+
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
                 objRtn.FAREO = rs01.getDouble("FAREO");
                 objRtn.FAREC = rs01.getDouble("FAREC");
+                objRtn.DIFF_FARE = objRtn.FAREC - objRtn.FAREO;
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
 
@@ -2788,6 +2789,10 @@ public class BankReconciliationDAO {
                         strTitulo += " - Country : " + beanTkt.SCOUNTRY + " : " + filter.strDescCountry.trim();
                     }
                     beanTkt.strTitulo = strTitulo;
+
+                    beanTkt.FAREO = rst.getDouble("FAREO");
+                    beanTkt.FAREC = rst.getDouble("FAREC");
+                    beanTkt.DIFF_FARE = beanTkt.FAREC - beanTkt.FAREO;
 
                     beanTkt.lngTotQACCB = lngTotCant;
                     beanTkt.lngTotQTYTKT = lngQTYTKT;
