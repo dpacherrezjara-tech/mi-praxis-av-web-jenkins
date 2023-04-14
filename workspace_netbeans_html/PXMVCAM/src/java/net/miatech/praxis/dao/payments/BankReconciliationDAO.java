@@ -845,7 +845,7 @@ public class BankReconciliationDAO {
                         beanTkt.strSORIG = rst.getString("SORIG").trim();
                     }
                     beanTkt.BAID = rst.getString("BAID").trim();
-                    beanTkt.MERCHN = rst.getString("MERCHN").trim();
+                    beanTkt.MERCHN = rst.getString("MERCHNC").trim();
                     if (rst.getString("NMERCHN") != null && !rst.getString("NMERCHN").trim().equals("-")) {
                         beanTkt.strDescMerchn = rst.getString("NMERCHN").trim();
                     }
