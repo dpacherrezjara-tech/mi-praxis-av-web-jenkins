@@ -27,12 +27,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.obtainData();
     },
     afterRender: function () {
+        console.log(this.bean.STVAL);
         this.mostrarData();
-        this.onSearchCompleteDetail();
+
         Ext.getCmp(prototype.id + '-btn-save').hide();
-        Ext.getCmp(prototype.id + '-btn-update').hide();
         Ext.getCmp(prototype.id + '-btn-delete').hide();
         Ext.getCmp(prototype.id + '-btn-cancel').show();
+
+        if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
+            this.onSearchCompleteDetail();
+            Ext.getCmp(prototype.id + '-btn-update').hide();
+        } else {
+            this.onSearchPendingDetail();
+            Ext.getCmp(prototype.id + '-btn-update').show();
+        }
     },
     addCreditCard_keyDownHandler: function () {
         var fecha_a_validar = "";
@@ -111,6 +119,40 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         console.log(paramDetail);
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanAMDP_DETAIL',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramDetail,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    meDe.bean_detail = res.result;
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    meDe.calcularMontos();
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+            }
+        });
+    },
+    onSearchPendingDetail: function () {
+
+        var paramDetail = {};
+        paramDetail.beanString = JSON.stringify(this.bean);
+        console.log(paramDetail);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDP_SCAN_PENDING',
             method: 'POST',
             timeout: 60000000,
             params: paramDetail,
@@ -532,6 +574,43 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         prototypeProgram.modulo = '';
 
         win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
+    },
+    removeTKT: function () {
+        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
+        //var rowIndex = store_gridInfoScan.indexOf(record);
+        store_gridInfoScan.removeAt(rowIndex);
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
+        this.calcularMontos();
+    },
+    onAdjust: function (grid, rowIndex, colIndex) {
+
+        var data = grid.getStore().getAt(rowIndex).data;
+        console.log(data);
+        if (data.STMANUAL !== 'Blocked') {
+            if (this.sumAmount === this.bean.TGROSAMOUN) {
+                global.Msg({msg: 'The sum amount is equal to transaction amount.'});
+            } else {
+                //this.lstAdjustment = [];
+                Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
+                Ext.getCmp(prototype.id + '-panelADJ').show();
+                var rec = Object.create(grid.getStore().getAt(rowIndex).data);
+                var monto_ajustado = parseFloat(parseFloat(this.bean.TGROSAMOUN - this.sumAmount).toFixed(2))
+
+                rec.A1531VFOP = monto_ajustado;
+                rec.tot_VFOP = monto_ajustado;
+                //rec.SADJUST = 0;
+                rec.A720AGENTE = $('#menuUser').text();
+                rec.CERROR = '01';
+                this.lstAdjustment.push(rec);
+                Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
+                        Ext.create('Ext.data.Store', {data: this.lstAdjustment, autoLoad: true})
+                        );
+                this.calcularMontos();
+            }
+        } else {
+            global.Msg({msg: 'Can\'t adjust a blocked ticket.'});
+        }
+
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {

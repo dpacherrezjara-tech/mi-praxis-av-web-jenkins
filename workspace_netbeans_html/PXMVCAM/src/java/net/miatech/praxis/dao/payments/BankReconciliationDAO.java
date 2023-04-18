@@ -4735,9 +4735,9 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
-    public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
 
+    public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
+        
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         String tipFecha = "Sales";
@@ -4748,15 +4748,15 @@ public class BankReconciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Settlement");
-        hmDescEstados.put("3", "Settlement without " + tipFecha);
+        hmDescEstados.put("2", tipFecha + " without ACCB");
+        hmDescEstados.put("3", "ACCB without " + tipFecha);
         hmDescEstados.put("4", "Match with Difference");
         hmDescEstados.put("5", "Match Manual");
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -4764,11 +4764,15 @@ public class BankReconciliationDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.TICKET.trim());
-            cstmt.setString(3, filter.CARD1.trim());
-            cstmt.setString(4, filter.CARD2.trim());
-            cstmt.setString(5, filter.SAUTHOC.trim());
-            cstmt.setString(6, filter.SDATE.trim());
+            cstmt.setString(2, filter.TDOC.trim());
+            cstmt.setString(3, filter.SDATE.trim());
+            cstmt.setString(4, filter.SCOUNTRY.trim());
+            cstmt.setString(5, filter.SPNR.trim());
+            cstmt.setString(6, filter.SCURRENCY.trim());
+            cstmt.setString(7, filter.SCARCOD.trim());
+            cstmt.setString(8, filter.SCARDN.trim());
+            cstmt.setString(9, filter.SAUTHOC.trim());
+            cstmt.setString(10, filter.SAGENT.trim());
 
             cstmt.execute();
 
@@ -4788,7 +4792,7 @@ public class BankReconciliationDAO {
                 beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
 
-                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
+                beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("R")) {
                     beanTkt.descTDOC = "Refund";
                 } else {
