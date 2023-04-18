@@ -2379,7 +2379,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'ACCB',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -2619,7 +2619,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'ACCB',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -2842,7 +2842,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'ACCB',
+                                                                        text: 'Reconcili.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,

@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     lstSendManual: [],
     lstBlocked: [],
     lstAdjustment: [],
-    sumAmount:0,
+    sumAmount: 0,
     sumAmountBlocked: 0,
     dataObtain: {},
     // </editor-fold>
@@ -27,35 +27,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.obtainData();
     },
     afterRender: function () {
-
-        switch (this.actionCode) {
-            case 'I':
-                //this.habilitarCampos();
-                Ext.getCmp(prototype.id + '-btn-save').show();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-//                Ext.getCmp(prototype.id + '-btn-delete').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
-                break;
-            case 'U':
-//                this.habilitarCampos();
-//                this.limpiarData();
-                this.onSearchCompleteDetail();
-                Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').show();
-//                Ext.getCmp(prototype.id + '-btn-delete').show();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
-                break;
-            case 'S':
-                //this.deshabilitarCampos();
-                //this.limpiarData();
-                this.mostrarData();
-                this.onSearchCompleteDetail();
-                Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-delete').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
-                break;
-        }
+        this.mostrarData();
+        this.onSearchCompleteDetail();
+        Ext.getCmp(prototype.id + '-btn-save').hide();
+        Ext.getCmp(prototype.id + '-btn-update').hide();
+        Ext.getCmp(prototype.id + '-btn-delete').hide();
+        Ext.getCmp(prototype.id + '-btn-cancel').show();
     },
     addCreditCard_keyDownHandler: function () {
         var fecha_a_validar = "";

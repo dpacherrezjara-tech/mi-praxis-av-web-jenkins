@@ -142,17 +142,17 @@
                 win.setValue('1-lblTicket02', beanTemp.strTicket.trim());
 //                lblTicket02.toolTip = app.trim(beanTemp.strComment);
                 if (beanTemp.AFTE === "X") {
-                    win.setValue('1-lblType02', 'ACCB BSP');
+                    win.setValue('1-lblType02', 'Reconcili. BSP');
                 } else if (beanTemp.AFTE === "A") {
-                    win.setValue('1-lblType02', 'ACCB ARC');
+                    win.setValue('1-lblType02', 'Reconcili. ARC');
                 } else if (beanTemp.AFTE === "B") {
-                    win.setValue('1-lblType02', 'ACCB ASR');
+                    win.setValue('1-lblType02', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "N") {
-                    win.setValue('1-lblType02', 'ACCB ASR');
+                    win.setValue('1-lblType02', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "L") {
-                    win.setValue('1-lblType02', 'ACCB ASR');
+                    win.setValue('1-lblType02', 'Reconcili. ASR');
                 } else {
-                    win.setValue('1-lblType02', 'ACCB');
+                    win.setValue('1-lblType02', 'Reconcili.');
                 }
                 win.setValue('1-lblStatus02', beanTemp.strDescStatus.trim());
                 win.setValue('1-lblDateV02', beanTemp.SDATE.trim());
@@ -225,17 +225,17 @@
                 win.setValue('1-lblTicket04', beanTemp.strTicket.trim());
 //                lblTicket04.toolTip = app.trim(beanTemp.strComment);
                 if (beanTemp.AFTE === "X") {
-                    win.setValue('1-lblType04', 'ACCB BSP');
+                    win.setValue('1-lblType04', 'Reconcili. BSP');
                 } else if (beanTemp.AFTE === "A") {
-                    win.setValue('1-lblType04', 'ACCB ARC');
+                    win.setValue('1-lblType04', 'Reconcili. ARC');
                 } else if (beanTemp.AFTE === "B") {
-                    win.setValue('1-lblType04', 'ACCB ASR');
+                    win.setValue('1-lblType04', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "N") {
-                    win.setValue('1-lblType04', 'ACCB ASR');
+                    win.setValue('1-lblType04', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "L") {
-                    win.setValue('1-lblType04', 'ACCB ASR');
+                    win.setValue('1-lblType04', 'Reconcili. ASR');
                 } else {
-                    win.setValue('1-lblType04', 'ACCB');
+                    win.setValue('1-lblType04', 'Reconcili.');
                 }
                 win.setValue('1-lblStatus04', beanTemp.strDescStatus.trim());
                 win.setValue('1-lblDateV04', beanTemp.SDATE.trim());
@@ -308,17 +308,17 @@
                 win.setValue('1-lblTicket06', beanTemp.strTicket.trim());
 //                lblTicket06.toolTip = app.trim(beanTemp.strComment);
                 if (beanTemp.AFTE === "X") {
-                    win.setValue('1-lblType06', 'ACCB BSP');
+                    win.setValue('1-lblType06', 'Reconcili. BSP');
                 } else if (beanTemp.AFTE === "A") {
-                    win.setValue('1-lblType06', 'ACCB ARC');
+                    win.setValue('1-lblType06', 'Reconcili. ARC');
                 } else if (beanTemp.AFTE === "B") {
-                    win.setValue('1-lblType06', 'ACCB ASR');
+                    win.setValue('1-lblType06', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "N") {
-                    win.setValue('1-lblType06', 'ACCB ASR');
+                    win.setValue('1-lblType06', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "L") {
-                    win.setValue('1-lblType06', 'ACCB ASR');
+                    win.setValue('1-lblType06', 'Reconcili. ASR');
                 } else {
-                    win.setValue('1-lblType06', 'ACCB');
+                    win.setValue('1-lblType06', 'Reconcili.');
                 }
                 win.setValue('1-lblStatus06', beanTemp.strDescStatus.trim());
                 win.setValue('1-lblDateV06', beanTemp.SDATE.trim());
@@ -391,17 +391,17 @@
                 win.setValue('1-lblTicket08', beanTemp.strTicket.trim());
 //                lblTicket08.toolTip = app.trim(beanTemp.strComment);
                 if (beanTemp.AFTE === "X") {
-                    win.setValue('1-lblType08', 'ACCB BSP');
+                    win.setValue('1-lblType08', 'Reconcili. BSP');
                 } else if (beanTemp.AFTE === "A") {
-                    win.setValue('1-lblType08', 'ACCB ARC');
+                    win.setValue('1-lblType08', 'Reconcili. ARC');
                 } else if (beanTemp.AFTE === "B") {
-                    win.setValue('1-lblType08', 'ACCB ASR');
+                    win.setValue('1-lblType08', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE === "N") {
-                    win.setValue('1-lblType08', 'ACCB ASR');
+                    win.setValue('1-lblType08', 'Reconcili. ASR');
                 } else if (beanTemp.AFTE == "L") {
-                    win.setValue('1-lblType08', 'ACCB ASR');
+                    win.setValue('1-lblType08', 'Reconcili. ASR');
                 } else {
-                    win.setValue('1-lblType08', 'ACCB');
+                    win.setValue('1-lblType08', 'Reconcili.');
                 }
                 win.setValue('1-lblStatus08', beanTemp.strDescStatus.trim());
                 win.setValue('1-lblDateV08', beanTemp.SDATE.trim());

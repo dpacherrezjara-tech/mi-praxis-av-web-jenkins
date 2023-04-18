@@ -1399,9 +1399,9 @@ public class BankReconciliationDAO {
         hmDescEstados.put("3", "Settlement Without Sales");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
-        hmDescEstados.put("6", "Forced Match");
-        hmDescEstados.put("7", "Compensation Match");
-        hmDescEstados.put("8", "Pending RFND");
+//        hmDescEstados.put("6", "Forced Match");
+//        hmDescEstados.put("7", "Compensation Match");
+//        hmDescEstados.put("8", "Pending RFND");
 
         HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
         hmDescSTCONL.put("", "");

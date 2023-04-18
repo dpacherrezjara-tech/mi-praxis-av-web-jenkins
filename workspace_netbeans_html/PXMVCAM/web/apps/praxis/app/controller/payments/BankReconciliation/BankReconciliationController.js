@@ -179,7 +179,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             fields: ['code', 'name'],
             data: [
                 ["SDATE", "Sales Date"],
-                //["BDATEP", "Reconciliation Date"]
+                        //["BDATEP", "Reconciliation Date"]
             ]
         }));
         cmbFecFiltro.setValue("SDATE");
@@ -270,7 +270,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 },
                 load: function (obj, obj2, success, response, obj5) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                    win.lblUser_toolTip("Estructura: A2291Y");
+                    win.lblUser_toolTip("Estructura: MPF101");
 
                     var res = Ext.JSON.decode(response._response.responseText);
                     if (res.success) {
@@ -387,7 +387,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         }
     },
     setGridData: function (obj, val) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
         if (me.panelActual !== '-panelGridData') {
             me.panelActual = '-panelGridData';
@@ -480,7 +480,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
     },
     setGridDataDetCard: function (data) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -653,7 +653,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         BankReconciliation.show();
     },
     setGridDataDetCardS: function (data) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
         me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -688,7 +688,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
     },
     setGridDataDetCountryS: function (data) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
         me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -774,7 +774,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 load: function (obj, obj2, success, response, obj5) {
 
                     //global.selectedChild(me.childs, '-boxDetCountryS');
-                    win.lblUser_toolTip("Estructura: A2291");
+                    win.lblUser_toolTip("Estructura: MPF101");
 
                     var pag = Ext.getCmp(prototype.id + '-paggin10');
                     var pagData = pag.getPageData();
@@ -828,7 +828,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     obj.proxy.extraParams = {beanString: JSON.stringify(me.beanDet2)};
                 },
                 load: function (obj, obj2, success, response, obj5) {
-                    win.lblUser_toolTip("Estructura: A2291");
+                    win.lblUser_toolTip("Estructura: MPF101");
 
                     var pag = Ext.getCmp(prototype.id + '-paggin11');
                     var pagData = pag.getPageData();
@@ -915,7 +915,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 load: function (obj, obj2, success, response, obj5) {
 
                     //me.selectedChild('vskMain', 'boxDetDayS');
-                    win.lblUser_toolTip("Estructura: A2291");
+                    win.lblUser_toolTip("Estructura: MPF101");
                     var pag = Ext.getCmp(prototype.id + '-paggin12');
                     var pagData = pag.getPageData();
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -1013,7 +1013,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
     },
     setGridDataDetCardNbr: function (data) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
         me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -1096,7 +1096,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
     },
     setGridDataDetDayByS: function (data) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
         me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -1167,7 +1167,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
     },
     setGridDataDetCardNbrByS: function (data) {
-        win.lblUser_toolTip("Estructura: A2291");
+        win.lblUser_toolTip("Estructura: MPF101");
         me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -1245,7 +1245,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         }
     },
     setGridDataDetTicket: function (data) {
-        win.lblUser_toolTip("Estructura: A2290");
+        win.lblUser_toolTip("Estructura: MPF100");
         me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -1328,7 +1328,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
     },
     setGridDataDetA1531TKT: function (data) {
-        win.lblUser_toolTip("Estructura: A2290");
+        win.lblUser_toolTip("Estructura: MPF100");
 //        me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -1367,7 +1367,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-paggin8').bindStore(storeGridDatas);
     },
     setGridDataDetA1531Excel: function (data) {
-        win.lblUser_toolTip("Estructura: A2290");
+        win.lblUser_toolTip("Estructura: MPF100");
 //        me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -1490,16 +1490,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 if (res.success) {
                     var beanCons = res.result;
 //                    console.log(beanCons.STVAL);
-                    if (beanCons !== null && beanCons.SCARDN !== '') {
-                        if (beanCons.STVAL !== '1' && beanCons.STVAL !== '5') {
-                            me.winDataEntry('U', beanCons);
-                        } else {
-                            me.winDataEntry('S', beanCons);
-                        }
+                    if (beanCons !== null) {
+                        me.winDataEntry('U', beanCons);
                     } else {
-                        global.Msg(
-                                {msg: 'An error has ocurred. Please contact our System Department'
-                                });
+                        global.Msg({
+                            msg: 'An error has ocurred. Please contact our System Department'
+                        });
                     }
 
                 } else {
@@ -1841,7 +1837,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 load: function (obj, obj2, success, response, obj5) {
 
 //                    me.selectedChild('vskMain', 'boxDetTktMatch');
-                    win.lblUser_toolTip("Estructura: A2291");
+                    win.lblUser_toolTip("Estructura: MPF101");
 
                     var res = Ext.JSON.decode(response._response.responseText);
 
