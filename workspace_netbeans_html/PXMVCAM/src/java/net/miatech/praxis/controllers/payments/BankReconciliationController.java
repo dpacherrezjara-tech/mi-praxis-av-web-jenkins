@@ -3103,15 +3103,15 @@ public class BankReconciliationController extends BaseController {
 
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
-            
+
             lst = logic.loadPX269SQP00833_MDP_DETAIL(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
     }
-    
-        @RequestMapping(value = "searchBeanAMDP_SCAN")
+
+    @RequestMapping(value = "searchBeanAMDP_SCAN")
     public @ResponseBody
     String searchBeanAMDP_SCAN(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- BankReconciliation : searchBeanAMDP_SCAN-------------");
@@ -3137,8 +3137,42 @@ public class BankReconciliationController extends BaseController {
 
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
-            
+
             lst = logic.loadPX269SQP00833_MDP_SCAN(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchBeanAMDP_SCAN_PENDING")
+    public @ResponseBody
+    String searchBeanAMDP_SCAN_PENDING(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanAMDP_SCAN_PENDING-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListAMDP_SCAN_PENDING(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListAMDP_SCAN_PENDING(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_MDP_SCAN_PENDING(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }

@@ -4735,4 +4735,100 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
+    
+    public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        String tipFecha = "Sales";
+        if (filter.TDOC.trim().equals("R")) {
+            tipFecha = "Refund";
+        }
+        double totAVFOP = 0;
+
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("2", tipFecha + " without Settlement");
+        hmDescEstados.put("3", "Settlement without " + tipFecha);
+        hmDescEstados.put("4", "Match with Difference");
+        hmDescEstados.put("5", "Match Manual");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.TICKET.trim());
+            cstmt.setString(3, filter.CARD1.trim());
+            cstmt.setString(4, filter.CARD2.trim());
+            cstmt.setString(5, filter.SAUTHOC.trim());
+            cstmt.setString(6, filter.SDATE.trim());
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                beanTkt = new A2290Filter();
+
+                beanTkt.CCIA = rst.getString("CCIA").trim();
+                beanTkt.FORMA = rst.getString("FORMA").trim();
+                beanTkt.SERIE = rst.getString("SERIE").trim();
+                beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
+                beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                beanTkt.SDATE = rst.getString("SDATE").trim();
+                beanTkt.SPNR = rst.getString("SPNR").trim();
+
+                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
+                if (rst.getString("TDOC").trim().equals("R")) {
+                    beanTkt.descTDOC = "Refund";
+                } else {
+                    beanTkt.descTDOC = "Sales";
+                }
+                beanTkt.A1531TTARJ = rst.getString("SCARCOD").trim();
+                beanTkt.A1531NREF = rst.getString("SCARDN").trim();
+                beanTkt.A1531CAPL = rst.getString("SAUTHOC").trim();
+                beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
+                beanTkt.A1531VFOP = rst.getDouble("SVFOP");
+                beanTkt.tot_VFOP = rst.getDouble("SVFOP");
+                beanTkt.A720FECVTA = rst.getString("SDATE").trim();
+                beanTkt.A720PNR = rst.getString("SPNR").trim();
+                beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
+
+                lstData.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
 }
