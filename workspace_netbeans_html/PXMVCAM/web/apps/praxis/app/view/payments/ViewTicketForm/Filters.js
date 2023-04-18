@@ -43,7 +43,7 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Filters', {
                         padding: '8px 4px 8px 4px',
                         anchor: '100%'
                     },
-                    items: [                       
+                    items: [
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDate',
@@ -60,7 +60,10 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Filters', {
                             emptyText: 'All',
                             labelWidth: 100,
                             width: 240,
-                            anchor: '100%'
+                            anchor: '100%',
+                            listeners: {
+                                change: 'cmbDate_changeHandler'
+                            }
                         },
                         {
                             xtype: 'textfield',
@@ -91,11 +94,102 @@ Ext.define('Ext.Praxis.view.payments.ViewTicketForm.Filters', {
                             maskRe: /[0-9]/,
                             fieldStyle: 'text-align: center;',
                             labelAlign: 'left',
+                            padding: '8px 2px 8px 2px',
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'onKeyPress_viewTicket'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtPNR',
+                            required: true,
+                            editable: true,
+                            fieldLabel: 'PNR',
+                            enforceMaxLength: true,
+                            hidden: true,
+                            maxLength: 6,
+                            width: 160,
+                            labelWidth: 60,
+                            //maskRe: /[0-9]/,
+                            fieldStyle: 'text-align: center;',
+                            labelAlign: 'left',
+                            padding: '8px 2px 8px 2px',
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'onKeyPress_viewTicket'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCC1',
+                            required: true,
+                            editable: true,
+                            fieldLabel: 'Credit Card',
+                            enforceMaxLength: true,
+                            hidden: true,
+                            maxLength: 6,
+                            width: 200,
+                            labelWidth: 100,
+                            //maskRe: /[0-9]/,
+                            fieldStyle: 'text-align: center;',
+                            labelAlign: 'left',
                             padding: '8px 2px 8px 2px'
-                        },                        
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCC_int',
+                            fieldStyle: 'text-align:center;',
+                            enableKeyEvents: true,
+                            enforceMaxLength: true,
+                            maxLength: 6,
+                            hidden: true,
+                            value: '******',
+                            readOnly: true,
+                            width: 50,
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCC2',
+                            required: true,
+                            editable: true,
+                            fieldLabel: '',
+                            enforceMaxLength: true,
+                            hidden: true,
+                            maxLength: 4,
+                            width: 60,
+                            labelWidth: 0,
+                            //maskRe: /[0-9]/,
+                            fieldStyle: 'text-align: center;',
+                            labelAlign: 'left',
+                            padding: '8px 2px 8px 2px',
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'onKeyPress_viewTicket'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtAUTH',
+                            required: true,
+                            editable: true,
+                            fieldLabel: 'Auth.',
+                            enforceMaxLength: true,
+                            hidden: true,
+                            maxLength: 6,
+                            width: 160,
+                            labelWidth: 60,
+                            //maskRe: /[0-9]/,
+                            fieldStyle: 'text-align: center;',
+                            labelAlign: 'left',
+                            padding: '8px 2px 8px 2px',
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'onKeyPress_viewTicket'
+                            }
+                        },
                     ]
                 },
-                
             ]
         }
     ]

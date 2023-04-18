@@ -73,7 +73,7 @@ public class ViewTicketDAO {
 
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL PRAXIS.SQP04906(?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.SQP04906(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -81,7 +81,12 @@ public class ViewTicketDAO {
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt01.setString(2, filter.TICKET);
+            cstmt01.setString(2, filter.option);
+            cstmt01.setString(3, filter.TICKET);
+            cstmt01.setString(4, filter.PNR);
+            cstmt01.setString(5, filter.CC1);
+            cstmt01.setString(6, filter.CC2);
+            cstmt01.setString(7, filter.AUTH);
 
             cstmt01.execute();
             rs01 = cstmt01.getResultSet();

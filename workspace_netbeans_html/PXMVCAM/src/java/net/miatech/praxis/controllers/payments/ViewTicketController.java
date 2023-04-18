@@ -87,7 +87,12 @@ public class ViewTicketController extends BaseController {
 
             logic.setSession(this.serverSession.getServerSession());
 
+            filter.option = request.getParameter("option");
             filter.TICKET = request.getParameter("TICKET");
+            filter.PNR = request.getParameter("PNR");
+            filter.CC1 = request.getParameter("CC1");
+            filter.CC2 = request.getParameter("CC2");
+            filter.AUTH = request.getParameter("AUTH");
 
             lst = logic.load(filter);
 

@@ -467,6 +467,13 @@ public class A2290Filter extends A2290 {
     public String DES_CODADJU = "";
     public String FSELEC = "";
     
+    //PArametros view ticket
+    public String option = "";
+    public String PNR = "";
+    public String CC1 = "";
+    public String CC2 = "";
+    public String AUTH = "";
+    
     //Campos de desglose
     public String A1531TKT = "";
     public String FDESGLOSE = "";
