@@ -628,7 +628,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         registro_adj.tot_VFOP = this.bean.SVFOP;
         registro_adj.A720FECVTA = this.bean.SDATE;
         registro_adj.A720PNR = this.bean.SPNR;
-        registro_adj.A720AGENTE = this.bean.SAGENT;
+        //registro_adj.A720AGENTE = this.bean.SAGENT;
+        registro_adj.A720AGENTE = $('#menuUser').text();;
         registro_adj.descTDOC = 'Adj.';
         registro_adj.TDOC = 'A';
 
