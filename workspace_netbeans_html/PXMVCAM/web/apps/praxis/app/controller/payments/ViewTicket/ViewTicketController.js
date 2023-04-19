@@ -58,9 +58,15 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
     },
     startDisplay: function () {
         var bean = {};
-        bean = this.params.bean;
+        bean = this.params.bean;                
         Ext.getCmp(prototype.id + '-txtCia').setValue(bean.IN_CIA);
         Ext.getCmp(prototype.id + '-txtTicket').setValue(bean.IN_FORMA + bean.IN_SERIE);
+        
+        var cmbDate = Ext.getCmp(prototype.id + '-cmbDate');
+        cmbDate.suspendEvents(false);
+        cmbDate.setValue('1');
+        cmbDate.resumeEvents();
+        
         this.btnSearch_click();
     },
     xpanel_afterrender: function (obj, e) {

@@ -69,7 +69,6 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
 //
         });
     },
-    
     eventKey: function(e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -94,6 +93,9 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
         }
 
     },
+    cmbTranType_changeHandler: function() {
+        this.btnSearch_click();
+    },
     obtainData: function() {
 
         var cmbCurrency = Ext.getCmp(prototype.id + '-cmbCurrency');
@@ -108,7 +110,7 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
             ]
         }));
         cmbCurrency.setValue("");
-        
+
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.CARD = 2;
         Ext.Ajax.request({
@@ -125,19 +127,18 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
                             Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
                             );
                     Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
-                    
+
                     Ext.getCmp(prototype.id + '-cmbCode').bindStore(
                             Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true})
                             );
                     Ext.getCmp(prototype.id + '-cmbCode').setValue('');
                     me.btnSearch_click();
-                    
+
                 } else
                     global.Msg({msg: res.sesion});
             }
-        });               
+        });
     },
-    
     setFormatParameter: function() {
 
         me.bean = {};
@@ -153,7 +154,15 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
     },
     btnSearch_click: function(obj, e) {
         this.setFormatParameter();
-        this.setGridData();
+        var check = Ext.getCmp(prototype.id + '-rbgType').getValue();
+        if (check.rbgType === 'CARD') {
+            console.log('CARD');
+            this.setGridData();
+        } else {
+            console.log('COMM');
+            this.setGridDataComm();
+        }
+
     },
     // <editor-fold defaultstate="collapsed" desc="setGridData">
 
@@ -199,7 +208,142 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
     },
     // </editor-fold>
 
+    setGridDataComm: function() {
+        win.lblUser_toolTip("Estructura: A2280");
+        me.panelActual = '-boxCommData';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+//        me.setWidthPie();
+        this.setFormatParameter();
 
+//        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+//            proxy: {
+//                url: prototype.url + '/searchComm'
+//            }, listeners: {
+//                beforeload: function(obj) {
+//                    obj.proxy.extraParams = searchParams;
+//                },
+//                load: function(obj) {
+//                    var pag = Ext.getCmp(prototype.id + '-paggin');
+//                    var pagData = pag.getPageData();
+//                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+//                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+//                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+//                    if (obj.data.length === 0) {
+//                        global.Msg({
+//                            msg: 'Data not found.'
+//                        });
+//                    }
+//                }
+//            }
+//        });
+//
+//        global.clear();
+//        Ext.getCmp(prototype.id + '-gridCommData').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+
+
+        var cadena = searchParams.beanString;
+
+        Ext.Ajax.request({
+            url: prototype.url + '/searchComm',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
+            params: {beanString: cadena},
+            success: function(response, options) {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+
+
+                if (res.data.length === 0) {
+                    global.Msg({
+                        msg: 'Data not found.'
+                    });
+                } else {
+//                    me.drillDown.push(me.panelActual);
+//                    me.panelActual = '-boxCardData';
+//                    global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+//                    var data = res.data[0];
+                    var lstData = res.data;
+                    console.log(lstData);
+//                    console.log(data.lngTotDocs);
+//                    var bean = res.data.items[0].data;
+
+                    var a = [];
+                    var dataRoot = {text: '.', expanded: false, children: []};
+
+                    Ext.Object.each(lstData, function(index, value) {
+//                        console.log(value);
+                        if (a.indexOf(value.strAgrupacion) < 0) {
+                            var x = [];
+
+                            var TOT_pos = 0;
+                            var TOT_VFOP = 0;
+                            var TOT_TOTCUP = 0;
+                            var TOT_AUTAMOUNT = 0;
+
+                            a.push(value.strAgrupacion);                            
+                            dataRoot.children.push({
+                                strAgrupacion: value.strAgrupacion.substr(0,18),
+                                COUNTRY: '',
+                                CODEBANK: '',
+                                CODE: '',
+                                CURRENC: '',
+                                TCOMIS: '',
+                                DCOMIS: '',
+                                FECFROM: value.FECFROM,
+                                FECTO: value.FECTO,
+                                BASEC: '',
+                                RATE: '',
+                                RATEIVA: '',
+                                MONTO: '',
+                                MESES: '',
+                                CODEQUIV: '',
+                                expanded: false, children: []
+                            });
+                            var b = [];
+                            Ext.Object.each(lstData, function(index, value01) {
+                                if (value.strAgrupacion === value01.strAgrupacion) {
+                                    dataRoot.children[a.indexOf(value.strAgrupacion)].children.push({
+                                        strAgrupacion: value01.strAgrupacion.substr(0,18),
+                                        COUNTRY: value01.COUNTRY,
+                                        CODEBANK: value01.CODEBANK,
+                                        CODE: value01.CODE,
+                                        CURRENC: value01.CURRENC,
+                                        TCOMIS: value01.TCOMIS,
+                                        DCOMIS: value01.DCOMIS,
+                                        FECFROM: value01.FECFROM,
+                                        FECTO: value01.FECTO,
+                                        BASEC: value01.BASEC,
+                                        RATE: value01.RATE,
+                                        RATEIVA: value01.RATEIVA,
+                                        MONTO: value01.MONTO,
+                                        MESES: value01.MESES,
+                                        CODEQUIV: value01.CODEQUIV,
+                                        leaf: true
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    console.log(dataRoot);
+
+                    var storeTree = Ext.create('Ext.data.TreeStore', {
+                        root: dataRoot
+                    });
+
+                    console.log(storeTree);
+
+                    Ext.getCmp(prototype.id + '-gridCommData').setStore(storeTree);
+                }
+
+            }
+        });
+
+
+    },
     validateFields: function() {
         var msj = '';
         var bean = searchParams.bean;
@@ -207,7 +351,15 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
         return msj;
     },
     btnAdd_click: function() {
-        this.winDataEntry('I');
+        var check = Ext.getCmp(prototype.id + '-rbgType').getValue();
+        if (check.rbgType === 'CARD') {
+            console.log('CARD');
+            this.winDataEntry('I');
+        } else {
+            console.log('COMM');
+            this.winDataEntry2('I');
+        }
+        
     },
     onEditClick: function(grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
@@ -218,6 +370,27 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
         rec = rec === null || rec === undefined ? {} : rec;
 
         Ext.create('Ext.Praxis.view.payments.CreditCardForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: me.lstCountry
+            }
+        }).show();
+    },
+    onEditClick2: function(grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        if (rec.data.children === null || rec.data.children === undefined) {
+            this.winDataEntry2('U', rec);
+        } else {
+            global.Msg({msg: 'Please Select Detail'});
+        }
+    },
+    winDataEntry2: function(action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.CreditCardForm.DataEntryComm', {
             id: prototype.id + '-dataEntry',
             params: {
                 action: action,
@@ -326,12 +499,16 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
     setWidthPie: function() {
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
         Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
     },
     getPaggin: function() {
         me.pagginActual = '';
         switch (me.panelActual) {
             case  '-panelGridData':
                 me.pagginActual = '-paggin';
+                break;
+            case  '-boxCommData':
+//                me.pagginActual = '-paggin';
                 break;
         }
     },

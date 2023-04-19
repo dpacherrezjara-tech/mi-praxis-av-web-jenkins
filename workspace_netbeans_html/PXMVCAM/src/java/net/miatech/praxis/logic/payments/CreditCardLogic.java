@@ -44,4 +44,32 @@ public class CreditCardLogic {
     public A2280Filter loadPX265SQP00662(A2280Filter filter) throws Exception {
         return CreditCardDAO.loadPX265SQP00662(filter);
     }
+
+    public List<A2280Filter> loadPX265SQP03398(A2280Filter filter) throws SQLException, Exception {
+        return CreditCardDAO.loadPX265SQP03398(filter);
+    }
+    
+    // ----------------------------------------------------------------------------------------------------
+    
+    public List<A2280Filter> loadPX265SQP00663() throws Exception {
+        return CreditCardDAO.loadPX265SQP00663();
+    }
+    
+    public List<A2280Filter> loadPX265SQP03423() throws SQLException, Exception {
+        return CreditCardDAO.loadPX265SQP03423();
+    }
+    
+    public A2280Filter loadPX265SQP03399(A2280Filter filter) throws SQLException, Exception  {
+        return CreditCardDAO.loadPX265SQP03399(filter);
+    }
+    
+    public String loadPX265SQP00941(A2280Filter filter) throws SQLException, Exception {
+        return CreditCardDAO.loadPX265SQP00941(filter);
+    }
+    
+    public String loadPX265SQP03400(A2280Filter filter, String option) throws SQLException, Exception {
+        return CreditCardDAO.loadPX265SQP03400(filter, option);
+    }
+    
+    
 }

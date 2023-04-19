@@ -321,7 +321,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 90,
-                                    maskRe: /[0-9]/,
+                                    maskRe: /[0-9.]/,
                                     enforceMaxLength: true,
                                     maxLength: 5                                  
                                 },
@@ -341,7 +341,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 119,
-                                    maskRe: /[0-9]/,
+                                    maskRe: /[0-9.]/,
                                     enforceMaxLength: true,
                                     maxLength: 5
                                 },
@@ -375,7 +375,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 90,
-                                    maskRe: /[0-9]/,
+                                    maskRe: /[0-9.]/,
                                     enforceMaxLength: true,
                                     maxLength: 5
                                 },
@@ -397,7 +397,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 119,
-                                    maskRe: /[0-9]/,
+                                    maskRe: /[0-9.]/,
                                     enforceMaxLength: true,
                                     maxLength: 5
                                 },

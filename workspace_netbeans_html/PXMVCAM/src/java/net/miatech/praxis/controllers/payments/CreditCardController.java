@@ -332,54 +332,6 @@ public class CreditCardController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "MaintenanceA2280")
-    public @ResponseBody
-    String MaintenanceA2280(ModelMap map, HttpServletRequest request) {
-
-        System.out.println("-------------- CreditCard : MaintenanceA2280-------------");
-        String option;
-        String beanString;
-        Gson gson = new Gson();
-
-        A2281 filter = new A2281();
-        String msj = "";
-
-        try {
-
-            option = request.getParameter("option");
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2281.class);
-//            filter.CODE = request.getParameter("CODE").trim();
-//            filter.NAME = request.getParameter("NAME").trim();
-//            filter.CODEQUIV = request.getParameter("CODEQUIV").trim();
-//            filter.CODEBANK = request.getParameter("CODEBANK").trim();
-//            filter.NAMEBANK = request.getParameter("NAMEBANK").trim();
-//            filter.COUNTRY = request.getParameter("COUNTRY").trim();
-//            filter.CURRENC = request.getParameter("CURRENC").trim();
-//            filter.FSTAT = request.getParameter("FSTAT").trim();
-//            filter.FNOBANK = request.getParameter("FNOBANK").trim();
-//            filter.RATECON = Double.parseDouble(request.getParameter("RATECON").trim());
-//            filter.RATECOP1 = Double.parseDouble(request.getParameter("RATECOP1").trim());
-//            filter.RATECOP2 = Double.parseDouble(request.getParameter("RATECOP2").trim());
-//            filter.RATEIVA = Double.parseDouble(request.getParameter("RATEIVA").trim());
-//            filter.CLIENTE = request.getParameter("CLIENTE").trim();
-
-            logic = new CreditCardLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX267SQP00672(filter, option);
-
-            map.put("success", true);
-            map.put("Mensaje", msj);
-        } catch (NumberFormatException | SQLException ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        } catch (Exception ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        }
-        return new Gson().toJson(map);
-    }
-
     @RequestMapping(value = "searchCompleteDetail")
     public @ResponseBody
     String searchCompleteDetail(ModelMap map, HttpServletRequest request) {
@@ -405,4 +357,155 @@ public class CreditCardController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "searchComm")
+    public @ResponseBody
+    String searchComm(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CreditCard : SearchComm-------------");
+        map.put("success", true);
+        List<A2280Filter> lst = this.getListComm(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2280Filter> getListComm(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2280Filter> lst = new ArrayList<>(0);
+        A2280Filter filter = new A2280Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CreditCardLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2280Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX265SQP03398(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchCompleteComm")
+    public @ResponseBody
+    String searchCompleteComm(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CreditCard : searchCompleteComm-------------");
+
+        Gson gson = new Gson();
+        A2280Filter filter = new A2280Filter();
+
+        List<A2280Filter> loadlstA2280;
+        List<A2280Filter> loadLstTCOMIS;
+        A2280Filter beanComplete = new A2280Filter();
+
+        String beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2280Filter.class);
+
+        logic = new CreditCardLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        try {
+
+            loadlstA2280 = logic.loadPX265SQP00663();
+            loadLstTCOMIS = logic.loadPX265SQP03423();
+            beanComplete = logic.loadPX265SQP03399(filter);
+
+            map.put("beanComplete", beanComplete);
+            map.put("loadlstA2280", loadlstA2280);
+            map.put("listaTCOMIS", loadLstTCOMIS);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "MaintenanceA2348Comm")
+    public @ResponseBody
+    String MaintenanceA2348Comm(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- CreditCard : MaintenanceA2348Comm-------------");
+        String beanString;
+        Gson gson = new Gson();
+
+        A2280Filter filter = new A2280Filter();
+        String msj = "";
+
+        try {
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2280Filter.class);
+
+            logic = new CreditCardLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            //Verifica que el código del banco ingresado exista en la tabla A2281
+            msj = logic.loadPX265SQP00941(filter);
+            if (msj.trim().isEmpty()) {
+                msj = logic.loadPX265SQP03400(filter, filter.option);
+            }
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "MaintenanceA2280")
+    public @ResponseBody
+    String MaintenanceA2280(ModelMap map, HttpServletRequest request){        
+        String msj = "";
+        String beanString;
+        Gson gson = new Gson();
+
+        A2280Filter filter = new A2280Filter();
+        System.out.println("-------------- CreditCard : MaintenanceA2280-------------");
+
+        try {
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2280Filter.class);
+            
+            CreditCardLogic logic = new CreditCardLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            //Verifica que el código del banco ingresado exista en la tabla A2281
+            msj = logic.loadPX265SQP00941(filter);
+            if(msj.trim().isEmpty()){
+                msj = logic.loadPX265SQP00661(filter, filter.option);
+            }
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+
+    }
 }

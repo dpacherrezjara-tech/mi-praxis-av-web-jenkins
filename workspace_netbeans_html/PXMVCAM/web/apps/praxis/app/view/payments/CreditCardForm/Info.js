@@ -1,6 +1,6 @@
 Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.'+prototype.id+'-info',
+    alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
     align: 'center',
     bodyStyle: 'background-color: #E3EAEF;',
@@ -19,11 +19,10 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1400,
+                width: 1460,
                 height: 700,
                 align: 'center'
             },
-            
             items: [
                 {
                     xtype: 'panel',
@@ -43,21 +42,20 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             padding: '1',
-                            border:true,
+                            border: true,
 //                            margin: '1',
-                             height: 550,
-                             width: 1300,  
+                            //height: 550,
+                            width: 1460,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
                             },
-                            
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id+'-gridDataAirport',
-                                    height: 510,
-                                    width: 1300,
+                                    id: prototype.id + '-gridDataAirport',
+                                    //height: 510,
+                                    width: 1460,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -77,7 +75,7 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'Code', dataIndex: 'CODE', width: 50 },
+                                                    {text: 'Code', dataIndex: 'CODE', width: 50},
                                                     {text: 'Name', dataIndex: 'NAME', width: 160, align: 'left'}
 //                                                    {text: 'Ctry', dataIndex: 'COUNTRY', width: 50 }
                                                 ]
@@ -95,30 +93,63 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
                                                     {text: 'Name', dataIndex: 'NAMEBANK', width: 140, align: 'center'}
                                                 ]
                                             },
-                                            {text: 'Currency', dataIndex: 'CURRENC', width: 70}
-                                            ,
-                                            {text: 'Commision',
+                                            {text: 'Currency', dataIndex: 'CURRENC', width: 70},
+                                            {text: 'Date',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Rate Normal', dataIndex: 'RATECON', width: 100, align: 'center',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    {text: 'From', dataIndex: 'FECFROM', width: 80, align: 'center', sortable: false
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Date',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'To', dataIndex: 'FECTO', width: 80, align: 'center', sortable: false
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'National Card Rate',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Credit', dataIndex: 'RATCNAC', width: 100, align: 'center',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Rate Promotional 1', dataIndex: 'RATECOP1', width: 130, align: 'center',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    {text: 'Debit', dataIndex: 'RATDNAC', width: 130, align: 'center',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Rate Promotional 2', dataIndex: 'RATECOP2', width: 130, align: 'center',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                ]
+                                            },
+                                            {text: 'International',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Card Rate', dataIndex: 'RATCEXT', width: 130, align: 'center',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
                                                             return value;
                                                         }
                                                     }
@@ -146,20 +177,25 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
 //                                                    }                                                ]
 //                                            },
                                             {
-                                             text: 'Rate',
+                                                text: 'IVA',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'IVA', dataIndex: 'RATEIVA', width: 50, align: 'right'}
-                                                ]   
+                                                    {text: 'Rate', dataIndex: 'RATEIVA', width: 50, align: 'right',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        }}
+                                                ]
                                             },
                                             {text: 'Cliente', dataIndex: 'CLIENTE', width: 95},
                                             {text: 'Status', dataIndex: 'FSTAT', width: 50},
                                             {
-                                             text: 'Equivalent',
+                                                text: 'Equivalent',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
@@ -167,7 +203,7 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
                                                 },
                                                 columns: [
                                                     {text: 'Code', dataIndex: 'CODEQUIV', width: 100}
-                                                ]   
+                                                ]
                                             },
                                             {
                                                 sortable: false,
@@ -186,88 +222,316 @@ Ext.define('Ext.Praxis.view.payments.CreditCardForm.Info', {
                                         ]
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 7, height: 10},
+                                //{xtype: 'tbspacer', width: 7, height: 10},                                
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxCommData',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            padding: '1',
+                            border: true,
+//                            margin: '1',
+                            height: 550,
+                            width: 1300,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
                                 {
-                                    xtype: 'panel',
-                                    id: prototype.id +'-pie',
-                                    layout: {
-                                        type: 'hbox',
-                                        pack: 'center'
+//                                    xtype: 'grid',
+                                    xtype: 'treepanel',
+                                    id: prototype.id + '-gridCommData',
+                                    height: 510,
+                                    width: 1262,
+                                    hidden: false,
+                                    columnLines: true,
+                                    reserveScrollbar: true,
+                                    useArrows: true,
+                                    rootVisible: false,
+                                    multiSelect: true,
+                                    rowLines: true,
+//                                    features: [{
+////                                        dock: 'bottom',
+//                                            ftype: 'summary'
+//                                        }],
+                                    plugins: {
+                                        ptype: 'cellediting',
+                                        clicksToEdit: 1
                                     },
-                                    border: true,
-                                    width: 1300,
-                                    height: 25,
-                                    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+
+                                        },
+                                        items: [
+                                            {text: 'Key',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Number',
+                                                        xtype: 'treecolumn',
+                                                        dataIndex: 'strAgrupacion', width: 180, align: 'center', sortable: false,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strAgrupacion + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Country',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Code', dataIndex: 'COUNTRY', width: 60, align: 'center', sortable: false,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "background-color:#d5f4d5;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescPais + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Bank',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Code', dataIndex: 'CODEBANK', width: 60, align: 'center', sortable: false,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "background-color:#d5f4d5;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescBank + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Credit',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Card', dataIndex: 'CODE', width: 60, align: 'center', sortable: false,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "background-color:#d5f4d5;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.NAMECAR + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Currency', dataIndex: 'CURRENC', width: 60, align: 'center', sortable: false,
+                                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "background-color:#d5f4d5;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Commission',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Type', dataIndex: 'TCOMIS', width: 50, align: 'center', sortable: false},
+                                                    {text: 'Description', dataIndex: 'DCOMIS', width: 250, align: 'center', sortable: false,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Date',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'From', dataIndex: 'FECFROM', width: 80, align: 'center', sortable: false
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Date',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'To', dataIndex: 'FECTO', width: 80, align: 'center', sortable: false
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Base', dataIndex: 'BASEC', width: 50, align: 'center', sortable: false},
+                                            {text: 'Rate', dataIndex: 'RATE', width: 50, align: 'center', sortable: false,
+                                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'IVA',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Rate', dataIndex: 'RATEIVA', width: 50, align: 'center', sortable: true,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Min.',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Amt', dataIndex: 'MONTO', width: 70, align: 'center', sortable: false,
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Months', dataIndex: 'MESES', width: 50, align: 'center', sortable: false},
+                                            {text: 'Equivalent',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Code', dataIndex: 'CODEQUIV', width: 50, align: 'center', sortable: true
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 40,
+                                                text: 'Edit',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'Edit',
+                                                        handler: 'onEditClick2'
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-pie',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: true,
+                            width: 1300,
+                            height: 25,
+                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
 //                                    defaults: {
 //                                        border: true,
 //                                        padding: '0px 5px 0px 5px'
 //                                    },
-                                    padding: '1px 5px 1px 0px',
+                            padding: '1px 5px 1px 0px',
+                            items: [
+                                {
+                                    xtype: 'panel',
+                                    width: 1300,
+                                    height: 25,
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+//                                                margin: '3px 0px 0px 5px'
+                                    },
                                     items: [
                                         {
-                                            xtype: 'panel',
-                                            width: 1300,
-                                            height: 25,
-                                            layout: {
-                                                type: 'hbox',
-                                                pack: 'center'
-                                            },
-                                            defaults: {
-                                                xtype: 'label',
-//                                                margin: '3px 0px 0px 5px'
-                                            },
-                                            items: [
-                                                {
-                                                    text: 'Page',
-                                                    width: 50
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-currentPage',
-                                                    text: '1',
-                                                    width: 50
-                                                },
-                                                {
-                                                    text: 'Of',
-                                                    width: 50
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-pageCount',
-                                                    text: '0',
-                                                    width: 50
-                                                },
-                                                {xtype: 'tbspacer', width: 100},
-                                                {
-                                                    text: 'Total found',
-                                                    width: 80
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-total',
-                                                    text: '0',
-                                                    width: 50
-                                                }
-                                             ]
+                                            text: 'Page',
+                                            width: 50
+                                        },
+                                        {
+                                            id: prototype.id + '-lbl-currentPage',
+                                            text: '1',
+                                            width: 50
+                                        },
+                                        {
+                                            text: 'Of',
+                                            width: 50
+                                        },
+                                        {
+                                            id: prototype.id + '-lbl-pageCount',
+                                            text: '0',
+                                            width: 50
+                                        },
+                                        {xtype: 'tbspacer', width: 100},
+                                        {
+                                            text: 'Total found',
+                                            width: 80
+                                        },
+                                        {
+                                            id: prototype.id + '-lbl-total',
+                                            text: '0',
+                                            width: 50
                                         }
                                     ]
                                 }
-                            ]  
+                            ]
                         }
-                   ]                             
-        },
-        
-        {
-            region: 'south',
-            layout: 'border',
-            height: 0,
-            defaults: {
-                style: 'margin: 1px;',
-                bodyStyle: 'background: transparent;',
-                border: false
-            }
-          }
-        ]
-      }
-    ] 
-  }   
+                    ]
+                },
+                {
+                    region: 'south',
+                    layout: 'border',
+                    height: 0,
+                    defaults: {
+                        style: 'margin: 1px;',
+                        bodyStyle: 'background: transparent;',
+                        border: false
+                    }
+                }
+            ]
+        }
+    ]
+}
 );
 
 

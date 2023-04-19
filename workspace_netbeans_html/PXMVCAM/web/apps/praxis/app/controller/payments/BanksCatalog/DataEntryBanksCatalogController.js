@@ -100,6 +100,7 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
+                ["",""],
                 ["O", "Open"],
                 ["C", "Closed"]
             ]

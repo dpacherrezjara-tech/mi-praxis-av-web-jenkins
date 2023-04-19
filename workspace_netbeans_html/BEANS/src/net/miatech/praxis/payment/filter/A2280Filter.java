@@ -21,10 +21,14 @@ public class A2280Filter extends A2280 {
     public String NEW_CODEBANK = "";
     public String NEW_COUNTRY = "";
     public String NEW_FNOBANK = "";
+    public String NEW_CODECAR = "";
+    public String NEW_FECFROM = "";
+    public String NEW_FECTO = "";
     public String strAgrupacion = "";
     public String strDescBank = "";
     public String strDescPais = "";
     public String IN_CODE_IN_NAME="";
+    public String option="";
     public long RN = 0;
     public List<A2348> lstDetalle = new ArrayList<A2348>(0);
     public Pagination page = new Pagination();
