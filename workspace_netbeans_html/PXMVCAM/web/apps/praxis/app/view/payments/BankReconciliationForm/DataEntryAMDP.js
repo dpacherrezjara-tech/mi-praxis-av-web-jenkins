@@ -260,7 +260,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 265},                                        
+                                        {xtype: 'tbspacer', width: 265},
                                     ]
                                 },
                                 {
@@ -667,7 +667,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             width: 100
                                         },
                                         {xtype: 'tbspacer', width: 30},
-
                                         {
                                             xtype: 'label',
                                             text: 'Qty Tkts',
@@ -792,7 +791,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         },
                                         {xtype: 'tbspacer', width: 5}
                                     ]
-                                },                                
+                                },
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -874,7 +873,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     margin: '0 2 0 20',
                                     bodyStyle: 'background:#efe5e5;',
                                     items: [
-                                        {xtype: 'tbspacer', width: 7, height: 24},                                        
+                                        {xtype: 'tbspacer', width: 7, height: 24},
                                         {
                                             xtype: 'label',
                                             text: 'Void',
@@ -922,7 +921,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 365},                                        
+                                        {xtype: 'tbspacer', width: 365},
                                     ]
                                 },
                                 {
@@ -1222,6 +1221,49 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             tooltip: 'Clean',
                                             listeners: {
                                                 click: 'clear_keyDownHandler'
+                                            }
+
+                                        },
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelAdjustment',
+                                    layout: 'hbox',
+                                    hidden: true,
+                                    border: false,
+                                    margin: '0 2 0 10',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Adj Ticket',
+                                            textAlign: 'center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '4 4 4 4',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-input-txtAdjTKTScan1',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            width: 100,
+                                            maskRe: /[0-9]/,
+                                            enforceMaxLength: true,
+                                            maxLength: 13,
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            //margin: '4 4 4 4',
+                                            iconCls: 'prx-icon-add',
+                                            tooltip: 'Add',
+                                            listeners: {
+                                                click: 'addAdjTicket_keyDownHandler'
                                             }
 
                                         },
@@ -1550,16 +1592,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             }
                                                         ]
                                                     },
-                                                            /*{
-                                                             text: 'Select',
-                                                             xtype: 'checkcolumn',
-                                                             id: prototype.id + '-id_checkManual',
-                                                             width: 50,
-                                                             dataIndex: 'false',
-                                                             listeners: {
-                                                             checkchange: 'checkManual'
-                                                             },
-                                                             },*/
+                                                    /*{
+                                                     text: 'Select',
+                                                     xtype: 'checkcolumn',
+                                                     id: prototype.id + '-id_checkManual',
+                                                     width: 50,
+                                                     dataIndex: 'false',
+                                                     listeners: {
+                                                     checkchange: 'checkManual'
+                                                     },
+                                                     },*/
                                                 ]
                                             }
                                         },
@@ -1777,31 +1819,31 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             return '';
                                                         }
                                                     },
-                                                            /*{text: 'Adjustment Type', width: 170, dataIndex: 'CERROR',
-                                                             renderer: function (value, meta, record, row, col) {
-                                                             meta.style = "background-color:#fae2a0;";
-                                                             switch (value) {
-                                                             case '':
-                                                             return 'DIFERENCIA LIQUIDACION VS SALE';
-                                                             case '01':
-                                                             return 'DIFERENCIA LIQUIDACION VS SALE';
-                                                             case '02':
-                                                             return 'PAGO DUPLICADO';
-                                                             case '03':
-                                                             return 'ADM/AVISOS DE CARGO';
-                                                             default:
-                                                             return 'DIFERENCIA LIQUIDACION VS SALE';
-                                                             }
-                                                             },
-                                                             editor: {
-                                                             xtype: 'combo',
-                                                             store: storeComboAdj,
-                                                             editable: false,
-                                                             valueField: 'code',
-                                                             displayField: 'name',
-                                                             value: '',
-                                                             }
-                                                             },*/
+                                                    /*{text: 'Adjustment Type', width: 170, dataIndex: 'CERROR',
+                                                     renderer: function (value, meta, record, row, col) {
+                                                     meta.style = "background-color:#fae2a0;";
+                                                     switch (value) {
+                                                     case '':
+                                                     return 'DIFERENCIA LIQUIDACION VS SALE';
+                                                     case '01':
+                                                     return 'DIFERENCIA LIQUIDACION VS SALE';
+                                                     case '02':
+                                                     return 'PAGO DUPLICADO';
+                                                     case '03':
+                                                     return 'ADM/AVISOS DE CARGO';
+                                                     default:
+                                                     return 'DIFERENCIA LIQUIDACION VS SALE';
+                                                     }
+                                                     },
+                                                     editor: {
+                                                     xtype: 'combo',
+                                                     store: storeComboAdj,
+                                                     editable: false,
+                                                     valueField: 'code',
+                                                     displayField: 'name',
+                                                     value: '',
+                                                     }
+                                                     },*/
                                                 ]
                                             }
                                         },

@@ -40,6 +40,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         } else {
             this.onSearchPendingDetail();
             Ext.getCmp(prototype.id + '-btn-update').show();
+            Ext.getCmp(prototype.id + '-panelAdjustment').show();
         }
     },
     addCreditCard_keyDownHandler: function () {
@@ -575,7 +576,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
     },
-    removeTKT: function () {
+    removeTKT: function (grid, rowIndex, colIndex) {
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         //var rowIndex = store_gridInfoScan.indexOf(record);
         store_gridInfoScan.removeAt(rowIndex);
@@ -611,6 +612,33 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             global.Msg({msg: 'Can\'t adjust a blocked ticket.'});
         }
 
+    },
+    addAdjTicket_keyDownHandler: function () {
+        var ticket = this.getValue('input-txtAdjTKTScan1').trim();
+        var registro_adj = {};
+        registro_adj.ST_MANUAL = '';
+
+        registro_adj.FDESGLOSE = '2';
+        registro_adj.A1531TTARJ = this.bean.SCARCOD;
+        registro_adj.A1531NREF = this.bean.SCARDN;
+        registro_adj.A1531CAPL = this.bean.SAUTHOC;
+        registro_adj.A1531MFOP = this.bean.SCURRENCY;
+        registro_adj.A1531TKT = ticket;
+        registro_adj.A1531VFOP = this.bean.SVFOP;
+        registro_adj.tot_VFOP = this.bean.SVFOP;
+        registro_adj.A720FECVTA = this.bean.SDATE;
+        registro_adj.A720PNR = this.bean.SPNR;
+        registro_adj.A720AGENTE = this.bean.SAGENT;
+        registro_adj.descTDOC = 'Adj.';
+        registro_adj.TDOC = 'A';
+
+        this.lstSendManual.push(registro_adj);
+
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(
+                Ext.create('Ext.data.Store', {data: this.lstSendManual, autoLoad: true})
+                );
+        //meDE.getDataGrid(meDE.beanResult);
+        this.calcularMontos();
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
