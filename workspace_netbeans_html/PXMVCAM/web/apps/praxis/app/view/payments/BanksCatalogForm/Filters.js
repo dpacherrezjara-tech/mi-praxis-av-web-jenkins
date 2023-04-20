@@ -32,12 +32,11 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.Filters', {
                     id: prototype.id+'-cmbCode',
                     queryMode: 'local',
                     triggerAction: 'all',
-                    valueField: 'code',
-                    displayField: 'name',
+                    valueField: 'A005KEY',
+                    displayField: 'A005KEY2',
                     emptyText: 'All',
-                    maxLength:3,
                     labelWidth: 120,
-                    width: 180,
+                    width: 400,
 //                    hidden: false,
                     hiddenLabel: false
                 }

@@ -103,19 +103,7 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.BanksCatalogController',
     obtainData: function() {
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.BANK = 1;
-        
-        var cmbCode = Ext.getCmp(prototype.id + '-cmbCode');
-        cmbCode.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "All"],
-                ["USD", "USD"],
-                ["EUR", "EUR"],
-                ["MXN", "MXN"]
-            ]
-        }));
-        cmbCode.setValue("");
+        this.dataObtain.CURRENCY = 1;       
         
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -135,6 +123,11 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.BanksCatalogController',
                         Ext.create('Ext.data.Store', {data: res.lstBank, autoLoad: true})
                     );
                     Ext.getCmp(prototype.id + '-cmbBank').setValue('');
+                    
+                    Ext.getCmp(prototype.id + '-cmbCode').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCurrencies, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCode').setValue('');
                     me.btnSearch_click();
                 } else
                     global.Msg({msg: res.sesion});

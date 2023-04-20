@@ -65,7 +65,7 @@ public class AgentsCatalogDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_CAGENCY.trim());
-            cstmt.setString(3, filter.IN_COUNTRY.trim());            
+            cstmt.setString(3, filter.COUNTRY.trim());            
 
             cstmt.setInt(4, filter.page.PAGNUM);
             cstmt.setInt(5, filter.page.PAGROW);
