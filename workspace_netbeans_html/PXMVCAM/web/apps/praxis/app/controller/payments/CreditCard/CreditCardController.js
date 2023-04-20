@@ -97,22 +97,9 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
         this.btnSearch_click();
     },
     obtainData: function() {
-
-        var cmbCurrency = Ext.getCmp(prototype.id + '-cmbCurrency');
-        cmbCurrency.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "All"],
-                ["USD", "USD"],
-                ["EUR", "EUR"],
-                ["MXN", "MXN"]
-            ]
-        }));
-        cmbCurrency.setValue("");
-
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.CARD = 2;
+        this.dataObtain.CURRENCY = 2;
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -132,12 +119,37 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
                             Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true})
                             );
                     Ext.getCmp(prototype.id + '-cmbCode').setValue('');
+                    
+                    Ext.getCmp(prototype.id + '-cmbCurrency').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCurrencies, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCurrency').setValue('');
+                    
                     me.btnSearch_click();
 
                 } else
                     global.Msg({msg: res.sesion});
             }
         });
+    },
+    obtainCurrencies: function() {
+      Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainDataCurrencies',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+//                console.log(res);
+                if (res.success) {
+                    Ext.getCmp(prototype.id + '-cmbCurrency').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstData, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCurrency').setValue('');
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });  
     },
     setFormatParameter: function() {
 

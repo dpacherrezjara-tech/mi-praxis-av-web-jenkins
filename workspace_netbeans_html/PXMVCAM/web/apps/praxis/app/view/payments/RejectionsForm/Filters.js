@@ -44,8 +44,7 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Filters', {
                         change: 'onUpperValue',
                         keypress: 'eventKey'
                     }
-                }
-                ,
+                },
                 {
                     xtype: 'combo',
                     fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Country',
@@ -67,6 +66,39 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Filters', {
                     labelWidth: 120,
                     hidden: false,
                     hiddenLabel: false
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Bank',
+                    id: prototype.id+'-cmbBank',
+                    disabled: false,
+                    width: 300,
+                    labelWidth: 120,
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    valueField: 'CODEBANK',
+                    displayField: 'IN_CODE_IN_NAME',
+                    hidden: false,
+                    hiddenLabel: false
+                },
+                { xtype: 'tbspacer', width: 60 },
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Flag Adjus:',
+                    id: prototype.id+'-cmbSADJUST',           
+                    triggerAction: 'all',
+                    enableKeyEvents: true,
+                    readOnly: false,
+                    editable: false,
+                    valueField: 'code',
+                    displayField: 'name',
+                    width: 210,
+                    labelWidth: 120,
+                    fieldStyle: 'text-align: left;',
+                    hidden: false,
+                    listeners:{
+//                        select: 'btnSearch_click',
+                    }
                 }
                 
             ]

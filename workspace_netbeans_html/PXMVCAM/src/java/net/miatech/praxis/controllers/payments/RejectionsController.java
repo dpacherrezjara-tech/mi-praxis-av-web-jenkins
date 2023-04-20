@@ -171,10 +171,11 @@ public class RejectionsController extends BaseController {
             Cell CH1_03 = row.createCell(3);
             Cell CH1_04 = row.createCell(4);
             Cell CH1_05 = row.createCell(5);
+            Cell CH1_06 = row.createCell(6);
 
             CH1_00.setCellValue("Nbr");
             CH1_01.setCellValue("Rejection");
-            CH1_03.setCellValue("Bank");
+            CH1_04.setCellValue("Bank");
 
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
@@ -182,11 +183,12 @@ public class RejectionsController extends BaseController {
             CH1_03.setCellStyle(headerStyle);
             CH1_04.setCellStyle(headerStyle);
             CH1_05.setCellStyle(headerStyle);
+            CH1_06.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 6));
 
             //*******************
             ++vj;
@@ -197,12 +199,14 @@ public class RejectionsController extends BaseController {
             Cell CH2_03 = row2.createCell(3);
             Cell CH2_04 = row2.createCell(4);
             Cell CH2_05 = row2.createCell(5);
+            Cell CH2_06 = row2.createCell(6);
 
-            CH2_01.setCellValue("Code");
-            CH2_02.setCellValue("Description");
-            CH2_03.setCellValue("Country");
-            CH2_04.setCellValue("Code");
-            CH2_05.setCellValue("Name");
+            CH2_01.setCellValue("Source");
+            CH2_02.setCellValue("Code");
+            CH2_03.setCellValue("Description");
+            CH2_04.setCellValue("Country");
+            CH2_05.setCellValue("Code");
+            CH2_06.setCellValue("Name");
 
             CH2_00.setCellStyle(headerStyle);
             CH2_01.setCellStyle(headerStyle);
@@ -210,6 +214,7 @@ public class RejectionsController extends BaseController {
             CH2_03.setCellStyle(headerStyle);
             CH2_04.setCellStyle(headerStyle);
             CH2_05.setCellStyle(headerStyle);
+            CH2_06.setCellStyle(headerStyle);
 
             //          ========================================================
             ++vj;
@@ -222,13 +227,15 @@ public class RejectionsController extends BaseController {
                 Cell rcell3 = row.createCell(3);
                 Cell rcell4 = row.createCell(4);
                 Cell rcell5 = row.createCell(5);
+                Cell rcell6 = row.createCell(6);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
-                rcell1.setCellValue(listaData.get(vi).CODEREJ);
-                rcell2.setCellValue(listaData.get(vi).DESCREJ);
-                rcell3.setCellValue(listaData.get(vi).COUNTRY);
-                rcell4.setCellValue(listaData.get(vi).CODEBANK);
-                rcell5.setCellValue(listaData.get(vi).NAMEBANK);
+                rcell1.setCellValue(listaData.get(vi).FTE);
+                rcell2.setCellValue(listaData.get(vi).CODEREJ);
+                rcell3.setCellValue(listaData.get(vi).DESCREJ);
+                rcell4.setCellValue(listaData.get(vi).COUNTRY);
+                rcell5.setCellValue(listaData.get(vi).CODEBANK);
+                rcell6.setCellValue(listaData.get(vi).NAMEBANK);
 
                 iter.next();
                 ++vi;
@@ -240,6 +247,7 @@ public class RejectionsController extends BaseController {
             sheet.autoSizeColumn(3, true);
             sheet.autoSizeColumn(4, true);
             sheet.autoSizeColumn(5, true);
+            sheet.autoSizeColumn(6, true);
 
             /**
              * fileNameDownload = Nombre de descarga
@@ -302,6 +310,8 @@ public class RejectionsController extends BaseController {
             filter.COUNTRY = request.getParameter("COUNTRY").trim();
             filter.CODEBANK = request.getParameter("CODEBANK").trim();
             filter.NAMEBANK = request.getParameter("NAMEBANK").trim();
+            filter.FTE = request.getParameter("FTE").trim();
+            filter.SADJUST = request.getParameter("SADJUST").trim();
                    
             logic = new RejectionstLogic();
             logic.setSession(this.serverSession.getServerSession());

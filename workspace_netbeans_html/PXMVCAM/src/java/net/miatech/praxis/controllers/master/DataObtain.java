@@ -18,4 +18,5 @@ public class DataObtain {
     public byte SOURCEA1691 = 0;
     public byte REJECTIONS = 0;
     public byte TRANSCODE = 0;
+    public byte CURRENCY = 0;
 }

@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 980,
+                width: 1055,
                 height: 700,
                 align: 'center'
             },
@@ -46,7 +46,7 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Info', {
                             border:true,
 //                            margin: '1',
                              height: 550,
-                             width: 725,  
+                             width: 1045,  
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -57,7 +57,7 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id+'-gridDataAirport',
                                     height: 510,
-                                    width: 725,
+                                    width: 1045,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -77,13 +77,19 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'Code', dataIndex: 'CODEREJ', width: 50, 
+                                                    {text: 'Source', dataIndex: 'FTE', width: 60, 
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;font-weight:bold;";
                                                             return  value;
                                                         }
                                                     },
-                                                    {text: 'Description', dataIndex: 'DESCREJ', width: 350, align: 'center',
+                                                    {text: 'Code', dataIndex: 'CODEREJ', width: 60, 
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;font-weight:bold;";
+                                                            return  value;
+                                                        }
+                                                    },                                                    
+                                                    {text: 'Description', dataIndex: 'DESCREJ', width: 450, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:left;";
@@ -102,15 +108,24 @@ Ext.define('Ext.Praxis.view.payments.RejectionsForm.Info', {
                                                 columns: [
                                                     {text: 'Country', dataIndex: 'COUNTRY', width: 70},
                                                     {text: 'Code', dataIndex: 'CODEBANK', width: 70, align: 'center'},
-                                                    {text: 'Name', dataIndex: 'NAMEBANK', width: 100, align: 'center',
+                                                    {text: 'Name', dataIndex: 'NAMEBANK', width: 140, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:left;";
                                                             return  value;
                                                         }
                                                     }
                                                 ]
-                                            }
-                                            ,
+                                            },
+                                            {text: 'Flag',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Adjusment', dataIndex: 'desSADJUST', width: 110, align: 'center'}
+                                                ]
+                                            },
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',

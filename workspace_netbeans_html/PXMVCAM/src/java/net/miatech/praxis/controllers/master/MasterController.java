@@ -105,6 +105,12 @@ public class MasterController extends BaseController {
                 List<A2357Filter> lstTransCode = masterDAO.loadPX382SQP03189();
                 map.put("lstTransCode", lstTransCode);
             }
+            
+            if (data.CURRENCY != 0) {
+                List<A005> lstCurrencies = masterDAO.loadCurrencies();
+                map.put("lstCurrencies", lstCurrencies);
+            }
+            
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
@@ -153,6 +159,29 @@ public class MasterController extends BaseController {
             masterDAO.setSession((IServerSession) serverSession.getServerSession());
 
             List<A005> lstAirlines = masterDAO.loadAirlines2();
+
+            map.put("success", true);
+            map.put("lstData", lstAirlines);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "/obtainDataCurrencies")
+    public @ResponseBody
+    String obtainDataCurrencies(ModelMap map, HttpServletRequest request) {
+        System.out.println("Master Controller --- obtainDataCurrencies");
+        try {
+            masterDAO = new MasterDAO();
+            masterDAO.setSession((IServerSession) serverSession.getServerSession());
+
+            List<A005> lstAirlines = masterDAO.loadCurrencies();
 
             map.put("success", true);
             map.put("lstData", lstAirlines);

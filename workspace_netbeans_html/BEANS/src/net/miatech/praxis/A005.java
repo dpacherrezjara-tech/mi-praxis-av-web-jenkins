@@ -29,6 +29,8 @@ public class A005 extends  Pagination implements Serializable{
     //Filter
     public String COD="";
     public String NAME="";
+    public String code="";
+    public String name="";
     public String strCampo="";
     public String strValor="";
     public String strExcel="FALSE";

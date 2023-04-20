@@ -1529,6 +1529,42 @@ public class MasterDAO {
 
     }
 
+    public List<A005> loadCurrencies() throws Exception {
+
+        List<A005> lista = new ArrayList<>();
+        A005 record;
+        record = new A005();
+        record.A005KEY = "";
+        record.A005KEY2 = "All";
+        lista.add(record);
+
+        String sql = "SELECT A051KEY2, A051COMENT FROM PRAXISMP.A051 WHERE A051KEY1 = 'T2'";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            stmt = cnx.createStatement();
+            rst = stmt.executeQuery(sql);
+
+            while (rst.next()) {
+
+                record = new A005();
+                record.A005KEY = rst.getString("A051KEY2").trim();
+                if (rst.getString("A051COMENT").trim().isEmpty()) {
+                    record.A005KEY2 = record.A005KEY + "-" + rst.getString("A051KEY2").trim();
+                } else {
+                    record.A005KEY2 = record.A005KEY + "-" + rst.getString("A051COMENT").trim();
+                }
+
+                lista.add(record);
+            }
+        } finally {
+            setClose();
+        }
+
+        return lista;
+    }
+
     public Connection getIBMDB2Connection() {
         //Connection cnx;    
 

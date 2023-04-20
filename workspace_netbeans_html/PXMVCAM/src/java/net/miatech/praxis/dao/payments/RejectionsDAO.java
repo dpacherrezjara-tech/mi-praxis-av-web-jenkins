@@ -61,33 +61,35 @@ public class RejectionsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00733(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00733(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(4, Types.INTEGER);
-            cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.CODEREJ.trim());
             cstmt.setString(3, filter.COUNTRY.trim());
+            cstmt.setString(4, filter.CODEBANK.trim());
+            cstmt.setString(5, filter.SADJUST.trim());
 
-            cstmt.setInt(4, filter.page.PAGNUM);
-            cstmt.setInt(5, filter.page.PAGROW);
-            cstmt.setInt(6, filter.page.TOTPAG);
-            cstmt.setInt(7, filter.page.TOTROW);
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(4);
-            filter.page.PAGROW = cstmt.getInt(5);
-            filter.page.TOTPAG = cstmt.getInt(6);
-            filter.page.TOTROW = cstmt.getInt(7);
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
 
@@ -100,6 +102,14 @@ public class RejectionsDAO {
                 bean.COUNTRY = rst.getString("COUNTRY").trim();
                 bean.CODEBANK = rst.getString("CODEBANK").trim();
                 bean.NAMEBANK = rst.getString("NAMEBANK").trim();
+                bean.FTE = rst.getString("FTE").trim();
+                
+                bean.SADJUST = rst.getString("SADJUST").trim();
+                if(bean.SADJUST.equals("T")){
+                    bean.desSADJUST = "Transaction";
+                }else{
+                    bean.desSADJUST = "";
+                }
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -139,7 +149,7 @@ public class RejectionsDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00735(?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00735(?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -148,6 +158,8 @@ public class RejectionsDAO {
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.CODEREJ.trim());
+            cstmt01.setString(3, filter.FTE.trim());
+            cstmt01.setString(4, filter.CODEBANK.trim());
 
             cstmt01.execute();
 
@@ -159,6 +171,13 @@ public class RejectionsDAO {
                 objRtn.COUNTRY = rs01.getString("COUNTRY").trim();
                 objRtn.CODEBANK = rs01.getString("CODEBANK").trim();
                 objRtn.NAMEBANK = rs01.getString("NAMEBANK").trim();
+                objRtn.FTE = rs01.getString("FTE").trim();
+                objRtn.SADJUST = rs01.getString("SADJUST").trim();
+                if(objRtn.SADJUST.equals("T")){
+                    objRtn.desSADJUST = "Transaction";
+                }else{
+                    objRtn.desSADJUST = "";
+                }
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -198,7 +217,7 @@ public class RejectionsDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00734(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00734(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -212,12 +231,15 @@ public class RejectionsDAO {
             cstmt.setString(5, filter.COUNTRY.trim());
             cstmt.setString(6, filter.CODEBANK.trim());
             cstmt.setString(7, filter.NAMEBANK.trim());
-            cstmt.setString(8, session.getUserView().getUserInfo().USR);
-            cstmt.setString(9, Functions.getFechaActual());
-            cstmt.setString(10, Functions.getHoraActual());
+            cstmt.setString(8, filter.FTE.trim());
+            cstmt.setString(9, filter.SADJUST.trim());
+            cstmt.setString(10, session.getUserView().getUserInfo().USR);
+            cstmt.setString(11, Functions.getFechaActual());
+            cstmt.setString(12, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {
+            strMsj = e.getMessage();
             e.getMessage();
         } finally {
             if (cstmt != null) {
@@ -229,6 +251,10 @@ public class RejectionsDAO {
             }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             pasarGarbageCollector();
+        }
+        
+        if (strMsj.toLowerCase().contains("duplicada")) {
+            strMsj = "Error: Duplicated record. Reject were not registered.";
         }
 
         return strMsj;

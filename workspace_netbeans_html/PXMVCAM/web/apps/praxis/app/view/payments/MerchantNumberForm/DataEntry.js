@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     enforceMaxLength: true,
                                     editable: true,
                                     enabled: false,
-                                    maxLength: 20,
+                                    maxLength: 15,
                                     maskRe: /[0-9]/,
                                     readOnly: false,
                                     width: 290
@@ -204,7 +204,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     enforceMaxLength: true,
                                     editable: true,
                                     enabled: false,
-                                    maxLength: 20,
+                                    maxLength: 15,
                                     maskRe: /[0-9]/,
                                     readOnly: false,
                                     width: 290

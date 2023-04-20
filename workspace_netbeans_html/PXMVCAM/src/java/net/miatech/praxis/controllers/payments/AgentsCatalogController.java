@@ -304,9 +304,9 @@ public class AgentsCatalogController extends BaseController {
 
     @RequestMapping(value = "MaintenanceMPF106")
     public @ResponseBody
-    String MaintenanceA2280(ModelMap map, HttpServletRequest request) {
+    String MaintenanceMPF106(ModelMap map, HttpServletRequest request) {
 
-        System.out.println("-------------- AgentsCatalog : MaintenanceA2280-------------");
+        System.out.println("-------------- AgentsCatalog : MaintenanceMPF106-------------");
         String option;
         MPF106Filter filter = new MPF106Filter();
         Gson gson = new Gson();
