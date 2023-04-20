@@ -1488,6 +1488,9 @@ public class BankReconciliationDAO {
                 objRtn.FAREO = rs01.getDouble("FAREO");
                 objRtn.FAREC = rs01.getDouble("FAREC");
                 objRtn.DIFF_FARE = objRtn.FAREC - objRtn.FAREO;
+                objRtn.COMMAMO = rs01.getDouble("COMMAMO");
+                objRtn.COMMAMOC = rs01.getDouble("COMMAMOC");
+                objRtn.DIFF_COMMAMO = objRtn.COMMAMOC - objRtn.COMMAMO;
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
 
@@ -2793,6 +2796,10 @@ public class BankReconciliationDAO {
                     beanTkt.FAREO = rst.getDouble("FAREO");
                     beanTkt.FAREC = rst.getDouble("FAREC");
                     beanTkt.DIFF_FARE = beanTkt.FAREC - beanTkt.FAREO;
+
+                    beanTkt.COMMAMO = rst.getDouble("COMMAMO");
+                    beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
+                    beanTkt.DIFF_COMMAMO = beanTkt.COMMAMOC - beanTkt.COMMAMO;
 
                     beanTkt.lngTotQACCB = lngTotCant;
                     beanTkt.lngTotQTYTKT = lngQTYTKT;
@@ -4737,7 +4744,7 @@ public class BankReconciliationDAO {
     }
 
     public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
-        
+
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         String tipFecha = "Sales";

@@ -319,11 +319,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryBankRecon
         this.setValue('de-txtREASONREJ', meDe.bean.CREJEC);
         this.setValue('de-txtDESREJ', meDe.bean.strCREJEC);
         this.setValue('de-txtTDATE', meDe.bean.TDATE);
-        this.setValue('de-txtDATEF', meDe.bean.DATEF);
-        
-        this.setValue('de-txtCOMMAMOC', meDe.bean.COMMAMOC);
-        this.setValue('de-txtCOMMAMO', meDe.bean.COMMAMO);
-        this.setValue('de-txtDIFF_COMMAMO', meDe.bean.DIFF_COMMAMO);
+        this.setValue('de-txtDATEF', meDe.bean.DATEF);               
 
         if (meDe.bean.strSORIG === 'B') {
             this.setValue('de-cmbSORIG', 'B');

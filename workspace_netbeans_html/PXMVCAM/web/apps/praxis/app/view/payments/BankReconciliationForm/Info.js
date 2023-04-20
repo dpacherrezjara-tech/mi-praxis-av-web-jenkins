@@ -1311,7 +1311,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     {
                                                         text: 'Number', dataIndex: 'strTicket', width: 110, align: 'center', menuDisabled: true,
                                                         listeners: {
-                                                            click: 'gridData_VIEWTKT_clickHandler'
+                                                            click: 'onGridData_VIEWTKT_clickHandler'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "color:#057ECB;background-color:#d5f4d5;";

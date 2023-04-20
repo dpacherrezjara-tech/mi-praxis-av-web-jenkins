@@ -1452,6 +1452,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
         win.displayProMasterTicket(this, 'BankConciliation', beanProMasterTicket);
     },
+    onGridData_VIEWTKT_clickHandler: function (column, e, row, column, x, rowData) {
+        var data = x.record.data;
+        var strTkt = data.strTicket;
+        var beanProMasterTicket = {};
+//        
+        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
+        beanProMasterTicket.IN_FORMA = strTkt.substr(4, 4);
+        beanProMasterTicket.IN_SERIE = strTkt.substr(8, 6);
+        beanProMasterTicket.IN_SEQ = '00';
+
+//        console.log(beanProMasterTicket);
+        prototypeProgram.view = 'payments-bank-reconciliation-form';
+        prototypeProgram.nprog = 'PX00000269';
+        prototypeProgram.title = 'Bank Reconciliation';
+        prototypeProgram.modulo = '';
+
+        win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
+    },
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
         console.log(rec.data);
