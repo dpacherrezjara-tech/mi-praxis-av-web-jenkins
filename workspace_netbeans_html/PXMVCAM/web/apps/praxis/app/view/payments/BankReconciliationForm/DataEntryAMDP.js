@@ -669,6 +669,22 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
+                                            text: 'Conciliation Date',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtCONCIDATE',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
                                             text: 'Qty Tkts',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
@@ -694,22 +710,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtPCURRENCY',
                                             fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100,
-                                        },
-                                        {xtype: 'tbspacer', width: 30},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Transact. Amount',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtTGROSAMOUN',
-                                            fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100,
@@ -743,19 +743,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Conciliation Date',
+                                            text: 'Comm Audit',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCONCIDATE',
+                                            id: prototype.id + '-de-txtCOMMAMOC',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100
                                         },
+                                        
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
@@ -767,6 +768,82 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtFAREC',
+                                            fieldStyle: 'text-align:right',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Transact. Amount',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtTGROSAMOUN',
+                                            fieldStyle: 'text-align:right',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100,
+                                        },
+                                        
+                                        {xtype: 'tbspacer', width: 5}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '0 2 0 20',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7, height: 24},
+                                        {
+                                            xtype: 'label',
+                                            text: 'ADM',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtFADM',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Comm Sett.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtCOMMAMO',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Fare Sett.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtFAREO',
                                             fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -802,14 +879,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 7, height: 24},
                                         {
                                             xtype: 'label',
-                                            text: 'ADM',
+                                            text: 'Void',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtFADM',
+                                            id: prototype.id + '-de-txtVOID',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -818,14 +895,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Reverse Policy',
+                                            text: 'Diff. Comm',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtFREVERSA',
+                                            id: prototype.id + '-de-txtDIFF_COMMAMO',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -834,14 +911,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Fare Sett.',
                                             style: 'font-weight:bold;color:#0B333C;',
+                                            text: 'Diff. Fare',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtFAREO',
+                                            id: prototype.id + '-de-txtDIFF_FARE',
                                             fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -876,14 +953,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 7, height: 24},
                                         {
                                             xtype: 'label',
-                                            text: 'Void',
+                                            text: 'Reverse Policy',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtVOID',
+                                            id: prototype.id + '-de-txtFREVERSA',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -905,23 +982,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 30},
-                                        {
-                                            xtype: 'label',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            text: 'Diff. Fare',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtDIFF_FARE',
-                                            fieldStyle: 'text-align:right',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 365},
+                                        {xtype: 'tbspacer', width: 525},
                                     ]
                                 },
                                 {
