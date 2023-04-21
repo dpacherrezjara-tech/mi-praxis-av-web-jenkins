@@ -247,10 +247,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         fila3.label3 = 'Diff. Amount';
         fila3.amount3 = 0;
 
+        var fila4 = {}
+        fila4.label1 = 'ADM';
+        fila4.amount1 = this.bean.DIFF_COMMAMO;
+        fila4.label2 = '';
+        fila4.amount2 = this.bean.COMMFAREC;
+        fila4.label3 = 'Total';
+        fila4.amount3 = this.bean.TOTAL_ADM;
+
 
         this.lstAmounts.push(fila1);
         this.lstAmounts.push(fila2);
         this.lstAmounts.push(fila3);
+        this.lstAmounts.push(fila4);
 
         Ext.getCmp(prototype.id + '-gridAmounts').bindStore(
                 Ext.create('Ext.data.Store', {data: this.lstAmounts, autoLoad: true})

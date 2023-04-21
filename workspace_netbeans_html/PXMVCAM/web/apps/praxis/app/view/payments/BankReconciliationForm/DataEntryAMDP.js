@@ -731,7 +731,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridAmounts',
                                             width: 573,
-                                            height: 133,
+                                            height: 158,
 //                                    hidden: false,
                                             columnLines: true,
                                             plugins: [

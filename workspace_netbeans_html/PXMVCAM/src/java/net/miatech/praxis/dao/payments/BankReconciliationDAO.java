@@ -1494,6 +1494,9 @@ public class BankReconciliationDAO {
                 objRtn.DIFF_COMMAMO = objRtn.COMMAMOC - objRtn.COMMAMO;
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
+                
+                objRtn.COMMFAREC = rs01.getDouble("COMMFAREC");
+                objRtn.TOTAL_ADM = objRtn.DIFF_COMMAMO + objRtn.COMMFAREC;
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

@@ -66,6 +66,8 @@ public class A2290 {
     public String ACARCOD = "";
     public String ATCNTR = "";
     public double AVFOP = 0;
+    public double COMMFAREC = 0;
+    public double TOTAL_ADM = 0;
     public String ACURRENCY = "";
     public String ACARDN = "";
     public String ADATEXP = "";
