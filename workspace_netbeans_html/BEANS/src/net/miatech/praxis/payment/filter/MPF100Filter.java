@@ -522,5 +522,8 @@ public class MPF100Filter extends MPF100 {
     public double TOT_COMPAMO = 0;
     public double TOT_COMPAMOC = 0;
     public double TOT_DIFF_COMPAMO = 0;
+    public String IN_CODE = "";
+    public String IN_CURRENCY = "";
+    public String IN_MERCHANT = "";
 
 }

@@ -133,6 +133,41 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
     },
     obtainData: function () {
 
+        this.dataObtain.COUNTRY = 2;
+        this.dataObtain.CARD = 2;
+        this.dataObtain.CURRENCY = 2;
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+//                console.log(res);
+                if (res.success) {
+                    me.lstCountry = res.lstCountry;
+                    Ext.getCmp(prototype.id + '-cmbCountry').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+
+                    Ext.getCmp(prototype.id + '-cmbCode').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCode').setValue('');
+
+                    Ext.getCmp(prototype.id + '-cmbCurrency').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCurrencies, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCurrency').setValue('');
+
+//                    me.btnSearch_click();
+
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });
+
         var month = this.fecha.getMonth() + 1;
 
         if (month < 10) {
@@ -173,12 +208,39 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
         }));
         cmbDateSel.setValue("PRDA");
     },
+    obtainCurrencies: function () {
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainDataCurrencies',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+//                console.log(res);
+                if (res.success) {
+                    Ext.getCmp(prototype.id + '-cmbCurrency').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstData, autoLoad: true})
+                            );
+                    Ext.getCmp(prototype.id + '-cmbCurrency').setValue('');
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });
+    },
+    eventKey: function (e, eOpts) {
+        if (eOpts.getKey() === 13) {
+            this.btnSearch_click();
+        }
+    },
     setFormatParameter: function () {
         me.bean = {};
 
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue(); //+ Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();// + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         me.bean.IN_DATETYPE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
+        me.bean.IN_CODE = Ext.getCmp(prototype.id + '-cmbCode').getValue();
+        me.bean.IN_CURRENCY = Ext.getCmp(prototype.id + '-cmbCurrency').getValue();
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 
         console.log(me.bean);
         var beanString = JSON.stringify(me.bean);
@@ -189,7 +251,26 @@ Ext.define('Ext.Praxis.controller.payments.DataIntegrity.DataIntegrityController
     },
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
-        this.setGridDataMainSummary();
+        var ga = Ext.getCmp(prototype.id + '-txtMERCHN').getValue();
+        console.log(ga);
+        if (Ext.getCmp(prototype.id + '-txtMERCHN').getValue() == '') {
+            this.setGridDataMainSummary();
+        } else {
+            
+            me.bean = {};
+            
+            me.bean.IN_DATETYPE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
+            me.bean.MERCHNC = Ext.getCmp(prototype.id + '-txtMERCHN').getValue();
+
+            console.log(me.bean);
+            var beanString = JSON.stringify(me.bean);
+            searchParamsSummaryMerchant = {
+                beanString: beanString,
+                bean: me.bean
+            };
+            this.setGridDataDaySummaryMerchant(searchParamsSummaryMerchant);
+        }
+
     },
     setGridDataMainSummary: function () {
         win.lblUser_toolTip("Estructura: MPF102");

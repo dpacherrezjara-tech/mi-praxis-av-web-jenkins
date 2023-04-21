@@ -71,7 +71,7 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Filters', {
                             displayField: 'name',
                             emptyText: 'All',
                             labelWidth: 60,
-                            width: 140,
+                            width: 150,
                             anchor: '100%'
                         },
                         {
@@ -161,7 +161,79 @@ Ext.define('Ext.Praxis.view.payments.DataIntegrityForm.Filters', {
                             width: 70,
                             anchor: '100%'
                         },
-                                      
+                        {
+                            xtype: 'combo',
+                            fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Credit Card Code',
+                            id: prototype.id + '-cmbCode',
+                            disabled: false,
+                            width: 300,
+                            labelWidth: 120,
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            hidden: false,
+                            hiddenLabel: false
+                        }
+                        ,
+                        {
+                            xtype: 'combo',
+                            fieldLabel: 'Currency ',
+                            id: prototype.id + '-cmbCurrency',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'A005KEY',
+                            displayField: 'A005KEY2',
+                            emptyText: 'All',
+                            //maxLength:3,
+                            labelWidth: 80,
+                            width: 300,
+                            hidden: false,
+                            hiddenLabel: false
+                        }
+                        ,
+                        {
+                            xtype: 'combo',
+                            fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Country',
+                            id: prototype.id + '-cmbCountry',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'A006PAIS',
+                            displayField: 'A006NOMBRE',
+                            width: 300,
+                            anyMatch: false,
+                            labelWidth: 80,
+                            hidden: false,
+                            hiddenLabel: false,
+                            margin: '0 40 0 0',
+                        },
+                        {
+                            xtype: 'label',
+                            html: '<strong style="color:#000;">Merchant:</strong>',
+                            align: 'left',
+                            fieldStyle: 'text-align: left;',
+                            padding: '8px 20px 0px 5px',
+                            hidden: false
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtMERCHN',
+                            enableKeyEvents: true,
+                            caseSensitive: true,
+                            allowBlank: true,
+                            readOnly: false,
+                            editable: true,
+                            enforceMaxLength: true,
+                            maxLength: 20,
+                            maskRe: /[0-9]/,
+                            labelWidth: 120,
+                            width: 130,
+                            hidden: false,
+                            hiddenLabel: false,
+                            listeners: {
+                                keypress: 'eventKey'
+                            }
+                        },
                     ]
                 },
             ]
