@@ -228,7 +228,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtCOMMAMO', Ext.util.Format.number(this.bean.COMMAMO, '0,000.00'));
         this.setValue('de-txtDIFF_COMMAMO', Ext.util.Format.number(this.bean.DIFF_COMMAMO, '0,000.00'));
         this.setValue('de-txtdescFREGLA', this.bean.descFREGLA);
-        //this.setValue('de-txtCONCIDATE', this.bean.CONCIDATE);
+        this.setValue('de-txtDATEC', this.bean.DATEC);
         //this.setValue('de-txtVOID', this.bean.VOID);
         this.setValue('de-txtSVFOPS', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
         //this.setValue('de-txtFADM', this.bean.FADM);

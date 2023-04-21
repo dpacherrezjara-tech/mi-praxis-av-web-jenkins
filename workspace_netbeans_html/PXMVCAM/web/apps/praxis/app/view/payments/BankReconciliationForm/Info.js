@@ -1212,10 +1212,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'Bank',
+                                                text: 'Conciliation',
                                                 columns: [
                                                     {
-                                                        text: 'Deposit', dataIndex: 'strBankDeposit', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Date', dataIndex: 'strBankDeposit', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                             return value;
@@ -1737,10 +1737,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'Bank',
+                                                text: 'Conciliation',
                                                 columns: [
                                                     {
-                                                        text: 'Deposit', dataIndex: 'strBankDeposit', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Date', dataIndex: 'strBankDeposit', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                             return value;

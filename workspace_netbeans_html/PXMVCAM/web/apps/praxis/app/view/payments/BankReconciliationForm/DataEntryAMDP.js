@@ -676,7 +676,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCONCIDATE',
+                                            id: prototype.id + '-de-txtDATEC',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
