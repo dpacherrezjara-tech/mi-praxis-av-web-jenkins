@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     bean_detail: {},
     bean_scan: {},
     lstA1852: {},
+    lstAmounts: [],
     lstSendManual: [],
     lstBlocked: [],
     lstAdjustment: [],
@@ -219,23 +220,68 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtSAUTHOC', this.bean.SAUTHOC);
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
-        this.setValue('de-txtPCURRENCY', this.bean.SCURRENCY);
-        this.setValue('de-txtTGROSAMOUN', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
-        this.setValue('de-txtFAREO', Ext.util.Format.number(this.bean.FAREO, '0,000.00'));
-        this.setValue('de-txtFAREC', Ext.util.Format.number(this.bean.FAREC, '0,000.00'));
-        this.setValue('de-txtDIFF_FARE', Ext.util.Format.number(this.bean.DIFF_FARE, '0,000.00'));
-        this.setValue('de-txtCOMMAMOC', Ext.util.Format.number(this.bean.COMMAMOC, '0,000.00'));
-        this.setValue('de-txtCOMMAMO', Ext.util.Format.number(this.bean.COMMAMO, '0,000.00'));
-        this.setValue('de-txtDIFF_COMMAMO', Ext.util.Format.number(this.bean.DIFF_COMMAMO, '0,000.00'));
+        
+        this.lstAmounts = [];
+
+        var fila1 = {}
+        fila1.label1 = 'Comm. Audit';
+        fila1.amount1 = this.bean.COMMAMOC;
+        fila1.label2 = 'Fare Sales';
+        fila1.amount2 = this.bean.FAREC;
+        fila1.label3 = 'Transact. Amount';
+        fila1.amount3 = this.bean.SVFOP;
+
+        var fila2 = {}
+        fila2.label1 = 'Comm. Sett.';
+        fila2.amount1 = this.bean.COMMAMO;
+        fila2.label2 = 'Fare Sett.';
+        fila2.amount2 = this.bean.FAREO;
+        fila2.label3 = 'Sales Amount';
+        fila2.amount3 = this.bean.SVFOP;
+
+        var fila3 = {}
+        fila3.label1 = 'Diff. Comm.';
+        fila3.amount1 = this.bean.DIFF_COMMAMO;
+        fila3.label2 = 'Diff. Fare';
+        fila3.amount2 = this.bean.DIFF_FARE;
+        fila3.label3 = 'Diff. Amount';
+        fila3.amount3 = 0;
+
+
+        this.lstAmounts.push(fila1);
+        this.lstAmounts.push(fila2);
+        this.lstAmounts.push(fila3);
+
+        Ext.getCmp(prototype.id + '-gridAmounts').bindStore(
+                Ext.create('Ext.data.Store', {data: this.lstAmounts, autoLoad: true})
+                );
+        
+        var title = 'Currency: ' + this.bean.SCURRENCY
+        
+        Ext.getCmp(prototype.id + '-gridAmounts').setTitle('<center style="font-size:12px;">' + title + '</center>');
+
+//        this.setValue('de-txtPCURRENCY', this.bean.SCURRENCY);       
+//        this.setValue('de-txtTGROSAMOUN', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
+//        this.setValue('de-txtSVFOPS', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
+//        this.setValue('de-txtDIFF_AMOUNT', Ext.util.Format.number(0, '0,000.00'));
+//        this.setValue('de-txtFAREO', Ext.util.Format.number(this.bean.FAREO, '0,000.00'));
+//        this.setValue('de-txtFAREC', Ext.util.Format.number(this.bean.FAREC, '0,000.00'));
+//        this.setValue('de-txtDIFF_FARE', Ext.util.Format.number(this.bean.DIFF_FARE, '0,000.00'));
+//        this.setValue('de-txtCOMMAMOC', Ext.util.Format.number(this.bean.COMMAMOC, '0,000.00'));
+//        this.setValue('de-txtCOMMAMO', Ext.util.Format.number(this.bean.COMMAMO, '0,000.00'));
+//        this.setValue('de-txtDIFF_COMMAMO', Ext.util.Format.number(this.bean.DIFF_COMMAMO, '0,000.00'));
+
+
+
         this.setValue('de-txtdescFREGLA', this.bean.descFREGLA);
         this.setValue('de-txtDATEC', this.bean.DATEC);
         //this.setValue('de-txtVOID', this.bean.VOID);
-        this.setValue('de-txtSVFOPS', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
+
         //this.setValue('de-txtFADM', this.bean.FADM);
         //this.setValue('de-txtFREVERSA', this.bean.FREVERSA);
         //this.setValue('de-txtFREVADM', this.bean.FREVADM);
         //this.setValue('de-txtDIFF_AMOUNT', Ext.util.Format.number(this.bean.DIFF_AMOUNT, '0,000.00'));
-        this.setValue('de-txtDIFF_AMOUNT', Ext.util.Format.number(0, '0,000.00'));
+
 
         this.setValue('txtUSCR', this.bean.USCR);
         this.setValue('txtFECR', this.bean.FECR);
@@ -632,7 +678,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         registro_adj.A720FECVTA = this.bean.SDATE;
         registro_adj.A720PNR = this.bean.SPNR;
         //registro_adj.A720AGENTE = this.bean.SAGENT;
-        registro_adj.A720AGENTE = $('#menuUser').text();;
+        registro_adj.A720AGENTE = $('#menuUser').text();
+        ;
         registro_adj.descTDOC = 'Adj.';
         registro_adj.TDOC = 'A';
 
