@@ -1493,6 +1493,10 @@ public class BankReconciliationDAO {
                 objRtn.COMMAMOC = rs01.getDouble("COMMAMOC");
                 objRtn.DIFF_COMMAMO = objRtn.COMMAMOC - objRtn.COMMAMO;
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
+                objRtn.CERROR = rs01.getString("CERROR").trim();
+                objRtn.DES_CERROR = rs01.getString("DES_CERROR").trim();
+                objRtn.CERROIN = rs01.getString("CERROIN").trim();
+                objRtn.DES_CERROIN = rs01.getString("DES_CERROIN").trim();
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
                 
                 objRtn.COMMFAREC = rs01.getDouble("COMMFAREC");

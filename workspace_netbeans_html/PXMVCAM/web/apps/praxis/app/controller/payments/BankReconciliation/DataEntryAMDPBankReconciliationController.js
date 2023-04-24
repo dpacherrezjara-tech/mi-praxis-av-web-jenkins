@@ -24,7 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstCard = this.p.lstCard;
         this.lstBank = this.p.lstBank;
         this.lstCountry = this.p.lstCountry;
-        console.log(this.bean.TDOC);
+        console.log(this.bean);
         this.obtainData();
     },
     afterRender: function () {
@@ -86,32 +86,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     obtainData: function () {
-
-//        var cmbDocumentType = Ext.getCmp(prototype.id + '-de-cmbTDOC');
-//        cmbDocumentType.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["S", "Sales"],
-//                ["R", "Refund"]
-//            ]
-//        }));
-//        cmbDocumentType.setValue("S");
-
-        var storeData = Ext.create('Ext.data.Store', {
-            data: this.lstCard,
-            autoLoad: true
-        });
-
-        var storeData2 = Ext.create('Ext.data.Store', {
-            data: this.lstBank,
-            autoLoad: true
-        });
-
-        var storeData3 = Ext.create('Ext.data.Store', {
-            data: this.lstCountry,
-            autoLoad: true
-        });
 
     },
     onSearchCompleteDetail: function () {
@@ -205,11 +179,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         //this.setValue('de-txtFCONTL', this.bean.FCONTL);
         //this.setValue('de-txtIDCONL', this.bean.IDCONL);
         //this.setValue('de-txtCERRORHST', this.bean.CERRORHST);
-        //this.setValue('de-txtCERROIN', this.bean.CERROIN);
-        //this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
+        this.setValue('de-txtCERROIN', this.bean.CERROIN);
+        this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
         //this.setValue('de-txtFLAG', this.bean.FLAG);
-        //this.setValue('de-txtCERROR', this.bean.CERROR);
-        //this.setValue('de-txtDES_CERROR', this.bean.DES_CERROR);
+        this.setValue('de-txtCERROR', this.bean.CERROR);
+        this.setValue('de-txtDES_CERROR', this.bean.DES_CERROR);
         this.setValue('de-txtBSUMDATE', this.bean.SDATE);
         this.setValue('de-txtTDOC', this.bean.strPEM);
         this.setValue('de-txtSPNR', this.bean.SPNR);
