@@ -615,9 +615,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 110
                                         },
-                                        {xtype: 'tbspacer', width: 30},
+                                        {xtype: 'tbspacer', width: 20},
                                         {
                                             xtype: 'label',
                                             text: 'Approval Code',
@@ -730,8 +730,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridAmounts',
-                                            width: 573,
-                                            height: 158,
+                                            width: 585,
+                                            height: 170,
 //                                    hidden: false,
                                             columnLines: true,
                                             plugins: [
@@ -1363,7 +1363,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     id: prototype.id + '-panelDataInfoScan',
                                     layout: 'vbox',
                                     border: false,
-                                    width: 930,
+                                    width: 960,
                                     height: 200,
                                     hidden: false,
                                     autoScroll: true,
@@ -1373,7 +1373,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataInfoScan',
-                                            width: 927,
+                                            width: 957,
                                             height: 180,
 //                                    hidden: false,
                                             columnLines: true,
@@ -1482,14 +1482,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Amount', dataIndex: 'A1531VFOP', width: 70,
+                                                    {text: 'Amount', dataIndex: 'A1531VFOP', width: 80,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 70, id: prototype.id + '-gridTot_VFOPs',
+                                                    {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 80, id: prototype.id + '-gridTot_VFOPs',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');

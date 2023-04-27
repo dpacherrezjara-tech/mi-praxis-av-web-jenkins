@@ -1488,10 +1488,13 @@ public class BankReconciliationDAO {
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
                 objRtn.FAREO = rs01.getDouble("FAREO");
                 objRtn.FAREC = rs01.getDouble("FAREC");
-                objRtn.DIFF_FARE = objRtn.FAREC - objRtn.FAREO;
+                //objRtn.DIFF_FARE = rs01.getDouble("FAREDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD
+                objRtn.DIFF_FARE = objRtn.FAREO - objRtn.FAREC;
+                
                 objRtn.COMMAMO = rs01.getDouble("COMMAMO");
                 objRtn.COMMAMOC = rs01.getDouble("COMMAMOC");
-                objRtn.DIFF_COMMAMO = objRtn.COMMAMOC - objRtn.COMMAMO;
+                objRtn.DIFF_COMMAMO = rs01.getDouble("COMMDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD
+                
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
                 objRtn.CERROR = rs01.getString("CERROR").trim();
                 objRtn.DES_CERROR = rs01.getString("DES_CERROR").trim();
@@ -1499,8 +1502,8 @@ public class BankReconciliationDAO {
                 objRtn.DES_CERROIN = rs01.getString("DES_CERROIN").trim();
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
                 
-                objRtn.COMMFAREC = rs01.getDouble("COMMFAREC");
-                objRtn.TOTAL_ADM = objRtn.DIFF_COMMAMO + objRtn.COMMFAREC;
+                objRtn.COMMFAREC = rs01.getDouble("COMMFAREC"); 
+                objRtn.TOTAL_ADM = rs01.getDouble("ADMTOTAL"); 
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

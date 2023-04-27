@@ -198,18 +198,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstAmounts = [];
 
         var fila1 = {}
-        fila1.label1 = 'Comm. Audit';
-        fila1.amount1 = this.bean.COMMAMOC;
-        fila1.label2 = 'Fare Sales';
-        fila1.amount2 = this.bean.FAREC;
+        fila1.label1 = 'Comm. Sett.';
+        fila1.amount1 = this.bean.COMMAMO;
+        fila1.label2 = 'Fare Sett.';
+        fila1.amount2 = this.bean.FAREO;
         fila1.label3 = 'Transact. Amount';
         fila1.amount3 = this.bean.SVFOP;
 
         var fila2 = {}
-        fila2.label1 = 'Comm. Sett.';
-        fila2.amount1 = this.bean.COMMAMO;
-        fila2.label2 = 'Fare Sett.';
-        fila2.amount2 = this.bean.FAREO;
+        
+        fila2.label1 = 'Comm. Audit';        
+        fila2.amount1 = this.bean.COMMAMOC;        
+        fila2.label2 = 'Fare Sales';
+        fila2.amount2 = this.bean.FAREC;
         fila2.label3 = 'Sales Amount';
         fila2.amount3 = this.bean.SVFOP;
 
