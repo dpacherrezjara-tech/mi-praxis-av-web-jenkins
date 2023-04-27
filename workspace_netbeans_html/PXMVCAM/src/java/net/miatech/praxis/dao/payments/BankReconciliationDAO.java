@@ -1488,8 +1488,8 @@ public class BankReconciliationDAO {
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
                 objRtn.FAREO = rs01.getDouble("FAREO");
                 objRtn.FAREC = rs01.getDouble("FAREC");
-                //objRtn.DIFF_FARE = rs01.getDouble("FAREDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD
-                objRtn.DIFF_FARE = objRtn.FAREO - objRtn.FAREC;
+                objRtn.DIFF_FARE = rs01.getDouble("FAREDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD
+                //objRtn.DIFF_FARE = objRtn.FAREO - objRtn.FAREC;
                 
                 objRtn.COMMAMO = rs01.getDouble("COMMAMO");
                 objRtn.COMMAMOC = rs01.getDouble("COMMAMOC");
@@ -2806,11 +2806,11 @@ public class BankReconciliationDAO {
 
                     beanTkt.FAREO = rst.getDouble("FAREO");
                     beanTkt.FAREC = rst.getDouble("FAREC");
-                    beanTkt.DIFF_FARE = beanTkt.FAREC - beanTkt.FAREO;
+                    beanTkt.DIFF_FARE = rst.getDouble("FAREDIFFC");
 
                     beanTkt.COMMAMO = rst.getDouble("COMMAMO");
                     beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
-                    beanTkt.DIFF_COMMAMO = beanTkt.COMMAMOC - beanTkt.COMMAMO;
+                    beanTkt.DIFF_COMMAMO = rst.getDouble("COMMDIFFC");
 
                     beanTkt.lngTotQACCB = lngTotCant;
                     beanTkt.lngTotQTYTKT = lngQTYTKT;

@@ -227,7 +227,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         fila4.amount1 = this.bean.DIFF_COMMAMO;
         fila4.label2 = '';
         fila4.amount2 = this.bean.COMMFAREC;
-        fila4.label3 = 'Total';
+        fila4.label3 = 'Total ADM';
         fila4.amount3 = this.bean.TOTAL_ADM;
 
 
