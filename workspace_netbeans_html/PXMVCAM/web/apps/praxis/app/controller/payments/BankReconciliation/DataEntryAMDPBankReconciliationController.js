@@ -223,7 +223,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         fila3.amount3 = 0;
 
         var fila4 = {}
-        fila4.label1 = 'ADM';
+        fila4.label1 = 'ADM/ACM';
         fila4.amount1 = this.bean.DIFF_COMMAMO;
         fila4.label2 = '';
         fila4.amount2 = this.bean.COMMFAREC;
