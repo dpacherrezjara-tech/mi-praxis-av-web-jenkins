@@ -195,6 +195,29 @@ public class MasterController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "/obtainDataAdjs")
+    public @ResponseBody
+    String obtainDataAdjs(ModelMap map, HttpServletRequest request) {
+        System.out.println("Master Controller --- obtainDataAdjs");
+        try {
+            masterDAO = new MasterDAO();
+            masterDAO.setSession((IServerSession) serverSession.getServerSession());
+
+            List<A2280> lstAirlines = masterDAO.loadAdjType();
+
+            map.put("success", true);
+            map.put("lstData", lstAirlines);
+        } catch (NumberFormatException ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "/obtainDataCity")
     public @ResponseBody

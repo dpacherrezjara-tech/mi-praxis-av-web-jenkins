@@ -2293,7 +2293,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDetCountryS',
                                                             bodyStyle: 'background: transparent;',
-                                                            width: 650,
+                                                            width: 530,
                                                             minHeight: 200,
                                                             titleAlign: 'center',
                                                             columnLines: true,
@@ -2372,7 +2372,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     var data = record.data;
                                                                                     var color = Number(data.SVFOP) !== Number(data.AVFOP) ? "#c22428" : "#244066";
-                                                                                    metaData.style = "text-align:right;color:" + color + ";";
+                                                                                    metaData.style = "text-align:right;";
                                                                                     return win.formatDblNumber(value);
                                                                                 }
                                                                             }
@@ -2380,6 +2380,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Reconcili.',
+                                                                        hidden:true,
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -2528,7 +2529,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDetCardS',
                                                             bodyStyle: 'background: transparent;',
-                                                            width: 750,
+                                                            width: 630,
                                                             minHeight: 200,
                                                             titleAlign: 'center',
                                                             columnLines: true,
@@ -2607,7 +2608,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     var data = record.data;
                                                                                     var color = Number(data.SVFOP) !== Number(data.AVFOP) ? "#c22428" : "#244066";
-                                                                                    metaData.style = "text-align:right;color:" + color + ";";
+                                                                                    metaData.style = "text-align:right;";
                                                                                     return win.formatDblNumber(value);
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -2620,6 +2621,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Reconcili.',
+                                                                        hidden:true,
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -2759,7 +2761,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDetDayS',
                                                             bodyStyle: 'background: transparent;',
-                                                            width: 480,
+                                                            width: 360,
                                                             minHeight: 200,
                                                             titleAlign: 'center',
                                                             columnLines: true,
@@ -2830,7 +2832,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     var data = record.data;
                                                                                     var color = Number(data.SVFOP) !== Number(data.AVFOP) ? "#c22428" : "#244066";
-                                                                                    metaData.style = "text-align:right;color:" + color + ";";
+                                                                                    metaData.style = "text-align:right;";
                                                                                     return win.formatDblNumber(value);
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -2843,6 +2845,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Reconcili.',
+                                                                        hidden:true,
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,

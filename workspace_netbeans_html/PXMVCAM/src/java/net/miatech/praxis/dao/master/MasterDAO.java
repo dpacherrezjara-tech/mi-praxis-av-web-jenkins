@@ -1398,6 +1398,59 @@ public class MasterDAO {
         return hmDescCard;
     }
 
+    public List<A2280> loadAdjType() {
+
+        //Connection con = null;
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaAdjs = new ArrayList<>();
+        A2280 adjs;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            strSQL = "SELECT CODETB CODE, DESCRE1 NAME FROM PRAXISMP.A4169 WHERE TTABLA = '89' AND CODETB <> ''";
+
+            //con = Proveedor.getConnectionIS(user);
+            stmt = cnx.createStatement();
+            rst = stmt.executeQuery(strSQL);
+
+            while (rst.next()) {
+                adjs = new A2280();
+                adjs.CODE = rst.getString("CODE").trim();
+                adjs.NAME = rst.getString("NAME").trim();
+
+                listaAdjs.add(adjs);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rst != null) {
+                    try {
+                        rst.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return listaAdjs;
+    }
+
     /*
     public List<A1852Filter> loadSource() {
 

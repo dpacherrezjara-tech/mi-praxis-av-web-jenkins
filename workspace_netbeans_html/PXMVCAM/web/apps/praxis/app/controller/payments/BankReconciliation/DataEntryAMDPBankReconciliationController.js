@@ -25,10 +25,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstBank = this.p.lstBank;
         this.lstCountry = this.p.lstCountry;
         console.log(this.bean);
-        this.obtainData();
+        this.lstAdjustment = [];
     },
     afterRender: function () {
-        console.log(this.bean.STVAL);
+        console.log(this.bean.STVAL);        
         this.mostrarData();
 
         Ext.getCmp(prototype.id + '-btn-save').hide();
@@ -86,7 +86,34 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     obtainData: function () {
-
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainDataAdjs',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            //beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function (response, opts) {
+                //Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    meDe.bean_detail = res.result;
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.lstData,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').bindStore(storeData);                    
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue('01');                    
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+            }
+        });
     },
     onSearchCompleteDetail: function () {
 
@@ -194,7 +221,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtSAUTHOC', this.bean.SAUTHOC);
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
-        
+
         this.lstAmounts = [];
 
         var fila1 = {}
@@ -206,9 +233,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         fila1.amount3 = this.bean.SVFOP;
 
         var fila2 = {}
-        
-        fila2.label1 = 'Comm. Audit';        
-        fila2.amount1 = this.bean.COMMAMOC;        
+
+        fila2.label1 = 'Comm. Audit';
+        fila2.amount1 = this.bean.COMMAMOC;
         fila2.label2 = 'Fare Sales';
         fila2.amount2 = this.bean.FAREC;
         fila2.label3 = 'Sales Amount';
@@ -239,9 +266,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         Ext.getCmp(prototype.id + '-gridAmounts').bindStore(
                 Ext.create('Ext.data.Store', {data: this.lstAmounts, autoLoad: true})
                 );
-        
+
         var title = 'Currency: ' + this.bean.SCURRENCY
-        
+
         Ext.getCmp(prototype.id + '-gridAmounts').setTitle('<center style="font-size:12px;">' + title + '</center>');
 
 //        this.setValue('de-txtPCURRENCY', this.bean.SCURRENCY);       
@@ -273,6 +300,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('txtUSUP', this.bean.USUP);
         this.setValue('txtFEUP', this.bean.FEUP);
         this.setValue('txtHOUP', this.bean.HOUP);
+        
+        this.obtainData();
 
     },
     calcularMontos: function () {
