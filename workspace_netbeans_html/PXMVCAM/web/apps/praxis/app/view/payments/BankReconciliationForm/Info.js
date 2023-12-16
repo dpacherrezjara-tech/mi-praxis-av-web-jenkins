@@ -1119,7 +1119,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Bank', dataIndex: 'strSORIG', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Bank', dataIndex: 'CODEBANK', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:left;background-color:#d5f4d5;";
                                                             var data = record.data;
@@ -1203,7 +1203,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Payment',
                                                 columns: [
                                                     {
-                                                        text: 'Date', dataIndex: 'BDATEP', width: 70, align: 'center', menuDisabled: true,
+                                                        text: 'Date', dataIndex: 'PAYDATE', width: 70, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                             return value;

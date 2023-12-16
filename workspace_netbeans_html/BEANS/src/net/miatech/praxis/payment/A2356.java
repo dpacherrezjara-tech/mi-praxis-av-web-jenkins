@@ -32,6 +32,7 @@ public class A2356 {
         public String CODAGRU="";
         public String DESMLINE ="";
         public String ICIA  = "";  
+        public String CTACTB  = "";  
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";

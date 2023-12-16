@@ -447,122 +447,135 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.DataEntry', {
                                     xtype: 'label',
                                     text: 'Accounting Code',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 110,
+                                    width: 150,
                                     padding: '3 0'
                                 },
-                                {xtype: 'tbspacer', width: 6},
+//                                {xtype: 'tbspacer', width: 6},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtCIACTA',
+                                    id: prototype.id + '-de-txtCTACTB',
                                     fieldStyle: 'text-align: center;',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 2,
+                                    maxLength: 10,
                                     padding: '3 0',
-                                    width: 30,
+                                    width: 330,
                                     listeners:{
                                         change: 'onUpperValue'
                                     }
                                 },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtUNIDAD',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 2,
-                                    padding: '3 0',
-                                    width: 30,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtCECOS',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 6,
-                                    padding: '3 0',
-                                    width: 60,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtLOCAC',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 4,
-                                    padding: '3 0',
-                                    width: 40,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtCODCTA',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 4,
-                                    padding: '3 0',
-                                    width: 40,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSUBCTA',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 5,
-                                    padding: '3 0',
-                                    width: 60,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtEQUIPO',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 4,
-                                    padding: '3 0',
-                                    width: 40,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtICIA',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9A-Za-z]/,
-                                    maxLength: 2,
-                                    padding: '3 0',
-                                    width: 30,
-                                    listeners:{
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 264}
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtCIACTA',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 2,
+//                                    padding: '3 0',
+//                                    width: 30,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtUNIDAD',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 2,
+//                                    padding: '3 0',
+//                                    width: 30,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtCECOS',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 6,
+//                                    padding: '3 0',
+//                                    width: 60,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtLOCAC',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 4,
+//                                    padding: '3 0',
+//                                    width: 40,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtCODCTA',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 4,
+//                                    padding: '3 0',
+//                                    width: 40,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtSUBCTA',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 5,
+//                                    padding: '3 0',
+//                                    width: 60,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtEQUIPO',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 4,
+//                                    padding: '3 0',
+//                                    width: 40,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+//                                {xtype: 'tbspacer', width: 5},
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-de-txtICIA',
+//                                    fieldStyle: 'text-align: center;',
+//                                    enforceMaxLength: true,
+//                                    maskRe: /[0-9A-Za-z]/,
+//                                    maxLength: 2,
+//                                    padding: '3 0',
+//                                    width: 30,
+//                                    listeners:{
+//                                        change: 'onUpperValue'
+//                                    }
+//                                },
+                                {xtype: 'tbspacer', width: 265}
                             ]
                         },
                         {

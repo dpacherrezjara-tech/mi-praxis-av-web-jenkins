@@ -193,7 +193,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Account', dataIndex: 'Field2', width: 250,
+                                                    {text: 'Account', dataIndex: 'CTACTB', width: 250,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:left;";

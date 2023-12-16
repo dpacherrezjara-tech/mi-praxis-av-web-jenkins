@@ -125,6 +125,7 @@ public class AccountingPlanDAO {
                 bean.SUBCTA = rst.getString("SUBCTA").trim();
                 bean.EQUIPO = rst.getString("EQUIPO").trim();
                 bean.ICIA = rst.getString("ICIA").trim();
+                bean.CTACTB = rst.getString("CTACTB").trim();
                 bean.Field1 = bean.CIACTA + bean.UNIDAD + bean.CECOS + bean.LOCAC + bean.CODCTA + bean.SUBCTA + bean.EQUIPO + bean.ICIA;
 
                 if (bean.Field1.equals("")) {
@@ -216,6 +217,7 @@ public class AccountingPlanDAO {
                 bean.SUBCTA = rst.getString("SUBCTA").trim();
                 bean.EQUIPO = rst.getString("EQUIPO").trim();
                 bean.ICIA = rst.getString("ICIA").trim();
+                bean.CTACTB = rst.getString("CTACTB").trim();
                 bean.Field1 = bean.CIACTA + bean.UNIDAD + bean.CECOS + bean.LOCAC + bean.CODCTA + bean.SUBCTA + bean.EQUIPO + bean.ICIA;
 
                 if (bean.Field1.equals("")) {
@@ -262,7 +264,7 @@ public class AccountingPlanDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02857_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02857_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -286,14 +288,15 @@ public class AccountingPlanDAO {
             cstmt.setString(15, filter.SUBCTA.trim());
             cstmt.setString(16, filter.EQUIPO.trim());
             cstmt.setString(17, filter.ICIA.trim());
-            cstmt.setString(18, filter.NROPOLIZ.trim());
-            cstmt.setString(19, filter.CLASE.trim());
-            cstmt.setString(20, filter.DIRCLIT.trim());
-            cstmt.setString(21, filter.CODAGRU.trim());
-            cstmt.setString(22, filter.DESMLINE.trim());
-            cstmt.setString(23, session.getUserView().getUserInfo().USR);
-            cstmt.setString(24, Functions.getFechaActual());
-            cstmt.setString(25, Functions.getHoraActual());
+            cstmt.setString(18, filter.CTACTB.trim());
+            cstmt.setString(19, filter.NROPOLIZ.trim());
+            cstmt.setString(20, filter.CLASE.trim());
+            cstmt.setString(21, filter.DIRCLIT.trim());
+            cstmt.setString(22, filter.CODAGRU.trim());
+            cstmt.setString(23, filter.DESMLINE.trim());
+            cstmt.setString(24, session.getUserView().getUserInfo().USR);
+            cstmt.setString(25, Functions.getFechaActual());
+            cstmt.setString(26, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {

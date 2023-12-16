@@ -838,6 +838,8 @@ public class BankReconciliationDAO {
                     }
                     beanTkt.SDATEL = rst.getString("LDATE").trim();
                     beanTkt.strSORIG = rst.getString("SORIG").trim();
+                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                    beanTkt.PAYDATE = rst.getString("PAYDATE").trim();
 
                     if (hmDescOrigen.containsKey(rst.getString("SORIG").trim())) {
                         beanTkt.strSORIG = hmDescOrigen.get(rst.getString("SORIG").trim());
