@@ -1488,6 +1488,8 @@ public class BankReconciliationDAO {
                 }
 
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
+                objRtn.SVFOPC = rs01.getDouble("SVFOPC");
+                objRtn.SVFOPD = rs01.getDouble("SVFOPD");
                 objRtn.FAREO = rs01.getDouble("FAREO");
                 objRtn.FAREC = rs01.getDouble("FAREC");
                 objRtn.DIFF_FARE = rs01.getDouble("FAREDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD

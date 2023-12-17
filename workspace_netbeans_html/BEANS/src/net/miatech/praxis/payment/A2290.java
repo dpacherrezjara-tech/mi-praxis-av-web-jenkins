@@ -36,6 +36,8 @@ public class A2290 {
     public String SCARCOD = "";
     public String STCNTR = "";
     public double SVFOP = 0;
+    public double SVFOPC = 0;
+    public double SVFOPD = 0;
     public double FAREO = 0;
     public double FAREC = 0;
     public double DIFF_FARE = 0;

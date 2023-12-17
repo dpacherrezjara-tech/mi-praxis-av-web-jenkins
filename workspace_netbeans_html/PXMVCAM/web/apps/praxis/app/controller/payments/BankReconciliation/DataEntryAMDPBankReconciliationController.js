@@ -239,7 +239,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         fila2.label2 = 'Fare Sales';
         fila2.amount2 = this.bean.FAREC;
         fila2.label3 = 'Sales Amount';
-        fila2.amount3 = this.bean.SVFOP;
+        fila2.amount3 = this.bean.SVFOPC;
 
         var fila3 = {}
         fila3.label1 = 'Diff. Comm.';
@@ -247,7 +247,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         fila3.label2 = 'Diff. Fare';
         fila3.amount2 = this.bean.DIFF_FARE;
         fila3.label3 = 'Diff. Amount';
-        fila3.amount3 = 0;
+        fila3.amount3 = this.bean.SVFOPD;
 
         var fila4 = {}
         fila4.label1 = 'ADM/ACM';
