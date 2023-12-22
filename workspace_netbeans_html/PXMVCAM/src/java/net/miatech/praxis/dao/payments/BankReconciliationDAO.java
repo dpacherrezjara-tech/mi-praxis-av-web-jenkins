@@ -930,17 +930,17 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00744_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00744_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(12, Types.INTEGER);
-            cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.SDATE.trim());//20190302
@@ -959,18 +959,20 @@ public class BankReconciliationDAO {
             cstmt.setString(9, filter.CODEBANK.trim()); //BN
             cstmt.setString(10, filter.NUMREF.trim());//75445509061250075522161
             cstmt.setString(11, filter.FTE.trim()); //
-
-            cstmt.setInt(12, filter.page.PAGNUM);
-            cstmt.setInt(13, filter.page.PAGROW);
-            cstmt.setInt(14, filter.page.TOTPAG);
-            cstmt.setInt(15, filter.page.TOTROW);
+            cstmt.setString(12, filter.DATEC.trim()); //
+            cstmt.setString(13, filter.TRANC.trim()); //
+            
+            cstmt.setInt(14, filter.page.PAGNUM);
+            cstmt.setInt(15, filter.page.PAGROW);
+            cstmt.setInt(16, filter.page.TOTPAG);
+            cstmt.setInt(17, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(12);
-            filter.page.PAGROW = cstmt.getInt(13);
-            filter.page.TOTPAG = cstmt.getInt(14);
-            filter.page.TOTROW = cstmt.getInt(15);
+            filter.page.PAGNUM = cstmt.getInt(14);
+            filter.page.PAGROW = cstmt.getInt(15);
+            filter.page.TOTPAG = cstmt.getInt(16);
+            filter.page.TOTROW = cstmt.getInt(17);
 
             rst = cstmt.getResultSet();
 
@@ -1508,7 +1510,11 @@ public class BankReconciliationDAO {
                 
                 objRtn.COMMFAREC = rs01.getDouble("COMMFAREC"); 
                 objRtn.TOTAL_ADM = rs01.getDouble("ADMTOTAL"); 
-
+                
+                objRtn.BANDOC = rs01.getString("BANDOC"); 
+                objRtn.DATEC = rs01.getString("DATEC").trim();
+                objRtn.TRANC = rs01.getString("TRANC").trim();
+                    
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
                 objRtn.HOCR = rs01.getString("HOCR");
@@ -2707,6 +2713,8 @@ public class BankReconciliationDAO {
                     } else {
                         beanTkt.strDescFTE = rst.getString("FTE").trim();
                     }
+                    beanTkt.DATEC = rst.getString("DATEC").trim();
+                    beanTkt.TRANC = rst.getString("TRANC").trim();
                     beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
                     beanTkt.SEQNUM = rst.getString("SEQNUM").trim();
                     beanTkt.NUMREF = rst.getString("NUMREF").trim();
@@ -4582,7 +4590,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_DETAIL(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_DETAIL(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -4599,6 +4607,8 @@ public class BankReconciliationDAO {
             cstmt.setString(8, filter.SCARDN.trim());
             cstmt.setString(9, filter.SAUTHOC.trim());
             cstmt.setString(10, filter.SAGENT.trim());
+            cstmt.setString(11, filter.DATEC.trim());
+            cstmt.setString(12, filter.TRANC.trim());
 
             cstmt.execute();
 

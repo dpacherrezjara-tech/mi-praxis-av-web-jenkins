@@ -35,6 +35,7 @@ public class A2290 {
     public String SPAYMENT = "";
     public String SCARCOD = "";
     public String STCNTR = "";
+    public String BANDOC = "";
     public double SVFOP = 0;
     public double SVFOPC = 0;
     public double SVFOPD = 0;

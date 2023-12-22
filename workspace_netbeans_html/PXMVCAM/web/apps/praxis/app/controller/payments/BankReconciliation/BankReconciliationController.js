@@ -1235,6 +1235,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             this.beanDetTicket.strTitulo = rowData.data.strTitulo;
             this.beanDetTicket.FTE = rowData.data.FTE;
             this.beanDetTicket.BAID = rowData.data.BAID;
+            this.beanDetTicket.STVAL = rowData.data.STVAL;
+            this.beanDetTicket.DATEC = rowData.data.DATEC;
+            this.beanDetTicket.TRANC = rowData.data.TRANC;
 
             me.paramsDetail.beanString = JSON.stringify(this.beanDetTicket);
             this.setGridDataDetTicket();

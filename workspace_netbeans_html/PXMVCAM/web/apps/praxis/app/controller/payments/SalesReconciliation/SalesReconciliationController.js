@@ -744,7 +744,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             if (win.getValue('cmbFOP') === 'CA') {
                 this.searchCashMonth(this.bean);
             } else {
-                this.search(this.bean);
+//                this.search(this.bean);
+                this.searchDetDay(this.bean);
             }
             //            }	
         }
@@ -848,7 +849,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 //        MatchTkt.show();
 //    },
     btnBack_click: function (obj, e) {
-        if (this.peek() === prototype.id + '-boxMainData') {
+//        if (this.peek() === prototype.id + '-boxMainData') {
+        if (this.peek() === prototype.id + '-boxDetDay') {
             global.showMenu();
         } else {
             this.stack.pop();
@@ -903,7 +905,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 },
                 load: function (obj, obj2, success, response, obj5) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                    win.lblUser_toolTip("Estructura: MPF103");
+                    win.lblUser_toolTip("Estructura: MPF101");
 
                     me.selectedChild('vskMain', 'boxMainData');
 

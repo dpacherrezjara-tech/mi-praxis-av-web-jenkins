@@ -94,6 +94,7 @@ public class A2290Filter extends A2290 {
     public String CBANK = "";
     public String MERCHNR = "";
     public String DATEC = "";
+    public String TRANC = "";
     public String STATUSC = "";
     public String TIPOTAR = "";
     public String FLOADE = "";

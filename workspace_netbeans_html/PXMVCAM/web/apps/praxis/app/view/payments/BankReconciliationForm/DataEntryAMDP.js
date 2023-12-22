@@ -542,7 +542,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'TICKET',
+                                            text: 'Id.Bank',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
@@ -550,14 +550,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtISREFNBR',
+                                            id: prototype.id + '-de-txtBANDOC',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
                                             width: 100,
                                             maskRe: /[0-9]/,
                                             readOnly: true,
                                             enforceMaxLength: true,
-                                            maxLength: 15
+                                            maxLength: 10
                                         },
                                         {xtype: 'tbspacer', width: 5}
                                     ]
@@ -1969,7 +1969,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     fieldStyle: 'text-align:right',
                                                     enforceMaxLength: true,
                                                     readOnly: true,
-                                                    width: 70,
+                                                    width: 120,
                                                 },
                                             ]
                                         },

@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
+    Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
