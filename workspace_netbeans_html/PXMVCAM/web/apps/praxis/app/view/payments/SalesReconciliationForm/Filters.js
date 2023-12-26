@@ -506,6 +506,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                         {xtype: 'tbspacer', width: 10, hidden:true},
                         {
                             xtype: 'radiogroup',
+                            hidden:true,
                             id:prototype.id+'-rbgType',
                             items: [
                                 { boxLabel: '<b style="color:#148D28;">Sales</b>', inputValue: 'Sales', name: 'rbgType', checked: true },

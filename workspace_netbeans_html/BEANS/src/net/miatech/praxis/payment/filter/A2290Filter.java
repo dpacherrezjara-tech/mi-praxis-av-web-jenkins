@@ -133,6 +133,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQTYTKT = 0;
     public long lngQMATCH = 0;
     public long lngQMANUAL = 0;
+    public long lngQPEND = 0;
     public long lngQSALES = 0;
     public long lngQACCB = 0;
     public long lngQDIFF = 0;
@@ -155,6 +156,7 @@ public class A2290Filter extends A2290 {
     public long lngQCLAR = 0;
     public long lngTotQMATCH = 0;
     public long lngTotQMANUAL = 0;
+    public long lngTotQPEND = 0;
     public long lngTotQSALES = 0;
     public long lngTotQACCB = 0;
     public long lngTotQDIFF = 0;

@@ -519,7 +519,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     id: prototype.id + '-2-txtSCARDN',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
-                                    maxLength: 16,
+                                    maxLength: 17,
                                     maskRe: /[0-9, */]/,
                                     margin: '0 0 0 3',
                                     readOnly: true,

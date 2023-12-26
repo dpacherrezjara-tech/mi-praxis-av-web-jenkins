@@ -37,9 +37,7 @@ public class LoadConciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQSALES = 0, lngTotQACCB = 0, lngTotQDIFF = 0;
-        long lngTotQACEP = 0, lngTotQRECH = 0, lngTotQSOSP = 0, lngTotQPAID = 0;
-        long lngTotQMANUAL = 0, lngTotQWSET = 0, lngTotQTHTEF = 0, lngTotQCLAR = 0, lngTotQCHRG = 0;
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQPEND = 0;
         String Fec = "";
 
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
@@ -97,19 +95,10 @@ public class LoadConciliationDAO {
             filter.page.TOTROW = cstmt.getInt(20);
 
             while (rst.next()) {
-                lngTotQMATCH = rst.getLong("QMATCH");
                 lngTotQSALES = rst.getLong("QSALES");
-                lngTotQACCB = rst.getLong("QACCB");
-                lngTotQDIFF = rst.getLong("QDIFF");
-                lngTotQMANUAL = rst.getLong("QMANU");
-                lngTotQACEP = rst.getLong("QACEP");
-                lngTotQRECH = rst.getLong("QRECH");
-                lngTotQSOSP = rst.getLong("QSOSP");
-                lngTotQPAID = rst.getLong("QPAID");
-                lngTotQWSET = rst.getLong("QTOTWS");
-                lngTotQTHTEF = rst.getLong("QTHTEF");
-                lngTotQCLAR = rst.getLong("QCLAR");
-                lngTotQCHRG = rst.getLong("QCHRG");
+                lngTotQMATCH = rst.getLong("QMATCH");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotQPEND = rst.getLong("QPEND");
             }
             rst.close();
 
@@ -136,47 +125,17 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     beanTkt.strFecFiltro = filter.strFecFiltro.trim();
 
-                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQSALES = rst.getLong("QSALES");
-                    beanTkt.lngQACCB = rst.getLong("QACCB");
-                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
-                    beanTkt.lngQMANUAL = rst.getLong("QMANU");
-                    beanTkt.lngQTOTSAL = rst.getLong("QMATCH") + rst.getLong("QSALES")
-                            + rst.getLong("QACCB") + rst.getLong("QDIFF") + rst.getLong("QMANU");
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngQTOTSAL = rst.getLong("QSALES") + rst.getLong("QMATCH")+ rst.getLong("QMANUAL") + rst.getLong("QPEND");
 
-                    beanTkt.lngQACEP = rst.getLong("QACEP");
-                    beanTkt.lngQRECH = rst.getLong("QRECH");
-                    beanTkt.lngQSOSP = rst.getLong("QSOSP");
-                    beanTkt.lngQTHTEF = rst.getLong("QTHTEF");
-                    //Sin Settlement
-                    /*beanTkt.lngQTOTWS = beanTkt.lngQTOTSAL - (rst.getLong("QACEP")
-                     + rst.getLong("QRECH") + rst.getLong("QSOSP"));*/
-                    beanTkt.lngQTOTWS = rst.getLong("QTOTWS");
-                    beanTkt.lngQTOTBK = rst.getLong("QACEP") + rst.getLong("QRECH")
-                            + rst.getLong("QSOSP") + rst.getLong("QTOTWS") + rst.getLong("QTHTEF");
-
-                    beanTkt.lngQPAID = rst.getLong("QPAID");
-                    beanTkt.lngQCLAR = rst.getLong("QCLAR");
-                    beanTkt.lngQCHRG = rst.getLong("QCHRG");
-                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQSALES = lngTotQSALES;
-                    beanTkt.lngTotQACCB = lngTotQACCB;
-                    beanTkt.lngTotQDIFF = lngTotQDIFF;
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
-                    beanTkt.lngTotQTOTSAL = lngTotQMATCH + lngTotQSALES + lngTotQACCB + lngTotQDIFF + lngTotQMANUAL;
-
-                    beanTkt.lngTotQACEP = lngTotQACEP;
-                    beanTkt.lngTotQRECH = lngTotQRECH;
-                    beanTkt.lngTotQSOSP = lngTotQSOSP;
-                    beanTkt.lngTotQTHTEF = lngTotQTHTEF;
-                    beanTkt.lngTotQCLAR = lngTotQCLAR;
-                    beanTkt.lngTotQCHRG = lngTotQCHRG;
-                    //Sin Settlement
-                    //beanTkt.lngTotQTOTWS = beanTkt.lngTotQTOTSAL - (lngTotQACEP + lngTotQRECH + lngTotQSOSP);
-                    beanTkt.lngTotQTOTWS = lngTotQWSET;
-                    beanTkt.lngTotQTOTBK = lngTotQWSET + lngTotQACEP + lngTotQRECH + lngTotQSOSP + lngTotQTHTEF;
-
-                    beanTkt.lngTotQPAID = lngTotQPAID;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+                    beanTkt.lngTotQTOTSAL = lngTotQSALES + lngTotQMATCH + lngTotQMANUAL + lngTotQPEND;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -325,7 +284,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -554,7 +513,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -995,9 +954,7 @@ public class LoadConciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQSALES = 0, lngTotQACCB = 0, lngTotQDIFF = 0;
-        long lngTotQACEP = 0, lngTotQRECH = 0, lngTotQSOSP = 0, lngTotQPAID = 0;
-        long lngTotQMANUAL = 0, lngTotQWSET = 0, lngTotQTHTEF = 0;
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQPEND = 0;
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -1044,17 +1001,10 @@ public class LoadConciliationDAO {
             filter.page.TOTROW = cstmt.getInt(19);
 
             while (rst.next()) {
-                lngTotQMATCH = rst.getLong("QMATCH");
                 lngTotQSALES = rst.getLong("QSALES");
-                lngTotQACCB = rst.getLong("QACCB");
-                lngTotQDIFF = rst.getLong("QDIFF");
-                lngTotQMANUAL = rst.getLong("QMANU");
-                lngTotQACEP = rst.getLong("QACEP");
-                lngTotQRECH = rst.getLong("QRECH");
-                lngTotQSOSP = rst.getLong("QSOSP");
-                lngTotQPAID = rst.getLong("QPAID");
-                lngTotQWSET = rst.getLong("QTOTWS");
-                lngTotQTHTEF = rst.getLong("QTHTEF");
+                lngTotQMATCH = rst.getLong("QMATCH");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotQPEND = rst.getLong("QPEND");
             }
             rst.close();
 
@@ -1091,43 +1041,19 @@ public class LoadConciliationDAO {
                          }*/
                         beanTkt.strDescCountry = rst.getString("NAME").trim();
                     }
-                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    
                     beanTkt.lngQSALES = rst.getLong("QSALES");
-                    beanTkt.lngQACCB = rst.getLong("QACCB");
-                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
-                    beanTkt.lngQMANUAL = rst.getLong("QMANU");
-                    beanTkt.lngQTOTSAL = rst.getLong("QMATCH") + rst.getLong("QSALES")
-                            + rst.getLong("QACCB") + rst.getLong("QDIFF") + rst.getLong("QMANU");
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngQTOTSAL = rst.getLong("QSALES") + rst.getLong("QMATCH")+ rst.getLong("QMANUAL") + rst.getLong("QPEND");
 
-                    beanTkt.lngQACEP = rst.getLong("QACEP");
-                    beanTkt.lngQRECH = rst.getLong("QRECH");
-                    beanTkt.lngQSOSP = rst.getLong("QSOSP");
-                    beanTkt.lngQTHTEF = rst.getLong("QTHTEF");
-                    //Sin Settlement
-                    /*beanTkt.lngQTOTWS = beanTkt.lngQTOTSAL - (rst.getLong("QACEP")
-                     + rst.getLong("QRECH") + rst.getLong("QSOSP"));*/
-                    beanTkt.lngQTOTWS = rst.getLong("QTOTWS");
-                    beanTkt.lngQTOTBK = rst.getLong("QACEP") + rst.getLong("QRECH")
-                            + rst.getLong("QSOSP") + rst.getLong("QTOTWS") + rst.getLong("QTHTEF");
 
-                    beanTkt.lngQPAID = rst.getLong("QPAID");
-                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQSALES = lngTotQSALES;
-                    beanTkt.lngTotQACCB = lngTotQACCB;
-                    beanTkt.lngTotQDIFF = lngTotQDIFF;
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
-                    beanTkt.lngTotQTOTSAL = lngTotQMATCH + lngTotQSALES + lngTotQACCB + lngTotQDIFF + lngTotQMANUAL;
-
-                    beanTkt.lngTotQACEP = lngTotQACEP;
-                    beanTkt.lngTotQRECH = lngTotQRECH;
-                    beanTkt.lngTotQSOSP = lngTotQSOSP;
-                    beanTkt.lngTotQTHTEF = lngTotQTHTEF;
-                    //Sin Settlement
-                    //beanTkt.lngTotQTOTWS = beanTkt.lngTotQTOTSAL - (lngTotQACEP + lngTotQRECH + lngTotQSOSP);
-                    beanTkt.lngTotQTOTWS = lngTotQWSET;
-                    beanTkt.lngTotQTOTBK = lngTotQWSET + lngTotQACEP + lngTotQRECH + lngTotQSOSP + lngTotQTHTEF;
-
-                    beanTkt.lngTotQPAID = lngTotQPAID;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+                    beanTkt.lngTotQTOTSAL = lngTotQSALES + lngTotQMATCH + lngTotQMANUAL + lngTotQPEND;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -1167,9 +1093,7 @@ public class LoadConciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQSALES = 0, lngTotQACCB = 0, lngTotQDIFF = 0;
-        long lngTotQACEP = 0, lngTotQRECH = 0, lngTotQSOSP = 0, lngTotQPAID = 0;
-        long lngTotQMANUAL = 0, lngTotQWSET = 0, lngTotQTHTEF = 0;
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQPEND = 0;
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -1216,17 +1140,11 @@ public class LoadConciliationDAO {
             filter.page.TOTROW = cstmt.getInt(19);
 
             while (rst.next()) {
-                lngTotQMATCH = rst.getLong("QMATCH");
                 lngTotQSALES = rst.getLong("QSALES");
-                lngTotQACCB = rst.getLong("QACCB");
-                lngTotQDIFF = rst.getLong("QDIFF");
+                lngTotQMATCH = rst.getLong("QMATCH");
                 lngTotQMANUAL = rst.getLong("QMANUAL");
-                lngTotQACEP = rst.getLong("QACEP");
-                lngTotQRECH = rst.getLong("QRECH");
-                lngTotQSOSP = rst.getLong("QSOSP");
-                lngTotQPAID = rst.getLong("QPAID");
-                lngTotQWSET = rst.getLong("QTOTWS");
-                lngTotQTHTEF = rst.getLong("QTHTEF");
+                lngTotQPEND = rst.getLong("QPEND");
+                
             }
             rst.close();
 
@@ -1257,43 +1175,19 @@ public class LoadConciliationDAO {
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.strDescCountry = rst.getString("NAME").trim();
 
-                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    
                     beanTkt.lngQSALES = rst.getLong("QSALES");
-                    beanTkt.lngQACCB = rst.getLong("QACCB");
-                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngQTOTSAL = rst.getLong("QSALES") + rst.getLong("QMATCH")+ rst.getLong("QMANUAL") + rst.getLong("QPEND");
 
-                    beanTkt.lngQACEP = rst.getLong("QACEP");
-                    beanTkt.lngQRECH = rst.getLong("QRECH");
-                    beanTkt.lngQSOSP = rst.getLong("QSOSP");
-                    beanTkt.lngQTHTEF = rst.getLong("QTHTEF");
-                    //Sin Settlement
-                    /*beanTkt.lngQTOTWS = beanTkt.lngQTOTSAL - (rst.getLong("QACEP")
-                     + rst.getLong("QRECH") + rst.getLong("QSOSP"));*/
-                    beanTkt.lngQTOTWS = rst.getLong("QTOTWS");
-                    beanTkt.lngQTOTBK = rst.getLong("QACEP") + rst.getLong("QRECH")
-                            + rst.getLong("QSOSP") + rst.getLong("QTOTWS") + rst.getLong("QTHTEF");
-
-                    beanTkt.lngQPAID = rst.getLong("QPAID");
-                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQSALES = lngTotQSALES;
-                    beanTkt.lngTotQACCB = lngTotQACCB;
-                    beanTkt.lngTotQDIFF = lngTotQDIFF;
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
 
-                    beanTkt.lngTotQACEP = lngTotQACEP;
-                    beanTkt.lngTotQRECH = lngTotQRECH;
-                    beanTkt.lngTotQSOSP = lngTotQSOSP;
-                    beanTkt.lngTotQTHTEF = lngTotQTHTEF;
-                    //Sin Settlement
-                    //beanTkt.lngTotQTOTWS = beanTkt.lngTotQTOTSAL - (lngTotQACEP + lngTotQRECH + lngTotQSOSP);
-                    beanTkt.lngTotQTOTWS = lngTotQWSET;
-                    beanTkt.lngTotQTOTBK = lngTotQWSET + lngTotQACEP + lngTotQRECH + lngTotQSOSP + lngTotQTHTEF;
-
-                    beanTkt.lngTotQPAID = lngTotQPAID;
-
-                    beanTkt.lngQTOTSAL = rst.getLong("QMATCH") + rst.getLong("QMANUAL") + rst.getLong("QSALES") + rst.getLong("QACCB") + rst.getLong("QDIFF");
-                    beanTkt.lngTotQTOTSAL = lngTotQMATCH + lngTotQSALES + lngTotQMANUAL;
+                    beanTkt.lngTotQTOTSAL = lngTotQSALES + lngTotQMATCH + lngTotQMANUAL + lngTotQPEND;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -1334,9 +1228,7 @@ public class LoadConciliationDAO {
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         //String strSCARF = "";
-        long lngTotQMATCH = 0, lngTotQSALES = 0, lngTotQACCB = 0, lngTotQDIFF = 0;
-        long lngTotQACEP = 0, lngTotQRECH = 0, lngTotQSOSP = 0, lngTotQPAID = 0;
-        long lngTotQMANUAL = 0, lngTotQWSET = 0, lngTotQTHTEF = 0;
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQPEND = 0;
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -1383,17 +1275,10 @@ public class LoadConciliationDAO {
             filter.page.TOTROW = cstmt.getInt(19);
 
             while (rst.next()) {
-                lngTotQMATCH = rst.getLong("QMATCH");
                 lngTotQSALES = rst.getLong("QSALES");
-                lngTotQACCB = rst.getLong("QACCB");
-                lngTotQDIFF = rst.getLong("QDIFF");
+                lngTotQMATCH = rst.getLong("QMATCH");
                 lngTotQMANUAL = rst.getLong("QMANUAL");
-                lngTotQACEP = rst.getLong("QACEP");
-                lngTotQRECH = rst.getLong("QRECH");
-                lngTotQSOSP = rst.getLong("QSOSP");
-                lngTotQPAID = rst.getLong("QPAID");
-                lngTotQWSET = rst.getLong("QWSET");
-                lngTotQTHTEF = rst.getLong("QTHTEF");
+                lngTotQPEND = rst.getLong("QPEND");
             }
             rst.close();
 
@@ -1424,41 +1309,18 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
 
                     beanTkt.SDATE = rst.getString("DATE").trim();
-                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQSALES = rst.getLong("QSALES");
-                    beanTkt.lngQACCB = rst.getLong("QACCB");
-                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
-                    beanTkt.lngQTOTSAL = rst.getLong("QMATCH") + rst.getLong("QSALES")
-                            + rst.getLong("QACCB") + rst.getLong("QDIFF") + rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngQTOTSAL = rst.getLong("QSALES") + rst.getLong("QMATCH")+ rst.getLong("QMANUAL") + rst.getLong("QPEND");
 
-                    beanTkt.lngQACEP = rst.getLong("QACEP");
-                    beanTkt.lngQRECH = rst.getLong("QRECH");
-                    beanTkt.lngQSOSP = rst.getLong("QSOSP");
-                    beanTkt.lngQTHTEF = rst.getLong("QTHTEF");
-                    //Sin Settlement
-                    /*beanTkt.lngQTOTWS = beanTkt.lngQTOTSAL - (rst.getLong("QACEP")
-                     + rst.getLong("QRECH") + rst.getLong("QSOSP"));*/
-                    beanTkt.lngQTOTWS = rst.getLong("QWSET");
-                    beanTkt.lngQTOTBK = rst.getLong("QACEP") + rst.getLong("QRECH")
-                            + rst.getLong("QSOSP") + rst.getLong("QWSET") + rst.getLong("QTHTEF");
-
-                    beanTkt.lngQPAID = rst.getLong("QPAID");
-                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQSALES = lngTotQSALES;
-                    beanTkt.lngTotQACCB = lngTotQACCB;
-                    beanTkt.lngTotQDIFF = lngTotQDIFF;
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
-                    beanTkt.lngTotQTOTSAL = lngTotQMATCH + lngTotQSALES + lngTotQACCB + lngTotQDIFF + lngTotQMANUAL;
-                    beanTkt.lngTotQACEP = lngTotQACEP;
-                    beanTkt.lngTotQRECH = lngTotQRECH;
-                    beanTkt.lngTotQSOSP = lngTotQSOSP;
-                    beanTkt.lngTotQTHTEF = lngTotQTHTEF;
-                    //Sin Settlement
-                    //beanTkt.lngTotQTOTWS = beanTkt.lngTotQTOTSAL - (lngTotQACEP + lngTotQRECH + lngTotQSOSP);
-                    beanTkt.lngTotQTOTWS = lngTotQWSET;
-                    beanTkt.lngTotQTOTBK = beanTkt.lngTotQTOTWS + lngTotQACEP + lngTotQRECH + lngTotQSOSP + lngTotQTHTEF;
-                    beanTkt.lngTotQPAID = lngTotQPAID;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+
+                    beanTkt.lngTotQTOTSAL = lngTotQSALES + lngTotQMATCH + lngTotQMANUAL + lngTotQPEND;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -1956,7 +1818,7 @@ public class LoadConciliationDAO {
             if (filter.STVAL.trim().equals("Match")) {
                 filter.STVAL = "1";
             } else if (filter.STVAL.trim().equals("Sales without Reconcili.") || filter.STVAL.trim().equals("Refund without Reconcili.")) {
-                filter.STVAL = "2";
+                filter.STVAL = "";
             } else if (filter.STVAL.trim().equals("Reconcili. without Sales") || filter.STVAL.trim().equals("Reconcili. without Refund")) {
                 filter.STVAL = "3";
             } else if (filter.STVAL.trim().equals("Match with Differences")) {
@@ -2823,7 +2685,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
