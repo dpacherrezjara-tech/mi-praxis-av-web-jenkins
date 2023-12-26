@@ -166,7 +166,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                 data: [
                                     [null, "&nbsp;"],
                                     ["1", "Match"],
-                                    ["2", "Sales without Reconcili."],
+                                    ["", "Sales without Reconcili."],
                                     ["3", "Reconcili. without Sales"],
                                     ["4", "Match with Differences"],
                                     ["5", "Match Manual"]

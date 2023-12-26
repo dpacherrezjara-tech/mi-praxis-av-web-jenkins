@@ -743,7 +743,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -1369,7 +1369,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -1963,7 +1963,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili. without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -2787,7 +2787,7 @@ public class LoadConciliationDAO {
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
