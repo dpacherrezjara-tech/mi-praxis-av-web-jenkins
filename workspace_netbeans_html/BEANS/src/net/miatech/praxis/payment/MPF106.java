@@ -20,6 +20,13 @@ public class MPF106 {
     public String COUNTRY = "";
     public String NAMEA = "";
     public String CANAL = "";
+    public String CITY = "";
+    public String NEGOC = "";
+    public String descNEGOC = "";
+    public String TERMI = "";
+    public String CONTAC = "";
+    public String EMAILS = "";
+    public String NPHONE = "";
     
     //Variables del 
     public String USCR = "";

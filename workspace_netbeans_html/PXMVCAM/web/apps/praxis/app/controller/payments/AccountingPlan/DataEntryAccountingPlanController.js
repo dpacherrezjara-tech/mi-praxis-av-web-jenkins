@@ -21,6 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         this.lstCountry = this.p.lstCountry;
     },
     afterRender: function() {
+        this.obtainData();
         this.limpiarData();
         switch (this.actionCode) {
             case 'I':
@@ -65,6 +66,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         this.setValue('de-txtCODAGRU', this.beanResult.CODAGRU);
         this.setValue('de-txtDESMLINE', this.beanResult.DESMLINE);
         
+        this.setValue('de-txtCOSTCEN', this.beanResult.COSTCEN);
+        this.setValue('de-cmbNEGOC', this.beanResult.NEGOC);
+        this.setValue('de-txtTTRAN', this.beanResult.TTRAN);
+        this.setValue('de-txtTOPER', this.beanResult.TOPER);
+        this.setValue('de-txtACCNUMBER', this.beanResult.ACCNUMBER);
+        
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
         this.setValue('txtHOCR', this.beanResult.HOCR);
@@ -74,40 +81,52 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
     },
     obtainData: function() {
         
-        var cmbSTATT = Ext.getCmp(prototype.id + '-de-cmbSTATT');
-        cmbSTATT.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "(None)"],
-                ["1", "Match"],
-                ["2", "Sin Aclaracion"]
-            ]
-        }));
-        cmbSTATT.setValue('');
+//        var cmbSTATT = Ext.getCmp(prototype.id + '-de-cmbSTATT');
+//        cmbSTATT.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "(None)"],
+//                ["1", "Match"],
+//                ["2", "Sin Aclaracion"]
+//            ]
+//        }));
+//        cmbSTATT.setValue('');
+//        
+//        var cmbFTEA = Ext.getCmp(prototype.id + '-de-cmbFTEA');
+//        cmbFTEA.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["BX", "BANAMEX"],
+//                ["A", "AMEX"],
+//                ["P", "PAYPAL"]
+//            ]
+//        }));
+//        cmbFTEA.setValue('BX');
+//        
+//        var cmbFSELEC = Ext.getCmp(prototype.id + '-de-cmbFSELEC');
+//        cmbFSELEC.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "(None)"],
+//                ["L", "Load"]
+//            ]
+//        }));
+//        cmbFSELEC.setValue('');
         
-        var cmbFTEA = Ext.getCmp(prototype.id + '-de-cmbFTEA');
-        cmbFTEA.bindStore(Ext.create('Ext.data.ArrayStore', {
+        var cmbNEGOC = Ext.getCmp(prototype.id + '-de-cmbNEGOC');
+        cmbNEGOC.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["BX", "BANAMEX"],
-                ["A", "AMEX"],
-                ["P", "PAYPAL"]
+                ["1", "PASAJES"],
+                ["2", "CARGA"],
+                ["3", "CORREO"],
             ]
         }));
-        cmbFTEA.setValue('BX');
-        
-        var cmbFSELEC = Ext.getCmp(prototype.id + '-de-cmbFSELEC');
-        cmbFSELEC.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "(None)"],
-                ["L", "Load"]
-            ]
-        }));
-        cmbFSELEC.setValue('');
+        cmbNEGOC.setValue('1');
 
     },
     llenarData: function(beanTemp) {
@@ -133,6 +152,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         beanTemp.DIRCLIT = this.getValue("de-txtDIRCLIT").trim();
         beanTemp.CODAGRU = this.getValue("de-txtCODAGRU").trim();
         beanTemp.DESMLINE = this.getValue("de-txtDESMLINE").trim();
+        
+        beanTemp.COSTCEN = this.getValue("de-txtCOSTCEN").trim();
+        beanTemp.NEGOC = this.getValue("de-cmbNEGOC");
+        beanTemp.TTRAN = this.getValue("de-txtTTRAN").trim();
+        beanTemp.TOPER = this.getValue("de-txtTOPER").trim();
+        beanTemp.ACCNUMBER = this.getValue("de-txtACCNUMBER").trim();
 
 //        console.log(beanTemp);
     },

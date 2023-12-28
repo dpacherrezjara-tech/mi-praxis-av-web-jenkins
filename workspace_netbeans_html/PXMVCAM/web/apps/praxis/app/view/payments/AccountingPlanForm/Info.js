@@ -37,9 +37,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxMainData',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
-                            width: 1192,
+                            width: 1482,
                             margin: '10 0 0 0',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1192,
+                                    width: 1472,
                                     columnLines: true,
 //                                    features: [{
 //                                        ftype: 'summary'
@@ -130,7 +130,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                                 },
                                                 columns: [
                                                     {text: 'Code', dataIndex: 'CODEBANK', width: 50},
-                                                    {text: 'Currency', dataIndex: 'SCURRENCY', width: 60},
+                                                    {text: 'Currency', dataIndex: 'SCURRENCY', width: 80},
                                                     {text: 'Country', dataIndex: 'SCOUNTRY', width: 60}
                                                 ]
                                             },
@@ -193,11 +193,43 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Account', dataIndex: 'CTACTB', width: 250,
+                                                    {text: 'Account', dataIndex: 'CTACTB', width: 120,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:left;";
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Cost Center', dataIndex: 'COSTCEN', width: 90,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:left;";
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Bussines', dataIndex: 'descNEGOC', width: 90,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:left;";
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Transaction Type', dataIndex: 'TTRAN', width: 110,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:left;";
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Operation Code', dataIndex: 'TOPER', width: 100,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:left;";
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
                                                             return value;
                                                         }
                                                     }
@@ -229,7 +261,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                 type: 'hbox',
                                 pack: 'center'
                             },
-                            border: true,
+                            border: false,
                             width: 1192,
                             height: 25,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
@@ -237,7 +269,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
 //                                        border: true,
 //                                        padding: '0px 5px 0px 5px'
 //                                    },
-//                                    padding: '1px 5px 1px 5px',
+//                            padding: '10px 5px 1px 5px',
                             items: [
                                 {
                                     xtype: 'panel',

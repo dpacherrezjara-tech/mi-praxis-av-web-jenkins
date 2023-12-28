@@ -1514,6 +1514,27 @@ public class BankReconciliationDAO {
                 objRtn.BANDOC = rs01.getString("BANDOC"); 
                 objRtn.DATEC = rs01.getString("DATEC").trim();
                 objRtn.TRANC = rs01.getString("TRANC").trim();
+                
+
+                objRtn.IVA = rs01.getDouble("IVA"); 
+                objRtn.PROPINA = rs01.getDouble("PROPINA"); 
+                objRtn.COMISION = rs01.getDouble("COMISION"); 
+                objRtn.BASEFUE = rs01.getDouble("BASEFUE"); 
+                objRtn.RTEFUE = rs01.getDouble("RTEFUE"); 
+                objRtn.RTEIVA = rs01.getDouble("RTEIVA"); 
+                objRtn.BASICA = rs01.getDouble("BASICA"); 
+                objRtn.RTEICA = rs01.getDouble("RTEICA"); 
+                objRtn.NETO = rs01.getDouble("NETO"); 
+                
+                objRtn.IVAC = rs01.getDouble("IVAC"); 
+                objRtn.PROPINAC = rs01.getDouble("PROPINAC"); 
+                objRtn.COMISIOC = rs01.getDouble("COMISIOC"); 
+                objRtn.BASEFUEC = rs01.getDouble("BASEFUEC"); 
+                objRtn.RTEFUEC = rs01.getDouble("RTEFUEC"); 
+                objRtn.RTEIVAC = rs01.getDouble("RTEIVAC"); 
+                objRtn.BASICAC = rs01.getDouble("BASICAC"); 
+                objRtn.RTEICAC = rs01.getDouble("RTEICAC"); 
+                objRtn.NETOC = rs01.getDouble("NETOC"); 
                     
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

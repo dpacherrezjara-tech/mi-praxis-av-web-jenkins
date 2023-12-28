@@ -87,6 +87,19 @@ public class AgentsCatalogDAO {
                 bean.CAGENCY = rst.getString("CAGENCY").trim();
                 bean.CANAL = rst.getString("CANAL").trim();
                 bean.NAMEA = rst.getString("NAMEA").trim();
+                bean.CITY = rst.getString("CITY").trim();
+                bean.NEGOC = rst.getString("NEGOC").trim();
+                if(rst.getString("NEGOC").trim().equals("1")){
+                    bean.descNEGOC = "PASAJES";
+                }else if(rst.getString("NEGOC").trim().equals("2")){
+                    bean.descNEGOC = "CARGA";
+                }else if(rst.getString("NEGOC").trim().equals("3")){
+                    bean.descNEGOC = "CORREO";
+                }
+                bean.TERMI = rst.getString("TERMI").trim();
+                bean.CONTAC = rst.getString("CONTAC").trim();
+                bean.EMAILS = rst.getString("EMAILS").trim();
+                bean.NPHONE = rst.getString("NPHONE").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -126,7 +139,7 @@ public class AgentsCatalogDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -139,11 +152,17 @@ public class AgentsCatalogDAO {
             cstmt.setString(4, filter.CAGENCY.trim());
             cstmt.setString(5, filter.NAMEA.trim());
             cstmt.setString(6, filter.CANAL.trim());
-            cstmt.setString(7, filter.NEW_CAGENCY.trim());
+            cstmt.setString(7, filter.CITY.trim());
+            cstmt.setString(8, filter.NEGOC.trim());
+            cstmt.setString(9, filter.TERMI.trim());
+            cstmt.setString(10, filter.CONTAC.trim());
+            cstmt.setString(11, filter.EMAILS.trim());
+            cstmt.setString(12, filter.NPHONE.trim());
+            cstmt.setString(13, filter.NEW_CAGENCY.trim());
 
-            cstmt.setString(8, session.getUserView().getUserInfo().USR);
-            cstmt.setString(9, Functions.getFechaActual());
-            cstmt.setString(10, Functions.getHoraActual());
+            cstmt.setString(14, session.getUserView().getUserInfo().USR);
+            cstmt.setString(15, Functions.getFechaActual());
+            cstmt.setString(16, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {
@@ -190,6 +209,12 @@ public class AgentsCatalogDAO {
                 objRtn.CAGENCY = rs01.getString("CAGENCY").trim();
                 objRtn.NAMEA = rs01.getString("NAMEA").trim();
                 objRtn.CANAL = rs01.getString("CANAL").trim();
+                objRtn.CITY = rs01.getString("CITY").trim();
+                objRtn.NEGOC = rs01.getString("NEGOC").trim();
+                objRtn.TERMI = rs01.getString("TERMI").trim();
+                objRtn.CONTAC = rs01.getString("CONTAC").trim();
+                objRtn.EMAILS = rs01.getString("EMAILS").trim();
+                objRtn.NPHONE = rs01.getString("NPHONE").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -224,6 +249,65 @@ public class AgentsCatalogDAO {
         }
 
         return objRtn;
+    }
+    
+    public List<MPF106Filter>  loadPX616SQP04943Citys(MPF106Filter filter) throws SQLException, Exception {
+
+        MPF106Filter objRtn = new MPF106Filter();
+        List<MPF106Filter> lstData = new ArrayList<MPF106Filter>(0);
+        
+//        MPF106Filter objRtn0;
+//        objRtn0 = new MPF106Filter();
+//        objRtn0.CODE = "";
+//        objRtn0.NAME = "All";
+//        lstData.add(objRtn0);
+        
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04943CITY(?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.COUNTRY.trim());
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn = new MPF106Filter();
+                objRtn.CODE = rs01.getString("CODE").trim();
+                objRtn.NAME = rs01.getString("NAME").trim();
+                
+                lstData.add(objRtn);
+            }
+            rs01.close();
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
     }
 
 }

@@ -134,6 +134,19 @@ public class AccountingPlanDAO {
                     bean.Field2 = bean.CIACTA + "-" + bean.UNIDAD + "-" + bean.CECOS + "-" + bean.LOCAC + "-" + bean.CODCTA + "-" + bean.SUBCTA + "-" + bean.EQUIPO + "-" + bean.ICIA;
                 }
                 bean.strDescripcion = "COMPANY CODE - UNITY - COST CENTER - LOCATION - ACCOUNTING ACCOUNT CODE - SUB ACCOUNT CODE - EQUIPMENT - INTER CIA";
+                bean.COSTCEN = rst.getString("COSTCEN").trim();
+                bean.NEGOC = rst.getString("NEGOC").trim();
+                if(rst.getString("NEGOC").trim().equals("1")){
+                    bean.descNEGOC = "PASAJES";
+                }else if(rst.getString("NEGOC").trim().equals("2")){
+                    bean.descNEGOC = "CARGA";
+                }else if(rst.getString("NEGOC").trim().equals("3")){
+                    bean.descNEGOC = "CORREO";
+                }
+                bean.TTRAN = rst.getString("TTRAN").trim();
+                bean.TOPER = rst.getString("TOPER").trim();
+                bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;
@@ -225,6 +238,20 @@ public class AccountingPlanDAO {
                 } else {
                     bean.Field2 = bean.CIACTA + "-" + bean.UNIDAD + "-" + bean.CECOS + "-" + bean.LOCAC + "-" + bean.CODCTA + "-" + bean.SUBCTA + "-" + bean.EQUIPO + "-" + bean.ICIA;
                 }
+                
+                bean.COSTCEN = rst.getString("COSTCEN").trim();
+                bean.NEGOC = rst.getString("NEGOC").trim();
+                if(rst.getString("NEGOC").trim().equals("1")){
+                    bean.descNEGOC = "PASAJES";
+                }else if(rst.getString("NEGOC").trim().equals("2")){
+                    bean.descNEGOC = "CARGA";
+                }else if(rst.getString("NEGOC").trim().equals("3")){
+                    bean.descNEGOC = "CORREO";
+                }
+                bean.TTRAN = rst.getString("TTRAN").trim();
+                bean.TOPER = rst.getString("TOPER").trim();
+                bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                
                 bean.USCR = rst.getString("USCR");
                 bean.FECR = rst.getString("FECR");
                 bean.HOCR = rst.getString("HOCR");
@@ -264,7 +291,7 @@ public class AccountingPlanDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02857_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02857(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -294,9 +321,14 @@ public class AccountingPlanDAO {
             cstmt.setString(21, filter.DIRCLIT.trim());
             cstmt.setString(22, filter.CODAGRU.trim());
             cstmt.setString(23, filter.DESMLINE.trim());
-            cstmt.setString(24, session.getUserView().getUserInfo().USR);
-            cstmt.setString(25, Functions.getFechaActual());
-            cstmt.setString(26, Functions.getHoraActual());
+            cstmt.setString(24, filter.COSTCEN.trim());
+            cstmt.setString(25, filter.NEGOC.trim());
+            cstmt.setString(26, filter.TTRAN.trim());
+            cstmt.setString(27, filter.TOPER.trim());
+            cstmt.setString(28, filter.ACCNUMBER.trim());
+            cstmt.setString(29, session.getUserView().getUserInfo().USR);
+            cstmt.setString(30, Functions.getFechaActual());
+            cstmt.setString(31, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {

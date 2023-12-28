@@ -110,7 +110,7 @@ public class AccountingPlanController extends BaseController {
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSX");
-        String fileNameDownload = String.format("Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Accounting Plan Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
@@ -164,6 +164,10 @@ public class AccountingPlanController extends BaseController {
             Cell CH1_10 = row1.createCell(10);
             Cell CH1_11 = row1.createCell(11);
             Cell CH1_12 = row1.createCell(12);
+            Cell CH1_13 = row1.createCell(13);
+            Cell CH1_14 = row1.createCell(14);
+            Cell CH1_15 = row1.createCell(15);
+            Cell CH1_16 = row1.createCell(16);
 
             CH1_0.setCellValue("Nbr.");
             CH1_1.setCellValue("Transaction");
@@ -175,6 +179,10 @@ public class AccountingPlanController extends BaseController {
             CH1_10.setCellValue("Class");
             CH1_11.setCellValue("Policy");
             CH1_12.setCellValue("Accounting");
+            CH1_13.setCellValue("");
+            CH1_14.setCellValue("");
+            CH1_15.setCellValue("");
+            CH1_16.setCellValue("");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -189,6 +197,10 @@ public class AccountingPlanController extends BaseController {
             CH1_10.setCellStyle(headerStyle);
             CH1_11.setCellStyle(headerStyle);
             CH1_12.setCellStyle(headerStyle);
+            CH1_13.setCellStyle(headerStyle);
+            CH1_14.setCellStyle(headerStyle);
+            CH1_15.setCellStyle(headerStyle);
+            CH1_16.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
@@ -200,7 +212,7 @@ public class AccountingPlanController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 16));
             ++vj;
             //============================================
 
@@ -219,6 +231,10 @@ public class AccountingPlanController extends BaseController {
             Cell CH2_10 = row2.createCell(10);
             Cell CH2_11 = row2.createCell(11);
             Cell CH2_12 = row2.createCell(12);
+            Cell CH2_13 = row2.createCell(13);
+            Cell CH2_14 = row2.createCell(14);
+            Cell CH2_15 = row2.createCell(15);
+            Cell CH2_16 = row2.createCell(16);
 
             CH2_1.setCellValue("Code");
             CH2_2.setCellValue("Description");
@@ -232,6 +248,10 @@ public class AccountingPlanController extends BaseController {
             CH2_10.setCellValue("Account");
             CH2_11.setCellValue("Number");
             CH2_12.setCellValue("Account");
+            CH2_13.setCellValue("Cost Center");
+            CH2_14.setCellValue("Bussines");
+            CH2_15.setCellValue("Transaction Type");
+            CH2_16.setCellValue("Operation Code");
 
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
@@ -246,6 +266,10 @@ public class AccountingPlanController extends BaseController {
             CH2_10.setCellStyle(headerStyle);
             CH2_11.setCellStyle(headerStyle);
             CH2_12.setCellStyle(headerStyle);
+            CH2_13.setCellStyle(headerStyle);
+            CH2_14.setCellStyle(headerStyle);
+            CH2_15.setCellStyle(headerStyle);
+            CH2_16.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             //sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
@@ -267,6 +291,10 @@ public class AccountingPlanController extends BaseController {
                 Cell rcell10 = row1.createCell(10);
                 Cell rcell11 = row1.createCell(11);
                 Cell rcell12 = row1.createCell(12);
+                Cell rcell13 = row1.createCell(13);
+                Cell rcell14 = row1.createCell(14);
+                Cell rcell15 = row1.createCell(15);
+                Cell rcell16 = row1.createCell(16);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).CODTRAN);
@@ -280,7 +308,11 @@ public class AccountingPlanController extends BaseController {
                 rcell9.setCellValue(listaData.get(vi).DIRCLIT);
                 rcell10.setCellValue(listaData.get(vi).CLASE);
                 rcell11.setCellValue(listaData.get(vi).NROPOLIZ);
-                rcell12.setCellValue(listaData.get(vi).Field2);
+                rcell12.setCellValue(listaData.get(vi).CTACTB);
+                rcell13.setCellValue(listaData.get(vi).COSTCEN);
+                rcell14.setCellValue(listaData.get(vi).descNEGOC);
+                rcell15.setCellValue(listaData.get(vi).TTRAN);
+                rcell16.setCellValue(listaData.get(vi).TOPER);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -299,6 +331,10 @@ public class AccountingPlanController extends BaseController {
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
             sheet.autoSizeColumn(12, true);
+            sheet.autoSizeColumn(13, true);
+            sheet.autoSizeColumn(14, true);
+            sheet.autoSizeColumn(15, true);
+            sheet.autoSizeColumn(16, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");

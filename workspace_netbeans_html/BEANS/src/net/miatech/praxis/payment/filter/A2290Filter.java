@@ -125,7 +125,26 @@ public class A2290Filter extends A2290 {
     public String strDescError = "";
     public double RATECOM = 0;
     public double COMISION = 0;
+    public double COMISIOC = 0;
     public double totCOMISION = 0;
+    
+    public double IVA = 0;
+    public double IVAC = 0;
+    public double PROPINA = 0;
+    public double PROPINAC = 0;
+    public double BASEFUE = 0;
+    public double BASEFUEC = 0;
+    public double RTEFUE = 0;
+    public double RTEFUEC = 0;
+    public double RTEIVA = 0;
+    public double RTEIVAC = 0;
+    public double BASICA = 0;
+    public double BASICAC = 0;
+    public double RTEICA = 0;
+    public double RTEICAC = 0;
+    public double NETO = 0;
+    public double NETOC = 0;
+    
     public String EMISOR = "";
     public long lngQTYDOC = 0;
     public long lngQTYTKT = 0;

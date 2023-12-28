@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1200,
+                width: 1400,
                 height: 700,
                 align: 'center'
             },
@@ -41,10 +41,10 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            padding: '1',
-                            border: true,
+                            padding: '10 0 0 0',
+                            border: false,
                             height: 560,
-                            width: 1164,
+                            width: 1364,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -53,8 +53,8 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
-                                    height: 520,
-                                    width: 594,
+                                    height: 486,
+                                    width: 1232,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -65,10 +65,16 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                         },
                                         items: [
                                             {text: 'Nbr', dataIndex: 'RN', width: 40},
-                                            {text: 'Ctry', dataIndex: 'COUNTRY', width: 50},
+                                            {text: 'Country', dataIndex: 'COUNTRY', width: 80},
                                             {text: 'Code', dataIndex: 'CAGENCY', width: 80},                                            
                                             {text: 'Name', dataIndex: 'NAMEA', width: 300, align: 'left'},
                                             {text: 'Channel', dataIndex: 'CANAL', width: 70},
+                                            {text: 'City', dataIndex: 'CITY', width: 70},
+                                            {text: 'Bussines', dataIndex: 'descNEGOC', width: 90},
+                                            {text: 'Terminal', dataIndex: 'TERMI', width: 80},
+                                            {text: 'Contact', dataIndex: 'CONTAC', width: 150},
+                                            {text: 'Email', dataIndex: 'EMAILS', width: 150},
+                                            {text: 'Phone', dataIndex: 'NPHONE', width: 80},
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
@@ -94,7 +100,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                         type: 'hbox',
                                         pack: 'center'
                                     },
-                                    border: true,
+                                    border: false,
                                     width: 1115,
                                     height: 25,
                                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',

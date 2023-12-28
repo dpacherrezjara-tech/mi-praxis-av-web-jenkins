@@ -35,5 +35,9 @@ public class AgentsCatalogLogic {
     public MPF106Filter loadPX616SQP04943(MPF106Filter filter) throws SQLException, Exception {
         return agentsCatalogDAO.loadPX616SQP04943(filter);
     }
+    
+    public List<MPF106Filter> loadPX616SQP04943Citys(MPF106Filter filter) throws SQLException, Exception {
+        return agentsCatalogDAO.loadPX616SQP04943Citys(filter);
+    }
 
 }

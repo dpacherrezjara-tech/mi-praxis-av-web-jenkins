@@ -5,6 +5,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
     meDE: '',
     actionCode: '',
     bean: {},
+    beanCity: {},
     beanResult: {},
     lstCountry: [],
     searchParams: {},
@@ -33,6 +34,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
             case 'U':
+                this.obtainDataCitys();
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
@@ -48,6 +50,12 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         this.setValue('de-txtNAMEA', this.beanResult.NAMEA);
         this.setValue('de-txtCANAL', this.beanResult.CANAL);
         this.setValue('de-cmbCOUNTRY', this.beanResult.COUNTRY);
+        this.setValue('de-cmbCITY', this.beanResult.CITY);
+        this.setValue('de-cmbNEGOC', this.beanResult.NEGOC);
+        this.setValue('de-cmbTERMI', this.beanResult.TERMI);
+        this.setValue('de-cmbCONTACT', this.beanResult.CONTAC);
+        this.setValue('de-cmbEMAILS', this.beanResult.EMAILS);
+        this.setValue('de-cmbNPHONE', this.beanResult.NPHONE);
 
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -56,11 +64,94 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
     },
-    obtainData: function () {       
+    obtainData: function () {
         Ext.getCmp(prototype.id + '-de-cmbCOUNTRY').bindStore(
                 Ext.create('Ext.data.Store', {data: this.lstCountry, autoLoad: true})
                 );
         Ext.getCmp(prototype.id + '-de-cmbCOUNTRY').setValue('');
+
+        var cmbNEGOC = Ext.getCmp(prototype.id + '-de-cmbNEGOC');
+        cmbNEGOC.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["1", "PASAJES"],
+                ["2", "CARGA"],
+                ["3", "CORREO"],
+            ]
+        }));
+        cmbNEGOC.setValue('1');
+
+    },
+    obtainDataCitys: function () {
+        
+        if (meDE.bean.data.COUNTRY !== '') {
+            meDE.beanCity = {};
+            meDE.beanCity.COUNTRY = meDE.bean.data.COUNTRY;
+
+            var beanString = JSON.stringify(meDE.beanCity);
+            Ext.Ajax.request({
+                url: prototype.url + '/obtainCitys',
+                method: 'POST',
+                timeout: 60000000,
+                params: {beanString: beanString},
+                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+                success: function (response, opts) {
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                    var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+
+                        var storeData = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-de-cmbCITY').bindStore(storeData);
+
+                    } else {
+                        global.Msg({msg: res.Mensaje});
+                    }
+                },
+                failure: function (response, opts) {
+                    console.log('server-side failure with status code ' + response.status);
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                }
+            });
+        } 
+    },
+    searchCitys: function () {
+        if (this.getValue("de-cmbCOUNTRY") !== '') {
+            meDE.beanCity = {};
+            meDE.beanCity.COUNTRY = Ext.getCmp(prototype.id + '-de-cmbCOUNTRY').getValue();
+
+            var beanString = JSON.stringify(meDE.beanCity);
+            Ext.Ajax.request({
+                url: prototype.url + '/obtainCitys',
+                method: 'POST',
+                timeout: 60000000,
+                params: {beanString: beanString},
+                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+                success: function (response, opts) {
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                    var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+
+                        var storeData = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-de-cmbCITY').bindStore(storeData);
+//                        Ext.getCmp(prototype.id + '-de-cmbCITY').setValue('');
+
+                    } else {
+                        global.Msg({msg: res.Mensaje});
+                    }
+                },
+                failure: function (response, opts) {
+                    console.log('server-side failure with status code ' + response.status);
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                }
+            });
+        }
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
@@ -69,7 +160,13 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         beanTemp.CANAL = this.getValue("de-txtCANAL");
         beanTemp.COUNTRY = this.getValue("de-cmbCOUNTRY");
         beanTemp.NAMEA = this.getValue("de-txtNAMEA");
-        beanTemp.CAGENCY = this.beanResult.CAGENCY;       
+        beanTemp.CITY = this.getValue("de-cmbCITY");
+        beanTemp.NEGOC = this.getValue("de-cmbNEGOC");
+        beanTemp.TERMI = this.getValue("de-cmbTERMI");
+        beanTemp.CONTAC = this.getValue("de-cmbCONTACT");
+        beanTemp.EMAILS = this.getValue("de-cmbEMAILS");
+        beanTemp.NPHONE = this.getValue("de-cmbNPHONE");
+        beanTemp.CAGENCY = this.beanResult.CAGENCY;
 
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
@@ -86,10 +183,10 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
             url: prototype.url + '/searchCompleteDetail',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 meDE.beanResult = res.result;
                 meDE.mostrarData();
@@ -146,24 +243,24 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
     },
     onUpdateClick: function (btn) {
         Ext.Msg.show(
-            {
-                title: '.:PRAXIS:.',
-                msg: 'Are you sure to update ?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                animateTarget: btn,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        this.llenarData(beanTemp);
-                        beanTemp.option = 'U';
-                        beanTemp.beanString = JSON.stringify(beanTemp);
-                        this.MaintenanceMPF106(beanTemp);
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to update ?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    animateTarget: btn,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            var beanTemp = {};
+                            this.llenarData(beanTemp);
+                            beanTemp.option = 'U';
+                            beanTemp.beanString = JSON.stringify(beanTemp);
+                            this.MaintenanceMPF106(beanTemp);
+                        }
                     }
-                }
-            });
+                });
     },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
@@ -197,7 +294,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
             timeout: 60000000,
             params: beanTemp,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function(response, opts) {
+            success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
@@ -206,7 +303,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
                     Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
                     Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                } else{
+                } else {
                     global.Msg({msg: 'An error occurred'});
                 }
             }

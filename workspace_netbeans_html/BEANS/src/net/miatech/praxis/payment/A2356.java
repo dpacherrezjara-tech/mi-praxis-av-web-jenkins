@@ -33,6 +33,12 @@ public class A2356 {
         public String DESMLINE ="";
         public String ICIA  = "";  
         public String CTACTB  = "";  
+        public String COSTCEN  = "";  
+        public String NEGOC  = "";  
+        public String descNEGOC  = "";  
+        public String TTRAN  = "";  
+        public String TOPER  = "";  
+        public String ACCNUMBER  = "";  
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";

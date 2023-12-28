@@ -113,7 +113,7 @@ public class AgentsCatalogController extends BaseController {
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("agentsCatalog : getXLSX");
+        System.out.println("AgentsCatalog : getXLSX");
 
         String fileNameDownload = String.format("agentsCatalog - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
 
@@ -176,16 +176,18 @@ public class AgentsCatalogController extends BaseController {
             Cell CH1_08 = row.createCell(8);
             Cell CH1_09 = row.createCell(9);
             Cell CH1_10 = row.createCell(10);
-            Cell CH1_11 = row.createCell(11);
 
             CH1_00.setCellValue("Nbr");
-            CH1_01.setCellValue("Bank");
-            CH1_04.setCellValue("Curr.");
-            CH1_05.setCellValue("Commision Rate");
-            CH1_08.setCellValue("Rate");
-            CH1_09.setCellValue("Cliente");
-            CH1_10.setCellValue("Status");
-            CH1_11.setCellValue("Bank");
+            CH1_01.setCellValue("Country");
+            CH1_02.setCellValue("Code");
+            CH1_03.setCellValue("Name");
+            CH1_04.setCellValue("Channel");
+            CH1_05.setCellValue("City");
+            CH1_06.setCellValue("Bussines");
+            CH1_07.setCellValue("Terminal");
+            CH1_08.setCellValue("Contact");
+            CH1_09.setCellValue("Email");
+            CH1_10.setCellValue("Phone");
 
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
@@ -198,58 +200,22 @@ public class AgentsCatalogController extends BaseController {
             CH1_08.setCellStyle(headerStyle);
             CH1_09.setCellStyle(headerStyle);
             CH1_10.setCellStyle(headerStyle);
-            CH1_11.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 3));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 7));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 10, 10));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
-
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
+            ++vj;
             //*******************
-            ++vj;
-            Row row2 = sheet.createRow(vj);
-            Cell CH2_00 = row2.createCell(0);
-            Cell CH2_01 = row2.createCell(1);
-            Cell CH2_02 = row2.createCell(2);
-            Cell CH2_03 = row2.createCell(3);
-            Cell CH2_04 = row2.createCell(4);
-            Cell CH2_05 = row2.createCell(5);
-            Cell CH2_06 = row2.createCell(6);
-            Cell CH2_07 = row2.createCell(7);
-            Cell CH2_08 = row2.createCell(8);
-            Cell CH2_09 = row2.createCell(9);
-            Cell CH2_10 = row2.createCell(10);
-            Cell CH2_11 = row2.createCell(11);
-
-            CH2_01.setCellValue("Ctry");
-            CH2_02.setCellValue("Code");
-            CH2_03.setCellValue("Name");
-            CH2_05.setCellValue("Normal");
-            CH2_06.setCellValue("Promotional 1");
-            CH2_07.setCellValue("Promotional 2");
-            CH2_08.setCellValue("IVA");
-            CH2_11.setCellValue("Status");
-
-            CH2_00.setCellStyle(headerStyle);
-            CH2_01.setCellStyle(headerStyle);
-            CH2_02.setCellStyle(headerStyle);
-            CH2_03.setCellStyle(headerStyle);
-            CH2_04.setCellStyle(headerStyle);
-            CH2_05.setCellStyle(headerStyle);
-            CH2_06.setCellStyle(headerStyle);
-            CH2_07.setCellStyle(headerStyle);
-            CH2_08.setCellStyle(headerStyle);
-            CH2_09.setCellStyle(headerStyle);
-            CH2_10.setCellStyle(headerStyle);
-            CH2_11.setCellStyle(headerStyle);
-
-            //          ========================================================
-            ++vj;
+            
             while (iter.hasNext()) {
 
                 row = sheet.createRow(vj);
@@ -259,17 +225,23 @@ public class AgentsCatalogController extends BaseController {
                 Cell rcell3 = row.createCell(3);
                 Cell rcell4 = row.createCell(4);
                 Cell rcell5 = row.createCell(5);
-
                 Cell rcell6 = row.createCell(6);
                 Cell rcell7 = row.createCell(7);
                 Cell rcell8 = row.createCell(8);
                 Cell rcell9 = row.createCell(9);
-                Cell rcel20 = row.createCell(10);
-                Cell rcel21 = row.createCell(11);
+                Cell rcell10 = row.createCell(10);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
-                               
-
+                rcell1.setCellValue(listaData.get(vi).COUNTRY);
+                rcell2.setCellValue(listaData.get(vi).CAGENCY);
+                rcell3.setCellValue(listaData.get(vi).NAMEA);
+                rcell4.setCellValue(listaData.get(vi).CANAL);
+                rcell5.setCellValue(listaData.get(vi).CITY);
+                rcell6.setCellValue(listaData.get(vi).descNEGOC);
+                rcell7.setCellValue(listaData.get(vi).TERMI);
+                rcell8.setCellValue(listaData.get(vi).CONTAC);
+                rcell9.setCellValue(listaData.get(vi).EMAILS);
+                rcell10.setCellValue(listaData.get(vi).NPHONE);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -285,7 +257,6 @@ public class AgentsCatalogController extends BaseController {
             sheet.autoSizeColumn(8, true);
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
-            sheet.autoSizeColumn(11, true);
 
             /**
              * fileNameDownload = Nombre de descarga
@@ -352,6 +323,33 @@ public class AgentsCatalogController extends BaseController {
         try {
             result = logic.loadPX616SQP04943(filter);
             map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "obtainCitys")
+    public @ResponseBody
+    String obtainCitys(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- AgentsCatalog : obtainCitys-------------");
+
+        Gson gson = new Gson();
+        MPF106Filter filter = new MPF106Filter();
+        MPF106Filter result = new MPF106Filter();
+        List<MPF106Filter> lst = new ArrayList<>(0);
+        
+        String beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, MPF106Filter.class);
+
+        logic = new AgentsCatalogLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        try {
+            lst = logic.loadPX616SQP04943Citys(filter);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
             map.put("success", true);
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
