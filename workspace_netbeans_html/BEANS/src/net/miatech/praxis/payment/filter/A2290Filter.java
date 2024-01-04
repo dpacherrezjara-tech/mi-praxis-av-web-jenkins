@@ -47,6 +47,7 @@ public class A2290Filter extends A2290 {
     public String IN_STVAL = "";
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
+    public String NAME = "";
     public String IN_SDATE = "";
     public String descSDATE = "";
     public String NUMAVIS = "";
@@ -143,6 +144,8 @@ public class A2290Filter extends A2290 {
     public double RTEICA = 0;
     public double RTEICAC = 0;
     public double NETO = 0;
+    public double totNETO = 0;
+    public double totNETOC = 0;
     public double NETOC = 0;
     
     public String EMISOR = "";
@@ -151,8 +154,15 @@ public class A2290Filter extends A2290 {
     public long lngTotQTYDOC = 0;
     public long lngTotQTYTKT = 0;
     public long lngQMATCH = 0;
+    public double lngQMATCHPercent = 0;
+    public double lngTotQMATCHPercent = 0;
+    public long lngQWECC = 0;
     public long lngQMANUAL = 0;
     public long lngQPEND = 0;
+    public long lngQTICKET = 0;
+    public long lngQTMATCH = 0;
+    public long lngQTMANUAL = 0;
+    public long lngQTPEND = 0;
     public long lngQSALES = 0;
     public long lngQACCB = 0;
     public long lngQDIFF = 0;
@@ -174,8 +184,14 @@ public class A2290Filter extends A2290 {
     public long lngQCHRG = 0;
     public long lngQCLAR = 0;
     public long lngTotQMATCH = 0;
+    public long lngTotQWECC = 0;
+    public long lngTotTotal = 0;
     public long lngTotQMANUAL = 0;
     public long lngTotQPEND = 0;
+    public long lngTotQTICKET = 0;
+    public long lngTotQTMATCH = 0;
+    public long lngTotQTMANUAL = 0;
+    public long lngTotQTPEND = 0;
     public long lngTotQSALES = 0;
     public long lngTotQACCB = 0;
     public long lngTotQDIFF = 0;
@@ -278,6 +294,7 @@ public class A2290Filter extends A2290 {
 
     //A2291
     public String CODEBANK = "";
+    public String IN_CODEBANK = "";
     public int QTYDOC = 0;
     public int totQTYDOC = 0;
     //
@@ -291,6 +308,11 @@ public class A2290Filter extends A2290 {
 
     public double AMOUNTS = 0;
     public long QTYTRAS = 0;
+    public long QTYTRAN1 = 0;
+    public long totQTYTRAN1 = 0;
+    public long QTYTRAN3 = 0;
+    public long totQTYTRAN3 = 0;
+    public long totQTYTRAS = 0;
     public long QTYDOCS = 0;
     public double AMOUNTR = 0;
     public long QTYTRAR = 0;

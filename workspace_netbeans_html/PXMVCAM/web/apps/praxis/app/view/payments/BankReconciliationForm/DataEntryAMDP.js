@@ -724,6 +724,48 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     xtype: 'panel',
                                     layout: 'hbox',
                                     border: false,
+                                    margin: '0 2 0 20',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7, height: 24},
+//                                        {
+//                                            xtype: 'label',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            text: 'Procesing Date',
+//                                            width: 120
+//                                        },
+//                                        {xtype: 'tbspacer', width: 10},
+//                                        {
+//                                            xtype: 'textfield',
+//                                            id: prototype.id + '-de-txtPRDA',
+//                                            fieldStyle: 'text-align:center',
+//                                            enforceMaxLength: true,
+//                                            readOnly: true,
+//                                            width: 100
+//                                        },
+//                                        {xtype: 'tbspacer', width: 24},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Transaction Conc.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtTRANC',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100,
+                                        },
+                                        {xtype: 'tbspacer', width: 785},
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
                                     id: prototype.id + '-PanelAmountsMain',
                                     margin: '10 0 10 0',
 //                                    bodyStyle: 'background:#efe5e5;',
@@ -844,7 +886,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     margin: '10 0 10 0',
 //                                    bodyStyle: 'background:#efe5e5;',
                                     items: [
-                                        {xtype: 'tbspacer', width: 100},
+//                                        {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
@@ -856,8 +898,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridAmountsExtras',
-                                                    width: 485,
-                                                    height: 170,
+                                                    width: 693,
+                                                    height: 132,
 //                                    hidden: false,
                                                     columnLines: true,
                                                     plugins: [
@@ -874,7 +916,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                         },
                                                         items: [
                                                             {
-                                                                text: 'Liquidacion',
+                                                                text: 'Liquidación',
                                                                 defaults: {
                                                                     menuDisabled: true,
                                                                     sortable: false,
@@ -883,45 +925,39 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                 columns: [
                                                                     {text: '', dataIndex: 'label1EX', width: 110,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.style = "text-align:center";
 
                                                                             return value;
                                                                         }
                                                                     },
                                                                     {text: '', dataIndex: 'amount1EX', width: 120,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
+                                                                            metaData.style = "text-align:right";
                                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                                             return value;
                                                                         }
                                                                     },
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Auditoría',
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: false,
-                                                                    align: 'center'
-                                                                },
-                                                                columns: [
+                                                                    {text: '', dataIndex: 'label2EX', width: 110,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;background-color:#b1e1fc;";
+
+                                                                            return value;
+                                                                        }
+                                                                    },
                                                                     {text: '', dataIndex: 'amount2EX', width: 120,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
+                                                                            metaData.style = "text-align:right;background-color:#b1e1fc;";
                                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                                             return value;
                                                                         }
                                                                     },
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Diferencias',
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: false,
-                                                                    align: 'center'
-                                                                },
-                                                                columns: [
+                                                                    {text: '', dataIndex: 'label3EX', width: 110,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+
+                                                                            return value;
+                                                                        }
+                                                                    },
                                                                     {text: '', dataIndex: 'amount3EX', width: 120,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";

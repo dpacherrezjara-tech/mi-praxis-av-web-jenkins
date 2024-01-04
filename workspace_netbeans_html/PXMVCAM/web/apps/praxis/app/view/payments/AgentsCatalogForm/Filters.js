@@ -1,6 +1,6 @@
 Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.'+prototype.id+'-filters',
+    alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
@@ -12,7 +12,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
             bodyStyle: 'background: transparent',
             padding: '2px 5px 1px 5px',
             layout: 'column',
-            defaults:  {
+            defaults: {
                 labelStyle: 'font-weight:bold;',
                 fieldStyle: 'text-align: center;',
                 padding: '5px 1px 5px 1px',
@@ -29,13 +29,13 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Currency ',
-                    id: prototype.id+'-cmbCode',
+                    id: prototype.id + '-cmbCode',
                     queryMode: 'local',
                     triggerAction: 'all',
                     valueField: 'A005KEY',
                     displayField: 'A005KEY2',
                     emptyText: 'All',
-                    maxLength:3,
+                    maxLength: 3,
                     labelWidth: 120,
                     width: 180,
                     hidden: true,
@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Country',
-                    id: prototype.id+'-cmbCountry',
+                    id: prototype.id + '-cmbCountry',
                     fieldStyle: 'text-align: left;',
                     queryMode: 'local',
                     triggerAction: 'all',
@@ -57,11 +57,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
 //                    hidden: false,
                     hiddenLabel: false
                 }
-                 ,
+                ,
                 {
                     xtype: 'combo',
                     fieldLabel: 'Bank',
-                    id: prototype.id+'-cmbBank',
+                    id: prototype.id + '-cmbBank',
                     fieldStyle: 'text-align: left;',
                     queryMode: 'local',
                     triggerAction: 'all',
@@ -72,8 +72,32 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
                     labelWidth: 80,
                     hidden: true,
                     hiddenLabel: false
-                }
-                
+                },
+                {
+                    xtype: 'label',
+                    text: 'Bussines:',
+                    padding: '8 0 0 20',
+                    width: 80
+                },
+//                {xtype: 'tbspacer', width: 80},
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbNEGOC',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    listConfig: {maxHeight: 111},
+                    width: 100,
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                },
             ]
         }
     ]

@@ -448,6 +448,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             xtype: 'label',
                             text: 'Merchant :',
                             padding: '3 0',
+                            hidden:true,
                             width: 74,
                             autoEl: {
                                 tag: 'label',
@@ -462,6 +463,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             maskRe: /[0-9a-zA-Z]/,      
                             maxLength: 20,
                             width: 192,
+                            hidden:true,
                             enableKeyEvents: true,
                             listeners:{
                                 keypress: 'BuscarTKT_keyDownHandler'

@@ -43,37 +43,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
     },
     mostrarData: function() {
-        this.setValue('de-txtNAID', this.beanResult.BAID);
+            
+        this.setValue('de-txtSCOUNTRY', this.beanResult.SCOUNTRY);
         this.setValue('de-cmbSTVAL', this.beanResult.STVAL);
-        
         this.setValue('de-txtSDATE', this.beanResult.SDATE);
-        this.setValue('de-txtTDATE', this.beanResult.TDATE);
-        this.setValue('de-txtBDATEP', this.beanResult.BDATEP);
-        this.setValue('de-txtMERCHN', this.beanResult.MERCHN);
-                
-        if(this.beanResult.strDescMerchn !== ''){
-                this.setValue('de-txtMERCHN', this.beanResult.MERCHN + ' - ' + this.beanResult.strDescMerchn);
-	}
-        
+        this.setValue('de-txtADATE', this.beanResult.ADATE);
+        this.setValue('de-txtCODEBANK', this.beanResult.CODEBANK);
+        this.setValue('de-txtBANDOC', this.beanResult.BANDOC);
         this.setValue('de-txtSCURRENCY', this.beanResult.SCURRENCY);
-        this.setValue('de-txtAMOUNTN', Ext.util.Format.number(this.beanResult.dblAMOUNT, '0,000.00'));
-        
-        this.setValue('de-cmbCODEBANK', this.beanResult.CODEBANK);
-        
-        this.setValue('de-txtMERCHNR', this.beanResult.MERCHNR);
-        this.setValue('de-txtDAMOUNTR', Ext.util.Format.number(this.beanResult.dblAMOUNTR, '0,000.00'));
-        this.setValue('de-txtCURRENCYR', this.beanResult.ACURRENCY);
-        this.setValue('de-txtDESCRI', this.beanResult.strDescripcion);
-        
-        this.setValue('de-txtAMOUNTS', Ext.util.Format.number(this.beanResult.AMOUNTS, '0,000.00'));
-        this.setValue('de-txtQTYTRAS', Ext.util.Format.number(this.beanResult.QTYTRAS, '0,000'));
-        this.setValue('de-txtQTYDOCS', Ext.util.Format.number(this.beanResult.QTYDOCS, '0,000'));
-        this.setValue('de-txtAMOUNTR', Ext.util.Format.number(this.beanResult.AMOUNTR, '0,000.00'));
-        this.setValue('de-txtQTYTRAR', Ext.util.Format.number(this.beanResult.QTYTRAR, '0,000'));
-        this.setValue('de-txtQTYDOCR', Ext.util.Format.number(this.beanResult.QTYDOCR, '0,000'));
-       
-        this.setValue('de-txtDATEC', this.beanResult.DATEC);
-        this.setValue('de-cmbSTATUSC', this.beanResult.STATUSC); 
+        this.setValue('de-txtNETO', this.beanResult.NETO);
+        this.setValue('de-txtQTYTRAS', this.beanResult.QTYTRAS);
+//        this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
+//        this.setValue('de-txtQTYTRAN3', this.beanResult.QTYTRAN3);
+        this.setValue('de-txtVALDATE', this.beanResult.VALDATE);
 
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -97,75 +79,44 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }));
         cmbSTVAL.setValue('');
         
-        
-        var cmbSTATUSC = Ext.getCmp(prototype.id + '-de-cmbSTATUSC');
-        cmbSTATUSC.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", ""],
-                ["1", "Processed"]
-            ]
-        }));
-        cmbSTATUSC.setValue('');
-
-
-        this.dataObtain.BANK = 2;
-        Ext.Ajax.request({
-            url: prototype.urlMaster + '/obtainData',
-            method: 'POST',
-            timeout: 60000000,
-            params: {
-                beanString: JSON.stringify(this.dataObtain)},
-            success: function (response, options) {
-                var res = Ext.JSON.decode(response.responseText);
-
-                var lstBank = res.lstBank;
-                var storeData = Ext.create('Ext.data.Store', {
-                    data: lstBank,
-                    autoLoad: true
-                });
-                
-                Ext.getCmp(prototype.id + '-de-cmbCODEBANK').bindStore(storeData);
-                Ext.getCmp(prototype.id + '-de-cmbCODEBANK').setValue('');
-            }
-        });
+//        this.dataObtain.BANK = 2;
+//        Ext.Ajax.request({
+//            url: prototype.urlMaster + '/obtainData',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: {
+//                beanString: JSON.stringify(this.dataObtain)},
+//            success: function (response, options) {
+//                var res = Ext.JSON.decode(response.responseText);
+//
+//                var lstBank = res.lstBank;
+//                var storeData = Ext.create('Ext.data.Store', {
+//                    data: lstBank,
+//                    autoLoad: true
+//                });
+//                
+//                Ext.getCmp(prototype.id + '-de-cmbCODEBANK').bindStore(storeData);
+//                Ext.getCmp(prototype.id + '-de-cmbCODEBANK').setValue('');
+//            }
+//        });
 
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function(beanTemp) {
 //        console.log('llenarData');
+        beanTemp.SCOUNTRY = this.getValue("de-txtSCOUNTRY");
+        beanTemp.STVAL = this.getValue("de-cmbSTVAL");
+        beanTemp.SDATE = this.getValue("de-txtSDATE");
+        beanTemp.ADATE = this.getValue("de-txtADATE");
         beanTemp.CODEBANK = this.getValue("de-txtCODEBANK");
-        beanTemp.NAMEBANK = this.getValue("de-txtNAMEBANK");
-        beanTemp.COUNTRY = this.getValue("de-cmbCOUNTRY");
-        beanTemp.CURRENC = this.getValue("de-txtCURRENC");
-        beanTemp.FSTAT = this.getValue("cmbFSTAT");
-        beanTemp.FINSUMO = this.getValue("cmbFINSUMO");
-        beanTemp.CODEBANKN = this.getValue("cmbCODEBANKN");
-        beanTemp.CLIENTE = this.getValue("de-txtCLIENTE");
-        
-        beanTemp.DOCNUM = this.getValue("txtDOCNUM");
-        if (beanTemp.RATEIVA.trim() === '') {
-            beanTemp.DOCNUM = 0;
-        }
-        
-        beanTemp.RATECON = this.getValue("de-txtRATECON");
-        if (beanTemp.RATECON.trim() === '') {
-            beanTemp.RATECON = 0;
-        }
-        beanTemp.RATECOP1 = this.getValue("de-txtRATECOP1");
-        if (beanTemp.RATECOP1.trim() === '') {
-            beanTemp.RATECOP1 = 0;
-        }
-        beanTemp.RATECOP2 = this.getValue("de-txtRATECOP2");
-        if (beanTemp.RATECOP2.trim() === '') {
-            beanTemp.RATECOP2 = 0;
-        }
-        beanTemp.RATEIVA = this.getValue("de-txtRATEIVA");
-        if (beanTemp.RATEIVA.trim() === '') {
-            beanTemp.RATEIVA = 0;
-        }
-
+        beanTemp.BANDOC = this.getValue("de-txtBANDOC");
+        beanTemp.SCURRENCY = this.getValue("de-txtSCURRENCY");
+        beanTemp.NETO = this.getValue("de-txtNETO");
+        beanTemp.QTYTRAS = this.getValue("de-txtQTYTRAS");
+//        beanTemp.QTYTRAN1 = this.getValue("de-txtQTYTRAN1");
+//        beanTemp.QTYTRAN3 = this.getValue("de-txtQTYTRAN3");
+        beanTemp.VALDATE = this.getValue("de-txtVALDATE");
+       
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
         beanTemp.HOCR = this.getValue("txtHOCR").trim();
@@ -201,12 +152,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function() {
-        this.setValue('txtCODSOUR', '');
-        this.setValue('txtDESSOU', '');
-        this.setValue('txtGRUSOR', '');
-        this.setValue('txtstrGRUSOR', '');
-        Ext.getCmp(prototype.id + '-lblDescripcion').setText('');
-        Ext.getCmp(prototype.id + '-lblDescripcion2').setText('');
+        this.setValue('txtSCOUNTRY', '');
+        this.setValue('cmbSTVAL', '');
+        this.setValue('txtSDATE', '');
+        this.setValue('txtADATE', '');
+        this.setValue('txtCODEBANK', '');
+        this.setValue('txtBANDOC', '');
+        this.setValue('txtSCURRENCY', '');
+        this.setValue('txtNETO', '');
+        this.setValue('txtQTYTRAN1', '');
+        this.setValue('txtQTYTRAN3', '');
+        this.setValue('txtVALDATE', '');
         this.setValue('txtUSCR', '');
         this.setValue('txtFECR', '');
         this.setValue('txtHOCR', '');

@@ -17,6 +17,7 @@ public class A2290 {
     public String TDOC = "";
     public String SEQ = "";
     public String STVAL = "";
+    public String VALDATE = "";
     public String FTE = "";
     public String TRNCU = "";
     public String NUMREF = "";
@@ -36,6 +37,7 @@ public class A2290 {
     public String SCARCOD = "";
     public String STCNTR = "";
     public String BANDOC = "";
+    public String ACCNUMBER = "";
     public double SVFOP = 0;
     public double SVFOPC = 0;
     public double SVFOPD = 0;

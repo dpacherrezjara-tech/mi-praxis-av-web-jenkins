@@ -119,11 +119,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Merchant Number:',
-                    id: prototype.id + '-txtMerchant',
+                    id: prototype.id + '-txtLiquida',
                     allowBlank: true,
                     maskRe: /[0-9]/,
                     enforceMaxLength: true,
                     maxLength: 20,
+                    hidden: true,
                     labelWidth: 150,
                     width: 300,
                     enableKeyEvents: true,
@@ -134,6 +135,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 {xtype: 'tbspacer', width: 30},
                 {
                     xtype: 'radiogroup',
+                    hidden: true,
 //                    fieldLabel: 'Transaction',
                     margin: '0px 5px 0px 10px',
                     id: prototype.id + '-rbgType',
@@ -184,6 +186,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     fieldLabel: 'Account',
                     id: prototype.id + '-cmbEFTE',
                     queryMode: 'local',
+                    hidden: true,
                     valueField: 'code',
                     displayField: 'name',
                     margin: '0 0 0 20',
@@ -198,13 +201,33 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     id: prototype.id + '-cmbTTRAN',
                     fieldStyle: 'text-align: left;',
                     queryMode: 'local',
+                    hidden: true,
                     valueField: 'code',
                     displayField: 'name',
-                    margin: '0 0 0 51',
+                    margin: '0 0 0 30',
                     labelWidth: 100,
                     width: 251,
                     labelAlign: 'left'
-                }
+                },
+                {
+                    xtype: 'label',
+                    text: 'Doc Sap Bank:',
+                    padding: '3 0 0 30',
+                    width: 120,
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtBANDOC',
+                    fieldStyle: 'text-align:center',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9a-zA-Z]/,
+                    maxLength: 20,
+                    width: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'eventKey_BANDOC'
+                    }
+                },
             ]
         }
 

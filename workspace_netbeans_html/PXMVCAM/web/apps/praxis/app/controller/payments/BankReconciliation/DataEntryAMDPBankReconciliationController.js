@@ -119,6 +119,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
+        console.log('MUESTRA EL PARAMS ');
         console.log(paramDetail);
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanAMDP_DETAIL',
@@ -192,6 +193,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 //        }
         console.log(this.bean);
         this.setValue('de-txtPRDA', this.bean.PRDA);
+        this.setValue('de-txtTRANC', this.bean.TRANC);
         this.setValue('de-txtSAGENT', this.bean.DESAGENT);
         this.setValue('de-txtMERCHID', this.bean.MERCHNC);
         //this.setValue('de-txtSMERCHID', this.bean.SMERCHID);
@@ -277,67 +279,30 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         var fila1EX = {}
         fila1EX.label1EX = 'IVA';
         fila1EX.amount1EX = this.bean.IVA;
-        fila1EX.amount2EX = this.bean.IVAC;
-        fila1EX.amount3EX = this.bean.IVA - this.bean.IVAC;
+        fila1EX.label2EX = 'BASEFUE';
+        fila1EX.amount2EX = this.bean.BASEFUE;
+        fila1EX.label3EX = 'BASICA';
+        fila1EX.amount3EX = this.bean.BASICA;
         
         var fila2EX = {}
         fila2EX.label1EX = 'PROPINA';
         fila2EX.amount1EX = this.bean.PROPINA;
-        fila2EX.amount2EX = this.bean.PROPINAC;
-        fila2EX.amount3EX = this.bean.PROPINA - this.bean.PROPINAC;
-        
+        fila2EX.label2EX = 'RTEFUE';
+        fila2EX.amount2EX = this.bean.RTEFUE;
+        fila2EX.label3EX = 'RTEICA';
+        fila2EX.amount3EX = this.bean.RTEICA;
+       
         var fila3EX = {}
-        fila3EX.label1EX = 'COMMISION';
+        fila3EX.label1EX = 'COMISION';
         fila3EX.amount1EX = this.bean.COMISION;
-        fila3EX.amount2EX = this.bean.COMISIOC;
-        fila3EX.amount3EX = this.bean.COMISION - this.bean.COMISIOC;
-        
-        var fila4EX = {}
-        fila4EX.label1EX = 'BASEFUE';
-        fila4EX.amount1EX = this.bean.BASEFUE;
-        fila4EX.amount2EX = this.bean.BASEFUEC;
-        fila4EX.amount3EX = this.bean.BASEFUE - this.bean.BASEFUEC;
-        
-        var fila5EX = {}
-        fila5EX.label1EX = 'RTEFUE';
-        fila5EX.amount1EX = this.bean.RTEFUE;
-        fila5EX.amount2EX = this.bean.RTEFUEC;
-        fila5EX.amount3EX = this.bean.RTEFUE - this.bean.RTEFUEC;
-        
-        var fila6EX = {}
-        fila6EX.label1EX = 'RTEIVA';
-        fila6EX.amount1EX = this.bean.RTEIVA; 
-        fila6EX.amount2EX = this.bean.RTEIVAC; 
-        fila6EX.amount3EX = this.bean.RTEIVA - this.bean.RTEIVAC; 
-        
-        var fila7EX = {}
-        fila7EX.label1EX = 'BASICA';
-        fila7EX.amount1EX = this.bean.BASICA; 
-        fila7EX.amount2EX = this.bean.BASICAC; 
-        fila7EX.amount3EX = this.bean.BASICA - this.bean.BASICAC; 
-        
-        var fila8EX = {}
-        fila8EX.label1EX = 'RTEICA';
-        fila8EX.amount1EX = this.bean.RTEICA; 
-        fila8EX.amount2EX = this.bean.RTEICAC; 
-        fila8EX.amount3EX = this.bean.RTEICA - this.bean.RTEICAC; 
-        
-        var fila9EX = {}
-        fila9EX.label1EX = 'NETO';
-        fila9EX.amount1EX = this.bean.NETO; 
-        fila9EX.amount2EX = this.bean.NETOC; 
-        fila9EX.amount3EX = this.bean.NETO - this.bean.NETOC; 
-
-        
+        fila3EX.label2EX = 'RTEIVA';
+        fila3EX.amount2EX = this.bean.RTEIVA;
+        fila3EX.label3EX = 'NETO';
+        fila3EX.amount3EX = this.bean.NETO;
+         
         this.lstAmountsExtras.push(fila1EX);
         this.lstAmountsExtras.push(fila2EX);
         this.lstAmountsExtras.push(fila3EX);
-        this.lstAmountsExtras.push(fila4EX);
-        this.lstAmountsExtras.push(fila5EX);
-        this.lstAmountsExtras.push(fila6EX);
-        this.lstAmountsExtras.push(fila7EX);
-        this.lstAmountsExtras.push(fila8EX);
-        this.lstAmountsExtras.push(fila9EX);
 
         Ext.getCmp(prototype.id + '-gridAmountsExtras').bindStore(
                 Ext.create('Ext.data.Store', {data: this.lstAmountsExtras, autoLoad: true})

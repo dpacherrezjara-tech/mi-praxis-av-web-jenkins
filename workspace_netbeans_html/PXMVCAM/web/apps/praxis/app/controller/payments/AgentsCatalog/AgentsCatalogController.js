@@ -132,6 +132,20 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
                     global.Msg({msg: res.sesion});
             }
         });
+        
+        var cmbNEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC');
+        cmbNEGOC.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["1", "PASAJES"],
+                ["2", "CARGA"],
+                ["3", "CORREO"],
+            ]
+        }));
+        cmbNEGOC.setValue('');
+        
     },
     setFormatParameter: function () {
 
@@ -139,6 +153,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
         me.bean.CURRENC = Ext.getCmp(prototype.id + '-cmbCode').getValue();
         me.bean.COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
+        me.bean.NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue();
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,

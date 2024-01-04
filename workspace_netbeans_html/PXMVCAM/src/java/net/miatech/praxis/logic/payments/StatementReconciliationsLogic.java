@@ -23,36 +23,34 @@ public class StatementReconciliationsLogic {
 
     public void setSession(IServerSession ss) {
         StatementReconciliationsDAO.setSession(ss);
-
     }
 
-    public List<A2280Filter> loadPX267SQP00671(A2280Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX267SQP00671(filter);
-    }
-
-   
-   public String loadPX267SQP00672(A2280Filter filter, String option) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX267SQP00672(filter, option);
-    }
-   public A2280Filter loadPX267SQP00673(A2280Filter filter) throws SQLException, Exception {
-     return StatementReconciliationsDAO.loadPX267SQP00673(filter);
-   }
-   
-   public List<A1691Filter> loadPX330SQP01039(A1691Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX330SQP01039(filter);
-    }
- 
-   public int loadPXSQPCLP(A1691Filter filter) throws Exception {
-        return StatementReconciliationsDAO.loadPXSQPCLP(filter);
-    }
-   
-   public A1691Filter loadPX265SQP01449(A1691Filter filter) throws Exception {
-        return StatementReconciliationsDAO.loadPX265SQP01449(filter);
-    }
-   
-   public String loadPX265SQP01448(A1691Filter filter, String option) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX265SQP01448(filter, option);
-    }
+//    public List<A2280Filter> loadPX267SQP00671(A2280Filter filter) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX267SQP00671(filter);
+//    }
+//   
+//   public String loadPX267SQP00672(A2280Filter filter, String option) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX267SQP00672(filter, option);
+//    }
+//   public A2280Filter loadPX267SQP00673(A2280Filter filter) throws SQLException, Exception {
+//     return StatementReconciliationsDAO.loadPX267SQP00673(filter);
+//   }
+//   
+//   public List<A1691Filter> loadPX330SQP01039(A1691Filter filter) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX330SQP01039(filter);
+//    }
+// 
+//   public int loadPXSQPCLP(A1691Filter filter) throws Exception {
+//        return StatementReconciliationsDAO.loadPXSQPCLP(filter);
+//    }
+//   
+//   public A1691Filter loadPX265SQP01449(A1691Filter filter) throws Exception {
+//        return StatementReconciliationsDAO.loadPX265SQP01449(filter);
+//    }
+//   
+//   public String loadPX265SQP01448(A1691Filter filter, String option) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX265SQP01448(filter, option);
+//    }
    
    public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00838(filter);
@@ -70,22 +68,26 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
     }
    
-   public List<A2290Filter> loadPX287SQP00924(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX287SQP00924(filter);
+   public List<A2290Filter> loadPX287SQP00842(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00842(filter);
     }
-
-   public List<A2290Filter> loadPX287SQP00925(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX287SQP00925(filter);
-    }
-   
-   public List<A2290Filter> loadPX287SQP00926(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX287SQP00926(filter);
-    }
-   
-   public List<A2290Filter> loadPX287SQP02055(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX287SQP02055(filter);
-    }
-   
+//   
+//   public List<A2290Filter> loadPX287SQP00924(A2290Filter filter) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX287SQP00924(filter);
+//    }
+//
+//   public List<A2290Filter> loadPX287SQP00925(A2290Filter filter) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX287SQP00925(filter);
+//    }
+//   
+//   public List<A2290Filter> loadPX287SQP00926(A2290Filter filter) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX287SQP00926(filter);
+//    }
+//   
+//   public List<A2290Filter> loadPX287SQP02055(A2290Filter filter) throws SQLException, Exception {
+//        return StatementReconciliationsDAO.loadPX287SQP02055(filter);
+//    }
+//   
    public A2290Filter loadPX287SQP00844(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
     }

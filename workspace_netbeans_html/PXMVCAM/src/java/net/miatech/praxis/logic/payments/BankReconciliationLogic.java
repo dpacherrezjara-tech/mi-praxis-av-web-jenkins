@@ -26,6 +26,22 @@ public class BankReconciliationLogic {
         bankReconciliationDAO.setSession(ss);
     }
 
+    public List<A2290Filter> loadPX269SQP00698Main(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Main(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698Country(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Country(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698Day(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Day(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698Detalle(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Detalle(filter);
+    }
+    
     public List<A2290Filter> loadPX269SQP00698(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698(filter);
     }
