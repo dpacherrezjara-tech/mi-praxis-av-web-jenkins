@@ -25,6 +25,7 @@ public class A2290Filter extends A2290 {
     public String origSEQNUM = "";
     public String origSCURRENCY = "";
     public double origSVFOP = 0;
+    public double VFOP = 0;
     //===============================
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
@@ -39,6 +40,9 @@ public class A2290Filter extends A2290 {
     public String IN_CARDN = "";
     public String IN_CARDN1 = "";
     public String IN_CARDN2 = "";
+    public String IN_SCARDNCOR = "";
+    public String CODE = "";
+    public String DESCR = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";

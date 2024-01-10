@@ -37,6 +37,8 @@ public class A2290 {
     public String SCARCOD = "";
     public String STCNTR = "";
     public String BANDOC = "";
+    public String STCON = "";
+    public String FCONT = "";
     public String ACCNUMBER = "";
     public double SVFOP = 0;
     public double SVFOPC = 0;

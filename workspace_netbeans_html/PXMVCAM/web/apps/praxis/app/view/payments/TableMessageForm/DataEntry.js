@@ -126,7 +126,7 @@ Ext.define('Ext.Praxis.view.payments.TableMessageForm.DataEntry',{
                                     fieldStyle: 'text-align:left;',
                                     maxChars: '40',
                                     width: 500,
-                                    maskRe: /[a-zA-Z]/
+//                                    maskRe: /[a-zA-Z]/
                                 }
                                 ,
                                 { xtype: 'tbspacer', width: 10 }

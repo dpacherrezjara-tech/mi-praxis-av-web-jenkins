@@ -442,7 +442,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtCERROR',
-                                            fieldStyle: 'text-align:right',
+                                            fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100
@@ -620,7 +620,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 20},
                                         {
                                             xtype: 'label',
-                                            text: 'Approval Code',
+                                            text: 'Authorization Code',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
@@ -666,6 +666,24 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             id: prototype.id + '-de-txtSTVAL',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSTVALHide',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            hidden: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSVFOPHide',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            hidden: true,
                                             readOnly: true,
                                             width: 100
                                         },
@@ -766,223 +784,345 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     xtype: 'panel',
                                     layout: 'hbox',
                                     border: false,
-                                    id: prototype.id + '-PanelAmountsMain',
-                                    margin: '10 0 10 0',
-//                                    bodyStyle: 'background:#efe5e5;',
+                                    id: prototype.id + '-PanelGridAndComments',
+                                    margin: '10 0 10 100',
                                     items: [
+                                        {   
+                                            xtype: 'tbspacer',
+                                            width: 60,
+                                            margin: '30 30 0 30',
+                                            id: prototype.id + '-vacioComment',
+                                        },
+                                        {
+                                            xtype: 'button',
+                                            width: 30,
+                                            margin: '30 30 0 30',
+                                            id: prototype.id + '-mostrarComment',
+                                            icon: 'resources/img/botones/Comment.png',
+                                            tooltip: 'BPO Comment',
+                                            listeners: {
+                                                click: 'mostrarComment'
+                                            }
+                                        },
                                         {
                                             xtype: 'panel',
-                                            layout: 'hbox',
+                                            layout: 'vbox',
                                             border: false,
-                                            margin: '0 0 0 220',
-                                            bodyStyle: 'background:#efe5e5;',
+                                            margin: '0 0 0 0',
                                             items: [
                                                 {
-                                                    xtype: 'grid',
-                                                    id: prototype.id + '-gridAmounts',
-                                                    width: 572,
-                                                    height: 158,
-//                                    hidden: false,
-                                                    columnLines: true,
-                                                    plugins: [
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    border: false,
+                                                    margin: '10 0 10 0',
+                                                    id: prototype.id + '-PanelComments',
+                                                    hidden: true,
+                                                    height: 30,
+                                                    width: 592,
+                                                    bodyStyle: 'background:#efe5e5;',
+                                                    items: [
                                                         {
-                                                            ptype: 'cellediting',
-                                                            clicksToEdit: 1
-                                                        }
-                                                    ],
-                                                    columns: {
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: true,
-                                                            align: 'center'
+                                                            xtype: 'label',
+//                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            margin: '5 0 0 10',
+                                                            text: 'BPO Comment:',
+                                                            width: 90
                                                         },
-                                                        items: [
-                                                            {
-                                                                text: 'Commission',
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: '(*)',
+                                                            margin: '5 2 0 0',
+                                                            id: prototype.id + '-COMENT_Forced',
+                                                            hidden: true,
+                                                            style: 'font-weight:bold;color:red;',
+                                                            width: 20
+                                                        },
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-cmbCOMENT',
+                                                            margin: '5 0 0 0',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            fieldStyle: 'text-align:left;',
+                                                            queryMode: 'local',
+                                                            triggerAction: 'all',
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            width: 460,
+                                                            labelWidth: 10,
+                                                            hidden: false,
+                                                            hiddenLabel: false
+                                                        },
+//                                                        {
+//                                                            xtype: 'textfield',
+//                                                            id: prototype.id + '-de-txtCOMENT',
+//                                                            margin: '5 0 0 0',
+//                                                            fieldStyle: 'text-align:center',
+//                                                            enforceMaxLength: true,
+//                                                            readOnly: true,
+//                                                            maxLength: 120,
+//                                                            width: 460,
+//                                                        },
+//                                                        {
+//                                                            xtype: 'button',
+//                                                            width: 30,
+//                                                            margin: '5 0 0 5',
+//                                                            id: prototype.id + '-CommentSave',
+//                                                            icon: 'resources/img/icon/save.png',
+//                                                            tooltip: 'Save',
+//                                                            listeners: {
+////                                                                click: 'mostrarComment'
+//                                                            }
+//                                                        },
+//                                                        {
+//                                                            xtype: 'button',
+//                                                            width: 30,
+//                                                            margin: '5 0 0 5',
+//                                                            id: prototype.id + '-CommentCancel',
+//                                                            icon: 'resources/img/icon/cancel.png',
+//                                                            tooltip: 'Delete',
+//                                                            listeners: {
+////                                                                click: 'mostrarComment'
+//                                                            }
+//                                                        },
+//                                                        {
+//                                                            xtype: 'textarea',
+//                                                            id: prototype.id + '-de-txtCOMENT',
+//                                                            fieldStyle: 'text-align: left; border-bottom: 1px solid #ccc;', // Añadido el estilo border-bottom
+//                                                            enforceMaxLength: true,
+//                                                            margin: '5 0 5 0',
+//                                                            maxLength: 120, // Máximo de 120 caracteres
+//                                                            width: 460,
+//                                                            height: 33, // Altura para dos líneas
+//                                                            grow: false, // Desactivar el aumento automático de altura
+//                                                            listeners: {
+//                                                                change: function (field, newValue, oldValue) {
+//                                                                    // Limitar a dos líneas
+//                                                                    var lines = newValue.split('\n');
+//                                                                    if (lines.length > 1) {
+//                                                                        lines = lines.slice(0, 1);
+//                                                                        field.setValue(lines.join('\n'));
+//                                                                    }
+//
+//                                                                    // Reemplazar cualquier secuencia de espacios con un solo espacio
+//                                                                    var cleanedValue = newValue.replace(/\s+/g, ' ');
+//                                                                    field.setValue(cleanedValue);
+//                                                                },
+//                                                                keydown: function (field, e) {
+//                                                                    // Evitar pasar a la segunda línea sin llenar la primera
+//                                                                    if (e.getKey() === 13) { // Código 13 para Enter
+//                                                                        var lines = field.getValue().split('\n');
+//                                                                        if (lines.length === 1 && lines[0].trim() === '') {
+//                                                                            e.stopEvent(); // Evitar el salto a la segunda línea
+//                                                                        }
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+
+
+                                                    ]
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    border: false,
+                                                    id: prototype.id + '-PanelAmountsMain',
+                                                    margin: '0 0 0 0',
+                                                    items: [
+                                                        {
+                                                            xtype: 'grid',
+                                                            id: prototype.id + '-gridAmounts',
+                                                            width: 572,
+                                                            height: 158,
+                                                            columnLines: true,
+                                                            plugins: [
+                                                                {
+                                                                    ptype: 'cellediting',
+                                                                    clicksToEdit: 1
+                                                                }
+                                                            ],
+                                                            columns: {
                                                                 defaults: {
                                                                     menuDisabled: true,
-                                                                    sortable: false,
+                                                                    sortable: true,
                                                                     align: 'center'
                                                                 },
-                                                                columns: [
-                                                                    {text: '', dataIndex: 'label1', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
+                                                                items: [
+                                                                    {
+                                                                        text: 'Commission',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {text: '', dataIndex: 'label1', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
 
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'amount1', width: 80,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'label2', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'amount1', width: 80,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'label2', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
 
-                                                                            return value;
-                                                                        }
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'amount2', width: 80,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                        ]
                                                                     },
-                                                                    {text: '', dataIndex: 'amount2', width: 80,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
-                                                                    },
+                                                                    {
+                                                                        text: 'Reconciliation',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {text: '', dataIndex: 'label3', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'amount3', width: 80,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                        ]
+                                                                    }
                                                                 ]
-                                                            },
-                                                            {
-                                                                text: 'Reconciliation',
+                                                            }
+                                                        },
+                                                        {
+                                                            xtype: 'button',
+                                                            width: 25,
+                                                            //margin: '4 4 4 4',
+                                                            id: prototype.id + '-mostrarDetalle',
+                                                            icon: 'resources/img/botones/grid.png',
+                                                            tooltip: 'Show Detail',
+                                                            listeners: {
+                                                                click: 'mostrarDeta'
+                                                            }
+                                                        },
+                                                    ]
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    hidden: true,
+                                                    border: false,
+                                                    id: prototype.id + '-PanelAmountsDeta',
+                                                    margin: '0 0 0 0',
+                                                    items: [
+                                                        {
+                                                            xtype: 'grid',
+                                                            id: prototype.id + '-gridAmountsExtras',
+                                                            width: 693,
+                                                            height: 132,
+                                                            columnLines: true,
+                                                            plugins: [
+                                                                {
+                                                                    ptype: 'cellediting',
+                                                                    clicksToEdit: 1
+                                                                }
+                                                            ],
+                                                            columns: {
                                                                 defaults: {
                                                                     menuDisabled: true,
-                                                                    sortable: false,
+                                                                    sortable: true,
                                                                     align: 'center'
                                                                 },
-                                                                columns: [
-                                                                    {text: '', dataIndex: 'label3', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
+                                                                items: [
+                                                                    {
+                                                                        text: 'Liquidación',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {text: '', dataIndex: 'label1EX', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center";
 
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'amount3', width: 80,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'amount1EX', width: 120,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'label2EX', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;background-color:#b1e1fc;";
+
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'amount2EX', width: 120,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#b1e1fc;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'label3EX', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: '', dataIndex: 'amount3EX', width: 120,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                        ]
                                                                     },
                                                                 ]
                                                             }
-                                                        ]
-                                                    }
-                                                },
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            width: 25,
-                                            //margin: '4 4 4 4',
-                                            id: prototype.id + '-mostrarDetalle',
-                                            icon: 'resources/img/botones/grid.png',
-                                            tooltip: 'Show Detail',
-                                            listeners: {
-                                                click: 'mostrarDeta'
-                                            }
-                                        },
-                                    ]
-                                },
-                                {
-                                    xtype: 'panel',
-                                    layout: 'hbox',
-                                    hidden: true,
-                                    border: false,
-                                    id: prototype.id + '-PanelAmountsDeta',
-                                    margin: '10 0 10 0',
-//                                    bodyStyle: 'background:#efe5e5;',
-                                    items: [
-//                                        {xtype: 'tbspacer', width: 50},
-                                        {
-                                            xtype: 'panel',
-                                            layout: 'hbox',
-                                            hidden: false,
-                                            border: false,
-                                            margin: '0 2 0 200',
-                                            bodyStyle: 'background:#efe5e5;',
-                                            items: [
-                                                {
-                                                    xtype: 'grid',
-                                                    id: prototype.id + '-gridAmountsExtras',
-                                                    width: 693,
-                                                    height: 132,
-//                                    hidden: false,
-                                                    columnLines: true,
-                                                    plugins: [
-                                                        {
-                                                            ptype: 'cellediting',
-                                                            clicksToEdit: 1
-                                                        }
-                                                    ],
-                                                    columns: {
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: true,
-                                                            align: 'center'
                                                         },
-                                                        items: [
-                                                            {
-                                                                text: 'Liquidación',
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: false,
-                                                                    align: 'center'
-                                                                },
-                                                                columns: [
-                                                                    {text: '', dataIndex: 'label1EX', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center";
-
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'amount1EX', width: 120,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'label2EX', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;background-color:#b1e1fc;";
-
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'amount2EX', width: 120,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#b1e1fc;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'label3EX', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: '', dataIndex: 'amount3EX', width: 120,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                ]
-                                                            },
-                                                        ]
-                                                    }
+                                                        {
+                                                            xtype: 'button',
+                                                            width: 25,
+                                                            //margin: '4 4 4 4',
+                                                            id: prototype.id + '-mostrarMain',
+                                                            icon: 'resources/img/botones/grid.png',
+                                                            tooltip: 'Show Main',
+                                                            listeners: {
+                                                                click: 'mostrarMain'
+                                                            }
+                                                        },
+                                                    ]
                                                 },
                                             ]
-                                        },
-
-                                        {
-                                            xtype: 'button',
-                                            width: 25,
-                                            //margin: '4 4 4 4',
-                                            id: prototype.id + '-mostrarMain',
-                                            icon: 'resources/img/botones/grid.png',
-                                            tooltip: 'Show Main',
-                                            listeners: {
-                                                click: 'mostrarMain'
-                                            }
                                         },
                                     ]
                                 },
@@ -1293,11 +1433,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 5},
                                         {
                                             xtype: 'label',
-                                            text: 'Approval',
+                                            text: 'Authorization',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             margin: '4 4 4 4',
-                                            width: 60
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 5},
                                         {
@@ -1305,7 +1445,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             id: prototype.id + '-txtApproval',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
-                                            maskRe: /[0-9]/,
+//                                            maskRe: /[0-9]/,
                                             maxLength: 6,
                                             width: 85,
                                             enableKeyEvents: true,
@@ -1532,113 +1672,302 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                 },
                                 {
                                     xtype: 'panel',
-                                    id: prototype.id + '-panelDataInfoScan',
-                                    layout: 'vbox',
+                                    layout: 'hbox',
                                     border: false,
-                                    width: 955,
-                                    height: 190,
-                                    hidden: false,
-                                    autoScroll: true,
-//                                    bodyStyle: 'background:#E5ECEF;',
-                                    margin: '10 0 7x 20',
+                                    margin: '0 0 0 0',
+                                    //bodyStyle: 'background:#efe5e5;',
                                     items: [
                                         {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataInfoScan',
-                                            width: 942,
-                                            height: 180,
-//                                    hidden: false,
-                                            columnLines: true,
-                                            plugins: [
+                                            xtype: 'panel',
+                                            id: prototype.id + '-panelDataInfoScan',
+                                            layout: 'vbox',
+                                            border: false,
+//                                            width: 1020,
+//                                            height: 190,
+                                            hidden: false,
+                                            autoScroll: true,
+//                                          bodyStyle: 'background:#E5ECEF;',
+                                            margin: '10 0 7x 20',
+                                            items: [
                                                 {
-                                                    ptype: 'cellediting',
-                                                    clicksToEdit: 1
-                                                }
-                                            ],
-                                            columns: {
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                items: [
-                                                    {text: 'Status', dataIndex: 'STMANUAL', width: 50,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            /*if (record.data.FDUPLI > 0) {
-                                                             metaData.style = "text-align:center;background-color:#f58989";
-                                                             }*/
-
-                                                            value = 'Sales';
-                                                            if (record.data.FDUPLIB > 0) {
-                                                                value = 'Blocked'
-                                                            }
-
-                                                            if (record.data.FDESGLOSE === '1') {
-                                                                value = 'Concil.'
-                                                            } else if (record.data.FDESGLOSE === '2') {
-                                                                value = 'Open'
-                                                            }
-                                                            return value;
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataInfoScan',
+                                                    width: 1017,
+                                                    height: 180,
+//                                    hidden: false,
+//                                                    border: false,
+                                                    columnLines: true,
+                                                    plugins: [
+                                                        {
+                                                            ptype: 'cellediting',
+                                                            clicksToEdit: 1
                                                         }
-                                                    },
-                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 61,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.tdAttr = 'data-qtip="' + record.data.desCERROR + '"';
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    /*{text: 'Adj.<br>Type', dataIndex: 'desCERROR', width: 65,
-                                                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                     metaData.style = "text-align:center;";
-                                                     return value;
-                                                     }
-                                                     },*/
-                                                    {
-                                                        text: 'Credit Card',
+                                                    ],
+                                                    columns: {
                                                         defaults: {
                                                             menuDisabled: true,
-                                                            sortable: false,
+                                                            sortable: true,
                                                             align: 'center'
                                                         },
-                                                        columns: [
-                                                            {text: 'Type', dataIndex: 'A1531TTARJ', width: 40,
+                                                        items: [
+                                                            {text: 'Status', dataIndex: 'STVAL', width: 100,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
-                                                                    /*if (record.data.FDUPLI > 0) {
-                                                                     metaData.style = "text-align:center;background-color:#f58989";
-                                                                     }
-                                                                     
-                                                                     if (record.data.FDUPLIB > 0) {
-                                                                     metaData.style = "text-align:center;background-color:#e7f589";
-                                                                     }
-                                                                     
-                                                                     if (record.data.FDESGLOSE === '1') {
-                                                                     metaData.style = "text-align:center;background-color:#9cfa89";
-                                                                     }*/
 
+                                                                    value = 'Match';
+
+                                                                    if (record.data.STVAL === '1') {
+                                                                        value = 'Match'
+                                                                    } else if (record.data.STVAL === '5') {
+                                                                        value = 'Match manual.'
+                                                                    } else {
+                                                                        value = 'Open'
+                                                                    }
                                                                     return value;
                                                                 }
                                                             },
-                                                            {text: 'Number', dataIndex: 'A1531NREF', width: 130,
+                                                            {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    if (record.data.TDOC === 'A') {
+                                                                        metaData.tdAttr = 'data-qtip="' + record.data.desCERROR + '"';
+                                                                    }
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {text: 'Type', dataIndex: 'A1531TTARJ', width: 40,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Number', dataIndex: 'A1531NREF', width: 130,
+                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Author.<br>Code', dataIndex: 'A1531CAPL', width: 65,
+                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
                                                                 editor: {xtype: 'textfield', editable: false},
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     return value;
                                                                 }
                                                             },
-                                                            {text: 'Approval', dataIndex: 'A1531CAPL', width: 65,
+                                                            {text: 'Amount', dataIndex: 'A1531VFOP', width: 85,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 85, id: prototype.id + '-gridTot_VFOPs',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 75, id: prototype.id + '-gridA720FECVTA',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'PNR', dataIndex: 'A720PNR', width: 63,
                                                                 editor: {xtype: 'textfield', editable: false},
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     return value;
                                                                 }
-                                                            }
+                                                            },
+                                                            {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridData_VIEWTKT_clickHandler'
+                                                                },
+                                                                //editor: {xtype: 'textfield', editable: false},
+                                                            },
+                                                            {text: 'Agent', dataIndex: 'A720AGENTE', width: 70,
+                                                                editor: {xtype: 'textfield', editable: false},
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                width: 40,
+                                                                text: 'Del.',
+                                                                id: prototype.id + '-gridColumnDelete',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-image-trash',
+                                                                        tooltip: 'Delete',
+                                                                        handler: 'removeTKT'
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                width: 40,
+                                                                text: 'Adj.',
+                                                                id: prototype.id + '-gridColumnAdj',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-add',
+                                                                        tooltip: 'Create adjustment',
+                                                                        handler: 'onAdjust'
+                                                                    }
+                                                                ]
+                                                            },
                                                         ]
-                                                    },
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', height: 2},
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    id: prototype.id + '-panelADJ',
+                                                    border: false,
+                                                    hidden: true,
+                                                    margin: '0 2 0 20',
+                                                    bodyStyle: 'background:#efe5e5;',
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Adjustment Type',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            width: 120
+                                                        },
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-cmbADJTYPE',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            fieldStyle: 'text-align:left;',
+                                                            queryMode: 'local',
+                                                            triggerAction: 'all',
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            width: 180,
+                                                            labelWidth: 10,
+                                                            hidden: false,
+                                                            hiddenLabel: false
+                                                        },
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Observation',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            width: 100
+                                                        },
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {
+                                                            xtype: 'textfield',
+                                                            id: prototype.id + '-de-txtOBSERV',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            fieldStyle: 'text-align:left;',
+                                                            enforceMaxLength: true,
+                                                            maxLength: 50,
+                                                            width: 320,
+                                                        },
+                                                        {xtype: 'tbspacer', width: 50},
+                                                    ]
+                                                },
+                                                {xtype: 'tbspacer', height: 2},
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataAdjustment',
+                                                    width: 927,
+                                                    height: 60,
+                                                    hidden: true,
+                                                    columnLines: true,
+                                                    //margin: '0 2 0 100',
+                                                    plugins: [
+                                                        {
+                                                            ptype: 'cellediting',
+                                                            clicksToEdit: 1
+                                                        }
+                                                    ],
+                                                    hideHeaders: true,
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {text: 'Status', dataIndex: 'STMANUAL', width: 50,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    value = 'Adjustment';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 61,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    value = 'Adjustment';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {text: 'Type', dataIndex: 'A1531TTARJ', width: 40,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Number', dataIndex: 'A1531NREF', width: 130,
+                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Authorization', dataIndex: 'A1531CAPL', width: 65,
+                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
 //                                            {text: 'Adjust.', dataIndex: 'SADJUST', width: 55,
 //                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                    metaData.style = "text-align:right;";
@@ -1647,501 +1976,282 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 //                                                    return value;
 //                                                }
 //                                            },
-                                                    {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Amount', dataIndex: 'A1531VFOP', width: 80,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 80, id: prototype.id + '-gridTot_VFOPs',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 61, id: prototype.id + '-gridA720FECVTA',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 62,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 112,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                        },
-                                                        listeners: {
-                                                            click: 'onGridData_VIEWTKT_clickHandler'
-                                                        },
-                                                        //editor: {xtype: 'textfield', editable: false},
-                                                    },
-                                                    {text: 'Agent', dataIndex: 'A720AGENTE', width: 62,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        sortable: false,
-                                                        xtype: 'actioncolumn',
-                                                        width: 40,
-                                                        text: 'Del.',
-                                                        id: prototype.id + '-gridColumnDelete',
-                                                        align: 'center',
-                                                        items: [
-                                                            {
-                                                                iconCls: 'prx-icon-image-trash',
-                                                                tooltip: 'Delete',
-                                                                handler: 'removeTKT'
-                                                            }
+                                                            {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
+                                                                editor: {xtype: 'textfield', editable: false},
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {header: 'Amount', dataIndex: 'A1531VFOP', width: 70, xtype: 'gridcolumn',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#F0FA8F";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                },
+                                                                listeners: {
+                                                                    click: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+                                                                        meDE.gridAdjustmentRowIndex = rowNum;
+                                                                    },
+                                                                },
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+                                                                    maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true,
+                                                                    listeners: {
+                                                                        /*blur: function (field, e, eOpts) {
+                                                                         var newVal = field.getValue().trim();
+                                                                         field.setValue(newVal);
+                                                                         meDE.refreshValuesAdjustment(self, e, eOpts);
+                                                                         }*/
+                                                                        specialkey: 'eventKeyAdjustment',
+                                                                    }
+                                                                },
+                                                            },
+                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 70, id: prototype.id + '-gridAdjTot_VFOPs',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 61, id: prototype.id + '-gridAdjA720FECVTA',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'PNR', dataIndex: 'A720PNR', width: 62,
+                                                                editor: {xtype: 'textfield', editable: false},
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Ticket', dataIndex: 'A1531TKT', width: 112,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                },
+                                                                editor: {xtype: 'textfield', editable: false},
+                                                            },
+                                                            {text: 'Agent', dataIndex: 'A720AGENTE', width: 62,
+                                                                editor: {xtype: 'textfield', editable: false},
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: '', dataIndex: '', width: 40,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {text: '', dataIndex: '', width: 30,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {text: '', dataIndex: '', width: 40,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                                    /*{text: 'Adjustment Type', width: 170, dataIndex: 'CERROR',
+                                                                     renderer: function (value, meta, record, row, col) {
+                                                                     meta.style = "background-color:#fae2a0;";
+                                                                     switch (value) {
+                                                                     case '':
+                                                                     return 'DIFERENCIA LIQUIDACION VS SALE';
+                                                                     case '01':
+                                                                     return 'DIFERENCIA LIQUIDACION VS SALE';
+                                                                     case '02':
+                                                                     return 'PAGO DUPLICADO';
+                                                                     case '03':
+                                                                     return 'ADM/AVISOS DE CARGO';
+                                                                     default:
+                                                                     return 'DIFERENCIA LIQUIDACION VS SALE';
+                                                                     }
+                                                                     },
+                                                                     editor: {
+                                                                     xtype: 'combo',
+                                                                     store: storeComboAdj,
+                                                                     editable: false,
+                                                                     valueField: 'code',
+                                                                     displayField: 'name',
+                                                                     value: '',
+                                                                     }
+                                                                     },*/
                                                         ]
-                                                    },
-                                                    {
-                                                        sortable: false,
-                                                        xtype: 'actioncolumn',
-                                                        width: 40,
-                                                        text: 'Adj.',
-                                                        id: prototype.id + '-gridColumnAdj',
-                                                        align: 'center',
-                                                        items: [
-                                                            {
-                                                                iconCls: 'prx-icon-add',
-                                                                tooltip: 'Create adjustment',
-                                                                handler: 'onAdjust'
-                                                            }
-                                                        ]
-                                                    },
-                                                            /*{
-                                                             text: 'Select',
-                                                             xtype: 'checkcolumn',
-                                                             id: prototype.id + '-id_checkManual',
-                                                             width: 50,
-                                                             dataIndex: 'false',
-                                                             listeners: {
-                                                             checkchange: 'checkManual'
-                                                             },
-                                                             },*/
-                                                ]
-                                            }
-                                        },
-                                        {xtype: 'tbspacer', height: 2},
-                                        {
-                                            xtype: 'panel',
-                                            layout: 'hbox',
-                                            id: prototype.id + '-panelADJ',
-                                            border: false,
-                                            hidden: true,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#efe5e5;',
-                                            items: [
-                                                {xtype: 'tbspacer', width: 30},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Adjustment Type',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 120
+                                                    }
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'combo',
-                                                    id: prototype.id + '-cmbADJTYPE',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:left;',
-                                                    queryMode: 'local',
-                                                    triggerAction: 'all',
-                                                    valueField: 'CODE',
-                                                    displayField: 'NAME',
-                                                    width: 180,
-                                                    labelWidth: 10,
-                                                    hidden: false,
-                                                    hiddenLabel: false
-                                                },
-                                                {xtype: 'tbspacer', width: 30},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Observation',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtOBSERV',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:left;',
-                                                    enforceMaxLength: true,
-                                                    maxLength: 50,
-                                                    width: 320,
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
                                             ]
                                         },
-                                        {xtype: 'tbspacer', height: 2},
                                         {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataAdjustment',
-                                            width: 927,
-                                            height: 60,
+                                            xtype: 'panel',
+                                            id: prototype.id + '-panelDataInfoBlocked',
+                                            layout: 'vbox',
+                                            border: false,
+                                            width: 900,
+                                            height: 245,
                                             hidden: true,
-                                            columnLines: true,
-                                            //margin: '0 2 0 100',
-                                            plugins: [
+                                            bodyStyle: 'background:#E5ECEF;',
+                                            margin: '10 2 12 80',
+                                            items: [
                                                 {
-                                                    ptype: 'cellediting',
-                                                    clicksToEdit: 1
-                                                }
-                                            ],
-                                            hideHeaders: true,
-                                            columns: {
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                items: [
-                                                    {text: 'Status', dataIndex: 'STMANUAL', width: 50,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            value = 'Adjustment';
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 61,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            value = 'Adjustment';
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Credit Card',
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: false,
-                                                            align: 'center'
-                                                        },
-                                                        columns: [
-                                                            {text: 'Type', dataIndex: 'A1531TTARJ', width: 40,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:center;";
-                                                                    return value;
-                                                                }
-                                                            },
-                                                            {text: 'Number', dataIndex: 'A1531NREF', width: 130,
-                                                                editor: {xtype: 'textfield', editable: false},
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:center;";
-                                                                    return value;
-                                                                }
-                                                            },
-                                                            {text: 'Approval', dataIndex: 'A1531CAPL', width: 65,
-                                                                editor: {xtype: 'textfield', editable: false},
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:center;";
-                                                                    return value;
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-//                                            {text: 'Adjust.', dataIndex: 'SADJUST', width: 55,
-//                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                    metaData.style = "text-align:right;";
-//
-//                                                    value = Ext.util.Format.number(value, '0,000.00');
-//                                                    return value;
-//                                                }
-//                                            },
-                                                    {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {header: 'Amount', dataIndex: 'A1531VFOP', width: 70, xtype: 'gridcolumn',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#F0FA8F";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        },
-                                                        listeners: {
-                                                            click: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-                                                                meDE.gridAdjustmentRowIndex = rowNum;
-                                                            },
-                                                        },
-                                                        editor: {
-                                                            xtype: 'textfield',
-                                                            editable: true,
-                                                            allowBlank: false,
-                                                            enableKeyEvents: true,
-                                                            maskRe: /[0-9\.-]/,
-                                                            selectOnFocus: true,
-                                                            listeners: {
-                                                                /*blur: function (field, e, eOpts) {
-                                                                 var newVal = field.getValue().trim();
-                                                                 field.setValue(newVal);
-                                                                 meDE.refreshValuesAdjustment(self, e, eOpts);
-                                                                 }*/
-                                                                specialkey: 'eventKeyAdjustment',
-                                                            }
-                                                        },
-                                                    },
-                                                    {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 70, id: prototype.id + '-gridAdjTot_VFOPs',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 61, id: prototype.id + '-gridAdjA720FECVTA',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 62,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 112,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        },
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                    },
-                                                    {text: 'Agent', dataIndex: 'A720AGENTE', width: 62,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: '', dataIndex: '', width: 40,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return '';
-                                                        }
-                                                    },
-                                                    {text: '', dataIndex: '', width: 30,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return '';
-                                                        }
-                                                    },
-                                                    {text: '', dataIndex: '', width: 40,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return '';
-                                                        }
-                                                    },
-                                                            /*{text: 'Adjustment Type', width: 170, dataIndex: 'CERROR',
-                                                             renderer: function (value, meta, record, row, col) {
-                                                             meta.style = "background-color:#fae2a0;";
-                                                             switch (value) {
-                                                             case '':
-                                                             return 'DIFERENCIA LIQUIDACION VS SALE';
-                                                             case '01':
-                                                             return 'DIFERENCIA LIQUIDACION VS SALE';
-                                                             case '02':
-                                                             return 'PAGO DUPLICADO';
-                                                             case '03':
-                                                             return 'ADM/AVISOS DE CARGO';
-                                                             default:
-                                                             return 'DIFERENCIA LIQUIDACION VS SALE';
-                                                             }
-                                                             },
-                                                             editor: {
-                                                             xtype: 'combo',
-                                                             store: storeComboAdj,
-                                                             editable: false,
-                                                             valueField: 'code',
-                                                             displayField: 'name',
-                                                             value: '',
-                                                             }
-                                                             },*/
-                                                ]
-                                            }
-                                        },
-                                    ]
-                                },
-                                {
-                                    xtype: 'panel',
-                                    id: prototype.id + '-panelDataInfoBlocked',
-                                    layout: 'vbox',
-                                    border: false,
-                                    width: 900,
-                                    height: 245,
-                                    hidden: true,
-                                    bodyStyle: 'background:#E5ECEF;',
-                                    margin: '10 2 12 80',
-                                    items: [
-                                        {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataInfoBlocked',
-                                            width: 882,
-                                            height: 220,
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataInfoBlocked',
+                                                    width: 882,
+                                                    height: 220,
 //                                    hidden: false,
-                                            columnLines: true,
-                                            columns: {
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                items: [
-                                                    {text: 'Status', dataIndex: 'STMANUAL', width: 60,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            /*if (record.data.FDUPLI > 0) {
-                                                             metaData.style = "text-align:center;background-color:#f58989";
-                                                             }*/
-
-                                                            value = 'Sales';
-                                                            if (record.data.FDUPLIB > 0) {
-                                                                value = 'Blocked'
-                                                            }
-
-                                                            if (record.data.FDESGLOSE === '1') {
-                                                                value = 'Concil.'
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Credit Card',
+                                                    columnLines: true,
+                                                    columns: {
                                                         defaults: {
                                                             menuDisabled: true,
-                                                            sortable: false,
+                                                            sortable: true,
                                                             align: 'center'
                                                         },
-                                                        columns: [
-                                                            {text: 'Type', dataIndex: 'A1531TTARJ', width: 60,
+                                                        items: [
+                                                            {text: 'Status', dataIndex: 'STMANUAL', width: 60,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     /*if (record.data.FDUPLI > 0) {
                                                                      metaData.style = "text-align:center;background-color:#f58989";
-                                                                     }
-                                                                     
-                                                                     if (record.data.FDUPLIB > 0) {
-                                                                     metaData.style = "text-align:center;background-color:#e7f589";
-                                                                     }
-                                                                     
-                                                                     if (record.data.FDESGLOSE === '1') {
-                                                                     metaData.style = "text-align:center;background-color:#9cfa89";
                                                                      }*/
 
+                                                                    value = 'Sales';
+                                                                    if (record.data.FDUPLIB > 0) {
+                                                                        value = 'Blocked'
+                                                                    }
+
+                                                                    if (record.data.FDESGLOSE === '1') {
+                                                                        value = 'Concil.'
+                                                                    }
                                                                     return value;
                                                                 }
                                                             },
-                                                            {text: 'Number', dataIndex: 'A1531NREF', width: 130,
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {text: 'Type', dataIndex: 'A1531TTARJ', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            /*if (record.data.FDUPLI > 0) {
+                                                                             metaData.style = "text-align:center;background-color:#f58989";
+                                                                             }
+                                                                             
+                                                                             if (record.data.FDUPLIB > 0) {
+                                                                             metaData.style = "text-align:center;background-color:#e7f589";
+                                                                             }
+                                                                             
+                                                                             if (record.data.FDESGLOSE === '1') {
+                                                                             metaData.style = "text-align:center;background-color:#9cfa89";
+                                                                             }*/
+
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Number', dataIndex: 'A1531NREF', width: 130,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Approval', dataIndex: 'A1531CAPL', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
+                                                                editor: {xtype: 'textfield', editable: false},
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     return value;
                                                                 }
                                                             },
-                                                            {text: 'Approval', dataIndex: 'A1531CAPL', width: 80,
+                                                            {text: 'Amount', dataIndex: 'A1531VFOP', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOPB', width: 80, id: prototype.id + '-gridBlockTot_VFOPs',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 70, id: prototype.id + '-gridBlockA720FECVTA',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     return value;
                                                                 }
-                                                            }
+                                                            },
+                                                            {text: 'PNR', dataIndex: 'A720PNR', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Ticket', dataIndex: 'A1531TKT', width: 120,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridData_VIEWTKT_clickHandler'
+                                                                },
+                                                            },
+                                                            {text: 'Agent', dataIndex: 'A720AGENTE', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    return value;
+                                                                }
+                                                            },
                                                         ]
-                                                    },
-                                                    {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Amount', dataIndex: 'A1531VFOP', width: 80,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Sales<br>Amount', dataIndex: 'tot_VFOPB', width: 80, id: prototype.id + '-gridBlockTot_VFOPs',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 70, id: prototype.id + '-gridBlockA720FECVTA',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 70,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 120,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                        },
-                                                        listeners: {
-                                                            click: 'onGridData_VIEWTKT_clickHandler'
-                                                        },
-                                                    },
-                                                    {text: 'Agent', dataIndex: 'A720AGENTE', width: 80,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            return value;
-                                                        }
-                                                    },
-                                                ]
-                                            }
-                                        },
-                                        {
-                                            xtype: 'panel',
-                                            layout: 'hbox',
-                                            border: false,
-                                            hidden: true,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#efe5e5;',
-                                            items: [
-                                                {xtype: 'tbspacer', width: 150},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Sum Amount',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 90
+                                                    }
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
                                                 {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSumAmountBlocked',
-                                                    fieldStyle: 'text-align:right',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 170,
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    border: false,
+                                                    hidden: true,
+                                                    margin: '0 2 0 20',
+                                                    bodyStyle: 'background:#efe5e5;',
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 150},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Sum Amount',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            width: 90
+                                                        },
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {
+                                                            xtype: 'textfield',
+                                                            id: prototype.id + '-de-txtSumAmountBlocked',
+                                                            fieldStyle: 'text-align:right',
+                                                            enforceMaxLength: true,
+                                                            readOnly: true,
+                                                            width: 170,
+                                                        },
+                                                    ]
                                                 },
                                             ]
                                         },

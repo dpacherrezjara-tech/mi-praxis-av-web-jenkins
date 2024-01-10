@@ -235,10 +235,29 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             width: 65,
                             enableKeyEvents: true,
                             listeners: {
-                                keypress: 'buscarCard_keyDownHandler'
+                                keypress: 'eventKey'
                             }
                         },
                         {xtype: 'tbspacer', width: 30},
+                        {
+                            xtype: 'label',
+                            text: 'Authorization Code : ',
+                            padding: '3 0',
+                            width: 120
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id+'-txtAUTHOC',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9a-zA-Z]/,      
+                            maxLength: 8,
+                            width: 100,
+                            enableKeyEvents: true,
+                            listeners:{
+                                keypress: 'eventKey'
+                            }
+                        },
                     ]
                 },
                 {

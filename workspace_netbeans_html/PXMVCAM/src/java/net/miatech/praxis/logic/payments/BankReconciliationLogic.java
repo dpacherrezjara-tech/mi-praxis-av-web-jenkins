@@ -42,30 +42,10 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadPX269SQP00698Detalle(filter);
     }
     
-    public List<A2290Filter> loadPX269SQP00698(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00698(filter);
+    public List<A2290Filter> loadPX269SQP00698Ticket(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Ticket(filter);
     }
-
-    public List<A2290Filter> loadPX269SQP00699(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00699(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP00700(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00700(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP00717(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00717(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP00744(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00744(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP02492(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP02492(filter);
-    }
-
+    
     public A2290Filter loadPX269SQP00833(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833(filter);
     }
@@ -74,28 +54,12 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadPX269SQPXXX(filter);
     }
 
-    public String loadPX269SQP00834(A2290Filter filter, UserView user) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00834(filter, user);
+    public String loadPX269SQP00834(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00834(filters, user);
     }
 
     public List<A2290Filter> loadPX269SQP00869(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00869(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP00869_TV(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00869_TV(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP00869_TV_ERRORS(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP00869_TV_ERRORS(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP03983(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP03983(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP03984(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP03984(filter);
     }
 
     public List<A2290Filter> loadPX269SQP00870(A2290Filter filter) throws SQLException, Exception {
@@ -104,10 +68,6 @@ public class BankReconciliationLogic {
 
     public List<A2290Filter> loadPX269SQP00871(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00871(filter);
-    }
-
-    public HashMap loadPX269SQP02478(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP02478(filter);
     }
 
     public String loadPX269SQP01950(A2290Filter filter) throws SQLException, Exception {
@@ -122,45 +82,16 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadPX263SQP02194(filter, user, accion);
     }
 
-    public List<A2290Filter> loadPX269SQP02368(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP02368(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP02369(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP02369(filter);
-    }
-
-    public String loadPX269SQP02488(A2290Filter filter, UserView user) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP02488(filter, user);
-    }
-
-    public List<A2290Filter> loadPX269SQP03808(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP03808(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP03808_S_R(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP03808_S_R(filter);
-    }
-
-    public HashMap<String, List<A2309AFilter>> loadPX269SQP03940(A2309AFilter filter) throws SQLException, Exception {
-
-        return bankReconciliationDAO.loadPX269SQP03940(filter);
-    }
-
-    public List<A2309AFilter> loadPX269SQP03940_TV(A2309AFilter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP03940_TV(filter);
-    }
-
-    public List<A2290Filter> loadPX269SQP03988(A2290Filter filter) throws SQLException, Exception {
-        return bankReconciliationDAO.loadPX269SQP03988(filter);
-    }
-
     public HashMap<String, List<A2290Filter>> loadPX263SQP03989(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX263SQP03989(filter);
     }
 
     public List<A2290Filter> loadPX269SQP00833_MDP_DETAIL(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_MDP_DETAIL(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP05103(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP05103(filter);
     }
 
     public List<A2290Filter> loadPX269SQP00833_MDP_SCAN(A2290Filter filter) throws SQLException, Exception {
