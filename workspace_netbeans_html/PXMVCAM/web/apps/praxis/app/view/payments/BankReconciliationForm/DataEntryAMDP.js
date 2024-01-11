@@ -295,7 +295,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSTCONL',
+                                            id: prototype.id + '-de-txtSTCON',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
@@ -313,7 +313,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtFCONTL',
+                                            id: prototype.id + '-de-txtFCONT',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:left;',
                                             readOnly: true,
@@ -330,7 +330,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtIDCONL',
+                                            id: prototype.id + '-de-txtIDCON',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:left;',
                                             readOnly: true,
@@ -1682,7 +1682,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             id: prototype.id + '-panelDataInfoScan',
                                             layout: 'vbox',
                                             border: false,
-//                                            width: 1020,
+                                            width: 1024,
 //                                            height: 190,
                                             hidden: false,
                                             autoScroll: true,
@@ -1692,7 +1692,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDataInfoScan',
-                                                    width: 1017,
+                                                    width: 1022,
                                                     height: 180,
 //                                    hidden: false,
 //                                                    border: false,

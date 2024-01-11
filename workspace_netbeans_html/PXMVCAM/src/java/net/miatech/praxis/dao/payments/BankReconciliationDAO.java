@@ -974,6 +974,8 @@ public class BankReconciliationDAO {
                 objRtn.BASICAC = rs01.getDouble("BASICAC");
                 objRtn.RTEICAC = rs01.getDouble("RTEICAC");
                 objRtn.NETOC = rs01.getDouble("NETOC");
+                objRtn.STCON = rs01.getString("STCON").trim();
+                objRtn.FCONT = rs01.getString("FCONT").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

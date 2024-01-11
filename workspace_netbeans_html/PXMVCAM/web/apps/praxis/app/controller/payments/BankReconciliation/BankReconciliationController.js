@@ -587,12 +587,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 break;
             case 2:
                 console.log('ENTRA AL MANUAL');
-                rowData.data.IN_STVAL = '4';
+                rowData.data.IN_STVAL = '5';
                 cant = rowData.data.lngQMANUAL;
                 break;
             case 3:
                 console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = '2';
+                rowData.data.IN_STVAL = '4';
                 cant = rowData.data.lngQDIFF;
                 break;
             case 4:
@@ -670,23 +670,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         });
                     } else {
                         var bean = obj.data.items[0].data;
-//                        var title = '';
-//                        var titulo1 = '';
-//                        if (me.flagDrilDownByDay !== 'Date') {
-//                            titulo1 = " - Card : " + bean.SCARCOD + ' : ' + bean.strDescCard;
-//                        }
-//                        if (bean.strFecFiltro === 'BDATEP') {
-//                            title = " Reconciliation Date : " + bean.strFormatDate + titulo1;
-//                        } else {
-//                            if (bean.IN_TDOC === 'R') {
-//                                title = " Refund Date : " + bean.strFormatDate + titulo1;
-//                            } else {
-//                                title = " Sales Date : " + bean.strFormatDate + titulo1;
-//
-//                            }
-//                        }
-//                        Ext.getCmp(prototype.id + '-labelTitle1').setText(title);
-//                        Ext.getCmp(prototype.id + '-gridDataDetDay').setTitle('<center style="font-size:12px;">' + title + '</center>');
                     }
                     me.setWidthPie();
                 }
@@ -760,12 +743,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 break;
             case 3:
                 console.log('ENTRA AL MANUAL');
-                rowData.data.IN_STVAL = '4';
+                rowData.data.IN_STVAL = '5';
                 cant = rowData.data.lngQMANUAL;
                 break;
             case 4:
                 console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = '2';
+                rowData.data.IN_STVAL = '4';
                 cant = rowData.data.lngQDIFF;
                 break;
             case 5:
@@ -823,18 +806,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 rowData.data.IN_STVAL = '1';
                 cant = rowData.data.lngQMATCH;
                 break;
-            case 7:
-//                rowData.data.IN_STVAL = '5';
-//                cant = rowData.data.lngQMANUAL;
-                break;
             case 3:
                 console.log('ENTRA AL MANUAL');
-                rowData.data.IN_STVAL = '4';
+                rowData.data.IN_STVAL = '5';
                 cant = rowData.data.lngQMANUAL;
                 break;
             case 4:
                 console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = '2';
+                rowData.data.IN_STVAL = '4';
                 cant = rowData.data.lngQDIFF;
                 break;
             case 5:
@@ -843,12 +822,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 cant = rowData.data.lngQPEND;
                 break;
         }
-
-//        console.log(columnNum)
-//        console.log(cant)
-//        console.log("Row data")
-//        console.log(rowData.data)
-
         if (cant > 0) {
             me.drillDown.push(me.panelActual);
             me.panelActual = '-panelGridDetCardByS';
