@@ -52,8 +52,9 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
         this.setValue('cmbFSTAT', this.beanResult.FSTAT);
 
         this.setValue('cmbFINSUMO', this.beanResult.FINSUMO);
-        this.setValue('cmbCODEBANKN', this.beanResult.CODBANKN);
-        this.setValue('txtDOCNUM', this.beanResult.DOCNUM);
+        this.setValue('de-txtCODEBANKN', this.beanResult.CODBANKN);
+        this.setValue('de-txtBNIT', this.beanResult.BNIT);
+        this.setValue('de-txtDOCNUM', this.beanResult.DOCNUM);
         this.setValue('de-txtRATECON', Ext.util.Format.number(this.beanResult.RATECON, '0,000.00'));
         this.setValue('de-txtRATECOP1', Ext.util.Format.number(this.beanResult.RATECOP1, '0,000.00'));
         this.setValue('de-txtRATECOP2', Ext.util.Format.number(this.beanResult.RATECOP2, '0,000.00'));
@@ -68,20 +69,20 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
     },
     obtainData: function () {
 
-        var cmbCODEBANKN = Ext.getCmp(prototype.id + '-cmbCODEBANKN');
-        cmbCODEBANKN.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "Empty"],
-                ["001", "001-BANAMEX"],
-                ["002", "002-SANTANDER"],
-                ["003", "003-BANORTE"],
-                ["004", "004-BBVA"],
-                ["005", "005-AMEX"]
-            ]
-        }));
-        cmbCODEBANKN.setValue('');
+//        var cmbCODEBANKN = Ext.getCmp(prototype.id + '-cmbCODEBANKN');
+//        cmbCODEBANKN.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "Empty"],
+//                ["001", "001-BANAMEX"],
+//                ["002", "002-SANTANDER"],
+//                ["003", "003-BANORTE"],
+//                ["004", "004-BBVA"],
+//                ["005", "005-AMEX"]
+//            ]
+//        }));
+//        cmbCODEBANKN.setValue('');
 
         var cmbFINSUMO = Ext.getCmp(prototype.id + '-cmbFINSUMO');
         cmbFINSUMO.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -100,7 +101,7 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["",""],
+                ["", ""],
                 ["O", "Open"],
                 ["C", "Closed"]
             ]
@@ -123,32 +124,33 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
         beanTemp.CLIENTE = this.getValue("de-txtCLIENTE");
         beanTemp.FSTAT = this.getValue("cmbFSTAT");
         beanTemp.FINSUMO = this.getValue("cmbFINSUMO");
-        beanTemp.CODBANKN = this.getValue("cmbCODEBANKN");
+        beanTemp.CODBANKN = this.getValue("de-txtCODEBANKN");
+        beanTemp.BNIT = this.getValue("de-txtBNIT");
 
         if (this.getValue("de-txtRATEIVA") !== '') {
-            beanTemp.DOCNUM = Number(this.getValue("txtDOCNUM").trim().replace(',', ''));
+            beanTemp.DOCNUM = Number(this.getValue("de-txtDOCNUM").trim().replace(',', ''));
         } else {
             beanTemp.DOCNUM = 0;
         }
-        
+
         if (this.getValue("de-txtRATECON") !== '') {
             beanTemp.RATECON = Number(this.getValue("de-txtRATECON").trim().replace(',', ''));
         } else {
             beanTemp.RATECON = 0;
         }
-        
+
         if (this.getValue("de-txtRATECOP1") !== '') {
             beanTemp.RATECOP1 = Number(this.getValue("de-txtRATECOP1").trim().replace(',', ''));
         } else {
             beanTemp.RATECOP1 = 0;
         }
-        
+
         if (this.getValue("de-txtRATECOP2") !== '') {
             beanTemp.RATECOP2 = Number(this.getValue("de-txtRATECOP2").trim().replace(',', ''));
         } else {
             beanTemp.RATECOP2 = 0;
         }
-        
+
         if (this.getValue("de-txtRATEIVA") !== '') {
             beanTemp.RATEIVA = Number(this.getValue("de-txtRATEIVA").trim().replace(',', ''));
         } else {
@@ -230,25 +232,32 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
         });
     },
     onUpdateClick: function (btn) {
-        Ext.Msg.show(
-            {
-                title: '.:PRAXIS:.',
-                msg: 'Are you sure to update ?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                animateTarget: btn,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        this.llenarData(beanTemp);
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to update ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+//            animateTarget: btn,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    this.llenarData(beanTemp);
+//                    beanTemp.option = 'U';
+//                    beanTemp.beanString = JSON.stringify(beanTemp);
+//                    this.MaintenanceA2280(beanTemp);
+                    var msjResult = this.validacionInsert(beanTemp);
+                    if (msjResult === '') {
                         beanTemp.option = 'U';
                         beanTemp.beanString = JSON.stringify(beanTemp);
                         this.MaintenanceA2280(beanTemp);
+                    } else {
+                        global.Msg({msg: msjResult});
                     }
                 }
-            });
+            }
+        });
     },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
@@ -282,7 +291,7 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
             timeout: 60000000,
             params: beanTemp,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function(response, opts) {
+            success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
@@ -291,7 +300,7 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
                     Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
                     Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                } else{
+                } else {
                     global.Msg({msg: 'An error occurred'});
                 }
             }
@@ -301,8 +310,9 @@ Ext.define('Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogCon
 
     validacionInsert: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("de-txtCODEBANK") === '' || this.getValue("de-cmbCOUNTRY") === '' || this.getValue("de-txtCURRENC") === '') {
+        if (this.getValue("de-txtCODEBANK") === '' || this.getValue("de-cmbCOUNTRY") === '' || this.getValue("de-txtCURRENC") === '' || this.getValue("de-txtBNIT") === '') {
             msjResult = "You must enter the required field.";
+            console.log("You must enter the required field.");
         }
         return msjResult;
     },

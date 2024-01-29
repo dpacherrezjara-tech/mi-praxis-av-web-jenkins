@@ -39,6 +39,7 @@ public class A2290 {
     public String BANDOC = "";
     public String STCON = "";
     public String FCONT = "";
+    public String NEGOC = "";
     public String ACCNUMBER = "";
     public double SVFOP = 0;
     public double SVFOPC = 0;
@@ -102,6 +103,20 @@ public class A2290 {
     public String DATEC2 = "";
     public String DATEC3 = "";
     public String TRNXCODE = "";
+    
+    //ADJUSTMENT
+    public String ASTVAL = "";
+    public String ATDOC = "";
+    public String ASCARCOD = "";
+    public String ASCARDN = "";
+    public String ASAUTHOC = "";
+    public double AAMOUNT = 0;
+    public String ASDATE = "";
+    public String ATICKET = "";
+    public String ASAGENT = "";
+    public String ATRANC = "";
+    public String ADJCODE = "";
+    
     //TEF
     public String TDATE = "";
     public String DATEF = "";

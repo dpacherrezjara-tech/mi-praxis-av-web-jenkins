@@ -65,7 +65,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                                         {
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter',
-                                            hidden: true
+//                                            hidden: true
                                         }
                                         ,
                                         {

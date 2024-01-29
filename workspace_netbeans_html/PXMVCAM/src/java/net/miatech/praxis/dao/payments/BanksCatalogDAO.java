@@ -148,7 +148,7 @@ public class BanksCatalogDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00672(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00672(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -170,9 +170,10 @@ public class BanksCatalogDAO {
             cstmt.setString(13, filter.CLIENTE.trim());
             cstmt.setString(14, filter.CODBANKN.trim());
             cstmt.setInt(15, filter.DOCNUM);
-            cstmt.setString(16, session.getUserView().getUserInfo().USR);
-            cstmt.setString(17, Functions.getFechaActual());
-            cstmt.setString(18, Functions.getHoraActual());
+            cstmt.setString(16, filter.BNIT);
+            cstmt.setString(17, session.getUserView().getUserInfo().USR);
+            cstmt.setString(18, Functions.getFechaActual());
+            cstmt.setString(19, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {
@@ -230,6 +231,7 @@ public class BanksCatalogDAO {
                 objRtn.RATEIVA = rs01.getDouble("RATEIVA");
                 objRtn.CODBANKN = rs01.getString("CODBANKN");
                 objRtn.DOCNUM = rs01.getInt("DOCNUM");
+                objRtn.BNIT = rs01.getString("BNIT").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

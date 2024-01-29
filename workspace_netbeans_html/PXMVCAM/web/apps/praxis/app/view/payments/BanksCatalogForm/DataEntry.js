@@ -1,34 +1,34 @@
-Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
+Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry', {
     extend: 'Ext.window.Window',
     alias: 'widget.DataEntryBanksCatalogForm',
-    requires:[
+    requires: [
         'Ext.Praxis.controller.payments.BanksCatalog.DataEntryBanksCatalogController'
     ],
     controller: 'DataEntryBanksCatalogController',
-    title:'Bank - Data Entry Form',
-    header:true,
-    height:365,
-    width:820,
-    resizable:false,
-    layout:'fit',
-    modal:true,
+    title: 'Bank - Data Entry Form',
+    header: true,
+    height: 385,
+    width: 820,
+    resizable: false,
+    layout: 'fit',
+    modal: true,
     border: false,
     defaults: {
         border: false
     },
-    items:[
+    items: [
         {
             xtype: 'form',
-            defaults:{
+            defaults: {
                 style: 'margin: 3px;',
                 border: false
             },
-            items:[
+            items: [
                 {
                     xtype: 'panel',
                     bodyStyle: 'background: transparent;"',
                     layout: 'vbox',
-                    width:930,
+                    width: 930,
                     defaults: {
                         anchor: '100%'
                     },
@@ -42,7 +42,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                             width: 234,
                             height: 20,
                             margin: '4 2 4 3'
-                        },   
+                        },
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -53,8 +53,8 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 anchor: '100%',
                                 width: 1080
                             },
-                            items: [                                                       
-                                { xtype: 'tbspacer', width: 7 },
+                            items: [
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'Code',
@@ -71,10 +71,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                         'data-qtip': 'Mandatory Field'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtCODEBANK',
+                                    id: prototype.id + '-de-txtCODEBANK',
                                     fieldStyle: 'text-align:center',
                                     enableKeyEvents: false,
                                     enforceMaxLength: true,
@@ -84,11 +84,11 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     maskRe: /[a-zA-Z]/,
                                     readOnly: false,
                                     width: 50,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 50 },
+                                {xtype: 'tbspacer', width: 50},
                                 {
 //                                 
                                     xtype: 'label',
@@ -96,32 +96,34 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 95
                                 },
-                                { xtype: 'tbspacer', width: 5 },
-                                {
-                                    xtype: 'combo',
-                                    id:prototype.id+'-cmbCODEBANKN',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:left;',
-                                    queryMode: 'local',
-                                    triggerAction: 'all',
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    width: 130,
-                                    labelWidth: 10,
-                                    hidden: false,
-                                    hiddenLabel: false 
-                                },
-                                { xtype: 'tbspacer', width: 45 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Name',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 45
-                                },
-                                { xtype: 'tbspacer', width: 2 },
+                                {xtype: 'tbspacer', width: 5},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtNAMEBANK',
+                                    id: prototype.id + '-de-txtCODEBANKN',
+                                    fieldStyle: 'text-align:center',
+                                    enableKeyEvents: false,
+                                    enforceMaxLength: true,
+                                    editable: true,
+                                    enabled: false,
+                                    maxLength: 3,
+                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 70,
+                                    listeners: {
+                                        change: 'onUpperValue'
+                                    }
+                                },
+                                {xtype: 'tbspacer', width: 50},
+                                {
+                                    xtype: 'label',
+                                    text: 'Bank Name',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 100
+                                },
+                                {xtype: 'tbspacer', width: 2},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-de-txtNAMEBANK',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
                                     enforceMaxLength: true,
@@ -129,7 +131,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     width: 263,
                                     labelWidth: 20
                                 },
-                                { xtype: 'tbspacer', width: 12 }
+                                {xtype: 'tbspacer', width: 12}
                             ]
                         },
                         {
@@ -143,7 +145,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 width: 1080
                             },
                             items: [
-                                { xtype: 'tbspacer', width: 7 },
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'Country',
@@ -160,10 +162,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                         'data-qtip': 'Mandatory Field'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'combo',
-                                    id:prototype.id+'-de-cmbCOUNTRY',
+                                    id: prototype.id + '-de-cmbCOUNTRY',
                                     fieldStyle: 'text-align:left;',
                                     enableKeyEvents: true,
                                     width: 65,
@@ -175,7 +177,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     valueField: 'A006PAIS',
                                     displayField: 'A006PAIS'
                                 },
-                                { xtype: 'tbspacer', width: 35 },
+                                {xtype: 'tbspacer', width: 35},
                                 {
                                     xtype: 'label',
                                     text: 'Currency',
@@ -192,10 +194,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                         'data-qtip': 'Mandatory Field'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 15 },
+                                {xtype: 'tbspacer', width: 15},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtCURRENC',
+                                    id: prototype.id + '-de-txtCURRENC',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
                                     width: 70,
@@ -203,48 +205,90 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     enforceMaxLength: true,
                                     maxLength: 3,
                                     maskRe: /[a-zA-Z]/,
-                                     listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 50 },
+                                {xtype: 'tbspacer', width: 50},
                                 {
                                     xtype: 'label',
                                     text: 'Document Nbr.',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 100
                                 },
-                                { xtype: 'tbspacer', width: 2 },
+                                {xtype: 'tbspacer', width: 2},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtDOCNUM',
+                                    id: prototype.id + '-de-txtDOCNUM',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
                                     enforceMaxLength: true,
                                     maxLength: 5,
                                     maskRe: /[0-9]/,
                                     width: 80
-                                },  
-                                { xtype: 'tbspacer', width: 40 },
+                                },
+                                {xtype: 'tbspacer', width: 40},
                                 {
                                     xtype: 'label',
                                     text: 'Status',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 50
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'combo',
-                                    id:prototype.id+'-cmbFSTAT',
+                                    id: prototype.id + '-cmbFSTAT',
                                     fieldStyle: 'text-align:left;',
                                     valueField: 'code',
                                     displayField: 'name',
                                     width: 90
                                 },
-                                { xtype: 'tbspacer', width: 11 }
+                                {xtype: 'tbspacer', width: 11}
                             ]
                         },
-                        { xtype: 'tbspacer', width: 6 },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            margin: '1 2 1 10',
+                            bodyStyle: 'background:#E5ECEF;',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1080
+                            },
+                            items: [
+                                {xtype: 'tbspacer', width: 7},
+                                {
+                                    xtype: 'label',
+                                    text: 'NIT',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: '(*)',
+//                                    style: 'font-weight:bold;color:red;',
+//                                    width: 20,
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Mandatory Field'
+//                                    }
+//                                },
+                                {xtype: 'tbspacer', width: 4},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-de-txtBNIT',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:center;',
+                                    enforceMaxLength: true,
+                                    maxLength: 10,
+                                    maskRe: /[0-9]/,
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 617},
+                            ]
+                        },
+                        {xtype: 'tbspacer', width: 6},
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -252,7 +296,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                             margin: '20 2 2 8',
 //                            bodyStyle: 'background:#E5ECEF;',
                             items: [
-                                { xtype: 'tbspacer', width: 7 },
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'Input Status',
@@ -262,10 +306,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 200
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'combo',
-                                    id:prototype.id+'-cmbFINSUMO',
+                                    id: prototype.id + '-cmbFINSUMO',
                                     fieldStyle: 'text-align:left;',
                                     width: 90,
                                     editable: true,
@@ -273,38 +317,38 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     displayField: 'name',
                                     enableKeyEvents: true
                                 },
-                                { xtype: 'tbspacer', width: 50 },
+                                {xtype: 'tbspacer', width: 50},
                                 {
                                     xtype: 'label',
                                     text: 'Cliente ',
                                     hidden: false,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 90
-                                    
+
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtCLIENTE',
+                                    id: prototype.id + '-de-txtCLIENTE',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
                                     width: 245,
                                     enforceMaxLength: true,
                                     maxLength: 8
                                 },
-                                { xtype: 'tbspacer', width: 35 }
+                                {xtype: 'tbspacer', width: 35}
                             ]
                         },
-                        { xtype: 'tbspacer', width: 6 },
+                        {xtype: 'tbspacer', width: 6},
                         {
                             xtype: 'panel',
                             layout: 'hbox',
                             border: false,
                             margin: '2 2 2 8',
 //                            bodyStyle: 'background:#E5ECEF;',
-                            
+
                             items: [
-                                { xtype: 'tbspacer', width: 7 },
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'Commission Rate Normal',
@@ -314,18 +358,18 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 200
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtRATECON',
+                                    id: prototype.id + '-de-txtRATECON',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 90,
                                     maskRe: /[0-9.]/,
                                     enforceMaxLength: true,
-                                    maxLength: 5                                  
+                                    maxLength: 5
                                 },
-                                { xtype: 'tbspacer', width: 50 },
+                                {xtype: 'tbspacer', width: 50},
                                 {
                                     xtype: 'label',
                                     text: ' Rate IVA',
@@ -333,11 +377,11 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     textAlign: 'center',
                                     paddingLeft: 3,
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 60                                },
-                                { xtype: 'tbspacer', width: 160 },
+                                    width: 60},
+                                {xtype: 'tbspacer', width: 160},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtRATEIVA',
+                                    id: prototype.id + '-de-txtRATEIVA',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 119,
@@ -345,19 +389,19 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     enforceMaxLength: true,
                                     maxLength: 5
                                 },
-                                { xtype: 'tbspacer', width: 5 }
+                                {xtype: 'tbspacer', width: 5}
                             ]
                         },
-                        { xtype: 'tbspacer', width: 6 },
+                        {xtype: 'tbspacer', width: 6},
                         {
                             xtype: 'panel',
                             layout: 'hbox',
                             border: false,
                             margin: '2 2 0 8',
 //                            bodyStyle: 'background:#E5ECEF;',
-                            
+
                             items: [
-                                { xtype: 'tbspacer', width: 7 },
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'Commission Rate Promocional 1',
@@ -368,10 +412,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     width: 200,
                                     height: 35
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtRATECOP1',
+                                    id: prototype.id + '-de-txtRATECOP1',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 90,
@@ -379,7 +423,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     enforceMaxLength: true,
                                     maxLength: 5
                                 },
-                                { xtype: 'tbspacer', width: 50 },
+                                {xtype: 'tbspacer', width: 50},
                                 {
                                     xtype: 'label',
                                     text: ' Commission Rate Promocional 2',
@@ -390,10 +434,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     width: 200,
                                     height: 35
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtRATECOP2',
+                                    id: prototype.id + '-de-txtRATECOP2',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:right;',
                                     width: 119,
@@ -401,10 +445,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                     enforceMaxLength: true,
                                     maxLength: 5
                                 },
-                                { xtype: 'tbspacer', width: 5 }
+                                {xtype: 'tbspacer', width: 5}
                             ]
                         }
-                        
+
                     ]
                 },
                 // <editor-fold defaultstate="collapsed" desc="ControlData">
@@ -415,10 +459,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                     style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                     width: 234,
                     margin: '0 2 4 8'
-                     
+
                 },
-                
-                {           
+
+                {
                     items: [
                         {
                             xtype: 'panel',
@@ -428,8 +472,8 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                             defaults: {
                                 labelAlign: 'left'
                             },
-                            items:[
-                                { xtype: 'tbspacer', width: 7 },
+                            items: [
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'Creator User ',
@@ -439,14 +483,14 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtUSCR',
+                                    id: prototype.id + '-txtUSCR',
                                     readOnly: true,
                                     width: 80,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
                                     text: 'Creation Date',
@@ -455,14 +499,14 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtFECR',
+                                    id: prototype.id + '-txtFECR',
                                     readOnly: true,
                                     width: 80,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
                                     text: 'Creation Time',
@@ -471,10 +515,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtHOCR',
+                                    id: prototype.id + '-txtHOCR',
                                     readOnly: true,
                                     width: 80,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 }
@@ -482,15 +526,15 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                         },
                         {
                             xtype: 'panel',
-                            border:false,
+                            border: false,
                             layout: 'hbox',
                             margin: '8 2 4 30',
-                            
+
                             defaults: {
                                 labelAlign: 'left'
                             },
-                            items:[
-                                { xtype: 'tbspacer', width: 7 },
+                            items: [
+                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
                                     text: 'User Update',
@@ -499,14 +543,14 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtUSUP',
+                                    id: prototype.id + '-txtUSUP',
                                     readOnly: true,
                                     width: 80,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
                                     text: 'Update Date',
@@ -515,14 +559,14 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtFEUP',
+                                    id: prototype.id + '-txtFEUP',
                                     readOnly: true,
                                     width: 80,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
                                     text: 'Update Time',
@@ -531,10 +575,10 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtHOUP',
+                                    id: prototype.id + '-txtHOUP',
                                     readOnly: true,
                                     width: 80,
-                                    listeners:{
+                                    listeners: {
                                         change: 'onUpperValue'
                                     }
                                 }
@@ -546,54 +590,54 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry',{
             ]
         }
     ],
-    dockedItems:[
+    dockedItems: [
         {
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
             margin: '10 0 10 0',
-            layout:{
+            layout: {
                 pack: 'center'
             },
             fieldStyle: 'text-align:center',
-            defaults:{
+            defaults: {
                 scale: 'medium'
             },
-            items:[
+            items: [
                 {
                     text: 'Save',
-                    id:prototype.id+'-btn-save',
+                    id: prototype.id + '-btn-save',
                     iconCls: 'prx-icon-save',
-                    listeners:{
+                    listeners: {
                         click: 'onSaveClick'
                     }
                 },
                 {
                     text: 'Update',
-                    id:prototype.id+'-btn-update',
+                    id: prototype.id + '-btn-update',
                     iconCls: 'prx-icon-update',
-                    listeners:{
+                    listeners: {
                         click: 'onUpdateClick'
                     }
                 },
                 {
                     text: 'Delete',
-                    id:prototype.id+'-btn-delete',
+                    id: prototype.id + '-btn-delete',
                     iconCls: 'prx-icon-delete',
-                    listeners:{
+                    listeners: {
                         click: 'onDeleteClick'
                     }
                 },
                 {
                     text: 'Cancel',
-                    id:prototype.id+'-btn-cancel',
+                    id: prototype.id + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
-                    listeners:{
+                    listeners: {
                         click: 'onCancelClick'
                     }
                 }
             ]
         }
     ]
-  }
+}
 );

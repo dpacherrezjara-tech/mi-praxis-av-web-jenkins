@@ -27,6 +27,25 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
             },
             items: [
                 {
+                    xtype: 'label',
+                    text: 'Code :',
+                    padding: '7 0 0 20',
+                    width: 60,
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtCAGENCY',
+                    fieldStyle: 'text-align:center',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9a-zA-Z]/,
+                    maxLength: 8,
+                    width: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'BuscarCAGENCY'
+                    }
+                },
+                {
                     xtype: 'combo',
                     fieldLabel: 'Currency ',
                     id: prototype.id + '-cmbCode',

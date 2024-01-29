@@ -24,7 +24,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                     layout: 'hbox',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
-                        margin: '10 0 0 0' 
+                        margin: '10 0 0 0'
                     },
                     items: [
                         {xtype: 'tbspacer', width: 100},
@@ -167,7 +167,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Code Bank:',
-                            hidden:true,
+                            hidden: true,
                             padding: '3 0',
                             width: 80
                         },
@@ -182,7 +182,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             autoSelect: true,
                             editable: true,
                             width: 190,
-                            hidden:true,
+                            hidden: true,
                             typeAhead: true,
                             valueField: 'CODEBANK',
                             displayField: 'IN_CODE_IN_NAME',
@@ -247,14 +247,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         },
                         {
                             xtype: 'textfield',
-                            id: prototype.id+'-txtAUTHOC',     
+                            id: prototype.id + '-txtAUTHOC',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9a-zA-Z]/,      
+                            enforceMaxLength: true,
+                            maskRe: /[0-9a-zA-Z]/,
                             maxLength: 8,
                             width: 100,
                             enableKeyEvents: true,
-                            listeners:{
+                            listeners: {
                                 keypress: 'eventKey'
                             }
                         },
@@ -273,7 +273,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             xtype: 'label',
                             text: 'Merchant Number :',
                             padding: '3 0',
-                            hidden:true,
+                            hidden: true,
                             width: 120,
 //                            autoEl: {
 //                                tag: 'label',
@@ -287,7 +287,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             enforceMaxLength: true,
                             maskRe: /[0-9a-zA-Z]/,
                             maxLength: 20,
-                            hidden:true,
+                            hidden: true,
                             width: 200,
                             enableKeyEvents: true,
                             listeners: {
@@ -299,7 +299,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             xtype: 'label',
                             text: 'IATA Number:',
                             padding: '3 0',
-                            hidden:true,
+                            hidden: true,
                             width: 100,
 //                            autoEl: {
 //                                tag: 'label',
@@ -312,7 +312,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             fieldStyle: 'text-align:center',
                             enforceMaxLength: true,
                             maskRe: /[0-9]/,
-                            hidden:true,
+                            hidden: true,
                             maxLength: 8,
                             width: 120,
                             enableKeyEvents: true,
@@ -323,7 +323,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Card Type:',
-                            hidden:true,
+                            hidden: true,
                             padding: '3 0',
                             width: 80,
 //                            autoEl: {
@@ -341,7 +341,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            hidden:true,
+                            hidden: true,
                             listConfig: {maxHeight: 111},
                             width: 240,
                             typeAhead: true,
@@ -365,7 +365,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             xtype: 'label',
                             text: 'Source:',
                             padding: '3 0',
-                            hidden:true,
+                            hidden: true,
                             width: 120
                         },
                         {
@@ -381,18 +381,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             listConfig: {maxHeight: 111},
                             width: 100,
                             typeAhead: true,
-                            hidden:true,
+                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             enableKeyEvents: true,
                             triggerAction: 'all',
                         },
-                        {xtype: 'tbspacer', width: 30},
+//                        {xtype: 'tbspacer', width: 30},
                         {
                             xtype: 'label',
                             text: 'PNR :',
                             padding: '3 0',
-                            hidden:true,
+                            hidden: true,
                             width: 40,
 //                            autoEl: {
 //                                tag: 'label',
@@ -408,7 +408,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             maxLength: 6,
                             width: 60,
                             enableKeyEvents: true,
-                            hidden:true,
+                            hidden: true,
                             listeners: {
                                 keypress: 'BuscarPNR_keyDownHandler'
                             }
@@ -425,10 +425,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 change: 'btnSearch_click'
                             }
                         },
-                        {xtype: 'tbspacer', width: 80},
+//                        {xtype: 'tbspacer', width: 80},
                         {
                             xtype: 'radiogroup',
-                            hidden:true,
+                            hidden: true,
                             id: prototype.id + '-rbgType',
                             items: [
                                 {boxLabel: '<b style="color:#148D28;">Sales</b>', inputValue: 'rbSALES', name: 'rbgType', checked: true},
@@ -439,12 +439,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 change: 'cmbTranType_changeHandler'
                             }
                         },
+                        {xtype: 'tbspacer', width: 100},
                         {
                             xtype: 'label',
                             text: 'Bussines:',
                             padding: '3 0',
-                            hidden:true,
-                            width: 60
+//                            hidden:true,
+                            width: 65
                         },
                         {
                             xtype: 'combo',
@@ -456,14 +457,60 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            listConfig: {maxHeight: 111},
+                            listConfig: {maxHeight: 130},
                             width: 100,
                             typeAhead: true,
-                            hidden:true,
+//                            hidden:true,
                             valueField: 'code',
                             displayField: 'name',
                             enableKeyEvents: true,
                             triggerAction: 'all',
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'label',
+//                            style: 'font-weight:bold;color:#0B333C;',
+                            padding: '3 0 0 10',
+                            text: 'BPO Comment:',
+                            width: 100
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbCOMENTF',
+                            margin: '5 0 0 0',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            fieldStyle: 'text-align:left;',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            width: 380,
+                            labelWidth: 10,
+                            hidden: false,
+                            hiddenLabel: false
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'label',
+//                            style: 'font-weight:bold;color:#0B333C;',
+                            padding: '3 0 0 10',
+                            text: 'Agent:',
+                            width: 55
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbAGENCY',
+                            margin: '5 0 0 0',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            fieldStyle: 'text-align:left;',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            width: 380,
+                            labelWidth: 10,
+                            hidden: false,
+                            hiddenLabel: false
                         },
                     ]
                 }

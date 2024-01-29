@@ -49,6 +49,10 @@ public class A2290Filter extends A2290 {
     public String IN_TDOC = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
+    public String IN_NEGOC = "";
+    public String IN_COMENT = "";
+    public String IN_TERMI = "";
+    public String IN_AGENCY = "";
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
     public String NAME = "";
@@ -81,6 +85,7 @@ public class A2290Filter extends A2290 {
     public String strDescripcion = "";
     public String strSCARF = "";
     public String strDescCountry = "";
+    public String NAMEBANK = "";
     public String strDescCard = "";
     public String strSDescCard = "";
     public String strADescCard = "";
@@ -167,6 +172,12 @@ public class A2290Filter extends A2290 {
     public long lngQTMATCH = 0;
     public long lngQTMANUAL = 0;
     public long lngQTPEND = 0;
+    public long lngQTOTS2 = 0;
+    public long lngQPOLI2 = 0;
+    public long lngQTOTS3 = 0;
+    public long lngQPOLI3 = 0;
+    public long lngQPOLIC = 0;
+    public long lngQPOLIPE = 0;
     public long lngQSALES = 0;
     public long lngQACCB = 0;
     public long lngQDIFF = 0;
@@ -196,6 +207,12 @@ public class A2290Filter extends A2290 {
     public long lngTotQTMATCH = 0;
     public long lngTotQTMANUAL = 0;
     public long lngTotQTPEND = 0;
+    public long lngTotQTOTS2 = 0;
+    public long lngTotQPOLI2 = 0;
+    public long lngTotQTOTS3 = 0;
+    public long lngTotQPOLI3 = 0;
+    public long lngTotQPOLIC = 0;
+    public long lngTotQPOLIPE = 0;
     public long lngTotQSALES = 0;
     public long lngTotQACCB = 0;
     public long lngTotQDIFF = 0;

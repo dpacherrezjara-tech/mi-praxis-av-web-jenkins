@@ -38,6 +38,7 @@ public class A2281 {
     public String option = "";
     public int DOCNUM = 0;
     public String FECFROM = "";
+    public String BNIT = "";
     public String FECTO = "";
     //Variables del 
     public String USCR = "";

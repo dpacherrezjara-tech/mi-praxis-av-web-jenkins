@@ -132,7 +132,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
                     global.Msg({msg: res.sesion});
             }
         });
-        
+
         var cmbNEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC');
         cmbNEGOC.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
@@ -145,11 +145,30 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
             ]
         }));
         cmbNEGOC.setValue('');
-        
+
+    },
+    BuscarCAGENCY: function (obj, e, eOpts) {
+        switch (e.getKey()) {
+            case 13:
+                if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length > 0) {
+//                    if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 7 || Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 8) {
+//                        this.btnSearch_click();
+//                    } else {
+//                        global.Msg({
+//                            msg: 'Agency Code must contain 8 characters.'
+//                        });
+//                    }
+                    this.btnSearch_click();
+                } else {
+                    this.btnSearch_click();
+                }
+
+                break;
+        }
     },
     setFormatParameter: function () {
-
         me.bean = {};
+        me.bean.IN_CAGENCY = Ext.getCmp(prototype.id + '-txtCAGENCY').getValue();
         me.bean.CURRENC = Ext.getCmp(prototype.id + '-cmbCode').getValue();
         me.bean.COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
