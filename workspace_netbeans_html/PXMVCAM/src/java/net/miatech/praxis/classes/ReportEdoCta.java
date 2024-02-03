@@ -259,7 +259,7 @@ public class ReportEdoCta {
             PdfContentByte under = writer.getDirectContentUnder();
             ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, txtTitle, 240, PYi, 0); //300
 
-            // Logo AEROMEXICO
+            // Logo AVIANCA
             int pos_img = 710; //698
             Image img;
             img = Image.getInstance(String.format("/Dumps/%s", RESOURCES[0]));
@@ -269,7 +269,7 @@ public class ReportEdoCta {
             document.add(img);
             writer.setCompressionLevel(0);
 
-            //datos AEROMEXICO
+            //datos AVIANCA
             PYi = PYi - 20; //32
             int py0 = PYi;
             Phrase txtAMInfo = new Phrase(new Paragraph(Data.get(1).tbl_misl.A3961DESC1, catFont)); //nombre AM

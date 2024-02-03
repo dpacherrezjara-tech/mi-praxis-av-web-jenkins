@@ -121,7 +121,7 @@ Ext.define('Ext.Praxis.view.flown.RevenueZoneForm.Facsimil', {
                                         {
                                             xtype: 'label',
                                             height: '',
-                                            html: '<b>AEROMEXICO</b>',
+                                            html: '<b>AVIANCA</b>',
                                             id: prototype.id + '-f-lblNomAer',
                                             margin: '0 2 0 2',
                                             padding: 0,

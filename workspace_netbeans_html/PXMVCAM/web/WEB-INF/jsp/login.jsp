@@ -178,7 +178,7 @@
             <div id="pnlAlertMessage" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="pnlAlertMessage" aria-hidden="true">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3>AEROMEXICO - Revenue Accounting Modules</h3>
+                    <h3>AVIANCA - Revenue Accounting Modules</h3>
                 </div>
                 <div class="modal-body">
                     <label id="lblMessage" name="lblMessage">Message</label>

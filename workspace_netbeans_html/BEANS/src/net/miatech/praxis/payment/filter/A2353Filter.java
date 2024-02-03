@@ -13,6 +13,9 @@ import net.miatech.beans.Pagination;
 public class A2353Filter extends A2353 {
     
      public String IN_CODEM = "";
+     public String IN_FILE = "";
+     public String IN_PRDA = "";
+     public String IN_DATE = "";
      
      public long RN = 0; 
      public Pagination page = new Pagination();

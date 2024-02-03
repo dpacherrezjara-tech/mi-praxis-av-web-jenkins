@@ -168,7 +168,7 @@ public class ProReportReject {
             writer.setPageEvent(event);
             document.open();
 
-            //COLOCANDO LOGO AEROMEXICO ========================================
+            //COLOCANDO LOGO AVIANCA ========================================
             Image img;
             img = Image.getInstance(String.format("/Dumps/%s", RESOURCES[0]));
             img.setAbsolutePosition(PosX1, 530); //550          

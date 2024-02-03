@@ -863,7 +863,7 @@ public class Dashboard01DAO {
                         bean.AMOUNT_O = AMOUNTNR;
                         bean.totAVG = (CUPONS > 0) ? AMOUNT / CUPONS : 0;
 
-                        //AEROMEXICO
+                        //AVIANCA
                         bean.CUPONS_ON = CUPONS_A;
                         bean.AMOUNT_ON = AMOUNT_A;
                         bean.CUPONS_MEX = CUPONSNR_A;
@@ -882,7 +882,7 @@ public class Dashboard01DAO {
                         bean.Perc3 = (bean.TOTAL_AMOUNT > 0) ? (bean.AMOUNT * 100) / bean.TOTAL_AMOUNT : 0;
                         //TOTALES DETALLE
                         bean.Perc4 = (bean.TOTAL_AMOUNT > 0) ? (AMOUNT * 100) / bean.TOTAL_AMOUNT : 0;
-                        //AEROMEXICO
+                        //AVIANCA
                         bean.Perc5 = (bean.TOTAL_AMOUNT > 0) ? (AMOUNT_A * 100) / bean.TOTAL_AMOUNT : 0;
 
                         lista.add(bean);

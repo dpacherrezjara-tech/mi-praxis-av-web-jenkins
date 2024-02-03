@@ -172,7 +172,7 @@ public class ProReportClarification {
             writer.setPageEvent(event);
             document.open();
 
-            //COLOCANDO LOGO AEROMEXICO ========================================
+            //COLOCANDO LOGO AVIANCA ========================================
             Image img;
             img = Image.getInstance(strRuta);
             img.setAlignment(Element.ALIGN_CENTER);
@@ -220,7 +220,7 @@ public class ProReportClarification {
             writer.setPageEvent(event);
             document.open();
 
-            //COLOCANDO LOGO AEROMEXICO ========================================
+            //COLOCANDO LOGO AVIANCA ========================================
             Image img;
             img = Image.getInstance(String.format("/Dumps/%s", RESOURCES[0]));
             img.setAbsolutePosition(PosX1, 530); //550          

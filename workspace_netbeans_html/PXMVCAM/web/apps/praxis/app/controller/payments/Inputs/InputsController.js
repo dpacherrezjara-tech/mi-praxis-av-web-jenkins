@@ -32,7 +32,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         prototype.id = 'InputsForm';
         prototype.url = CONTEXTPATH + '/Inputs';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-boxMainAll';
+//        me.panelActual = '-boxMainAll';
+        me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
         this.control({
@@ -102,9 +103,11 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     ChangeVista_clickHandler: function () {
         var cmbVISTA = Ext.getCmp(prototype.id + '-cmbVISTA').getValue();
         if (cmbVISTA === 'D') {
-            Ext.getCmp(prototype.id + '-boxMainAll').hide();
+//            Ext.getCmp(prototype.id + '-boxMainAll').hide();
+            Ext.getCmp(prototype.id + '-panelGridData').hide();
         } else {
-            Ext.getCmp(prototype.id + '-boxMainAll').hide();
+//            Ext.getCmp(prototype.id + '-boxMainAll').hide();
+            Ext.getCmp(prototype.id + '-panelGridData').hide();
         }
         this.btnSearch_click();
     },
@@ -368,7 +371,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                         Ext.getCmp(prototype.id + '-Filters3_1').hide();
                         Ext.getCmp(prototype.id + '-contentFilter2').show();
                         Ext.getCmp(prototype.id + '-boxMainAll').hide();
-                        Ext.getCmp(prototype.id + '-panelGridData').hide();
+//                        Ext.getCmp(prototype.id + '-panelGridData').hide();
                         this.gridCalendar_clickHandler();
                     } else {
                         global.Msg({msg: 'Select source'});
@@ -385,7 +388,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
 
 //        me.drillDown.push(me.panelActual);
         if (FUENTE === 'All') {
-            me.panelActual = '-boxMainAll';
+//            me.panelActual = '-boxMainAll';
+            me.panelActual = '-panelGridData';
         } else {
             me.panelActual = '-panelGridData';
         }

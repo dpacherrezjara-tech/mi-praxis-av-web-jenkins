@@ -135,7 +135,7 @@ Ext.define('Ext.Praxis.view.flown.RevenueFlightForm.Prorrateo', {
                                                             id: prototype.id + '-lblNomAer',
                                                             margin: '1 2 1 2',
                                                             style: 'color: #0B333C;font-weight:bold; font-size: 10px;',
-                                                            text: 'AEROMEXICO'
+                                                            text: 'AVIANCA'
                                                         }
                                                     ]
                                                 },

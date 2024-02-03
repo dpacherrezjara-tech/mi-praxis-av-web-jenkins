@@ -551,8 +551,8 @@ public class AtlUsageNoSaleController extends BaseController {
              Preparando parámetros para enviar por body
              */
             HashMap bodyData = new HashMap<>();            
-//            bodyData.put("server_database", "AEROMEXICO_TEST"); //test
-//            bodyData.put("server_database", "AEROMEXICO"); //prod
+//            bodyData.put("server_database", "AVIANCA_TEST"); //test
+//            bodyData.put("server_database", "AVIANCA"); //prod
             bodyData.put("server_database", serverSession.getServerSession().getPropertySession().get("SERVER_DJANGO").toString());
             bodyData.put("VP_AIR", "139");
             bodyData.put("VP_FILTRO", filter.VP_FILTRO);

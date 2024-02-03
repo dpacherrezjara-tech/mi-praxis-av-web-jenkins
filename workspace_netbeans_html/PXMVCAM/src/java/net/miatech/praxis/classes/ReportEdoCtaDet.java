@@ -259,7 +259,7 @@ public class ReportEdoCtaDet {
             Phrase txtTitle1 = new Phrase(new Paragraph("ANEXO: Detalle de boletos", subFontT));            
             ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, txtTitle1, 300, PYi, 0);
 
-            // Logo AEROMEXICO
+            // Logo AVIANCA
             Image img;
             img = Image.getInstance(String.format("/Dumps/%s", RESOURCES[0]));
             img.setAbsolutePosition(PosX1, 530);
@@ -268,7 +268,7 @@ public class ReportEdoCtaDet {
             document.add(img);
             writer.setCompressionLevel(0);
 
-            //datos AEROMEXICO
+            //datos AVIANCA
             PYi = PYi - 32;
             int py0 = PYi;
             Phrase txtAMInfo = new Phrase(new Paragraph(Data.get(1).tbl_misl.A3961DESC1, catFont)); //nombre AM

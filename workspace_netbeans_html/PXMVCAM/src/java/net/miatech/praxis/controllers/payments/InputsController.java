@@ -130,11 +130,11 @@ public class InputsController extends BaseController {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A1686Filter.class);
 
-            if (filter.IN_FUENTE.trim().equals("")) {
-                lst = logic.loadPX264SQP02957(filter);
-            } else {
+//            if (filter.IN_FUENTE.trim().equals("")) {
+//                lst = logic.loadPX264SQP02957(filter);
+//            } else {
                 lst = logic.loadPX264SQP00665(filter, consulta);
-            }
+//            }
 
         } catch (Exception e) {
             throw new SpringException(e);

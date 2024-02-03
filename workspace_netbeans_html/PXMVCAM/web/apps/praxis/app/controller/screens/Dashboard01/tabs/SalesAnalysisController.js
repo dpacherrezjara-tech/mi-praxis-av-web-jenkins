@@ -611,7 +611,7 @@ Ext.define('Ext.Praxis.controller.screens.Dashboard01.tabs.SalesAnalysisControll
                 });
                 Ext.getCmp(prototype.id + '-gridAlliances').bindStore(storeData);
 
-                //AEROMEXICO
+                //AVIANCA
                 Ext.getCmp(prototype.id + '-lblTotalAlCPN').setText(Ext.util.Format.number(data.CUPONS_OFF, '0,000'));
                 Ext.getCmp(prototype.id + '-lblTotalAlAmount').setText(Ext.util.Format.number(data.AMOUNT_OFF, '0,000'));
                 Ext.getCmp(prototype.id + '-lblTotalAlAVG').setText(Ext.util.Format.number(data.totAVG, '0,000.00'));
