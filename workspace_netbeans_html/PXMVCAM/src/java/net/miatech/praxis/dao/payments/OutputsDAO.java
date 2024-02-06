@@ -81,10 +81,11 @@ public class OutputsDAO {
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 bean = new A2353Filter();
-                bean.TRAN = rst.getInt("TRAN");
+//                bean.TRAN = rst.getInt("TRAN");
                 bean.DDATA = rst.getString("DDATA").trim();
                 bean.DATEC = rst.getString("DATEC").trim();
                 bean.TRANC = rst.getString("TRANC").trim();
+                bean.NEGOC = rst.getString("NEGOC").trim();
 
                 lstData.add(bean);
             }
@@ -138,10 +139,10 @@ public class OutputsDAO {
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 bean = new A2353Filter();
-                bean.TRAN = rst.getInt("TRAN");
-                bean.DDATA = rst.getString("DDATA").trim();
-                bean.DATEC = rst.getString("DATEC").trim();
-                bean.TRANC = rst.getString("TRANC").trim();
+//                bean.TRAN = rst.getInt("TRAN");
+//                bean.DDATA = rst.getString("DDATA").trim();
+//                bean.DATEC = rst.getString("DATEC").trim();
+//                bean.TRANC = rst.getString("TRANC").trim();
                 bean.TRAMA = rst.getString("TRAMA").trim();
 
                 lstData.add(bean);

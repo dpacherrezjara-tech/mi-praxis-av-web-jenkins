@@ -19,6 +19,8 @@ public class A2353 {
     public String DATEC = "";
     public String TRANC = "";
     public String TRAMA = "";
+    public String NEGOC = "";
+    public double SVFOP = 0;
     
     public String CAMP00 = "";
     public String CAMP01 = "";

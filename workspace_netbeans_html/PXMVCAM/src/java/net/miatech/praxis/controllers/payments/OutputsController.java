@@ -469,18 +469,18 @@ public class OutputsController extends BaseController {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
             String cadena;
 
-            cadena = "Fecha de Abono|Fecha de Transaccion|IATA|Terminal|Codigo de venta| Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto |Nro Tarjeta de Credito Debito|Autorizacion|Tipo de Tarjeta|Nro de cuenta|Cod Banco|Cod unico|Red|Nro Tiquete|LLAVE|DOC SAP|Key Conciliations";
+            cadena = "Fecha de Abono|Fecha de Transaccion|IATA|Terminal|Codigo de venta| Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto |Nro Tarjeta de Credito Debito|Autorizacion|Tipo de Tarjeta|Nro de cuenta|Cod Banco|Cod unico|Red|Nro Tiquete|LLAVE|DOC SAP|Key Conciliations|Bussines";
             writer.println("" + cadena);
 
             for (vi = 0; vi < len; vi++) {
                 cadena = "";
                 cadena += "" + listaData.get(vi).DDATA.replaceAll(";", "|") + "|";//
-                if (listaData.get(vi).TRANC == null || listaData.get(vi).TRANC.isEmpty()) {
-                    cadena += ""; 
+                if (listaData.get(vi).DATEC == null || listaData.get(vi).DATEC.isEmpty()) {
+                    cadena += "" + "|"; 
                 } else {
-                    cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC; 
+                    cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC + "|"; 
                 }
-//                cadena += "" + listaData.get(vi).DATEC + listaData.get(vi).TRANC;//
+                cadena += "" + listaData.get(vi).NEGOC ;//
                 cadena = cadena.replaceAll("null", "");
                 writer.println("" + cadena);
             }

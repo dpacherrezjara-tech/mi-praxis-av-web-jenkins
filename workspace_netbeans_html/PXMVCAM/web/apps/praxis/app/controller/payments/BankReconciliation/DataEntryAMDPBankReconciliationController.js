@@ -62,6 +62,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             return;
         }
 
+        // Obtener el componente del grid
+        var gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var storeNormalon = gridComponentNormalon.getStore();
+        var lstNormalon11 = storeNormalon.getData().items;
+
+        var gridComponentBlockedon = Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked');
+        var storeBlockedon = gridComponentBlockedon.getStore();
+        var lstBlockedon11 = storeBlockedon.getData().items;
+
+//        console.log(lstNormalon11[0].data);
+//        console.log(lstBlockedon11);
+
         var paramScan = {};
         paramScan.beanString = JSON.stringify(this.bean_scan);
         console.log(paramScan);
@@ -76,15 +88,109 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
                 if (res.success) {
-                    meDe.bean_detail = res.result;
-                    //llenar grilla gridDataInfoScan
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
+
+                    let ticketsOcupados = [];
+                    var cont = 0;
+
+                    if (storeNormalon.getData().items.length > 0) {
+                        var lstNormal = storeNormalon.getData().items;
+                        console.log('Normal: había data');
+                    } else {
+                        var lstNormal = [];
+                        console.log('Normal: no había data');
+                    }
+
+                    if (storeBlockedon.getData().items.length > 0) {
+                        var lstBlocked = storeBlockedon.getData().items;
+                        console.log('Blocked: había data');
+                    } else {
+                        var lstBlocked = [];
+                        console.log('Blocked: no había data');
+                    }
+
+                    var item_Normal = {};
+                    var item_Blocked = {};
+
+                    for (var i = 0; i < res.data.length; i++) {
+                        var validador = res.data[i].STVAL;
+                        if (validador === '1' || validador === '5') {
+                            ticketsOcupados.push(res.data[i].A1531TKT);
+                            cont++;
+
+                            item_Blocked.STVAL = res.data[i].STVAL;
+                            item_Blocked.descTDOC = res.data[i].descTDOC;
+                            item_Blocked.A720AGENTE = res.data[i].A720AGENTE;
+                            item_Blocked.A720FECVTA = res.data[i].A720FECVTA;
+                            item_Blocked.A720PNR = res.data[i].A720PNR;
+                            item_Blocked.A1531TKT = res.data[i].A1531TKT;
+                            item_Blocked.A1531TTARJ = res.data[i].A1531TTARJ;
+                            item_Blocked.A1531NREF = res.data[i].A1531NREF;
+                            item_Blocked.A1531CAPL = res.data[i].A1531CAPL;
+                            item_Blocked.A1531MFOP = res.data[i].A1531MFOP;
+                            item_Blocked.A1531VFOP = res.data[i].A1531VFOP;
+                            item_Blocked.tot_VFOP = res.data[i].tot_VFOP;
+                            lstBlocked.push(item_Blocked);
+                            item_Blocked = {};
+                        } else {
+                            item_Normal.STVAL = res.data[i].STVAL;
+                            item_Normal.descTDOC = res.data[i].descTDOC;
+                            item_Normal.A720AGENTE = res.data[i].A720AGENTE;
+                            item_Normal.A720FECVTA = res.data[i].A720FECVTA;
+                            item_Normal.A720PNR = res.data[i].A720PNR;
+                            item_Normal.A1531TKT = res.data[i].A1531TKT;
+                            item_Normal.A1531TTARJ = res.data[i].A1531TTARJ;
+                            item_Normal.A1531NREF = res.data[i].A1531NREF;
+                            item_Normal.A1531CAPL = res.data[i].A1531CAPL;
+                            item_Normal.A1531MFOP = res.data[i].A1531MFOP;
+                            item_Normal.A1531VFOP = res.data[i].A1531VFOP;
+                            item_Normal.tot_VFOP = res.data[i].tot_VFOP;
+
+//                            if (storeNormalon.getData().items.length > 0) {
+//                                var OBJ = storeNormalon.getData().items;
+//                                console.log(OBJ);
+//                                for (var j = 0; j < storeNormalon.getData().items.length; j++) {
+//                                    
+//                                    console.log(j);
+////                                    console.log(OBJ[j].data.A1531TKT);
+//                                    
+////                                    if (OBJ[j].data.STVAL === item_Normal.STVAL && OBJ[j].data.descTDOC === item_Normal.descTDOC && OBJ[j].data.A720AGENTE === item_Normal.A720AGENTE && OBJETO.A720FECVTA === item_Normal.A720FECVTA && OBJETO.A720PNR === item_Normal.A720PNR && OBJETO.A1531TKT === item_Normal.A1531TKT && OBJETO.A1531TTARJ === item_Normal.A1531TTARJ && OBJETO.A1531NREF === item_Normal.A1531NREF && OBJETO.A1531CAPL === item_Normal.A1531CAPL && OBJETO.A1531MFOP === item_Normal.A1531MFOP && OBJETO.A1531VFOP === item_Normal.A1531VFOP && OBJETO.tot_VFOP === item_Normal.tot_VFOP) {
+////                                        //es igual
+////                                    } else {
+////                                        lstNormal.push(item_Normal);
+////                                    }
+//                                    
+//                                }
+//                            }else{
+                            lstNormal.push(item_Normal);
+//                            }
+                            item_Normal = {};
+                        }
+                    }
+
+                    if (cont > 0) {
+                        let mensaje = 'Blocked tickets:<br>' + ticketsOcupados.join('<br>');
+                        global.Msg({msg: mensaje});
+                        console.log(mensaje);
+                    }
+
+                    console.log(lstNormal);
+                    console.log(lstBlocked);
+
+                    var storeDataNormal = Ext.create('Ext.data.Store', {
+                        data: lstNormal,
                         autoLoad: true
                     });
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
+
+                    var storeDataBlocked = Ext.create('Ext.data.Store', {
+                        data: lstBlocked,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked').bindStore(storeDataBlocked);
+
                     meDe.calcularMontos();
                     meDe.avisarRegistros();
+
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
@@ -264,8 +370,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(942);
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(944);
+//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(942);
+//            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(944);
             Ext.getCmp(prototype.id + '-vacioComment').show();
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
@@ -273,8 +379,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-panelScanCard').show();
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
             Ext.getCmp(prototype.id + '-gridColumnAdj').show();
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
+//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
+//            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
             Ext.getCmp(prototype.id + '-vacioComment').hide();
         }
 
