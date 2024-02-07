@@ -1,6 +1,7 @@
 prototype.widthContenedor = 800;
 prototype.widthGrid = '100%';
 prototype.id = 'GenerationOfAccountingForm';
+prototype.id01 = 'DataEntryDownload';
 prototype.url = CONTEXTPATH + '/Accounting';
 
 Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.GenerationOfAccountingForm', {

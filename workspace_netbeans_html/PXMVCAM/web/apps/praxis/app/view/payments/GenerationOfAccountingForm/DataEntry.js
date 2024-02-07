@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
         'Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGenerationOfAccountingController'
     ],
     controller: 'DataEntryGenerationOfAccountingController',
-    title: 'Generate accounting interface',
+    title: 'Generate file interface',
     header: true,
 //    height:920,
     width: 550,
@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     xtype: 'radiofield',
                                     id: prototype.id + '-op01',
                                     name: prototype.id + '-op',
-                                    boxLabel: 'Accounting Interface',
+                                    boxLabel: 'File Interface',
                                     margin: '2 2 2 10',
                                     checked: true
                                 }
@@ -60,7 +60,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                 {
                                     xtype: 'datefield',
                                     id: prototype.id + '-PSTGD1',
-                                    fieldLabel: 'From date', labelAlign: 'right', labelStyle: 'font-weight: bold;', labelWidth: 90,
+                                    fieldLabel: 'Date', labelAlign: 'right', labelStyle: 'font-weight: bold;', labelWidth: 90,
                                     width: 190, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
                                     format: 'Ymd',
                                     invalidText: 'Ingrese fecha valida en formato Ymd',
@@ -92,6 +92,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     value: new Date(),
                                     maskRe: /[0-9/]/,
                                     editable: true,
+                                    hidden:true,
                                     enableKeyEvents: true,
                                     enforceMaxLength: true,
                                     maxLength: 12,

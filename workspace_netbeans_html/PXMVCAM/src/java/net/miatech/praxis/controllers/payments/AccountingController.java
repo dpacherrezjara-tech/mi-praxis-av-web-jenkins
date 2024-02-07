@@ -130,7 +130,7 @@ public class AccountingController extends BaseController {
 
             int len = lst.size();
             Integer vi = 0;
-            String vl_fileName = "CARGUE_TC_" + formattedDate + "_" + filter.FNAME + filter.IN_LEXT;
+            String vl_fileName = "CARGUE_TC_" + formattedDate + "_" + filter.FNAME; // + filter.IN_LEXT;
             File file = new File(rutaFile + "\\" + vl_fileName + ".txt");
 
             if (file.exists()) {

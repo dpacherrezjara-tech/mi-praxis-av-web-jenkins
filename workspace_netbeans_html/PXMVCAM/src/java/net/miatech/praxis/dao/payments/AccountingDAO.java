@@ -172,15 +172,15 @@ public class AccountingDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, filter.IN_TIPO);
-            cstmt.setInt(2, filter.IN_LEXT);
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_TIPO);
+            cstmt.setInt(3, filter.IN_LEXT);
             cstmt.execute();
             rst = cstmt.getResultSet();
             while (rst.next()) {

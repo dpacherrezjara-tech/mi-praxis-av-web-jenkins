@@ -27,15 +27,15 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
     onProcessClick: function () {
         this.winDataEntry('I', undefined);
     },
-    onDownloadClick: function (grid, rowIndex, colIndex) {
+    onDownloadClick: function (grid, rowIndex) {
+
         var rec = grid.getStore().getAt(rowIndex);
-        console.log(rec.data);
-        //var n;
-        for (var i = 1; i <= parseInt(rec.data.A4556NARCH); i++) {
-           // n += i;
-            console.log('n>>' + i );
-            this.getDownloadFileTxt(rec.data, i);
-        }        
+        var NARCH = parseInt(rec.data.A4556NARCH);
+        if (NARCH === 1) {
+            this.getDownloadFileTxt(rec.data, NARCH);
+        } else {
+            this.winDownloadFiles('D', rec.data);
+        }     
     },
     getDownloadFileTxt: function (rec, in_LEXT) {
 
@@ -62,9 +62,10 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
     setFormatParameter: function () {
         var me = this;
         me.bean = {};
-        me.bean.VP_OPCION = "1";
+        me.bean.VP_OPCION = Ext.getCmp(prototype.id + '-cmbfiltro').getValue();
+        //enviar siempre las mismas fechas
         me.bean.VP_FDATE1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha1').getValue(), 'Ymd');
-        me.bean.VP_FDATE2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha2').getValue(), 'Ymd');
+        me.bean.VP_FDATE2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha1').getValue(), 'Ymd'); //ojo
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString
@@ -126,12 +127,22 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
-
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
         Ext.create('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
             id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec
+            }
+        }).show();
+    },
+    winDownloadFiles: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+        Ext.create('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntryDownload', {
+            id: prototype.id01 + '-dataEntryDownload',
             params: {
                 action: action,
                 rec: rec

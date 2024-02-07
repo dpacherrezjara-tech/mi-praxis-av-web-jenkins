@@ -31,7 +31,8 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.Filters', {
                     store: new Ext.data.SimpleStore({
                         fields: ['code', 'name'],
                         data: [
-                            ["1", "Processing date"]
+                            ["1", "Processing date"],
+                            ["2", "Generation date"]
                         ]
                     }),
                     queryMode: 'local',

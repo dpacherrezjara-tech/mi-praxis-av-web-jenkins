@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
                                     width: '100%',
-                                    height: 490,
+                                    height: 470,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -62,9 +62,9 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.Info', {
                                             {text: 'Procesing<br>Date', dataIndex: 'A4556PSTGD', width: 80},
                                             {text: 'Generation <br>Date', dataIndex: 'A4556FFILE', width: 80},
                                             {text: 'Type File', dataIndex: 'A4556TFILE_0', width: 180},
-                                            {text: 'Qty. Records', dataIndex: 'A4556TREGI', width: 90},
-                                            {text: 'Qty. Files', dataIndex: 'A4556NARCH', width: 70},
-                                            {text: 'Status', dataIndex: 'A4556ESTAD', width: 120},
+                                            {text: 'Qty.<br>Records', dataIndex: 'A4556TREGI', align: 'right', width: 90},
+                                            {text: 'Qty.<br>Files', dataIndex: 'A4556NARCH', width: 70},
+                                            {text: 'Status', dataIndex: 'A4556ESTAD', width: 120},                                            
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
@@ -92,7 +92,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.Info', {
                                 type: 'hbox',
                                 pack: 'center'
                             },
-                            border: false,                                                     
+                            border: false,
                             height: 30,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                             items: [
