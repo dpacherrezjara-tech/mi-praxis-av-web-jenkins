@@ -1587,6 +1587,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     layout: 'hbox',
                                     border: false,
                                     margin: '0 0 0 0',
+                                    
                                     //bodyStyle: 'background:#efe5e5;',
                                     items: [
                                         {
@@ -1977,10 +1978,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                             },
                                                                         ]
                                                                     }
-                                                                },
-                                                            ]
+                                                                }
+                                                                
+                                                            ],
+                                                            
                                                         },
-                                                    ]
+                                                    ],
+                                                    
                                                 },
                                                 {
                                                     xtype: 'panel',
@@ -2127,7 +2131,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             ]
                                                         },
                                                     ]
-                                                },
+                                                }
+                                                
                                             ]
                                         },
 //                                        {
@@ -2671,6 +2676,28 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 //                                                },
 //                                            ]
 //                                        },
+                                        
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '0 0 0 300',
+                                    //bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            margin: '0 0 0 718',
+                                            id: prototype.id + '-btnClearCustom',
+                                            //margin: '4 4 4 4',
+                                            iconCls: 'prx-icon-clear',
+                                            tooltip: 'Clean',
+                                            listeners: {
+                                                click: 'clear_tableNormal'
+                                            }
+                                        }
                                     ]
                                 },
                                 {

@@ -768,7 +768,7 @@ public class BankReconciliationDAO {
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", "Settlement w/o Paying");
-        hmDescEstados.put("3", "Paying w/o Settlement");
+        hmDescEstados.put("3", "Settlement w/o Sales");
         hmDescEstados.put("4", "Match with Difference");
         hmDescEstados.put("5", "Match Manual");
 
@@ -1329,7 +1329,7 @@ public class BankReconciliationDAO {
                     } else if (filter.IN_STVAL.trim().equals("2")) {
                         estado = "Settlement w/o Paying";
                     } else if (filter.IN_STVAL.trim().equals("3")) {
-                        estado = "Paying w/o Settlement";
+                        estado = "Settlement w/o Sales";
                     } else if (filter.IN_STVAL.trim().equals("4")) {
                         estado = "Match with Difference";
                     } else if (filter.IN_STVAL.trim().equals("5")) {
@@ -1732,7 +1732,7 @@ public class BankReconciliationDAO {
                     } else if (filter.IN_STVAL.trim().equals("2")) {
                         estado = "Settlement w/o Paying";
                     } else if (filter.IN_STVAL.trim().equals("3")) {
-                        estado = "Paying w/o Settlement";
+                        estado = "Settlement w/o Sales";
                     } else if (filter.IN_STVAL.trim().equals("4")) {
                         estado = "Match with Differences";
                     } else if (filter.IN_STVAL.trim().equals("5")) {
@@ -1925,8 +1925,8 @@ public class BankReconciliationDAO {
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", "Settlement w/o Paying");
-        hmDescEstados.put("3", "Paying w/o Settlement");
-        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("3", "Settlement w/o Sales");
+        hmDescEstados.put("4", "Match with Difference");
         hmDescEstados.put("5", "Match Manual");
 
         CallableStatement cstmt = null;

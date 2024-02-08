@@ -64,15 +64,40 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         // Obtener el componente del grid
         var gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        var storeNormalon = gridComponentNormalon.getStore();
-        var lstNormalon11 = storeNormalon.getData().items;
-
         var gridComponentBlockedon = Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked');
-        var storeBlockedon = gridComponentBlockedon.getStore();
-        var lstBlockedon11 = storeBlockedon.getData().items;
-
-//        console.log(lstNormalon11[0].data);
-//        console.log(lstBlockedon11);
+        let dataGrid = gridComponentNormalon.getStore().getData().items
+        let dataGridBl = gridComponentBlockedon.getStore().getData().items
+        var constructorExcluir = {}.constructor; 
+        let arrayConstructor = dataGrid.filter(function(elemento) {
+            return elemento.constructor !== constructorExcluir;
+        });
+        
+        let arrayConstructorBlocked = dataGridBl.filter(function(elemento) {
+            return elemento.constructor !== constructorExcluir;
+        });
+        
+        let arrayNormal = []
+        let arrayBlocked = []
+        if( arrayConstructor.length > 0 ){
+            for( let value of arrayConstructor){
+                arrayNormal.push(value.data)
+            }
+        }
+        if( arrayConstructorBlocked.length > 0 ){
+            for( let value of arrayConstructorBlocked){
+                arrayBlocked.push(value.data)
+            }
+        }
+        let listAux = {}
+        let listAuxBl = {}
+        console.log(arrayNormal, 'arrayNormal')
+        for( let value of arrayNormal){
+            listAux[`${value.STVAL}#${value.descTDOC}#${value.A720AGENTE}#${value.A720FECVTA}#${value.A720PNR}#${value.A1531TKT}#${value.A1531TTARJ}#${value.A1531NREF}#${value.A1531CAPL}#${value.A1531MFOP}#${value.A1531VFOP}#${value.tot_VFOP}`] = "repetido"
+        }
+        for( let value of arrayBlocked){
+            listAuxBl[`${value.STVAL}#${value.descTDOC}#${value.A720AGENTE}#${value.A720FECVTA}#${value.A720PNR}#${value.A1531TKT}#${value.A1531TTARJ}#${value.A1531NREF}#${value.A1531CAPL}#${value.A1531MFOP}#${value.A1531VFOP}#${value.tot_VFOP}`] = "repetido"
+        }
+        
 
         var paramScan = {};
         paramScan.beanString = JSON.stringify(this.bean_scan);
@@ -91,95 +116,80 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
                     let ticketsOcupados = [];
                     var cont = 0;
-
-                    if (storeNormalon.getData().items.length > 0) {
-                        var lstNormal = storeNormalon.getData().items;
-                        console.log('Normal: había data');
-                    } else {
-                        var lstNormal = [];
-                        console.log('Normal: no había data');
-                    }
-
-                    if (storeBlockedon.getData().items.length > 0) {
-                        var lstBlocked = storeBlockedon.getData().items;
-                        console.log('Blocked: había data');
-                    } else {
-                        var lstBlocked = [];
-                        console.log('Blocked: no había data');
-                    }
-
-                    var item_Normal = {};
-                    var item_Blocked = {};
-
-                    for (var i = 0; i < res.data.length; i++) {
-                        var validador = res.data[i].STVAL;
+                    
+                    
+                    let lstNormal = arrayNormal.length > 0 ? arrayNormal : []
+                    let lstBlocked = arrayBlocked.length > 0 ? arrayBlocked : [] 
+                    console.log(lstNormal, 'lstNormal')
+                    
+                    
+                    console.log(res.data, 'res.data')
+                    for (let item of res.data ) {
+                        var validador = item.STVAL;
                         if (validador === '1' || validador === '5') {
-                            ticketsOcupados.push(res.data[i].A1531TKT);
+                            ticketsOcupados.push(item.A1531TKT);
                             cont++;
-
-                            item_Blocked.STVAL = res.data[i].STVAL;
-                            item_Blocked.descTDOC = res.data[i].descTDOC;
-                            item_Blocked.A720AGENTE = res.data[i].A720AGENTE;
-                            item_Blocked.A720FECVTA = res.data[i].A720FECVTA;
-                            item_Blocked.A720PNR = res.data[i].A720PNR;
-                            item_Blocked.A1531TKT = res.data[i].A1531TKT;
-                            item_Blocked.A1531TTARJ = res.data[i].A1531TTARJ;
-                            item_Blocked.A1531NREF = res.data[i].A1531NREF;
-                            item_Blocked.A1531CAPL = res.data[i].A1531CAPL;
-                            item_Blocked.A1531MFOP = res.data[i].A1531MFOP;
-                            item_Blocked.A1531VFOP = res.data[i].A1531VFOP;
-                            item_Blocked.tot_VFOP = res.data[i].tot_VFOP;
-                            lstBlocked.push(item_Blocked);
-                            item_Blocked = {};
+                            if( `${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAuxBl ){
+                                console.log('repetido')
+                                continue
+                            }
+                            lstBlocked.push({
+                                STVAL : item.STVAL,
+                                descTDOC : item.descTDOC,
+                                A720AGENTE : item.A720AGENTE,
+                                A720FECVTA : item.A720FECVTA,
+                                A720PNR : item.A720PNR,
+                                A1531TKT : item.A1531TKT,
+                                A1531TTARJ : item.A1531TTARJ,
+                                A1531NREF : item.A1531NREF,
+                                A1531CAPL : item.A1531CAPL,
+                                A1531MFOP : item.A1531MFOP,
+                                A1531VFOP : item.A1531VFOP,
+                                tot_VFOP : item.tot_VFOP
+                            })
+                    
+                            
                         } else {
-                            item_Normal.STVAL = res.data[i].STVAL;
-                            item_Normal.descTDOC = res.data[i].descTDOC;
-                            item_Normal.A720AGENTE = res.data[i].A720AGENTE;
-                            item_Normal.A720FECVTA = res.data[i].A720FECVTA;
-                            item_Normal.A720PNR = res.data[i].A720PNR;
-                            item_Normal.A1531TKT = res.data[i].A1531TKT;
-                            item_Normal.A1531TTARJ = res.data[i].A1531TTARJ;
-                            item_Normal.A1531NREF = res.data[i].A1531NREF;
-                            item_Normal.A1531CAPL = res.data[i].A1531CAPL;
-                            item_Normal.A1531MFOP = res.data[i].A1531MFOP;
-                            item_Normal.A1531VFOP = res.data[i].A1531VFOP;
-                            item_Normal.tot_VFOP = res.data[i].tot_VFOP;
-
-//                            if (storeNormalon.getData().items.length > 0) {
-//                                var OBJ = storeNormalon.getData().items;
-//                                console.log(OBJ);
-//                                for (var j = 0; j < storeNormalon.getData().items.length; j++) {
-//                                    
-//                                    console.log(j);
-////                                    console.log(OBJ[j].data.A1531TKT);
-//                                    
-////                                    if (OBJ[j].data.STVAL === item_Normal.STVAL && OBJ[j].data.descTDOC === item_Normal.descTDOC && OBJ[j].data.A720AGENTE === item_Normal.A720AGENTE && OBJETO.A720FECVTA === item_Normal.A720FECVTA && OBJETO.A720PNR === item_Normal.A720PNR && OBJETO.A1531TKT === item_Normal.A1531TKT && OBJETO.A1531TTARJ === item_Normal.A1531TTARJ && OBJETO.A1531NREF === item_Normal.A1531NREF && OBJETO.A1531CAPL === item_Normal.A1531CAPL && OBJETO.A1531MFOP === item_Normal.A1531MFOP && OBJETO.A1531VFOP === item_Normal.A1531VFOP && OBJETO.tot_VFOP === item_Normal.tot_VFOP) {
-////                                        //es igual
-////                                    } else {
-////                                        lstNormal.push(item_Normal);
-////                                    }
-//                                    
-//                                }
-//                            }else{
-                            lstNormal.push(item_Normal);
-//                            }
-                            item_Normal = {};
+                            console.log(listAux,'primer listAux')
+                            console.log(`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAux, 'josue no sale')
+                            if( `${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAux ){
+                                console.log('repetido')
+                                continue
+                            }
+                            
+                            lstNormal.push({
+                                STVAL : item.STVAL,
+                                descTDOC : item.descTDOC,
+                                A720AGENTE : item.A720AGENTE,
+                                A720FECVTA : item.A720FECVTA,
+                                A720PNR : item.A720PNR,
+                                A1531TKT : item.A1531TKT,
+                                A1531TTARJ : item.A1531TTARJ,
+                                A1531NREF : item.A1531NREF,
+                                A1531CAPL : item.A1531CAPL,
+                                A1531MFOP : item.A1531MFOP,
+                                A1531VFOP : item.A1531VFOP,
+                                tot_VFOP : item.tot_VFOP
+                            })
+                            
+                            console.log(lstNormal, 'lstNormalAfterPush')
+                            console.log(item, 'item')
+                            
+//                            listAux[`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}`] = "quegil"
+//                            console.log(listAux, 'segundo listAux')
                         }
                     }
-
+                    console.log(lstNormal, 'lstNormalFuera')
                     if (cont > 0) {
                         let mensaje = 'Blocked tickets:<br>' + ticketsOcupados.join('<br>');
                         global.Msg({msg: mensaje});
                         console.log(mensaje);
                     }
 
-                    console.log(lstNormal);
-                    console.log(lstBlocked);
-
                     var storeDataNormal = Ext.create('Ext.data.Store', {
                         data: lstNormal,
                         autoLoad: true
-                    });
+                    })
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
 
                     var storeDataBlocked = Ext.create('Ext.data.Store', {
@@ -317,6 +327,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    console.log('setea nuevamente')
                     meDe.calcularMontos();
                 } else {
                     global.Msg({msg: res.Mensaje});
@@ -629,6 +640,22 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('txtApproval', '');
         this.setValue('txtFromDate', null);
     },
+    clear_tableNormal: function (){
+        console.log('click clear')
+        let storeDataClear = Ext.create('Ext.data.Store', {
+            data: '',
+            autoLoad: true
+        });
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataClear);
+        
+        let storeDataClearBl = Ext.create('Ext.data.Store', {
+            data: '',
+            autoLoad: true
+        });
+        Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked').bindStore(storeDataClearBl);
+        
+    },
+    
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Botones">
