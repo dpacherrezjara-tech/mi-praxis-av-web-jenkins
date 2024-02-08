@@ -150,7 +150,7 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.TerminalsCatalogCont
     BuscarCAGENCY: function (obj, e, eOpts) {
         switch (e.getKey()) {
             case 13:
-                if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length > 0) {
+                if (Ext.getCmp(prototype.id + '-txtTERMP').getValue().length > 0 || Ext.getCmp(prototype.id + '-txtSAGENT').getValue().length > 0) {
 //                    if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 7 || Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 8) {
 //                        this.btnSearch_click();
 //                    } else {
@@ -168,8 +168,8 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.TerminalsCatalogCont
     },
     setFormatParameter: function () {
         me.bean = {};
-        me.bean.IN_TERMINAL = Ext.getCmp(prototype.id + '-txtTERMINAL').getValue();
-        me.bean.IN_CAGENCY = Ext.getCmp(prototype.id + '-txtCAGENCY').getValue();
+        me.bean.IN_TERMP = Ext.getCmp(prototype.id + '-txtTERMP').getValue();
+        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
         
         
         var beanString = JSON.stringify(me.bean);

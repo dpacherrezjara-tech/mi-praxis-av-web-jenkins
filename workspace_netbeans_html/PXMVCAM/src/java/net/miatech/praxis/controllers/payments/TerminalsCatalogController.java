@@ -169,17 +169,14 @@ public class TerminalsCatalogController extends BaseController {
             Cell CH1_01 = row.createCell(1);
             Cell CH1_02 = row.createCell(2);
             
-
             CH1_00.setCellValue("Nbr");
-            CH1_01.setCellValue("TERMP");
-            CH1_02.setCellValue("SAGENT");
+            CH1_01.setCellValue("Terminal");
+            CH1_02.setCellValue("Agent");
             
-
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
             CH1_02.setCellStyle(headerStyle);
             
-
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
@@ -195,7 +192,6 @@ public class TerminalsCatalogController extends BaseController {
                 Cell rcell1 = row.createCell(1);
                 Cell rcell2 = row.createCell(2);
                 
-
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).TERMP);
                 rcell2.setCellValue(listaData.get(vi).SAGENT);
@@ -207,7 +203,6 @@ public class TerminalsCatalogController extends BaseController {
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
             
-
             /**
              * fileNameDownload = Nombre de descarga
              */
@@ -235,13 +230,10 @@ public class TerminalsCatalogController extends BaseController {
         String beanString = "";
 
         try {
-
             option = request.getParameter("option");
             filter.TERMP = request.getParameter("TERMP");
             filter.SAGENT = request.getParameter("SAGENT");
-            
-//            beanString = request.getParameter("beanString");
-//            filter = gson.fromJson(beanString, MPF106Filter.class);
+           
             logic = new TerminalsCatalogLogic();
             logic.setSession(this.serverSession.getServerSession());
             msj = logic.loadPX620SQP05108(filter, option);
@@ -282,32 +274,5 @@ public class TerminalsCatalogController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
-//    @RequestMapping(value = "obtainCitys")
-//    public @ResponseBody
-//    String obtainCitys(ModelMap map, HttpServletRequest request) {
-//        System.out.println("-------------- TerminalsCatalog : obtainCitys-------------");
-//
-//        Gson gson = new Gson();
-//        MPF106Filter filter = new MPF106Filter();
-//        MPF106Filter result = new MPF106Filter();
-//        List<MPF106Filter> lst = new ArrayList<>(0);
-//        
-//        String beanString = request.getParameter("beanString");
-//        filter = gson.fromJson(beanString, MPF106Filter.class);
-//
-//        logic = new TerminalsCatalogLogic();
-//        logic.setSession(this.serverSession.getServerSession());
-//        try {
-//            lst = logic.loadPX620SQP04943Citys(filter);
-//            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-//            map.put("data", lst);
-//            map.put("success", true);
-//        } catch (Exception ex) {
-//            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
-//            map.put("success", false);
-//        }
-//        return new Gson().toJson(map);
-//    }
 
 }

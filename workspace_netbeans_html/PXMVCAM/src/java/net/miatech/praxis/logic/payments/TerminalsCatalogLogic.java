@@ -13,7 +13,7 @@ import net.miatech.praxis.payment.filter.MPF106Filter;
 
 /**
  *
- * @author lmendoza
+ * @author anthonyBash
  */
 public class TerminalsCatalogLogic {
 
@@ -35,9 +35,5 @@ public class TerminalsCatalogLogic {
     public MPF106Filter loadPX620SQP05107(MPF106Filter filter) throws SQLException, Exception {
         return terminalsCatalogDAO.loadPX620SQP05107(filter);
     }
-    
-//    public List<MPF106Filter> loadPX620SQP04943Citys(MPF106Filter filter) throws SQLException, Exception {
-//        return terminalsCatalogDAO.loadPX620SQP04943Citys(filter);
-//    }
 
 }

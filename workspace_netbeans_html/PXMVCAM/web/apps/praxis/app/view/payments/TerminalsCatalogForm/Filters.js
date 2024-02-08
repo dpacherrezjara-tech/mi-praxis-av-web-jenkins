@@ -34,7 +34,7 @@ Ext.define('Ext.Praxis.view.payments.TerminalsCatalogForm.Filters', {
                 },
                 {
                     xtype: 'textfield',
-                    id: prototype.id + '-txtTERMINAL',
+                    id: prototype.id + '-txtTERMP',
                     fieldStyle: 'text-align:center',
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.TerminalsCatalogForm.Filters', {
                 },
                 {
                     xtype: 'textfield',
-                    id: prototype.id + '-txtCAGENCY',
+                    id: prototype.id + '-txtSAGENT',
                     fieldStyle: 'text-align:center',
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
