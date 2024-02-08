@@ -15,6 +15,8 @@ public class MPF106Filter extends MPF106 {
     public String IN_CAGENCY = "";
     public String IN_COUNTRY = "";
     public String NEW_CAGENCY = "";
+    public String IN_TERMP = "";
+    public String IN_SAGENT = "";
     
     public Pagination page = new Pagination();
 }

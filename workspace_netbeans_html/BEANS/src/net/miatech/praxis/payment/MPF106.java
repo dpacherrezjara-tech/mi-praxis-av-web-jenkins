@@ -27,6 +27,8 @@ public class MPF106 {
     public String CONTAC = "";
     public String EMAILS = "";
     public String NPHONE = "";
+    public String TERMP = "";
+    public String SAGENT = "";
     
     //Variables del 
     public String USCR = "";
