@@ -145,7 +145,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.AccountingPlanControll
         me.bean.CODTRAN = Ext.getCmp(prototype.id + '-cmbTrans').getValue( );
         me.bean.TIPREG = Ext.getCmp(prototype.id + '-cmbTReg').getValue( );
         me.bean.NROPOLIZ = Ext.getCmp(prototype.id + '-txtPolicy').getValue( );
-                
+        console.log(me.bean, 'me.bean')      
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
@@ -277,7 +277,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.AccountingPlanControll
                 
         switch (me.panelActual) {
             case  '-boxMainData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
                 global.Msg(
