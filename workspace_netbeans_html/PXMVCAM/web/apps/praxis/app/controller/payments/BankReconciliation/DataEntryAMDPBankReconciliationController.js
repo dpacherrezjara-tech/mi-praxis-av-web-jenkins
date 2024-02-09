@@ -381,8 +381,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
-//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(942);
-//            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(944);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(942);
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(944);
             Ext.getCmp(prototype.id + '-vacioComment').show();
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
@@ -390,8 +390,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-panelScanCard').show();
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
             Ext.getCmp(prototype.id + '-gridColumnAdj').show();
-//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
-//            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
             Ext.getCmp(prototype.id + '-vacioComment').hide();
         }
 
@@ -774,9 +774,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             console.error('Entró al procesar Registros');
             if (comentVisible) {
                 datos = this.procesarRegistros(miGrilla, miGrillaAdj);
+                
             } else {
                 datos = this.procesarRegistros(miGrilla);
             }
+            console.log(datos);
 //            datos = this.procesarRegistros(miGrilla);
             if (Array.isArray(datos) && datos.length === 0) {
                 // Nadine
@@ -837,6 +839,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
                         // Agrega más campos según sea necesario
             };
+            console.log(registro);
             if (record.get('STVAL') === '1' || record.get('STVAL') === '5') {
                 ticketsOcupados.push(record.get('A1531TKT'));
                 cont++;

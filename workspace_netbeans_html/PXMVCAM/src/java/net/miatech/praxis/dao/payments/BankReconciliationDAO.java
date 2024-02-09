@@ -1122,17 +1122,18 @@ public class BankReconciliationDAO {
             for (int i = 0; i < filters.size(); i++) {
 
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
-
+                A2290Filter filterC = filters.get(i);
+                
                 cstmt2.setString(1, "U");
                 cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(3, filter.PRDA.trim());
-                cstmt2.setString(4, filter.SCARDN.trim());
-                cstmt2.setString(5, filter.SAUTHOC.trim());
-                cstmt2.setDouble(6, filter.VFOP);
-                cstmt2.setString(7, filter.SDATE.trim());
-                cstmt2.setString(8, filter.TICKET.trim());
-                cstmt2.setString(9, filter.TRANC.trim());
-                cstmt2.setString(10, filter.BANDOC.trim());
+                cstmt2.setString(3, filterC.PRDA.trim());
+                cstmt2.setString(4, filterC.SCARDN.trim());
+                cstmt2.setString(5, filterC.SAUTHOC.trim());
+                cstmt2.setDouble(6, filterC.VFOP);
+                cstmt2.setString(7, filterC.SDATE.trim());
+                cstmt2.setString(8, filterC.TICKET.trim());
+                cstmt2.setString(9, filterC.TRANC.trim());
+                cstmt2.setString(10, filterC.BANDOC.trim());
                 cstmt2.setString(11, user.getUserInfo().USR);
                 cstmt2.setString(12, Functions.getFechaActual());
                 cstmt2.setString(13, Functions.getHoraActual());
