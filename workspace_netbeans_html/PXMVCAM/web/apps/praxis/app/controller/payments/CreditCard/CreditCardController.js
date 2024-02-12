@@ -200,6 +200,8 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
                     load: function(obj) {
                         var pag = Ext.getCmp(prototype.id + '-paggin');
                         var pagData = pag.getPageData();
+                        console.log(pag, 'pag')
+                        console.log(pagData, 'pagData')
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
@@ -422,6 +424,8 @@ Ext.define('Ext.Praxis.controller.payments.CreditCard.CreditCardController', {
             if (me.pagginActual !== '') {
                 var pag = Ext.getCmp(prototype.id + me.pagginActual);
                 var pagData = pag.getPageData();
+                console.log(pag, 'pag')
+                console.log(pagData, 'pagData')
                 Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                 Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                 Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));

@@ -71,7 +71,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
         });
     },
     xpanel_afterrender: function () {
-        this.btnSearch_click();
+//        this.btnSearch_click();
     },
 
     eventKey: function (e, eOpts) {
@@ -101,96 +101,49 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
     obtainData: function () {
 
-        var cmbFindBy = Ext.getCmp(prototype.id + '-cmbFindBy');
-        cmbFindBy.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["1", "Merchant Nbr:"],
-                ["2", "Social Reason:"]
-            ]
-        }));
-        cmbFindBy.setValue("1");
-        Ext.getCmp(prototype.id + '-txtMERCHN').show();
-        Ext.getCmp(prototype.id + '-txtRSOCIAL').hide();
-
-        var cmbUNIOPE = Ext.getCmp(prototype.id + '-cmbUNIOPE');
-        cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "All"],
-                ["1", "Aerovias MX"],
-                ["2", "Aeromexico Cargo"],
-                ["3", "PLM"]
-            ]
-        }));
-        cmbUNIOPE.setValue("");
-
-        var cmbSTATUS = Ext.getCmp(prototype.id + '-cmbSTATUS');
-        cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "All"],
-                ["0", "Disabled"],
-                ["1", "Enabled"]
-            ]
-        }));
-        cmbSTATUS.setValue("");
+        this.dataObtain.COUNTRY = 2;
+        this.dataObtain.BANK = 1;
+        this.dataObtain.CARD = 2;           
         
-        Ext.getCmp(prototype.id + '-cmbCountry').setValue("");
         Ext.Ajax.request({
-            url: prototype.url + '/getPaises',
+            url: prototype.urlMaster + '/obtainData',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(this.dataObtain)},
-            success: function (response, options) {
-                var res = Ext.JSON.decode(response.responseText);
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText); 
+                console.log(res, 'res')
                 if (res.success) {
-                    Ext.getCmp(prototype.id + '-cmbCountry').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.data, autoLoad: true})
-                            );
-                    Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
-                } 
-                else
+                    
+                    me.lstCountry = res.lstCountry;
+                    me.lstBank = res.lstBank;
+                    Ext.getCmp(prototype.id + '-cmbScarCode').bindStore(
+                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-cmbScarCode').setValue('');   
+                    
+                 
+                    me.btnSearch_click();
+                } else
                     global.Msg({msg: res.sesion});
             }
         });
     },
 
-    cmbFind_changeHandler: function () {
-
-        var cmbFindBy = Ext.getCmp(prototype.id + '-cmbFindBy');
-
-        if (cmbFindBy.getValue() === '1') {
-            Ext.getCmp(prototype.id + '-txtMERCHN').show();
-            Ext.getCmp(prototype.id + '-txtRSOCIAL').hide();
-
-        } else
-        if (cmbFindBy.getValue() === '2') {
-            Ext.getCmp(prototype.id + '-txtRSOCIAL').show();
-            Ext.getCmp(prototype.id + '-txtMERCHN').hide();
-        }
-    },
 
     setFormatParameter: function () {
 
         me.bean = {};
-        me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtMERCHN').getValue();
-        me.bean.IN_RSOCIAL = Ext.getCmp(prototype.id + '-txtRSOCIAL').getValue();
-
-        me.bean.IN_UNIOPE = Ext.getCmp(prototype.id + '-cmbUNIOPE').getValue();
-        me.bean.IN_STATUS = Ext.getCmp(prototype.id + '-cmbSTATUS').getValue();
-        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-txtCANAL').getValue();
-        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
-
+        me.bean.IN_CMERCHAN = Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue();
+        me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbScarCode').getValue();
+        me.bean.IN_CTABANK = Ext.getCmp(prototype.id + '-txtCTABANK').getValue();
+        
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,
             beanString: beanString
         };
-        console.log(searchParams);
+        console.log(searchParams, 'searchParams')
+        console.log(beanString, 'beanString')
     },
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
@@ -199,7 +152,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     // <editor-fold defaultstate="collapsed" desc="setGridData">
 
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A2354");
+        win.lblUser_toolTip("Estructura: MPF109");
         me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         me.setWidthPie();
@@ -232,10 +185,29 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            console.log(storeGridDatas, 'storeGridDatas')
         }
     },
     // </editor-fold>
+    buscarFilter: function (obj, e, eOpts) {
+        switch (e.getKey()) {
+            case 13:
+                if (Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue().length > 0 || Ext.getCmp(prototype.id + '-txtCTABANK').getValue().length > 0 || Ext.getCmp(prototype.id + '-cmbScarCode').getValue().length > 0 ) {
+//                    if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 7 || Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 8) {
+//                        this.btnSearch_click();
+//                    } else {
+//                        global.Msg({
+//                            msg: 'Agency Code must contain 8 characters.'
+//                        });
+//                    }
+                    this.btnSearch_click();
+                } else {
+                    this.btnSearch_click();
+                }
 
+                break;
+        }
+    },
 
     validateFields: function () {
         var msj = '';

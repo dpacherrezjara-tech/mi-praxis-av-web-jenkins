@@ -20,163 +20,70 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                 hiddenLabel: false,
                 labelAlign: 'right',
                 xtype: 'textfield',
-                hidden: true,
+//                hidden: true,
                 selectOnFocus: true,
                 enableKeyEvents: true,
                 enforceMaxLength: true
             },
             items: [
                 {
+                    xtype: 'label',
+                    strong: true,
+                    html: '<strong>Merchant :</strong>',
+                    padding: '7 0 0 20',
+                    width: 87,
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtCMERCHAN',
+                    fieldStyle: 'text-align:center',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9a-zA-Z]/,
+                    maxLength: 10,
+                    width: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'buscarFilter'
+                    }
+                },
+                {
+                    xtype: 'label',
+                    html: '<strong>Cta Bank :</strong>',
+                    padding: '7 0 0 20',
+                    width: 87,
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtCTABANK',
+                    fieldStyle: 'text-align:center',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9a-zA-Z]/,
+                    maxLength: 15,
+                    width: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'buscarFilter'
+                    }
+                },
+                {
                     xtype: 'combo',
-                    id: prototype.id+'-cmbFindBy',
+                    fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Credit Card Code',
+                    id: prototype.id+'-cmbScarCode', 
+                    disabled: false,
+                    width: 300,
+                    labelWidth: 120,
                     queryMode: 'local',
                     triggerAction: 'all',
-                    autoSelect: false,
-                    enableKeyEvents: true,                    
-                    caseSensitive: true,
-                    allowBlank: true,
-                    readOnly: false,
-                    editable: false,
-                    valueField: 'code',
-                    displayField: 'name',
-                    labelWidth: 120,
-                    width: 120,
-                    hidden: false,
-                    hiddenLabel: false,
-                    listeners:{
-                        change: 'cmbFind_changeHandler'
-                    }
-                },
-                {
-                    xtype: 'textfield',
-                    id: prototype.id+'-txtMERCHN',                                   
-                    enableKeyEvents: true,                    
-                    caseSensitive: true,
-                    allowBlank: true,
-                    readOnly: false,
-                    editable: true,    
-                    enforceMaxLength: true,
-                    maxLength: 20,
-                    maskRe: /[0-9]/,
-                    labelWidth: 120,
-                    width: 130,
-                    hidden: false,
-                    hiddenLabel: false,
-                    listeners:{
-                        keypress: 'eventKey'
-                    }  
-                },
-                {
-                    xtype: 'textfield',
-                    id: prototype.id+'-txtRSOCIAL',                                   
-                    enableKeyEvents: true,                    
-                    caseSensitive: true,
-                    allowBlank: true,
-                    readOnly: false,
-                    editable: true,    
-                    enforceMaxLength: true,
-                    maxLength: 40,
-//                    maskRe: /[a-zA-Z]/,
-                    labelWidth: 120,
-                    width: 190,
-                    hidden: false,
-                    hiddenLabel: false,
-                    listeners:{
-                        change: 'onUpperValue',
-                        keypress: 'eventKey'
-                    }
-                },
-//                {
-//                    xtype: 'label',
-//                    text: 'Operative Unit:',
-//                    hidden: false,
-//                    textAlign: 'center',
-//                    paddingLeft: 3,
-//                    style: 'font-weight:bold;color:#0B333C;',
-//                    width: 120
-//                },
-                {xtype: 'tbspacer', width: 30},
-                {
-                    xtype: 'combo',
-                    fieldLabel: 'Operative Unit:',
-                    id: prototype.id + '-cmbUNIOPE',
-                    queryMode: 'local',
-//                    labelWidth: 120,
-                    width: 240,
-                    fieldStyle: 'color:#074066;',
-                    forceSelection: true,
-                    selectOnFocus: false,
-                    caseSensitive: false,
-                    hidden: false,
-                    autoSelect: true,
-                    editable: false,
-                    disabled: false,
-                    typeAhead: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    enableKeyEvents: true,
-                    triggerAction: 'all'
-                },
-                {xtype: 'tbspacer', width: 30},
-                {
-                    xtype: 'textfield',
-                    fieldLabel: 'Channel',
-                    id: prototype.id+'-txtCANAL',                                   
-                    enableKeyEvents: true,
-                    caseSensitive: true,
-                    allowBlank: true,
-                    readOnly: false,
-                    editable: true,    
-                    maxLength:4,
-                    labelWidth: 120,
-                    width: 190,
-                    hidden: false,
-                    hiddenLabel: false,
-                    listeners:{
-                        change: 'onUpperValue',
-                        keypress: 'eventKey'
-                    }
-                },
-                {
-                    xtype: 'combo',
-                    fieldLabel: 'Status:',
-                    id: prototype.id + '-cmbSTATUS',
-                    queryMode: 'local',
-                    width: 200,
-                    fieldStyle: 'color:#074066;',
-                    forceSelection: true,
-                    selectOnFocus: false,
-                    caseSensitive: false,
-                    hidden: false,
-                    autoSelect: true,
-                    editable: false,
-                    disabled: false,
-                    typeAhead: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    enableKeyEvents: true,
-                    triggerAction: 'all'
-                },
-                {
-                    xtype: 'combo',
-                    fieldLabel: 'Country:',
-                    id: prototype.id + '-cmbCountry',
-                    queryMode: 'local',
-                    width: 240,
-                    fieldStyle: 'color:#074066;',
-                    forceSelection: true,
-                    selectOnFocus: false,
-                    caseSensitive: false,
-                    hidden: false,
-                    autoSelect: true,
-                    editable: false,
-                    disabled: false,
-                    typeAhead: true,
                     valueField: 'CODE',
                     displayField: 'NAME',
-                    enableKeyEvents: true,
-                    triggerAction: 'all'
+                    hidden: false,
+                    hiddenLabel: false,
+                    listeners: {
+                        keypress: 'buscarFilter'
+                    }
                 }
+                
+                
             ]
         }
     ]

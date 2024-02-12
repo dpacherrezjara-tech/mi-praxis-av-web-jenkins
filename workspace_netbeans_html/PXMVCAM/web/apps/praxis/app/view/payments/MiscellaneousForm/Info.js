@@ -44,7 +44,7 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                             padding: '1',
                             border: true,
                             height: 560,
-                            width: 745,
+                            width: 772,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -53,8 +53,8 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
-                                    height: 520,
-                                    width: 745,
+                                    height: 256,
+                                    width: 772,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -64,8 +64,8 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Table', dataIndex: 'TTABLA', width: 80, hidden: true},
-                                            {text: 'Code', dataIndex: 'CODETB', width: 80},
+                                            {text: 'Table', dataIndex: 'TTABLA', width: 55, hidden: false},
+                                            {text: 'Code', dataIndex: 'CODETB', width: 55},
                                             {text: 'Status', dataIndex: 'STVAL', width: 80, hidden: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = 'text-align:center;';

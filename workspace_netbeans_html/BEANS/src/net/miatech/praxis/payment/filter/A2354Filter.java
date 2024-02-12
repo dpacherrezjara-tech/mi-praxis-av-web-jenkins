@@ -34,6 +34,18 @@ public String IN_STATUS = "";
 public String IN_COUNTRY = "";
 public String CODE = "";
 public String NAME = "";
+public String IN_CMERCHAN = "";
+public String IN_SCARCOD = "";
+public String IN_CTABANK = "";
+public String IN_CODEBANK = "";
+public String IN_CODEBANKA = "";
+public String CMERCHAN = "";
+public String SCARCOD = "";
+public String CTABANK = "";
+public String CODEBANK = "";
+public String CODEBANKA = "";
+public String COUNTRY = "";
+
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);
 

@@ -177,7 +177,8 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.TerminalsCatalogCont
             bean: me.bean,
             beanString: beanString
         };
-//        console.log(searchParams);
+        console.log(beanString, 'beanString')
+        console.log(searchParams, 'searchParams');
     },
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
@@ -223,6 +224,7 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.TerminalsCatalogCont
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            console.log(storeGridDatas, 'storeGridDatas')
         }
     },
     // </editor-fold>

@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                             padding: '1',
                             border: true,
                             height: 550,
-                            width: 1705,
+                            width: 751,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
                                     height: 510,
-                                    width: 1705,
+                                    width: 751,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -66,133 +66,41 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
 
                                         },
                                         items: [
-                                            {text: 'Nbr', dataIndex: 'RN', width: 40, hidden:true},
-                                            {text: 'Merchant<br>Nbr.', dataIndex: 'MERCHN', width: 75},
-                                            {text: 'Merchant Name', dataIndex: 'DESCR', width: 210,
+                                            
+                                            {text: 'Nbr', dataIndex: 'RN', width: 40},
+                                            {text: 'Merchant Code', dataIndex: 'CMERCHAN', width: 210,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:left;";
-                                                    metaData.tdAttr = 'data-qtip="' + data.DESCR + '"';
+                                                    
                                                     return  value;
                                                 }
                                             },
-                                            {text: 'Status', dataIndex: 'desSTATUS', width: 70,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:left;";
-                                                    return value;
-                                                }
+                                            {text: 'Credit Card',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Code Card', dataIndex: 'SCARCOD', width: 90},
+                                                    {text: 'Cta Bank', dataIndex: 'CTABANK', width: 125 }
+                                                ]
                                             },
-                                            {text: 'Operative<br>Unit', dataIndex: 'strDescripUNIOPE', width: 120},
-                                            {text: 'Channel', dataIndex: 'CANAL', width: 60},
-                                            {text: 'Social',
+//                                          
+                                            {text: 'Bank',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Reason', dataIndex: 'RSOCIAL', width: 230,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            metaData.style = "text-align:left;";
-                                                            metaData.tdAttr = 'data-qtip="' + data.RSOCIAL + '"';
-                                                            return value;
-                                                        }
-                                                    }
+                                                    {text: 'Nrc Code', dataIndex: 'CODEBANKA', width: 70, align: 'center'},
+                                                    {text: 'Code', dataIndex: 'CODEBANK', width: 70, align: 'center'},
+                                                    {text: 'Country', dataIndex: 'COUNTRY', width: 140, align: 'center'}
                                                 ]
                                             },
-                                            {
-                                                text: 'Merchant',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Payment', dataIndex: 'MERCHP', width: 75}
-                                                ]
-                                            },
-                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 60,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'IATA',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Code', dataIndex: 'CIATA', width: 70},
-                                                    {text: 'Name', dataIndex: 'strDescrip', width: 200,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:left;";
-                                                            return value;
-                                                        }
-                                                    }
-                                                ]
-                                            },                                            
-                                            {
-                                                text: 'Commission Policy Information',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Client Code', dataIndex: 'CODCLIT1', width: 77,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;background-color:#e5ecef;";
-                                                            return  value;
-                                                        }
-                                                    },
-                                                    {text: 'Client Address', dataIndex: 'DIRCLIT1', width: 165,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:left;background-color:#e5ecef;";
-                                                            return  value;
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                text: 'Chargeback Policy Information',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Client Code', dataIndex: 'CODCLIT2', width: 77,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;background-color:#e5ecef;";
-                                                            return  value;
-                                                        }
-                                                    },
-                                                    {text: 'Client Address', dataIndex: 'DIRCLIT2', width: 165,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:left;background-color:#e5ecef;";
-                                                            return  value;
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                sortable: false,
-                                                xtype: 'actioncolumn',
-                                                width: 40,
-                                                text: 'Edit',
-                                                align: 'center',
-                                                items: [
-                                                    {
-                                                        iconCls: 'prx-icon-edit',
-                                                        tooltip: 'Edit',
-                                                        handler: 'onEditClick'
-                                                    }
-                                                ]
-                                            }
                                         ]
                                     }
                                 },
@@ -205,13 +113,13 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                         pack: 'center'
                                     },
                                     border: true,
-                                    width: 1705,
+                                    width: 700,
                                     height: 25,
                                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            width: 1705,
+                                            width: 700,
                                             height: 25,
                                             margin: '0 0 0 0',
                                             layout: {
