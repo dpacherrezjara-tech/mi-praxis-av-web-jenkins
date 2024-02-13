@@ -65,13 +65,13 @@ public class DefaultController extends BaseController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index2(ModelMap map, HttpSession session) throws Exception {
+    public String index2(HttpServletRequest request, HttpServletResponse response, ModelMap map, HttpSession session) throws Exception {
         System.out.println("************  INICIO DE LA APLICACION (index2)- METODO GET ****************");
         try {
             map.put("anio_actual", anio_actual());
             if (serverSession.getServerSession() == null) {
                 System.out.println("---Return Login----");
-                this.InitialSession(session);
+                this.InitialSession(request.getSession());
                 return "login";
             } else {
                 System.out.println("---Return Home----");
@@ -600,7 +600,7 @@ public class DefaultController extends BaseController {
         try {
 
             String user = request.getParameter("user");
-
+            logMaster.setSession(serverSession.getServerSession());
             lstData = logMaster.loadSQP03628(user);
 
             m.put("success", true);
