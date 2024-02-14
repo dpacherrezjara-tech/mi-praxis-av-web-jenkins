@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.A1691Filter;
 import net.miatech.beans.spring.implement.IServerSession;
+import static net.miatech.praxis.dao.payments.BankReconciliationDAO.pasarGarbageCollector;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.utils.Functions;
@@ -1192,7 +1193,172 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-//    
+    
+    public List<A2290Filter> loadPX287SQP00839Stval(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        long lngTotCant = 0;
+        double dblSVFOP = 0;
+        String estado = "", strTitulo = "";
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Accepted");
+        hmDescEstados.put("2", "Rejected");
+        hmDescEstados.put("3", "Suspect");
+        hmDescEstados.put("P", "Paying w/o Sales");
+        hmDescEstados.put("C", "Clarifications");
+        hmDescEstados.put("H", "Chargebacks");
+
+        HashMap<String, String> hmDescOrigen = new HashMap<String, String>();
+        hmDescOrigen.put("B", "Banamex");
+        hmDescOrigen.put("A", "American");
+        hmDescOrigen.put("P", "Pagatodo");
+        hmDescOrigen.put("C", "Citibank");
+        hmDescOrigen.put("S", "Santander");
+        hmDescOrigen.put("N", "Banorte");
+        hmDescOrigen.put("E", "Elavon");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00839Stval(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strFecFiltro);
+            cstmt.setString(3, filter.IN_SDATE.trim());
+            cstmt.setString(4, filter.IN_STVAL.trim());
+            
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            while (rst.next()) {
+                lngTotCant += rst.getLong("CANT");
+                dblSVFOP += rst.getDouble("SVFOP");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.strFormatDate = filter.strFormatDate.trim();
+                    beanTkt.IN_SDATE = filter.IN_SDATE.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_CARDN1 = filter.IN_CARDN1.trim();
+                    beanTkt.IN_CARDN2 = filter.IN_CARDN2.trim();
+                    beanTkt.IN_CARDC = filter.IN_CARDC.trim();
+                    beanTkt.IN_STVAL = filter.IN_STVAL.trim();
+                    beanTkt.IN_BSTVAL = filter.IN_BSTVAL.trim();
+                    beanTkt.IN_MERCHN = filter.IN_MERCHN.trim();
+                    beanTkt.IN_AGENT = filter.IN_AGENT.trim();
+                    beanTkt.IN_BANK = filter.IN_BANK.trim();
+                    beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_FTE = filter.IN_FTE.trim();
+                    beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
+
+                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                    beanTkt.SCARCOD = rst.getString("CARD").trim();
+
+                    beanTkt.NAMEBANK = rst.getString("NAMEBANK").trim();
+                    beanTkt.strDescCard = rst.getString("NAMECAR").trim();
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.strDescCountry = rst.getString("NAME").trim();
+                    beanTkt.SCURRENCY = rst.getString("CURRENCY").trim();
+                    beanTkt.SORIG = rst.getString("SORIG").trim();
+
+                    if (hmDescOrigen.containsKey(rst.getString("SORIG").trim())) {
+                        beanTkt.strSORIG = hmDescOrigen.get(rst.getString("SORIG").trim());
+                    } else {
+                        beanTkt.strSORIG = rst.getString("SORIG").trim();
+                    }
+
+                    beanTkt.lngQACCB = rst.getLong("CANT");
+                    beanTkt.SVFOP = rst.getDouble("SVFOP");
+                    beanTkt.lngTotQACCB = lngTotCant;
+                    beanTkt.dblTotSVFOP = dblSVFOP;
+
+                    if (!filter.IN_BSTVAL.trim().equals("")) {
+                        estado = hmDescEstados.get(beanTkt.IN_BSTVAL).toString();
+                    }
+
+                    if (filter.IN_STVAL.trim().equals("1")) {
+                        estado = "Match";
+                    } else if (filter.IN_STVAL.trim().equals("2")) {
+                        estado = "Settlement w/o Paying";
+                    } else if (filter.IN_STVAL.trim().equals("3")) {
+                        estado = "Settlement w/o Sales";
+                    } else if (filter.IN_STVAL.trim().equals("4")) {
+                        estado = "Match with Difference";
+                    } else if (filter.IN_STVAL.trim().equals("5")) {
+                        estado = "Match Manual";
+                    }
+
+                    if (filter.strFecFiltro.trim().equals("BDATEP")) {
+                        strTitulo = "Conciliaton Date : ";
+                    } else if (filter.IN_TDOC.trim().equals("R")) {
+                        strTitulo = "Refund Date : ";
+                    } else {
+                        strTitulo = "Sales Date : ";
+                    }
+                    strTitulo += beanTkt.strFormatDate + " *** " + estado + " ***";
+                    beanTkt.strTitulo = strTitulo;
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
 //    public List<A2290Filter> loadPX287SQP00924(A2290Filter filter) throws SQLException, Exception {
 //
 //        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);

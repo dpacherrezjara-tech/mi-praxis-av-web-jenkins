@@ -14,6 +14,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     beanDay: {},
     beanLiquida: {},
     beanDetails: {},
+    beanDetBankByS: {},
     paginActual: '',
     drillDown: [],
     lstCountry: [],
@@ -488,6 +489,79 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             Ext.getCmp(prototype.id + '-gridDetDetails').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
         }
+    },
+
+    //<editor-fold defaultstate="collapsed" desc="onGridDetBankS">
+    onGridDetBankS: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        var cant = 0;
+        switch (columnNum) {
+            case 1:
+                console.log('ENTRA AL MATCH');
+                rowData.data.IN_STVAL = '1';
+                cant = rowData.data.lngQMATCH;
+                break;
+            case 2:
+                console.log('ENTRA AL DIFF');
+                rowData.data.IN_STVAL = '4';
+                cant = rowData.data.lngQDIFF;
+                break;
+            case 4:
+                console.log('ENTRA AL PEND');
+                rowData.data.IN_STVAL = '3';
+                cant = rowData.data.lngQPEND;
+                break;
+        }
+        
+        if (cant > 0) {
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridDetBankByS';
+
+            me.flag = 'all';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+            this.beanDetBankByS.strFecFiltro = 'VALDATE';
+            this.beanDetBankByS.IN_SDATE = rowData.data.IN_SDATE;
+            this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
+            this.beanDetBankByS.strFormatDate = rowData.data.strFormatDate;
+            console.log(this.beanDetBankByS);
+            me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
+            this.setGridDataDetBankS();
+
+        } else {
+            global.Msg({
+                msg: 'Data not found.'
+            });
+        }
+
+    },
+    setGridDataDetBankS: function (data) {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.setWidthPie();
+        var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetBankCodeByStval'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetail;
+                },
+                load: function (obj) {
+//                    var pag = Ext.getCmp(prototype.id + '-paggin5');
+//                    var pagData = pag.getPageData();
+//                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+//                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+//                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+//                    console.log(obj.data);
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } 
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDetCardByS').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
     },
 
     eventKey_BANDOC: function (e, eOpts) {
