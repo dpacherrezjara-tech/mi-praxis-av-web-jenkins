@@ -979,6 +979,7 @@ public class BankReconciliationDAO {
                 objRtn.DESC_SCOUNTRY = objRtn.SCOUNTRY + " - " + rs01.getString("DESC_SCOUNTRY");
                 objRtn.SPNR = rs01.getString("SPNR");
                 objRtn.SCARCOD = rs01.getString("SCARCOD");
+                objRtn.CODEBANK = rs01.getString("CODEBANK");
                 objRtn.SCARDN = rs01.getString("SCARDN");
                 objRtn.SAUTHOC = rs01.getString("SAUTHOC");
                 objRtn.FREGLA = rs01.getString("FREGLA");

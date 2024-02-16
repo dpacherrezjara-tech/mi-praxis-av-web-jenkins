@@ -551,6 +551,12 @@ public class A2290Filter extends A2290 {
     public String A720FECVTA = "";
     public String A720PNR = "";
     public String A720AGENTE = "";
+    public String IN_UNICODE = "";
+    public String IN_VALDATE = "";
+    public String IN_SALECOD = "";
+    public String IN_TERM = "";
+    public String IN_TRAN = "";
+    
 
     public String bufferToString(String ccust) {
 

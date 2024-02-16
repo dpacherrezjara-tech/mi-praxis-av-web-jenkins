@@ -1024,6 +1024,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.totQTYTRAN3 = totQTYTRAN3;
                     beanTkt.totQTYTRAS = totQTYTRAS;
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
+                    beanTkt.UNICODE = rst.getString("UNICODE").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
                         beanTkt.strTitulo = "Value Date : " + filter.SDATE;
@@ -1032,6 +1033,141 @@ public class StatementReconciliationsDAO {
                     }
 
                     beanTkt.strTitulo = beanTkt.strTitulo + " - Bank : " + beanTkt.CODEBANK.trim() + "-" + beanTkt.strCREJEC.trim();
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    public List<A2290Filter> loadPX287SQP05111Cross(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        double totNETO = 0, totNETOC = 0;
+        long totQTYTRAS = 0, totQTYTRAN1 = 0, totQTYTRAN3 = 0;
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("2", "Liq. Without EECC");
+        hmDescEstados.put("3", "Bank whitout Liquidacion");
+        hmDescEstados.put("4", "Match with Differences");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05111Cross(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_VALDATE);
+            cstmt.setString(3, filter.IN_CODEBANK);
+            cstmt.setString(4, filter.IN_UNICODE);
+            
+
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+//                totNETO = rst.getDouble("NETO");
+//                totNETOC = rst.getDouble("NETOC");
+//                totQTYTRAS = rst.getLong("QTYTRAS");
+//                totQTYTRAN1 = rst.getLong("QTYTRAN1");
+//                totQTYTRAN3 = rst.getLong("QTYTRAN3");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.IN_VALDATE = filter.IN_VALDATE.trim();
+                    beanTkt.IN_CODEBANK = filter.IN_CODEBANK.trim();
+                    beanTkt.IN_UNICODE = filter.IN_UNICODE.trim();
+                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
+                    beanTkt.ADATE = rst.getString("ADATE").trim();
+                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
+                    beanTkt.NETO = rst.getDouble("NETO");
+                    beanTkt.IN_SALECOD = rst.getString("SALECOD").trim();
+                    beanTkt.IN_TERM = rst.getString("TERMI").trim();
+                    beanTkt.DATEC = rst.getString("DATEC").trim();
+                    beanTkt.IN_TRAN = rst.getString("TRAN").trim();
+                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    beanTkt.CARDTYPE = rst.getString("CARDTYPE").trim();
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    
+
+//                    beanTkt.QTYTRAS = rst.getInt("QTYTRAS");
+//                    beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
+//                    beanTkt.totQTYTRAN1 = totQTYTRAN1;
+//                    beanTkt.QTYTRAN3 = rst.getInt("QTYTRAN3");
+//                    beanTkt.totQTYTRAN3 = totQTYTRAN3;
+//                    beanTkt.totQTYTRAS = totQTYTRAS;
+                    
+                    beanTkt.VALDATE = rst.getString("VALDATE").trim();
+                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
+                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                    } else {
+                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                    }
+//                    if (filter.IN_DATE.trim().equals("VALDATE")) {
+//                        beanTkt.strTitulo = "Value Date : " + filter.SDATE;
+//                    } else {
+//                        beanTkt.strTitulo = "Abono Date : " + filter.SDATE;
+//                    }
+
+//                    beanTkt.strTitulo = beanTkt.strTitulo + " - Bank : " + beanTkt.CODEBANK.trim() + "-" + beanTkt.strCREJEC.trim();
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -1286,7 +1422,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.strDescCard = rst.getString("NAMECAR").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.strDescCountry = rst.getString("NAME").trim();
-                    beanTkt.SCURRENCY = rst.getString("CURRENCY").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SORIG = rst.getString("SORIG").trim();
 
                     if (hmDescOrigen.containsKey(rst.getString("SORIG").trim())) {

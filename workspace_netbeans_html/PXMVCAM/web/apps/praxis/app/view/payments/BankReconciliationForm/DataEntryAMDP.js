@@ -576,16 +576,32 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             xtype: 'label',
                                             text: 'Card Code',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 62
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 5},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtSCARCODE',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 36
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Bank Code',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 64
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtCODEBANK',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 48
                                         },
                                         {xtype: 'tbspacer', width: 30},
                                         {

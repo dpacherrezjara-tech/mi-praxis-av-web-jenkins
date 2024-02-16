@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     beanLiquida: {},
     beanDetails: {},
     beanDetBankByS: {},
+    beanDetCross: {},
     paginActual: '',
     drillDown: [],
     lstCountry: [],
@@ -392,6 +393,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.CBANK = rowData.data.CBANK;
         this.beanLiquida.IN_MERCHN = rowData.data.IN_MERCHN;
         this.beanLiquida.IN_TTRAN = rowData.data.IN_TTRAN;
+        this.beanLiquida.IN_QTYTRAN1 = rowData.data.QTYTRAN1;
         this.beanLiquida.strFormatDate = rowData.data.strFormatDate;
         this.beanLiquida.strCREJEC = rowData.data.strCREJEC;
 
@@ -507,7 +509,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 break;
             case 4:
                 console.log('ENTRA AL PEND');
-                rowData.data.IN_STVAL = '3';
+                rowData.data.IN_STVAL = 'P';
                 cant = rowData.data.lngQPEND;
                 break;
         }
@@ -518,9 +520,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
             me.flag = 'all';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-
+            console.log(rowData.data.SDATE, 'valor IN_SDATE')
             this.beanDetBankByS.strFecFiltro = 'VALDATE';
-            this.beanDetBankByS.IN_SDATE = rowData.data.IN_SDATE;
+            this.beanDetBankByS.IN_SDATE = rowData.data.SDATE;
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
             this.beanDetBankByS.strFormatDate = rowData.data.strFormatDate;
             console.log(this.beanDetBankByS);
@@ -560,8 +562,109 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }
         });
         global.clear();
-        Ext.getCmp(prototype.id + '-gridDataDetCardByS').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-gridDataDetBankByS').bindStore(storeGridDatas);
 //        Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+    },
+    onGridDetQtyByS: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        
+        let qty = rowData.data.lngQACCB;
+        if (qty > 0) {
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridDetDayByS';
+
+            me.flag = 'all';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+            this.beanDetDayByS.strFecFiltro = rowData.data.strFecFiltro;
+            this.beanDetDayByS.IN_SDATE = rowData.data.IN_SDATE;
+            this.beanDetDayByS.IN_TDOC = rowData.data.IN_TDOC;
+            this.beanDetDayByS.IN_CARDN1 = rowData.data.IN_CARDN1;
+            this.beanDetDayByS.IN_CARDN2 = rowData.data.IN_CARDN2;
+            this.beanDetDayByS.SCARCOD = rowData.data.SCARCOD;
+            this.beanDetDayByS.IN_STVAL = rowData.data.IN_STVAL;
+            this.beanDetDayByS.SCURRENCY = rowData.data.SCURRENCY;
+            this.beanDetDayByS.SORIG = rowData.data.SORIG;
+            this.beanDetDayByS.IN_MERCHN = rowData.data.IN_MERCHN;
+            this.beanDetDayByS.IN_AGENT = rowData.data.IN_AGENT;
+            this.beanDetDayByS.IN_BANK = rowData.data.IN_BANK;
+            this.beanDetDayByS.SCOUNTRY = rowData.data.SCOUNTRY;
+            this.beanDetDayByS.IN_FTE = rowData.data.IN_FTE;
+            this.beanDetDayByS.IN_ADYEN = rowData.data.IN_ADYEN;
+            this.beanDetDayByS.strFormatDate = rowData.data.strFormatDate;
+            this.beanDetDayByS.IN_CARDC = rowData.data.IN_CARDC;
+            this.beanDetDayByS.strDescCard = rowData.data.strDescCard;
+            this.beanDetDayByS.strSORIG = rowData.data.strSORIG;
+            this.beanDetDayByS.strDescCountry = rowData.data.strDescCountry;
+            this.beanDetDayByS.strTitulo = rowData.data.strTitulo;
+            this.beanDetDayByS.IN_CODEBANK = rowData.data.CODEBANK;
+
+            me.paramsDetail.beanString = JSON.stringify(this.beanDetDayByS);
+            this.setGridDataDetDayByS();
+
+        } else {
+            global.Msg({
+                msg: 'Data not found.'
+            });
+        }
+
+    },
+    onGridDataCross: function (obj, metaData, rowNum, columnNum, obj2, rowData){
+        let qty = rowData.data.QTYTRAN1;
+        if (qty > 0) {
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridDataCross';
+
+            me.flag = 'all';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+            this.beanDetCross.IN_VALDATE = rowData.data.VALDATE;
+            this.beanDetCross.IN_CODEBANK = rowData.data.CODEBANK;
+            this.beanDetCross.IN_UNICODE = rowData.data.UNICODE;
+
+            me.paramsDetail.beanString = JSON.stringify(this.beanDetCross);
+            this.setGridDataCross();
+
+        } else {
+            global.Msg({
+                msg: 'Data not found.'
+            });
+        }
+    },
+    setGridDataCross: function () {
+        win.lblUser_toolTip("Estructura: MPF060");
+        me.setWidthPie();
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetCross'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin5');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+//                            Ext.getCmp(prototype.id + '-gridDataCross').setTitle('<center style="font-size:12px;">' + data.strTitulo + '</center>');
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataCross').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+        }
     },
 
     eventKey_BANDOC: function (e, eOpts) {

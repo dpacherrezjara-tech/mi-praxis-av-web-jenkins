@@ -425,6 +425,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtBANDOC', this.bean.BANDOC);
         this.setValue('de-txtPAYDATE', this.bean.PAYDATE);
         this.setValue('de-txtSCARCODE', this.bean.SCARCOD);
+        this.setValue('de-txtCODEBANK', this.bean.CODEBANK);
         this.setValue('de-txtSCARDN', this.bean.SCARDN);
         this.setValue('de-txtSAUTHOC', this.bean.SAUTHOC);
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
@@ -613,6 +614,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtSPNR', '');
         this.setValue('de-txtBANDOC', '');
         this.setValue('de-txtSCARCODE', '');
+        this.setValue('de-txtCODEBANK', '');
         this.setValue('de-txtSCARDN', '');
         this.setValue('de-txtSAUTHOC', '');
         this.setValue('de-txtSTVAL', '');

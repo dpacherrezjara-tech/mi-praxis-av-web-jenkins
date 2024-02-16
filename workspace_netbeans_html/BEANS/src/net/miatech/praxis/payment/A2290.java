@@ -18,6 +18,7 @@ public class A2290 {
     public String SEQ = "";
     public String STVAL = "";
     public String VALDATE = "";
+    public String UNICODE = "";
     public String FTE = "";
     public String TRNCU = "";
     public String NUMREF = "";
@@ -58,6 +59,7 @@ public class A2290 {
     public String SCARDN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";
+    public String CARDTYPE = "";
     public String SINVN = "";
     public String SIDATE = "";
     public String SPNR = "";
