@@ -6,8 +6,6 @@
 package net.miatech.praxis.controllers.sales;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.ByteArrayInputStream;
@@ -23,7 +21,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import jdk.nashorn.internal.parser.JSONParser;
 import net.miatech.beans.PX036S01A1531Filter;
 import net.miatech.beans.PX036S01A1532Filter;
 import net.miatech.beans.PX036S01A1533Filter;
@@ -67,7 +64,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.json.JSONArray;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -721,7 +717,7 @@ public class SalesReportControoller extends BaseController {
             //FOP
             PX036S01A1531Filter filter = new PX036S01A1531Filter();
 
-            filter.IN_AIRLIN = "139";
+            filter.IN_AIRLIN = "134";
             filter.IN_CIA = request.getParameter("A720CIAI");
             filter.IN_FORMA = request.getParameter("A720FORMAI");
             filter.IN_SERIE = request.getParameter("A720SERIEI");
@@ -729,7 +725,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_FOP = logic.loadPX036S01A1531(filter);
             //TAX
             PX036S01A1532Filter filter2 = new PX036S01A1532Filter();
-            filter2.IN_AIRLIN = "139";
+            filter2.IN_AIRLIN = "134";
             filter2.IN_CIA = request.getParameter("A720CIAI");
             filter2.IN_FORMA = request.getParameter("A720FORMAI");
             filter2.IN_SERIE = request.getParameter("A720SERIEI");
@@ -737,7 +733,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_TAX = logic.loadPX036S01A1532(filter2);
             //COMM
             PX036S01A1533Filter filter3 = new PX036S01A1533Filter();
-            filter3.IN_AIRLIN = "139";
+            filter3.IN_AIRLIN = "134";
             filter3.IN_CIA = request.getParameter("A720CIAI");
             filter3.IN_FORMA = request.getParameter("A720FORMAI");
             filter3.IN_SERIE = request.getParameter("A720SERIEI");
@@ -745,7 +741,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_COMM = logic.loadPX036S01A1533(filter3);
             //TAXCOMM
             PX036S01A1534Filter filter4 = new PX036S01A1534Filter();
-            filter4.IN_AIRLIN = "139";
+            filter4.IN_AIRLIN = "134";
             filter4.IN_CIA = request.getParameter("A720CIAI");
             filter4.IN_FORMA = request.getParameter("A720FORMAI");
             filter4.IN_SERIE = request.getParameter("A720SERIEI");
@@ -753,7 +749,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_TAXCOMM = logic.loadPX036S01A1534(filter4);
             //FC
             PX036S01A1721Filter filter5 = new PX036S01A1721Filter();
-            filter5.IN_AIRLIN = "139";
+            filter5.IN_AIRLIN = "134";
             filter5.IN_CIA = request.getParameter("A720CIAI");
             filter5.IN_FORMA = request.getParameter("A720FORMAI");
             filter5.IN_SERIE = request.getParameter("A720SERIEI");
@@ -794,7 +790,7 @@ public class SalesReportControoller extends BaseController {
 
             //FOP
             PX036S01A1731Filter filter = new PX036S01A1731Filter();
-            filter.IN_AIRLIN = "139";
+            filter.IN_AIRLIN = "134";
             filter.IN_CIA = request.getParameter("A713CIAI");
             filter.IN_FORMA = request.getParameter("A713FORMAI");
             filter.IN_SERIE = request.getParameter("A713SERIEI");
@@ -802,7 +798,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_FOP = logic.loadPX036S01A1731(filter);
             //TAX
             PX036S01A1732Filter filter2 = new PX036S01A1732Filter();
-            filter2.IN_AIRLIN = "139";
+            filter2.IN_AIRLIN = "134";
             filter2.IN_CIA = request.getParameter("A713CIAI");
             filter2.IN_FORMA = request.getParameter("A713FORMAI");
             filter2.IN_SERIE = request.getParameter("A713SERIEI");
@@ -810,7 +806,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_TAX = logic.loadPX036S01A1732(filter2);
             //COMM
             PX036S01A1733Filter filter3 = new PX036S01A1733Filter();
-            filter3.IN_AIRLIN = "139";
+            filter3.IN_AIRLIN = "134";
             filter3.IN_CIA = request.getParameter("A713CIAI");
             filter3.IN_FORMA = request.getParameter("A713FORMAI");
             filter3.IN_SERIE = request.getParameter("A713SERIEI");
@@ -818,7 +814,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_COMM = logic.loadPX036S01A1733(filter3);
             //TAXCOMM
             PX036S01A1734Filter filter4 = new PX036S01A1734Filter();
-            filter4.IN_AIRLIN = "139";
+            filter4.IN_AIRLIN = "134";
             filter4.IN_CIA = request.getParameter("A713CIAI");
             filter4.IN_FORMA = request.getParameter("A713FORMAI");
             filter4.IN_SERIE = request.getParameter("A713SERIEI");
@@ -826,7 +822,7 @@ public class SalesReportControoller extends BaseController {
             List lstTKT_TAXCOMM = logic.loadPX036S01A1734(filter4);
             //FC
             PX036S01A1735Filter filter5 = new PX036S01A1735Filter();
-            filter5.IN_AIRLIN = "139";
+            filter5.IN_AIRLIN = "134";
             filter5.IN_CIA = request.getParameter("A713CIAI");
             filter5.IN_FORMA = request.getParameter("A713FORMAI");
             filter5.IN_SERIE = request.getParameter("A713SERIEI");

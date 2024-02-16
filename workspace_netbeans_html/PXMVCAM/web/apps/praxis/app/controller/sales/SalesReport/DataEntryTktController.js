@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryTktController', {
     getDataInputs: function () {
         var p = this.view.params;
         var bean = p.rec.data;
-        var IN_AIRLIN = '139';
+        var IN_AIRLIN = '134';
         var IN_CIA = bean.A720CIA;
         var IN_FORMA = bean.DOCUMENTO.substr(0, 4);
         var IN_SERIE = bean.DOCUMENTO.substr(4, 6);
@@ -88,7 +88,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryTktController', {
     getDataInputsPopUp: function () {
         var p = this.view.params;
         var bean = p.rec.data;
-        var IN_AIRLIN = '139';
+        var IN_AIRLIN = '134';
         var IN_CIA = bean.A720CIA;
         var IN_FORMA = bean.DOCUMENTO.substr(0, 4);
         var IN_SERIE = bean.DOCUMENTO.substr(4, 6);
@@ -157,7 +157,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryTktController', {
             if (file.A720ORIG === 'B')
                 file.A720ORIG = 'BSP';
             if (file.A720ORIG === 'S')
-                file.A720ORIG = 'ASR';
+                file.A720ORIG = 'AMA'; //ASR
             if (file.A720ORIG === 'M')
                 file.A720ORIG = 'MAN';
             meDET.ORIG=file.A720ORIG;    
@@ -538,6 +538,8 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryTktController', {
         var idTab = obj.id;
         meDET.cant++;
         if (Ext.getCmp(idTab).getActiveTab().id === 'SalesReportFormSale-det-tabProrrateo' && meDET.cant === 1) {
+//            console.log(paramsProrrate);
+//            return;
             Ext.getCmp(prototype.idSale + '-widget-prorrate').setParam(paramsProrrate);
         }
     },

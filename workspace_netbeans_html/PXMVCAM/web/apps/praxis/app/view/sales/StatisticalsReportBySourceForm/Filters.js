@@ -189,7 +189,7 @@ Ext.define('Ext.Praxis.view.sales.StatisticalsReportBySourceForm.Filters', {
                                     triggerAction: 'all',
                                     listeners: {
                                         afterrender: function (combo, eOpts) {
-                                            combo.setValue("A");
+                                            combo.setValue("N");
                                         },
                                         keyup: function (combo, e) {
                                             var key = String.fromCharCode(e.getKey());
@@ -214,7 +214,7 @@ Ext.define('Ext.Praxis.view.sales.StatisticalsReportBySourceForm.Filters', {
                                     store: new Ext.data.SimpleStore({
                                         fields: ['code', 'name'],
                                         data: [
-                                            ["ARC", "ARC"], ["BSP", "BSP"], ["ASR", "ASR"]
+                                            ["ARC", "ARC"], ["BSP", "BSP"], ["AMA", "AMA"]
                                         ]
                                     }),
                                     queryMode: 'local',
@@ -229,7 +229,7 @@ Ext.define('Ext.Praxis.view.sales.StatisticalsReportBySourceForm.Filters', {
                                     triggerAction: 'all',
                                     listeners: {
                                         afterrender: function (combo, eOpts) {
-                                            combo.setValue("ARC");
+                                            combo.setValue("BSP");
                                         },
                                         keyup: function (combo, e) {
                                             var key = String.fromCharCode(e.getKey());

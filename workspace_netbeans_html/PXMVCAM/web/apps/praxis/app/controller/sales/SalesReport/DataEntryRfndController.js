@@ -62,7 +62,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryRfndController', {
         Ext.getCmp(prototype.idRfnd + '-det-gridDetCpn').getStore().removeAll();
         Ext.getCmp(prototype.idRfnd + '-det-gridEMD').getStore().removeAll();
         if(modo==='I'){
-            Ext.getCmp(prototype.idRfnd + '-det-lblCia').setValue("139");
+            Ext.getCmp(prototype.idRfnd + '-det-lblCia').setValue("134");
             Ext.getCmp(prototype.idRfnd + '-det-lblCia').setReadOnly(false);
             Ext.getCmp(prototype.idRfnd + '-det-lblDocumento').setReadOnly(false);
             Ext.getCmp(prototype.idRfnd + '-det-lblDocType').setValue("TKTT");

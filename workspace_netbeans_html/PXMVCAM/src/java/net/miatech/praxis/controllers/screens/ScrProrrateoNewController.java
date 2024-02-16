@@ -2,9 +2,7 @@ package net.miatech.praxis.controllers.screens;
 
 //<editor-fold defaultstate="collapsed" desc="import">
 import com.google.gson.Gson;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +11,6 @@ import net.miatech.beans.S0007A720Filter;
 import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.BSPF104;
 import net.miatech.praxis.controllers.BaseController;
-import net.miatech.praxis.dao.LoadDataDAO;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.logic.program.ProrrateoNewLogic;
 import net.miatech.praxis.spring.INF020;
@@ -329,7 +326,7 @@ public class ScrProrrateoNewController extends BaseController {
                 strTexto = logic.searchDeliveryMEMO(cliente.CCUST, filter, "B");
             } else if (filter.FUENTE.trim().equals("ARC") || filter.FUENTE.trim().equals("A")) {
                 strTexto = logic.searchDeliveryMEMO(cliente.CCUST, filter, "A");
-            } else if (filter.FUENTE.trim().equals("ASR") || filter.FUENTE.trim().equals("S")) {
+            } else if (filter.FUENTE.trim().equals("AMA") || filter.FUENTE.trim().equals("S")) {
                 strTexto = logic.searchDeliveryMEMO(cliente.CCUST, filter, "S");
             }
             
@@ -362,7 +359,7 @@ public class ScrProrrateoNewController extends BaseController {
                 strTexto = logic.searchDelivery(cliente.CCUST, filter, "B");
             } else if (filter.FUENTE.trim().equals("ARC") || filter.FUENTE.trim().equals("A")) {
                 strTexto = logic.searchDelivery(cliente.CCUST, filter, "A");
-            } else if (filter.FUENTE.trim().equals("ASR") || filter.FUENTE.trim().equals("S")) {
+            } else if (filter.FUENTE.trim().equals("AMA") || filter.FUENTE.trim().equals("S")) {
                 strTexto = logic.searchDelivery(cliente.CCUST, filter, "S");
             } else if (filter.FUENTE.trim().equals("ISR")) {
                 strTexto = logic.searchDelivery(cliente.CCUST, filter, "I");

@@ -34,7 +34,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryAdmController', {
 
         var p = this.view.params;
         var bean = p.rec.data;
-        var IN_AIRLIN = '139';
+        var IN_AIRLIN = '134';
         var IN_CIA = bean.A714CIA;
         var IN_FORMA = bean.DOCUMENTO.substr(0, 4);
         var IN_SERIE = bean.DOCUMENTO.substr(4, 6);

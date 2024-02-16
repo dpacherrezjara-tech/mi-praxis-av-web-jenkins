@@ -266,7 +266,7 @@ Ext.define('Ext.Praxis.view.sales.ControlFiguresForm.Filters', {
                                     store: new Ext.data.SimpleStore({
                                         fields: ['code', 'name'],
                                         data: [
-                                            ["ARC", "ARC"], ["BSP", "BSP"], ["ASR", "ASR"], ["MAN", "MAN"]
+                                            ["ARC", "ARC"], ["BSP", "BSP"], ["AMA", "AMA"], ["MAN", "MAN"]
                                         ]
                                     }),
                                     queryMode: 'local',
@@ -283,7 +283,7 @@ Ext.define('Ext.Praxis.view.sales.ControlFiguresForm.Filters', {
                                     padding: '6 0',
                                     listeners: {
                                         afterrender: function (combo, eOpts) {
-                                            combo.setValue("ARC");
+                                            combo.setValue("BSP");
                                         },
                                         focus: function(combo) {
                                             combo.expand();
@@ -420,7 +420,7 @@ Ext.define('Ext.Praxis.view.sales.ControlFiguresForm.Filters', {
                                     xtype: 'textfield',
                                     id:prototype.id+'-IN_A1530MDA',
                                     fieldStyle: 'text-align:center;',
-                                    value: 'USD',
+                                    value: 'COP',
                                     enableKeyEvents: true,
                                     enforceMaxLength: true,
                                     maxLength: 3,

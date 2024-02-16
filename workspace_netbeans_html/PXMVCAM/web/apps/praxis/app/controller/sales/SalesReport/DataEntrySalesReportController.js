@@ -328,7 +328,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntrySalesReportControll
         var strBank = Ext.getCmp(prototype.id + '-de-txtBank').getValue().trim();
         var strBankCode = meDE.strBankCode;
         var IN_ACTION = strOption;
-        var A1530CCUST = '139';
+        var A1530CCUST = '134';
         var A1530PSVTA = Ext.getCmp(prototype.id + '-de-txtCountry').getValue().trim();
         var A1530GRUPO = Ext.getCmp(prototype.id + '-de-txtGroup').getValue().trim();
         var A1530CIUVT = strBank;
