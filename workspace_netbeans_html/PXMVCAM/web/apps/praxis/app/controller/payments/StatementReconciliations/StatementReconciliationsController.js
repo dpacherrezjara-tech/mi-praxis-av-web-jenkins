@@ -13,6 +13,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     beanBank: {},
     beanDay: {},
     beanLiquida: {},
+    beanLiquidaByS: {},
     beanDetails: {},
     beanDetBankByS: {},
     beanDetCross: {},
@@ -332,7 +333,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDay.IN_TTRAN = rowData.data.IN_TTRAN;
         this.beanDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDay.strCREJEC = rowData.data.strCREJEC;
-
+        console.log(this.beanDay, 'this.beanDay')
         me.paramsDetail.beanString = JSON.stringify(this.beanDay);
         this.setGridDataDetDay();
     },
@@ -439,8 +440,69 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
         }
     },
+    onGridDetLiquidaByS: function (obj, metaData, rowNum, columnNum, obj2, rowData){
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDetLiquidaByS';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        console.log(rowData.data, 'rowData')
+        this.beanLiquidaByS.IN_TDOC = rowData.data.IN_TDOC;
+        this.beanLiquidaByS.IN_DATE = rowData.data.IN_DATE;
+        this.beanLiquidaByS.SDATE = rowData.data.SDATE;
+        this.beanLiquidaByS.CBANK = rowData.data.CBANK;
+        this.beanLiquidaByS.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanLiquidaByS.IN_TTRAN = rowData.data.IN_TTRAN;
+        this.beanLiquidaByS.IN_QTYTRAN1 = rowData.data.QTYTRAN1;
+        this.beanLiquidaByS.strFormatDate = rowData.data.strFormatDate;
+        this.beanLiquidaByS.strCREJEC = rowData.data.strCREJEC;
+
+        me.paramsDetail.beanString = JSON.stringify(this.beanLiquidaByS);
+        this.setGridDataDetLiquidaByS();
+    },
+    
+    setGridDataDetLiquidaByS: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.setWidthPie();
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetLiquidaByS'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin4');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-gridDetLiquidaByS').setTitle('<center style="font-size:12px;">' + data.strTitulo + '</center>');
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDetLiquidaByS').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
+        }
+    },
 
     onGridDetDetails: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        console.log(rowData, 'rowData')
+        if(rowData.data.STVAL != 'Match'){
+            return false
+        }
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDetDetails';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -449,8 +511,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDetails.VALDATE = rowData.data.VALDATE;
         this.beanDetails.SCOUNTRY = rowData.data.SCOUNTRY;
         this.beanDetails.CODEBANK = rowData.data.CODEBANK;
-
+        this.beanDetails.strCREJEC = rowData.data.strCREJEC;
+        this.beanDetails.strTitulo = "Bank : " + this.beanDetails.CODEBANK + " " + this.beanDetails.strCREJEC + " - Bandoc : " + this.beanDetails.BANDOC
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
+        
         this.setGridDataDetDetails();
     },
 
@@ -499,17 +563,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         switch (columnNum) {
             case 1:
                 console.log('ENTRA AL MATCH');
-                rowData.data.IN_STVAL = '1';
+                rowData.data.IN_STVAL = "1";
                 cant = rowData.data.lngQMATCH;
                 break;
             case 2:
                 console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = '4';
+                rowData.data.IN_STVAL = "4";
                 cant = rowData.data.lngQDIFF;
                 break;
             case 4:
                 console.log('ENTRA AL PEND');
-                rowData.data.IN_STVAL = 'P';
+                rowData.data.IN_STVAL = "P";
                 cant = rowData.data.lngQPEND;
                 break;
         }
@@ -520,12 +584,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
             me.flag = 'all';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-            console.log(rowData.data.SDATE, 'valor IN_SDATE')
-            this.beanDetBankByS.strFecFiltro = 'VALDATE';
-            this.beanDetBankByS.IN_SDATE = rowData.data.SDATE;
-            this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
+            this.beanDetBankByS.IN_TDOC = rowData.data.IN_TDOC;
+            this.beanDetBankByS.IN_DATE = rowData.data.IN_DATE;
+            this.beanDetBankByS.SDATE = rowData.data.SDATE;
+            this.beanDetBankByS.IN_MERCHN = rowData.data.IN_MERCHN;
+            this.beanDetBankByS.IN_BANK = rowData.data.IN_BANK;
+            this.beanDetBankByS.IN_TTRAN = rowData.data.IN_TTRAN;
             this.beanDetBankByS.strFormatDate = rowData.data.strFormatDate;
-            console.log(this.beanDetBankByS);
+            this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
+            
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
             this.setGridDataDetBankS();
 
@@ -547,12 +614,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     obj.proxy.extraParams = me.paramsDetail;
                 },
                 load: function (obj) {
-//                    var pag = Ext.getCmp(prototype.id + '-paggin5');
-//                    var pagData = pag.getPageData();
-//                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-//                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-//                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-//                    console.log(obj.data);
+                    var pag = Ext.getCmp(prototype.id + '-paggin5');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    console.log(obj.data);
                     if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
@@ -563,7 +630,68 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataDetBankByS').bindStore(storeGridDatas);
-//        Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+    },
+    onGridDetDayByS: function ( obj, metaData, rowNum, columnNum, obj2, rowData ){
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDetDayByS';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+        this.beanDayByS.IN_TDOC = rowData.data.IN_TDOC;
+        this.beanDayByS.IN_DATE = rowData.data.IN_DATE;
+        this.beanDayByS.SDATE = rowData.data.SDATE;
+        this.beanDayByS.CBANK = rowData.data.CBANK;
+        this.beanDayByS.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanDayByS.IN_TTRAN = rowData.data.IN_TTRAN;
+        this.beanDayByS.strFormatDate = rowData.data.strFormatDate;
+        this.beanDayByS.strCREJEC = rowData.data.strCREJEC;
+        console.log(this.beanDay, 'this.beanDay')
+        me.paramsDetail.beanString = JSON.stringify(this.beanDayByS);
+        this.setGridDataDetDayByS();
+    },
+    setGridDataDetDayByS: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.setWidthPie();
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetDay'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin3');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            var value = Ext.getCmp(prototype.id + '-htDetDay');
+                            if (data.IN_DATE === "DATEP") {
+                                value.setText = "Deposit";
+                            } else {
+                                value.setText = "Payment";
+                            }
+                            Ext.getCmp(prototype.id + '-gridDetDayByS').setTitle('<center style="font-size:12px;">' + data.strTitulo + '</center>');
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDetDay').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+        }
     },
     onGridDetQtyByS: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         
@@ -685,14 +813,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         global.selectedChild(this.childs, prototype.id + me.panelActual);
 
         this.beanDetails.BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
-        this.beanDetails.CODEBANK = "";
-
+        
+        
+//        this.beanDetails.strCREJEC = Ext.getCmp(prototype.id + '-StatementReconciliationsForm-gridDetLiquida_header-title-textEl').getValue();
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
         this.setGridDataDetBANDOC();
     },
 
     setGridDataDetBANDOC: function () {
-        win.lblUser_toolTip("Estructura: MPF101");
+        win.lblUser_toolTip("Estructura: MPF060");
         me.setWidthPie();
         this.setFormatParameter();
         var msj = this.validateFields();
@@ -727,6 +856,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             global.clear();
             Ext.getCmp(prototype.id + '-gridDetDetails').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+            
+           
+       
         }
     },
 
@@ -740,7 +872,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.winDataEntry('I');
     },
     onEditClick: function (grid, rowIndex, colIndex) {
+        console.log( grid, rowIndex, colIndex , 'raaaaaaaaaaaaaaaaaa')
         var rec = grid.getStore().getAt(rowIndex);
+        console.log('rec', rec)
+        console.log(rec.data.STVAL, 'rec.data.STVAL')
+        if( rec.data.STVAL == "Match"){
+            global.Msg({
+                msg: 'Not allowed.'
+            });
+            return false
+        }
         this.winDataEntry('U', rec);
     },
     winDataEntry: function (action, rec) {

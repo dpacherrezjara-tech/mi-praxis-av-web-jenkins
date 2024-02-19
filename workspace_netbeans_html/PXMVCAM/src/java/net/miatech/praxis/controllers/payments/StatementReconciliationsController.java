@@ -112,7 +112,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "searchDetBank")
     public @ResponseBody
     String searchDetBank(ModelMap map, HttpServletRequest request) {
-
+        System.out.println("-------------- StatementReconciliations : searchDetBank");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -213,7 +213,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "searchDetLiquida")
     public @ResponseBody
     String searchDetLiquida(ModelMap map, HttpServletRequest request) {
-
+        System.out.println("-------------- StatementReconciliations : searchDetLiquida-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -269,14 +269,14 @@ public class StatementReconciliationsController extends BaseController {
     }
     
     
-    @RequestMapping(value = "searchDetCross")
+    @RequestMapping(value = "searchDetLiquidaByS")
     public @ResponseBody
-    String searchDetCross(ModelMap map, HttpServletRequest request) {
-
+    String searchDetLiquidaByS(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchDetLiquidaByS-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
-            List<A2290Filter> lst = this.getListDetCross(request, false);
+            List<A2290Filter> lst = this.getListDetLiquidaByS(request, false);
 
             map.put("success", true);
             map.put("data", lst);
@@ -291,7 +291,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    public List<A2290Filter> getListDetCross(HttpServletRequest request, Boolean bExcel) {
+    public List<A2290Filter> getListDetLiquidaByS(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
         A2290Filter filter;
@@ -330,7 +330,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "searchDetDetails")
     public @ResponseBody
     String searchDetDetails(ModelMap map, HttpServletRequest request) {
-
+        System.out.println("-------------- StatementReconciliations : searchDetDetails-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -389,7 +389,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "searchDetBankCodeByStval")
     public @ResponseBody
     String searchDetBankCodeByStval(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankReconciliation : searchDetCardCodeByStval-------------");
+        System.out.println("-------------- BankReconciliation : searchDetBankCodeByStval-------------");
 
         map.put("success", true);
         List<A2290Filter> lst = this.getListDetBankCodeByStval(request, false);
@@ -438,7 +438,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "/searchBean")
     public @ResponseBody
     String searchBean(ModelMap map, HttpServletRequest request) {
-
+        System.out.println("-------------- BankStatementReconciliation : searchBean-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
