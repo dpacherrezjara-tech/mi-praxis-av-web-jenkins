@@ -3135,10 +3135,10 @@ public class ProrrateoNewDAO {
                 //ARC
                 //strSQL = "{CALL " + session.getMainLibrary() + ".PX01S01A1347(?,?)}";
                 strSQL = "{CALL " + session.getMainLibrary() + ".PX01S01A1347(?,?,?,?)}"; //Cambio ROLLING
-            } else if (fuente.trim().equals("S") || fuente.trim().equals("ASR")) {
+            } else if (fuente.trim().equals("S") || fuente.trim().equals("AMA")) {
                 //ASR
                 //strSQL = "{CALL " + session.getMainLibrary() + ".PX01S02A1536(?,?)}";
-                strSQL = "{CALL " + session.getMainLibrary() + ".PX01S02A1536(?,?,?,?)}"; //Cambio ROLLING
+                strSQL = "{CALL " + session.getMainLibrary() + ".PX01S03A4544(?,?,?,?)}"; //Cambio ROLLING ASR:PX01S02A1536
             } else if (fuente.trim().equals("B") || fuente.trim().equals("BSP")){
                 //BSP
                 //strSQL = "{CALL " + session.getMainLibrary() + ".PX01S03A1348(?,?)}";

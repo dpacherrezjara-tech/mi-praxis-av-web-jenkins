@@ -142,7 +142,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.SalesReportController', {
                 ["", "Select"],
                 ["BSP", "BSP"],
                 ["ARC", "ARC"],
-                ["ASR", "ASR"],
+                ["AMA", "AMA"],
                 ["MAN", "MAN"]
             ]
         }));
@@ -221,7 +221,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.SalesReportController', {
             case '6':
                 Ext.getCmp(prototype.id + '-txtCia').show();
                 Ext.getCmp(prototype.id + '-txtTicket').show();
-                Ext.getCmp(prototype.id + '-txtCia').setValue('139');
+                Ext.getCmp(prototype.id + '-txtCia').setValue('134');
                 this.onFocus('-txtTicket');
                 break;
         }
@@ -229,7 +229,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.SalesReportController', {
     onChangeCmbSource: function (obj, value) {
         switch (value) {
             case 'BSP':
-            case 'ASR':
+            case 'AMA':
             case 'MAN':
                 Ext.getCmp(prototype.id + '-txtCountry').show();
                 Ext.getCmp(prototype.id + '-cmbBanco').hide();
@@ -258,7 +258,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.SalesReportController', {
         this.setGridData(obj, e);
     },
     setFormatParameter: function () {
-        var AIRLINE = '139';
+        var AIRLINE = '134';
         var CIUVT = '';
         var year = Ext.getCmp(prototype.id + '-cmbDateYear').getValue();
         var month = Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
@@ -437,7 +437,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.SalesReportController', {
     },
     btnExcel_click: function (obj, e) {
         Ext.Msg.show({
-            title: '.:PRAXISAM:.',
+            title: '.:PRAXIS:.',
             msg: 'Download Excel ?',
             buttons: Ext.MessageBox.OKCANCEL,
             scope: this,

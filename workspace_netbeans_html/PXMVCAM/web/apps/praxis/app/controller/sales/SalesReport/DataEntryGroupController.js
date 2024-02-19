@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryGroupController', {
     tabName: prototype.idGr+ '-tabTkt',
     paramsDE: {
         IN_OPCION: '1',
-        IN_AIRLIN: '139',
+        IN_AIRLIN: '134',
         IN_GRUPO: '',
         IN_TKT: '',
         IN_TRANSACTION: '',
@@ -296,7 +296,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryGroupController', {
     },
     //<editor-fold defaultstate="collapsed" desc="searchDet">
     searchDet: function(url, title) {
-        this.beanDet.IN_A1720CCUST = '139';
+        this.beanDet.IN_A1720CCUST = '134';
         this.beanDet.IN_A1720GRUPO = Ext.getCmp(prototype.idGr+ '-de-lblGroup').getValue();
         var contenedor = Ext.getCmp(prototype.idGr+'-tabTotal');
         contenedor.removeAll();

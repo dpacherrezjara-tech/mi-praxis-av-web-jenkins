@@ -144,7 +144,7 @@ Ext.define('Ext.Praxis.controller.sales.ControlFigures.ControlFiguresController'
 	}
 	// Add Param
 	data.A1530GROUPS = A1530GROUPS;	
-	data.CCUST = "139";
+	data.CCUST = "134";
         
 	// Title Windonw
         var dataEntry2 = Ext.create('Ext.Praxis.view.sales.ControlFiguresForm.DataEntryDetailRef', {
@@ -250,7 +250,7 @@ Ext.define('Ext.Praxis.controller.sales.ControlFigures.ControlFiguresController'
                     case 'ARC':
                         this.bean.VP_A1530CIUVT = win.getValue("cmbBank");
                         break;
-                    case 'BSP': case 'MAN':
+                    case 'BSP': case 'MAN': case 'AMA':
                         this.bean.VP_A1530PSVTA = win.getValue("IN_A1530PSVTA");
                     break;
                 }
@@ -357,7 +357,7 @@ Ext.define('Ext.Praxis.controller.sales.ControlFigures.ControlFiguresController'
                         this.beancf.VP_A1530CSABR = win.getValue("txtA1530CSABR");
                         break;
                     case 'ARC': this.beancf.VP_A1530CIUVT = win.getValue("cmbBank"); break;
-                    case 'BSP': case 'MAN': this.beancf.VP_A1530PSVTA = win.getValue("IN_A1530PSVTA"); break;
+                    case 'BSP': case 'MAN': case 'AMA': this.beancf.VP_A1530PSVTA = win.getValue("IN_A1530PSVTA"); break;
                 }
             break;
             case '4': this.beancf.VP_A1530GRUPO = win.getValue("txtA1530GRUPO"); break;
@@ -415,7 +415,7 @@ Ext.define('Ext.Praxis.controller.sales.ControlFigures.ControlFiguresController'
                 if (res.success) {
                     win.setValue('txtGroupSelected', '');
                     var vA1530GRUPO = '';
-                    var vA1530CCUST='139'; //default 
+                    var vA1530CCUST='134'; //default 
                     
                     me.lstControlfiguresRep = res.lstControlfiguresRep;
                     
@@ -1186,7 +1186,7 @@ Ext.define('Ext.Praxis.controller.sales.ControlFigures.ControlFiguresController'
         // Add Param	
 	data.A1530GROUPS = A1530GROUPS;
 	data.TRANS = "S";
-	data.CCUST = "139";	
+	data.CCUST = "134";	
         
         // Title Windonw
         var dataEntry = Ext.create('Ext.Praxis.view.sales.ControlFiguresForm.DataEntry',{
@@ -1214,7 +1214,7 @@ Ext.define('Ext.Praxis.controller.sales.ControlFigures.ControlFiguresController'
             id: 'DataEntryDetailAdmsControlFiguresForm'
         });
         data.A1530GROUPS = A1530GROUPS;
-        data.CCUST = "139";
+        data.CCUST = "134";
         var controller = dataEntry.getController();
         controller.gridA1720 = data;
         

@@ -34,7 +34,7 @@ Ext.define('Ext.Praxis.controller.sales.StatisticalsReportBySource.StatisticalsR
     // <editor-fold defaultstate="collapsed" desc="Options">
     btnSearch_click: function(obj, e) {
         var bean = {};
-        bean.VP_CUSTOM  = '139';
+        bean.VP_CUSTOM  = '134';
         bean.VP_TIPO  = this.getValue('cmbPeriodType');
         bean.VP_AGRUPA  = this.getValue('rbtnIATA').rbtnIATA;
         bean.VP_AFETNU  = this.getValue('cmbTransactionType');

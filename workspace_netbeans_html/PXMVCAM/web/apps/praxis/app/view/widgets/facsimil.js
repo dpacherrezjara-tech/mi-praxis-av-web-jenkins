@@ -683,7 +683,7 @@ Ext.define('Ext.Praxis.view.widgets.facsimil', {
             strOrigIssue += Ext.String.trim(String(bean.lstReg46OrigIssue[e]));
         }
 
-        Ext.getCmp(me.id + '-txtIssuedBy').setValue('AEROMEXICO');
+        Ext.getCmp(me.id + '-txtIssuedBy').setValue('AVIANCA');
         Ext.getCmp(me.id + '-txtRPSI').setValue(bean.FUENTE);
         Ext.getCmp(me.id + '-txtEndRes').setValue(Ext.String.trim(strRestrict));
         Ext.getCmp(me.id + '-txtPassenger').setValue(bean.PXNM);

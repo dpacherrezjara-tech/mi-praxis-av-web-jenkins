@@ -16,28 +16,33 @@ import net.miatech.praxis.dao.widgets.FacsimilDAO;
  * @author jjulca
  */
 public class FacsimilLogic {
+
     private FacsimilDAO loadFacsimileDAO = new FacsimilDAO();
-    
+
     public FacsimilLogic() {
     }
-    
+
     public FacsimilLogic(IServerSession ss) {
         loadFacsimileDAO.setSession(ss);
     }
-    
+
     public void setSession(IServerSession ss) {
         loadFacsimileDAO.setSession(ss);
     }
-    
-    public  FACSIMILFilter loadBSPFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
+
+    public FACSIMILFilter loadBSPFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
         return loadFacsimileDAO.loadBSPFacsimilProrate(filter, hmCiudades);
     }
 
-    public  FACSIMILFilter loadARCFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
+    public FACSIMILFilter loadAMAFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
+        return loadFacsimileDAO.loadAMAFacsimilProrate(filter, hmCiudades);
+    }
+
+    public FACSIMILFilter loadARCFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
         return loadFacsimileDAO.loadARCFacsimilProrate(filter, hmCiudades);
     }
 
-    public  FACSIMILFilter loadASRFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
+    public FACSIMILFilter loadASRFacsimilProrate(BSPF104 filter, HashMap hmCiudades) throws SQLException, Exception {
         return loadFacsimileDAO.loadASRFacsimilProrate(filter, hmCiudades);
     }
 }

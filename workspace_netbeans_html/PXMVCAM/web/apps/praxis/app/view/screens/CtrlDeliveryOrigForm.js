@@ -12,7 +12,7 @@ Ext.define('Ext.Praxis.view.screens.CtrlDeliveryOrigForm', {
     title: 'Delivery Information',
     header: true,
     width: 1180,
-    height: 428,
+    height: 550,
     border: false,
     resizable: false,
     layout: {
@@ -46,7 +46,7 @@ Ext.define('Ext.Praxis.view.screens.CtrlDeliveryOrigForm', {
                                 hideInactive:false
                             },
                             width: 1140,
-                            height: 260,
+                            height: 350,
                             border: false,
                             bodyStyle: 'background: transparent',
 //                            bodyStyle: "background-image:url(resources/img/icon/999x999/VOID_03_r1_c1.png) !important;background-repeat: no-repeat;background-position: center;",
@@ -106,7 +106,7 @@ Ext.define('Ext.Praxis.view.screens.CtrlDeliveryOrigForm', {
             dock: 'bottom',
             ui: 'footer',
             style: 'border-top: 2px #c4cccc solid;border-bottom: 2px #c4cccc solid',
-            margin: '20 0',
+            margin: '10 0',
             padding: '8 0',
             layout: {
                 pack: 'center'

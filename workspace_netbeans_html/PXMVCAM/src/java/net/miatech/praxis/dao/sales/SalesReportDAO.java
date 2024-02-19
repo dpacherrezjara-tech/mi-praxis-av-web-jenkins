@@ -5,7 +5,6 @@
  */
 package net.miatech.praxis.dao.sales;
 
-import com.google.gson.JsonArray;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -36,7 +35,6 @@ import net.miatech.beans.S0001A714Filter;
 import net.miatech.beans.S0002A1530Filter;
 import net.miatech.beans.S0007A720Filter;
 import net.miatech.beans.S0007A730Filter;
-
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A006;
 import net.miatech.libmiatec.A1007;
@@ -91,7 +89,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
             if (filter.FLAG.equals("6")) {
-                cstmt01.setString(1, "139");
+                cstmt01.setString(1, "134");
                 cstmt01.setString(2, filter.TKT.substring(0, 3));
                 cstmt01.setString(3, filter.TKT.substring(3, 7));
                 cstmt01.setString(4, filter.TKT.substring(7, 13));
@@ -1589,7 +1587,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "139");
+            cstmt01.setString(1, "134");
             cstmt01.setString(2, filter.A720CIAI);
             cstmt01.setString(3, filter.A720FORMAI);
             cstmt01.setString(4, filter.A720SERIEI);
@@ -1648,7 +1646,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "139");
+            cstmt01.setString(1, "134");
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
@@ -2683,7 +2681,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "139");
+            cstmt01.setString(1, "134");
             cstmt01.setString(2, filter.A720CIAI);
             cstmt01.setString(3, filter.A720FORMAI);
             cstmt01.setString(4, filter.A720SERIEI);
@@ -2748,7 +2746,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "139");
+            cstmt01.setString(1, "134");
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
@@ -2807,7 +2805,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "139");
+            cstmt01.setString(1, "134");
             cstmt01.setString(2, filter.A720CIAI);
             cstmt01.setString(3, filter.A720FORMAI);
             cstmt01.setString(4, filter.A720SERIEI);
