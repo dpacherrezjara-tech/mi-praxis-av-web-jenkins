@@ -367,12 +367,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                             });
                         } else {
                             var data = obj.data.items[0].data;
-                            var value = Ext.getCmp(prototype.id + '-htDetDay');
-                            if (data.IN_DATE === "DATEP") {
-                                value.setText = "Deposit";
-                            } else {
-                                value.setText = "Payment";
-                            }
                             Ext.getCmp(prototype.id + '-gridDetDay').setTitle('<center style="font-size:12px;">' + data.strTitulo + '</center>');
                         }
                     }

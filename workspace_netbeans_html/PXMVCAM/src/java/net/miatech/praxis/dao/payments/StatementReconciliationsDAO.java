@@ -481,7 +481,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
-                    beanTkt.strFormatDate = rst.getString("DATE").trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
                     
                     beanTkt.SDATE = rst.getString("DATE").trim();
