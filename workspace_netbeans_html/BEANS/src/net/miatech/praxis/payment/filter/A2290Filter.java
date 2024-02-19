@@ -57,6 +57,7 @@ public class A2290Filter extends A2290 {
     public String IN_COUNTRY = "";
     public String NAME = "";
     public String IN_SDATE = "";
+    public String IN_CBANK = "";
     public String descSDATE = "";
     public String NUMAVIS = "";
     public String IN_TICKET = "";
@@ -215,6 +216,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQPOLIPE = 0;
     public long lngTotQSALES = 0;
     public long lngTotQACCB = 0;
+    public long lngTotSVFOP = 0;
     public long lngTotQDIFF = 0;
     public long lngTotQACEP = 0;
     public long lngTotQRECH = 0;

@@ -151,6 +151,55 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "searchDetBankByS")
+    public @ResponseBody
+    String searchDetBankCodeByS(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchDetBankCodeByStval-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDetBankCodeByS(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListDetBankCodeByS(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX287SQP00839ByS(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
     @RequestMapping(value = "searchDetDay")
     public @ResponseBody
     String searchDetDay(ModelMap map, HttpServletRequest request) {
@@ -204,6 +253,65 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
             lst = logic.loadPX287SQP00840(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchDetDayByS")
+    public @ResponseBody
+    String searchDetDayByS(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- StatementReconciliations : searchDetDayByStval-------------");
+
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = this.getListDetDayByS(request, false);
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListDetDayByS(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter;
+        Gson gson = new Gson();
+        String beanString;
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+            lst = logic.loadPX287SQP00840ByS(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -268,11 +376,10 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
     
-    
     @RequestMapping(value = "searchDetLiquidaByS")
     public @ResponseBody
     String searchDetLiquidaByS(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- StatementReconciliations : searchDetLiquidaByS-------------");
+        System.out.println("-------------- StatementReconciliations : searchDetLiquidaByStval-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -320,7 +427,7 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
             
-            lst = logic.loadPX287SQP05111Cross(filter);
+            lst = logic.loadPX287SQP00841ByS(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -386,54 +493,6 @@ public class StatementReconciliationsController extends BaseController {
     }
 
     //Drill Down por Estado
-    @RequestMapping(value = "searchDetBankCodeByStval")
-    public @ResponseBody
-    String searchDetBankCodeByStval(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankReconciliation : searchDetBankCodeByStval-------------");
-
-        map.put("success", true);
-        List<A2290Filter> lst = this.getListDetBankCodeByStval(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<A2290Filter> getListDetBankCodeByStval(HttpServletRequest request, Boolean bExcel) {
-
-        List<A2290Filter> lst = new ArrayList<>(0);
-        A2290Filter filter = new A2290Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new StatementReconciliationsLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2290Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-
-            lst = logic.loadPX287SQP00839Stval(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
     
     @RequestMapping(value = "/searchBean")
     public @ResponseBody
