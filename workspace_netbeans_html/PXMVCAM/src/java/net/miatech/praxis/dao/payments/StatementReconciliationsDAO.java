@@ -483,6 +483,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
+                    beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     
                     beanTkt.SDATE = rst.getString("DATE").trim();
                     beanTkt.lngQMATCH = rst.getLong("QMATCH");
@@ -599,6 +600,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
+                    beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
                     
                     beanTkt.SDATE = rst.getString("VALDATE");
