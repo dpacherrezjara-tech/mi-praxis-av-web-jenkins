@@ -492,41 +492,6 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
 
-    //Drill Down por Estado
-    
-    @RequestMapping(value = "/searchBean")
-    public @ResponseBody
-    String searchBean(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankStatementReconciliation : searchBean-------------");
-        try {
-            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-
-            A2290Filter lst;
-            A2290Filter filter;
-            Gson gson = new Gson();
-            String beanString;
-
-            logic = new StatementReconciliationsLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2290Filter.class);
-
-            lst = logic.loadPX287SQP00844(filter);
-
-            map.put("success", true);
-            map.put("data", lst);
-        } catch (SQLException e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        } catch (Exception e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        }
-        return new Gson().toJson(map);
-
-    }
-
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1331,5 +1296,71 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
+    
+    @RequestMapping(value = "/searchBean")
+    public @ResponseBody
+    String searchBean(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
+            A2290Filter lst;
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX287SQP00844(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+
+    @RequestMapping(value = "/searchBean_DETAIL")
+    public @ResponseBody
+    String searchBean_DETAIL(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean_DETAIL-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = new ArrayList<>(0);
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP05114Detail(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    
 }

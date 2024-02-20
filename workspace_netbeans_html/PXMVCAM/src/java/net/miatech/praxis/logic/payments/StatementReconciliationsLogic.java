@@ -60,5 +60,8 @@ public class StatementReconciliationsLogic {
    public A2290Filter loadPX287SQP00844(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
     }
-
+      
+   public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05114Detail(filter);
+    }
 }

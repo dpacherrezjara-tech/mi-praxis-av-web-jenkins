@@ -879,7 +879,39 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
         this.setGridDataDetBANDOC();
     },
-
+//    searchBean: function (rec) {
+//
+//        Ext.Ajax.request({
+//            url: prototype.url + '/searchBean',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: {beanString: JSON.stringify(rec.data)},
+////            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            success: function (response, opts) {
+////                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//                var res = Ext.JSON.decode(response.responseText);
+//                if (res.success) {
+//                    var beanCons = res.result;
+//                    console.log('beanCons');
+//                    console.log(beanCons);
+//                    if (beanCons !== null) {
+//                        me.winDataEntry('U', beanCons);
+//                    } else {
+//                        global.Msg({
+//                            msg: 'An error has ocurred. Please contact our System Department'
+//                        });
+//                    }
+//
+//                } else {
+//                    global.Msg({msg: res.Mensaje});
+//                }
+//            },
+//            failure: function (response, opts) {
+//                console.log('server-side failure with status code ' + response.status);
+////                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//            }
+//        });
+//    },
     setGridDataDetBANDOC: function () {
         win.lblUser_toolTip("Estructura: MPF060");
         me.setWidthPie();
@@ -932,7 +964,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.winDataEntry('I');
     },
     onEditClick: function (grid, rowIndex, colIndex) {
-        console.log(grid, rowIndex, colIndex, 'raaaaaaaaaaaaaaaaaa')
         var rec = grid.getStore().getAt(rowIndex);
         console.log('rec', rec)
         console.log(rec.data.STVAL, 'rec.data.STVAL')

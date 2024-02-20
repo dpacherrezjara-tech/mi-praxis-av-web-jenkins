@@ -18,7 +18,9 @@ public class A2290 {
     public String SEQ = "";
     public String STVAL = "";
     public String VALDATE = "";
+    public String VALDATEL = "";
     public String UNICODE = "";
+    public String UNICODEL = "";
     public String FTE = "";
     public String TRNCU = "";
     public String NUMREF = "";
@@ -31,6 +33,8 @@ public class A2290 {
     public String SCOUNTRY = "";
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
+    public String TERMI = "";
+    public String RED = "";
     public String DESAGENT = "";
     public String SDATE = "";
     public String SDATEVTA = "";
@@ -38,6 +42,7 @@ public class A2290 {
     public String SCARCOD = "";
     public String STCNTR = "";
     public String BANDOC = "";
+    public String BANDOCL = "";
     public String STCON = "";
     public String FCONT = "";
     public String NEGOC = "";
@@ -56,6 +61,7 @@ public class A2290 {
     public double ATAX = 0;
     public double TOTAL = 0;
     public String SCURRENCY = "";
+    public String SCURRENCYL = "";
     public String SCARDN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";

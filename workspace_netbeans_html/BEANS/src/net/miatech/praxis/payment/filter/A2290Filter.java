@@ -154,6 +154,8 @@ public class A2290Filter extends A2290 {
     public double RTEICA = 0;
     public double RTEICAC = 0;
     public double NETO = 0;
+    public double NETOL = 0;
+    public double DIFF = 0;
     public double totNETO = 0;
     public double totNETOC = 0;
     public double NETOC = 0;
@@ -317,6 +319,7 @@ public class A2290Filter extends A2290 {
 
     //A2291
     public String CODEBANK = "";
+    public String CODEBANKA = "";
     public String IN_CODEBANK = "";
     public int QTYDOC = 0;
     public int totQTYDOC = 0;
@@ -554,6 +557,7 @@ public class A2290Filter extends A2290 {
     public String A720PNR = "";
     public String A720AGENTE = "";
     public String IN_UNICODE = "";
+    public String IN_BANDOC = "";
     public String IN_VALDATE = "";
     public String IN_SALECOD = "";
     public String IN_TERM = "";
