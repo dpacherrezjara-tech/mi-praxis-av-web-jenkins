@@ -8,6 +8,7 @@ package net.miatech.praxis.logic.payments;
 import java.sql.SQLException;
 import java.util.List;
 import net.miatech.beans.A1691Filter;
+import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.StatementReconciliationsDAO;
 import net.miatech.praxis.payment.filter.A2280Filter;
@@ -25,43 +26,47 @@ public class StatementReconciliationsLogic {
         StatementReconciliationsDAO.setSession(ss);
     }
 
-   public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
+    public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00838(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00839(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00839(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00839(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00839ByS(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00839ByS(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00839ByS(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00840(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00840(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00840(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00840ByS(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00840ByS(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00840ByS(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00841ByS(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00841ByS(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841ByS(filter);
     }
-   
-   public List<A2290Filter> loadPX287SQP00842(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX287SQP00842(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00842(filter);
     }
-    
-   public A2290Filter loadPX287SQP00844(A2290Filter filter) throws SQLException, Exception {
+
+    public A2290Filter loadPX287SQP00844(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
     }
-      
-   public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05114Detail(filter);
+    }
+
+    public String loadPX269SQP05115(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05115(filter, user);
     }
 }

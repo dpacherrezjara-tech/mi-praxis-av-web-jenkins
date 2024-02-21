@@ -577,12 +577,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     click: 'onGridDetDetails'
                                                 },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
+                                                    var isMatch = record.data.STVAL === 'Match' || record.data.STVAL === 'Match Manual';
+                                                    if (isMatch) {
+                                                        metaData.style = "text-align:center;color:#057ECB";
+                                                        value = '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                    } else {
+                                                        metaData.style = "text-align:center;";
+                                                    }
 
-//                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
-//                                                    return value;
-                                                    return record.data.STVAL == 'Match' ? '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>' : value;
-                                                },
+                                                    return value;
+                                                }
+
                                             },
                                             {
                                                 text: 'Conciliacion - Fase I',

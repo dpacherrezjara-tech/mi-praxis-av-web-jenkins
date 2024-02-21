@@ -49,6 +49,7 @@ public class A2290Filter extends A2290 {
     public String IN_TDOC = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
+    public String IN_RED = "";
     public String IN_NEGOC = "";
     public String IN_COMENT = "";
     public String IN_TERMI = "";
@@ -105,6 +106,7 @@ public class A2290Filter extends A2290 {
     public String CBANK = "";
     public String MERCHNR = "";
     public String DATEC = "";
+    public String FECSELEC = "";
     public String TRANC = "";
     public String STATUSC = "";
     public String TIPOTAR = "";
@@ -557,6 +559,7 @@ public class A2290Filter extends A2290 {
     public String A720PNR = "";
     public String A720AGENTE = "";
     public String IN_UNICODE = "";
+    public long IN_NETO = 0;
     public String IN_BANDOC = "";
     public String IN_VALDATE = "";
     public String IN_SALECOD = "";

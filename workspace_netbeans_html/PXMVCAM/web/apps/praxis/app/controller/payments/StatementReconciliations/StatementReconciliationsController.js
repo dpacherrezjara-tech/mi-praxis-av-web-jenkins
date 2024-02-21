@@ -531,7 +531,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     onGridDetDetails: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         console.log(rowData, 'rowData')
-        if (rowData.data.STVAL != 'Match') {
+        if (rowData.data.STVAL != 'Match' && rowData.data.STVAL != 'Match Manual') {
             return false
         }
         me.drillDown.push(me.panelActual);

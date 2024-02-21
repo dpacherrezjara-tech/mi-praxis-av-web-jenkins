@@ -11,11 +11,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
@@ -199,7 +201,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchDetDay")
     public @ResponseBody
     String searchDetDay(ModelMap map, HttpServletRequest request) {
@@ -368,14 +370,14 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGROW = -1;
                 filter.page.PAGNUM = 1;
             }
-            
+
             lst = logic.loadPX287SQP00841(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchDetLiquidaByS")
     public @ResponseBody
     String searchDetLiquidaByS(ModelMap map, HttpServletRequest request) {
@@ -426,14 +428,14 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGROW = -1;
                 filter.page.PAGNUM = 1;
             }
-            
+
             lst = logic.loadPX287SQP00841ByS(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchDetDetails")
     public @ResponseBody
     String searchDetDetails(ModelMap map, HttpServletRequest request) {
@@ -484,7 +486,7 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGROW = -1;
                 filter.page.PAGNUM = 1;
             }
-            
+
             lst = logic.loadPX287SQP00842(filter);
         } catch (Exception e) {
             throw new SpringException(e);
@@ -1296,7 +1298,7 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "/searchBean")
     public @ResponseBody
     String searchBean(ModelMap map, HttpServletRequest request) {
@@ -1362,5 +1364,40 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
-    
+
+    @RequestMapping(value = "executeOption")
+    public @ResponseBody
+    String executeOption(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : executeOption-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05115(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
 }
