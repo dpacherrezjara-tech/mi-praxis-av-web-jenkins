@@ -81,7 +81,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Filters', {
                             },
                             items: [
                                 {
-                                    value: '139',
+                                    value: '134',
                                     id: prototype.id+'-txtFilterTicketCia',
                                     fieldStyle: 'text-align:center',
                                     maxLength: 3,
@@ -192,7 +192,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Filters', {
                                 },
                                 {xtype: 'tbspacer', width: 15},
                                 {
-                                    value: '139',
+                                    value: '134',
                                     id: prototype.id+'-txtFilterTicketCia0',
                                     fieldStyle: 'text-align:center',
                                     width: 40,

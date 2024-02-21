@@ -1345,8 +1345,8 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                                                     console.log("record");
                                                     console.log(record.data.CIA);
                                                     metaData.style = ' color:#008FE3;text-align:center; margin-right:0px ; background:#d5f4d5; ';
-                                                    return (value==='Y' && record.data.CIA === '139' ?  ('<a href="#">' + value + '</a>') : 
-                                                            (value==='Y' && record.data.CIA !== '139' ?  ('N') : value));
+                                                    return (value==='Y' && record.data.CIA === '134' ?  ('<a href="#">' + value + '</a>') : 
+                                                            (value==='Y' && record.data.CIA !== '134' ?  ('N') : value));
                                                 },
                                                 listeners: {
                                                     click: 'lnkLegSales_clickHandler'
@@ -2720,7 +2720,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                                                                                 //alert('ok');
                                                                                 var strTKT = '';
                                                                                 var strSEQ = '';
-                                                                                if(win.getValue('lblRelatedTickets1').trim().length > 0 && win.getValue('lblRelatedTickets1').substr(0, 3) === '139'){
+                                                                                if(win.getValue('lblRelatedTickets1').trim().length > 0 && win.getValue('lblRelatedTickets1').substr(0, 3) === '134'){
                                                                                     strTKT = win.getValue('lblRelatedTickets1').trim();
                                                                                     strSEQ = (win.getValue('lblRelatedTickets1SEQ').trim().length === 2) ? win.getValue('lblRelatedTickets1SEQ').trim() : '00';
                                                                                     /*var ScrTKTForm = Ext.create('Ext.Praxis.view.screens.ScrTKTForm', { id: 'ScrTKTForm' });
@@ -2761,7 +2761,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                                                                             this.getEl().on('mousedown', function(e, t, eOpts) {
                                                                                 var strTKT = '';
                                                                                 var strSEQ = '';
-                                                                                if(win.getValue('lblRelatedTickets2').trim().length > 0 && win.getValue('lblRelatedTickets2').substr(0, 3) === '139'){
+                                                                                if(win.getValue('lblRelatedTickets2').trim().length > 0 && win.getValue('lblRelatedTickets2').substr(0, 3) === '134'){
                                                                                     strTKT = win.getValue('lblRelatedTickets2').trim();
                                                                                     strSEQ = (win.getValue('lblRelatedTickets2SEQ').trim().length === 2) ? win.getValue('lblRelatedTickets2SEQ').trim() : '00';
                                                                                     var strCIA = win.getValue('lblRelatedTickets2').substr(0, 3);
@@ -2792,7 +2792,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                                                                             this.getEl().on('mousedown', function(e, t, eOpts) {
                                                                                 var strTKT = '';
                                                                                 var strSEQ = '';
-                                                                                if(win.getValue('lblRelatedTickets3').trim().length > 0 && win.getValue('lblRelatedTickets3').substr(0, 3) === '139'){
+                                                                                if(win.getValue('lblRelatedTickets3').trim().length > 0 && win.getValue('lblRelatedTickets3').substr(0, 3) === '134'){
                                                                                     strTKT = win.getValue('lblRelatedTickets3').trim();
                                                                                     strSEQ = (win.getValue('lblRelatedTickets3SEQ').trim().length === 2) ? win.getValue('lblRelatedTickets3SEQ').trim() : '00';
                                                                                     var strCIA = win.getValue('lblRelatedTickets3').substr(0, 3);
@@ -2823,7 +2823,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                                                                             this.getEl().on('mousedown', function(e, t, eOpts) {
                                                                                 var strTKT = '';
                                                                                 var strSEQ = '';
-                                                                                if(win.getValue('lblRelatedTickets4').trim().length > 0 && win.getValue('lblRelatedTickets4').substr(0, 3) === '139'){
+                                                                                if(win.getValue('lblRelatedTickets4').trim().length > 0 && win.getValue('lblRelatedTickets4').substr(0, 3) === '134'){
                                                                                     strTKT = win.getValue('lblRelatedTickets4').trim();
                                                                                     strSEQ = (win.getValue('lblRelatedTickets4SEQ').trim().length === 2) ? win.getValue('lblRelatedTickets4SEQ').trim() : '00';
                                                                                     var strCIA = win.getValue('lblRelatedTickets4').substr(0, 3);

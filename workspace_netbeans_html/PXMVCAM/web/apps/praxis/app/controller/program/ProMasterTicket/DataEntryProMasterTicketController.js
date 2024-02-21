@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.DataEntryProMasterTick
     init: function () {
     },
     afterRender: function() {
-        win.setValue('1-txtTicketCia', '139');
+        win.setValue('1-txtTicketCia', '134');
         if(this.actionCode === ''){
             win.setValue('1-cbxSearchBy', "1");
             this.cbxSearchBy_changeHandler();

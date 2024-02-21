@@ -31,7 +31,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
     gridDataMemoAC: [],
     gridDataTktRealUsesAC: [],
     init: function (view) {
-//        this.bean.IN_CIA  = '139';
+//        this.bean.IN_CIA  = '134';
 //        this.bean.IN_FORMA= this.TicketNumber.substr(0,4); 
 //        this.bean.IN_SERIE= this.TicketNumber.substr(4,6);			
 //        this.bean.IN_SEQ = this.TicketNumber.substr(10,2);
@@ -234,7 +234,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
 	if(data.STAT === 'RFND' || data.STAT === 'RFND-VOID'){
             var rec = {
                 data:{
-                    A713AIRLIN: '139',
+                    A713AIRLIN: '134',
                     A713CIA:data.CIA,
                     DOCUMENTO:data.FOR + data.SER,
                     A713SEQ:data.SEQ
@@ -703,7 +703,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
     },
     Tickets1_clickHandler: function (cmp, a, event) {
         alert(win.getValue('lblRelatedTickets1').trim());
-        /*if(win.getValue('lblRelatedTickets1').trim().length > 0 && win.getValue('lblRelatedTickets1').substr(0, 3) === '139'){
+        /*if(win.getValue('lblRelatedTickets1').trim().length > 0 && win.getValue('lblRelatedTickets1').substr(0, 3) === '134'){
             strTKT = win.getValue('lblRelatedTickets1').trim();
             strSEQ = (win.getValue('lblRelatedTickets1SEQ').trim().length === 2) ? win.getValue('lblRelatedTickets1SEQ').trim() : '00';
             var ScrTKTForm = Ext.create('Ext.Praxis.view.screens.ScrTKTForm', { id: 'ScrTKTForm' });
@@ -722,7 +722,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
     get_load_Accounting: function () {
         if (win.getValue('txtFilterTicketFormSer').trim().length === 10) {
             win.removeAll('gridDataAccounting');
-            this.beanAccounting.VP_A1716CCUST = '139';
+            this.beanAccounting.VP_A1716CCUST = '134';
             this.beanAccounting.VP_A1716CIA = win.getValue('txtFilterTicketCia');
             this.beanAccounting.VP_A1716FORMA = win.getValue('txtFilterTicketFormSer').substring(0, 4);
             this.beanAccounting.VP_A1716SERIE = win.getValue('txtFilterTicketFormSer').substring(4, 10);
@@ -747,7 +747,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
             case 'TKT':
                 var strFilterTicketForSer = win.getValue('txtFilterTicketFormSer').trim();
                 if (strFilterTicketForSer.length >= 10  && win.getValue('txtFilterTicketCia').trim().length === 3) {
-                    /*if (win.getValue('txtFilterTicketCia') !== '139') {
+                    /*if (win.getValue('txtFilterTicketCia') !== '134') {
                         var bean104 = {};
                         console.log('OAL1');
                         if(win.getValue('txtFilterTicketSeq').trim().length !== 2)
@@ -1194,7 +1194,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
                             Ext.getCmp(prototype.id+'-btnPNR').disable(true);
                             //Ext.getCmp(prototype.id+'-btnFacsimil0').show();
                             Ext.getCmp(prototype.id+'-btnDelivery0').show();
-                        }else if(win.getValue('txtFilterTicketCia').trim()==='139'){
+                        }else if(win.getValue('txtFilterTicketCia').trim()==='134'){
                             // with(idFacsimil){addChild(image); removeChild(image)}
                             Ext.getCmp(prototype.id+'-btnProrrate').show();
                             //Ext.getCmp(prototype.id+'-btnFacsimil0').show();

@@ -766,7 +766,7 @@ public class ProMasterTicketDAO {
         String SQLQRY01 = "SELECT";
 
         //<editor-fold defaultstate="collapsed" desc="{...} SQL Sentences">
-        if(filter.IN_CIA.equals("139"))
+        if(filter.IN_CIA.equals("134"))
         {
             SQLQRY01 = "SELECT"
                 + "   A720CIA,A720FORMA,A720SERIE, A720SEQ "
@@ -788,7 +788,7 @@ public class ProMasterTicketDAO {
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            if(filter.IN_CIA.equals("139")){
+            if(filter.IN_CIA.equals("134")){
                 pstmt01 = cnx.prepareStatement(SQLQRY01);
                 pstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
                 pstmt01.setString(2, filter.IN_CIA);
@@ -1904,7 +1904,7 @@ public class ProMasterTicketDAO {
         String SQLCLL01 = "";
        
         SQLCLL01 = "{CALL SQP00697(?,?,?,?,?,?,?,?,?)}"; 
-        if(filter.IN_TFILTER == 1 && !"139".equals(filter.IN_TEXT.substring(0, 3)))
+        if(filter.IN_TFILTER == 1 && !"134".equals(filter.IN_TEXT.substring(0, 3)))
         {
             SQLCLL01 = "{CALL SQP04574(?,?,?,?,?,?,?,?,?)}"; 
         }

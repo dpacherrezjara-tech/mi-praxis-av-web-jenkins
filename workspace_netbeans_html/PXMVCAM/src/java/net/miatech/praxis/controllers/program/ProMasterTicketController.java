@@ -102,7 +102,7 @@ public class ProMasterTicketController extends BaseController {
             PX040S01A720Filter filterTKT;
             //PX040S01A720Filter filterTKT = logic.loadPX040S01A720(filter);
             //PX040S01A720Filter filterTKT = logic.loadPRO11013(filter);
-            if (filter.IN_CIA.equals("139")){
+            if (filter.IN_CIA.equals("134")){
                 filterTKT = logic.loadPX040S01A720(filter);
 //                filterTKT = logic.loadPRO11013(filter);
             }else{
