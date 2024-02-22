@@ -40,11 +40,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtNAME', this.beanResult.NAME);
         this.setValue('de-txtSTVAL', this.beanResult.descSTVAL);
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
-           Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
-           Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(985);
-        }else{
+            Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(985);
+        } else {
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
-           Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1025);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1025);
+
         }
         this.setValue('de-txtDATEC', this.beanResult.DATEC);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
@@ -89,14 +90,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         bean.SDATE = this.getValue("de-txtSDATE");
         bean.ACCNUMBER = this.getValue("de-txtACCNUMBER");
         bean.DIFF = this.getValue("de-txtDIFF");
-
         bean.USCR = this.getValue("txtUSCR").trim();
         bean.FECR = this.getValue("txtFECR").trim();
         bean.HOCR = this.getValue("txtHOCR").trim();
         bean.USUP = this.getValue("txtUSUP").trim();
         bean.FEUP = this.getValue("txtFEUP").trim();
         bean.HOUP = this.getValue("txtHOUP").trim();
-        
         console.log(bean.SAGENT);
         return bean;
     },
@@ -121,7 +120,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                console.log("asdasda");
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 //                console.log(res);
@@ -152,7 +150,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                console.log("asdasda");
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
@@ -173,6 +170,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     //</editor-fold>
     calcularMontos: function () {
+
+        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var store = grid.getStore();
+        var calculateButton = this.lookupReference('calculateButton');
+
+        if (store.getCount() > 0 && store.getCount() < 22) {
+            calculateButton.show();
+        } else {
+            calculateButton.hide();
+        }
+
         this.sumAmount = 0;
         this.lstSendManual = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
@@ -185,6 +193,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
 
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
+        this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount, '0,000.00'));
+        this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.sumAmount, '0,000.00'));
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
     },
     calcularDiferencias: function () {
@@ -194,16 +204,33 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         var suma = 0;
         grid.getStore().each(function (record) {
             suma += record.get('NETO');
-            console.log(suma);
         });
-        var diff = Math.abs(this.beanResult.DIFF);
+        var diff = Math.abs(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
+        console.log(diff);
+
         var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         var store = grid.getStore();
         var records = store.getRange();
-        // Llama a la función findCombinations
-        this.findCombinations(records, 0, 0, [], diff);
-        console.log('calcular diff 2');
+        this.desmarcarRegistros(records);
+        if (diff !== 0) {
+            var timeout = 6000; // 6 segundos
+            var startTime = new Date().getTime();
+
+            var findCombinationsWithTimeout = function () {
+                var currentTime = new Date().getTime();
+                if (currentTime - startTime < timeout) {
+                    this.findCombinations(records, 0, 0, [], diff);
+                } else {
+                    console.log('Tiempo límite alcanzado. La búsqueda se ha interrumpido.');
+                }
+            }.bind(this);
+
+            setTimeout(findCombinationsWithTimeout, 0);
+        } else {
+            this.desmarcarRegistros(records);
+        }
     },
+
     findCombinations: function (records, index, sum, combination, diff) {
         if (sum === diff) {
             this.mostrarCombinacionValida(combination, diff);
@@ -221,6 +248,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         // Pasa el argumento 'diff' a la función recursiva
         this.findCombinations(records, index + 1, sum, combination, diff);
     },
+
+    findCombinations: function (records, index, sum, combination, diff) {
+        if (sum === diff) {
+            this.mostrarCombinacionValida(combination, diff);
+            combination.forEach(function (record) {
+                record.set('isInValidCombination', true); // Marcar los registros de combinación válida
+            });
+            return;
+        }
+        if (index >= records.length || sum > diff) {
+            return;
+        }
+
+        // Usa 'this.findCombinations' para llamar a la función recursiva
+        this.findCombinations(records, index + 1, sum + records[index].get('NETO'), combination.concat(records[index]), diff);
+        // Pasa el argumento 'diff' a la función recursiva
+        this.findCombinations(records, index + 1, sum, combination, diff);
+    },
+
     mostrarCombinacionValida: function (combination, diff) {
         console.log('Se encontró una combinación válida:');
         console.log('Valor deseado:', diff);
@@ -229,14 +275,98 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             console.log(record.get('NETO'));
         });
     },
+    desmarcarRegistros: function (records) {
+        records.forEach(function (record) {
+            if (record.get('isInValidCombination')) {
+                record.set('isInValidCombination', false); // Desmarcar el registro
+            }
+        });
+    },
     removeTKT: function (grid, rowIndex, colIndex) {
+
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
-        //var rowIndex = store_gridInfoScan.indexOf(record);
         store_gridInfoScan.removeAt(rowIndex);
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
         this.calcularMontos();
+        var checkbox = Ext.getCmp(prototype.id01 + '-chkVALDATE');
+        var estaMarcado = checkbox.getValue();
+        if (estaMarcado) {
+//            console.log('El checkbox está marcado');
+            meDE.calcularDiferencias();
+        } else {
+//            console.log('El checkbox no está marcado');
+        }
     },
+    cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
 
+        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
+        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
+        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
+        meDE.bean.data.IN_RED = meDE.bean.data.RED;
+        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
+            meDE.bean.data.IN_STVAL = '1';
+        } else {
+            meDE.bean.data.IN_STVAL = 'P';
+        }
+        if (newValue) {
+            console.log('El checkbox está marcado');
+            meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
+            var beanString = JSON.stringify(meDE.bean.data);
+            Ext.Ajax.request({
+                url: prototype.url + '/searchBean_DETAIL',
+                method: 'POST',
+                timeout: 60000000,
+                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+                params: {beanString: beanString},
+                success: function (response, options) {
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                    var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+
+                        var storeData = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                        meDE.calcularMontos();
+                        meDE.calcularDiferencias();
+                    } else {
+                        global.Msg({msg: res.Mensaje});
+                    }
+                }
+            });
+        } else {
+            console.log('El checkbox está desmarcado');
+            meDE.bean.data.IN_UNICODE = '';
+            var beanString = JSON.stringify(meDE.bean.data);
+            Ext.Ajax.request({
+                url: prototype.url + '/searchBean_DETAIL',
+                method: 'POST',
+                timeout: 60000000,
+                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+                params: {beanString: beanString},
+                success: function (response, options) {
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                    var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+
+                        var storeData = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                        meDE.calcularMontos();
+//                    meDE.calcularDiferencias();
+                    } else {
+                        global.Msg({msg: res.Mensaje});
+                    }
+                }
+            });
+        }
+
+    },
 //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {
         this.setValue('txtSCOUNTRY', '');
@@ -364,11 +494,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         if (miGrilla) {
             // Llamada a la función procesarRegistros con la grilla como parámetro
             console.error('Entró al procesar Registros');
-
             datos = this.procesarRegistros(miGrilla);
-
             console.log(datos);
-
             if (Array.isArray(datos) && datos.length === 0) {
                 // Nadine
             } else {
@@ -420,24 +547,20 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 VALDATE: Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue(),
                 UNICODE: Ext.getCmp(prototype.id + '-de-txtUNICODE').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
-
                 SDATE: record.get('SDATE'),
                 SAGENT: record.get('SAGENT'),
                 TERMI: record.get('TERMI'),
                 SCARDN: record.get('SCARDN'),
                 SAUTHOC: record.get('SAUTHOC'),
                 NETO: record.get('NETO'),
-
                 USCR: Ext.getCmp(prototype.id + '-txtUSCR').getValue(),
                 FECR: Ext.getCmp(prototype.id + '-txtFECR').getValue(),
                 HOCR: Ext.getCmp(prototype.id + '-txtHOCR').getValue(),
                 USUP: Ext.getCmp(prototype.id + '-txtUSUP').getValue(),
                 FEUP: Ext.getCmp(prototype.id + '-txtFEUP').getValue(),
                 HOUP: Ext.getCmp(prototype.id + '-txtHOUP').getValue(),
-
             };
             console.log(registro);
-
             listaDeDatos.push(registro);
         });
         // Convertir la lista a JSON

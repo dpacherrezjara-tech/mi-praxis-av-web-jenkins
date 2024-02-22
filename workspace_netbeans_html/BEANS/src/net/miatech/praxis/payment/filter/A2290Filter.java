@@ -58,6 +58,7 @@ public class A2290Filter extends A2290 {
     public String IN_COUNTRY = "";
     public String NAME = "";
     public String IN_SDATE = "";
+    public String IN_SDATEE = "";
     public String IN_CBANK = "";
     public String descSDATE = "";
     public String NUMAVIS = "";

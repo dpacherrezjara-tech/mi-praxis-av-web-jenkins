@@ -454,6 +454,48 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                 {xtype: 'tbspacer', height: 5},
                                 {
                                     xtype: 'panel',
+                                    id: prototype.id + '-panelScanCard',
+                                    layout: 'hbox',
+                                    hidden: false,
+                                    border: false,
+                                    margin: '0 2 0 20',
+                                    bodyStyle: 'background:#;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Value Date',
+                                            textAlign: 'center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '4 4 4 4',
+                                            width: 70
+                                        },
+                                        {
+                                            xtype: 'checkboxfield',
+                                            id: prototype.id01 + '-chkVALDATE',
+                                            checked: true,
+                                            padding: '0px 0px 0px 10px',
+//                                            boxLabel: 'Value'
+                                            listeners: {
+                                                change: 'cambiaParams'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            margin: '4 4 4 890',
+                                            iconCls: 'prx-icon-add',
+                                            tooltip: 'Calculate Differences',
+                                            hidden: true, 
+                                            reference: 'calculateButton',
+                                            listeners: {
+                                                click: 'calcularDiferencias'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
                                     layout: 'hbox',
                                     border: false,
                                     margin: '10 0 0 20',

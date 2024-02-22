@@ -328,6 +328,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         this.beanDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDay.IN_DATE = rowData.data.IN_DATE;
+        this.beanDay.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDay.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDay.IN_CBANK = rowData.data.IN_CBANK;
         this.beanDay.IN_MERCHN = rowData.data.IN_MERCHN;
@@ -389,6 +390,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.IN_CBANK = rowData.data.IN_CBANK;
         this.beanLiquida.IN_STVAL = "";
         this.beanLiquida.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanLiquida.IN_SDATEE = rowData.data.IN_SDATEE;
         this.beanLiquida.IN_TTRAN = rowData.data.IN_TTRAN;
         this.beanLiquida.IN_QTYTRAN1 = rowData.data.QTYTRAN1;
         this.beanLiquida.strFormatDate = rowData.data.strFormatDate;
@@ -406,6 +408,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.IN_DATE = rowData.data.IN_DATE;
         this.beanLiquida.IN_STVAL = rowData.data.IN_STVAL;
         this.beanLiquida.IN_SDATE = rowData.data.SDATE;
+        this.beanLiquida.IN_SDATEE = rowData.data.IN_SDATEE;
         this.beanLiquida.IN_CBANK = rowData.data.IN_CBANK;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquida);
@@ -478,6 +481,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanLiquidaByS.IN_DATE = rowData.data.IN_DATE;
             this.beanLiquidaByS.IN_SDATE = rowData.data.SDATE;
             this.beanLiquidaByS.IN_CBANK = rowData.data.IN_CBANK;
+            this.beanLiquidaByS.IN_SDATEE = rowData.data.IN_SDATEE;
             this.beanLiquidaByS.IN_STVAL = rowData.data.IN_STVAL;
 
             me.paramsDetail.beanString = JSON.stringify(this.beanLiquidaByS);
@@ -669,6 +673,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDayByS.IN_DATE = rowData.data.IN_DATE;
         this.beanDayByS.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK;
+        this.beanDay.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_STVAL = rowData.data.IN_STVAL;
         console.log(this.beanDayByS, 'this.beanDay')
         me.paramsDetail.beanString = JSON.stringify(this.beanDayByS);
@@ -703,6 +708,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanDetBankByS.IN_DATE = rowData.data.IN_DATE;
             this.beanDetBankByS.IN_SDATE = rowData.data.IN_SDATE;
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
+            this.beanDetBankByS.IN_SDATEE = rowData.data.IN_SDATE;
             this.beanDetBankByS.IN_CBANK = rowData.data.IN_CBANK;
             console.log(this.beanDetBankByS);
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);

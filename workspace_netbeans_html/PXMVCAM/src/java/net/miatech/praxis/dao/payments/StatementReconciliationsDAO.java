@@ -445,7 +445,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_TDOC);
             cstmt.setString(3, filter.IN_DATE);
-            cstmt.setString(4, filter.IN_SDATE);
+            cstmt.setString(4, filter.IN_SDATEE);
             cstmt.setString(5, filter.IN_CBANK);
             cstmt.setString(6, filter.IN_MERCHN.trim());
             cstmt.setString(7, filter.IN_TTRAN.trim());
@@ -481,6 +481,7 @@ public class StatementReconciliationsDAO {
                     beanTkt = new A2290Filter();
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
+                    beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
@@ -567,7 +568,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_TDOC);
             cstmt.setString(3, filter.IN_DATE);
-            cstmt.setString(4, filter.IN_SDATE);
+            cstmt.setString(4, filter.IN_SDATEE);
             cstmt.setString(5, filter.IN_CBANK);
             cstmt.setString(6, filter.IN_STVAL.trim());
             cstmt.setString(7, filter.IN_TTRAN.trim());
@@ -600,6 +601,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
+                    beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
                     beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
@@ -721,6 +723,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
+                    beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
                     beanTkt.strFormatDate = rst.getString("VALDATE").trim();
 
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
@@ -855,6 +858,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
+                    beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
 
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {

@@ -479,7 +479,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         this.beanProMasterTicket = {};
         this.beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
         this.beanProMasterTicket.IN_FORMA = strTkt.substr(4, 4);
-        this.beanProMasterTicket.IN_SERIE = strTkt.substr(8, 6);
+        this.beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
         this.beanProMasterTicket.IN_SEQ = '00';
         
         prototypeProgram.view = 'payments-sales-reconciliation-form';
@@ -2165,10 +2165,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         var strTkt = data.strTicket;
 
         this.beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
-        this.beanProMasterTicket.IN_FORMA = strTkt.substr(3, 4);
-        this.beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
+        this.beanProMasterTicket.IN_FORMA = strTkt.substr(4, 4);
+        this.beanProMasterTicket.IN_SERIE = strTkt.substr(8, 6);
         this.beanProMasterTicket.IN_SEQ = '00';
-
+        console.log(this.beanProMasterTicket);
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
