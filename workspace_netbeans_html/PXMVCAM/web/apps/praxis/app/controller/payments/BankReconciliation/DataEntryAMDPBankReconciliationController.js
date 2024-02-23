@@ -384,6 +384,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(942);
             Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(944);
             Ext.getCmp(prototype.id + '-vacioComment').show();
+            this.hiddenByMatch()
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
             Ext.getCmp(prototype.id + '-labelScan').show();
@@ -1102,6 +1103,23 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 );
         //meDE.getDataGrid(meDE.beanResult);
         this.calcularMontos();
+    },
+    hiddenByMatch: function (){
+        Ext.getCmp(prototype.id + '-btnClearCustom').hide();
+        $('.x-tab-top:contains("Blocked")').hide();
+    },
+    onWindowNormal: function (){
+        if( this.bean.STVAL === '1' || this.bean.STVAL === '5' ){
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+            
+        }else{
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
+            
+        }
+    },
+    onWindowBlocked: function (){
+        Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+        
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {

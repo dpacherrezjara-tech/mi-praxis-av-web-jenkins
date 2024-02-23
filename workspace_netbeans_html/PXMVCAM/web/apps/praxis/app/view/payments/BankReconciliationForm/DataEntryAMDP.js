@@ -1423,11 +1423,27 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             //margin: '4 4 4 4',
                                             iconCls: 'prx-icon-clear',
                                             tooltip: 'Clean',
+                                            style: {
+                                                background: '#EFE5E5' 
+                                            },
                                             listeners: {
                                                 click: 'clear_keyDownHandler'
                                             }
 
                                         },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            id: prototype.id + '-btnClearCustom',
+                                            //margin: '4 4 4 4',
+                                            iconCls: 'prx-icon-image-trash',
+                                            tooltip: 'Clean Detail',
+                                            
+                                            listeners: {
+                                                click: 'clear_tableNormal'
+                                            }
+                                        }
                                     ]
                                 },
                                 {
@@ -1622,6 +1638,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     xtype: 'panel',
 //                                                    id: prototype.id + '-SalesAnalysis_tab',
                                                     title: 'Normal',
+                                                    listeners: {
+                                                        activate: 'onWindowNormal'
+                                                    },
+                                                    
                                                     items: [
                                                         {
                                                             xtype: 'panel',
@@ -2006,6 +2026,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     xtype: 'panel',
 //                                                    id: prototype.id + '-FlownAnalysis_tab',
                                                     title: 'Blocked',
+                                                    listeners: {
+                                                        activate: 'onWindowBlocked'
+                                                    },
                                                     items: [
                                                         {
                                                             xtype: 'panel',
@@ -2147,8 +2170,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             ]
                                                         },
                                                     ]
-                                                }
-                                                
+                                                },
+                                                                                     
                                             ]
                                         },
 //                                        {
@@ -2695,27 +2718,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         
                                     ]
                                 },
-                                {
-                                    xtype: 'panel',
-                                    layout: 'hbox',
-                                    border: false,
-                                    margin: '0 0 0 300',
-                                    //bodyStyle: 'background:#efe5e5;',
-                                    items: [
-                                        {
-                                            xtype: 'button',
-                                            width: 25,
-                                            margin: '0 0 0 718',
-                                            id: prototype.id + '-btnClearCustom',
-                                            //margin: '4 4 4 4',
-                                            iconCls: 'prx-icon-clear',
-                                            tooltip: 'Clean',
-                                            listeners: {
-                                                click: 'clear_tableNormal'
-                                            }
-                                        }
-                                    ]
-                                },
+                                
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -2750,13 +2753,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                             fontSize: '11',
                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                             width: 180,
-                            margin: '8 2 4 180'
+                            margin: '8 2 4 19'
                         },
                         {
                             xtype: 'panel',
                             layout: 'vbox',
                             border: false,
-                            margin: '0 2 0 180',
+                            margin: '0 2 0 30',
                             items: [
                                 {
                                     xtype: 'panel',
