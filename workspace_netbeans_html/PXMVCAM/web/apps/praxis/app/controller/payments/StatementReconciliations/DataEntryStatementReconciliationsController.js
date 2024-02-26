@@ -200,35 +200,45 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     calcularDiferencias: function () {
         console.log('calcular diferencias');
         var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        var model = grid.getStore().getModel();
-        var suma = 0;
-        grid.getStore().each(function (record) {
-            suma += record.get('NETO');
-        });
-        var diff = Math.abs(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
-        console.log(diff);
 
-        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         var store = grid.getStore();
-        var records = store.getRange();
-        this.desmarcarRegistros(records);
-        if (diff !== 0) {
-            var timeout = 6000; // 6 segundos
-            var startTime = new Date().getTime();
+        var calculateButton = this.lookupReference('calculateButton');
 
-            var findCombinationsWithTimeout = function () {
-                var currentTime = new Date().getTime();
-                if (currentTime - startTime < timeout) {
-                    this.findCombinations(records, 0, 0, [], diff);
-                } else {
-                    console.log('Tiempo límite alcanzado. La búsqueda se ha interrumpido.');
-                }
-            }.bind(this);
+        if (store.getCount() > 0 && store.getCount() < 22) {
 
-            setTimeout(findCombinationsWithTimeout, 0);
-        } else {
+            var model = grid.getStore().getModel();
+            var suma = 0;
+            grid.getStore().each(function (record) {
+                suma += record.get('NETO');
+            });
+            var diff = Math.abs(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
+            console.log(diff);
+
+            var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+            var store = grid.getStore();
+            var records = store.getRange();
             this.desmarcarRegistros(records);
+            if (diff !== 0) {
+                var timeout = 6000; // 6 segundos
+                var startTime = new Date().getTime();
+
+                var findCombinationsWithTimeout = function () {
+                    var currentTime = new Date().getTime();
+                    if (currentTime - startTime < timeout) {
+                        this.findCombinations(records, 0, 0, [], diff);
+                    } else {
+                        console.log('Tiempo límite alcanzado. La búsqueda se ha interrumpido.');
+                    }
+                }.bind(this);
+
+                setTimeout(findCombinationsWithTimeout, 0);
+            } else {
+                this.desmarcarRegistros(records);
+            }
+        } else {
+//            this.desmarcarRegistros(records);
         }
+
     },
 
     findCombinations: function (records, index, sum, combination, diff) {
@@ -409,7 +419,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                         });
                         Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                         meDE.calcularMontos();
-//                    meDE.calcularDiferencias();
+                    meDE.calcularDiferencias();
                     } else {
                         global.Msg({msg: res.Mensaje});
                     }
