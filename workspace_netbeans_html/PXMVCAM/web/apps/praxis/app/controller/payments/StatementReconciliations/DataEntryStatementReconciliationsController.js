@@ -249,22 +249,73 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.findCombinations(records, index + 1, sum, combination, diff);
     },
 
-    findCombinations: function (records, index, sum, combination, diff) {
-        if (sum === diff) {
-            this.mostrarCombinacionValida(combination, diff);
-            combination.forEach(function (record) {
-                record.set('isInValidCombination', true); // Marcar los registros de combinación válida
-            });
-            return;
+    getExcel: function (records, index, sum, combination, diff) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Excel ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportExcelEntry();
+                }
+            }
+        });
+    },
+    exportExcelEntry: function () {
+        let miGrilla2 = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        let datos2 = {};
+        if (miGrilla2) {
+            datos2 = this.procesarRegistros(miGrilla2);
+//            console.log(datos2);
+            if (Array.isArray(datos2) && datos2.length === 0) {
+                // Nadine
+            } else {
+                this.enviarDatosAlServidor(datos2);
+            }
+        } else {
+            console.error('No se pudo encontrar la grilla con el ID especificado.');
         }
-        if (index >= records.length || sum > diff) {
-            return;
-        }
+    },
+    enviarDatosAlServidor: function (datos) {
+        Ext.Ajax.request({
+            url: prototype.url + '/getXLSXEntry',
+            method: 'POST',
+            params: {
+                beanString: datos
+            },
+            responseType: 'blob', // Especifica que esperamos un Blob como respuesta
+            success: function (response) {
+                console.log(response);
+                console.log(response.responseText);
+                var blob = new Blob([response.responseText], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                var url = window.URL.createObjectURL(blob);
 
-        // Usa 'this.findCombinations' para llamar a la función recursiva
-        this.findCombinations(records, index + 1, sum + records[index].get('NETO'), combination.concat(records[index]), diff);
-        // Pasa el argumento 'diff' a la función recursiva
-        this.findCombinations(records, index + 1, sum, combination, diff);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = meDE.obtenerNombreArchivo(response); // Establece el nombre del archivo
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            },
+
+            failure: function (response) {
+                console.error('Error al enviar los datos al servidor:', response.statusText);
+            }
+        });
+    },
+
+// Función para obtener el nombre del archivo de la respuesta
+    obtenerNombreArchivo: function (response) {
+        var disposition = response.getResponseHeader('Content-Disposition');
+        var matches = /filename="?([^"]+)"?/.exec(disposition);
+        if (matches !== null && matches[1]) {
+            return matches[1];
+        } else {
+            return 'archivo.xlsx'; // Nombre predeterminado si no se puede obtener del encabezado
+        }
     },
 
     mostrarCombinacionValida: function (combination, diff) {
@@ -495,7 +546,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             // Llamada a la función procesarRegistros con la grilla como parámetro
             console.error('Entró al procesar Registros');
             datos = this.procesarRegistros(miGrilla);
-            console.log(datos);
+//            console.log(datos);
             if (Array.isArray(datos) && datos.length === 0) {
                 // Nadine
             } else {
@@ -536,35 +587,31 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     //</editor-fold>
 
     procesarRegistros: function (grilla, miGrillaAdj) {
-        // Crear una lista para almacenar los datos
-        let listaDeDatos = [];
-        // Recorrer la grilla y agregar los datos a la lista
+        var listaDeDatos = [];
         grilla.getStore().each(function (record) {
 
             let registro = {
-
                 CODEBANK: Ext.getCmp(prototype.id + '-de-txtCODEBANK').getValue(),
                 VALDATE: Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue(),
                 UNICODE: Ext.getCmp(prototype.id + '-de-txtUNICODE').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
-                SDATE: record.get('SDATE'),
-                SAGENT: record.get('SAGENT'),
-                TERMI: record.get('TERMI'),
-                SCARDN: record.get('SCARDN'),
-                SAUTHOC: record.get('SAUTHOC'),
+//                descSTVAL: record.get('descSTVAL').trim(),
+                SDATE: record.get('SDATE').trim(),
+                SAGENT: record.get('SAGENT').trim(),
+                TERMI: record.get('TERMI').trim(),
+                CARDTYPE: record.get('CARDTYPE').trim(),
+                SCARDN: record.get('SCARDN').trim(),
+                SAUTHOC: record.get('SAUTHOC').trim(),
+                SCURRENCY: 'COP',
+                TOTAL: record.get('TOTAL'),
                 NETO: record.get('NETO'),
-                USCR: Ext.getCmp(prototype.id + '-txtUSCR').getValue(),
-                FECR: Ext.getCmp(prototype.id + '-txtFECR').getValue(),
-                HOCR: Ext.getCmp(prototype.id + '-txtHOCR').getValue(),
-                USUP: Ext.getCmp(prototype.id + '-txtUSUP').getValue(),
-                FEUP: Ext.getCmp(prototype.id + '-txtFEUP').getValue(),
-                HOUP: Ext.getCmp(prototype.id + '-txtHOUP').getValue(),
+                RED: record.get('RED').trim()
             };
-            console.log(registro);
+//            console.log(registro);
             listaDeDatos.push(registro);
         });
         // Convertir la lista a JSON
-        let datosEnJSON = Ext.JSON.encode(listaDeDatos);
+        var datosEnJSON = Ext.JSON.encode(listaDeDatos);
         return datosEnJSON;
     },
     validacionInsert: function (beanTemp) {

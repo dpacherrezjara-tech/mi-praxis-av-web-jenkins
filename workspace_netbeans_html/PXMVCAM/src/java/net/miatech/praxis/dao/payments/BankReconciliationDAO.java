@@ -985,6 +985,7 @@ public class BankReconciliationDAO {
                 objRtn.FREGLA = rs01.getString("FREGLA");
                 objRtn.MERCHNC = rs01.getString("MERCHNC");
                 objRtn.PRDA = rs01.getString("PRDA");
+                objRtn.SDATEC = rs01.getString("SDATEC");
                 objRtn.PAYDATE = rs01.getString("PAYDATE");
                 objRtn.DATEC = rs01.getString("DATEC");
                 if (hmDescReglas.containsKey(rs01.getString("FREGLA").trim())) {
@@ -2382,7 +2383,7 @@ public class BankReconciliationDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.TDOC.trim());
-            cstmt.setString(3, filter.SDATE.trim());
+            cstmt.setString(3, filter.SDATEC.trim());
             cstmt.setString(4, filter.SCOUNTRY.trim());
             cstmt.setString(5, filter.SPNR.trim());
             cstmt.setString(6, filter.SCURRENCY.trim());

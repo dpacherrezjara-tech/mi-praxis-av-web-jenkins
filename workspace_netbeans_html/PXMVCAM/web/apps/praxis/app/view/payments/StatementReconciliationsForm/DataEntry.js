@@ -464,11 +464,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {xtype: 'tbspacer', width: 7},
                                         {
                                             xtype: 'label',
-                                            text: 'Value Date',
+                                            text: 'Unique Code',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             margin: '4 4 4 4',
-                                            width: 70
+                                            width: 90
                                         },
                                         {
                                             xtype: 'checkboxfield',
@@ -483,15 +483,25 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {
                                             xtype: 'button',
                                             width: 25,
-                                            margin: '4 4 4 890',
+                                            margin: '4 4 4 810',
+                                            iconCls: 'prx-icon-excel',
+                                            tooltip: 'Download excel',
+                                            listeners: {
+                                                click: 'getExcel'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            margin: '4 4 4 4',
                                             iconCls: 'prx-icon-add',
                                             tooltip: 'Calculate Differences',
-                                            hidden: true, 
+                                            hidden: true,
                                             reference: 'calculateButton',
                                             listeners: {
                                                 click: 'calcularDiferencias'
                                             }
-                                        }
+                                        },
                                     ]
                                 },
                                 {
@@ -576,7 +586,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Author.<br>Code', dataIndex: 'SAUTHOC', width: 80,
+                                                                    {text: 'Auth.<br>Code', dataIndex: 'SAUTHOC', width: 80,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -587,7 +597,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                             {text: 'Curr', dataIndex: 'SCURRENCY', width: 60,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
-                                                                    return 'COP';
+                                                                    value = 'COP';
+                                                                    return value;
                                                                 }
                                                             },
                                                             {text: 'Total', dataIndex: 'TOTAL', width: 110,

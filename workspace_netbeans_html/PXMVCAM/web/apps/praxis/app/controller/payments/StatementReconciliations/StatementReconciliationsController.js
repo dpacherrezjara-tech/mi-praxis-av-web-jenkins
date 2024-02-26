@@ -622,7 +622,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanDetBankByS.IN_DATE = rowData.data.IN_DATE;
             this.beanDetBankByS.IN_SDATE = rowData.data.SDATE;
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
-
+            this.beanDetBankByS.IN_SDATEE = rowData.data.IN_SDATE;
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
             this.setGridDataDetBankS();
 
@@ -673,7 +673,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDayByS.IN_DATE = rowData.data.IN_DATE;
         this.beanDayByS.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK;
-        this.beanDay.IN_SDATEE = rowData.data.IN_SDATE;
+        this.beanDayByS.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_STVAL = rowData.data.IN_STVAL;
         console.log(this.beanDayByS, 'this.beanDay')
         me.paramsDetail.beanString = JSON.stringify(this.beanDayByS);

@@ -37,6 +37,7 @@ public class A2290 {
     public String RED = "";
     public String DESAGENT = "";
     public String SDATE = "";
+    public String SDATEC = "";
     public String SDATEVTA = "";
     public String SPAYMENT = "";
     public String SCARCOD = "";
