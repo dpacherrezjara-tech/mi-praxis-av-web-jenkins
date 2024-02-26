@@ -1443,6 +1443,19 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             listeners: {
                                                 click: 'clear_tableNormal'
                                             }
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            id: prototype.id + '-btnRefresh',
+                                            //margin: '4 4 4 4',
+                                            iconCls: 'prx-icon-refresh',
+                                            tooltip: 'Refresh Detail',
+                                            
+                                            listeners: {
+                                                click: 'allRefreshDataEntryAMDP'
+                                            }
                                         }
                                     ]
                                 },

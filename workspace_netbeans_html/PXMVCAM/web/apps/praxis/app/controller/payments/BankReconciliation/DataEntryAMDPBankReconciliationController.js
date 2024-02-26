@@ -63,11 +63,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         }
 
         // Obtener el componente del grid
-        var gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        var gridComponentBlockedon = Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked');
+        let gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        let gridComponentBlockedon = Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked');
         let dataGrid = gridComponentNormalon.getStore().getData().items
         let dataGridBl = gridComponentBlockedon.getStore().getData().items
-        var constructorExcluir = {}.constructor; 
+        let constructorExcluir = {}.constructor; 
         let arrayConstructor = dataGrid.filter(function(elemento) {
             return elemento.constructor !== constructorExcluir;
         });
@@ -91,6 +91,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let listAux = {}
         let listAuxBl = {}
         console.log(arrayNormal, 'arrayNormal')
+        console.log(arrayBlocked, 'arrayBlocked')
         for( let value of arrayNormal){
             listAux[`${value.STVAL}#${value.descTDOC}#${value.A720AGENTE}#${value.A720FECVTA}#${value.A720PNR}#${value.A1531TKT}#${value.A1531TTARJ}#${value.A1531NREF}#${value.A1531CAPL}#${value.A1531MFOP}#${value.A1531VFOP}#${value.tot_VFOP}`] = "repetido"
         }
@@ -1120,6 +1121,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     onWindowBlocked: function (){
         Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
         
+    },
+    allRefreshDataEntryAMDP: function (){
+        console.log('nikaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
+            this.onSearchCompleteDetail();
+        } else {
+            this.onSearchPendingDetail();
+        }
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
