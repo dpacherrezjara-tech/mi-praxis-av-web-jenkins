@@ -2814,6 +2814,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720FECVTA = rst.getString("SDATE").trim();
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
+                beanTkt.STVAL = rst.getString("STVAL").trim();
 
                 lstData.add(beanTkt);
             }

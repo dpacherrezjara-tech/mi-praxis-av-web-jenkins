@@ -577,8 +577,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     click: 'onGridDetDetails'
                                                 },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var isMatch = record.data.STVAL === 'Match' || record.data.STVAL === 'Match Manual';
-                                                    if (isMatch) {
+                                                    
+                                                    if (record.data.STVAL === 'Match' || record.data.STVAL === 'Match Manual') {
                                                         metaData.style = "text-align:center;color:#057ECB";
                                                         value = '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                     } else {

@@ -1049,28 +1049,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         console.log(me.panelActual);
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxDetBank':
-                global.getFile(prototype.url + '/getXLSXbank?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXbank?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             case  '-boxDetDay':
-                global.getFile(prototype.url + '/getXLSXDay?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXDay?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             case  '-boxDetLiquida':
-                global.getFile(prototype.url + '/getXLSXLiquida?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXLiquida?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-            case  '-boxDetBankByS':
-                global.getFile(prototype.url + '/getXLSXBankByS?beanString=' + me.paramsDetail.beanString);
-                break;
-//            case  '-boxDetDayByS':
-//                global.getFile(prototype.url + '/getXLSXDayByS?beanString=' + me.paramsDetail.beanString);
-//                break;
             case  '-boxDetLiquidaByS':
-                global.getFile(prototype.url + '/getXLSXLiquidaByS?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXLiquidaByS?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-            case  '-boxByLiquida':
-                global.getFile(prototype.url + '/getXLSXByLiquida?beanString=' + me.paramsDetail.beanString);
+            case '-panelGridDetBankByS':
+                global.getFile(prototype.url + '/getXLSXBankByS?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+            case '-panelGridDetDayByS':
+                global.getFile(prototype.url + '/getXLSXDayByS?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
         }
     },
