@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     beanResult: {},
     lstCountry: [],
     searchParams: {},
+    beanDetails: {},
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
@@ -42,10 +43,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(985);
+            Ext.getCmp(prototype.id + '-panelScanCard').hide();
         } else {
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1025);
-
+            Ext.getCmp(prototype.id + '-panelScanCard').show();
         }
         this.setValue('de-txtDATEC', this.beanResult.DATEC);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
@@ -269,53 +271,73 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             modal: true,
             fn: function (btn) {
                 if (btn === 'ok') {
-                    this.exportExcelEntry();
+                    this.exportExcel();
                 }
             }
         });
     },
-    exportExcelEntry: function () {
-        let miGrilla2 = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        let datos2 = {};
-        if (miGrilla2) {
-            datos2 = this.procesarRegistros(miGrilla2);
-//            console.log(datos2);
-            if (Array.isArray(datos2) && datos2.length === 0) {
-                // Nadine
-            } else {
-                this.enviarDatosAlServidor(datos2);
-            }
+//    exportExcelEntry: function () {
+//        let miGrilla2 = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//        let datos2 = {};
+//        if (miGrilla2) {
+//            datos2 = this.procesarRegistros(miGrilla2);
+////            console.log(datos2);
+//            if (Array.isArray(datos2) && datos2.length === 0) {
+//                // Nadine
+//            } else {
+//                this.enviarDatosAlServidor(datos2);
+//            }
+//        } else {
+//            console.error('No se pudo encontrar la grilla con el ID especificado.');
+//        }
+//    },
+    exportExcel: function () {
+        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
+        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        this.beanDetails.IN_UNICODE = meDE.bean.data.UNICODE;
+        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
+        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
+        this.beanDetails.IN_RED = meDE.bean.data.RED;
+        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
+            this.beanDetails.IN_STVAL = '1';
         } else {
-            console.error('No se pudo encontrar la grilla con el ID especificado.');
+            this.beanDetails.IN_STVAL = 'P';
         }
-    },
-    enviarDatosAlServidor: function (datos) {
-        Ext.Ajax.request({
-            url: prototype.url + '/getXLSXEntry',
-            method: 'POST',
-            params: {
-                beanString: datos
-            },
-            responseType: 'blob', // Especifica que esperamos un Blob como respuesta
-            success: function (response) {
-                console.log(response);
-                console.log(response.responseText);
-                var blob = new Blob([response.responseText], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-                var url = window.URL.createObjectURL(blob);
+        this.beanDetails.BANDOC
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
+        console.log(this.beanDetails);
+        global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
 
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = meDE.obtenerNombreArchivo(response); // Establece el nombre del archivo
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            },
 
-            failure: function (response) {
-                console.error('Error al enviar los datos al servidor:', response.statusText);
-            }
-        });
     },
+//    enviarDatosAlServidor: function (datos) {
+//        Ext.Ajax.request({
+//            url: prototype.url + '/getXLSXEntry',
+//            method: 'POST',
+//            params: {
+//                beanString: datos
+//            },
+//            responseType: 'blob', // Especifica que esperamos un Blob como respuesta
+//            success: function (response) {
+//                console.log(response);
+//                console.log(response.responseText);
+//                var blob = new Blob([response.responseText], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+//                var url = window.URL.createObjectURL(blob);
+//
+//                var a = document.createElement('a');
+//                a.href = url;
+//                a.download = meDE.obtenerNombreArchivo(response); // Establece el nombre del archivo
+//                document.body.appendChild(a);
+//                a.click();
+//                window.URL.revokeObjectURL(url);
+//            },
+//
+//            failure: function (response) {
+//                console.error('Error al enviar los datos al servidor:', response.statusText);
+//            }
+//        });
+//    },
 
 // Función para obtener el nombre del archivo de la respuesta
     obtenerNombreArchivo: function (response) {
@@ -419,7 +441,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                         });
                         Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                         meDE.calcularMontos();
-                    meDE.calcularDiferencias();
+                        meDE.calcularDiferencias();
                     } else {
                         global.Msg({msg: res.Mensaje});
                     }
