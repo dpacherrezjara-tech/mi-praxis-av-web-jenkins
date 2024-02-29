@@ -2850,7 +2850,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                                 columns: [
                                                                     {
-                                                                        text: 'Status', dataIndex: 'strFlagStat', width: 50,
+                                                                        text: 'Status', dataIndex: 'STVAL', width: 50,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';

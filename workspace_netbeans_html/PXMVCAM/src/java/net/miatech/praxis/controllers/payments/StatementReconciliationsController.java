@@ -12,15 +12,18 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.spring.UserView;
+import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
+import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.utils.Functions;
@@ -2280,6 +2283,57 @@ public class StatementReconciliationsController extends BaseController {
         }
 
     }
+    
+//    @RequestMapping(value = "/getExcelDataEntry")
+//    public @ResponseBody
+//    String getExcelDataEntry(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+//        A2290Filter filter = new A2290Filter();
+//        HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
+//        boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
+//        try {
+//            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+//            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+//
+//            if (!dw_excel) {
+//                filter.page.PAGROW = 20;
+//                start = (start != 0 ? start : 0);
+//                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+//            } else {
+//                filter.page.PAGROW = -1;
+//                filter.page.PAGNUM = 1;
+//            }
+//
+//            LoadConciliationLogic logic = new LoadConciliationLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//            List<A2290Filter> listaData = logic.loadPX263SQP05116(filter);
+//
+//            if (dw_excel) {
+//                ExportUtil.exportFields(request, response, listaData);
+////                map.put("nameExcel", nameExcel);
+//            } else {
+//                map.put("success", true);
+//                map.put("data", listaData);
+//                map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
+//            }
+//
+////            map.put("success", true);
+////            map.put("lstDetTkyByStval", listaData);
+////            map.put("lstError", listaError);
+//        } catch (SQLException e) {
+//            map.put("success", false);
+//            map.put("sesion", SESSION_CONTROL);
+//        } catch (Exception e) {
+//            map.put("success", false);
+//            map.put("sesion", SESSION_CONTROL);
+//        }
+//        return (dw_excel) ? null : (new Gson().toJson(map));
+//    }
     
     @RequestMapping(value = "/searchBean")
     public @ResponseBody

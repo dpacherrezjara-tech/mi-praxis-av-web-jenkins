@@ -877,7 +877,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                 if (win.getValue('txtAUTHNBR').trim().length === 6) {
                     this.searchDetTARJETA(this.beanDetailTar);
-                } else {
+                }else if( win.getValue('txtAUTHNBR').trim().length === 4 ){
+                    this.searchDetTARJETA(this.beanDetailTar);
+                }else {
                     win.setValue('txtTicket', '');
                     global.Msg({msg: 'Authorization Number must contain 6 digits.'});
                 }
@@ -935,7 +937,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 console.log(this.beanDetailTar);
 
                 if (win.getValue('txtSAGENT').trim().length === 8) {
-                    this.searchDetTARJETA(this.beanDetailTar);
+                    this.searchBySAGENT(this.beanDetailTar);
                 } else {
                     win.setValue('txtSAGENT', '');
                     global.Msg({msg: 'Agent must contain 8 digits.'});
