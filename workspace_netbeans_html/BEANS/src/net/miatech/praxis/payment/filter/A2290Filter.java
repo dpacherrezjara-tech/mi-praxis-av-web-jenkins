@@ -114,6 +114,7 @@ public class A2290Filter extends A2290 {
     public String TIPOTAR = "";
     public String FLOADE = "";
     public String LDATEE = "";
+    public String CFUENTE = "";
     public String STATT = "";
     public String DATET = "";
     public String TVENTA = "";

@@ -832,6 +832,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
         this.beanDetDay.TRANC = rowData.data.TRANC;
         this.beanDetDay.DATEC = rowData.data.DATEC;
+        this.beanDetDay.BANDOC = rowData.data.BANDOC;
         console.log(rowData.data);
 
         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
