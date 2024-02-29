@@ -43,7 +43,7 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             padding: '1',
                             border: true,
-                            height: 560,
+                            height: 860,
                             width: 772,
                             layout: {
                                 type: 'vbox',
@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
-                                    height: 256,
+                                    height: 556,
                                     width: 772,
                                     hidden: false,
                                     columnLines: true,

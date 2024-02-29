@@ -368,7 +368,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             id: prototype.id+'-txtAUTHNBR',     
                             fieldStyle: 'text-align:center',
                             enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
+                            maskRe: /[a-zA-Z0-9]/,      
                             maxLength: 6,
                             width: 120,
                             enableKeyEvents: true,
@@ -491,6 +491,30 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             enableKeyEvents: true,
                             listeners:{
                                 keypress: 'BuscarPNR_keyDownHandler'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 25},
+                        {
+                            xtype: 'label',
+                            text: 'Agent: ',
+                            padding: '3 0',
+                            width: 40,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Agent'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id+'-txtSAGENT',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9]/,
+                            maxLength: 8,
+                            width: 70,
+                            enableKeyEvents: true,
+                            listeners:{
+                                keypress: 'BuscarSAGENT_keyDownHandler'
                             }
                         },
                         {xtype: 'tbspacer', width: 40},

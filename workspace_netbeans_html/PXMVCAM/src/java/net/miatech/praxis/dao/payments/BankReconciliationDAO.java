@@ -2660,7 +2660,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2673,6 +2673,8 @@ public class BankReconciliationDAO {
             cstmt.setString(4, filter.CARD2.trim());
             cstmt.setString(5, filter.SAUTHOC.trim());
             cstmt.setString(6, filter.SDATE.trim());
+            cstmt.setString(7, filter.SPNR.trim());
+            cstmt.setString(8, filter.SAGENT.trim());
 
             cstmt.execute();
 

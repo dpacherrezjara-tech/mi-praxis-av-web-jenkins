@@ -49,13 +49,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
         this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
         this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
+        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue()
+        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue()
         // Validación: Verificar si todos los campos son vacíos
         if (
                 !this.bean_scan.TICKET &&
                 !this.bean_scan.CARD1 &&
                 !this.bean_scan.CARD2 &&
                 !this.bean_scan.SAUTHOC &&
-                !this.bean_scan.SDATE
+                !this.bean_scan.SDATE &&
+                !this.bean_scan.SPNR &&
+                !this.bean_scan.SAGENT
                 ) {
             console.log("Todos los campos son vacíos. No se realizará la solicitud Ajax.");
             global.Msg({msg: 'Fields to Scan must be filled out'});
@@ -643,6 +647,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('txtCard22', '');
         this.setValue('txtApproval', '');
         this.setValue('txtFromDate', null);
+        this.setValue('txtScanPNR', null);
+        this.setValue('txtScanSAGENT', null);
+        
     },
     clear_tableNormal: function (){
         console.log('click clear')

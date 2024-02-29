@@ -93,7 +93,9 @@ public class LoadConciliationLogic {
     public List<A2290Filter> loadPX263SQP03986(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP03986(filter);
     }
-    
+    public List<A2290Filter> loadPX263SQP05116(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP05116(filter);
+    }
     public HashMap<String, List<A2290Filter>> loadPX263SQP00715(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00715(filter);
     }

@@ -3224,6 +3224,163 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 //</editor-fold>
                                             ]
                                         },
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-boxDetBySAGENT',
+                                            hidden: true,
+                                            width: '100%',
+                                            bodyStyle: 'background: transparent;',
+                                            border: false,
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'center'
+                                            },
+                                            defaults: {
+                                                border: false,
+                                                height: '100%'
+                                            },
+                                            items: [
+                                                
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDetBySAGENT',
+                                                    bodyStyle: 'background: transparent;',
+                                                    width: 1325,
+                                                    titleAlign: 'center',
+                                                    columnLines: true,
+                                                    enableColumnMove: false,
+                                                    /*features: [{
+                                                     ftype: 'summary'
+                                                     }],*/
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            resizable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Sale <br> Date', dataIndex: 'SDATE', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'PNR', dataIndex: 'SPNR', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Ticket', dataIndex: 'TICKET', width: 120,
+                                                                listeners: {
+                                                                    click: 'viewMasterTkt2'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "background-color:#d5f4d5;";
+                                                                    value = '<b>' + value + '</b>';
+                                                                    return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    resizable: true,
+                                                                    align: 'center',
+                                                                    border: true
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SCARCOD', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Number', dataIndex: 'SCARDN', width: 140,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Auth. Code', dataIndex: 'SAUTHOC', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Type', dataIndex: 'TDOC', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Seq', dataIndex: 'SEQ', width: 65,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Status', dataIndex: 'STVAL', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Src', dataIndex: 'FTE', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Agent <br> Code', dataIndex: 'SAGENT', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'TVENTA', dataIndex: 'TVENTA', width: 65,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Payment', dataIndex: 'SPAYMENT', width: 75,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sale <br> Amount MXN', dataIndex: 'SVFOP', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sale <br> Amount USD', dataIndex: 'SVFOPUSD', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                }
+                                                            },
+                                                        ]
+                                                    }
+                                                }
+                                                //</editor-fold>
+                                            ]
+                                        },
                                     ]
                                 },
                                 // <editor-fold defaultstate="collapsed" desc="boxPagDetail">

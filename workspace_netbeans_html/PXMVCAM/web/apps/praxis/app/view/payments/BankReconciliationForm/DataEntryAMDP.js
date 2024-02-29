@@ -587,22 +587,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 36
                                         },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Bank Code',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 64
-                                        },
-                                        {xtype: 'tbspacer', width: 5},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCODEBANK',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 48
-                                        },
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
@@ -626,16 +610,32 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 5},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtSAUTHOC',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 47
                                         },
-                                        {xtype: 'tbspacer', width: 5}
+                                        {xtype: 'tbspacer', width: 58},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Bank Code',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 64
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtCODEBANK',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 57
+                                        },
+                                        {xtype: 'tbspacer', width: 6},
                                     ]
                                 },
                                 {
@@ -1298,7 +1298,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     margin: '0 2 0 20',
                                     bodyStyle: 'background:#efe5e5;',
                                     items: [
-                                        {xtype: 'tbspacer', width: 7},
+                                        {xtype: 'tbspacer', width: 7, higth: 24},
                                         {
                                             xtype: 'label',
                                             text: 'Add Ticket',
@@ -1456,9 +1456,61 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             listeners: {
                                                 click: 'allRefreshDataEntryAMDP'
                                             }
-                                        }
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
                                     ]
                                 },
+                                
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelScanCard_2',
+                                    layout: 'hbox',
+                                    hidden: false,
+                                    border: false,
+                                    margin: '0 2 0 20',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7, hight: 24},
+                                        {
+                                            xtype: 'label',
+                                            text: 'PNR',
+                                            textAlign: 'center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '4 4 4 4',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtScanPNR',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maskRe: /[a-zA-Z0-9]/,
+                                            maxLength: 6,
+                                            width: 65,
+                                        },
+                                        {xtype: 'tbspacer', width: 38},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Agent',
+                                            textAlign: 'center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '4 4 4 4',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtScanSAGENT',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9/]/,
+                                            maxLength: 8,
+                                            width: 65,
+                                        },
+                                        {xtype: 'tbspacer', width: 850},
+                                    ]
+                                },    
                                 {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelAdjustment',
@@ -1760,7 +1812,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: 'Author.<br>Code', dataIndex: 'A1531CAPL', width: 65,
+                                                                                    { sortable: true, text: 'Author.<br>Code', dataIndex: 'A1531CAPL', width: 65,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";

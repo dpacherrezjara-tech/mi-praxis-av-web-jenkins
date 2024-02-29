@@ -1101,7 +1101,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Bussines', dataIndex: 'NEGOC', width: 70, align: 'center',
+                                                text: 'Business', dataIndex: 'NEGOC', width: 70, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
@@ -1766,7 +1766,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Bussines', dataIndex: 'NEGOC', width: 70, align: 'center', menuDisabled: true,
+                                                        text: 'Business', dataIndex: 'NEGOC', width: 70, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             return value;

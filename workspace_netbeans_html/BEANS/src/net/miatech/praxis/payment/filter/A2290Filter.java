@@ -54,6 +54,7 @@ public class A2290Filter extends A2290 {
     public String IN_COMENT = "";
     public String IN_TERMI = "";
     public String IN_AGENCY = "";
+    public String IN_SAGENT = "";
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
     public String NAME = "";

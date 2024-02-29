@@ -2706,7 +2706,7 @@ public class BankReconciliationController extends BaseController {
             CH2_6.setCellValue("Merchant");
             CH2_7.setCellValue("PNR");
             CH2_8.setCellValue("Agent");
-            CH2_9.setCellValue("Bussines");
+            CH2_9.setCellValue("Business");
             CH2_10.setCellValue("ID");
             CH2_11.setCellValue("Flag");
             CH2_12.setCellValue("Date");

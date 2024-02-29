@@ -100,7 +100,31 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 change: 'cbxDateFromMonth_changeHandler'
                             }
                         },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDateDay',
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            editable: false,
+                            autoSelect: false,
+                            enableKeyEvents: true,
+                            caseSensitive: true,
+                            hidden: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            emptyText: 'All',
+                            width: 70,
+                            anchor: '100%',
+                            listener: {
+                                change: 'onDateFromDaySelect',
+                                expand: 'eventSelectFromDay'
+                                
+                            }
+                        },
                         {xtype: 'tbspacer', width: 15},
+                        
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToYear',
@@ -136,6 +160,28 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             listConfig: {minWidth: 60},
                             maxLength: 3,
                             enforceMaxLength: true
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDateToDay',
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            editable: false,
+                            autoSelect: false,
+                            enableKeyEvents: true,
+                            caseSensitive: true,
+                            hidden: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            emptyText: 'All',
+                            width: 70,
+                            anchor: '100%',
+                            listener: {
+                                change: 'onDateToDaySelect',
+                                expand: 'eventSelectToDay'
+                            }
                         },
                         //</editor-fold>
                         {xtype: 'tbspacer', width: 30},
@@ -442,7 +488,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {xtype: 'tbspacer', width: 100},
                         {
                             xtype: 'label',
-                            text: 'Bussines:',
+                            text: 'Business:',
                             padding: '3 0',
 //                            hidden:true,
                             width: 65

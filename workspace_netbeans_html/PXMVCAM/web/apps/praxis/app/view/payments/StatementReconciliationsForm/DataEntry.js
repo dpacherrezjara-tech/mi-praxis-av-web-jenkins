@@ -486,6 +486,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             margin: '4 4 4 810',
                                             iconCls: 'prx-icon-excel',
                                             tooltip: 'Download excel',
+                                            hidden: true,
+                                            listeners: {
+                                                click: 'getPruebaExcel'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            margin: '4 4 4 810',
+                                            iconCls: 'prx-icon-excel',
+                                            tooltip: 'Download excel',
                                             listeners: {
                                                 click: 'getExcel'
                                             }

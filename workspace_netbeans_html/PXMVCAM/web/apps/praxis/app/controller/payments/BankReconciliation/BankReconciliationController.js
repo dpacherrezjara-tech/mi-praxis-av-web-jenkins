@@ -88,6 +88,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             '#BankReconciliationForm-cmbDateToMonth': {
                 select: this.selectComboToMonth
             },
+            '#BankReconciliationForm-cmbDateDay': {
+                select: this.selectComboFromDay
+            },
+            '#BankReconciliationForm-cmbDateToDay': {
+                select: this.selectComboToDay
+            },
             '#BankReconciliationForm-chkADYEN': {
                 change: this.btnSearch_click
             },
@@ -122,12 +128,16 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
+        console.log(storeComboDataYear, 'comboToYear')
+        console.log(comboToYear, 'comboToYear')
     },
     selectComboFromMonth: function (obj) {
+        console.log(obj, 'obj from month')
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToMonth.setValue(obj.getValue());
     },
     selectComboToMonth: function (obj) {
+        console.log(obj, 'obj to month')
         var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
@@ -137,18 +147,75 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             }
         }
     },
+    selectComboFromDay: function (obj) {
+        console.log(obj, 'obj day from')
+        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        comboToDay.setValue(obj.getValue());
+        console.log('sdadsadadsad')
+    },
+    selectComboToDay: function (obj) {
+        var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        var comboFromDay = Ext.getCmp(prototype.id + '-cmbDateDay');
+        if (comboFromMonth.getValue() === comboToMonth.getValue()) {
+            if (obj.getValue() < comboFromDay.getValue()) {
+                comboFromDay.setValue(obj.getValue());
+            }
+        }
+        if(comboFromDay.getValue() === ''){
+            
+            comboFromDay.setValue(obj.getValue())
+        }
+    },
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
-
+        var month = this.fecha.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
         Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(win.getStoreYear(false));
         Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(win.getStoreYear(false));
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(win.getStoreMonth(true));
         Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateDay').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(win.getStoreDays(true));
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
+
+
+//        var storeComboDataYear = win.getStoreYear(false);
+//        var storeComboDataMonth = win.getStoreMonth(false);
+//        var storeComboDataDay = win.getStoreDays(true);
+//        
+//        var month = this.fecha.getMonth() + 1;
+//
+//        if (month < 10) {
+//            month = '0' + month;
+//        }
+//
+//        Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(storeComboDataYear);
+//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
+//        Ext.getCmp(prototype.id + '-cmbDateDay').bindStore(storeComboDataDay);
+//
+//        Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
+//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
+//        Ext.getCmp(prototype.id + '-cmbDateDay').setValue('');
+//
+//
+//        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
+//        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
+//        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
+//
+//        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
+//        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+//        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
@@ -274,6 +341,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             },
         });
 
+    },
+    onDateFromDaySelect: function (){
+        console.log('No hay breeeteeeeeeeeeeeeeeeeeeee')
+    },
+    onDateToDaySelect: function (){
+        console.log('Nikeeeeeeeeeeeeee')
+    },
+    eventSelectFromDay: function (){
+        console.log('Evento de fechaaa')
     },
     //</editor-fold>
     BuscarPNR_keyDownHandler: function (obj, e, eOpts) {
@@ -1013,7 +1089,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     obj.proxy.extraParams = me.paramsDetail;
                 },
                 load: function (obj) {
-                    var pag = Ext.getCmp(prototype.id + '-paggin6');
+                    var pag = Ext.getCmp(prototype.id + '-paggin8');
                     var pagData = pag.getPageData();
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -1036,7 +1112,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         });
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataDetDayByS').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin6').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin8').bindStore(storeGridDatas);
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="onGridDetCardNbrByS">
@@ -1687,7 +1763,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             case '-panelGridDataDetalle':
                 me.pagginActual = '-paggin4';
                 break;
-            case '-gridDataDetCardByS':
+            case '-panelGridDetCardByS':
                 me.pagginActual = '-paggin5';
                 break;
             case '-gridDataDetDayByS':
@@ -1696,7 +1772,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             case '-panelGridDataTicket':
                 me.pagginActual = '-paggin7';
                 break;
-        }
+            case '-panelGridDetDayByS':
+                me.pagginActual = '-paggin8';
+                break;
+        }   
     },
     /*     
      * Funciones para la paginacion     
@@ -1711,8 +1790,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         pag.movePrevious();
     },
     pagNext: function (obj, e) {
+        console.log(obj, e, 'nikaaaaa')
         this.getPaggin();
+        console.log(this.getPaggin(), 'this.getPaggin')
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        console.log(pag, 'pag')
         pag.moveNext();
     },
     pagLast: function (obj, e) {

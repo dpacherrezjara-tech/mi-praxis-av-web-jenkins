@@ -21,6 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanboxDetTktS2: {},
     beanboxDetTktS3: {},
     beanboxDetTktS4: {},
+    beanDetailAgent: {},
     init: function (view) {
         me = this;
         prototypeProgram.view = 'payments-sales-reconciliation-form';
@@ -201,6 +202,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             switch (e.getKey()) {
                 case 13:
                     if (win.getValue('txtCard1').trim().length === 6 && win.getValue('txtCard2').trim().length === 4) {
+                        
                         var selectedValuec = win.getValue('rbgType').rbgType;
                         switch (selectedValuec) {
                             case 'Sales':
@@ -220,10 +222,30 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
                         console.log(this.beanDetailTar);
                         this.searchDetTARJETA(this.beanDetailTar);
+                    }else if( win.getValue('txtCard1').trim().length === 0 && win.getValue('txtCard2').trim().length === 4 ){
+                        var selectedValuec = win.getValue('rbgType').rbgType;
+                        switch (selectedValuec) {
+                            case 'Sales':
+                                this.beanDetailTar.IN_TDOC = 'S';
+                                break;
+                            case 'Refund':
+                                this.beanDetailTar.IN_TDOC = 'R';
+                                break;
+                        }
+                        this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
+                        this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
+                        this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
+                        this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
+                        this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
+                        this.beanDetailTar.IN_CARDN1 = '';
+                        this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
+                        this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
+                        this.searchDetTARJETA(this.beanDetailTar);
                     } else {
+                        console.log()
                         win.setValue('txtCard1', '');
                         win.setValue('txtCard2', '');
-                        global.Msg({msg: 'CC Number must contain 10 digits.'});
+                        global.Msg({msg: 'CC Number must contain 6 first digits.'});
                     }
                     if (win.getValue('txtCard1').trim() !== '' && win.getValue('txtCard2').trim() !== '') {
                         win.enabled('cmbAFTE', false);
@@ -349,6 +371,74 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
         Ext.getCmp(prototype.id + '-gridDetByPNR').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin11').bindStore(storeGridDatas);
+    },
+    BuscarSAGENT_keyDownHandler: function (obj, e, eOpts) {
+        switch (e.getKey()) {
+            case 13:
+                if (Ext.getCmp(prototype.id + '-txtSAGENT').getValue().length === 8) {
+                    console.log('funciona campo')
+                    this.searchBySAGENT()
+                } else {
+                    global.Msg({
+                        msg: 'Agent must contain 8 digits.'
+                    });
+                }
+                break;
+        }
+    },
+    searchBySAGENT: function ( beanDetailAgent ){
+        var beanDetailAgent = {}
+        beanDetailAgent.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue()
+        console.log(beanDetailAgent, 'beanDetailAgent')
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchBySAGENT'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDetailAgent)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+//                    var pag = Ext.getCmp(prototype.id + '-paggin12');
+//                    var pagData = pag.getPageData();
+//                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+//                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+//                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                    me.selectedChild('vskMain', 'boxDetBySAGENT');
+                    win.lblUser_toolTip("Estructura: MPF100");
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    console.log(res, 'res')
+                    if (res.success) {
+                        if (obj.data.length > 0) {
+                            /*var obj = obj.data.items[0].data;
+                             if (obj.strFecFiltro === 'DATEC') {
+                             win.setText('adgSalDate', 'Reconciliation');
+                             } else {
+                             if (obj.IN_TDOC === 'R') {
+                             win.setText('adgSalDate', 'Refund');
+                             } else {
+                             win.setText('adgSalDate', 'Sales');
+                             }
+                             me.DateControl = obj.strDescripcion;
+                             win.setText('label_1', 'Sales Reconciliation ' + me.DateControl);
+                             win.setText('ahDetCtry', 'Sales Reconciliation ' + me.DateControl);
+                             win.setText('ahDetCard', 'Sales Reconciliation ' + me.DateControl);
+                             win.setText('ahDetDay', 'Sales Reconciliation ' + me.DateControl);
+                             }*/
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+                    } else
+//                        global.Msg({msg: res.sesion});
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDetBySAGENT').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin12').bindStore(storeGridDatas);
     },
     //<editor-fold defaultstate="collapsed" desc="onViewClick">
     gridDetCountry_clickHandler: function (column, e, row, column, x, rowData) {
@@ -646,7 +736,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
     //<editor-fold defaultstate="collapsed" desc="Options">
     btnSearch_click: function (obj, e) {
-        if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== ''
+        if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== '' || win.getValue('txtSAGENT').trim() !== ''
                 || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '') {
             if (win.getValue('txtTicket').trim() !== '') {
                 if (win.getValue('txtTicket').trim().length === 13) {
@@ -701,7 +791,33 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     }
                     console.log(this.beanDetailTar);
                     this.searchDetTARJETA(this.beanDetailTar);
-                } else {
+                } else if( win.getValue('txtCard1').trim().length === 0 && win.getValue('txtCard2').trim().length === 4){
+                    var selectedValuec = win.getValue('rbgType').rbgType;
+                    switch (selectedValuec) {
+                        case 'Sales':
+                            this.beanDetailTar.IN_TDOC = 'S';
+                            break;
+                        case 'Refund':
+                            this.beanDetailTar.IN_TDOC = 'R';
+                            break;
+                    }
+                    this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
+                    this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
+                    this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
+                    this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
+                    this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
+                    this.beanDetailTar.IN_CARDN1 = '';
+                    this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
+                    this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
+                    if (win.getValue('chkADYEN')) {
+                        this.beanDetailTar.IN_ADYEN = 'Y';
+                    } else {
+                        this.beanDetailTar.IN_ADYEN = '';
+                    }
+                    
+                    this.searchDetTARJETA(this.beanDetailTar);
+                    
+                }else {
                     alert("CC Number must contain 10 digits.");
                     txtCard1.text = '';
                     txtCard2.text = '';
@@ -797,6 +913,33 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 //				Alert.show("Authorization Number must contain 6 digits.");
                 //				txtAUTHNBR.text = '';
                 //			}
+            } else if( win.getValue('txtSAGENT').trim() !== '' ){
+                var selectedValuec = win.getValue('rbgType').rbgType;
+                switch (selectedValuec) {
+                    case 'Sales':
+                        this.beanDetailTar.IN_TDOC = 'S';
+                        break;
+                    case 'Refund':
+                        this.beanDetailTar.IN_TDOC = 'R';
+                        break;
+                }
+                this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
+                this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
+                this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
+                this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
+                this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
+                this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
+                this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
+                this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
+                this.beanDetailTar.IN_AUTHNBR = win.getValue('txtSAGENT');
+                console.log(this.beanDetailTar);
+
+                if (win.getValue('txtSAGENT').trim().length === 8) {
+                    this.searchDetTARJETA(this.beanDetailTar);
+                } else {
+                    win.setValue('txtSAGENT', '');
+                    global.Msg({msg: 'Agent must contain 8 digits.'});
+                }
             }
         } else {
             this.bean.strFecFiltro = win.getValue('cmbFecFiltro');
@@ -822,6 +965,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.bean.IN_AFTE = win.getValue('cmbAFTE');
             this.bean.IN_MERCHN = win.getValue('txtMERCHN').trim();
             this.bean.IN_AUTHNBR = win.getValue('txtAUTHNBR').trim();
+            this.bean.IN_SAGENT = win.getValue('txtSAGENT').trim();
             if (win.getValue('chkADYEN')) {
                 this.bean.IN_ADYEN = 'Y';
             } else {
@@ -898,6 +1042,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 break;
             case prototype.id + '-boxDetTktMatch':
                 global.getFileExcelPost('searchDetTktByStval', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktMatch').config.columns.items);
+                break;
+            case prototype.id + '-boxDetBySAGENT':
+                console.log(me.beanDetailAgent, 'me.beanDetailAgent')
+                var beanDetailAgent = {}
+                beanDetailAgent.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue()
+                global.getFileExcelPost('searchBySAGENT', JSON.stringify(beanDetailAgent), Ext.getCmp(prototype.id + '-gridDetBySAGENT').config.columns.items);
                 break;
             default:
                 break;
@@ -2015,8 +2165,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     //</editor-fold>
 
     searchDetTARJETA: function (beanDetailTar) {
+        console.log(beanDetailTar, 'beanDetailTar')
         me.f_boxDetTktS = '3';
         me.beanboxDetTktS3 = beanDetailTar;
+        console.log(me.beanboxDetTktS3, 'me.beanboxDetTktS3')
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
                 url: prototype.url + '/searchDetTARJETA'
@@ -2273,6 +2425,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 return Ext.getCmp(prototype.id + '-paggin10');
             case prototype.id + '-boxDetByPNR':
                 return Ext.getCmp(prototype.id + '-paggin11');
+            case prototype.id + '-boxDetBySAGENT':
+                return Ext.getCmp(prototype.id + '-paggin12');
             default:
                 return null;
         }

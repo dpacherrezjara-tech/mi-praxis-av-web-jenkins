@@ -276,20 +276,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             }
         });
     },
-//    exportExcelEntry: function () {
-//        let miGrilla2 = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-//        let datos2 = {};
-//        if (miGrilla2) {
-//            datos2 = this.procesarRegistros(miGrilla2);
-////            console.log(datos2);
-//            if (Array.isArray(datos2) && datos2.length === 0) {
-//                // Nadine
-//            } else {
-//                this.enviarDatosAlServidor(datos2);
-//            }
-//        } else {
-//            console.error('No se pudo encontrar la grilla con el ID especificado.');
-//        }
+//    getPruebaExcel: function () {
+//       global.getFileExcelPost('getXLSXEntry', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktMatch').config.columns.items);
 //    },
     exportExcel: function () {
         this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
