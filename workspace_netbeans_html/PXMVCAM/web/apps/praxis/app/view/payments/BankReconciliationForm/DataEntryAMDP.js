@@ -1842,6 +1842,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 }
                                                                             },
+//                                                                            {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,hidden:true,
+                                                                            {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                }
+                                                                            },
                                                                             {
                                                                                 sortable: false,
                                                                                 xtype: 'actioncolumn',

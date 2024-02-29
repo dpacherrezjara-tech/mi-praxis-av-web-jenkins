@@ -846,7 +846,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
+                BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                DATEC: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
 
                         // Agrega más campos según sea necesario
             };
@@ -876,7 +877,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     ASAGENT: record.get('A720AGENTE'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ATRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(),
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
-                    BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue()
+                    BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
+                    CFUENTE: record.get('CFUENTE') ///CFUENTE
 
                             // Agrega más campos según sea necesario
                 };
