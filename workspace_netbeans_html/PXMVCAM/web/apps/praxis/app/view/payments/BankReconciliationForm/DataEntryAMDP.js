@@ -1460,7 +1460,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 5},
                                     ]
                                 },
-                                
                                 {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelScanCard_2',
@@ -1842,8 +1841,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 }
                                                                             },
-//                                                                            {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,hidden:true,
-                                                                            {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,
+                                                                            {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,hidden:true,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     return value;

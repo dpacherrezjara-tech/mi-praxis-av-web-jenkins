@@ -150,7 +150,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 A1531CAPL : item.A1531CAPL,
                                 A1531MFOP : item.A1531MFOP,
                                 A1531VFOP : item.A1531VFOP,
-                                tot_VFOP : item.tot_VFOP
+                                tot_VFOP : item.tot_VFOP,
+                                CFUENTE : item.CFUENTE,
                             })
                     
                             
@@ -174,7 +175,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 A1531CAPL : item.A1531CAPL,
                                 A1531MFOP : item.A1531MFOP,
                                 A1531VFOP : item.A1531VFOP,
-                                tot_VFOP : item.tot_VFOP
+                                tot_VFOP : item.tot_VFOP,
+                                CFUENTE : item.CFUENTE,
                             })
                             
                             console.log(lstNormal, 'lstNormalAfterPush')
@@ -384,6 +386,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-mostrarComment').hide();
             Ext.getCmp(prototype.id + '-labelScan').hide();
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
+            Ext.getCmp(prototype.id + '-panelScanCard_2').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(942);
@@ -394,6 +397,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-mostrarComment').show();
             Ext.getCmp(prototype.id + '-labelScan').show();
             Ext.getCmp(prototype.id + '-panelScanCard').show();
+            Ext.getCmp(prototype.id + '-panelScanCard_2').show();
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
             Ext.getCmp(prototype.id + '-gridColumnAdj').show();
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
@@ -878,8 +882,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     ATRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(),
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
                     BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
-                    CFUENTE: record.get('CFUENTE') ///CFUENTE
-
+                    CFUENTE: record.get('CFUENTE'), ///CFUENTE
+                    ADATEC: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue()
                             // Agrega más campos según sea necesario
                 };
 

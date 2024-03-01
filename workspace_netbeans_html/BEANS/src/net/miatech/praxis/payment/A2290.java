@@ -121,6 +121,7 @@ public class A2290 {
     public String ASAUTHOC = "";
     public double AAMOUNT = 0;
     public String ASDATE = "";
+    public String ADATEC = "";
     public String ATICKET = "";
     public String ASAGENT = "";
     public String ATRANC = "";

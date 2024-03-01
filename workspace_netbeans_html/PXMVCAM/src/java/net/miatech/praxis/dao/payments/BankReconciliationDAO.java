@@ -1151,7 +1151,7 @@ public class BankReconciliationDAO {
             A2290Filter filterA = filters.get(filters.size() - 1);
 
             if (filterA.ATDOC.equals("A")) {
-                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP00834INSERTMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP00834INSERTMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt3 = cnx3.prepareCall(SQLCLL03);
@@ -1168,18 +1168,19 @@ public class BankReconciliationDAO {
                 cstmt3.setString(8, filterA.ACURRENCY.trim());
                 cstmt3.setDouble(9, filterA.AAMOUNT);
                 cstmt3.setString(10, filterA.ASDATE.trim());
-                cstmt3.setString(11, filterA.APNR.trim());
-                cstmt3.setString(12, filterA.ATICKET.substring(0, 3).trim());
-                cstmt3.setString(13, filterA.ATICKET.substring(3, 7).trim());
-                cstmt3.setString(14, filterA.ATICKET.substring(7, 13).trim());
-                cstmt3.setString(15, filterA.ASAGENT.trim());
-                cstmt3.setString(16, filterA.ATRANC.trim());
-                cstmt3.setString(17, filterA.ADJCODE.trim());
-                cstmt3.setString(18, filterA.BANDOC.trim());
-                cstmt3.setString(19, filterA.CFUENTE.trim());
-                cstmt3.setString(20, user.getUserInfo().USR);
-                cstmt3.setString(21, Functions.getFechaActual());
-                cstmt3.setString(22, Functions.getHoraActual());
+                cstmt3.setString(11, filterA.ADATEC.trim());
+                cstmt3.setString(12, filterA.APNR.trim());
+                cstmt3.setString(13, filterA.ATICKET.substring(0, 3).trim());
+                cstmt3.setString(14, filterA.ATICKET.substring(3, 7).trim());
+                cstmt3.setString(15, filterA.ATICKET.substring(7, 13).trim());
+                cstmt3.setString(16, filterA.ASAGENT.trim());
+                cstmt3.setString(17, filterA.ATRANC.trim());
+                cstmt3.setString(18, filterA.ADJCODE.trim());
+                cstmt3.setString(19, filterA.BANDOC.trim());
+                cstmt3.setString(20, filterA.CFUENTE.trim());
+                cstmt3.setString(21, user.getUserInfo().USR);
+                cstmt3.setString(22, Functions.getFechaActual());
+                cstmt3.setString(23, Functions.getHoraActual());
 
                 cstmt3.execute();
                 cstmt3.close(); // Cerrar el CallableStatement después de cada ejecución
