@@ -2462,6 +2462,46 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
 //            this.BuscarTKT_keyDownHandler(obj, e, eOpts);
         }
+    },
+    sendMail_clickHandler: function () {
+
+        console.log('sendMail_clickHandler');
+        
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Sure to Send Email to IATA?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+//                            this.sendEmailtoIATA(me.lstSendIata);
+                    console.log(me.lstSendIata);
+
+                    var listaCadena = [];
+//                            console.log(listaCadena);
+
+                    Ext.Ajax.request({
+                        url: prototype.url + '/sendEmail',
+                        method: 'POST',
+                        timeout: 60000000,
+                        beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
+                        params: {lista: listaCadena},
+                        success: function (response, options) {
+                            Ext.getCmp(prototype.id + '-contentInfo').unmask('Loading...');
+                            var res = Ext.JSON.decode(response.responseText);
+                            console.log(res);
+                            var msj = String(res.msj);
+
+                            global.Msg({msg: msj});
+                            
+                        }
+                    });
+                }
+            }
+        });
+           
     }
     // </editor-fold>
 });

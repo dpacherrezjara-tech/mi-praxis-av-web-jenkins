@@ -8,6 +8,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.LoadConciliationDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2370Filter;
+import net.miatech.praxis.payment.filter.MPF100Filter;
 
 // </editor-fold>
 /**
@@ -99,4 +100,9 @@ public class LoadConciliationLogic {
     public HashMap<String, List<A2290Filter>> loadPX263SQP00715(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00715(filter);
     }
+    
+    public List<MPF100Filter> loadPX263SQP00XXXJT(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00XXXJT(filter);
+    }
+
 }
