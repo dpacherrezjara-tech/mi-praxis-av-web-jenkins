@@ -26,6 +26,7 @@ public class MPF100 {
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String SAGENT = "";
+    public String DIG_AGENT = "";
     public String SDATE = "";
     public String SDATEVTA = "";
     public String SPAYMENT = "";
