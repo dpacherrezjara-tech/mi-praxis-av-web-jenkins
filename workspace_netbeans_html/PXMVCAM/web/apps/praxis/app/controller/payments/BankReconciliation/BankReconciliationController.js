@@ -1185,7 +1185,23 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
 
     //</editor-fold>
-
+    onGridDataViewTktFinal: function ( column, e, row, column, x, rowData ) {
+        
+        var data = x.record.data;
+        var strTkt = data.A1531TKT;
+        var beanProMasterTicket = {};
+//        
+        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
+        beanProMasterTicket.IN_FORMA = strTkt.substr(3, 4);
+        beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
+        beanProMasterTicket.IN_SEQ = '00';
+//        console.log(beanProMasterTicket);
+        prototypeProgram.view = 'payments-bank-reconciliation-form';
+        prototypeProgram.nprog = 'PX00000269';
+        prototypeProgram.title = 'Bank Reconciliation';
+        prototypeProgram.modulo = '';
+        win.displayProMasterTicket(this, 'BankConciliation', beanProMasterTicket);
+    },
     gridData_VIEWTKT_clickHandler: function (column, e, row, column, x, rowData) {
         var data = x.record.data;
         var strTkt = data.strTicket;
@@ -1225,6 +1241,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
 
         item.disable()
+
         var rec = grid.getStore().getAt(rowIndex);
         console.log('RECDATA');
         console.log(rec.data);

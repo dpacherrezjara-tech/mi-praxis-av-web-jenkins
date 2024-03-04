@@ -1395,11 +1395,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {
+                                            {   //ticketxd
                                                 text: 'Ticket', dataIndex: 'A1531TKT', width: 112, align: 'center',
+                                                listeners: {
+                                                    click: 'onGridDataViewTktFinal',
+                                                },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
+                                                    metaData.style = "text-align:center;color:#057ECB";;
+                                                    return '<a <a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
                                                 }
                                             },
                                         ]

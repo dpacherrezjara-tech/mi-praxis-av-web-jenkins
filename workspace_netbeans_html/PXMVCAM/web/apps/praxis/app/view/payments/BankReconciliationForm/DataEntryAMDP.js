@@ -1783,11 +1783,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                             {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
-                                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                                    return value;
                                                                                 },
-                                                                                listeners: {
-                                                                                    click: 'onGridDataViewTktFinal'
-                                                                                },
+//                                                                                listeners: {
+//                                                                                    click: 'onGridDataViewTktFinal'
+//                                                                                },
                                                                                 //editor: {xtype: 'textfield', editable: false},
                                                                             },
                                                                             {
@@ -2176,11 +2176,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                             {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
-                                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                                    return value;
                                                                                 },
-                                                                                listeners: {
-                                                                                    click: 'onGridDataViewTktFinal'
-                                                                                },
+//                                                                                listeners: {
+//                                                                                    click: 'onGridDataViewTktFinal'
+//                                                                                },
                                                                                 //editor: {xtype: 'textfield', editable: false},
                                                                             },
                                                                             {
