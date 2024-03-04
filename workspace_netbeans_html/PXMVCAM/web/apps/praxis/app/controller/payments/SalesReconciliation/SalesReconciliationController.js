@@ -933,7 +933,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
                 this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
                 this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                this.beanDetailTar.IN_AUTHNBR = win.getValue('txtSAGENT');
+                this.beanDetailTar.IN_SAGENT = win.getValue('txtSAGENT');
                 console.log(this.beanDetailTar);
 
                 if (win.getValue('txtSAGENT').trim().length === 8) {

@@ -523,15 +523,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             maxLength: 6,
-                                            width: 100,
+                                            width: 118,
                                         },
-                                        {xtype: 'tbspacer', width: 30},
+                                        {xtype: 'tbspacer', width: 33},
                                         {
                                             xtype: 'label',
                                             text: 'Id.Bank',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 70
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -539,13 +539,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             id: prototype.id + '-de-txtBANDOC',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
-                                            width: 100,
+                                            width: 124,
                                             maskRe: /[0-9]/,
                                             readOnly: true,
                                             enforceMaxLength: true,
                                             maxLength: 10
                                         },
-                                        {xtype: 'tbspacer', width: 5}
+                                        {xtype: 'tbspacer', width: 6}
                                     ]
                                 },
                                 {
@@ -610,7 +610,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
-                                        {xtype: 'tbspacer', width: 5},
+                                        {xtype: 'tbspacer', width: 31},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtSAUTHOC',
@@ -619,7 +619,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 47
                                         },
-                                        {xtype: 'tbspacer', width: 58},
+                                        {xtype: 'tbspacer', width: 28},
                                         {
                                             xtype: 'label',
                                             text: 'Bank Code',
@@ -1690,7 +1690,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             xtype: 'tabpanel',
                                             id: prototype.id + '-tabMain',
                                             deferredRender: true,
-                                            width: 1024,
+                                            width: 926,
                                             border: false,
 //                                            height: 182, //820
 //                                            anchor: '100%',
@@ -1713,7 +1713,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             id: prototype.id + '-panelDataInfoScan',
                                                             layout: 'vbox',
                                                             border: false,
-                                                            width: 1024,
+                                                            width: 926,
 //                                                            height: 180,
                                                             hidden: false,
                                                             autoScroll: true,
@@ -1721,7 +1721,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                 {
                                                                     xtype: 'grid',
                                                                     id: prototype.id + '-gridDataInfoScan',
-                                                                    width: 1022,
+                                                                    width: 926,
                                                                     height: 180,
                                                                     columnLines: true,
                                                                     plugins: [
@@ -1786,7 +1786,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 listeners: {
-                                                                                    click: 'onGridData_VIEWTKT_clickHandler'
+                                                                                    click: 'onGridDataViewTktFinal'
                                                                                 },
                                                                                 //editor: {xtype: 'textfield', editable: false},
                                                                             },
@@ -1834,13 +1834,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 85, id: prototype.id + '-gridTot_VFOPs',
-                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                    metaData.style = "text-align:right;";
-                                                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                                                    return value;
-                                                                                }
-                                                                            },
+//                                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 85, id: prototype.id + '-gridTot_VFOPs',
+//                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                                    metaData.style = "text-align:right;";
+//                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+//                                                                                    return value;
+//                                                                                }
+//                                                                            },
                                                                             {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,hidden:true,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
@@ -2179,7 +2179,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 listeners: {
-                                                                                    click: 'onGridData_VIEWTKT_clickHandler'
+                                                                                    click: 'onGridDataViewTktFinal'
                                                                                 },
                                                                                 //editor: {xtype: 'textfield', editable: false},
                                                                             },
@@ -2227,13 +2227,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 85,
-                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                    metaData.style = "text-align:right;";
-                                                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                                                    return value;
-                                                                                }
-                                                                            },
+//                                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 85,
+//                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                                    metaData.style = "text-align:right;";
+//                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+//                                                                                    return value;
+//                                                                                }
+//                                                                            },
                                                                         ]
                                                                     }
                                                                 },
@@ -2793,7 +2793,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     xtype: 'panel',
                                     layout: 'hbox',
                                     border: false,
-                                    margin: '0 0 0 300',
+                                    margin: '0 0 0 217',
+                                    id: prototype.id + '-panelSumAmount',
                                     //bodyStyle: 'background:#efe5e5;',
                                     items: [
                                         {xtype: 'tbspacer', width: 460},

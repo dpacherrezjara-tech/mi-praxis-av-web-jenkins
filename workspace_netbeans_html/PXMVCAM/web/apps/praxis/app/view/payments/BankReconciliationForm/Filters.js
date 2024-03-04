@@ -544,20 +544,33 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             width: 55
                         },
                         {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbAGENCY',
-                            margin: '5 0 0 0',
-                            style: 'font-weight:bold;color:#0B333C;',
-                            fieldStyle: 'text-align:left;',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            valueField: 'CODE',
-                            displayField: 'NAME',
-                            width: 380,
-                            labelWidth: 10,
-                            hidden: false,
-                            hiddenLabel: false
+                            xtype: 'textfield',
+                            id: prototype.id+'-txtAGENCY',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9]/,
+                            maxLength: 8,
+                            width: 70,
+                            enableKeyEvents: true,
+                            listeners:{
+                                keypress: 'BuscarSAGENT_keyDownHandler'
+                            }
                         },
+//                        {
+//                            xtype: 'combo',
+//                            id: prototype.id + '-cmbAGENCY',
+//                            margin: '5 0 0 0',
+//                            style: 'font-weight:bold;color:#0B333C;',
+//                            fieldStyle: 'text-align:left;',
+//                            queryMode: 'local',
+//                            triggerAction: 'all',
+//                            valueField: 'CODE',
+//                            displayField: 'NAME',
+//                            width: 380,
+//                            labelWidth: 10,
+//                            hidden: false,
+//                            hiddenLabel: false
+//                        },
                     ]
                 }
             ]

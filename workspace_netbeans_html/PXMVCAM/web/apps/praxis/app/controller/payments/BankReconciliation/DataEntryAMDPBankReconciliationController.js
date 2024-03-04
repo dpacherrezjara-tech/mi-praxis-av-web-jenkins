@@ -132,7 +132,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     for (let item of res.data ) {
                         var validador = item.STVAL;
                         if (validador === '1' || validador === '5') {
-                            ticketsOcupados.push(item.A1531TKT);
+                                ticketsOcupados.push(item.A1531TKT);
                             cont++;
                             if( `${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAuxBl ){
                                 console.log('repetido')
@@ -187,11 +187,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         }
                     }
                     console.log(lstNormal, 'lstNormalFuera')
-                    if (cont > 0) {
-                        let mensaje = 'Blocked tickets:<br>' + ticketsOcupados.join('<br>');
-                        global.Msg({msg: mensaje});
-                        console.log(mensaje);
-                    }
+//                    if (cont > 0) {
+//                        let mensaje = 'Blocked tickets:<br>' + ticketsOcupados.join('<br>');
+//                        global.Msg({msg: mensaje});
+//                        console.log(mensaje);
+//                    }
 
                     var storeDataNormal = Ext.create('Ext.data.Store', {
                         data: lstNormal,
@@ -1053,6 +1053,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         prototypeProgram.modulo = '';
         win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
     },
+    onGridDataViewTktFinal: function ( column, e, row, column, x, rowData ) {
+        Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+        var data = x.record.data;
+        var strTkt = data.A1531TKT;
+        var beanProMasterTicket = {};
+//        
+        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
+        beanProMasterTicket.IN_FORMA = strTkt.substr(3, 4);
+        beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
+        beanProMasterTicket.IN_SEQ = '00';
+//        console.log(beanProMasterTicket);
+        prototypeProgram.view = 'payments-bank-reconciliation-form';
+        prototypeProgram.nprog = 'PX00000269';
+        prototypeProgram.title = 'Bank Reconciliation';
+        prototypeProgram.modulo = '';
+        win.displayProMasterTicket(this, 'BankConciliation', beanProMasterTicket);
+    },
+    
     removeTKT: function (grid, rowIndex, colIndex) {
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         //var rowIndex = store_gridInfoScan.indexOf(record);
@@ -1124,19 +1142,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     onWindowNormal: function (){
         if( this.bean.STVAL === '1' || this.bean.STVAL === '5' ){
-            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
-            
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(846);
+ 
         }else{
-            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
-            
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(926);
+            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 296');
         }
     },
     onWindowBlocked: function (){
-        Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+        Ext.getCmp(prototype.id + '-tabMain').setWidth(846);
+        Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 215');
         
     },
     allRefreshDataEntryAMDP: function (){
-        console.log('nikaaaaaaaaaaaaaaaaaaaaaaaaaa')
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
         } else {

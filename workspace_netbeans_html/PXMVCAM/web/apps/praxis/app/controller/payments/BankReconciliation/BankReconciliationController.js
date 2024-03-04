@@ -320,12 +320,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     Ext.getCmp(prototype.id + '-cmbCOMENTF').bindStore(storeDataC);
                     Ext.getCmp(prototype.id + '-cmbCOMENTF').setValue('');
 
-                    var storeDataT = Ext.create('Ext.data.Store', {
-                        data: res.dataT,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-cmbAGENCY').bindStore(storeDataT);
-                    Ext.getCmp(prototype.id + '-cmbAGENCY').setValue('');
+//                    var storeDataT = Ext.create('Ext.data.Store', {
+//                        data: res.dataT,
+//                        autoLoad: true
+//                    });
+//                    Ext.getCmp(prototype.id + '-cmbAGENCY').bindStore(storeDataT);
+//                    Ext.getCmp(prototype.id + '-cmbAGENCY').setValue('');
 
 
                     console.log('INICIO');
@@ -413,7 +413,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_COMENT = '';
         this.beanDetDay.IN_AGENCY = '';
 
-        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbAGENCY').getValue() !== '') {
+        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
 
             me.panelActual = '-panelGridDataDetalle';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -457,7 +457,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             this.beanDetDay.IN_COMENT = Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim();
 //            }
 //            if (Ext.getCmp(prototype.id + '-cmbAGENCY').getValue().trim() !== '') {
-            this.beanDetDay.IN_AGENCY = Ext.getCmp(prototype.id + '-cmbAGENCY').getValue().trim();
+            this.beanDetDay.IN_AGENCY = Ext.getCmp(prototype.id + '-txtAGENCY').getValue().trim();
 //            }
 
             me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
@@ -803,7 +803,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     } else {
                         var bean = obj.data.items[0].data;
                         var title = '';
-                        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbAGENCY').getValue() !== '') {
+                        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
                             title = " ";
                         } else {
                             title = " Sales Date : " + bean.SDATE + " - Country : " + bean.IN_COUNTRY;
@@ -1222,9 +1222,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
         win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
     },
-    onEditClick: function (grid, rowIndex, colIndex) {
-        var rec = grid.getStore().getAt(rowIndex);
+    onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
 
+        item.disable()
+        var rec = grid.getStore().getAt(rowIndex);
         console.log('RECDATA');
         console.log(rec.data);
         if (rec.data.IN_ADYEN === 'Y' && (rec.data.IN_STVAL === '2' || rec.data.IN_STVAL === '3')) {
@@ -1240,6 +1241,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                console.log('else');
 //            }
         }
+        setTimeout(function() {
+            item.enable()
+        }, 1000); // Simular una tarea de 1 segundo
+       
     },
     searchBean: function (rec) {
 
@@ -1671,7 +1676,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-txtAUTHOC').setValue('');
         Ext.getCmp(prototype.id + '-cmbNEGOC').setValue('');
         Ext.getCmp(prototype.id + '-cmbCOMENTF').setValue('');
-        Ext.getCmp(prototype.id + '-cmbAGENCY').setValue('');
+        Ext.getCmp(prototype.id + '-txtAGENCY').setValue('');
 
     },
     btnExcel_click: function (obj, e) {

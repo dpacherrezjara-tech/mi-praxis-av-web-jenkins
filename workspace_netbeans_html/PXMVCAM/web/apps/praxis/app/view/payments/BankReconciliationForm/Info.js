@@ -1826,14 +1826,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
+                                                id: prototype.id + '-editActionDE',
                                                 width: 40,
                                                 text: 'View',
                                                 align: 'center',
                                                 items: [
                                                     {
+                                                        xtype: 'button',
+                                                        id: prototype.id + '-btnActionDE',
                                                         iconCls: 'prx-icon-edit',
                                                         tooltip: 'View',
-                                                        handler: 'onEditClick'
+//                                                        handler: 'onEditClick'
+                                                        listeners: {
+                                                            click: 'onEditClick'
+                                                        }
                                                     }
                                                 ]
                                             }
