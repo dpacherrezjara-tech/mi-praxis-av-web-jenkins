@@ -71,24 +71,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let gridComponentBlockedon = Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked');
         let dataGrid = gridComponentNormalon.getStore().getData().items
         let dataGridBl = gridComponentBlockedon.getStore().getData().items
-        let constructorExcluir = {}.constructor; 
-        let arrayConstructor = dataGrid.filter(function(elemento) {
+        let constructorExcluir = {}.constructor;
+        let arrayConstructor = dataGrid.filter(function (elemento) {
             return elemento.constructor !== constructorExcluir;
         });
-        
-        let arrayConstructorBlocked = dataGridBl.filter(function(elemento) {
+
+        let arrayConstructorBlocked = dataGridBl.filter(function (elemento) {
             return elemento.constructor !== constructorExcluir;
         });
-        
+
         let arrayNormal = []
         let arrayBlocked = []
-        if( arrayConstructor.length > 0 ){
-            for( let value of arrayConstructor){
+        if (arrayConstructor.length > 0) {
+            for (let value of arrayConstructor) {
                 arrayNormal.push(value.data)
             }
         }
-        if( arrayConstructorBlocked.length > 0 ){
-            for( let value of arrayConstructorBlocked){
+        if (arrayConstructorBlocked.length > 0) {
+            for (let value of arrayConstructorBlocked) {
                 arrayBlocked.push(value.data)
             }
         }
@@ -96,13 +96,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let listAuxBl = {}
         console.log(arrayNormal, 'arrayNormal')
         console.log(arrayBlocked, 'arrayBlocked')
-        for( let value of arrayNormal){
+        for (let value of arrayNormal) {
             listAux[`${value.STVAL}#${value.descTDOC}#${value.A720AGENTE}#${value.A720FECVTA}#${value.A720PNR}#${value.A1531TKT}#${value.A1531TTARJ}#${value.A1531NREF}#${value.A1531CAPL}#${value.A1531MFOP}#${value.A1531VFOP}#${value.tot_VFOP}`] = "repetido"
         }
-        for( let value of arrayBlocked){
+        for (let value of arrayBlocked) {
             listAuxBl[`${value.STVAL}#${value.descTDOC}#${value.A720AGENTE}#${value.A720FECVTA}#${value.A720PNR}#${value.A1531TKT}#${value.A1531TTARJ}#${value.A1531NREF}#${value.A1531CAPL}#${value.A1531MFOP}#${value.A1531VFOP}#${value.tot_VFOP}`] = "repetido"
         }
-        
+
 
         var paramScan = {};
         paramScan.beanString = JSON.stringify(this.bean_scan);
@@ -121,67 +121,67 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
                     let ticketsOcupados = [];
                     var cont = 0;
-                    
-                    
+
+
                     let lstNormal = arrayNormal.length > 0 ? arrayNormal : []
-                    let lstBlocked = arrayBlocked.length > 0 ? arrayBlocked : [] 
+                    let lstBlocked = arrayBlocked.length > 0 ? arrayBlocked : []
                     console.log(lstNormal, 'lstNormal')
-                    
-                    
+
+
                     console.log(res.data, 'res.data')
-                    for (let item of res.data ) {
+                    for (let item of res.data) {
                         var validador = item.STVAL;
                         if (validador === '1' || validador === '5') {
-                                ticketsOcupados.push(item.A1531TKT);
+                            ticketsOcupados.push(item.A1531TKT);
                             cont++;
-                            if( `${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAuxBl ){
+                            if (`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAuxBl) {
                                 console.log('repetido')
                                 continue
                             }
                             lstBlocked.push({
-                                STVAL : item.STVAL,
-                                descTDOC : item.descTDOC,
-                                A720AGENTE : item.A720AGENTE,
-                                A720FECVTA : item.A720FECVTA,
-                                A720PNR : item.A720PNR,
-                                A1531TKT : item.A1531TKT,
-                                A1531TTARJ : item.A1531TTARJ,
-                                A1531NREF : item.A1531NREF,
-                                A1531CAPL : item.A1531CAPL,
-                                A1531MFOP : item.A1531MFOP,
-                                A1531VFOP : item.A1531VFOP,
-                                tot_VFOP : item.tot_VFOP,
-                                CFUENTE : item.CFUENTE,
+                                STVAL: item.STVAL,
+                                descTDOC: item.descTDOC,
+                                A720AGENTE: item.A720AGENTE,
+                                A720FECVTA: item.A720FECVTA,
+                                A720PNR: item.A720PNR,
+                                A1531TKT: item.A1531TKT,
+                                A1531TTARJ: item.A1531TTARJ,
+                                A1531NREF: item.A1531NREF,
+                                A1531CAPL: item.A1531CAPL,
+                                A1531MFOP: item.A1531MFOP,
+                                A1531VFOP: item.A1531VFOP,
+                                tot_VFOP: item.tot_VFOP,
+                                CFUENTE: item.CFUENTE,
                             })
-                    
-                            
+
+
                         } else {
-                            console.log(listAux,'primer listAux')
+                            console.log(listAux, 'primer listAux')
                             console.log(`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAux, 'josue no sale')
-                            if( `${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAux ){
+                            if (`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAux) {
                                 console.log('repetido')
                                 continue
                             }
-                            
+
                             lstNormal.push({
-                                STVAL : item.STVAL,
-                                descTDOC : item.descTDOC,
-                                A720AGENTE : item.A720AGENTE,
-                                A720FECVTA : item.A720FECVTA,
-                                A720PNR : item.A720PNR,
-                                A1531TKT : item.A1531TKT,
-                                A1531TTARJ : item.A1531TTARJ,
-                                A1531NREF : item.A1531NREF,
-                                A1531CAPL : item.A1531CAPL,
-                                A1531MFOP : item.A1531MFOP,
-                                A1531VFOP : item.A1531VFOP,
-                                tot_VFOP : item.tot_VFOP,
-                                CFUENTE : item.CFUENTE,
+                                STVAL: item.STVAL,
+                                descTDOC: item.descTDOC,
+                                A720AGENTE: item.A720AGENTE,
+                                A720FECVTA: item.A720FECVTA,
+                                A720PNR: item.A720PNR,
+                                A1531TKT: item.A1531TKT,
+                                A1531TTARJ: item.A1531TTARJ,
+                                A1531NREF: item.A1531NREF,
+                                A1531CAPL: item.A1531CAPL,
+                                A1531MFOP: item.A1531MFOP,
+                                A1531VFOP: item.A1531VFOP,
+                                tot_VFOP: item.tot_VFOP,
+                                CFUENTE: item.CFUENTE,
                             })
-                            
+
                             console.log(lstNormal, 'lstNormalAfterPush')
                             console.log(item, 'item')
-                            
+
 //                            listAux[`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}`] = "quegil"
 //                            console.log(listAux, 'segundo listAux')
                         }
@@ -207,6 +207,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
                     meDe.calcularMontos();
                     meDe.avisarRegistros();
+                    meDe.calcularSumAmount();
 
                 } else {
                     global.Msg({msg: res.Mensaje});
@@ -335,6 +336,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                     console.log('setea nuevamente')
+                    meDe.calcularSumAmount();
                     meDe.calcularMontos();
                 } else {
                     global.Msg({msg: res.Mensaje});
@@ -369,6 +371,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    meDe.calcularSumAmount();
                     meDe.calcularMontos();
                 } else {
                     global.Msg({msg: res.Mensaje});
@@ -576,6 +579,29 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         Ext.getCmp(prototype.id + '-PanelAmountsMain').hide();
         Ext.getCmp(prototype.id + '-PanelAmountsDeta').show();
     },
+    calcularSumAmount: function () {
+        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan'); // Reemplaza 'tuGridId' con el ID de tu grilla
+        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore(); // Reemplaza 'tuGridId' con el ID de tu grilla
+        var groupField = 'A720PNR'; // Campo por el cual quieres agrupar (PNR)
+
+        var sum = {};
+
+        store_gridInfoScan.each(function (record) {
+            var key = record.get(groupField);
+            var value = record.get('A1531VFOP');
+            sum[key] = (sum[key] || 0) + parseFloat(value);
+        });
+
+        console.log(sum); // Esto imprime la suma agrupada por PNR
+
+        // Ahora actualizamos los valores en la columna tot_VFOP
+        store_gridInfoScan.each(function (record) {
+            var key = record.get(groupField);
+            record.set('tot_VFOP', sum[key]);
+        });
+
+        grid.getView().refresh(); // Actualizar la vista de la grilla
+    },
     mostrarMain: function () {
         console.log('mostrarMontos');
         Ext.getCmp(prototype.id + '-PanelAmountsMain').show();
@@ -653,24 +679,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('txtFromDate', null);
         this.setValue('txtScanPNR', null);
         this.setValue('txtScanSAGENT', null);
-        
+
     },
-    clear_tableNormal: function (){
+    clear_tableNormal: function () {
         console.log('click clear')
         let storeDataClear = Ext.create('Ext.data.Store', {
             data: '',
             autoLoad: true
         });
         Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataClear);
-        
+
         let storeDataClearBl = Ext.create('Ext.data.Store', {
             data: '',
             autoLoad: true
         });
         Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked').bindStore(storeDataClearBl);
-        
+
     },
-    
+
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Botones">
@@ -789,7 +815,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             console.error('Entró al procesar Registros');
             if (comentVisible) {
                 datos = this.procesarRegistros(miGrilla, miGrillaAdj);
-                
+
             } else {
                 datos = this.procesarRegistros(miGrilla);
             }
@@ -1053,7 +1079,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         prototypeProgram.modulo = '';
         win.displayCustomViewTicket(this, 'BankConciliation', beanProMasterTicket);
     },
-    onGridDataViewTktFinal: function ( column, e, row, column, x, rowData ) {
+    onGridDataViewTktFinal: function (column, e, row, column, x, rowData) {
         Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
         var data = x.record.data;
         var strTkt = data.A1531TKT;
@@ -1070,12 +1096,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         prototypeProgram.modulo = '';
         win.displayProMasterTicket(this, 'BankConciliation', beanProMasterTicket);
     },
-    
+
     removeTKT: function (grid, rowIndex, colIndex) {
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         //var rowIndex = store_gridInfoScan.indexOf(record);
         store_gridInfoScan.removeAt(rowIndex);
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
+        this.calcularSumAmount();
         this.calcularMontos();
     },
     onAdjust: function (grid, rowIndex, colIndex) {
@@ -1103,6 +1130,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
                         Ext.create('Ext.data.Store', {data: this.lstAdjustment, autoLoad: true})
                         );
+                this.calcularSumAmount();
                 this.calcularMontos();
             }
         } else {
@@ -1134,27 +1162,28 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 Ext.create('Ext.data.Store', {data: this.lstSendManual, autoLoad: true})
                 );
         //meDE.getDataGrid(meDE.beanResult);
+        this.calcularSumAmount();
         this.calcularMontos();
     },
-    hiddenByMatch: function (){
+    hiddenByMatch: function () {
         Ext.getCmp(prototype.id + '-btnClearCustom').hide();
         $('.x-tab-top:contains("Blocked")').hide();
     },
-    onWindowNormal: function (){
-        if( this.bean.STVAL === '1' || this.bean.STVAL === '5' ){
-            Ext.getCmp(prototype.id + '-tabMain').setWidth(846);
- 
-        }else{
-            Ext.getCmp(prototype.id + '-tabMain').setWidth(926);
+    onWindowNormal: function () {
+        if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+
+        } else {
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
             Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 296');
         }
     },
-    onWindowBlocked: function (){
-        Ext.getCmp(prototype.id + '-tabMain').setWidth(846);
+    onWindowBlocked: function () {
+        Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
         Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 215');
-        
+
     },
-    allRefreshDataEntryAMDP: function (){
+    allRefreshDataEntryAMDP: function () {
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
         } else {

@@ -493,7 +493,6 @@ public class OutputsController extends BaseController {
             IOUtils.copy(is, response.getOutputStream());
             response.flushBuffer();
 
-//            this.getTXT100(request,response,listaData);
         } catch (IOException e) {
             throw new SpringException(e);
         }

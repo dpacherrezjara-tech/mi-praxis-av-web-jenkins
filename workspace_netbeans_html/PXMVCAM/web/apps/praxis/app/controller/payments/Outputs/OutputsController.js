@@ -44,8 +44,11 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             '#OutputsForm-btnExcel': {
                 click: this.btnExcel_click
             },
-            '#OutputsForm-btnTxt': {
-                click: this.btnTxt_click
+            '#OutputsForm-btnTxtLIQUI': {
+                click: this.btnTxt_clickLIQUI
+            },
+            '#OutputsForm-btnTxtSALE': {
+                click: this.btnTxt_clickSALE
             },
             '#OutputsForm-btnFilter': {
                 click: this.btnFilter_click
@@ -95,31 +98,13 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
 
-//        Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(win.getStoreYear(false));
-//        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(win.getStoreYear(false));
-//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(win.getStoreMonth(true));
-//        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(win.getStoreMonth(true));
-//
-//        Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
-//        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-//
-//        var storeComboDataMonth = win.getStoreDays(true);
-//        Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(storeComboDataMonth);
-//        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataMonth);
-//
-//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
-//        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(win.getStoreYear(false));
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(win.getStoreMonth(true));
 
-        var cmbFILE = Ext.getCmp(prototype.id + '-cmbFILE');
-        cmbFILE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["LIQUI2023", "LIQUI2023"],
-            ]
-        }));
-        cmbFILE.setValue("LIQUI2023");
-        
+        Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
+
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
+
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
@@ -134,11 +119,8 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     //</editor-fold>
 
     setFormatParameter: function () {
-        var regExp = new RegExp('/','gi');
         me.bean = {};
-        me.bean.IN_FILE = Ext.getCmp(prototype.id + '-cmbFILE').getValue();
-//        me.bean.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
-        me.bean.IN_PRDA = Ext.getCmp('-txtDateFrom').getRawValue().replace(regExp, '');
+        me.bean.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
         var beanString = JSON.stringify(me.bean);
         console.log(me.bean);
@@ -153,7 +135,6 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         this.setGridData();
     },
     // <editor-fold defaultstate="collapsed" desc="setGridData">
-
     setGridData: function () {
         win.lblUser_toolTip("Estructura: ");
         me.panelActual = '-panelGridData';
@@ -237,45 +218,44 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     btnExcel_click: function (obj, e) {
 
         this.setFormatParameter();
-            Ext.Msg.show({
-                title: '.:PRAXIS:.',
-                msg: 'Download Excel ?',
-                buttons: Ext.MessageBox.OKCANCEL,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'ok') {
-                        this.exportExcel();
-                    }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Excel ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportExcel();
                 }
-            });
+            }
+        });
 //        }
     },
-    btnTxt_click: function (obj, e) {
+    btnTxt_clickLIQUI: function (obj, e) {
 
         this.setFormatParameter();
-            Ext.Msg.show({
-                title: '.:PRAXIS:.',
-                msg: 'Download Txt ?',
-                buttons: Ext.MessageBox.OKCANCEL,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'ok') {
-                        this.exportTxt();
-                    }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Txt ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportTxtLIQUI();
                 }
-            });
-//        }
+            }
+        });
     },
-    exportExcel: function () {
+    exportTxtLIQUI: function () {
 
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getTXT?beanString=' + searchParams.beanString);
                 break;
             default:
                 global.Msg(
@@ -284,12 +264,28 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         }
 
     },
-    exportTxt: function () {
+    btnTxt_clickSALE: function (obj, e) {
+
+        this.setFormatParameter();
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Txt ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportTxtSALE();
+                }
+            }
+        });
+    },
+    exportTxtSALE: function () {
 
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getTXT?beanString=' + searchParams.beanString);
                 global.getFile(prototype.url + '/getTXT100?beanString=' + searchParams.beanString);
                 break;
             default:
