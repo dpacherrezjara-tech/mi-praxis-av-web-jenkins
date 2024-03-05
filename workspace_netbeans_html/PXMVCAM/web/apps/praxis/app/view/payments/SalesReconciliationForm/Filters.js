@@ -43,7 +43,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 100,
+                            width: 120,
                             value: "SDATE",
                             typeAhead: true,
                             valueField: 'code', displayField: 'name',
