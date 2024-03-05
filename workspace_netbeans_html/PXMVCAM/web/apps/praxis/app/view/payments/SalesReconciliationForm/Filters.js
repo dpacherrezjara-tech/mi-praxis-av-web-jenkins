@@ -33,7 +33,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['code', 'name'],
                                 data: [
-                                    ["SDATE", "Sales Date"], ["FCONT", "Account Date"]
+                                    ["SDATE", "Sales Date"], ["FCONT", "Accounting Date"]
                                 ]
                             }),
                             queryMode: 'local',

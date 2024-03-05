@@ -307,7 +307,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                         },
                                                         items: [
                                                             {
-                                                                text: 'Sales',
+                                                                text: 'Accounting',
                                                                 defaults: {
                                                                     menuDisabled: true,
                                                                     sortable: false,
