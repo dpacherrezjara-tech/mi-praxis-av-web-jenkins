@@ -350,7 +350,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     return Ext.util.Format.number(data.lngTotQMATCH, '0,000');
                                                                                 }
                                                                             },
@@ -362,7 +362,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                     return value;
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                                                     return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000.00') + '%<b>';
                                                                                 }
@@ -376,7 +376,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     return Ext.util.Format.number(data.lngTotQMANUAL, '0,000');
                                                                                 }
                                                                             },
@@ -389,7 +389,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     return Ext.util.Format.number(data.lngTotQMANUAL, '0,000');
                                                                                 }
                                                                             }
@@ -412,7 +412,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     return Ext.util.Format.number(data.lngTotQPEND, '0,000');
                                                                                 }
                                                                             }
@@ -427,7 +427,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;";
-                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                             return Ext.util.Format.number(data.lngTotQSALES, '0,000');
                                                                         }
                                                                     },
@@ -448,7 +448,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     return Ext.util.Format.number(data.lngTotQPOLIC, '0,000');
                                                                                 }
                                                                             },
@@ -461,7 +461,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
-                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataAcc').getStore().getData().items[0].data;
                                                                                     return Ext.util.Format.number(data.lngTotQPOLIPE, '0,000');
                                                                                 }
                                                                             }
