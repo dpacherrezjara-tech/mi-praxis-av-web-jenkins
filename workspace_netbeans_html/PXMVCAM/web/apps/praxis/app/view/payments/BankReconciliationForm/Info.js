@@ -1835,14 +1835,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 align: 'center',
                                                 items: [
                                                     {
-                                                        xtype: 'button',
-                                                        id: prototype.id + '-btnActionDE',
                                                         iconCls: 'prx-icon-edit',
                                                         tooltip: 'View',
-//                                                        handler: 'onEditClick'
-                                                        listeners: {
-                                                            click: 'onEditClick'
-                                                        }
+                                                        handler: 'onEditClick'
                                                     }
                                                 ]
                                             }
