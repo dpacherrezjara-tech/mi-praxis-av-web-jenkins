@@ -121,7 +121,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         //        win.setText('label_17', Ext.getCmp(prototype.id+'-label_17').text.replace(oldLabel, newabel));
     },
     cbxFOPAC_changeHandler: function () {
-        var FOP = win.getValue('cmbFOP');
+//        var FOP = win.getValue('cmbFOP');
 
         if (FOP === 'CA') {
             win.enabled('txtAUTHNBR', false);
@@ -143,173 +143,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         }
     },
     BuscarTKT_keyDownHandler: function (obj, e, eOpts) {
-        win.enabled('cmbDateFromYear', true);
-        win.enabled('cmbDateFromMonth', true);
-        win.enabled('cmbDateToYear', true);
-        win.enabled('cmbDateToMonth', true);
-        win.enabled('cmbAFTE', true);
-        win.enabled('cmbCardType', true);
-        win.enabled('cmbCountry', true);
-        win.enabled('cmbFOP', true);
-        win.enabled('cmbSource', true);
-
-
-        if (win.getValue('txtTicket') !== '') {
-            switch (e.getKey()) {
-                case 13:
-                    if (win.getValue('txtTicket').trim().length === 13) {
-
-                        var selectedValues = win.getValue('rbgType').rbgType;
-                        switch (selectedValues) {
-                            case 'Sales':
-                                this.beanDetailTkt.IN_TDOC = 'S';
-                                break;
-                            case 'Refund':
-                                this.beanDetailTkt.IN_TDOC = 'R';
-                                break;
-                        }
-                        this.beanDetailTkt.IN_TICKET = win.getValue('txtTicket');
-                        this.searchDetTICKET(this.beanDetailTkt);
-                    } else {
-                        win.setValue('txtTicket', '');
-                        global.Msg({msg: 'Ticket number must contain 13 digits.'});
-                    }
-                    if (win.getValue('txtTicket').trim() !== '') {
-                        win.enabled('cmbDateFromYear', false);
-                        win.enabled('cmbDateFromMonth', false);
-                        win.enabled('cmbDateToYear', false);
-                        win.enabled('cmbDateToMonth', false);
-                        win.enabled('cmbAFTE', false);
-                        win.enabled('cmbCardType', false);
-                        win.enabled('cmbCountry', false);
-                        win.enabled('cmbFOP', false);
-                        win.enabled('cmbSource', false);
-                    }
-                    break;
-                case 8://Backspace
-                    this.habilitarFiltros();
-                    break;
-                case 32: //Spacebar
-                    this.habilitarFiltros();
-                    break;
-                case 46: //Delete
-                    this.habilitarFiltros();
-                    break;
-            }
-            if (win.getValue('txtTicket').trim() === '') {
-                this.habilitarFiltros();
-            }
-        } else if (win.getValue('txtCard1') !== '' || win.getValue('txtCard2') !== '') {
-            switch (e.getKey()) {
-                case 13:
-                    if (win.getValue('txtCard1').trim().length === 6 && win.getValue('txtCard2').trim().length === 4) {
-
-                        var selectedValuec = win.getValue('rbgType').rbgType;
-                        switch (selectedValuec) {
-                            case 'Sales':
-                                this.beanDetailTar.IN_TDOC = 'S';
-                                break;
-                            case 'Refund':
-                                this.beanDetailTar.IN_TDOC = 'R';
-                                break;
-                        }
-                        this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
-                        this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
-                        this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
-                        this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
-                        this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
-                        this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
-                        this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
-                        this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                        console.log(this.beanDetailTar);
-                        this.searchDetTARJETA(this.beanDetailTar);
-                    } else if (win.getValue('txtCard1').trim().length === 0 && win.getValue('txtCard2').trim().length === 4) {
-                        var selectedValuec = win.getValue('rbgType').rbgType;
-                        switch (selectedValuec) {
-                            case 'Sales':
-                                this.beanDetailTar.IN_TDOC = 'S';
-                                break;
-                            case 'Refund':
-                                this.beanDetailTar.IN_TDOC = 'R';
-                                break;
-                        }
-                        this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
-                        this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
-                        this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
-                        this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
-                        this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
-                        this.beanDetailTar.IN_CARDN1 = '';
-                        this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
-                        this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                        this.searchDetTARJETA(this.beanDetailTar);
-                    } else {
-                        console.log()
-                        win.setValue('txtCard1', '');
-                        win.setValue('txtCard2', '');
-                        global.Msg({msg: 'CC Number must contain 6 first digits.'});
-                    }
-                    if (win.getValue('txtCard1').trim() !== '' && win.getValue('txtCard2').trim() !== '') {
-                        win.enabled('cmbAFTE', false);
-                        win.enabled('cmbCardType', false);
-                        win.enabled('cmbCountry', false);
-                        win.enabled('cmbFOP', false);
-                        win.enabled('cmbSource', false);
-                    }
-                    break;
-                case 8://Backspace
-                    this.habilitarFiltros2();
-                    break;
-                case 32: //Spacebar
-                    this.habilitarFiltros2();
-                    break;
-                case 46: //Delete
-                    this.habilitarFiltros2();
-                    break;
-            }
-            if (win.getValue('txtCard1').trim() === '' && win.getValue('txtCard2').trim() === '') {
-                this.habilitarFiltros2();
-            }
-        } else if (win.getValue('txtMERCHN') !== '') {
-            switch (e.getKey()) {
-                case 13:
-                    var selectedValuem = win.getValue('rbgType').rbgType;
-                    switch (selectedValuem) {
-                        case 'Sales':
-                            this.beanDetailMer.IN_TDOC = 'S';
-                            break;
-                        case 'Refund':
-                            this.beanDetailMer.IN_TDOC = 'R';
-                            break;
-                    }
-                    this.beanDetailMer.strFecFiltro = win.getValue('cmbFecFiltro');
-                    this.beanDetailMer.strYearFrom = win.getValue('cmbDateFromYear');
-                    this.beanDetailMer.strMonthFrom = win.getValue('cmbDateFromMonth');
-                    this.beanDetailMer.strYearTo = win.getValue('cmbDateToYear');
-                    this.beanDetailMer.strMonthTo = win.getValue('cmbDateToMonth');
-                    this.beanDetailMer.IN_MERCHN = win.getValue('txtMERCHN');
-                    console.log(this.beanDetailMer);
-                    this.searchDetMERCHAT(this.beanDetailMer);
-                    if (win.getValue('txtMERCHN').trim() !== '') {
-                        win.enabled('cmbAFTE', false);
-                        win.enabled('cmbCardType', false);
-                        win.enabled('cmbCountry', false);
-                        win.enabled('cmbFOP', false);
-                        win.enabled('cmbSource', false);
-                    }
-                    break;
-                case 8://Backspace
-                    this.habilitarFiltros2();
-                    break;
-                case 32: //Spacebar
-                    this.habilitarFiltros2();
-                    break;
-                case 46: //Delete
-                    this.habilitarFiltros2();
-                    break;
-            }
-            if (win.getValue('txtMERCHN').trim() === '') {
-                this.habilitarFiltros2();
-            }
+        switch (e.getKey()) {
+            case 13:
+                this.btnSearch_click()
+                
         }
     },
     BuscarPNR_keyDownHandler: function (obj, e, eOpts) {
@@ -366,7 +203,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -434,7 +271,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -452,7 +289,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetCountry_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS');
-
+        
         beanDet.IN_STVAL = '1';
         this.searchDetCountryByStval_1(beanDet);
     },
@@ -572,7 +409,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         this.beanProMasterTicket.IN_FORMA = strTkt.substr(4, 4);
         this.beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
         this.beanProMasterTicket.IN_SEQ = '00';
-
+        
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
@@ -595,7 +432,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetCardS_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCardS');
-
+        
         beanDet.IN_STVAL = '1';
         this.searchDetCardCodeByStval(beanDet);
     },
@@ -626,7 +463,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetDayS_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetDayS');
-
+        
         beanDet.IN_STVAL = '1';
         this.searchDetDayByStval(beanDet);
     },
@@ -670,7 +507,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetTicketS_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDetE = x.record.data;
         win.selectedChild('vskMain', 'boxDetTicket');
-
+        
         beanDetE.IN_STVAL = '1';
         this.searchDetTktByStval(beanDetE);
     },
@@ -747,177 +584,72 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.searchAcc(this.beanDetailAcc);
         } else {
             if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== '' || win.getValue('txtSAGENT').trim() !== ''
-                    || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '') {
-                if (win.getValue('txtTicket').trim() !== '') {
-                    if (win.getValue('txtTicket').trim().length === 13) {
-                        var selectedValues = win.getValue('rbgType').rbgType;
-                        switch (selectedValues) {
-                            case 'Sales':
-                                this.beanDetailTkt.IN_TDOC = 'S';
-                                break;
-                            case 'Refund':
-                                this.beanDetailTkt.IN_TDOC = 'R';
-                                break;
-                        }
-                        this.beanDetailTkt.IN_TICKET = win.getValue('txtTicket');
-                        this.searchDetTICKET(this.beanDetailTkt);
-                    } else {
-                        win.setValue('txtTicket', '');
-                        global.Msg({msg: 'Ticket number must contain 13 digits.'});
-                    }
-                } else if (win.getValue('txtPNR').trim() !== '') {
-                    if (Ext.getCmp(prototype.id + '-txtPNR').getValue().length === 6) {
-                        this.searchByPNR();
-                    } else {
-                        global.Msg({
-                            msg: 'PNR must contain 6 characters.'
-                        });
-                    }
-                } else if (win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '') {
+                    || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '' || win.getValue('cmbSource').trim() !== ''
+                    || win.getValue('cmbCountry').trim() !== '' || win.getValue('cmbCardType').trim() !== '' ) {
 
-
-                    if (win.getValue('txtCard1').trim().length === 6 && win.getValue('txtCard2').trim().length === 4) {
-                        var selectedValuec = win.getValue('rbgType').rbgType;
-                        switch (selectedValuec) {
-                            case 'Sales':
-                                this.beanDetailTar.IN_TDOC = 'S';
-                                break;
-                            case 'Refund':
-                                this.beanDetailTar.IN_TDOC = 'R';
-                                break;
-                        }
-                        this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
-                        this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
-                        this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
-                        this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
-                        this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
-                        this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
-                        this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
-                        this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                        if (win.getValue('chkADYEN')) {
-                            this.beanDetailTar.IN_ADYEN = 'Y';
-                        } else {
-                            this.beanDetailTar.IN_ADYEN = '';
-                        }
-                        console.log(this.beanDetailTar);
-                        this.searchDetTARJETA(this.beanDetailTar);
-                    } else if (win.getValue('txtCard1').trim().length === 0 && win.getValue('txtCard2').trim().length === 4) {
-                        var selectedValuec = win.getValue('rbgType').rbgType;
-                        switch (selectedValuec) {
-                            case 'Sales':
-                                this.beanDetailTar.IN_TDOC = 'S';
-                                break;
-                            case 'Refund':
-                                this.beanDetailTar.IN_TDOC = 'R';
-                                break;
-                        }
-                        this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
-                        this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
-                        this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
-                        this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
-                        this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
-                        this.beanDetailTar.IN_CARDN1 = '';
-                        this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
-                        this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                        if (win.getValue('chkADYEN')) {
-                            this.beanDetailTar.IN_ADYEN = 'Y';
-                        } else {
-                            this.beanDetailTar.IN_ADYEN = '';
-                        }
-
-                        this.searchDetTARJETA(this.beanDetailTar);
-
-                    } else {
-                        alert("CC Number must contain 10 digits.");
-                        txtCard1.text = '';
-                        txtCard2.text = '';
-                    }
-
-                } else if (win.getValue('txtMERCHN').trim() !== '') {
-                    //window.alert("2");               
-                    var selectedValuem = win.getValue('rbgType').rbgType;
-                    switch (selectedValuem) {
-                        case 'Sales':
-                            this.beanDetailMer.IN_TDOC = 'S';
-                            break;
-                        case 'Refund':
-                            this.beanDetailMer.IN_TDOC = 'R';
-                            break;
-                    }
-                    this.beanDetailMer.strFecFiltro = win.getValue('cmbFecFiltro');
-                    this.beanDetailMer.strYearFrom = win.getValue('cmbDateFromYear');
-                    this.beanDetailMer.strMonthFrom = win.getValue('cmbDateFromMonth');
-                    this.beanDetailMer.strYearTo = win.getValue('cmbDateToYear');
-                    this.beanDetailMer.strMonthTo = win.getValue('cmbDateToMonth');
-                    this.beanDetailMer.IN_MERCHN = win.getValue('txtMERCHN');
-                    console.log(this.beanDetailMer);
-                    this.searchDetMERCHAT(this.beanDetailMer);
-                    if (win.getValue('txtMERCHN').trim() !== '') {
-                        win.enabled('cmbAFTE', false);
-                        win.enabled('cmbCardType', false);
-                        win.enabled('cmbCountry', false);
-                        win.enabled('cmbFOP', false);
-                        win.enabled('cmbSource', false);
-                    }
-
-                } else if (win.getValue('txtAUTHNBR').trim() !== '') {
-                    console.log("----->");
-                    var selectedValuec = win.getValue('rbgType').rbgType;
-                    switch (selectedValuec) {
-                        case 'Sales':
-                            this.beanDetailTar.IN_TDOC = 'S';
-                            break;
-                        case 'Refund':
-                            this.beanDetailTar.IN_TDOC = 'R';
-                            break;
-                    }
-                    this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
-                    this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
-                    this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
-                    this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
-                    this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
-                    this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
-                    this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
-                    this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                    console.log(this.beanDetailTar);
-
-                    if (win.getValue('txtAUTHNBR').trim().length === 6) {
-                        this.searchDetTARJETA(this.beanDetailTar);
-                    } else if (win.getValue('txtAUTHNBR').trim().length === 4) {
-                        this.searchDetTARJETA(this.beanDetailTar);
-                    } else {
-                        win.setValue('txtTicket', '');
-                        global.Msg({msg: 'Authorization Number must contain 6 digits.'});
-                    }
-
-                } else if (win.getValue('txtSAGENT').trim() !== '') {
-                    var selectedValuec = win.getValue('rbgType').rbgType;
-                    switch (selectedValuec) {
-                        case 'Sales':
-                            this.beanDetailTar.IN_TDOC = 'S';
-                            break;
-                        case 'Refund':
-                            this.beanDetailTar.IN_TDOC = 'R';
-                            break;
-                    }
-                    this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
-                    this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
-                    this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
-                    this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
-                    this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
-                    this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
-                    this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
-                    this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
-                    this.beanDetailTar.IN_SAGENT = win.getValue('txtSAGENT');
-                    console.log(this.beanDetailTar);
-
-                    if (win.getValue('txtSAGENT').trim().length === 8) {
-                        this.searchBySAGENT(this.beanDetailTar);
-                    } else {
-                        win.setValue('txtSAGENT', '');
-                        global.Msg({msg: 'Agent must contain 8 digits.'});
-                    }
+                if( win.getValue('txtTicket').trim() !== '' && win.getValue('txtTicket').trim().length !== 13 ){
+                    win.setValue('txtTicket', '');
+                    global.Msg({msg: 'Ticket number must contain 13 digits.'});
+                    return false
                 }
+                if( win.getValue('txtPNR').trim() !== '' && win.getValue('txtPNR').length !== 6 ){
+                    win.setValue('txtPNR', '');
+                    global.Msg({msg: 'PNR must contain 6 characters.'});
+                    return false
+                }
+                if( win.getValue('txtCard1').trim() !== '' && win.getValue('txtCard1').trim().length !== 6){
+                    win.setValue('txtCard1', '');
+                    global.Msg({msg: 'Cc number must contain 6 digits.'})
+                    return false
+                }
+                if( win.getValue('txtCard2').trim() !== '' && win.getValue('txtCard2').trim().length !== 4 ){
+                    win.setValue('txtCard2', '');
+                    global.Msg({msg: 'Coorrelative must contain 4 digits.'})
+                    return false
+                }
+                if( win.getValue('txtAUTHNBR').trim() !== '' && win.getValue('txtAUTHNBR').trim().length !== 6 && win.getValue('txtAUTHNBR').trim().length !== 4){
+                    win.setValue('txtAUTHNBR', '');
+                    global.Msg({msg: 'Authorization Number must contain 6 digits.'})
+                    return false
+                }
+                if( win.getValue('txtSAGENT').trim() !== '' && win.getValue('txtSAGENT').trim().length !== 8 ){
+                    win.setValue('txtSAGENT ', '');
+                    global.Msg({msg: 'Agent must contain 8 digits.'})
+                    return false
+                }
+
+
+                var selectedValuec = win.getValue('rbgType').rbgType;
+                switch (selectedValuec) {
+                    case 'Sales':
+                        this.beanDetailTar.IN_TDOC = 'S';
+                        break;
+                    case 'Refund':
+                        this.beanDetailTar.IN_TDOC = 'R';
+                        break;
+                }
+                this.beanDetailTar.strFecFiltro = win.getValue('cmbFecFiltro');
+                this.beanDetailTar.strYearFrom = win.getValue('cmbDateFromYear');
+                this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
+                this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
+                this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
+                this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
+                this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
+                this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
+                this.beanDetailTar.IN_TICKET = win.getValue('txtTicket');
+
+                this.beanDetailTar.IN_COUNTRY = win.getValue('cmbCountry');
+                this.beanDetailTar.IN_CARDC = win.getValue('cmbCardType');
+                this.beanDetailTar.IN_FTE = win.getValue('cmbSource');
+
+                this.beanDetailTar.IN_SAGENT = win.getValue('txtSAGENT');
+                this.beanDetailTar.IN_SPNR = win.getValue('txtPNR');
+                if (win.getValue('chkADYEN')) {
+                    this.beanDetailTar.IN_ADYEN = 'Y';
+                } else {
+                    this.beanDetailTar.IN_ADYEN = '';
+                }
+                this.searchDetTARJETA(this.beanDetailTar);
             } else {
                 this.bean.strFecFiltro = win.getValue('cmbFecFiltro');
                 this.bean.strYearFrom = win.getValue('cmbDateFromYear');
@@ -935,14 +667,17 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         break;
                 }
                 this.bean.IN_COUNTRY = win.getValue('cmbCountry');
-                this.bean.IN_PAYMENT = win.getValue('cmbFOP');
+    //            this.bean.IN_PAYMENT = win.getValue('cmbFOP');
                 this.bean.IN_CARDC = win.getValue('cmbCardType');
                 this.bean.IN_TICKET = win.getValue('txtTicket').trim();
                 this.bean.IN_FTE = win.getValue('cmbSource');
-                this.bean.IN_AFTE = win.getValue('cmbAFTE');
+    //            this.bean.IN_AFTE = win.getValue('cmbAFTE');
+                this.bean.IN_CARDN1 = win.getValue('txtCard1').trim();
+                this.bean.IN_CARDN2 = win.getValue('txtCard2').trim();
                 this.bean.IN_MERCHN = win.getValue('txtMERCHN').trim();
                 this.bean.IN_AUTHNBR = win.getValue('txtAUTHNBR').trim();
                 this.bean.IN_SAGENT = win.getValue('txtSAGENT').trim();
+                this.bean.IN_SPNR = win.getValue('txtPNR').trim();
                 if (win.getValue('chkADYEN')) {
                     this.bean.IN_ADYEN = 'Y';
                 } else {
@@ -954,12 +689,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 //                    imgSearchChart_clickHandler();
                 //
                 //            }else{
-                if (win.getValue('cmbFOP') === 'CA') {
-                    this.searchCashMonth(this.bean);
-                } else {
-                    this.search(this.bean);
-//                this.searchDetDay(this.bean);
-                }
+    //            if (win.getValue('cmbFOP') === 'CA') {
+    //                this.searchCashMonth(this.bean);
+    //            } else {
+                this.search(this.bean);
+    //                this.searchDetDay(this.bean);
+    //            }
                 //            }	
             }
         }
@@ -998,9 +733,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             case prototype.id + '-boxMainData':
                 global.getFileExcelPost('search', JSON.stringify(this.bean), Ext.getCmp(prototype.id + '-gridData').config.columns.items);
                 break;
-            case prototype.id + '-boxMainDataAcc':
-                global.getFileExcelPost('search', JSON.stringify(this.beanDetailAcc), Ext.getCmp(prototype.id + '-gridDataAcc').config.columns.items);
-                break;    
             case prototype.id + '-boxDetCountryS':
                 global.getFileExcelPost('searchDetCountryByStval', JSON.stringify(me.beanDet), Ext.getCmp(prototype.id + '-gridDetCountryS').config.columns.items);
                 break;
@@ -1056,7 +788,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         this.initDate();
 
         win.setValue('cmbCountry', '');
-        win.setValue('cmbFOP', 'CC');
+//        win.setValue('cmbFOP', 'CC');
         win.setValue('cmbCardType', '');
         win.setValue('txtTicket', '');
         win.setValue('txtCard1', '');
@@ -1159,7 +891,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1245,7 +977,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1299,7 +1031,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1350,7 +1082,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1407,7 +1139,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1441,7 +1173,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1475,7 +1207,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1509,7 +1241,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1745,7 +1477,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         //                        }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1779,7 +1511,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1846,7 +1578,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         //                        }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1907,7 +1639,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         //                        }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -1993,7 +1725,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     }
                 } else
 //                    global.Msg({msg: res.sesion});
-                    global.clear();
+                global.clear();
             },
             failure: function (response, opts) {
                 Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -2084,7 +1816,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -2227,7 +1959,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -2284,7 +2016,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                        global.clear();
+                    global.clear();
                 }
             }
         });
@@ -2345,17 +2077,17 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         win.enabled('cmbDateFromMonth', true);
         win.enabled('cmbDateToYear', true);
         win.enabled('cmbDateToMonth', true);
-        win.enabled('cmbAFTE', true);
+//        win.enabled('cmbAFTE', true);
         win.enabled('cmbCardType', true);
         win.enabled('cmbCountry', true);
-        win.enabled('cmbFOP', true);
+//        win.enabled('cmbFOP', true);
         win.enabled('cmbSource', true);
     },
     habilitarFiltros2: function () {
-        win.enabled('cmbAFTE', true);
+//        win.enabled('cmbAFTE', true);
         win.enabled('cmbCardType', true);
         win.enabled('cmbCountry', true);
-        win.enabled('cmbFOP', true);
+//        win.enabled('cmbFOP', true);
         win.enabled('cmbSource', true);
     },
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginación">
@@ -2417,8 +2149,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         switch (this.peek()) {
             case prototype.id + '-boxMainData':
                 return Ext.getCmp(prototype.id + '-paggin');
-            case prototype.id + '-boxMainDataAcc':
-                return Ext.getCmp(prototype.id + '-pagginAcc');
             case prototype.id + '-boxDetCountry':
                 return Ext.getCmp(prototype.id + '-paggin2');
             case prototype.id + '-boxDetCard':
@@ -2478,7 +2208,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     sendMail_clickHandler: function () {
 
         console.log('sendMail_clickHandler');
-
+        
         Ext.Msg.show({
             title: '.:Confirmation:.',
             msg: 'Sure to Send Email to IATA?',
@@ -2507,13 +2237,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             var msj = String(res.msj);
 
                             global.Msg({msg: msj});
-
+                            
                         }
                     });
                 }
             }
         });
-
+           
     }
     // </editor-fold>
 });

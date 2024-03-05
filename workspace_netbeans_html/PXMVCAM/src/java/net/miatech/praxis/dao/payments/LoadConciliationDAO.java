@@ -953,40 +953,49 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(10, Types.INTEGER);
-            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.registerOutParameter(12, Types.INTEGER);
-            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
+            cstmt.registerOutParameter(18, Types.INTEGER);
+            cstmt.registerOutParameter(19, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
             cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom);
             cstmt.setString(4, filter.strYearTo + filter.strMonthTo);
+            
             cstmt.setString(5, filter.IN_TDOC);//SERIE
             cstmt.setString(6, filter.IN_CARDN1);//PRIMEROS 6 DIGITOS DE LA TARJETA
             cstmt.setString(7, filter.IN_CARDN2);//ULTIMOS 4 DIGITOS DE LA TARJETA
             cstmt.setString(8, filter.IN_AUTHNBR);//NUMERO AUTORIZACION
             cstmt.setString(9, filter.IN_ADYEN);
+            cstmt.setString(10, filter.IN_SAGENT);
+            cstmt.setString(11, filter.IN_SPNR);
+            cstmt.setString(12, filter.IN_TICKET);
+            cstmt.setString(13, filter.IN_COUNTRY.trim());
+            cstmt.setString(14, filter.IN_CARDC.trim());
+            cstmt.setString(15, filter.IN_FTE.trim());
+            
 
-            cstmt.setInt(10, filter.page.PAGNUM);
-            cstmt.setInt(11, filter.page.PAGROW);
-            cstmt.setInt(12, filter.page.TOTPAG);
-            cstmt.setInt(13, filter.page.TOTROW);
+
+            cstmt.setInt(16, filter.page.PAGNUM);
+            cstmt.setInt(17, filter.page.PAGROW);
+            cstmt.setInt(18, filter.page.TOTPAG);
+            cstmt.setInt(19, filter.page.TOTROW);
 
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
-            filter.page.PAGNUM = cstmt.getInt(10);
-            filter.page.PAGROW = cstmt.getInt(11);
-            filter.page.TOTPAG = cstmt.getInt(12);
-            filter.page.TOTROW = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(16);
+            filter.page.PAGROW = cstmt.getInt(17);
+            filter.page.TOTPAG = cstmt.getInt(18);
+            filter.page.TOTROW = cstmt.getInt(19);
 
             while (rst.next()) {
                 lngTotCant += rst.getLong("CANT");

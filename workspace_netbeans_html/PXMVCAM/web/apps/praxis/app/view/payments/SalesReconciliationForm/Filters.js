@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
             id: prototype.id+'-boxSearchFilter',
             margin: '0 7',
             border: false,
-            width: 1200,
+            width: 1330,
             bodyStyle: 'background: transparent',
             layout: 'vbox',
             defaults: {
@@ -43,7 +43,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 120,
+                            width: 105,
                             value: "SDATE",
                             typeAhead: true,
                             valueField: 'code', displayField: 'name',
@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             listeners:{
                             }
                         },
-                        {xtype: 'tbspacer', width: 10},
+                        {xtype: 'tbspacer', width: 5},
                         //<editor-fold defaultstate="collapsed" desc="cmbDate">
                         {
                             xtype: 'combo',
@@ -175,44 +175,44 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
 //                        },
                         //</editor-fold>
                         {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'label',
-                            text: 'FOP:',
-                            padding: '3 0',
-                            width: 74
-                        },
-                        {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbFOP',
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    ["", "All"], ["CC", "Credit Card"], ["CA", "Cash"]
-                                ]
-                            }),
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
-                            width: 100,
-                            value: "CC",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners:{
-                                change: 'cbxFOPAC_changeHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 58},
+//                        {
+//                            xtype: 'label',
+//                            text: 'FOP:',
+//                            padding: '3 0',
+//                            width: 74
+//                        },
+//                        {
+//                            xtype:'combo',
+//                            id: prototype.id+'-cmbFOP',
+//                            store: new Ext.data.SimpleStore({
+//                                fields: ['code', 'name'],
+//                                data: [
+//                                    ["", "All"], ["CC", "Credit Card"], ["CA", "Cash"]
+//                                ]
+//                            }),
+//                            queryMode: 'local',
+//                            allowBlank: false,
+//                            forceSelection: true,
+//                            selectOnFocus: true,
+//                            caseSensitive: false,
+//                            autoSelect: true,
+//                            editable: true,
+//                            width: 100,
+//                            value: "CC",
+//                            typeAhead: true,
+//                            valueField: 'code', displayField: 'name',
+//                            enableKeyEvents: true,
+//                            triggerAction: 'all',
+//                            listeners:{
+//                                change: 'cbxFOPAC_changeHandler'
+//                            }
+//                        },
+                        {xtype: 'tbspacer', width: 80},
                         {
                             xtype: 'label',
                             text: 'Source:',
                             padding: '3 0',
-                            width: 66
+                            width: 100
                         },
                         {
                             xtype:'combo',
@@ -220,7 +220,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['code', 'name'],
                                 data: [
-                                    ["", "All"], ["B", "BSP"], ["S", "ASR"], ["A", "ARC"]
+                                    ["", "All"], ["AVCAO", "AVCAO"], ["BSP", "BSP"], ["BSPCO", "BSPCO"]
                                 ]
                             }),
                             queryMode: 'local',
@@ -237,6 +237,58 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                             listeners:{
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 29},
+                        {
+                            xtype: 'label',
+                            text: 'Country:',
+                            padding: '3 0',
+                            width: 57
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype:'combo',
+                            id: prototype.id+'-cmbCountry',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 251,
+                            typeAhead: true,
+                            valueField: 'A006PAIS', displayField: 'A006NOMBRE',
+                            listConfig: {maxHeight: 111},
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            listeners:{
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 25},
+                        {
+                            xtype: 'label',
+                            text: 'PNR: ',
+                            padding: '3 0',
+                            width: 40,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'PNR'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id+'-txtPNR',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9a-zA-Z]/,
+                            maxLength: 6,
+                            width: 70,
+                            enableKeyEvents: true,
+                            listeners:{
+                                keypress: 'BuscarTKT_keyDownHandler'
                             }
                         },
 //                        {xtype: 'tbspacer', width: 30},
@@ -246,32 +298,32 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
 //                            padding: '3 0',
 //                            width: 94
 //                        },
-                        {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbAFTE',
-                            hidden:true,
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    ["", "All"], ["B", "Billed"], ["N", "Not Billed"], ["L", "Local"], ["X", "BSP Billed"]
-                                ]
-                            }),
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
-                            width: 100,
-                            value: "",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners:{
-                            }
-                        }
+//                        {
+//                            xtype:'combo',
+//                            id: prototype.id+'-',
+//                            hidden:true,
+//                            store: new Ext.data.SimpleStore({
+//                                fields: ['code', 'name'],
+//                                data: [
+//                                    ["", "All"], ["B", "Billed"], ["N", "Not Billed"], ["L", "Local"], ["X", "BSP Billed"]
+//                                ]
+//                            }),
+//                            queryMode: 'local',
+//                            allowBlank: false,
+//                            forceSelection: true,
+//                            selectOnFocus: true,
+//                            caseSensitive: false,
+//                            autoSelect: true,
+//                            editable: true,
+//                            width: 100,
+//                            value: "",
+//                            typeAhead: true,
+//                            valueField: 'code', displayField: 'name',
+//                            enableKeyEvents: true,
+//                            triggerAction: 'all',
+//                            listeners:{
+//                            }
+//                        }
                     ]
                 },
                 {
@@ -325,7 +377,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             width: 85,
                             enableKeyEvents: true,
                             listeners:{
-                                keypress: 'tarjeta_keyDownHandler',
+                                keypress: 'BuscarTKT_keyDownHandler',
                             }
                         },
                         {xtype: 'tbspacer', width: 5},
@@ -370,13 +422,13 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             enforceMaxLength: true,     
                             maskRe: /[a-zA-Z0-9]/,      
                             maxLength: 6,
-                            width: 120,
+                            width: 100,
                             enableKeyEvents: true,
                             listeners:{
-                                keypress: 'onTextKeypress'
+                                keypress: 'BuscarTKT_keyDownHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 5},
+                        {xtype: 'tbspacer', width: 30},
                         {
                             xtype: 'label',
                             text: 'CC Type:',
@@ -405,7 +457,32 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             triggerAction: 'all',
                             listeners:{
                             }
-                        }
+                        },
+                        {xtype: 'tbspacer', width: 25},
+                        {
+                            xtype: 'label',
+                            text: 'Agent: ',
+                            padding: '3 0',
+                            width: 40,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Agent'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id+'-txtSAGENT',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9]/,
+                            maxLength: 8,
+                            width: 70,
+                            enableKeyEvents: true,
+                            listeners:{
+                                keypress: 'BuscarTKT_keyDownHandler'
+                            }
+                        },
                     ]
                 },
                 {
@@ -417,32 +494,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                         margin: '4 0'
                     },
                     items: [
-                        {
-                            xtype: 'label',
-                            text: 'Country:',
-                            padding: '3 0',
-                            width: 100
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbCountry',
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
-                            width: 236,
-                            typeAhead: true,
-                            valueField: 'A006PAIS', displayField: 'A006NOMBRE',
-                            listConfig: {maxHeight: 111},
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners:{
-                            }
-                        },
+                        
                         {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
@@ -467,54 +519,6 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             enableKeyEvents: true,
                             listeners:{
                                 keypress: 'BuscarTKT_keyDownHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 25},
-                        {
-                            xtype: 'label',
-                            text: 'PNR: ',
-                            padding: '3 0',
-                            width: 40,
-                            autoEl: {
-                                tag: 'label',
-                                'data-qtip': 'PNR'
-                            }
-                        },
-                        {
-                            xtype: 'textfield',
-                            id: prototype.id+'-txtPNR',     
-                            fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9a-zA-Z]/,
-                            maxLength: 6,
-                            width: 70,
-                            enableKeyEvents: true,
-                            listeners:{
-                                keypress: 'BuscarPNR_keyDownHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 25},
-                        {
-                            xtype: 'label',
-                            text: 'Agent: ',
-                            padding: '3 0',
-                            width: 40,
-                            autoEl: {
-                                tag: 'label',
-                                'data-qtip': 'Agent'
-                            }
-                        },
-                        {
-                            xtype: 'textfield',
-                            id: prototype.id+'-txtSAGENT',     
-                            fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,
-                            maxLength: 8,
-                            width: 70,
-                            enableKeyEvents: true,
-                            listeners:{
-                                keypress: 'BuscarSAGENT_keyDownHandler'
                             }
                         },
                         {xtype: 'tbspacer', width: 40},
