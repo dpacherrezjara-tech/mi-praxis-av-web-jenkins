@@ -160,4 +160,7 @@ public class A2290 {
     public String FEUP = "";
     public String HOUP = "";
     public String PGMUP = "";
+    
+    
+    public String SCARDNCOR = "";
 }

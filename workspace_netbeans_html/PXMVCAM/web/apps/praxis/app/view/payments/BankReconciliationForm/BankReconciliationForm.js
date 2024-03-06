@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
     requires: [
         'Ext.Praxis.view.payments.BankReconciliationForm.Options',
         'Ext.Praxis.view.payments.BankReconciliationForm.Filters',
+        'Ext.Praxis.view.payments.BankReconciliationForm.FiltersBT',
         'Ext.Praxis.view.payments.BankReconciliationForm.Info',
         'Ext.Praxis.controller.payments.BankReconciliation.BankReconciliationController'
     ],
@@ -64,6 +65,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
                                         {
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter'
+                                        },
+                                        {
+                                            xtype:prototype.id+ '-filtersBT',
+                                            region: 'center',
+                                            id: prototype.id+'-contentFilterBT',
+                                            hidden: true
                                         }
                                         ,
                                         {

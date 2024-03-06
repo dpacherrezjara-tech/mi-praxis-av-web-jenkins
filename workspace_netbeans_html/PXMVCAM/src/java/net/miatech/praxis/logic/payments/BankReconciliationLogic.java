@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.libmiatec.A1248;
 import net.miatech.praxis.dao.payments.BankReconciliationDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
+import net.miatech.praxis.spring.INF020;
 
 /**
  *
@@ -108,5 +110,29 @@ public class BankReconciliationLogic {
     
     public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_MDP_SCAN_PENDING(filter);
+    }
+
+    public List<A2290Filter> loadPX269SQP00871JT(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00871JT(filter);
+    }
+    
+    public List<A1248> loadSQP03739(String tabla) throws Exception {
+        return bankReconciliationDAO.loadSQP03739(tabla);
+    }
+    public List<A1248> loadOperadores() throws Exception {
+        return bankReconciliationDAO.loadOperadores();
+    }
+    public List<A2290Filter> loadAuditores() throws Exception {
+        return bankReconciliationDAO.loadAuditores();
+    }
+    public INF020 loadUserInfo() throws Exception {
+        return bankReconciliationDAO.loadUserInfo();
+    }
+    public String asginarTW(A2290Filter filter) throws Exception {
+        return bankReconciliationDAO.asginarTW(filter);
+    }
+
+    public List<A2290Filter> loadPX269SQPMPF100(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQPMPF100(filter);
     }
 }

@@ -571,6 +571,10 @@ public class A2290Filter extends A2290 {
     public String IN_TRAN = "";
     
 
+    public String UASIG = "";
+    public String IN_ANALISTA = "";
+    public String IN_WHERE = "";
+    
     public String bufferToString(String ccust) {
 
         String strValue = "";

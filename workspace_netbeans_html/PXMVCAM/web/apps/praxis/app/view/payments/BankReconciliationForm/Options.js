@@ -149,6 +149,22 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-pagginTW',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-pagginMPF101TW',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
 
                     ]
@@ -175,6 +191,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter'
 
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn-TW',
+                            tooltip: 'Work assignment',
+                            icon: 'resources/img/botones/grid.png',
+                            listeners: {
+                                click: 'ongridTW'
+                            }
                         },
 //                        {
 //                            xtype: 'button',

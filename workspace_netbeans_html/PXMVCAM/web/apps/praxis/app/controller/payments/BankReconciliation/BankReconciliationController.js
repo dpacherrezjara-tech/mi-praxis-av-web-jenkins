@@ -27,11 +27,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     flag: '',
     flagStatus: '',
     flagDrilDownByDay: '',
+    nivel_usr: '',
     lstBank: [],
     bean_detail: [],
     bean_detailT: [],
     lstCard: [],
     lstCountry: [],
+    listaCampos: [],
+    beanTW: {},
     me: '',
     searchParams: {},
     paramsObtainData: {},
@@ -102,6 +105,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             },
             '#BankReconciliationForm-imgSwap1': {
                 click: this.btnImgSwap1
+            },
+            '#BankReconciliationForm-btnBackTW': {
+                click: this.btnBackTW_click
             }
         });
     },
@@ -190,6 +196,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
 
 
+        /*Teleworking*/
+        Ext.getCmp(prototype.id + '-cmbDateYearTW').bindStore(win.getStoreYear(false));
+        Ext.getCmp(prototype.id + '-cmbDateMonthTW').bindStore(win.getStoreMonth(true));
+//        Ext.getCmp(prototype.id + '-cmbDateFromDayTW').bindStore(win.getStoreDays(true));
+//        Ext.getCmp(prototype.id + '-cmbDateToDayTW').bindStore(win.getStoreDays(true));
+
+        var mes = Ext.String.leftPad(this.fecha.getMonth()+1,2,'0');
+        Ext.getCmp(prototype.id + '-cmbDateYearTW').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateMonthTW').setValue(mes);
+//        Ext.getCmp(prototype.id + '-cmbDateFromDayTW').setValue("");
+//        Ext.getCmp(prototype.id + '-cmbDateToDayTW').setValue("");
+        
+        /*Teleworking*/
+        
 //        var storeComboDataYear = win.getStoreYear(false);
 //        var storeComboDataMonth = win.getStoreMonth(false);
 //        var storeComboDataDay = win.getStoreDays(true);
@@ -365,6 +385,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 break;
         }
     },
+    Search_keyDownHandler: function (obj, e, eOpts) {
+
+        switch (e.getKey()) {
+
+            case 13:
+
+                this.btnSearch_click();
+
+                break;
+
+        }
+
+    },
     searchByPNR: function () {
         var bean = {};
         bean.IN_PNR = Ext.getCmp(prototype.id + '-txtPNR').getValue()
@@ -413,61 +446,66 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_COMENT = '';
         this.beanDetDay.IN_AGENCY = '';
 
-        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
+        if( Ext.getCmp(prototype.id + '-panelTW').isVisible()){
+            this.searchDetailTW();
+        }else{
+            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
 
-            me.panelActual = '-panelGridDataDetalle';
-            global.selectedChild(me.childs, prototype.id + me.panelActual);
+                me.panelActual = '-panelGridDataDetalle';
+                global.selectedChild(me.childs, prototype.id + me.panelActual);
 
-            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '') {
-                if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim().length === 6 && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim().length === 4) {
-                    this.beanDetDay.IN_CARDN1 = Ext.getCmp(prototype.id + '-txtCard1').getValue().trim();
-                    this.beanDetDay.IN_CARDN2 = Ext.getCmp(prototype.id + '-txtCard2').getValue().trim();
+                if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '') {
+                    if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim().length === 6 && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim().length === 4) {
+                        this.beanDetDay.IN_CARDN1 = Ext.getCmp(prototype.id + '-txtCard1').getValue().trim();
+                        this.beanDetDay.IN_CARDN2 = Ext.getCmp(prototype.id + '-txtCard2').getValue().trim();
 
-                } else {
-                    global.Msg({
-                        msg: 'Credit Card Number must contain 10 digits.'
-                    });
-                    Ext.getCmp(prototype.id + '-txtCard1').setValue('');
-                    Ext.getCmp(prototype.id + '-txtCard2').setValue('');
+                    } else {
+                        global.Msg({
+                            msg: 'Credit Card Number must contain 10 digits.'
+                        });
+                        Ext.getCmp(prototype.id + '-txtCard1').setValue('');
+                        Ext.getCmp(prototype.id + '-txtCard2').setValue('');
+                    }
+                } else if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() === '' && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '') {
+                    if (Ext.getCmp(prototype.id + '-txtCard2').getValue().trim().length === 4) {
+                        this.beanDetDay.IN_SCARDNCOR = Ext.getCmp(prototype.id + '-txtCard2').getValue().trim();
+                    } else {
+                        global.Msg({
+                            msg: 'Correlative Number must contain 4 digits.'
+                        });
+                        Ext.getCmp(prototype.id + '-txtCard2').setValue('');
+                    }
                 }
-            } else if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() === '' && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '') {
-                if (Ext.getCmp(prototype.id + '-txtCard2').getValue().trim().length === 4) {
-                    this.beanDetDay.IN_SCARDNCOR = Ext.getCmp(prototype.id + '-txtCard2').getValue().trim();
-                } else {
-                    global.Msg({
-                        msg: 'Correlative Number must contain 4 digits.'
-                    });
-                    Ext.getCmp(prototype.id + '-txtCard2').setValue('');
-                }
+    //            if (Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() > 0) {
+    //                if (Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim().length === 8) {
+                this.beanDetDay.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim();
+    //                } else {
+    //                    global.Msg({
+    //                        msg: 'Authorization Code Number must contain 8 digits.'
+    //                    });
+    //                    Ext.getCmp(prototype.id + '-txtAUTHOC').setValue('');
+    //                }
+    //            }
+    //            if (Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '') {
+                this.beanDetDay.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim();
+    //            }
+    //            if (Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim() !== '') {
+                this.beanDetDay.IN_COMENT = Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim();
+    //            }
+    //            if (Ext.getCmp(prototype.id + '-cmbAGENCY').getValue().trim() !== '') {
+                this.beanDetDay.IN_AGENCY = Ext.getCmp(prototype.id + '-txtAGENCY').getValue().trim();
+    //            }
+
+                me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
+                console.log(me.paramsDetail.beanString);
+                this.setGridDataDetalle();
+
+            } else {
+                this.setFormatParameter();
+                this.setGridDataMain(obj, e);
+
             }
-//            if (Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() > 0) {
-//                if (Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim().length === 8) {
-            this.beanDetDay.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim();
-//                } else {
-//                    global.Msg({
-//                        msg: 'Authorization Code Number must contain 8 digits.'
-//                    });
-//                    Ext.getCmp(prototype.id + '-txtAUTHOC').setValue('');
-//                }
-//            }
-//            if (Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '') {
-            this.beanDetDay.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim();
-//            }
-//            if (Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim() !== '') {
-            this.beanDetDay.IN_COMENT = Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim();
-//            }
-//            if (Ext.getCmp(prototype.id + '-cmbAGENCY').getValue().trim() !== '') {
-            this.beanDetDay.IN_AGENCY = Ext.getCmp(prototype.id + '-txtAGENCY').getValue().trim();
-//            }
-
-            me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
-            console.log(me.paramsDetail.beanString);
-            this.setGridDataDetalle();
-
-        } else {
-            this.setFormatParameter();
-            this.setGridDataMain(obj, e);
-
+            
         }
     },
     cmbTranType_changeHandler: function () {
@@ -1773,32 +1811,42 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     getPaggin: function () {
         me.pagginActual = '';
-        switch (me.panelActual) {
-            case  '-panelGridDataMain':
-                me.pagginActual = '-paggin';
-                break;
-            case '-panelGridDataCountry':
-                me.pagginActual = '-paggin2';
-                break;
-            case '-panelGridDataDay':
-                me.pagginActual = '-paggin3';
-                break;
-            case '-panelGridDataDetalle':
-                me.pagginActual = '-paggin4';
-                break;
-            case '-panelGridDetCardByS':
-                me.pagginActual = '-paggin5';
-                break;
-            case '-gridDataDetDayByS':
-                me.pagginActual = '-paggin6';
-                break;
-            case '-panelGridDataTicket':
-                me.pagginActual = '-paggin7';
-                break;
-            case '-panelGridDetDayByS':
-                me.pagginActual = '-paggin8';
-                break;
-        }   
+        if( Ext.getCmp(prototype.id + '-panelTW').isVisible()){
+            
+            if( Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()){
+                me.pagginActual = '-pagginMPF101TW';
+            }else{
+                me.pagginActual = '-pagginTW';
+            }
+        }else{
+            switch (me.panelActual) {
+                case  '-panelGridDataMain':
+                    me.pagginActual = '-paggin';
+                    break;
+                case '-panelGridDataCountry':
+                    me.pagginActual = '-paggin2';
+                    break;
+                case '-panelGridDataDay':
+                    me.pagginActual = '-paggin3';
+                    break;
+                case '-panelGridDataDetalle':
+                    me.pagginActual = '-paggin4';
+                    break;
+                case '-panelGridDetCardByS':
+                    me.pagginActual = '-paggin5';
+                    break;
+                case '-gridDataDetDayByS':
+                    me.pagginActual = '-paggin6';
+                    break;
+                case '-panelGridDataTicket':
+                    me.pagginActual = '-paggin7';
+                    break;
+                case '-panelGridDetDayByS':
+                    me.pagginActual = '-paggin8';
+                    break;
+            }  
+        }
+         
     },
     /*     
      * Funciones para la paginacion     
@@ -1832,7 +1880,664 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     getDouble: function (value, metaData, record, rowIndex, colIndex, store, view) {
         metaData.style = 'text-align:right';
         return Ext.util.Format.number(value, '0,000.00');
+    },
+
+    ongridTW: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var panelMain = Ext.getCmp(prototype.id + '-panelMain');
+        var panelTW = Ext.getCmp(prototype.id + '-panelTW');
+        
+        var option = Ext.getCmp(prototype.id + '-contentFilter');
+        var option2 = Ext.getCmp(prototype.id + '-contentFilterBT');
+        
+        if (panelMain.isVisible()) {
+            panelMain.setVisible(false);
+            option.setVisible(false);
+            panelTW.setVisible(true);
+            option2.setVisible(true);
+            
+            var lista = [{code:"SDATE",name:"Sale Date"}];
+            var storeData = Ext.create('Ext.data.Store', {
+                fields: ['data'],
+                data: lista,
+                autoLoad: true
+            });
+            Ext.getCmp(prototype.id + '-cmbTipoFecha').bindStore(storeData);//
+            Ext.getCmp(prototype.id + '-cmbTipoFecha').setValue('SDATE');
+            
+            this.setStoreDataTW();
+            this.obtainFields();
+            this.imgClearFields();
+            this.searchDetailTW();
+        } else {
+            panelMain.setVisible(true);
+            option.setVisible(true);
+            panelTW.setVisible(false);
+            option2.setVisible(false);
+        }
+        
+        
+    },
+    
+    obtainFields: function () {
+
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainFields',
+            method: 'POST',
+            timeout: 60000000,
+//            beforerequest: Ext.getCmp(prototype.id + '-cmbCampo1').mask('Loading...'),
+            params: {tabla: 'MPF100'},
+            success: function (response, options) {
+//                Ext.getCmp(prototype.id + '-cmbCampo1').unmask('Loading...');
+//                console.log(response);
+
+                var res = Ext.JSON.decode(response.responseText);
+
+                var resCampos = res.lstData;
+
+//                var listaCampos = [];
+                me.listaCampos = [];
+                me.listaCampos.push({code: "", name: "All", tabla: "", size: "", tipo: "", fieldSys: "", userfield: "", label: ""});
+                var listaCamposGB = [];
+                listaCamposGB.push({code: "", name: "All", tabla: "", size: "", tipo: "", fieldSys: "", userfield: "", label: ""});
+
+                for (var i = 0; i < resCampos.length; i++) {
+
+                    var datosCampos = {};
+
+                    datosCampos = {
+                        code: resCampos[i].TABNAME + '.' + resCampos[i].SYSTFIELD,
+                        name: resCampos[i].DESCRIPT,
+                        tabla: resCampos[i].TABNAME,
+                        size: resCampos[i].LENGHTF,
+                        tipo: resCampos[i].DATATYPE,
+                        fieldSys: resCampos[i].SYSTFIELD,
+                        userfield: resCampos[i].USERFIELD,
+                        label: resCampos[i].USERFIELD + ' - ' + resCampos[i].DESCRIPT
+                    };
+
+                    me.listaCampos.push(datosCampos);
+
+                    if (resCampos[i].SUBSTRFL === 'Y') {
+                        listaCamposGB.push(datosCampos);
+                    }
+                }
+
+
+                var storeDataComboGB = Ext.create('Ext.data.Store', {
+                    fields: ['data'],
+                    data: listaCamposGB,
+                    autoLoad: true
+                });
+
+                for (var i = 1; i < 8; i++) {
+
+                    var storeDataCombo = Ext.create('Ext.data.Store', {
+                        fields: ['data'],
+                        data: me.listaCampos,
+                        autoLoad: true
+                    });
+
+                    Ext.getCmp(prototype.id + '-cmbCampo' + i).getStore().removeAll();
+                    Ext.getCmp(prototype.id + '-cmbCampo' + i).bindStore(Ext.clone(storeDataCombo));
+                    Ext.getCmp(prototype.id + '-cmbCampo' + i).setValue('');
+                }
+//                Ext.getCmp(prototype.id + '-cmbSelection').bindStore(storeDataComboGB);
+//                Ext.getCmp(prototype.id + '-cmbSelection').setValue('');
+
+            }
+        });
+
+
+    },
+    changecmbCampo: function (nbr) {
+        var idtxt = '-txtCampo' + nbr;
+        var idcmb = '-cmbCampo' + nbr;
+
+        if (Ext.getCmp(prototype.id + idcmb).getValue() === null) {
+            Ext.getCmp(prototype.id + idcmb).getStore().load();
+            Ext.getCmp(prototype.id + idtxt).setValue('');
+        } else {
+//        console.log(Ext.getCmp(prototype.id + idtxt));
+            Ext.getCmp(prototype.id + idtxt).setValue(Ext.getCmp(prototype.id + idcmb).getValue());
+        }
+    },
+    imgInfo_clickHandler: function (nbr) {
+
+        var idtxt = '-txtCampo' + nbr;
+        var idcmb = '-cmbCampo' + nbr;
+
+        if (Ext.getCmp(prototype.id + idtxt).isVisible()) {
+            Ext.getCmp(prototype.id + idtxt).hide();
+            Ext.getCmp(prototype.id + idcmb).show();
+        } else {
+            Ext.getCmp(prototype.id + idtxt).show();
+            Ext.getCmp(prototype.id + idcmb).hide();
+        }
+
+    },
+    imgClearFields: function () {
+        /*if(nro!='1'){
+         var v_cmbConector:ComboBox = this["cmbConector"+nro];
+         }*/
+
+        for (var nbr = 1; nbr < 8; nbr++) {
+            var v_txtCampoText = Ext.getCmp(prototype.id + '-txtCampo' + nbr);
+            var v_cmbCampo = Ext.getCmp(prototype.id + '-cmbCampo' + nbr);
+            //var v_cmbCampoB = Ext.getCmp(prototype.id + '-cmbCampo' + nbr + 'B');
+            var v_cmbOperador = Ext.getCmp(prototype.id + '-cmbOperador' + nbr);
+            var v_txtValue = Ext.getCmp(prototype.id + '-txtValue' + nbr);
+            var v_txtValueBetween = Ext.getCmp(prototype.id + '-txtValue' + nbr + 'B');
+            var v_hbox = Ext.getCmp(prototype.id + '-hb_Between' + nbr);
+
+//            if (nbr !== '1') {
+//                //SelectedIndex = 0
+//                var cb = Ext.getCmp(prototype.id + '-cmbConector' + nbr);
+//                cb.setValue(cb.getStore().getAt(0).get(cb.valueField));
+//            }
+
+            v_txtCampoText.setValue('');
+            v_txtCampoText.show();
+            v_cmbCampo.setValue('');
+            v_cmbCampo.hide();
+            v_cmbCampo.getStore().load();
+//            //v_cmbCampoB.selectedIndex=0;
+//            v_cmbOperador.setValue('');
+//            v_txtValue.setValue('');
+//            v_txtValueBetween.setValue('');
+//            v_hbox.hide();
+
+        }
+    },
+    setStoreDataTW: function () {
+
+//        var storeComboDataYear = win.getStoreYear(false);
+//
+//        Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(storeComboDataYear);
+//        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
+//
+//        var storeComboDataMonth = win.getStoreMonth(true);
+//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
+//        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
+//        
+//        var storeComboDataDay = win.getStoreDays(true);
+//        Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(storeComboDataDay);
+//        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
+//
+//        
+        
+
+//        var store_paisesREF = Ext.create('Ext.data.Store', {
+//            fields: ['data'],
+//            autoLoad: true,
+//            //pageSize:20,
+//            proxy: {
+//                type: 'ajax',
+//                url: CONTEXTPATH + '/MasterTable/getDescPaises',
+//                reader: {
+//                    type: 'json',
+//                    rootProperty: 'data'
+//                }
+//            }
+//        });
+//
+//        Ext.getCmp(prototype.id + '-cmbREF087PAIS').bindStore(store_paisesREF);
+//        Ext.getCmp(prototype.id + '-cmbREF087PAIS').setValue('');
+
+
+        Ext.Ajax.request({
+            url: prototype.url + '/getUserInfo',
+            method: 'POST',
+            timeout: 60000000,
+//            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                tabla: ''
+            },
+            success: function (response, options) {
+//                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                var obj = res.objINF020;
+                
+                me.nivel_usr = obj.NIVEL;
+                
+                if(me.nivel_usr==='SUP'){
+                    Ext.getCmp(prototype.id + '-panelAsignar').setVisible(true);
+                }else{
+                    Ext.getCmp(prototype.id + '-panelAsignar').setVisible(false);
+                }
+            }
+        });
+        
+        var store_auditores = Ext.create('Ext.data.Store', {
+            fields: ['data'],
+            autoLoad: true,
+            proxy: {
+                type: 'ajax',
+                url: prototype.url + '/getAuditores',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                }
+            },
+            listeners: {
+                load: function(obj) {
+                    var resCampos = obj.data.items;
+                    var listaCamposGrid = [];
+                    
+//                    for (var i = 0; i < resCampos.length; i++) {
+//                        var datosCamposGrid = {};
+//                        datosCamposGrid = {
+//                            select: false,
+//                            UASIG: resCampos[i].data.UASIG
+//                        };
+//                        listaCamposGrid.push(datosCamposGrid);
+//                    }
+//                    var storeDataUser = Ext.create('Ext.data.Store', {
+//                        fields: ['data'],
+//                        data: listaCamposGrid,
+//                        autoLoad: true
+//                    });
+//                    Ext.getCmp(prototype.id + '-gridDataColumns').bindStore(storeDataUser);
+                }
+            }
+        });
+        
+        Ext.getCmp(prototype.id + '-cmbUser').bindStore(store_auditores);
+        Ext.getCmp(prototype.id + '-cmbUser').setValue('');
+
+
+        for (var i = 2; i < 8; i++) {
+            var cmbConector = Ext.getCmp(prototype.id + '-cmbConector' + i);
+            cmbConector.bindStore(Ext.create('Ext.data.ArrayStore', {
+                autoLoad: false,
+                fields: ['code', 'name'],
+                data: [
+                    ["AND", "AND"],
+                    ["OR", "OR"]
+                ]}));
+            cmbConector.setValue('AND');
+        }
+
+
+        Ext.Ajax.request({
+            url: prototype.url + '/getOperadores',
+            method: 'POST',
+            timeout: 60000000,
+//            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                tabla: ''
+            },
+            success: function (response, options) {
+//                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                var lstOperadores = res.data;
+                var dataOP = [];
+
+                dataOP.push({data: "", label: "All", help: ""});
+
+                for (var j = 0; j < lstOperadores.length; j++) {
+                    var itemOP = {
+                        data: lstOperadores[j].OPERADOR,
+                        label: lstOperadores[j].OPERADOR,
+                        help: lstOperadores[j].DESCRIPT
+                    };
+                    dataOP.push(itemOP);
+                }
+//                console.log(dataOP);
+                var storeDataOP = Ext.create('Ext.data.Store', {
+                    fields: ['data', 'label', 'help'],
+                    data: dataOP,
+                    autoLoad: true
+                });
+
+                for (var i = 1; i < 8; i++) {
+                    Ext.getCmp(prototype.id + '-cmbOperador' + i).bindStore(storeDataOP);
+                    Ext.getCmp(prototype.id + '-cmbOperador' + i).setValue('');
+                }
+            }
+        });
+
+    },
+    armandoQuery: function () {
+        //Userfield = systfield
+        //Armando Query ===========================================
+        var strSQL = '';
+        var temp = '';
+        var temp2 = '';
+        var campo = '';
+        var esPrim = false;
+        var dataType = '';
+
+
+        //=========================================================
+        //Campo 1 =================================================
+
+
+        for (var i = 1; i < 8; i++) {
+
+            var idtxtCampo = '-txtCampo' + i;
+            var idcmbCampo = '-cmbCampo' + i;
+            var idcmbCampoB = '-cmbCampo' + i + 'B';
+            var idtxtValue = '-txtValue' + i;
+            var idtxtValueB = '-txtValue' + i + 'B';
+            var idcmbOperador = '-cmbOperador' + i;
+            var idcmbConector = '-cmbConector' + i;
+
+            var txtCampo = Ext.getCmp(prototype.id + idtxtCampo);
+            var cmbCampo = Ext.getCmp(prototype.id + idcmbCampo).getValue();
+            var cmbCampoB = Ext.getCmp(prototype.id + idcmbCampoB).getValue();
+            var txtValue = Ext.getCmp(prototype.id + idtxtValue);
+            var txtValueB = Ext.getCmp(prototype.id + idtxtValueB).getValue();
+            var cmbConector = '';
+            if (esPrim) {
+                cmbConector = Ext.getCmp(prototype.id + idcmbConector).getValue();
+            }
+
+
+            //alert(cmbCampo);
+            var cmbOperador = Ext.getCmp(prototype.id + idcmbOperador).getValue();
+
+            if (txtCampo.isVisible()) {
+                campo = this.getSystFieldByUserField(txtCampo.getValue().toUpperCase());
+            } else {
+                campo = this.getSystFieldByUserField(cmbCampo.toUpperCase());
+            }
+
+            if (campo !== '' && (txtValue.getValue() !== '' || cmbCampoB !== '')) {
+
+                if (txtValue.isVisible()) {
+                    dataType = '';
+                    temp = txtValue.getValue().toUpperCase();
+                    temp2 = txtValueB.toUpperCase();
+                } else {
+                    temp = cmbCampoB.toUpperCase();
+                    dataType = 'N';
+                }
+
+                if (esPrim) {
+                    strSQL += cmbConector.toUpperCase();
+                }
+
+
+                strSQL += " " + campo + " " + this.getConectorSql(cmbOperador, '', temp, temp2, dataType);
+                esPrim = true;
+            }
+            //=================================================
+            //Campo 2 =============================================
+        }
+        //alert(strSQL);
+        return strSQL;
+    },
+    getConectorSql: function (operador, combo, campo1, campo2, dataType) {
+        var operadorEq = '';
+        var param = campo1.split(',');
+        var open = " '", close = "' ";
+        if (dataType == "N") {
+            //Si es numerico no se pone ''
+            open = " ", close = " ";
+            //campo= "DECIMAL("+campo+", 13, 2 )";
+        }
+
+        switch (operador.trim()) {
+            case 'EQ':
+                operadorEq = '=' + open + campo1 + close;
+                break;
+            case 'GT':
+                operadorEq = '>' + open + campo1 + close;
+                break;
+            case 'LT':
+                operadorEq = '<' + open + campo1 + close;
+                ;
+                break;
+            case 'GE':
+                operadorEq = '>=' + open + campo1 + close;
+                break;
+            case 'LE':
+                operadorEq = '<=' + open + campo1 + close;
+                break;
+            case 'NE':
+                operadorEq = '<>' + open + campo1 + close;
+                break;
+            case 'LIKE':
+                operadorEq = ' LIKE ' + open + campo1 + close;
+                break;
+            case 'NLIKE':
+                operadorEq = 'NOT LIKE' + open + campo1 + close;
+                break;
+            case 'LIST':
+                operadorEq = 'IN ('
+                for (var c = 0; c < param.length; c++) {
+                    operadorEq += param[c]
+                    if (c + 2 <= param.length) {
+                        operadorEq += ',';
+                    }
+                }
+                operadorEq += ') ';
+                break;
+            case 'NLIST':
+                operadorEq = 'NOT IN ('
+                for (var j = 0; j < param.length; j++) {
+                    operadorEq += param[j]
+                    if (j + 2 <= param.length) {
+                        operadorEq += ',';
+                    }
+                }
+                operadorEq += ') ';
+                break;
+            case 'BETWEEN':
+                operadorEq = ' BETWEEN ' + open + campo1 + close + ' AND ' + open + campo2 + close + ' ';
+                break;
+            default:
+                operadorEq = '=';
+                //setComboBoxItem(combo, 'All');
+                break;
+        }
+
+        return operadorEq;
+    },
+    getSystFieldByUserField: function (campo) {
+
+        var objCampo;
+        var campoA1248 = '';
+//        var lstCampos = Ext.getCmp(prototype.id + '-cmbCampo1').getStore().data.items;
+
+
+        for (var j = 0; j < me.listaCampos.length; j++) {
+            objCampo = me.listaCampos[j];
+            if (objCampo["userfield"] === campo.trim()) {
+                campoA1248 = objCampo["fieldSys"];
+                break;
+            }
+        }
+        return campoA1248;
+    },
+    imgClearRow: function (nbr) {
+        /*if(nro!='1'){
+         var v_cmbConector:ComboBox = this["cmbConector"+nro];
+         }*/
+        var v_txtCampoText = Ext.getCmp(prototype.id + '-txtCampo' + nbr);
+        var v_cmbCampo = Ext.getCmp(prototype.id + '-cmbCampo' + nbr);
+        //var v_cmbCampoB = Ext.getCmp(prototype.id + '-cmbCampo' + nbr + 'B');
+        var v_cmbOperador = Ext.getCmp(prototype.id + '-cmbOperador' + nbr);
+        var v_txtValue = Ext.getCmp(prototype.id + '-txtValue' + nbr);
+        var v_txtValueBetween = Ext.getCmp(prototype.id + '-txtValue' + nbr + 'B');
+        var v_hbox = Ext.getCmp(prototype.id + '-hb_Between' + nbr);
+
+        if (nbr !== '1') {
+            //SelectedIndex = 0
+            var cb = Ext.getCmp(prototype.id + '-cmbConector' + nbr);
+            cb.setValue(cb.getStore().getAt(0).get(cb.valueField));
+        }
+
+        v_txtCampoText.setValue('');
+        v_cmbCampo.setValue('');
+        //v_cmbCampoB.selectedIndex=0;
+        v_cmbOperador.setValue('');
+        v_txtValue.setValue('');
+        v_txtValueBetween.setValue('');
+        v_hbox.hide();
+    },
+    searchDetailTW: function () {
+        win.lblUser_toolTip("Estructura: IMF101");
+//        this.showPagination_clickHandler();
+        
+        
+        var chkReAsign = '';//Ext.getCmp(prototype.id + '-chkReAsign').getValue();
+        console.log(chkReAsign);
+        
+        if(chkReAsign){
+            chkReAsign = 'T';
+        }else{
+            chkReAsign = 'F';
+        }
+        
+        var chkReAsiga = '';//Ext.getCmp(prototype.id + '-chkReAsiga').getValue();
+        console.log(chkReAsiga);
+        
+        if(chkReAsiga){
+            chkReAsiga = 'T';
+        }else{
+            chkReAsiga = 'F';
+        }
+        
+        
+        this.beanTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
+        this.beanTW.strSQL = this.armandoQuery();
+//        this.beanTW.IN_CAMPO = this.getSystFieldByUserField(Ext.getCmp(prototype.id + '-cmbSelection').getValue());
+//        this.beanTW.IN_ANALISTA = Ext.getCmp(prototype.id + '-cmbUser').getValue();
+//        this.beanTW.lstAsignacion = this.getListAsginacion();
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchTeleworking'
+            }, listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id+ '-panelTW').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(me.beanTW), dw_excel: false, Freasign: chkReAsign, Freasiga: chkReAsiga };
+//                    obj.proxy.extraParams = {beanString: JSON.stringify(me.beanBT), dw_excel: false};
+                },
+                load: function (obj) {
+                    Ext.getCmp(prototype.id + '-panelTW').unmask();
+
+                    if (obj.data.length > 0) {
+                        var Objtemp = obj.data.items[0].data;
+
+                        var pag = Ext.getCmp(prototype.id + '-pagginTW');
+                        var pagData = pag.getPageData();
+//                        console.log(pagData);
+                        Ext.getCmp(prototype.id + '-lbl-currentPageTW').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCountTW').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-totalTW').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+
+                    } else {
+                        global.Msg({msg: 'Data not found'});
+                    }
+                }
+            }
+        });
+
+        Ext.getCmp(prototype.id + '-gridDataTeleworking').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pagginTW').bindStore(storeGridDatas);
+
+    },
+    btnAsignar_click: function () {
+        console.log('btnAsignar_click');
+        
+        win.lblUser_toolTip("Estructura: IMF101");
+//        this.showPagination_clickHandler();
+        
+        
+        
+        this.beanTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
+        this.beanTW.strSQL = this.armandoQuery();
+        this.beanTW.USUP = Ext.getCmp(prototype.id + '-cmbUser').getValue();
+        
+
+        Ext.Ajax.request({
+            url: prototype.url + '/asginarTW',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id+ '-panelTW').mask('Loading...'),
+            params: {beanString: JSON.stringify(me.beanTW) },
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-panelTW').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                
+                global.Msg({msg: res.mensaje });
+            }
+        });
+    },
+    gridDetMPF101_clickHandler: function (column, e, row, column, x, rowData) {
+        console.log('gridDetMPF101_clickHandler');
+        var beanDet = x.record.data;
+        console.log(beanDet);
+        this.viewMPF101_clickHandler(beanDet);
+        
+    },
+    viewMPF101_clickHandler: function (beanDet) {
+        console.log('viewMPF101_clickHandler');
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchMPF101Teleworking'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-panelTW').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDet)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+                    win.lblUser_toolTip("Estructura: MPF101");
+
+                    Ext.getCmp(prototype.id + '-panelTW').unmask();
+
+                    if (obj.data.length > 0) {
+                        var Objtemp = obj.data.items[0].data;
+
+                        var pag = Ext.getCmp(prototype.id + '-pagginMPF101TW');
+                        var pagData = pag.getPageData();
+//                        console.log(pagData);
+                        Ext.getCmp(prototype.id + '-lbl-currentPageTW').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCountTW').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-totalTW').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        var gridDataTeleworking = Ext.getCmp(prototype.id + '-gridDataTeleworking');
+                        var panelDetailTW = Ext.getCmp(prototype.id + '-panelDetailTW');
+                        var panelFilters2 = Ext.getCmp(prototype.id + '-panelFilters2');
+        
+                        panelFilters2.setVisible(false);
+                        gridDataTeleworking.setVisible(false);
+                        panelDetailTW.setVisible(true);
+                        
+                    } else {
+                        global.Msg({msg: 'Data not found'});
+                    }
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDetailTeleworking').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pagginMPF101TW').bindStore(storeGridDatas);
+         
+    },
+    btnBackTW_click: function (obj, e) {
+
+       
+        var gridDataTeleworking = Ext.getCmp(prototype.id + '-gridDataTeleworking');
+        var panelDetailTW = Ext.getCmp(prototype.id + '-panelDetailTW');
+        var panelFilters2 = Ext.getCmp(prototype.id + '-panelFilters2');
+
+        gridDataTeleworking.setVisible(true);
+        panelFilters2.setVisible(true);
+        panelDetailTW.setVisible(false);
+        
+        this.getPaggin();
+        if (me.pagginActual !== '') {
+            var pag = Ext.getCmp(prototype.id + me.pagginActual);
+            var pagData = pag.getPageData();
+            Ext.getCmp(prototype.id + '-lbl-currentPageTW').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+            Ext.getCmp(prototype.id + '-lbl-pageCountTW').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+            Ext.getCmp(prototype.id + '-lbl-totalTW').setText(Ext.util.Format.number(pagData.total, '0,000'));
+        }
     }
-
-
 });
