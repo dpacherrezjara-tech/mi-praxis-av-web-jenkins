@@ -550,19 +550,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
-            console.log(dataRow1.data.STMANUAL, 'dataRow1.data.STMANUAL')
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-
                 this.sumAmount = this.sumAmount + dataRow1.data.A1531VFOP; //+ dataRow1.data.SADJUST;
-                console.log('primer if wadafa', dataRow1.data.STMANUAL, 'sumamount', this.sumAmount)
             }
         }
-        console.log(this.lstAdjustment, 'this.lstAdjustment')
+
         for (var i = 0; i < this.lstAdjustment.length; i++) {
-            console.log(parseFloat(this.lstAdjustment[i].A1531VFOP), this.sumAmount)
             this.sumAmount = this.sumAmount + parseFloat(this.lstAdjustment[i].A1531VFOP);
-            
-            console.log(this.sumAmount, 'wadadafadafadadadadada')
         }
 
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
@@ -689,7 +683,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     clear_tableNormal: function () {
         console.log('click clear')
-        
         let storeDataClear = Ext.create('Ext.data.Store', {
             data: '',
             autoLoad: true
@@ -701,17 +694,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             autoLoad: true
         });
         Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked').bindStore(storeDataClearBl);
+
         let storeDataClearAdjustment = Ext.create('Ext.data.Store', {
             data: '',
             autoLoad: true
-        })
+        });
+
         Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(storeDataClearAdjustment);
         this.sumAmount = 0;
-        this.lstAdjustment = []
+        this.lstAdjustment = [];
         Ext.getCmp(prototype.id + '-gridDataAdjustment').hide();
         Ext.getCmp(prototype.id + '-panelADJ').hide();
-        
-        
     },
 
 //</editor-fold>
@@ -780,6 +773,29 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 }
             }
         });
+    },
+    onReverseClick: function (btn) {
+//        var deci = this.preexecuteOption();
+//        if (deci) {
+            Ext.Msg.show({
+                title: '.:Confirmation:.',
+                msg: 'Are you sure to Reverse?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+//            animateTarget: btn,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        var beanTemp = {};
+                        beanTemp = this.llenarData();
+                        beanTemp.option = 'R';
+                        beanTemp.beanString = JSON.stringify(meDe.bean);
+                        this.reverseOption(beanTemp);
+                    }
+                }
+            });
+//        }
     },
     onCancelClick: function (btn) {
         this.view.close();
@@ -875,6 +891,56 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             console.error('No se pudo encontrar la grilla con el ID especificado.');
         }
     },
+    reverseOption: function (beanTemp, option) {
+
+        let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+
+        let datos = {};
+        if (miGrilla) {
+            // Llamada a la función procesarRegistros con la grilla como parámetro
+            console.error('Entró al procesar Registros');
+
+            datos = this.desprocesarRegistros(miGrilla);
+
+            console.log(datos);
+//            datos = this.procesarRegistros(miGrilla);
+            if (Array.isArray(datos) && datos.length === 0) {
+                // Nadine
+            } else {
+                Ext.Ajax.request({
+                    url: prototype.url + '/reverseOption',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: datos, option: option},
+                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+                    success: function (response, opts) {
+                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                        var res = Ext.JSON.decode(response.responseText);
+                        console.log(res);
+                        if (res.success) {
+
+                            global.Msg({
+                                msg: res.Mensaje,
+                                icon: 1,
+                                fn: function () {
+                                    //exito
+                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                                }
+                            });
+                        } else
+                            global.Msg({msg: res.sesion});
+                    },
+                    failure: function (response, opts) {
+                        console.log('server-side failure with status code ' + response.status);
+                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                    }
+                });
+            }
+        } else {
+            console.error('No se pudo encontrar la grilla con el ID especificado.');
+        }
+    },
     //</editor-fold>
 
     procesarRegistros: function (grilla, miGrillaAdj) {
@@ -893,6 +959,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 DATEC: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
 
@@ -923,13 +990,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     ATICKET: record.get('A1531TKT'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ASAGENT: record.get('A720AGENTE'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ATRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(),
+                    ACERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(),
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
                     BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
                     CFUENTE: record.get('CFUENTE'), ///CFUENTE
                     ADATEC: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue()
-                            // Agrega más campos según sea necesario
                 };
-
                 listaDeDatos.push(registro);
             });
         } else {
@@ -940,12 +1006,42 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
         if (cont > 0) {
             let mensaje = 'Errror. Blocked tickets:<br>' + ticketsOcupados.join('<br>');
-            global.Msg({msg: mensaje});
+//            global.Msg({msg: mensaje});
             console.log(mensaje);
             return [];
         } else {
             return datosEnJSON;
         }
+    },
+    desprocesarRegistros: function (grilla, miGrillaAdj) {
+        // Crear una lista para almacenar los datos
+        let listaDeDatos = [];
+        // Recorrer la grilla y agregar los datos a la lista
+        grilla.getStore().each(function (record) {
+            let registro = {
+                PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), // Reemplaza 'id' con el campo correcto de tu modelo
+                SAUTHOCM: Ext.getCmp(prototype.id + '-de-txtSAUTHOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                SAUTHOC: record.get('A1531CAPL'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                SCARDNM: Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                SCARDN: record.get('A1531NREF'), // Reemplaza 'id' con el campo correcto de tu modelo
+                VFOP: Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, ''), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                SDATE: record.get('A720FECVTA'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
+
+                        // Agrega más campos según sea necesario
+            };
+            console.log(registro);
+            listaDeDatos.push(registro);
+        });
+        // Convertir la lista a JSON
+        let datosEnJSON = Ext.JSON.encode(listaDeDatos);
+
+        return datosEnJSON;
+
     },
     validacionInsert: function (beanTemp) {
         var msjResult = '';
@@ -1129,8 +1225,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         console.log(this.sumAmount);
         console.log(this.bean.SVFOP);
         if (data.STMANUAL !== 'Blocked') {
-            console.log(this.sumAmount, 'this.sumAmount')
-            console.log(this.bean.SVFOP, 'this.bean.SVFOP')
             if (this.sumAmount === this.bean.SVFOP) {
                 global.Msg({msg: 'The sum amount is equal to transaction amount.'});
             } else {

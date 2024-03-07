@@ -273,7 +273,7 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchTicket")
     public @ResponseBody
     String searchTicket(ModelMap map, HttpServletRequest request) {
@@ -389,7 +389,7 @@ public class BankReconciliationController extends BaseController {
         Gson gson = new Gson();
         String beanString = "";
 
-            try {
+        try {
 
             option = request.getParameter("option");
             beanString = request.getParameter("beanString");
@@ -398,12 +398,49 @@ public class BankReconciliationController extends BaseController {
             // Deserializar directamente a una lista de A2290Filter
             A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
             List<A2290Filter> filterList = Arrays.asList(filters);
-    
+
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
             msj = logic.loadPX269SQP00834(filterList, user);
             // ... (código existente)
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "reverseOption")
+    public @ResponseBody
+    String reverseOption(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOption-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117(filterList, user);
 
             map.put("success", true);
             map.put("Mensaje", msj);
@@ -767,7 +804,7 @@ public class BankReconciliationController extends BaseController {
             CH1_1.setCellValue("Settlement Reconciliation");
             CH1_9.setCellValue("Sales Reconciliation");
             CH1_13.setCellValue("Settlement");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -854,7 +891,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 12, 12));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 13, 14));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 15, 16));
-  
+
             ++vj;
             //============================================
 
@@ -997,8 +1034,7 @@ public class BankReconciliationController extends BaseController {
             CH1_14_T.setCellValue(listaData.get(0).lngTotQPOLI2);
             CH1_15_T.setCellValue(listaData.get(0).lngTotQTOTS3);
             CH1_16_T.setCellValue(listaData.get(0).lngTotQPOLI3);
-            
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -1016,7 +1052,7 @@ public class BankReconciliationController extends BaseController {
             CH1_14_T.setCellStyle(totalStyle);
             CH1_15_T.setCellStyle(totalStyle);
             CH1_16_T.setCellStyle(totalStyle);
-            
+
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
@@ -1047,7 +1083,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXCountry")
     public @ResponseBody
     void getXLSXCountry(HttpServletRequest request, HttpServletResponse response) {
@@ -1130,7 +1166,7 @@ public class BankReconciliationController extends BaseController {
             CH1_2.setCellValue("Settlement Reconciliation");
             CH1_9.setCellValue("Sales Reconciliation");
             CH1_13.setCellValue("Settlement");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -1183,7 +1219,7 @@ public class BankReconciliationController extends BaseController {
             CH2_5.setCellValue("Settlement");
             CH2_6.setCellValue("Total");
             CH2_7.setCellValue("Accounted");
-            
+
             CH2_9.setCellValue("Total");
             CH2_10.setCellValue("Match");
             CH2_12.setCellValue("Sales");
@@ -1215,7 +1251,7 @@ public class BankReconciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 5));
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 6, 6));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 8));
-            
+
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 10, 11));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 12, 12));
@@ -1250,7 +1286,7 @@ public class BankReconciliationController extends BaseController {
             CH3_5.setCellValue("w/o Sales");
             CH3_7.setCellValue("Processed");
             CH3_8.setCellValue("Pending");
-            
+
             CH3_9.setCellValue("by Ticket");
             CH3_10.setCellValue("Automatic");
             CH3_11.setCellValue("Manual");
@@ -1312,7 +1348,7 @@ public class BankReconciliationController extends BaseController {
                 rcell6.setCellValue(listaData.get(vi).lngQSALES);
                 rcell7.setCellValue(listaData.get(vi).lngQPOLIC);
                 rcell8.setCellValue(listaData.get(vi).lngQPOLIPE);
-                
+
                 rcell9.setCellValue(listaData.get(vi).lngQTICKET);
                 rcell10.setCellValue(listaData.get(vi).lngQTMATCH);
                 rcell11.setCellValue(listaData.get(vi).lngQTMANUAL);
@@ -1321,13 +1357,12 @@ public class BankReconciliationController extends BaseController {
                 rcell14.setCellValue(listaData.get(vi).lngQPOLI2);
                 rcell15.setCellValue(listaData.get(vi).lngQTOTS3);
                 rcell16.setCellValue(listaData.get(vi).lngQPOLI3);
-                
-                
+
                 iter.next();
                 ++vi;
                 ++vj;
             }
-            
+
             // ======  Nivel de TOTALES ==========
             Row rowTotal = sheet.createRow(vj);
             Cell CH1_0_T = rowTotal.createCell(0);
@@ -1365,7 +1400,7 @@ public class BankReconciliationController extends BaseController {
             CH1_14_T.setCellValue(listaData.get(0).lngTotQPOLI2);
             CH1_15_T.setCellValue(listaData.get(0).lngTotQTOTS3);
             CH1_16_T.setCellValue(listaData.get(0).lngTotQPOLI3);
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -1414,7 +1449,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDay")
     public @ResponseBody
     void getXLSXDay(HttpServletRequest request, HttpServletResponse response) {
@@ -1484,7 +1519,7 @@ public class BankReconciliationController extends BaseController {
 
             CH1_0.setCellValue("Sales");
             CH1_1.setCellValue("Settlement Reconciliation");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -1540,7 +1575,6 @@ public class BankReconciliationController extends BaseController {
             CH3_2.setCellValue("Manual");
             CH3_3.setCellValue("Diff");
             CH3_4.setCellValue("w/o Sales");
-            
 
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
@@ -1548,7 +1582,7 @@ public class BankReconciliationController extends BaseController {
             CH3_3.setCellStyle(headerStyle);
             CH3_4.setCellStyle(headerStyle);
             CH3_5.setCellStyle(headerStyle);
-            
+
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             //sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             ++vj;
@@ -1589,14 +1623,14 @@ public class BankReconciliationController extends BaseController {
             CH1_3_T.setCellValue(listaData.get(0).lngTotQDIFF);
             CH1_4_T.setCellValue(listaData.get(0).lngTotQPEND);
             CH1_5_T.setCellValue(listaData.get(0).lngTotQSALES);
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
             CH1_3_T.setCellStyle(totalStyle);
             CH1_4_T.setCellStyle(totalStyle);
             CH1_5_T.setCellStyle(totalStyle);
-            
+
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
@@ -1616,7 +1650,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDetalle")
     public @ResponseBody
     void getXLSXDetalle(HttpServletRequest request, HttpServletResponse response) {
@@ -1709,7 +1743,7 @@ public class BankReconciliationController extends BaseController {
             CH1_10.setCellValue("Amount");
             CH1_11.setCellValue("Poliza");
             CH1_14.setCellValue("Qty");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -1816,7 +1850,7 @@ public class BankReconciliationController extends BaseController {
             Cell CH3_14 = row3.createCell(14);
 
             CH3_6.setCellValue("Code");
-            
+
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
             CH3_2.setCellStyle(headerStyle);
@@ -1832,7 +1866,7 @@ public class BankReconciliationController extends BaseController {
             CH3_12.setCellStyle(headerStyle);
             CH3_13.setCellStyle(headerStyle);
             CH3_14.setCellStyle(headerStyle);
-            
+
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             //sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             ++vj;
@@ -1871,7 +1905,7 @@ public class BankReconciliationController extends BaseController {
                 rcell12.setCellValue(listaData.get(vi).STCON);
                 rcell13.setCellValue(listaData.get(vi).FCONT);
                 rcell14.setCellValue(listaData.get(vi).lngQTYTKT);
-                
+
                 rcell0.setCellStyle(bodyStyle);
                 rcell1.setCellStyle(bodyStyle);
                 rcell2.setCellStyle(bodyStyle);
@@ -1887,12 +1921,12 @@ public class BankReconciliationController extends BaseController {
                 rcell12.setCellStyle(bodyStyle);
                 rcell13.setCellStyle(bodyStyle);
                 rcell14.setCellStyle(bodyStyle);
-                
+
                 iter.next();
                 ++vi;
                 ++vj;
             }
-            
+
             // ======  Nivel de TOTALES ==========
             Row rowTotal = sheet.createRow(vj);
             Cell CH1_0_T = rowTotal.createCell(0);
@@ -1926,7 +1960,7 @@ public class BankReconciliationController extends BaseController {
             CH1_12_T.setCellValue("");
             CH1_13_T.setCellValue("");
             CH1_14_T.setCellValue(listaData.get(0).lngTotQTYTKT);
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -1971,7 +2005,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXTicket")
     public @ResponseBody
     void getXLSXTicket(HttpServletRequest request, HttpServletResponse response) {
@@ -2052,7 +2086,7 @@ public class BankReconciliationController extends BaseController {
             CH1_8.setCellValue("Amount");
             CH1_9.setCellValue("PNR");
             CH1_10.setCellValue("Ticket");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -2131,7 +2165,7 @@ public class BankReconciliationController extends BaseController {
             Cell CH3_10 = row3.createCell(10);
 
             CH3_5.setCellValue("Code");
-            
+
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
             CH3_2.setCellStyle(headerStyle);
@@ -2143,7 +2177,7 @@ public class BankReconciliationController extends BaseController {
             CH3_8.setCellStyle(headerStyle);
             CH3_9.setCellStyle(headerStyle);
             CH3_10.setCellStyle(headerStyle);
-            
+
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             //sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             ++vj;
@@ -2178,7 +2212,7 @@ public class BankReconciliationController extends BaseController {
                 ++vi;
                 ++vj;
             }
-            
+
             // ======  Nivel de TOTALES ==========
             Row rowTotal = sheet.createRow(vj);
             Cell CH1_0_T = rowTotal.createCell(0);
@@ -2204,7 +2238,7 @@ public class BankReconciliationController extends BaseController {
             CH1_8_T.setCellValue(listaData.get(0).totSVFOP);
             CH1_9_T.setCellValue("");
             CH1_10_T.setCellValue("");
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -2241,7 +2275,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDetCardByS")
     public @ResponseBody
     void getXLSXDetCardByS(HttpServletRequest request, HttpServletResponse response) {
@@ -2310,14 +2344,14 @@ public class BankReconciliationController extends BaseController {
             Cell CH1_5 = row1.createCell(5);
             Cell CH1_6 = row1.createCell(6);
             Cell CH1_7 = row1.createCell(7);
-            
+
             CH1_0.setCellValue("Country");
             CH1_1.setCellValue("Bank");
             CH1_3.setCellValue("Credit Card");
             CH1_5.setCellValue("Quantity");
             CH1_6.setCellValue("Currency");
             CH1_7.setCellValue("Amount");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -2352,7 +2386,6 @@ public class BankReconciliationController extends BaseController {
             CH2_2.setCellValue("Description");
             CH2_3.setCellValue("Code");
             CH2_4.setCellValue("Description");
-            
 
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
@@ -2394,7 +2427,7 @@ public class BankReconciliationController extends BaseController {
                 ++vi;
                 ++vj;
             }
-            
+
             // ======  Nivel de TOTALES ==========
             Row rowTotal = sheet.createRow(vj);
             Cell CH1_0_T = rowTotal.createCell(0);
@@ -2414,7 +2447,7 @@ public class BankReconciliationController extends BaseController {
             CH1_5_T.setCellValue(listaData.get(0).lngTotQACCB);
             CH1_6_T.setCellValue("");
             CH1_7_T.setCellValue(listaData.get(0).dblTotSVFOP);
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -2445,7 +2478,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDetDayByS")
     public @ResponseBody
     void getXLSXDetDayByS(HttpServletRequest request, HttpServletResponse response) {
@@ -2515,7 +2548,7 @@ public class BankReconciliationController extends BaseController {
             CH1_1.setCellValue("Quantity");
             CH1_2.setCellValue("Currency");
             CH1_3.setCellValue("Amount");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -2540,7 +2573,7 @@ public class BankReconciliationController extends BaseController {
                 ++vi;
                 ++vj;
             }
-            
+
             // ======  Nivel de TOTALES ==========
             Row rowTotal = sheet.createRow(vj);
             Cell CH1_0_T = rowTotal.createCell(0);
@@ -2552,7 +2585,7 @@ public class BankReconciliationController extends BaseController {
             CH1_1_T.setCellValue(listaData.get(0).lngTotQACCB);
             CH1_2_T.setCellValue("");
             CH1_3_T.setCellValue(listaData.get(0).dblTotSVFOP);
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -2575,7 +2608,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-   
+
     @RequestMapping(value = "getXLSXDetCardNbrByS")
     public @ResponseBody
     void getXLSXDetCardNbrByS(HttpServletRequest request, HttpServletResponse response) {
@@ -2658,7 +2691,7 @@ public class BankReconciliationController extends BaseController {
             CH1_6.setCellValue("Sales");
             CH1_10.setCellValue("Poliza");
             CH1_13.setCellValue("Tkts");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -2712,7 +2745,7 @@ public class BankReconciliationController extends BaseController {
             CH2_10.setCellValue("ID");
             CH2_11.setCellValue("Flag");
             CH2_12.setCellValue("Date");
-            
+
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
             CH2_2.setCellStyle(headerStyle);
@@ -2760,7 +2793,7 @@ public class BankReconciliationController extends BaseController {
             Cell CH3_13 = row3.createCell(13);
 
             CH3_3.setCellValue("Code");
-            
+
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
             CH3_2.setCellStyle(headerStyle);
@@ -2775,7 +2808,7 @@ public class BankReconciliationController extends BaseController {
             CH3_11.setCellStyle(headerStyle);
             CH3_12.setCellStyle(headerStyle);
             CH3_13.setCellStyle(headerStyle);
-            
+
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             //sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             ++vj;
@@ -2816,7 +2849,7 @@ public class BankReconciliationController extends BaseController {
                 ++vi;
                 ++vj;
             }
-            
+
             // ======  Nivel de TOTALES ==========
             Row rowTotal = sheet.createRow(vj);
             Cell CH1_0_T = rowTotal.createCell(0);
@@ -2848,7 +2881,7 @@ public class BankReconciliationController extends BaseController {
             CH1_11_T.setCellValue("");
             CH1_12_T.setCellValue("");
             CH1_13_T.setCellValue(listaData.get(0).lngTotQTYTKT);
-            
+
             CH1_0_T.setCellStyle(totalStyle);
             CH1_1_T.setCellStyle(totalStyle);
             CH1_2_T.setCellStyle(totalStyle);
@@ -2891,7 +2924,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "searchBeanAMDP_DETAIL")
     public @ResponseBody
     String searchBeanAMDP_DETAIL(ModelMap map, HttpServletRequest request) {
@@ -2926,14 +2959,14 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
 
-     @RequestMapping(value = "/obtainMessages")
+    @RequestMapping(value = "/obtainMessages")
     public @ResponseBody
     String obtainMessages(ModelMap map, HttpServletRequest request) {
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
         String beanString = "";
         List<A2290Filter> lst = new ArrayList<>(0);
-         try {
+        try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
 
@@ -2941,11 +2974,11 @@ public class BankReconciliationController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
 
             lst = logic.loadPX269SQP05103(filter);
-            
+
             map.put("success", true);
             System.out.println("Total : " + lst.size());
             map.put("data", lst);
-            
+
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
@@ -2955,8 +2988,8 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
-     @RequestMapping(value = "/obtainMessagesF")
+
+    @RequestMapping(value = "/obtainMessagesF")
     public @ResponseBody
     String obtainMessagesF(ModelMap map, HttpServletRequest request) {
         A2290Filter filter = new A2290Filter();
@@ -2964,7 +2997,7 @@ public class BankReconciliationController extends BaseController {
         String beanString = "";
         List<A2290Filter> lstC = new ArrayList<>(0);
         List<A2290Filter> lstT = new ArrayList<>(0);
-         try {
+        try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
 
@@ -2972,14 +3005,14 @@ public class BankReconciliationController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
 
             lstC = logic.loadPX269SQP05103F(filter);
-            lstT = logic.loadPX269SQP05103T(filter);
-            
+//            lstT = logic.loadPX269SQP05103T(filter);
+
             map.put("success", true);
             System.out.println("Total : " + lstC.size());
             System.out.println("Total : " + lstT.size());
             map.put("dataC", lstC);
             map.put("dataT", lstT);
-            
+
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
@@ -2989,7 +3022,7 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "searchBeanAMDP_SCAN")
     public @ResponseBody
     String searchBeanAMDP_SCAN(ModelMap map, HttpServletRequest request) {
@@ -3060,24 +3093,22 @@ public class BankReconciliationController extends BaseController {
 
     @RequestMapping(value = "obtainFields")
     public @ResponseBody
-    String obtainFields(ModelMap map,HttpServletRequest request,HttpServletResponse response) {
+    String obtainFields(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         System.out.println("RefundAssignmentController : obtainFields");
-        
+
         logic = new BankReconciliationLogic();
         List<A1248> lstData = new ArrayList<A1248>(0);
-        
+
         try {
             logic.setSession(this.serverSession.getServerSession());
-            
+
             String tabla = request.getParameter("tabla");
-            
+
             lstData = logic.loadSQP03739(tabla);
-            
+
             map.put("success", true);
             map.put("lstData", lstData);
-            
-            
-            
+
         } catch (SQLException e) {
             map.put("success", false);
             map.put("sesion", e.getMessage());
@@ -3088,10 +3119,9 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
 
-
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "searchTeleworking")
     public @ResponseBody
     String searchTeleworking(ModelMap map, HttpServletRequest request) {
@@ -3119,7 +3149,7 @@ public class BankReconciliationController extends BaseController {
             boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
             String Freasign = request.getParameter("Freasign");
             String Freasiga = request.getParameter("Freasiga");
-            
+
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
             filter.page.TOTROW = -1;
@@ -3145,7 +3175,6 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
 
-    
     @RequestMapping(value = "searchMPF101Teleworking")
     public @ResponseBody
     String searchMPF101Teleworking(ModelMap map, HttpServletRequest request) {
@@ -3173,7 +3202,7 @@ public class BankReconciliationController extends BaseController {
             boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
             String Freasign = request.getParameter("Freasign");
             String Freasiga = request.getParameter("Freasiga");
-            
+
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
             filter.page.TOTROW = -1;
@@ -3198,7 +3227,7 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getOperadores")
     public @ResponseBody
     String getOperadores(String ccust) {
@@ -3216,6 +3245,7 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(m);
     }
+
     @RequestMapping(value = "getAuditores")
     public @ResponseBody
     String getAuditores(String ccust) {
@@ -3232,29 +3262,26 @@ public class BankReconciliationController extends BaseController {
         m.put("data", lista);
 
         return new Gson().toJson(m);
-    }   
-
+    }
 
     @RequestMapping(value = "getUserInfo")
     public @ResponseBody
-    String getUserInfo(ModelMap map,HttpServletRequest request,HttpServletResponse response) {
+    String getUserInfo(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         System.out.println("RefundAssignmentController : getUserInfo");
-        
+
         logic = new BankReconciliationLogic();
         INF020 objINF020 = new INF020();
-        
+
         try {
             logic.setSession(this.serverSession.getServerSession());
-            
+
             String tabla = request.getParameter("tabla");
-            
+
             objINF020 = logic.loadUserInfo();
-            
+
             map.put("success", true);
             map.put("objINF020", objINF020);
-            
-            
-            
+
         } catch (SQLException e) {
             map.put("success", false);
             map.put("sesion", e.getMessage());
@@ -3265,36 +3292,31 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
 
-
         return new Gson().toJson(map);
     }
-    
-    
+
     @RequestMapping(value = "asginarTW")
     public @ResponseBody
     String asginarTW(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- BankReconciliation : asginarTW-------------");
 
-        
         logic = new BankReconciliationLogic();
         String msj = "";
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
         String beanString = "";
-        
+
         try {
             logic.setSession(this.serverSession.getServerSession());
-            
+
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
-            
+
             msj = logic.asginarTW(filter);
-            
+
             map.put("success", true);
             map.put("mensaje", msj);
-            
-            
-            
+
         } catch (SQLException e) {
             map.put("success", false);
             map.put("sesion", e.getMessage());
@@ -3304,7 +3326,6 @@ public class BankReconciliationController extends BaseController {
             map.put("sesion", e.getMessage());
             throw new SpringException(e);
         }
-
 
         return new Gson().toJson(map);
     }

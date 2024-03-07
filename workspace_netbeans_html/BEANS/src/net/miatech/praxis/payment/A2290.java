@@ -63,9 +63,11 @@ public class A2290 {
     public double TOTAL = 0;
     public String SCURRENCY = "";
     public String SCURRENCYL = "";
+    public String SCARDNM = "";
     public String SCARDN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";
+    public String SAUTHOCM = "";
     public String CARDTYPE = "";
     public String SINVN = "";
     public String SIDATE = "";
@@ -126,6 +128,7 @@ public class A2290 {
     public String ASAGENT = "";
     public String ATRANC = "";
     public String ADJCODE = "";
+    public String ACERROR = "";
     
     //TEF
     public String TDATE = "";
