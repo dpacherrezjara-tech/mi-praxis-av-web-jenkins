@@ -36,9 +36,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
             Ext.getCmp(prototype.id + '-btn-update').hide();
+            Ext.getCmp(prototype.id + '-btn-reverse').show();
         } else {
             this.onSearchPendingDetail();
             Ext.getCmp(prototype.id + '-btn-update').show();
+            Ext.getCmp(prototype.id + '-btn-reverse').hide();
 //            Ext.getCmp(prototype.id + '-panelAdjustment').show();
         }
     },
@@ -274,7 +276,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-cmbADJTYPE').bindStore(storeData);
-                    Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue('01');
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue(' ');
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
