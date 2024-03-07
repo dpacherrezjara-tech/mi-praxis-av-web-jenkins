@@ -478,6 +478,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-boxDetCountry',
+                                            hidden: true,
                                             width: '100%',
                                             bodyStyle: 'background: transparent;',
                                             border: false,

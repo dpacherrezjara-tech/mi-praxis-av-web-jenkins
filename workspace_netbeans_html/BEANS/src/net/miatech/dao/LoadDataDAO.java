@@ -50,7 +50,7 @@ public class LoadDataDAO {
     public LoadDataDAO(IServerSession ss) {
         session = ss;
     }
-
+ 
     public void setSession(IServerSession ss) {
         session = ss;
     }
@@ -60,6 +60,7 @@ public class LoadDataDAO {
         Connection con = null;
         Statement stmt = null;
         ResultSet rst = null;
+        
         String strSQL = "", ruta = "";
 
         if (!grupo.trim().equals("") && (!nroprt.trim().equals("") || !doc.trim().equals(""))) {
@@ -1953,4 +1954,5 @@ public class LoadDataDAO {
 
         return listaFuentes;
     }
+    
 }
