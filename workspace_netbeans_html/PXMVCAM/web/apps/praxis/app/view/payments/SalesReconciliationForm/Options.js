@@ -199,6 +199,15 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-imgMail',
+                            icon: 'resources/img/botones/24x24/Forward.png',
+                            tooltip: 'Send Mail to Bank',
+                            listeners: {
+                                click: 'sendMail_clickHandler'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id+'-btnExcel',
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel',

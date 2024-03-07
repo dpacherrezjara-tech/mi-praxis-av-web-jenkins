@@ -23,6 +23,7 @@ import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2370Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
+import net.miatech.praxis.payment.filter.MPF106Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -1008,112 +1009,159 @@ public class SalesReconciliationController extends BaseController {
         
         System.out.println("-------------- DataRequestedByBank : sendEmail-------------");
         Gson gson = new Gson();
-        String listas = "";
+        String fecha = "",fecha_des="";
         
         MPF100Filter obj = new MPF100Filter();
         boolean iboolean;
         String msj = "";
         
         List<MPF100Filter> listaData;
+        List<MPF106Filter> listaDataCorreos = new ArrayList<MPF106Filter>(0);;
         
         try {
             LoadConciliationLogic logic = new LoadConciliationLogic();
             logic = new LoadConciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
             
-            listas = request.getParameter("lista");
+            fecha = request.getParameter("v_fecha");
+            if(!fecha.equals("")){
             
+                fecha_des =  Functions.getAbreviaturaMes(fecha.substring(4))+ " " + fecha.substring(0, 4);
+                obj.IN_FECHA = fecha;
+                listaDataCorreos = logic.loadPX263getCorreosAV(obj);
 
-            //Obtiene la lista de aclaraciones de esa fecha
-            listaData = logic.loadPX263SQP00XXXJT(obj);
+                if(listaDataCorreos.size()>0){
 
-            String ruta_file = obtenerExcel(listaData);
+                    int contIatas = 0;
+                    for (int j = 0; j < listaDataCorreos.size(); j++) {
+                        String correos = ((MPF106Filter)listaDataCorreos.get(j)).EMAILS;
+                        String agent = ((MPF106Filter)listaDataCorreos.get(j)).CAGENCY;
+                        String agent_name = ((MPF106Filter)listaDataCorreos.get(j)).NAMEA;
 
+                        obj.IN_AGENT = agent;
+                        //Obtiene la lista de aclaraciones de esa fecha
+                        listaData = logic.loadPX263SQP00XXXJT(obj);
 
-            //CODIGO DE MAIL Y SU ATTACHMENT
-            ProMail proMail = new ProMail();
-            List<String> receptores = new ArrayList<String>();
-            List<String> adjuntos = new ArrayList<String>();
-            
-            if(!ruta_file.equals("")){
-                adjuntos.add(ruta_file);
-            }
-            // Emails CC
-            List<String> Ccp = new ArrayList<String>();
-            String strMails = "jtorres@miatech.net";
-            String emisor = "jtorres@miatech.net";
+                        String ruta_file = obtenerExcel(listaData,agent_name);
 
 
-            receptores.add("jtorres@miatech.net");
+                        //CODIGO DE MAIL Y SU ATTACHMENT
+                        ProMail proMail = new ProMail();
+                        List<String> receptores = new ArrayList<String>();
+                        List<String> adjuntos = new ArrayList<String>();
 
-            if (!strMails.trim().equals("")) {
-                String[] parts = strMails.split(";");
-                for (int i = 0; i < parts.length; i++) {
-                    Ccp.add(parts[i]);
+                        if(!ruta_file.equals("")){
+                            adjuntos.add(ruta_file);
+                        }
+                        // Emails CC
+                        List<String> CC = new ArrayList<String>();
+                        List<String> Ccp = new ArrayList<String>();
+//                        String correosCopia = "luis.miranda@avianca.com;carlos.miranda@avianca.com;jacquelinne.diaz@avianca.com";
+                        String correosCopia = "jtorres@miatech.net";
+                        String correosOcultos = "larango@miatech.net;eneves@miatech.net;jtorres@miatech.net;jsolano@miatech.net";
+//                        String emisor = "jtorres@miatech.net";
+
+
+//                        receptores.add(correos);
+                        
+                        /*Correo Destino*/
+                        if (!correos.trim().equals("")) {
+                            String[] partsTo = correos.split(";");
+                            for (int h = 0; h < partsTo.length; h++) {
+                                receptores.add(partsTo[h]);
+                            }
+                        }
+                        
+                        /*Correo Copia*/
+                        if (!correosCopia.trim().equals("")) {
+                            String[] partsTo = correosCopia.split(";");
+                            for (int h = 0; h < partsTo.length; h++) {
+                                CC.add(partsTo[h]);
+                            }
+                        }
+                        
+                        /*Correo oculto*/
+                        if (!correosOcultos.trim().equals("")) {
+                            String[] parts = correosOcultos.split(";");
+                            for (int i = 0; i < parts.length; i++) {
+                                Ccp.add(parts[i]);
+                            }
+                        }
+                        String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  " + Functions.getFechaActual();
+                        String mensaje = "<p>Estimados miembros de agencia de viajes:</p>\n" +
+                        "<p>Les brindamos inicialmente un cordial saludo</p>\n" +
+                        "<p>&nbsp;</p>\n" +
+                        "<p>Continuando con nuestro proceso de conciliaci&oacute;n de pagos de tiquetes con forma de pago tarjeta de cr&eacute;dito, adjuntamos los tiquetes "+
+                        "definitivos pendientes de pago que corresponden a las ventas realizadas con tarjeta de cr&eacute;dito por su Agencia en el mes "+
+                        "de <strong><strong>"+fecha_des+"</strong></strong><strong><strong>&nbsp;</strong></strong>y hemos encontrado diferencias entre el valor facturado por ustedes y "+
+                        "el valor ingresado en nuestras cuentas bancarias (total resaltado en color amarillo),&nbsp;por lo cual de manera muy respetuosa solicitamos a ustedes enviarnos "+
+                        "la informaci&oacute;n correspondiente al n&uacute;mero de autorizaci&oacute;n, as&iacute; como la fecha de expedici&oacute;n de &eacute;ste y el "+
+                        "valor<strong><strong>&nbsp;</strong></strong><strong><strong>EXACTO</strong></strong>&nbsp;del pago, esto con el fin de corroborar esta informaci&oacute;n y "+
+                        "realizar una correcta conciliaci&oacute;n.</p>\n" +
+                        "<p>&nbsp;</p>\n" +
+                        "<p>Luego, si da a lugar solicitaremos el soporte de pago.</p>\n" +
+                        "<p><strong><strong>&nbsp;</strong></strong></p>\n" +
+                        "<p><strong><strong>FAVOR DILIGENCIAR LOS DATOS EN EL MISMO FORMATO </strong></strong>y responder al "+
+                        "correo&nbsp;<a href=\"mailto:conciliacionventastc@avianca.com\"><u>conciliacionventastc@avianca.com</u></a>&nbsp;con copia "+
+                        "a: <a href=\"mailto:cheryd.quintero@avianca.com\"><u>cheryd.quintero@avianca.com</u></a>&nbsp;"+
+                        "<a href=\"mailto:jose.higuera@avianca.com\"><u>jose.higuera@avianca.com</u></a>&nbsp;<a href=\"mailto:monica.zuluaga@avianca.com\"><u>monica.zuluaga@avianca.com</u></a>"+
+                        "&nbsp;<a href=\"mailto:carlos.jaimes@avianca.com\"><u>carlos.jaimes@avianca.com</u></a>. D<strong><strong>e encontrar tiquetes los cuales no hayan "+
+                        "sido cancelados, solicitamos su legalizaci&oacute;n de forma inmediata mediante&nbsp;la confirmaci&oacute;n del cobro mediante BSP - nota de cargo respondiendo en este "+
+                        "mismo correo.</strong></strong></p>\n" +
+                        "<p>&nbsp;</p>\n" +
+                        "<p>&nbsp;</p>\n" +
+                        "<p>Muchas gracias y quedamos atentos a su respuesta,&nbsp;la cual agradezco sea <strong><strong>enviada dentro de los pr&oacute;ximos 3 "+
+                        "d&iacute;as h&aacute;biles</strong></strong><strong><strong>,</strong></strong><strong><strong>&nbsp;</strong></strong>esto con el fin de estar al "+
+                        "d&iacute;a con las auditor&iacute;as, caso contrario se entender&aacute; que las transacciones est&aacute;n <strong><strong>pendientes de pago y se "+
+                        "elaborar&aacute; la respectiva nota de cargo.&nbsp;</strong></strong></p>\n" +
+                        "<p>&nbsp;</p>\n" +
+                        "<p>Como informaci&oacute;n general y con el fin de evitar reprocesos de ambas partes,&nbsp;antes de enviar la respuesta definitiva&nbsp;en cuanto a los "+
+                        "soportes&nbsp;de pago de los tiquetes solicitados, agradecemos que la agencia tenga en cuenta las siguientes recomendaciones:</p>\n" +
+                        "<ul>\n" +
+                        "<li>Revisar que los voucher que env&iacute;an como soporte de pago sean direccionados a Avianca y si por error no fue as&iacute;,&nbsp;aprobar el "+
+                        "ADM y solicitar la nota de abono a la aerol&iacute;nea a la cual fue direccionado el pago.</li>\n" +
+                        "<li>No se pueden aceptar pagos diferentes a la fecha de la expedici&oacute;n del tiquete m&aacute;ximo al d&iacute;a siguiente,&nbsp;no se aceptar&aacute;n pagos "+
+                        "del mes posterior o anterior.</li>\n" +
+                        "<li>Que los valores de los voucher coincidan con el valor total de los tiquetes.</li>\n" +
+                        "<li>Los dat&aacute;fonos de Credibanco no pueden recibir Master Card,&nbsp;solo se hacen a trav&eacute;s de Redeban,&nbsp;para estos casos revisar en sus "+
+                        "extractos ya que la franquicia abona estas transacciones a la agencia y por consiguiente tambi&eacute;n se generar&iacute;a la nota de cargo por los tiquetes "+
+                        "que est&eacute;n amparados por estas transacciones.</li>\n" +
+                        "<li>Cuando se comente un error al expedir una MPD o tiquete,&nbsp;no existe otra soluci&oacute;n que generar&nbsp;la ADM&nbsp;a la agencia ya que no se pueden "+
+                        "alterar los valores en Rapid a no ser que sean detectados el mismo d&iacute;a para que sean corregidos por la agencia,&nbsp;de lo contrario se debe cancelar "+
+                        "la ADM y solicitar el reembolso y/o ACM seg&uacute;n corresponda.</li>\n" +
+                        "<li>Verificar que&nbsp;los soportes que env&iacute;an no&nbsp;hayan presentado anulaci&oacute;n no satisfactoria,&nbsp;porque de ser as&iacute; no se pueden "+
+                        "tomar para cancelar tiquetes pendientes y por ende se genera la nota de cargo.</li>\n" +
+                        "</ul>\n" +
+                        "<p>&nbsp;</p>\n" +
+                        "<p>Cordial saludo,</p>\n"+
+                        "<img src=\"cid:logo\" />";
+                        iboolean = proMail.enviaCorreoAV("", asunto, receptores, CC ,Ccp, mensaje, adjuntos,this.serverSession.getServerSession());
+
+                        if (iboolean) {
+                            //resp.info.add("Email Sent.");
+                            contIatas +=1;
+                            msj += " Email Sent" ;
+                        } else {
+                            //resp.info.add("Could not send email!");
+                            msj += " Could not send email " ;
+                        }
+
+                        /*Eliminamos archivo temporal*/
+                        File file = new File(ruta_file);
+                        if (file.exists()) {
+                            file.delete();
+                        }
+
+                    }
+
+                    msj  = contIatas + " Email Sent." ;
+
+                }else{
+                    msj = "No existe información para enviar.";
                 }
-            }
-            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  " + Functions.getFechaActual();
-            String mensaje = "<p>Estimados miembros de agencia de viajes:</p>\n" +
-            "<p>Les brindamos inicialmente un cordial saludo</p>\n" +
-            "<p>&nbsp;</p>\n" +
-            "<p>Continuando con nuestro proceso de conciliaci&oacute;n de pagos de tiquetes con forma de pago tarjeta de cr&eacute;dito, adjuntamos los tiquetes "+
-            "definitivos pendientes de pago que corresponden a las ventas realizadas con tarjeta de cr&eacute;dito por su Agencia en el mes "+
-            "de <strong><strong>XXXX 2024</strong></strong><strong><strong>&nbsp;</strong></strong>y hemos encontrado diferencias entre el valor facturado por ustedes y "+
-            "el valor ingresado en nuestras cuentas bancarias (total resaltado en color amarillo),&nbsp;por lo cual de manera muy respetuosa solicitamos a ustedes enviarnos "+
-            "la informaci&oacute;n correspondiente al n&uacute;mero de autorizaci&oacute;n, as&iacute; como la fecha de expedici&oacute;n de &eacute;ste y el "+
-            "valor<strong><strong>&nbsp;</strong></strong><strong><strong>EXACTO</strong></strong>&nbsp;del pago, esto con el fin de corroborar esta informaci&oacute;n y "+
-            "realizar una correcta conciliaci&oacute;n.</p>\n" +
-            "<p>&nbsp;</p>\n" +
-            "<p>Luego, si da a lugar solicitaremos el soporte de pago.</p>\n" +
-            "<p><strong><strong>&nbsp;</strong></strong></p>\n" +
-            "<p><strong><strong>FAVOR DILIGENCIAR LOS DATOS EN EL MISMO FORMATO </strong></strong>y responder al "+
-            "correo&nbsp;<a href=\"mailto:conciliacionventastc@avianca.com\"><u>conciliacionventastc@avianca.com</u></a>&nbsp;con copia "+
-            "a: <a href=\"mailto:cheryd.quintero@avianca.com\"><u>cheryd.quintero@avianca.com</u></a>&nbsp;"+
-            "<a href=\"mailto:jose.higuera@avianca.com\"><u>jose.higuera@avianca.com</u></a>&nbsp;<a href=\"mailto:monica.zuluaga@avianca.com\"><u>monica.zuluaga@avianca.com</u></a>"+
-            "&nbsp;<a href=\"mailto:carlos.jaimes@avianca.com\"><u>carlos.jaimes@avianca.com</u></a>. D<strong><strong>e encontrar tiquetes los cuales no hayan "+
-            "sido cancelados, solicitamos su legalizaci&oacute;n de forma inmediata mediante&nbsp;la confirmaci&oacute;n del cobro mediante BSP - nota de cargo respondiendo en este "+
-            "mismo correo.</strong></strong></p>\n" +
-            "<p>&nbsp;</p>\n" +
-            "<p>&nbsp;</p>\n" +
-            "<p>Muchas gracias y quedamos atentos a su respuesta,&nbsp;la cual agradezco sea <strong><strong>enviada dentro de los pr&oacute;ximos 3 "+
-            "d&iacute;as h&aacute;biles</strong></strong><strong><strong>,</strong></strong><strong><strong>&nbsp;</strong></strong>esto con el fin de estar al "+
-            "d&iacute;a con las auditor&iacute;as, caso contrario se entender&aacute; que las transacciones est&aacute;n <strong><strong>pendientes de pago y se "+
-            "elaborar&aacute; la respectiva nota de cargo.&nbsp;</strong></strong></p>\n" +
-            "<p>&nbsp;</p>\n" +
-            "<p>Como informaci&oacute;n general y con el fin de evitar reprocesos de ambas partes,&nbsp;antes de enviar la respuesta definitiva&nbsp;en cuanto a los "+
-            "soportes&nbsp;de pago de los tiquetes solicitados, agradecemos que la agencia tenga en cuenta las siguientes recomendaciones:</p>\n" +
-            "<ul>\n" +
-            "<li>Revisar que los voucher que env&iacute;an como soporte de pago sean direccionados a Avianca y si por error no fue as&iacute;,&nbsp;aprobar el "+
-            "ADM y solicitar la nota de abono a la aerol&iacute;nea a la cual fue direccionado el pago.</li>\n" +
-            "<li>No se pueden aceptar pagos diferentes a la fecha de la expedici&oacute;n del tiquete m&aacute;ximo al d&iacute;a siguiente,&nbsp;no se aceptar&aacute;n pagos "+
-            "del mes posterior o anterior.</li>\n" +
-            "<li>Que los valores de los voucher coincidan con el valor total de los tiquetes.</li>\n" +
-            "<li>Los dat&aacute;fonos de Credibanco no pueden recibir Master Card,&nbsp;solo se hacen a trav&eacute;s de Redeban,&nbsp;para estos casos revisar en sus "+
-            "extractos ya que la franquicia abona estas transacciones a la agencia y por consiguiente tambi&eacute;n se generar&iacute;a la nota de cargo por los tiquetes "+
-            "que est&eacute;n amparados por estas transacciones.</li>\n" +
-            "<li>Cuando se comente un error al expedir una MPD o tiquete,&nbsp;no existe otra soluci&oacute;n que generar&nbsp;la ADM&nbsp;a la agencia ya que no se pueden "+
-            "alterar los valores en Rapid a no ser que sean detectados el mismo d&iacute;a para que sean corregidos por la agencia,&nbsp;de lo contrario se debe cancelar "+
-            "la ADM y solicitar el reembolso y/o ACM seg&uacute;n corresponda.</li>\n" +
-            "<li>Verificar que&nbsp;los soportes que env&iacute;an no&nbsp;hayan presentado anulaci&oacute;n no satisfactoria,&nbsp;porque de ser as&iacute; no se pueden "+
-            "tomar para cancelar tiquetes pendientes y por ende se genera la nota de cargo.</li>\n" +
-            "</ul>\n" +
-            "<p>&nbsp;</p>\n" +
-            "<p>Cordial saludo,</p>";
-
-            iboolean = proMail.enviaCorreoAV(emisor, asunto, receptores, Ccp, mensaje, adjuntos,this.serverSession.getServerSession());
-
-            if (iboolean) {
-                //resp.info.add("Email Sent.");
-                msj += " Email Sent" ;
-            } else {
-                //resp.info.add("Could not send email!");
-                msj += " Could not send email " ;
-            }
-            
-            /*Eliminamos archivo temporal*/
-            File file = new File(ruta_file);
-            if (file.exists()) {
-                file.delete();
+                
+            }else{
+                msj = "No se selecciono fecha.";
             }
 
             map.put("msj", msj);
@@ -1127,7 +1175,7 @@ public class SalesReconciliationController extends BaseController {
 
     
     
-    public String obtenerExcel(List<MPF100Filter> listaData) {
+    public String obtenerExcel(List<MPF100Filter> listaData, String agent_name) {
         
         DecimalFormat df = new DecimalFormat("#,###,###.00");
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -1136,7 +1184,7 @@ public class SalesReconciliationController extends BaseController {
         df.setDecimalFormatSymbols(otherSymbols);
         
         
-        String fileNameDownload = String.format("ADMs - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("ADMs - "+agent_name+" -"+ Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         String ruta ="";
         try {
             ruta = "C:\\Dumps\\"+fileNameDownload;

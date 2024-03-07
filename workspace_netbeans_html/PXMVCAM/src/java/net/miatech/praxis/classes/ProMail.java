@@ -1047,7 +1047,8 @@ public class ProMail {
         return envioExitoso;
     }
 
-    public boolean enviaCorreoAV(String emisor, String asunto, List<String> receptores, List<String> Ccpy, String mensaje, List<String> adjuntos,IServerSession ss) {
+    
+    public boolean enviaCorreoAV(String emisor, String asunto, List<String> receptores, List<String> lstCopia, List<String> lstCopiaOculta, String mensaje, List<String> adjuntos,IServerSession ss) {
         //Para alertas de insumo de medios de pago
         boolean envioExitoso = true;
                 
@@ -1086,9 +1087,14 @@ public class ProMail {
                 dest[i] = new InternetAddress(receptores.get(i));
             }
             // Correo con copy To
-            InternetAddress[] Ccp = new InternetAddress[Ccpy.size()];
+            InternetAddress[] CC = new InternetAddress[lstCopia.size()];
+            for (int i = 0; i < CC.length; i++) {
+                CC[i] = new InternetAddress(lstCopia.get(i));
+            }
+            // Correo con copia Oculta
+            InternetAddress[] Ccp = new InternetAddress[lstCopiaOculta.size()];
             for (int i = 0; i < Ccp.length; i++) {
-                Ccp[i] = new InternetAddress(Ccpy.get(i));
+                Ccp[i] = new InternetAddress(lstCopiaOculta.get(i));
             }
             
             //Se define qui&amp;eacute;n es el emisor del e-mail
@@ -1098,6 +1104,7 @@ public class ProMail {
             message.setReplyTo(replyTo);
             //Se definen el o los destinatarios
             message.addRecipients(Message.RecipientType.TO, dest);
+            message.addRecipients(Message.RecipientType.CC, CC );
             message.addRecipients(Message.RecipientType.BCC, Ccp );
             //message.addRecipients(Message.RecipientType.BCC, dest);
             //Se defina el asunto del e-mail

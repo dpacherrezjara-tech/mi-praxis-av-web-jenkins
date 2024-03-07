@@ -18,6 +18,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     strSTVAL: '',
     NPROG: '',
     f_boxDetTktS: '',
+    dpick:null,
     beanboxDetTktS1: {},
     beanboxDetTktS2: {},
     beanboxDetTktS3: {},
@@ -2221,9 +2222,65 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
         console.log('sendMail_clickHandler');
         
+        me.dpick= win = Ext.create('Ext.window.Window', {
+            title: 'Seleccionar Fecha',
+            modal: true,
+            width: 280,
+            height: 200,
+            layout: 'hbox',
+//            align: 'center',
+            items: [
+                {
+                    xtype: 'monthpicker',
+                    id:prototype.id + '-monthPicker',
+//                    listeners: {
+////                        cancelclick: 'cancelarSeleccionFecha',
+//                        monthdblclick: 'aceptarSeleccionFecha'
+//                    }
+                },
+                {
+                    xtype: 'button',
+                    padding: '10px 10px 10px 10px',
+                    margin: '60px 0px 0px 0px',
+                    text: 'Enviar Correo',
+                    handler: this.aceptarSeleccionFecha
+                }
+            ]
+        });
+        me.dpick.show();
+           
+    },
+    aceptarSeleccionFecha: function(button) {
+//        var window = button.up('window'); // Obtener la ventana que contiene el MonthPicker
+//        var monthpicker = window.down('monthpicker'); // Obtener el componente MonthPicker
+        var monthpicker = Ext.getCmp(prototype.id + '-monthPicker'); // Obtener el componente MonthPicker
+        var selectedDate = monthpicker.getValue(); // Obtener la fecha seleccionada
+//        console.log('Año xxxxxxx:', selectedDate);
+        if (selectedDate) {
+            var year = selectedDate[1]; // Obtener el año seleccionado
+            var month = selectedDate[0] + 1; // Obtener el mes seleccionado (los meses son base 0)
+            month = Ext.String.leftPad(month,2,'0');
+            
+            console.log('Año seleccionado:', year);
+            console.log('Mes seleccionado:', month);
+            
+            // Luego puedes realizar las acciones que necesites con el año y el mes seleccionados
+            // Por ejemplo, enviar esta información al servidor para enviar un correo electrónico
+            me.enviarCorreo(year +''+ month);
+        } else {
+            console.error('No se ha seleccionado ninguna fecha');
+        }
+//        this.enviarFechaSeleccionada(fechaSeleccionada);
+    },
+    enviarCorreo: function (fecha) {
+        me.dpick.close();
+        console.log('enviarCorreo');
+        console.log(fecha);
+        var msj='¿Estás seguro de enviar Correo para la fecha : '+ fecha + ' ?';
+        
         Ext.Msg.show({
             title: '.:Confirmation:.',
-            msg: 'Sure to Send Email to IATA?',
+            msg: msj,
             buttons: Ext.MessageBox.OKCANCEL,
             scope: this,
             icon: Ext.MessageBox.QUESTION,
@@ -2241,7 +2298,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         method: 'POST',
                         timeout: 60000000,
                         beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
-                        params: {lista: listaCadena},
+                        params: {v_fecha: fecha},
                         success: function (response, options) {
                             Ext.getCmp(prototype.id + '-contentInfo').unmask('Loading...');
                             var res = Ext.JSON.decode(response.responseText);
@@ -2249,13 +2306,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             var msj = String(res.msj);
 
                             global.Msg({msg: msj});
-                            
+
                         }
                     });
                 }
             }
         });
-           
+            
     }
-    // </editor-fold>
+    
 });

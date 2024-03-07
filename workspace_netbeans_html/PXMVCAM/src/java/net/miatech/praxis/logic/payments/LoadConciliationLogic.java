@@ -9,6 +9,7 @@ import net.miatech.praxis.dao.payments.LoadConciliationDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2370Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
+import net.miatech.praxis.payment.filter.MPF106Filter;
 
 // </editor-fold>
 /**
@@ -103,6 +104,10 @@ public class LoadConciliationLogic {
     
     public List<MPF100Filter> loadPX263SQP00XXXJT(MPF100Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00XXXJT(filter);
+    }
+    
+    public List<MPF106Filter> loadPX263getCorreosAV(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263getCorreosAV(filter);
     }
 
 }

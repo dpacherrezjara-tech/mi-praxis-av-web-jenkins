@@ -13,6 +13,7 @@ import java.util.List;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2370Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
+import net.miatech.praxis.payment.filter.MPF106Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -3190,6 +3191,65 @@ public class LoadConciliationDAO {
     }
 
 
+    public List<MPF106Filter> loadPX263getCorreosAV(MPF100Filter filter) throws SQLException, Exception {
+
+        List<MPF106Filter> lstCorreos = new ArrayList<MPF106Filter>(0);
+        MPF106Filter beanTkt;
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".getCorreosAV(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA);
+            cstmt.setString(3, session.getUserView().getCustomerInfo().USR);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new MPF106Filter();
+                beanTkt.EMAILS = rst.getString("EMAILS");
+                beanTkt.CAGENCY = rst.getString("CAGENCY");
+                beanTkt.NAMEA = rst.getString("NAMEA");
+
+                lstCorreos.add(beanTkt);
+
+            }
+            rst.close();
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstCorreos;
+    }
+
     public List<MPF100Filter> loadPX263SQP00XXXJT(MPF100Filter filter) throws SQLException, Exception {
 
         List<MPF100Filter> lstTkts = new ArrayList<MPF100Filter>(0);
@@ -3198,7 +3258,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00XXXJT(?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00XXXJT(?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3208,6 +3268,8 @@ public class LoadConciliationDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
+            cstmt.setString(3, filter.IN_AGENT);
+            cstmt.setString(4, filter.IN_FECHA);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3255,7 +3317,7 @@ public class LoadConciliationDAO {
 
         return lstTkts;
     }
-
+    
     public static void pasarGarbageCollector() {
         System.gc();
         System.runFinalization();
