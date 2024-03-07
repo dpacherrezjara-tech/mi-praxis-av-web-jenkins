@@ -7,7 +7,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
     controller: 'DataEntryAgentsCatalogController',
     title: 'Agent - Data Entry Form',
     header: true,
-    height: 365,
+    height: 400,
     width: 820,
     resizable: false,
     layout: 'fit',
@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                             margin: '1 2 1 20',
                             defaults: {
                                 anchor: '100%',
-                                width: 600
+                                width: 900
                             },
                             items: [
                                 {
@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             readOnly: false,
                                             width: 80,
                                         },
-                                        {xtype: 'tbspacer', width: 60},
+                                        {xtype: 'tbspacer', width: 226},
                                         {
                                             xtype: 'label',
                                             text: 'Name',
@@ -163,7 +163,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                                 select: 'searchCitys'
                                             }
                                         },
-                                        {xtype: 'tbspacer', width: 45},
+                                        {xtype: 'tbspacer', width: 213},
                                         {
                                             xtype: 'label',
                                             text: 'City',
@@ -218,7 +218,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             //maskRe: /[0-9]/,
                                             width: 95
                                         },
-                                        {xtype: 'tbspacer', width: 45},
+                                        {xtype: 'tbspacer', width: 213},
                                         {
                                             xtype: 'label',
                                             text: 'Bussines',
@@ -272,7 +272,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             //maskRe: /[0-9]/,
                                             width: 95
                                         },
-                                        {xtype: 'tbspacer', width: 45},
+                                        {xtype: 'tbspacer', width: 213},
                                         {
                                             xtype: 'label',
                                             text: 'Contact',
@@ -322,7 +322,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             //maskRe: /[0-9]/,
                                             width: 95
                                         },
-                                        {xtype: 'tbspacer', width: 45},
+                                        {xtype: 'tbspacer', width: 213},
                                         {
                                             xtype: 'label',
                                             text: 'Email',
@@ -335,8 +335,108 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             id: prototype.id + '-de-cmbEMAILS',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
-                                            enforceMaxLength: true,
-                                            maxLength: 30,
+//                                            enforceMaxLength: true,
+//                                            maxLength: 30,
+                                            //maskRe: /[0-9]/,
+                                            width: 263
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '1 2 1 10',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Email 2',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 82
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-cmbEMAILS2',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+//                                            enforceMaxLength: true,
+//                                            maxLength: 30,
+                                            //maskRe: /[0-9]/,
+                                            width: 263
+                                        },
+                                        {xtype: 'tbspacer', width: 45},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Email 3',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-cmbEMAILS3',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+//                                            enforceMaxLength: true,
+//                                            maxLength: 30,
+                                            //maskRe: /[0-9]/,
+                                            width: 263
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '1 2 1 10',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Email 4',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 82
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-cmbEMAILS4',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+//                                            enforceMaxLength: true,
+//                                            maxLength: 30,
+                                            //maskRe: /[0-9]/,
+                                            width: 263
+                                        },
+                                        {xtype: 'tbspacer', width: 45},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Email 5',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-cmbEMAILS5',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+//                                            enforceMaxLength: true,
+//                                            maxLength: 30,
                                             //maskRe: /[0-9]/,
                                             width: 263
                                         },

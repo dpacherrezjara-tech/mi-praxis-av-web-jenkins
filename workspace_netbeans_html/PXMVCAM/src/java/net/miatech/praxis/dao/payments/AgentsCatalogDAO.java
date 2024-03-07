@@ -101,6 +101,10 @@ public class AgentsCatalogDAO {
                 bean.CONTAC = rst.getString("CONTAC").trim();
                 bean.EMAILS = rst.getString("EMAILS").trim();
                 bean.NPHONE = rst.getString("NPHONE").trim();
+                bean.EMAILS2 = rst.getString("EMAILS2").trim();
+                bean.EMAILS3 = rst.getString("EMAILS3").trim();
+                bean.EMAILS4 = rst.getString("EMAILS4").trim();
+                bean.EMAILS5 = rst.getString("EMAILS5").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -216,6 +220,10 @@ public class AgentsCatalogDAO {
                 objRtn.CONTAC = rs01.getString("CONTAC").trim();
                 objRtn.EMAILS = rs01.getString("EMAILS").trim();
                 objRtn.NPHONE = rs01.getString("NPHONE").trim();
+                objRtn.EMAILS2 = rs01.getString("EMAILS2").trim();
+                objRtn.EMAILS3 = rs01.getString("EMAILS3").trim();
+                objRtn.EMAILS4 = rs01.getString("EMAILS4").trim();
+                objRtn.EMAILS5 = rs01.getString("EMAILS5").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

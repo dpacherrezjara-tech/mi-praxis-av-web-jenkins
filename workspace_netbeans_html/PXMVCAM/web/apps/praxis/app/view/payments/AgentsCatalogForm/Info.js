@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1400,
+                width: 1735,
                 height: 700,
                 align: 'center'
             },
@@ -41,10 +41,10 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            padding: '10 0 0 0',
+                            padding: '0 0 0 0',
                             border: false,
                             height: 560,
-                            width: 1364,
+                            width: 1735,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
                                     height: 486,
-                                    width: 1232,
+                                    width: 1735,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -67,13 +67,17 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                             {text: 'Nbr', dataIndex: 'RN', width: 40},
                                             {text: 'Country', dataIndex: 'COUNTRY', width: 80},
                                             {text: 'Code', dataIndex: 'CAGENCY', width: 80},                                            
-                                            {text: 'Name', dataIndex: 'NAMEA', width: 300, align: 'left'},
+                                            {text: 'Name', dataIndex: 'NAMEA', width: 200, align: 'left'},
                                             {text: 'Channel', dataIndex: 'CANAL', width: 70},
                                             {text: 'City', dataIndex: 'CITY', width: 70},
                                             {text: 'Bussines', dataIndex: 'descNEGOC', width: 90},
                                             {text: 'Terminal', dataIndex: 'TERMI', width: 80},
                                             {text: 'Contact', dataIndex: 'CONTAC', width: 150},
-                                            {text: 'Email', dataIndex: 'EMAILS', width: 150},
+                                            {text: 'Email-1', dataIndex: 'EMAILS', width: 150},
+                                            {text: 'Email-2', dataIndex: 'EMAILS2', width: 150},
+                                            {text: 'Email-3', dataIndex: 'EMAILS3', width: 150},
+                                            {text: 'Email-4', dataIndex: 'EMAILS4', width: 150},
+                                            {text: 'Email-5', dataIndex: 'EMAILS5', width: 150},
                                             {text: 'Phone', dataIndex: 'NPHONE', width: 80},
                                             {
                                                 sortable: false,
@@ -101,7 +105,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                         pack: 'center'
                                     },
                                     border: false,
-                                    width: 1115,
+                                    width: 1735,
                                     height: 25,
                                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
 //                                    defaults: {
@@ -112,7 +116,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            width: 1164,
+                                            width: 1735,
                                             height: 25,
                                             layout: {
                                                 type: 'hbox',

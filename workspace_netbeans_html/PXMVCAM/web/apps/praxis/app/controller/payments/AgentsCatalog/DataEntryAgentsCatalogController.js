@@ -45,7 +45,8 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         }
     },
     mostrarData: function () {
-//        console.log(meDE.beanResult);
+//        console.log(meDE.beanResult, );
+        console.log(this.beanResult, 'this.beanResult')
         this.setValue('de-txtCAGENCY', this.beanResult.CAGENCY);
         this.setValue('de-txtNAMEA', this.beanResult.NAMEA);
         this.setValue('de-txtCANAL', this.beanResult.CANAL);
@@ -56,6 +57,10 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         this.setValue('de-cmbCONTACT', this.beanResult.CONTAC);
         this.setValue('de-cmbEMAILS', this.beanResult.EMAILS);
         this.setValue('de-cmbNPHONE', this.beanResult.NPHONE);
+        this.setValue('de-cmbEMAILS2', this.beanResult.EMAILS2);
+        this.setValue('de-cmbEMAILS3', this.beanResult.EMAILS3);
+        this.setValue('de-cmbEMAILS4', this.beanResult.EMAILS4);
+        this.setValue('de-cmbEMAILS5', this.beanResult.EMAILS5);
 
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -155,7 +160,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
-//        console.log(beanTemp);
+        console.log(beanTemp, 'beanTemp');
         beanTemp.NEW_CAGENCY = this.getValue("de-txtCAGENCY");
         beanTemp.CANAL = this.getValue("de-txtCANAL");
         beanTemp.COUNTRY = this.getValue("de-cmbCOUNTRY");
@@ -167,6 +172,11 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         beanTemp.EMAILS = this.getValue("de-cmbEMAILS");
         beanTemp.NPHONE = this.getValue("de-cmbNPHONE");
         beanTemp.CAGENCY = this.beanResult.CAGENCY;
+        beanTemp.EMAILS2 = this.getValue("de-cmbEMAILS2");
+        beanTemp.EMAILS3 = this.getValue("de-cmbEMAILS3");
+        beanTemp.EMAILS4 = this.getValue("de-cmbEMAILS4");
+        beanTemp.EMAILS5 = this.getValue("de-cmbEMAILS5");
+       
 
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
@@ -174,7 +184,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         beanTemp.USUP = this.getValue("txtUSUP").trim();
         beanTemp.FEUP = this.getValue("txtFEUP").trim();
         beanTemp.HOUP = this.getValue("txtHOUP").trim();
-//        console.log(beanTemp);
+        console.log(beanTemp);
     },
     getData: function () {
         var beanString = JSON.stringify(meDE.bean.data);
@@ -188,6 +198,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
             success: function (response, options) {
 //                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
+                console.log('res.result', res.result)
                 meDE.beanResult = res.result;
                 meDE.mostrarData();
 

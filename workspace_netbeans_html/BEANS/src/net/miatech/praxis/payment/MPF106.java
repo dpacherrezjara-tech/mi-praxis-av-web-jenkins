@@ -27,6 +27,10 @@ public class MPF106 {
     public String CONTAC = "";
     public String EMAILS = "";
     public String NPHONE = "";
+    public String EMAILS2 = "";
+    public String EMAILS3 = "";
+    public String EMAILS4 = "";
+    public String EMAILS5 = "";
     public String TERMP = "";
     public String SAGENT = "";
     
