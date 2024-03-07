@@ -289,6 +289,8 @@ public class LoadConciliationDAO {
                     beanTkt.lngTotQPOLIC = lngTotQPOLIC;
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
                     
+                    beanTkt.strTitulo = "Sales Date: " + filter.strFormatDate.trim();
+                            
                     beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
                     beanTkt.lngTotQMATCHPercent = (lngTotQSALES > 0) ? (lngTotQMATCH * 100.0) / lngTotQSALES : 0.00;
 
@@ -428,6 +430,9 @@ public class LoadConciliationDAO {
                     beanTkt.lngTotQPEND = lngTotQPEND;
                     beanTkt.lngTotQPOLIC = lngTotQPOLIC;
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
+                    
+                    System.out.println("str titulo" + filter.strTitulo.trim() );
+                    beanTkt.strTitulo = filter.strTitulo.trim() + " - Country : " + beanTkt.SCOUNTRY;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -565,6 +570,8 @@ public class LoadConciliationDAO {
                     beanTkt.lngTotQPEND = lngTotQPEND;
                     beanTkt.lngTotQPOLIC = lngTotQPOLIC;
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
+                    
+                    beanTkt.strTitulo = filter.strTitulo.trim() + " Card: " + filter.SCARCOD.trim() + " : " + filter.strDescCard.trim();
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -953,16 +960,16 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(16, Types.INTEGER);
-            cstmt.registerOutParameter(17, Types.INTEGER);
             cstmt.registerOutParameter(18, Types.INTEGER);
             cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.registerOutParameter(21, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -977,25 +984,27 @@ public class LoadConciliationDAO {
             cstmt.setString(10, filter.IN_SAGENT);
             cstmt.setString(11, filter.IN_SPNR);
             cstmt.setString(12, filter.IN_TICKET);
-            cstmt.setString(13, filter.IN_COUNTRY.trim());
-            cstmt.setString(14, filter.IN_CARDC.trim());
-            cstmt.setString(15, filter.IN_FTE.trim());
+            cstmt.setString(13, filter.IN_COUNTRY);
+            cstmt.setString(14, filter.IN_CARDC);
+            cstmt.setString(15, filter.IN_FTE);
+            cstmt.setString(16, filter.IN_STVAL);
+            cstmt.setString(17, filter.IN_strSVFOP);
             
 
 
-            cstmt.setInt(16, filter.page.PAGNUM);
-            cstmt.setInt(17, filter.page.PAGROW);
-            cstmt.setInt(18, filter.page.TOTPAG);
-            cstmt.setInt(19, filter.page.TOTROW);
+            cstmt.setInt(18, filter.page.PAGNUM);
+            cstmt.setInt(19, filter.page.PAGROW);
+            cstmt.setInt(20, filter.page.TOTPAG);
+            cstmt.setInt(21, filter.page.TOTROW);
 
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
-            filter.page.PAGNUM = cstmt.getInt(16);
-            filter.page.PAGROW = cstmt.getInt(17);
-            filter.page.TOTPAG = cstmt.getInt(18);
-            filter.page.TOTROW = cstmt.getInt(19);
+            filter.page.PAGNUM = cstmt.getInt(18);
+            filter.page.PAGROW = cstmt.getInt(19);
+            filter.page.TOTPAG = cstmt.getInt(20);
+            filter.page.TOTROW = cstmt.getInt(21);
 
             while (rst.next()) {
                 lngTotCant += rst.getLong("CANT");
@@ -1576,14 +1585,8 @@ public class LoadConciliationDAO {
                     } catch (Exception e) {
                     }
 
-                    if (beanTkt.strFecFiltro.equals("DATEC")) {
-                        beanTkt.strTitulo = "Conciliation Date : ";
-                    } else if (beanTkt.IN_TDOC.equals("R")) {
-                        beanTkt.strTitulo = "Refund Date : ";
-                    } else {
-                        beanTkt.strTitulo = "Sales Date : ";
-                    }
-                    beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + beanTkt.strDescCountry + " - Card : " + beanTkt.SCARCOD + " : " + beanTkt.strDescCard;
+                    
+                    beanTkt.strTitulo = filter.strTitulo.trim() + " - Day : " + filter.IN_SDATE.trim();
 
                     if (rst.getString("TKVOID").trim().equals("V")) {
                         beanTkt.strFlagStat = "Void";

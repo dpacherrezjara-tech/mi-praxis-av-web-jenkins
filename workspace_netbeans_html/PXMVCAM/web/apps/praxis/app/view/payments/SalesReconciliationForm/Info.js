@@ -478,7 +478,6 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-boxDetCountry',
-                                            hidden: true,
                                             width: '100%',
                                             bodyStyle: 'background: transparent;',
                                             border: false,
@@ -492,6 +491,26 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                             },
                                             items: [
                                                 //<editor-fold defaultstate="collapsed" desc="gridDetCountry">
+//                                                {
+//                                                    xtype: 'panel',
+//                                                    width: 1250,
+//                                                    bodyStyle: 'background: #ECECEC;',
+//                                                    border: true,
+//                                                    layout: 'hbox',
+//                                                    defaults: {
+//                                                        border: false
+//                                                    },
+//                                                    items: [
+//                                                        {
+//                                                            xtype: 'label',
+//                                                            id: prototype.id + '-lblTitDetCountry',
+//                                                            text: '',
+//                                                            padding: '6 0',
+//                                                            style: 'font-weight:bold;text-align:center;',
+//                                                            width: 900
+//                                                        },
+//                                                    ]
+//                                                },
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDetCountry',
@@ -2730,6 +2749,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                     width: 1250,
                                                     bodyStyle: 'background: #ECECEC;',
                                                     border: true,
+                                                    hidden: true,
                                                     layout: 'hbox',
                                                     defaults: {
                                                         border: false

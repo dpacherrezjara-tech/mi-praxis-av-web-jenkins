@@ -550,13 +550,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
+            console.log(dataRow1.data.STMANUAL, 'dataRow1.data.STMANUAL')
             if (dataRow1.data.STMANUAL !== 'Blocked') {
+
                 this.sumAmount = this.sumAmount + dataRow1.data.A1531VFOP; //+ dataRow1.data.SADJUST;
+                console.log('primer if wadafa', dataRow1.data.STMANUAL, 'sumamount', this.sumAmount)
             }
         }
-
+        console.log(this.lstAdjustment, 'this.lstAdjustment')
         for (var i = 0; i < this.lstAdjustment.length; i++) {
+            console.log(parseFloat(this.lstAdjustment[i].A1531VFOP), this.sumAmount)
             this.sumAmount = this.sumAmount + parseFloat(this.lstAdjustment[i].A1531VFOP);
+            
+            console.log(this.sumAmount, 'wadadafadafadadadadada')
         }
 
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
@@ -683,6 +689,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     clear_tableNormal: function () {
         console.log('click clear')
+        
         let storeDataClear = Ext.create('Ext.data.Store', {
             data: '',
             autoLoad: true
@@ -694,7 +701,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             autoLoad: true
         });
         Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked').bindStore(storeDataClearBl);
-
+        let storeDataClearAdjustment = Ext.create('Ext.data.Store', {
+            data: '',
+            autoLoad: true
+        })
+        Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(storeDataClearAdjustment);
+        this.sumAmount = 0;
+        this.lstAdjustment = []
+        Ext.getCmp(prototype.id + '-gridDataAdjustment').hide();
+        Ext.getCmp(prototype.id + '-panelADJ').hide();
+        
+        
     },
 
 //</editor-fold>
@@ -1112,6 +1129,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         console.log(this.sumAmount);
         console.log(this.bean.SVFOP);
         if (data.STMANUAL !== 'Blocked') {
+            console.log(this.sumAmount, 'this.sumAmount')
+            console.log(this.bean.SVFOP, 'this.bean.SVFOP')
             if (this.sumAmount === this.bean.SVFOP) {
                 global.Msg({msg: 'The sum amount is equal to transaction amount.'});
             } else {

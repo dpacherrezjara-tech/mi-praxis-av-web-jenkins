@@ -498,6 +498,78 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                         {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
+                            text: 'Status :',
+                            padding: '3 0',
+                            hidden: true,
+                            width: 74,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Status'
+                            }
+                        },
+                        {
+                            xtype:'combo',
+                            id: prototype.id+'-cmbStatus',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['value', 'description'],
+                                data: [
+                                    ["", "All"], ["1", "Match"], ["2", "Sales Without Liqui."]
+                                ]
+                            }),
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 150,
+                            value: "",
+                            hidden: true,
+                            typeAhead: true,
+                            valueField: 'value', displayField: 'description',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            listeners:{
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'label',
+                            text: 'Amount :',
+                            padding: '3 0',
+                            hidden: true,
+                            width: 74,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Amount'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtAMOUNT',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9.]/, // Permitir solo números y el punto decimal
+                            maxLength: 20,
+                            hidden: true,
+                            width: 192,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keyup: function(field) {
+                                    var value = field.getValue().replace(/[^\d.]/g, '');
+                                    var parts = value.split('.');
+                                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                    if (parts[1] && parts[1].length > 2) { 
+                                        parts[1] = parts[1].substring(0, 2);    
+                                    }
+                                    field.setValue(parts.join('.'));
+                                },
+                                keypress: 'BuscarTKT_keyDownHandler'
+                            }
+                        },
+                        {
+                            xtype: 'label',
                             text: 'Merchant :',
                             padding: '3 0',
                             hidden:true,

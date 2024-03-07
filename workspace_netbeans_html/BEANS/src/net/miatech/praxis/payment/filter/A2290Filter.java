@@ -49,6 +49,7 @@ public class A2290Filter extends A2290 {
     public String IN_TDOC = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
+    public String IN_strSVFOP = "";
     public String IN_RED = "";
     public String IN_NEGOC = "";
     public String IN_COMENT = "";
