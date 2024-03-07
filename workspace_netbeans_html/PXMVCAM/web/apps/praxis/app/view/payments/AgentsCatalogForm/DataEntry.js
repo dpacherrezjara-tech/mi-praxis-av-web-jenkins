@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                     xtype: 'panel',
                     bodyStyle: 'background: transparent;"',
                     layout: 'vbox',
-                    width: 930,
+                    width: 780,
                     defaults: {
                         anchor: '100%'
                     },
@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             readOnly: false,
                                             width: 80,
                                         },
-                                        {xtype: 'tbspacer', width: 226},
+                                        {xtype: 'tbspacer', width: 143},
                                         {
                                             xtype: 'label',
                                             text: 'Name',
@@ -108,10 +108,10 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtNAMEA',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
                                             enforceMaxLength: true,
                                             maxLength: 40,
-                                            width: 263,
+                                            width: 180,
                                             labelWidth: 20
                                         },
                                         {xtype: 'tbspacer', width: 12}
@@ -163,7 +163,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                                 select: 'searchCitys'
                                             }
                                         },
-                                        {xtype: 'tbspacer', width: 213},
+                                        {xtype: 'tbspacer', width: 130},
                                         {
                                             xtype: 'label',
                                             text: 'City',
@@ -218,7 +218,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             //maskRe: /[0-9]/,
                                             width: 95
                                         },
-                                        {xtype: 'tbspacer', width: 213},
+                                        {xtype: 'tbspacer', width: 130},
                                         {
                                             xtype: 'label',
                                             text: 'Bussines',
@@ -272,7 +272,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             //maskRe: /[0-9]/,
                                             width: 95
                                         },
-                                        {xtype: 'tbspacer', width: 213},
+                                        {xtype: 'tbspacer', width: 130},
                                         {
                                             xtype: 'label',
                                             text: 'Contact',
@@ -284,11 +284,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-cmbCONTACT',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
                                             enforceMaxLength: true,
                                             maxLength: 30,
                                             //maskRe: /[0-9]/,
-                                            width: 263
+                                            width: 180
                                         },
                                         {xtype: 'tbspacer', width: 40},
                                     ]
@@ -322,7 +322,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             //maskRe: /[0-9]/,
                                             width: 95
                                         },
-                                        {xtype: 'tbspacer', width: 213},
+                                        {xtype: 'tbspacer', width: 130},
                                         {
                                             xtype: 'label',
                                             text: 'Email',
@@ -334,11 +334,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-cmbEMAILS',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
 //                                            enforceMaxLength: true,
 //                                            maxLength: 30,
                                             //maskRe: /[0-9]/,
-                                            width: 263
+                                            width: 180
                                         },
                                         {xtype: 'tbspacer', width: 40},
                                     ]
@@ -366,11 +366,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-cmbEMAILS2',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
 //                                            enforceMaxLength: true,
 //                                            maxLength: 30,
                                             //maskRe: /[0-9]/,
-                                            width: 263
+                                            width: 180
                                         },
                                         {xtype: 'tbspacer', width: 45},
                                         {
@@ -384,11 +384,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-cmbEMAILS3',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
 //                                            enforceMaxLength: true,
 //                                            maxLength: 30,
                                             //maskRe: /[0-9]/,
-                                            width: 263
+                                            width: 180
                                         },
                                         {xtype: 'tbspacer', width: 40},
                                     ]
@@ -416,11 +416,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-cmbEMAILS4',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
 //                                            enforceMaxLength: true,
 //                                            maxLength: 30,
                                             //maskRe: /[0-9]/,
-                                            width: 263
+                                            width: 180
                                         },
                                         {xtype: 'tbspacer', width: 45},
                                         {
@@ -434,11 +434,11 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-cmbEMAILS5',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
+                                            fieldStyle: 'text-align:left;',
 //                                            enforceMaxLength: true,
 //                                            maxLength: 30,
                                             //maskRe: /[0-9]/,
-                                            width: 263
+                                            width: 180
                                         },
                                         {xtype: 'tbspacer', width: 40},
                                     ]

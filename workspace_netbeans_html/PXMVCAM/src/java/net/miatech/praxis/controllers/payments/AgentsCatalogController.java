@@ -176,6 +176,10 @@ public class AgentsCatalogController extends BaseController {
             Cell CH1_08 = row.createCell(8);
             Cell CH1_09 = row.createCell(9);
             Cell CH1_10 = row.createCell(10);
+            Cell CH1_11 = row.createCell(11);
+            Cell CH1_12 = row.createCell(12);
+            Cell CH1_13 = row.createCell(13);
+            Cell CH1_14 = row.createCell(14);
 
             CH1_00.setCellValue("Nbr");
             CH1_01.setCellValue("Country");
@@ -187,7 +191,11 @@ public class AgentsCatalogController extends BaseController {
             CH1_07.setCellValue("Terminal");
             CH1_08.setCellValue("Contact");
             CH1_09.setCellValue("Email");
-            CH1_10.setCellValue("Phone");
+            CH1_10.setCellValue("Email-2");
+            CH1_11.setCellValue("Email-3");
+            CH1_12.setCellValue("Email-4");
+            CH1_13.setCellValue("Email-5");
+            CH1_14.setCellValue("Phone");
 
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
@@ -200,6 +208,10 @@ public class AgentsCatalogController extends BaseController {
             CH1_08.setCellStyle(headerStyle);
             CH1_09.setCellStyle(headerStyle);
             CH1_10.setCellStyle(headerStyle);
+            CH1_11.setCellStyle(headerStyle);
+            CH1_12.setCellStyle(headerStyle);
+            CH1_13.setCellStyle(headerStyle);
+            CH1_14.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -213,6 +225,10 @@ public class AgentsCatalogController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
             ++vj;
             //*******************
             
@@ -230,6 +246,10 @@ public class AgentsCatalogController extends BaseController {
                 Cell rcell8 = row.createCell(8);
                 Cell rcell9 = row.createCell(9);
                 Cell rcell10 = row.createCell(10);
+                Cell rcell11 = row.createCell(11);
+                Cell rcell12 = row.createCell(12);
+                Cell rcell13 = row.createCell(13);
+                Cell rcell14 = row.createCell(14);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).COUNTRY);
@@ -241,7 +261,11 @@ public class AgentsCatalogController extends BaseController {
                 rcell7.setCellValue(listaData.get(vi).TERMI);
                 rcell8.setCellValue(listaData.get(vi).CONTAC);
                 rcell9.setCellValue(listaData.get(vi).EMAILS);
-                rcell10.setCellValue(listaData.get(vi).NPHONE);
+                rcell10.setCellValue(listaData.get(vi).EMAILS2);
+                rcell11.setCellValue(listaData.get(vi).EMAILS3);
+                rcell12.setCellValue(listaData.get(vi).EMAILS4);
+                rcell13.setCellValue(listaData.get(vi).EMAILS5);
+                rcell14.setCellValue(listaData.get(vi).NPHONE);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -257,6 +281,10 @@ public class AgentsCatalogController extends BaseController {
             sheet.autoSizeColumn(8, true);
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
+            sheet.autoSizeColumn(11, true);
+            sheet.autoSizeColumn(12, true);
+            sheet.autoSizeColumn(13, true);
+            sheet.autoSizeColumn(14, true);
 
             /**
              * fileNameDownload = Nombre de descarga

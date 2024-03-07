@@ -308,7 +308,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
                 global.Msg(
