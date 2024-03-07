@@ -1111,7 +1111,7 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.TRANC.trim());
             cstmt.setDouble(7, filter.VFOP);
             cstmt.setString(8, filter.CERROR);
-            cstmt.setString(9, filter.CERROIN);
+            cstmt.setString(9, filter.CERROIN.trim());
             cstmt.setInt(10, filters.size());
             cstmt.setString(11, user.getUserInfo().USR);
             cstmt.setString(12, Functions.getFechaActual());
