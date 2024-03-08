@@ -585,7 +585,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 global.Msg({msg: 'Ticket number must contain 13 digits.'});
                 return false
             }
-            if( win.getValue('txtPNR').trim() !== '' && win.getValue('txtPNR').length !== 6 && win.getValue('txtPNR').trim().length !== 4 ){
+            if( win.getValue('txtPNR').trim() !== '' && win.getValue('txtPNR').length !== 6 && win.getValue('txtPNR').trim().length !== 4 && win.getValue('txtPNR').trim().length !== 5  ){
                 win.setValue('txtPNR', '');
                 global.Msg({msg: 'PNR must contain 6 characters.'});
                 return false
