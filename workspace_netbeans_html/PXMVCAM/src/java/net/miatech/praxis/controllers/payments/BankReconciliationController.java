@@ -3329,4 +3329,23 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "getIatas")
+    public @ResponseBody
+    String getIatas(HttpServletRequest request) {
+        List<A2290Filter> lista = new ArrayList<A2290Filter>();
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            String fecha = request.getParameter("sdate");
+            lista = logic.loadgetIatas(fecha);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        HashMap m = new HashMap();
+        m.put("success", true);
+        m.put("data", lista);
+
+        return new Gson().toJson(m);
+    }
 }

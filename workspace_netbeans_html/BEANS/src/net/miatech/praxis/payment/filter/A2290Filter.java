@@ -353,6 +353,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQTYDOCS = 0;
     public long lngTotQTYDOCR = 0;
     public String IN_TKT = "";
+    public String IN_TKT_ASIG = "";
     public String PS_TKT = "";
 
     //A3307

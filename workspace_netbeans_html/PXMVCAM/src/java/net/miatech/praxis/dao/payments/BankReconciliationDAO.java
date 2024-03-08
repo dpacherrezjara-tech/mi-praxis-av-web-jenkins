@@ -962,6 +962,7 @@ public class BankReconciliationDAO {
 
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
+                objRtn.IN_TKT_ASIG =filter.IN_TKT_ASIG;
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SAGENT = rs01.getString("SAGENT");
                 objRtn.DESAGENT = objRtn.SAGENT + " - " + rs01.getString("DESAGENT");
@@ -3048,6 +3049,7 @@ public class BankReconciliationDAO {
                     beanTkt.strDescCountry = filter.strDescCountry.trim();
                     beanTkt.IN_FTE = filter.IN_FTE.trim();
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
+                    beanTkt.IN_TKT_ASIG = filter.CCIA +filter.FORMA+filter.SERIE;
 
                     beanTkt.FCONC = rst.getString("FCONC").trim();
 
@@ -3364,6 +3366,7 @@ public class BankReconciliationDAO {
 
                 record = new A2290Filter();
                 record.UASIG = rst.getString("UASIG").trim();
+                record.QTYDOC = rst.getInt("PEND");
 
                 lista.add(record);
             }
@@ -3718,5 +3721,55 @@ public class BankReconciliationDAO {
         }
 
         return lstTkts;
+    }
+
+    public List<A2290Filter> loadgetIatas(String fecha) throws SQLException, Exception {
+
+        List<A2290Filter> lista = new ArrayList<>();
+        A2290Filter record;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".getIatas(?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cs.setString(2, fecha);
+            cs.execute();
+
+            rst = cs.getResultSet();
+            while (rst.next()) {
+
+                record = new A2290Filter();
+                record.SAGENT = rst.getString("SAGENT").trim();
+                record.strDescripcion = rst.getString("DESCAGT").trim();
+                record.QTYDOC = rst.getInt("PEND");
+
+                lista.add(record);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cs != null) {
+                try {
+                    cs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lista;
     }
 }

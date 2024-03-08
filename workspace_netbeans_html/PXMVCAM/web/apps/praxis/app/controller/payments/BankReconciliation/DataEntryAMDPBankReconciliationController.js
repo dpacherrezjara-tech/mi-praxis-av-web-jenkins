@@ -43,6 +43,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-btn-reverse').hide();
 //            Ext.getCmp(prototype.id + '-panelAdjustment').show();
         }
+        meDe.agregaTicket(meDe.bean);
     },
     addCreditCard_keyDownHandler: function () {
         var fecha_a_validar = "";
@@ -1325,7 +1326,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if (e.getKey() === e.ENTER) {
 //            this.btnSearch_click();
         }
-    }
+    },
 // </editor-fold>
+    agregaTicket: function (obj) {
+        console.log('agregaTicket');
+        if(obj.IN_TKT_ASIG!==''){
+            Ext.getCmp(prototype.id + '-input-txtTKTScan1').setValue(obj.IN_TKT_ASIG);
+//            meDe.addCreditCard_keyDownHandler();
+        }
+    }
 });
 
