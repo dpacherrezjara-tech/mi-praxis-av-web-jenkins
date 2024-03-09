@@ -781,13 +781,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     onReverseClick: function (btn) {
-//        var deci = this.preexecuteOption();
-//        if (deci) {
-            Ext.Msg.show({
-                title: '.:Confirmation:.',
-                msg: 'Are you sure to Reverse?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to Reverse?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
 //            animateTarget: btn,
                 icon: Ext.MessageBox.QUESTION,
                 modal: true,
@@ -799,9 +797,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         beanTemp.beanString = JSON.stringify(meDe.bean);
                         this.reverseOption(beanTemp);
                     }
-                }
-            });
-//        }
+            }
+        });
     },
     onCancelClick: function (btn) {
         this.view.close();
@@ -902,17 +899,47 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
         let datos = {};
+        var cont;
         if (miGrilla) {
             // Llamada a la función procesarRegistros con la grilla como parámetro
-            console.error('Entró al procesar Registros');
+            cont = this.desprocesarRegistros(miGrilla);
+            if (cont === 0) {
+                
+                datos = this.desprocesarOnlyLiquidacion();
+                console.log(datos);
+                Ext.Ajax.request({
+                    url: prototype.url + '/reverseOptionOnlyLiq',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: datos, option: option},
+                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+                    success: function (response, opts) {
+                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                        var res = Ext.JSON.decode(response.responseText);
+                        console.log(res);
+                        if (res.success) {
 
-            datos = this.desprocesarRegistros(miGrilla);
+                            global.Msg({
+                                msg: res.Mensaje,
+                                icon: 1,
+                                fn: function () {
+                                    //exito
+                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                                }
+                            });
+                        } else
+                            global.Msg({msg: res.sesion});
+                    },
+                    failure: function (response, opts) {
+                        console.log('server-side failure with status code ' + response.status);
+                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                    }
+                });
 
-            console.log(datos);
-//            datos = this.procesarRegistros(miGrilla);
-            if (Array.isArray(datos) && datos.length === 0) {
-                // Nadine
             } else {
+                datos = this.desprocesarRegistros(miGrilla);
+                console.log(datos);
                 Ext.Ajax.request({
                     url: prototype.url + '/reverseOption',
                     method: 'POST',
@@ -946,7 +973,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         } else {
             console.error('No se pudo encontrar la grilla con el ID especificado.');
         }
-    },
+    },        
     //</editor-fold>
 
     procesarRegistros: function (grilla, miGrillaAdj) {
@@ -959,6 +986,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             let registro = {
                 PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), // Reemplaza 'id' con el campo correcto de tu modelo
                 SCARDN: record.get('A1531NREF'), // Reemplaza 'id' con el campo correcto de tu modelo
+                SCARDNM: Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                SAUTHOCM: Ext.getCmp(prototype.id + '-de-txtSAUTHOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 SAUTHOC: record.get('A1531CAPL'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 VFOP: Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, ''), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 SDATE: record.get('A720FECVTA'), // Reemplaza 'nombre' con el campo correcto de tu modelo
@@ -1019,7 +1048,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             return datosEnJSON;
         }
     },
-    desprocesarRegistros: function (grilla, miGrillaAdj) {
+    desprocesarRegistros: function (grilla) {
         // Crear una lista para almacenar los datos
         let listaDeDatos = [];
         // Recorrer la grilla y agregar los datos a la lista
@@ -1043,6 +1072,38 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             console.log(registro);
             listaDeDatos.push(registro);
         });
+
+        if (listaDeDatos.length === 0) {
+            console.log('SIN FILAS, UPDATE ONLY LIQUID');
+            return 0;
+        } else {
+            // Convertir la lista a JSON
+            let datosEnJSON = Ext.JSON.encode(listaDeDatos);
+            console.log('Datos en JSON:', datosEnJSON); // Agregar depuración
+            return datosEnJSON;
+        }
+
+    },
+    desprocesarOnlyLiquidacion: function () {
+        // Crear una lista para almacenar los datos
+        let listaDeDatos = [];
+        // Recorrer la grilla y agregar los datos a la lista
+
+        let registro = {
+            PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), // Reemplaza 'id' con el campo correcto de tu modelo
+            SAUTHOCM: Ext.getCmp(prototype.id + '-de-txtSAUTHOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            SCARDNM: Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            VFOP: Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, ''), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            SDATE: Ext.getCmp(prototype.id + '-de-txtBSUMDATE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
+                    // Agrega más campos según sea necesario
+        };
+        console.log(registro);
+        listaDeDatos.push(registro);
+
         // Convertir la lista a JSON
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
 
@@ -1333,7 +1394,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if(obj.IN_TKT_ASIG!==''){
             Ext.getCmp(prototype.id + '-input-txtTKTScan1').setValue(obj.IN_TKT_ASIG);
 //            meDe.addCreditCard_keyDownHandler();
-        }
+    }
     }
 });
 

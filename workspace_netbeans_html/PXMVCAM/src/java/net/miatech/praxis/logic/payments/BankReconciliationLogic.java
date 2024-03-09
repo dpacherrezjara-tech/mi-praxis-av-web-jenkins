@@ -64,6 +64,10 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadPX269SQP05117(filters, user);
     }
 
+    public String loadPX269SQP05117OnlyLiq(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP05117OnlyLiq(filters, user);
+    }
+
     public List<A2290Filter> loadPX269SQP00869(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00869(filter);
     }

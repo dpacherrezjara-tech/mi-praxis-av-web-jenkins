@@ -454,6 +454,43 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "reverseOptionOnlyLiq")
+    public @ResponseBody
+    String reverseOptionOnlyLiq(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOptionOnlyLiq-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117OnlyLiq(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
     @RequestMapping(value = "searchBeanAdyen")
     public @ResponseBody
     List<A2290Filter> searchBeanAdyen(ModelMap map, HttpServletRequest request) {
@@ -3329,7 +3366,7 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "getIatas")
     public @ResponseBody
     String getIatas(HttpServletRequest request) {
