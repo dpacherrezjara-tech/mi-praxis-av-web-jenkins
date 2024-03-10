@@ -978,6 +978,10 @@ public final class ExportUtil {
             }
         }
 
+        for(int z=0 ; z<= filterTemp.columns.length ; z++){
+//                sheet.autoSizeColumn(z,true);
+            pagina.autoSizeColumn(z, true);
+        }
         // Ahora guardaremos el archivo
         try {
 //            // Creamos el flujo de salida de datos,

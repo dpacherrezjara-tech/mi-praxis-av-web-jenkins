@@ -3159,31 +3159,36 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    @RequestMapping(value = "searchTeleworking")
+//    @RequestMapping(value = "searchTeleworking")
+//    public @ResponseBody
+//    String searchTeleworking(ModelMap map, HttpServletRequest request) {
+//        System.out.println("-------------- BankReconciliation : searchTeleworking-------------");
+//
+//        map.put("success", true);
+//        List<A2290Filter> lst = this.getListTeleworking(request, false);
+//        System.out.println("Total : " + lst.size());
+//        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+//        map.put("data", lst);
+//        return new Gson().toJson(map);
+//    }
+//
+//    public List<A2290Filter> getListTeleworking(HttpServletRequest request, Boolean bExcel) {
+    @RequestMapping(value = "/searchTeleworking")
     public @ResponseBody
-    String searchTeleworking(ModelMap map, HttpServletRequest request) {
+    String searchTeleworking(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         System.out.println("-------------- BankReconciliation : searchTeleworking-------------");
-
-        map.put("success", true);
-        List<A2290Filter> lst = this.getListTeleworking(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<A2290Filter> getListTeleworking(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
         String beanString = "";
-
+        boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
+        
         try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
+            
             String Freasign = request.getParameter("Freasign");
             String Freasiga = request.getParameter("Freasiga");
 
@@ -3206,37 +3211,50 @@ public class BankReconciliationController extends BaseController {
             }
 
             lst = logic.loadPX269SQPMPF100(filter);
+            if (dw_excel) {
+                ExportUtil.exportFields(request, response, lst);
+//                map.put("nameExcel", nameExcel);
+            } else {
+
+                map.put("success", true);
+                map.put("data", lst);
+                map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            }
         } catch (Exception e) {
             throw new SpringException(e);
         }
-        return lst;
+        
+        return (dw_excel)?null:(new Gson().toJson(map));
     }
 
+//    @RequestMapping(value = "searchMPF101Teleworking")
+//    public @ResponseBody
+//    String searchMPF101Teleworking(ModelMap map, HttpServletRequest request) {
+//        System.out.println("-------------- BankReconciliation : searchMPF101Teleworking-------------");
+//
+//        map.put("success", true);
+//        List<A2290Filter> lst = this.getListMPF101Teleworking(request, false);
+//        System.out.println("Total : " + lst.size());
+//        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+//        map.put("data", lst);
+//        return new Gson().toJson(map);
+//    }
+//
+//    public List<A2290Filter> getListMPF101Teleworking(HttpServletRequest request, Boolean bExcel) {
     @RequestMapping(value = "searchMPF101Teleworking")
     public @ResponseBody
-    String searchMPF101Teleworking(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankReconciliation : searchMPF101Teleworking-------------");
-
-        map.put("success", true);
-        List<A2290Filter> lst = this.getListMPF101Teleworking(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<A2290Filter> getListMPF101Teleworking(HttpServletRequest request, Boolean bExcel) {
+    String searchMPF101Teleworking(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
         String beanString = "";
 
+        boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
         try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
             String Freasign = request.getParameter("Freasign");
             String Freasiga = request.getParameter("Freasiga");
 
@@ -3259,10 +3277,20 @@ public class BankReconciliationController extends BaseController {
             }
 
             lst = logic.loadPX269SQP00871JT(filter);
+            if (dw_excel) {
+                ExportUtil.exportFields(request, response, lst);
+//                map.put("nameExcel", nameExcel);
+            } else {
+
+                map.put("success", true);
+                map.put("data", lst);
+                map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            }
         } catch (Exception e) {
             throw new SpringException(e);
         }
-        return lst;
+        
+        return (dw_excel)?null:(new Gson().toJson(map));
     }
 
     @RequestMapping(value = "getOperadores")

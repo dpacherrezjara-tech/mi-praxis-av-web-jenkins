@@ -1765,8 +1765,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         if( Ext.getCmp(prototype.id + '-panelTW').isVisible()){
             
             
-            alert('Under Construction');
-            
+            if( Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()){
+                global.getFileExcelPost('searchMPF101Teleworking', JSON.stringify(this.beanDetailTW), Ext.getCmp(prototype.id + '-gridDetailTeleworking').config.columns.items);
+            }else{
+                
+                global.getFileExcelPost('searchTeleworking', JSON.stringify(this.beanTW), Ext.getCmp(prototype.id + '-gridDataTeleworking').config.columns.items);
+            }
         }else{
             
             switch (me.panelActual) {
@@ -2370,7 +2374,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     imgClearRowAll: function (nbr) {
         for (var j = 1; j < 8; j++) {
-            me.imgClearRow(j);
+            me.imgClearRow(String(j));
         }
     },
     imgClearRow: function (nbr) {
@@ -2385,7 +2389,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         var v_txtValueBetween = Ext.getCmp(prototype.id + '-txtValue' + nbr + 'B');
         var v_hbox = Ext.getCmp(prototype.id + '-hb_Between' + nbr);
 
-        if (nbr !== 1) {
+        if (nbr !== '1') {
             //SelectedIndex = 0
             var cb = Ext.getCmp(prototype.id + '-cmbConector' + nbr);
             cb.setValue(cb.getStore().getAt(0).get(cb.valueField));

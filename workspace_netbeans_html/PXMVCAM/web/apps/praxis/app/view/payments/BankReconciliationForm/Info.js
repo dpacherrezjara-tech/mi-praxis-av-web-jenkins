@@ -2230,7 +2230,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridDetailTeleworking',
-                                        width: 1157,
+                                        width: 1177,
                                         columnLines: true,
                                         features: [{
                                                 ftype: 'summary'
@@ -2271,16 +2271,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             }
                                                         },
                                                         {
-                                                            text: 'Author.',
-                                                            columns: [
-                                                                {
-                                                                    text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
-                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                        metaData.style = "text-align:center;";
-                                                                        return value;
-                                                                    }
-                                                                }
-                                                            ]
+                                                            text: 'Author. Code', dataIndex: 'SAUTHOC', width: 90, align: 'center', menuDisabled: true,
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                return value;
+                                                            }
                                                         },
                                                     ]
                                                 },
