@@ -410,6 +410,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.IN_SDATE = rowData.data.SDATE;
         this.beanLiquida.IN_SDATEE = rowData.data.IN_SDATEE;
         this.beanLiquida.IN_CBANK = rowData.data.IN_CBANK;
+        this.beanLiquida.IN_SCURRENCY = rowData.data.SCURRENCY;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquida);
         this.setGridDataDetLiquida();
@@ -675,6 +676,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK;
         this.beanDayByS.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_STVAL = rowData.data.IN_STVAL;
+        this.beanDayByS.IN_SCURRENCY = rowData.data.SCURRENCY;
         console.log(this.beanDayByS, 'this.beanDay')
         me.paramsDetail.beanString = JSON.stringify(this.beanDayByS);
         this.setGridDataDetDayByS();

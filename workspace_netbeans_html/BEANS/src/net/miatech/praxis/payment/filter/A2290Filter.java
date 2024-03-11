@@ -63,6 +63,7 @@ public class A2290Filter extends A2290 {
     public String IN_SDATE = "";
     public String IN_SDATEE = "";
     public String IN_CBANK = "";
+    public String IN_SCURRENCY = "";
     public String descSDATE = "";
     public String NUMAVIS = "";
     public String IN_TICKET = "";
