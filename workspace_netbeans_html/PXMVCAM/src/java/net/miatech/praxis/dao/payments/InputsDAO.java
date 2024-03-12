@@ -884,6 +884,10 @@ public class InputsDAO {
                 }else{
                     objRtn.strFormatDate4 = filter.strFormatDate4;
                 }
+                if(!objRtn.strFormatDate4.equals("")){
+                    String[] fields = objRtn.strFormatDate4.split("\\.");
+                    objRtn.strFormatDate4 = fields[1];
+                }
                 objRtn.flagError = rs01.getString("FERROR");
                 if(rs01.getString("FERROR").trim().equals("D")){
                     objRtn.strDescripcion1 = "Duplicated Record";
