@@ -261,8 +261,8 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     fieldStyle: 'text-align: left;',
                     hidden: false,
                     listeners:{
-                        select: 'btnSearch_click',
-//                        change: 'ChangeVista_clickHandler'
+//                        change: 'btnSearch_click',
+                        select: 'selectCmbVista'
                     }
                 },
                 {

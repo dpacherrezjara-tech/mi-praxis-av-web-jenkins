@@ -150,7 +150,8 @@ Ext.define('Ext.Praxis.controller.payments.Rejections.RejectionsController', {
             bean: me.bean,
             beanString: beanString
         };
-//        console.log(me.bean);
+        console.log(me.bean, 'me.bean');
+        console.log(beanString, 'beanString');
     },
     btnSearch_click: function(obj, e) {
         this.setFormatParameter();
@@ -183,6 +184,7 @@ Ext.define('Ext.Praxis.controller.payments.Rejections.RejectionsController', {
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        console.log(obj.data, 'obj.data')
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -191,7 +193,7 @@ Ext.define('Ext.Praxis.controller.payments.Rejections.RejectionsController', {
                     }
                 }
             });
-//            console.log(storeGridDatas)
+            console.log(storeGridDatas, 'storeGridDatas')
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);

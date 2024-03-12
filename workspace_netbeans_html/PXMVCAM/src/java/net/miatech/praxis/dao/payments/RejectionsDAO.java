@@ -102,14 +102,14 @@ public class RejectionsDAO {
                 bean.COUNTRY = rst.getString("COUNTRY").trim();
                 bean.CODEBANK = rst.getString("CODEBANK").trim();
                 bean.NAMEBANK = rst.getString("NAMEBANK").trim();
-                bean.FTE = rst.getString("FTE").trim();
+//                bean.FTE = rst.getString("FTE").trim();
                 
-                bean.SADJUST = rst.getString("SADJUST").trim();
-                if(bean.SADJUST.equals("T")){
-                    bean.desSADJUST = "Transaction";
-                }else{
-                    bean.desSADJUST = "";
-                }
+//                bean.SADJUST = rst.getString("SADJUST").trim();
+//                if(bean.SADJUST.equals("T")){
+//                    bean.desSADJUST = "Transaction";
+//                }else{
+//                    bean.desSADJUST = "";
+//                }
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

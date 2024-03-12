@@ -111,6 +111,29 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         }
         this.btnSearch_click();
     },
+    selectCmbVista: function ( obj ) {
+        console.log(obj, 'obj xdddddddddddddddddddd')
+        console.log(obj.getValue(), 'obj raaaaaaaaaaa')
+        if(obj.getValue() == 'All'){
+            global.Msg({msg: 'Select source'});
+        }
+        if (obj.getValue() == 'C') {
+            Ext.getCmp(prototype.id + '-Filters3_1').hide();
+            Ext.getCmp(prototype.id + '-contentFilter2').show();
+            Ext.getCmp(prototype.id + '-boxMainAll').hide();
+//                        Ext.getCmp(prototype.id + '-panelGridData').hide();
+            console.log('Entra a if de grid calendar')
+            this.gridCalendar_clickHandler();
+        }
+        if(obj.getValue() == 'D'){
+            Ext.getCmp(prototype.id + '-Filters3_2').show();
+            Ext.getCmp(prototype.id + '-Filters3_1').show();
+            Ext.getCmp(prototype.id + '-infoCalendar').hide();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-panelGridData').show();
+        }
+        
+    },
     obtainData: function () {
 
         var storeComboDataYear = win.getStoreYear(false);
@@ -372,6 +395,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                         Ext.getCmp(prototype.id + '-contentFilter2').show();
                         Ext.getCmp(prototype.id + '-boxMainAll').hide();
 //                        Ext.getCmp(prototype.id + '-panelGridData').hide();
+                        console.log('Entra a if de grid calendar')
                         this.gridCalendar_clickHandler();
                     } else {
                         global.Msg({msg: 'Select source'});
@@ -649,6 +673,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     gridCalendar_clickHandler: function (obj) {
         Ext.getCmp(prototype.id + '-Filters3_2').show();
         Ext.getCmp(prototype.id + '-infoCalendar').show();
+        Ext.getCmp(prototype.id + '-panelGridData').hide();
 
         this.setCalendar2();
         global.clear();

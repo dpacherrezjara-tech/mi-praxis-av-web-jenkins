@@ -51,6 +51,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                             listeners:{
+                                select: 'selectFecFiltro',
                             }
                         },
                         {xtype: 'tbspacer', width: 5},
@@ -135,7 +136,10 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             listConfig: {maxHeight: 111, minWidth: 70},
                             maxLength: 4,
                             enforceMaxLength: true,
-                            maskRe: /[0-9]/
+                            maskRe: /[0-9]/,
+                            listeners: {
+                                change: 'cbxDateToYear_changeHandler'
+                            }
                         },
                         {xtype: 'tbspacer', width: 10},
                         {
@@ -153,7 +157,10 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             valueField: 'code', displayField: 'name',
                             listConfig: {minWidth: 60},
                             maxLength: 3,
-                            enforceMaxLength: true
+                            enforceMaxLength: true,
+                            listeners: {
+                                change: 'cbxDateToMonth_changeHandler'
+                            }
                         },
 //                        {
 //                            xtype: 'combo',

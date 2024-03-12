@@ -26,10 +26,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanDetailAgent: {},
     init: function (view) {
         me = this;
+        
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
         prototypeProgram.modulo = '';
+        
     },
     afterRender: function () {
         this.setStoreData();
@@ -48,13 +50,43 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         //        Ext.getCmp(prototype.id+'-cmbDateToDay').setValue('');
     },
     cbxDateFromYear_changeHandler: function () {
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue());
+        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
+    },
+    cbxDateToYear_changeHandler: function () {
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        if( comboToYear.getValue() < comboFromYear.getValue()  ){
+           comboFromYear.setValue(comboToYear.getValue()); 
+        }
+        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
     },
     cbxDateFromMonth_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue());
     },
     cbxDateFromDay_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue());
+    },
+    cbxDateToMonth_changeHandler: function () {
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        if (comboFromYear.getValue() === comboToYear.getValue()) {
+            if (comboToMonth.getValue() < comboFromMonth.getValue()) {
+                comboFromMonth.setValue(comboToMonth.getValue());
+            }
+        }
     },
     setStoreData: function () {
         var storeComboDataYear = win.getStoreYear(false);
@@ -2102,6 +2134,49 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         win.enabled('cmbCountry', true);
 //        win.enabled('cmbFOP', true);
         win.enabled('cmbSource', true);
+    },
+    inhabilitarFiltrosByFCONT: function () {
+        win.enabled('cmbSource', false);
+        win.enabled('cmbCountry', false);
+        win.enabled('txtPNR', false);
+        win.enabled('txtTicket', false);
+        win.enabled('txtCard1', false);
+        win.enabled('txtCard2', false);
+        win.enabled('txtAUTHNBR', false);
+        win.enabled('cmbCardType', false);
+        win.enabled('txtSAGENT', false);
+    },
+    habilitarFiltrosByFCONT: function () {
+        win.enabled('cmbSource', true);
+        win.enabled('cmbCountry', true);
+        win.enabled('txtPNR', true);
+        win.enabled('txtTicket', true);
+        win.enabled('txtCard1', true);
+        win.enabled('txtCard2', true);
+        win.enabled('txtAUTHNBR', true);
+        win.enabled('cmbCardType', true);
+        win.enabled('txtSAGENT', true);
+        
+    },
+    vaciarFiltrosByFCONT: function () {
+        win.setValue('cmbSource', '');
+        win.setValue('cmbCountry', '');
+        win.setValue('txtPNR', '');
+        win.setValue('txtTicket', '');
+        win.setValue('txtCard1', '');
+        win.setValue('txtCard2', '');
+        win.setValue('txtAUTHNBR', '');
+        win.setValue('cmbCardType', '');
+        win.setValue('txtSAGENT', '');
+    },
+    selectFecFiltro: function () {
+        console.log('evento select')
+        if( win.getValue('cmbFecFiltro').trim() == 'FCONT' ){
+            this.inhabilitarFiltrosByFCONT()
+            this.vaciarFiltrosByFCONT()
+        } else {
+            this.habilitarFiltrosByFCONT()
+        }
     },
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginación">
     pagFirst: function (obj, e) {

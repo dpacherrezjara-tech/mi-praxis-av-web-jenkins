@@ -70,7 +70,7 @@ public class BankStatementTransactionDAO {
             cstmt.registerOutParameter(10, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.SCOUNTRY.trim());
+            cstmt.setString(2, filter.IN_SCOUNTRY.trim());
             cstmt.setString(3, filter.IN_CODEBANK.trim());
             cstmt.setString(4, filter.IN_TTRAN.trim());
             cstmt.setString(5, filter.IN_CTRAN.trim());

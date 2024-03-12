@@ -178,7 +178,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementTransaction.BankStatemen
             bean: me.bean,
             beanString: beanString
         };
-//        console.log(searchParams);
+        
+        console.log(searchParams, 'searchParams');
+        console.log(me.bean, 'me.bean');
     },
     btnSearch_click: function(obj, e) {
         this.setFormatParameter();
@@ -211,6 +213,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementTransaction.BankStatemen
 //                        console.log(obj.data);
                         var pag = Ext.getCmp(prototype.id + '-paggin');
                         var pagData = pag.getPageData();
+                        console.log(obj.data, 'obj.data')
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
