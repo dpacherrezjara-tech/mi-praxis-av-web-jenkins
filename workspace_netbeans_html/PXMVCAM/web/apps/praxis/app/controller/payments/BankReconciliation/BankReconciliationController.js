@@ -87,6 +87,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             '#BankReconciliationForm-cmbDateFromYear': {
                 select: this.selectComboFromYear
             },
+            '#BankReconciliationForm-cmbDateToYear': {
+                select: this.selectComboToYear
+            },
             '#BankReconciliationForm-cmbDateFromMonth': {
                 select: this.selectComboFromMonth
             },
@@ -134,10 +137,28 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     selectComboFromYear: function (obj) {
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
         console.log(storeComboDataYear, 'comboToYear')
         console.log(comboToYear, 'comboToYear')
+        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
+    },
+    selectComboToYear: function (obj) {
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        if( comboToYear.getValue() < comboFromYear.getValue()  ){
+           comboFromYear.setValue(comboToYear.getValue()); 
+        }
+        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
     },
     selectComboFromMonth: function (obj) {
         console.log(obj, 'obj from month')

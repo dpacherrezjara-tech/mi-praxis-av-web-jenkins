@@ -78,6 +78,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 //                afterrender: this.afterRenderYear,
                 select: this.selectComboFromYear
             },
+            '#StatementReconciliationsForm-cmbDateToYear': {
+//                afterrender: this.afterRenderYear,
+                select: this.selectComboToYear
+            },
             '#StatementReconciliationsForm-cmbDateFromMonth': {
 //                afterrender: this.afterRenderMonth,
                 select: this.selectComboFromMonth
@@ -1152,8 +1156,26 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     selectComboFromYear: function (obj) {
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
+        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
+    },
+    selectComboToYear: function (obj) {
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        if( comboToYear.getValue() < comboFromYear.getValue()  ){
+           comboFromYear.setValue(comboToYear.getValue()); 
+        }
+        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
     },
     selectComboFromMonth: function (obj) {
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');

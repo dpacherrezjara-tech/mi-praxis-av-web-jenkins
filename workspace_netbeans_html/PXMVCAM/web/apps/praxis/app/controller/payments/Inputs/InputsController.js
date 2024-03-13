@@ -990,11 +990,11 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     exportExcel: function () {
 
         switch (me.panelActual) {
-            case  '-boxMainAll':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+            case  '-panelGridData':
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxDelivery':
-                global.getFile(prototype.url + '/getXLSX_Delivery?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSX_Delivery?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
         }
 
