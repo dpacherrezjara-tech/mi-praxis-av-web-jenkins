@@ -105,7 +105,7 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry', {
                                     enforceMaxLength: true,
                                     editable: true,
                                     enabled: false,
-                                    maxLength: 3,
+                                    maxLength: 4,
                                     maskRe: /[0-9]/,
                                     readOnly: false,
                                     width: 70,
