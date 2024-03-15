@@ -19,8 +19,7 @@ public class CPF031Filter extends CPF031{
     public String IN_DATETO = "";
     public String IN_USEAC = "";
     public String IN_FASIG = "";
-    public Double PORCENTAJE = 0.0;
-    public String desPORCENTAJE = "";
+    
     public String desTMOTI = "";
     public String desTEMI = "";
     public String desTRFND = "";
@@ -28,6 +27,7 @@ public class CPF031Filter extends CPF031{
     public String IN_UASIG = "";
     
     public long totPRODUS = 0;
+    public long totASG = 0;
     public long totDIASL = 0;
     public long totTOTALP = 0;
     

@@ -138,41 +138,41 @@ public class AuditorControlController extends BaseController {
 //        return new Gson().toJson(m);
 //    }
 //
-//    @RequestMapping(value = "searchDataDetailDay")
-//    public @ResponseBody
-//    String searchDataDetailDay(HttpServletRequest request) {
-//        System.out.println("AuditorControlController : searchDataDetailDay");
-//        HashMap m = new HashMap();
-//        logic = new AuditorControlLogic();
-//        List<CPF030Filter> lstData;
-//        CPF031Filter filter = new CPF031Filter();
-//        String flag = "";
-//        try {
-//            logic.setSession(currentSession.getServerSession());
-//            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-//            flag = request.getParameter("flag");
-//
-//            filter.page.TOTROW = -1;
-//            filter.page.START = 0;
-//            filter.page.LIMIT = 0;
-//
-//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-//
-//            filter.page.PAGROW = 20;
-//            start = (start != 0 ? start : 0);
-//            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-//
-//            lstData = logic.searchDetailDay(filter, flag);
-//            m.put("success", true);
-//            m.put("data", lstData);
-//            m.put("total", lstData.size() > 0 ? lstData.get(0).page.TOTROW : 0);
-//        } catch (Exception e) {
-//            m.put("success", false);
-//        }
-//
-//        return new Gson().toJson(m);
-//    }
+    @RequestMapping(value = "searchDataDetailDay")
+    public @ResponseBody
+    String searchDataDetailDay(HttpServletRequest request) {
+        System.out.println("AuditorControlController : searchDataDetailDay");
+        HashMap m = new HashMap();
+        logic = new AuditorControlLogic();
+        List<CPF030Filter> lstData;
+        CPF031Filter filter = new CPF031Filter();
+        String flag = "";
+        try {
+            logic.setSession(this.serverSession.getServerSession());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            flag = request.getParameter("flag");
+
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+
+            lstData = logic.searchDetailDay(filter, flag);
+            m.put("success", true);
+            m.put("data", lstData);
+            m.put("total", lstData.size() > 0 ? lstData.get(0).page.TOTROW : 0);
+        } catch (Exception e) {
+            m.put("success", false);
+        }
+
+        return new Gson().toJson(m);
+    }
 //
     @RequestMapping(value = "searchDataDetailAll")
     public @ResponseBody

@@ -262,18 +262,18 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry', {
                                     xtype: 'label',
                                     text: 'NIT',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
+                                    width: 60
                                 },
-//                                {
-//                                    xtype: 'label',
-//                                    text: '(*)',
-//                                    style: 'font-weight:bold;color:red;',
-//                                    width: 20,
-//                                    autoEl: {
-//                                        tag: 'label',
-//                                        'data-qtip': 'Mandatory Field'
-//                                    }
-//                                },
+                                {
+                                    xtype: 'label',
+                                    text: '(*)',
+                                    style: 'font-weight:bold;color:red;',
+                                    width: 20,
+                                    autoEl: {
+                                        tag: 'label',
+                                        'data-qtip': 'Mandatory Field'
+                                    }
+                                },
                                 {xtype: 'tbspacer', width: 4},
                                 {
                                     xtype: 'textfield',

@@ -39,7 +39,7 @@ public class AuditorControlDAO {
 
         List<CPF031Filter> lista = new ArrayList<>();
         CPF031Filter bean;
-        long totPRODUS = 0, totDIASL = 0;
+        long totPRODUS = 0, totDIASL = 0, totASG = 0;
 
         try {
 
@@ -77,14 +77,14 @@ public class AuditorControlDAO {
                 bean.IN_DATETO = filter.IN_DATETO;
 
                 bean.RN = rst.getInt("RN");
-                bean.FEUP = rst.getString("DATE").trim();
+                bean.SDATE = rst.getString("DATE").trim();
                 bean.UAUDIT = rst.getString("UAUDIT").trim();
-                bean.NOMB = rst.getString("NAMEUSAR").trim();
-                bean.APE = rst.getString("APEUSAR").trim();
+//                bean.NOMB = rst.getString("NAMEUSAR").trim();
+//                bean.APE = rst.getString("APEUSAR").trim();
                 bean.TQMATCH = rst.getInt("TQMATCH");
                 bean.TQPEND = rst.getInt("TQPEND");
                 bean.TOTAL = rst.getInt("TOTAL");
-                bean.PORCENTAJE = rst.getDouble("TQMATCH") / rst.getDouble("TOTAL") * 100;
+                bean.desPORCENTAJE = Functions.redondear(((double)bean.TQMATCH/(double)bean.TOTAL) * (double)100, 2) + "%";
                 
 //                bean.NOMB = rst.getString("NOMB").trim();
 //                bean.APE = rst.getString("APE").trim();
@@ -96,6 +96,7 @@ public class AuditorControlDAO {
 //                bean.desPORCENTAJE = Functions.redondear(rst.getDouble("PORCENTAJE"), 2) + "%";
 //
                 totPRODUS = totPRODUS + bean.TQMATCH;
+                totASG = totASG + bean.TOTAL;
 //                totDIASL = totDIASL + bean.DIASL;
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
@@ -107,6 +108,7 @@ public class AuditorControlDAO {
 
             for (int i = 0; i < lista.size(); i++) {
                 lista.get(i).totPRODUS = totPRODUS;
+                lista.get(i).totASG = totASG;
 //                lista.get(i).totDIASL = totDIASL;
             }
 
@@ -230,109 +232,107 @@ public class AuditorControlDAO {
 
         try {
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP03743_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP03743_MDP(?,?,?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
-            cs.registerOutParameter(11, Types.INTEGER);
-            cs.registerOutParameter(12, Types.INTEGER);
-            cs.registerOutParameter(13, Types.INTEGER);
-            cs.registerOutParameter(14, Types.INTEGER);
+            cs.registerOutParameter(4, Types.INTEGER);
+            cs.registerOutParameter(5, Types.INTEGER);
+            cs.registerOutParameter(6, Types.INTEGER);
+            cs.registerOutParameter(7, Types.INTEGER);
 
             cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cs.setString(2, filter.FECAC);
-            cs.setString(3, filter.USEAC);
-            cs.setString(4, filter.TMOTI);
-            cs.setString(5, filter.TEMI);
-            cs.setString(6, filter.TRFND);
-            cs.setString(7, filter.FASIG);
-            cs.setString(8, flag);
-            cs.setString(9, filter.IN_DATEFROM);
-            cs.setString(10, filter.IN_DATETO);
+            cs.setString(2, filter.SDATEDAY);
+            cs.setString(3, filter.UAUDIT);
 
-            cs.setInt(11, filter.page.PAGNUM);
-            cs.setInt(12, filter.page.PAGROW);
-            cs.setInt(13, filter.page.TOTPAG);
-            cs.setInt(14, filter.page.TOTROW);
+            cs.setInt(4, filter.page.PAGNUM);
+            cs.setInt(5, filter.page.PAGROW);
+            cs.setInt(6, filter.page.TOTPAG);
+            cs.setInt(7, filter.page.TOTROW);
             cs.execute();
 
-            filter.page.PAGNUM = cs.getInt(11);
-            filter.page.PAGROW = cs.getInt(12);
-            filter.page.TOTPAG = cs.getInt(13);
-            filter.page.TOTROW = cs.getInt(14);
+            filter.page.PAGNUM = cs.getInt(4);
+            filter.page.PAGROW = cs.getInt(5);
+            filter.page.TOTPAG = cs.getInt(6);
+            filter.page.TOTROW = cs.getInt(7);
 
             rst = cs.getResultSet();
 
             while (rst.next()) {
                 bean = new CPF030Filter();
-                bean.totPRODUS = filter.PRODUS;
+//                bean.totPRODUS = filter.PRODUS;
 
                 bean.RN = rst.getInt("RN");
-                bean.FCARG = rst.getString("FCARG").trim();
-                bean.FASIG = rst.getString("FASIG").trim();
-                bean.FECAC = rst.getString("FECAC").trim();
-                bean.subFECAC = bean.FECAC.substring(0, 6);
-                bean.DIAAC = rst.getString("DIAAC").trim();
-                bean.USEAC = rst.getString("USEAC").trim();
-                bean.HORAI = rst.getString("HORAI").trim();
-                bean.HORASR = rst.getString("HORASR").trim();
-                bean.HORAIR = rst.getString("HORAIR").trim();
-                bean.HORAS = rst.getString("HORAS").trim();
-                bean.TIPO = rst.getString("TIPO").trim();
-                bean.TMOTI = rst.getString("TMOTI").trim();
-                if (bean.TMOTI.equals("I")) {
-                    bean.desTMOTI = "Involuntary";
-                } else if (bean.TMOTI.equals("V")) {
-                    bean.desTMOTI = "Voluntary";
-                } else if (bean.TMOTI.equals("W")) {
-                    bean.desTMOTI = "Waiver";
-                } else if (bean.TMOTI.equals("E")) {
-                    bean.desTMOTI = "Exception";
-                } else {
-                    bean.desTMOTI = bean.TMOTI;
-                }
-                bean.TEMI = rst.getString("TEMI").trim();
-                if (bean.TEMI.equals("1")) {
-                    bean.desTEMI = "Primera Emision";
-                } else if (bean.TEMI.equals("2")) {
-                    bean.desTEMI = "Reemision";
-                } else {
-                    bean.desTEMI = bean.TEMI;
-                }
-                bean.TRFND = rst.getString("TRFND").trim();
-                if (bean.TRFND.equals("P")) {
-                    bean.desTRFND = "Parcial";
-                } else if (bean.TRFND.equals("T")) {
-                    bean.desTRFND = "Total";
-                } else {
-                    bean.desTRFND = bean.TRFND;
-                }
-                bean.ESTAD = rst.getString("ESTAD").trim();
-                if (bean.ESTAD.equals("0")) {
-                    bean.desESTAD = "Procesado/Autorizado-RF";
-                } else if (bean.ESTAD.equals("1")) {
-                    bean.desESTAD = "Renegado/Rechazado";
-                } else if (bean.ESTAD.equals("2")) {
-                    bean.desESTAD = "En consulta";
-                } else if (bean.ESTAD.equals("4")) {
-                    bean.desESTAD = "Bajo Revision";
-                } else if (bean.ESTAD.equals("5")) {
-                    bean.desESTAD = "Devuelto a Lan";
-                } else if (bean.ESTAD.equals("6")) {
-                    bean.desESTAD = "Procesado Contact Cente";
-                } else if (bean.ESTAD.equals("7")) {
-                    bean.desESTAD = "Enviada a Cus/Operacion";
-                } else if (bean.ESTAD.equals("8")) {
-                    bean.desESTAD = "Pagado por sap";
-                } else {
-                    bean.desESTAD = bean.ESTAD;
-                }
-                bean.TKT = rst.getString("TKT").trim();
-                bean.HORAC = rst.getString("HORAC").trim();
-                bean.MINCAL = rst.getString("MINCAL").trim();
-                bean.MINDET = rst.getString("MINDET").trim();
-                bean.RULE = rst.getString("RULE").trim();
-                bean.HORCAL = rst.getString("HORCAL").trim();
+//                bean.FCARG = rst.getString("FASIGN").trim();
+                bean.FASIG = rst.getString("FASIGN").trim();
+                bean.FAUDIT = rst.getString("FAUDIT").trim();
+                bean.SDATE = rst.getString("SDATE").trim();
+                bean.UAUDIT = rst.getString("UAUDIT").trim();
+                bean.DAYSW = rst.getString("DIFFDAYS").trim();
+                bean.TICKET = rst.getString("CCIA").trim() + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
+//                bean.FECAC = rst.getString("FECAC").trim();
+//                bean.subFECAC = bean.FECAC.substring(0, 6);
+//                bean.DIAAC = rst.getString("DIAAC").trim();
+//                bean.USEAC = rst.getString("USEAC").trim();
+//                bean.HORAI = rst.getString("HORAI").trim();
+//                bean.HORASR = rst.getString("HORASR").trim();
+//                bean.HORAIR = rst.getString("HORAIR").trim();
+//                bean.HORAS = rst.getString("HORAS").trim();
+//                bean.TIPO = rst.getString("TIPO").trim();
+//                bean.TMOTI = rst.getString("TMOTI").trim();
+//                if (bean.TMOTI.equals("I")) {
+//                    bean.desTMOTI = "Involuntary";
+//                } else if (bean.TMOTI.equals("V")) {
+//                    bean.desTMOTI = "Voluntary";
+//                } else if (bean.TMOTI.equals("W")) {
+//                    bean.desTMOTI = "Waiver";
+//                } else if (bean.TMOTI.equals("E")) {
+//                    bean.desTMOTI = "Exception";
+//                } else {
+//                    bean.desTMOTI = bean.TMOTI;
+//                }
+//                bean.TEMI = rst.getString("TEMI").trim();
+//                if (bean.TEMI.equals("1")) {
+//                    bean.desTEMI = "Primera Emision";
+//                } else if (bean.TEMI.equals("2")) {
+//                    bean.desTEMI = "Reemision";
+//                } else {
+//                    bean.desTEMI = bean.TEMI;
+//                }
+//                bean.TRFND = rst.getString("TRFND").trim();
+//                if (bean.TRFND.equals("P")) {
+//                    bean.desTRFND = "Parcial";
+//                } else if (bean.TRFND.equals("T")) {
+//                    bean.desTRFND = "Total";
+//                } else {
+//                    bean.desTRFND = bean.TRFND;
+//                }
+//                bean.ESTAD = rst.getString("ESTAD").trim();
+//                if (bean.ESTAD.equals("0")) {
+//                    bean.desESTAD = "Procesado/Autorizado-RF";
+//                } else if (bean.ESTAD.equals("1")) {
+//                    bean.desESTAD = "Renegado/Rechazado";
+//                } else if (bean.ESTAD.equals("2")) {
+//                    bean.desESTAD = "En consulta";
+//                } else if (bean.ESTAD.equals("4")) {
+//                    bean.desESTAD = "Bajo Revision";
+//                } else if (bean.ESTAD.equals("5")) {
+//                    bean.desESTAD = "Devuelto a Lan";
+//                } else if (bean.ESTAD.equals("6")) {
+//                    bean.desESTAD = "Procesado Contact Cente";
+//                } else if (bean.ESTAD.equals("7")) {
+//                    bean.desESTAD = "Enviada a Cus/Operacion";
+//                } else if (bean.ESTAD.equals("8")) {
+//                    bean.desESTAD = "Pagado por sap";
+//                } else {
+//                    bean.desESTAD = bean.ESTAD;
+//                }
+//                bean.TKT = rst.getString("TKT").trim();
+//                bean.HORAC = rst.getString("HORAC").trim();
+//                bean.MINCAL = rst.getString("MINCAL").trim();
+//                bean.MINDET = rst.getString("MINDET").trim();
+//                bean.RULE = rst.getString("RULE").trim();
+//                bean.HORCAL = rst.getString("HORCAL").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -357,84 +357,91 @@ public class AuditorControlDAO {
 
         List<CPF031Filter> lista = new ArrayList<>();
         CPF031Filter bean;
-
+        long totPRODUS = 0;
         try {
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP03745(?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP03745_MDP(?,?,?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
-            cs.registerOutParameter(3, Types.INTEGER);
             cs.registerOutParameter(4, Types.INTEGER);
             cs.registerOutParameter(5, Types.INTEGER);
             cs.registerOutParameter(6, Types.INTEGER);
+            cs.registerOutParameter(7, Types.INTEGER);
 
             cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cs.setString(2, filter.FECHAP);
+            cs.setString(2, filter.SDATE);
+            cs.setString(3, filter.UAUDIT);
 
-            cs.setInt(3, filter.page.PAGNUM);
-            cs.setInt(4, filter.page.PAGROW);
-            cs.setInt(5, filter.page.TOTPAG);
-            cs.setInt(6, filter.page.TOTROW);
+            cs.setInt(4, filter.page.PAGNUM);
+            cs.setInt(5, filter.page.PAGROW);
+            cs.setInt(6, filter.page.TOTPAG);
+            cs.setInt(7, filter.page.TOTROW);
             cs.execute();
 
-            filter.page.PAGNUM = cs.getInt(3);
-            filter.page.PAGROW = cs.getInt(4);
-            filter.page.TOTPAG = cs.getInt(5);
-            filter.page.TOTROW = cs.getInt(6);
+            filter.page.PAGNUM = cs.getInt(4);
+            filter.page.PAGROW = cs.getInt(5);
+            filter.page.TOTPAG = cs.getInt(6);
+            filter.page.TOTROW = cs.getInt(7);
 
             rst = cs.getResultSet();
 
             while (rst.next()) {
                 bean = new CPF031Filter();
-                bean.FECAC = filter.FECAC;
+                bean.SDATE = filter.SDATE;
 
                 bean.RN = rst.getInt("RN");
-                bean.FECHAP = filter.FECHAP;
+                bean.UAUDIT = filter.UAUDIT;
+                bean.SDATEDAY = rst.getString("FASIGN").trim();
 //                bean.USEAC = filter.USEAC;
 //                bean.totPRODUS = filter.PRODUS;
 //                bean.totTOTALP = filter.TOTALP;
-                bean.USEAC = rst.getString("USEAC").trim();
-                bean.FECAC = rst.getString("FECAC").trim();
-                bean.PRODUS = rst.getInt("PRODUS");
-                bean.DIASL = rst.getInt("DIASL");
-                bean.TMOTI = rst.getString("TMOTI").trim();
-                if (bean.TMOTI.equals("I")) {
-                    bean.desTMOTI = "Involuntary";
-                } else if (bean.TMOTI.equals("V")) {
-                    bean.desTMOTI = "Voluntary";
-                } else {
-                    bean.desTMOTI = bean.TMOTI;
-                }
-                bean.TEMI = rst.getString("TEMI").trim();
-                if (bean.TEMI.equals("1")) {
-                    bean.desTEMI = "SALE";
-                } else if (bean.TEMI.equals("2")) {
-                    bean.desTEMI = "EXCH";
-                } else {
-                    bean.desTEMI = bean.TEMI;
-                }
-                bean.TRFND = rst.getString("TRFND").trim();
-                if (bean.TRFND.equals("P")) {
-                    bean.desTRFND = "Parcial";
-                } else if (bean.TRFND.equals("T")) {
-                    bean.desTRFND = "Total";
-                } else {
-                    bean.desTRFND = bean.TRFND;
-                }
-                bean.PROMED = rst.getInt("PROMED");
-                bean.TOTALP = rst.getInt("TOTALP");
-                bean.DIAAC = rst.getString("DIAAC").trim();
-                bean.HORAI = rst.getString("HORAI").trim();
-                bean.HORASR = rst.getString("HORASR").trim();
-                bean.HORAIR = rst.getString("HORAIR").trim();
-                bean.HORAS = rst.getString("HORAS").trim();
-
+//                bean.USEAC = rst.getString("USEAC").trim();
+//                bean.FECAC = rst.getString("FECAC").trim();
+//                bean.PRODUS = rst.getInt("PRODUS");
+                
+//                bean.TMOTI = rst.getString("TMOTI").trim();
+//                if (bean.TMOTI.equals("I")) {
+//                    bean.desTMOTI = "Involuntary";
+//                } else if (bean.TMOTI.equals("V")) {
+//                    bean.desTMOTI = "Voluntary";
+//                } else {
+//                    bean.desTMOTI = bean.TMOTI;
+//                }
+//                bean.TEMI = rst.getString("TEMI").trim();
+//                if (bean.TEMI.equals("1")) {
+//                    bean.desTEMI = "SALE";
+//                } else if (bean.TEMI.equals("2")) {
+//                    bean.desTEMI = "EXCH";
+//                } else {
+//                    bean.desTEMI = bean.TEMI;
+//                }
+//                bean.TRFND = rst.getString("TRFND").trim();
+//                if (bean.TRFND.equals("P")) {
+//                    bean.desTRFND = "Parcial";
+//                } else if (bean.TRFND.equals("T")) {
+//                    bean.desTRFND = "Total";
+//                } else {
+//                    bean.desTRFND = bean.TRFND;
+//                }
+//                bean.PROMED = rst.getInt("PROMED");
+                bean.DIASL = rst.getInt("DIFFDAYS");
+                bean.TOTAL = rst.getInt("TOTAL");
+//                bean.DIAAC = rst.getString("DIAAC").trim();
+//                bean.HORAI = rst.getString("HORAI").trim();
+//                bean.HORASR = rst.getString("HORASR").trim();
+//                bean.HORAIR = rst.getString("HORAIR").trim();
+//                bean.HORAS = rst.getString("HORAS").trim();
+                totPRODUS = totPRODUS + bean.TOTAL;
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;
                 bean.page.TOTROW = filter.page.TOTROW;
                 lista.add(bean);
+            }
+            for (int i = 0; i < lista.size(); i++) {
+                lista.get(i).totPRODUS = totPRODUS;
+//                lista.get(i).totDIASL = totDIASL;
             }
 
             setClose();

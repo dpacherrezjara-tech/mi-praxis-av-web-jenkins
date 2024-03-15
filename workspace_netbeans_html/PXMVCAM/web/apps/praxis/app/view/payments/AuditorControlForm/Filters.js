@@ -195,6 +195,7 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Filters', {
                             id: prototype.id + '-chkBsplink',
                             width: 150,
                             boxLabel: 'Process',
+                            hidden: true,
                             inputValue: '1'
                         }
                     ]

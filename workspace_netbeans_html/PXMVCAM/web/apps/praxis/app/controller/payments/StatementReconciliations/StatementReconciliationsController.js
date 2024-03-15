@@ -128,8 +128,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["VALDATE", "Value Date"],
-                ["ADATE", "Abono Date"]
+                ["VALDATE", "Payment Date"],
+//                ["ADATE", "Abono Date"]
             ]
         }));
         cmbDateSel.setValue("VALDATE");

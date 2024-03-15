@@ -14,6 +14,7 @@ public class CPF030 {
     public String CCUST = "";
     public String FCARG = "";
     public String FASIG = "";
+    public String FAUDIT = "";
     public String UASIG = "";
     public String FECAC = "";
     public String DIAAC = "";
@@ -35,5 +36,9 @@ public class CPF030 {
     public String TMOTI = "";
     public String NOMB = "";
     public String APE = "";
+    public String SDATE = "";
+    public String TICKET = "";
+    public String UAUDIT = "";
+    public String DAYSW = "";
     
 }

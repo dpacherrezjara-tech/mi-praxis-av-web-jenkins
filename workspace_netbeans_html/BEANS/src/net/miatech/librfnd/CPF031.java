@@ -18,6 +18,8 @@ public class CPF031 {
     public String NOMB = "";
     public String APE = "";
     public String FEUP = "";
+    public String SDATE = "";
+    public String SDATEDAY = "";
     public String UAUDIT = "";
     public String STVAL = "";
     public int PRODUS = 0;
@@ -39,5 +41,6 @@ public class CPF031 {
     public String HORAIR = "";
     public String HORAS = "";
     public double PORCENTAJE = 0.00;
+    public String desPORCENTAJE = "";
     
 }

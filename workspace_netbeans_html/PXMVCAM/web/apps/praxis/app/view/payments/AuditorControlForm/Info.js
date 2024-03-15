@@ -68,10 +68,10 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Process <br> Date', width: 100, dataIndex: 'FEUP',
+                                            {text: 'Process <br> Date', width: 100, dataIndex: 'SDATE',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = ' color:#008FE3;text-align:center;text-decoration:underline;';
-                                                    return '<a href="#" style="color:#008FE3;">' + value + '</a>';
+                                                    metaData.style = record.data.TQMATCH !== 0 ? ' color:#008FE3;text-align:center;text-decoration:underline;':'text-align:center'; ;
+                                                    return record.data.TQMATCH !== 0 ? '<a href="#" style="color:#008FE3;">' + value + '</a>' : value ;
                                                 },
                                                 listeners: {
                                                     click: 'onSetGridDataDetailAll'
@@ -85,10 +85,10 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'USEAC', width: 100, dataIndex: 'UAUDIT',
+                                                    {text: 'UAUDIT', width: 100, dataIndex: 'UAUDIT',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = ' color:#008FE3;text-align:left;text-decoration:underline;';
-                                                            return '<a href="#" style="color:#008FE3;">' + value + '</a>';
+                                                            metaData.style = 'text-align:left;';
+                                                            return value;
                                                         },
                                                         listeners: {
                                                             click: 'onSetGridDataDetail'
@@ -126,8 +126,19 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                                             return '<b>' + Ext.util.Format.number(data.totDIASL, '0,000') + '<b>';
                                                         }
                                                     },
-                                                    {text: 'Percentage', width: 80, dataIndex: 'PORCENTAJE', align: 'center'},
-                                                    {text: 'Total<br>Production', width: 85, dataIndex: 'TOTAL', align: 'center'}
+                                                    {text: 'Percentage', width: 80, dataIndex: 'desPORCENTAJE', align: 'center'},
+                                                    {text: 'Total<br>Production', width: 85, dataIndex: 'TOTAL', align: 'center',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'text-align:center;';
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                            console.log(data);
+                                                            metaData.style = 'text-align:center;';
+                                                            return '<b>' + Ext.util.Format.number(data.totASG, '0,000') + '<b>';
+                                                        }
+                                                    }
                                                 ]
                                             },
                                             {text: 'Average<br>Transaction<br>by Team ', width: 85, dataIndex: 'PROMET', align: 'center'}
@@ -256,7 +267,7 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                     cls: 'gridCss',
                                     id: prototype.id + '-gridDataDetailDay',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1350,
+                                    width: 855,
                                     columnLines: true,
                                     enableColumnMove: false,
 //                                    features: [{
@@ -270,12 +281,12 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Load<br>Date', width: 80, dataIndex: 'FCARG'},
+                                            {text: 'Sales<br>Date', width: 80, dataIndex: 'SDATE'},
                                             {text: 'Assignment<br>Date', width: 95, dataIndex: 'FASIG'},
-                                            {text: 'Audit<br>Date', width: 80, dataIndex: 'FECAC', align: 'center'},
-                                            {text: 'Weekday', width: 90, dataIndex: 'DIAAC', align: 'center',
+                                            {text: 'Audit<br>Date', width: 80, dataIndex: 'FAUDIT', align: 'center'},
+                                            {text: 'Working<br>Days', width: 90, dataIndex: 'DAYSW', align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = 'text-align:left;';
+                                                    metaData.style = 'text-align:center;';
                                                     return value;
                                                 }
                                             },
@@ -283,9 +294,9 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                             {text: 'Entry<br>Time', width: 80, dataIndex: 'HORAI', align: 'center'},
                                             {text: 'HORASR', width: 80, dataIndex: 'HORASR', align: 'center'},
                                             {text: 'HORAIR', width: 80, dataIndex: 'HORAIR', align: 'center'},
-                                            {text: 'Departure<br>Time', width: 90, dataIndex: 'HORAS', align: 'center'},
-                                            {text: 'Document<br>Type', width: 80, dataIndex: 'TIPO', align: 'center'},
-                                            {text: 'Type',
+                                            {text: 'Departure<br>Time', width: 90, dataIndex: 'HORAS', align: 'center',hidden: true},
+                                            {text: 'Document<br>Type', width: 80, dataIndex: 'TIPO', align: 'center',hidden: true},
+                                            {text: 'Type',hidden: true,
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
@@ -311,12 +322,12 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                                         }}
                                                 ]
                                             },
-                                            {text: 'Ticket', width: 110, dataIndex: 'TKT', align: 'center'},
+                                            {text: 'Ticket', width: 110, dataIndex: 'TICKET', align: 'center'},
                                             {text: 'HORAC', width: 80, dataIndex: 'HORAC', align: 'center'},
                                             {text: 'Minutes<br>Calculated', width: 80, dataIndex: 'MINCAL', align: 'center'},
-                                            {text: 'Minutes<br>SLA', width: 80, dataIndex: 'MINDET', align: 'center'},
-                                            {text: 'Rules<br>Batch', width: 80, dataIndex: '', align: 'center'},
-                                            {text: 'Hours<br>Perm.', width: 80, dataIndex: 'HORCAL', align: 'center'}
+                                            {text: 'Minutes<br>SLA', width: 80, dataIndex: 'MINDET', align: 'center',hidden: true},
+                                            {text: 'Rules<br>Batch', width: 80, dataIndex: '', align: 'center',hidden: true},
+                                            {text: 'Hours<br>Perm.', width: 80, dataIndex: 'HORCAL', align: 'center',hidden: true}
                                         ]
                                     }
                                 }
@@ -343,12 +354,12 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                     cls: 'gridCss',
                                     id: prototype.id + '-gridDataDetailAll',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1005,
+                                    width: 350,
                                     columnLines: true,
                                     enableColumnMove: false,
-//                                    features: [{
-//                                            ftype: 'summary'
-//                                        }],
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -357,7 +368,7 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Process <br> Date', width: 100, dataIndex: 'FECAC',
+                                            {text: 'Process <br> Date', width: 100, dataIndex: 'SDATEDAY',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = ' color:#008FE3;text-align:center;text-decoration:underline;';
                                                     return '<a href="#" style="color:#008FE3;">' + value + '</a>';
@@ -366,15 +377,26 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                                     click: 'onSetGridDataDetailDay'
                                                 }
                                             },
-                                            {text: 'USEAC', width: 90, dataIndex: 'USEAC', align: 'center',
+                                            {text: 'UAUDIT', width: 90, dataIndex: 'UAUDIT', align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = 'text-align:left;';
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Produced', width: 80, dataIndex: 'PRODUS', align: 'center'},
+                                            {text: 'Produced', width: 80, dataIndex: 'TOTAL', align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = 'text-align:center;';
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataDetailAll').getStore().getData().items[0].data;
+                                                    console.log(data);
+                                                    metaData.style = 'text-align:center;';
+                                                    return '<b>' + Ext.util.Format.number(data.totPRODUS, '0,000') + '<b>';
+                                                }
+                                            },
                                             {text: 'Working<br>Days', width: 80, dataIndex: 'DIASL', align: 'center'},
-                                            {text: 'Type',
+                                            {text: 'Type', hidden: true,
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
@@ -401,16 +423,16 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                             },
 //                                            {text: 'Average<br>Day', width: 65, dataIndex: 'PROMED', align: 'center'},
 //                                            {text: 'Total<br>Production', width: 85, dataIndex: 'TOTALP', align: 'center'},
-                                            {text: 'Weekday', width: 85, dataIndex: 'DIAAC', align: 'center',
+                                            {text: 'Weekday', width: 85, dataIndex: 'DIAAC', align: 'center', hidden: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = 'text-align:left;';
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Entry<br>Time', width: 90, dataIndex: 'HORAI', align: 'center'},
-                                            {text: 'HORASR', width: 90, dataIndex: 'HORASR', align: 'center'},
-                                            {text: 'HORAIR', width: 90, dataIndex: 'HORAIR', align: 'center'},
-                                            {text: 'Departure<br>Time', width: 90, dataIndex: 'HORAS', align: 'center'}
+                                            {text: 'Entry<br>Time', width: 90, dataIndex: 'HORAI', align: 'center', hidden: true},
+                                            {text: 'HORASR', width: 90, dataIndex: 'HORASR', align: 'center', hidden: true},
+                                            {text: 'HORAIR', width: 90, dataIndex: 'HORAIR', align: 'center', hidden: true},
+                                            {text: 'Departure<br>Time', width: 90, dataIndex: 'HORAS', align: 'center', hidden: true}
                                         ]
                                     }
                                 }
@@ -1823,7 +1845,7 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                         type: 'hbox',
                         pack: 'center'
                     },
-                    hidden: true,
+                    hidden: false,
                     border: true,
                     height: 25,
                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
@@ -1862,10 +1884,10 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                     text: '0',
                                     width: 50
                                 },
-                                {xtype: 'tbspacer', width: 100},
+                                {xtype: 'tbspacer', width: 20},
                                 {
                                     text: 'Total found',
-                                    width: 80
+                                    width: 60
                                 },
                                 {
                                     id: prototype.id + '-lbl-total',
