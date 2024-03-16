@@ -628,6 +628,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanDetBankByS.IN_SDATE = rowData.data.SDATE;
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
             this.beanDetBankByS.IN_SDATEE = rowData.data.IN_SDATE;
+            this.beanDetBankByS.IN_BANK = rowData.data.IN_BANK;
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
             this.setGridDataDetBankS();
 
@@ -884,7 +885,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.panelActual = '-boxDetDetails';
         global.selectedChild(this.childs, prototype.id + me.panelActual);
 
-        this.beanDetails.BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        this.beanDetails.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        this.beanDetails.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
 
 
 //        this.beanDetails.strCREJEC = Ext.getCmp(prototype.id + '-StatementReconciliationsForm-gridDetLiquida_header-title-textEl').getValue();
