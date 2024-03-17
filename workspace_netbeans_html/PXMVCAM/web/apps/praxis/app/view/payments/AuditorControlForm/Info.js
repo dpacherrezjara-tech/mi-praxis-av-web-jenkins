@@ -267,7 +267,7 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                     cls: 'gridCss',
                                     id: prototype.id + '-gridDataDetailDay',
                                     bodyStyle: 'background: transparent;',
-                                    width: 855,
+                                    width: 615,
                                     columnLines: true,
                                     enableColumnMove: false,
 //                                    features: [{
@@ -291,9 +291,9 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                                 }
                                             },
 //                                            {text: 'Auditor', width: 90, dataIndex: 'USEAC', align: 'center'},
-                                            {text: 'Entry<br>Time', width: 80, dataIndex: 'HORAI', align: 'center'},
-                                            {text: 'HORASR', width: 80, dataIndex: 'HORASR', align: 'center'},
-                                            {text: 'HORAIR', width: 80, dataIndex: 'HORAIR', align: 'center'},
+                                            {text: 'Entry<br>Time', width: 80, dataIndex: 'HORAI', align: 'center',hidden: true},
+                                            {text: 'HORASR', width: 80, dataIndex: 'HORASR', align: 'center',hidden: true},
+                                            {text: 'HORAIR', width: 80, dataIndex: 'HORAIR', align: 'center',hidden: true},
                                             {text: 'Departure<br>Time', width: 90, dataIndex: 'HORAS', align: 'center',hidden: true},
                                             {text: 'Document<br>Type', width: 80, dataIndex: 'TIPO', align: 'center',hidden: true},
                                             {text: 'Type',hidden: true,
@@ -354,7 +354,7 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                     cls: 'gridCss',
                                     id: prototype.id + '-gridDataDetailAll',
                                     bodyStyle: 'background: transparent;',
-                                    width: 350,
+                                    width: 650,
                                     columnLines: true,
                                     enableColumnMove: false,
                                     features: [{
@@ -383,6 +383,8 @@ Ext.define('Ext.Praxis.view.payments.AuditorControlForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            {text: 'Name', width: 150, dataIndex: 'NOMB', align: 'left'},
+                                            {text: 'Last Name', width: 150, dataIndex: 'APE', align: 'left'},
                                             {text: 'Produced', width: 80, dataIndex: 'TOTAL', align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = 'text-align:center;';

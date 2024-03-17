@@ -24,6 +24,7 @@ import net.miatech.praxis.A051;
 import net.miatech.praxis.flown.A2826;
 import net.miatech.praxis.interline.filter.A1852Filter;
 import net.miatech.praxis.payment.A2280;
+import net.miatech.librfnd.filter.CPF031Filter;
 import net.miatech.praxis.payment.A2287;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2357Filter;
@@ -1256,6 +1257,63 @@ public class MasterDAO {
 
         return listaTarjetas;
     }
+    
+    public List<CPF031Filter> loadUaudits() {
+
+        //Connection con = null;
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<CPF031Filter> listaUaudits = new ArrayList<>();
+        CPF031Filter Uaudits;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            strSQL = "SELECT DISTINCT UAUDIT,IFNULL((SELECT A804NOMB FROM PRAXISMP.MPAUDIT WHERE UAUDIT = A804USAR FETCH FIRST 1 ROWS ONLY), '''') NAMEUSAR,IFNULL((SELECT A804APE FROM PRAXISMP.MPAUDIT WHERE UAUDIT = A804USAR FETCH FIRST 1 ROWS ONLY), '''') APEUSAR FROM PRAXISMP.MPF100 WHERE UAUDIT <> '' ";
+
+            //con = Proveedor.getConnectionIS(user);
+            stmt = cnx.createStatement();
+            rst = stmt.executeQuery(strSQL);
+            Uaudits = new CPF031Filter();
+            Uaudits.UAUDIT = "";
+            Uaudits.NAME = "All";
+            listaUaudits.add(Uaudits);
+
+            while (rst.next()) {
+                Uaudits = new CPF031Filter();
+                Uaudits.UAUDIT = rst.getString("UAUDIT").trim();
+                Uaudits.NAME = Uaudits.UAUDIT + " - " + rst.getString("NAMEUSAR").trim() + " " + rst.getString("APEUSAR").trim();
+
+                listaUaudits.add(Uaudits);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rst != null) {
+                    try {
+                        rst.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return listaUaudits;
+    }
 
     public List<A2287> loadRejections() {
 
@@ -1624,6 +1682,7 @@ public class MasterDAO {
 
         return lista;
     }
+    
 
     public Connection getIBMDB2Connection() {
         //Connection cnx;    

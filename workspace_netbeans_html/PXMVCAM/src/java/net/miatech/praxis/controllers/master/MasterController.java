@@ -11,6 +11,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A006;
 import net.miatech.libmiatec.A1007;
 import net.miatech.libmiatec.A1248;
+import net.miatech.librfnd.filter.CPF031Filter;
 import net.miatech.praxis.A005;
 import net.miatech.praxis.A051;
 import net.miatech.praxis.controllers.BaseController;
@@ -109,6 +110,10 @@ public class MasterController extends BaseController {
             if (data.CURRENCY != 0) {
                 List<A005> lstCurrencies = masterDAO.loadCurrencies();
                 map.put("lstCurrencies", lstCurrencies);
+            }
+            if (data.UAUDITS != 0) {
+                List<CPF031Filter> lstUaudits = masterDAO.loadUaudits();
+                map.put("lstUaudits", lstUaudits);
             }
             
         } catch (NumberFormatException | SQLException ex) {

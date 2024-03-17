@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                             padding: '1',
                             border: true,
                             height: 550,
-                            width: 751,
+                            width: 790,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
                                     height: 510,
-                                    width: 751,
+                                    width: 790,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -101,6 +101,21 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                     {text: 'Country', dataIndex: 'COUNTRY', width: 140, align: 'center'}
                                                 ]
                                             },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                id: prototype.id + '-gridEdit',
+                                                width: 40,
+                                                text: 'View',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'View',
+                                                        handler: 'onEditClick'
+                                                    }
+                                                ]
+                                            }
                                         ]
                                     }
                                 },

@@ -21,79 +21,140 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.lstCountry = this.p.lstCountry;
 //        console.log(this.p);
 //        this.obtainData();
+        this.dataStatic();
+        
     },
-    afterRender: function () {
-//        console.log('afterRender');
-        switch (this.actionCode) {
-            case 'I':
-                var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
-                cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", "None"],
-                        ["1", "Aerovias MX"],
-                        ["2", "Aeromexico Cargo"],
-                        ["3", "PLM"]
-                    ]
-                }));
-                cmbUNIOPE.setValue('');
-                var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
-                cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", "None"],
-                        ["0", "Disabled"],
-                        ["1", "Enabled"],
-                    ]
-                }));
-                cmbSTATUS.setValue('');
-                var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
-                cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", "none"],
-                        ["ATO", "ATO - Aeropuert"],
-                        ["CTO", "CTO - Oficina"],
-                        ["CCT", "CCT - Reserva"],
-                        ["WEB", "WEB - Web"],
-                        ["GSA", "GSA - G.S.Agte"],
-                        ["FRA", "FRA - Franquic"],
-                    ]
-                }));
-                cmbCANAL.setValue('');
-                var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
-                cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", "none"],
-                        ["US", "US - UNITED STATES"],
-                        ["CA", "CA - CANADA"],
-                        ["AR", "AR - ARGENTINA"],
-                        ["JP", "JP - JAPAN"],
-                        ["ES", "ES - SPAIN"],
-                        ["MX", "MX - MEXICO"],
-                    ]
-                }));
-                cmbSCOUNTRY.setValue('');
-                Ext.getCmp(prototype.id + '-btn-save').show();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-delete').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
-                break;
-            case 'U':
-                this.getData();
-                this.DeshabilitarCampoClave();
-                Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-delete').show();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
-                break;
-        }
+    dataStatic: function () {
+        let miStoreIATA = Ext.create('Ext.data.Store', {
+            fields: ['DSAP', 'ATA', 'CANAL', 'PROCESS', 'COUNTRY', 'descCOUNTRY', 'SOCVENTA', 'MONVENTA', 'PROCENTER'],
+            data: [
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+            ]
+        })
+        let gridIata = Ext.getCmp(prototype.id + '-gridDataInfoIATAS');
+        gridIata.bindStore(miStoreIATA)
+        
+        let miStoreBank = Ext.create('Ext.data.Store', {
+            fields: ['BANKCODE', 'BANKNAME', 'BANKCOMP', 'DEPCURR', 'ACCNUMBER', 'AUXACCACCO', 'AUXACCACCO'],
+            data: [
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+                
+            ]
+        }) 
+        let gridBank = Ext.getCmp(prototype.id + '-gridDataInfoBANCOS');
+        gridBank.bindStore(miStoreBank)
+        
+        this.setValue('de-txtMERCHN', '96455739')
+        this.setValue('de-txtSCOUNTRY', '92690113')
+        this.setValue('de-txtSCARCOD', '96455739')
+        this.setValue('de-txtCTABANK', '96455739')
+        this.setValue('de-txtAFBRANCH', '96455739')
+        this.setValue('de-txtACQPROC', 'CREDOMATIC PANAMA')
+        this.setValue('de-txtAPCODE', 'CM')
+        this.setValue('de-txtDOWNREPORT', 'Plataforma Web - GAW / Correo Electronico - Orquestador')
+        this.setValue('de-txtFRANCH1', 'VI')
+        this.setValue('de-txtFRANCH2', 'CA')
+        this.setValue('de-txtFRANCH3', 'DS')
+        this.setValue('de-txtFRANCH4', 'DS')
+        
     },
+//    afterRender: function () {
+////        console.log('afterRender');
+//        switch (this.actionCode) {
+//            case 'I':
+//                var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
+//                cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
+//                    autoLoad: false,
+//                    fields: ['code', 'name'],
+//                    data: [
+//                        ["", "None"],
+//                        ["1", "Aerovias MX"],
+//                        ["2", "Aeromexico Cargo"],
+//                        ["3", "PLM"]
+//                    ]
+//                }));
+//                cmbUNIOPE.setValue('');
+//                var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
+//                cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
+//                    autoLoad: false,
+//                    fields: ['code', 'name'],
+//                    data: [
+//                        ["", "None"],
+//                        ["0", "Disabled"],
+//                        ["1", "Enabled"],
+//                    ]
+//                }));
+//                cmbSTATUS.setValue('');
+//                var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
+//                cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
+//                    autoLoad: false,
+//                    fields: ['code', 'name'],
+//                    data: [
+//                        ["", "none"],
+//                        ["ATO", "ATO - Aeropuert"],
+//                        ["CTO", "CTO - Oficina"],
+//                        ["CCT", "CCT - Reserva"],
+//                        ["WEB", "WEB - Web"],
+//                        ["GSA", "GSA - G.S.Agte"],
+//                        ["FRA", "FRA - Franquic"],
+//                    ]
+//                }));
+//                cmbCANAL.setValue('');
+//                var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
+//                cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
+//                    autoLoad: false,
+//                    fields: ['code', 'name'],
+//                    data: [
+//                        ["", "none"],
+//                        ["US", "US - UNITED STATES"],
+//                        ["CA", "CA - CANADA"],
+//                        ["AR", "AR - ARGENTINA"],
+//                        ["JP", "JP - JAPAN"],
+//                        ["ES", "ES - SPAIN"],
+//                        ["MX", "MX - MEXICO"],
+//                    ]
+//                }));
+//                cmbSCOUNTRY.setValue('');
+//                Ext.getCmp(prototype.id + '-btn-save').show();
+//                Ext.getCmp(prototype.id + '-btn-update').hide();
+//                Ext.getCmp(prototype.id + '-btn-delete').hide();
+//                Ext.getCmp(prototype.id + '-btn-cancel').show();
+//                break;
+//            case 'U':
+//                this.getData();
+//                this.DeshabilitarCampoClave();
+//                Ext.getCmp(prototype.id + '-btn-save').hide();
+//                Ext.getCmp(prototype.id + '-btn-update').show();
+//                Ext.getCmp(prototype.id + '-btn-delete').show();
+//                Ext.getCmp(prototype.id + '-btn-cancel').show();
+//                break;
+//        }
+//    },
     mostrarData: function () {
 //        console.log(meDE.beanResult);
 //        console.log(this.beanResult.CODEREJ);

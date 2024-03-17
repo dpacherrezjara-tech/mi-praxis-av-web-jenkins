@@ -19,6 +19,9 @@ public class CPF031Filter extends CPF031{
     public String IN_DATETO = "";
     public String IN_USEAC = "";
     public String IN_FASIG = "";
+    public String UAUDIT = "";
+    public String NAME = "";
+    
     
     public String desTMOTI = "";
     public String desTEMI = "";

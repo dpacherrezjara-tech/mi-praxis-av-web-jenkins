@@ -79,8 +79,8 @@ public class AuditorControlDAO {
                 bean.RN = rst.getInt("RN");
                 bean.SDATE = rst.getString("DATE").trim();
                 bean.UAUDIT = rst.getString("UAUDIT").trim();
-//                bean.NOMB = rst.getString("NAMEUSAR").trim();
-//                bean.APE = rst.getString("APEUSAR").trim();
+                bean.NOMB = rst.getString("NAMEUSAR").trim();
+                bean.APE = rst.getString("APEUSAR").trim();
                 bean.TQMATCH = rst.getInt("TQMATCH");
                 bean.TQPEND = rst.getInt("TQPEND");
                 bean.TOTAL = rst.getInt("TOTAL");
@@ -357,7 +357,7 @@ public class AuditorControlDAO {
 
         List<CPF031Filter> lista = new ArrayList<>();
         CPF031Filter bean;
-        long totPRODUS = 0;
+        long totPRODUS = 0, totASIG = 0;
         try {
 
             String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP03745_MDP(?,?,?,?,?,?,?)}";
@@ -425,6 +425,9 @@ public class AuditorControlDAO {
 //                    bean.desTRFND = bean.TRFND;
 //                }
 //                bean.PROMED = rst.getInt("PROMED");
+                bean.NOMB = filter.NOMB;
+                bean.APE = filter.APE;
+                bean.TOTALASIG = filter.TOTAL;
                 bean.DIASL = rst.getInt("DIFFDAYS");
                 bean.TOTAL = rst.getInt("TOTAL");
 //                bean.DIAAC = rst.getString("DIAAC").trim();
@@ -433,6 +436,7 @@ public class AuditorControlDAO {
 //                bean.HORAIR = rst.getString("HORAIR").trim();
 //                bean.HORAS = rst.getString("HORAS").trim();
                 totPRODUS = totPRODUS + bean.TOTAL;
+                
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;

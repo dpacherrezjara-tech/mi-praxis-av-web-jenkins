@@ -19,4 +19,5 @@ public class DataObtain {
     public byte REJECTIONS = 0;
     public byte TRANSCODE = 0;
     public byte CURRENCY = 0;
+    public byte UAUDITS = 0;
 }

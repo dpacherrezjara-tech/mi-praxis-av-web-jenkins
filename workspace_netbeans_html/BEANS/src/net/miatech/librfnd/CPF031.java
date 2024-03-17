@@ -25,6 +25,7 @@ public class CPF031 {
     public int PRODUS = 0;
     public int TOTAL = 0;
     public int TOTALP = 0;
+    public int TOTALASIG = 0;
     public int DIASL = 0;
     public int PROMET = 0;
     public int PENDUS = 0;

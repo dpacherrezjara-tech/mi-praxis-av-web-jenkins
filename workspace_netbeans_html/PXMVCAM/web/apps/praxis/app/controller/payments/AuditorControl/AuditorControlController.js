@@ -22,6 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
     pagginActual: '-paggin',
     user: '',
     dw_excel: false,
+    dataObtain: {},
     init: function (view) {
         console.log('2-) CONTROLLER -  Auditor Control - INIT');
         me = this;
@@ -153,24 +154,50 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
         });
         Ext.getCmp(prototype.id + '-cmbFECHA').bindStore(storeComboPlaca);
         Ext.getCmp(prototype.id + '-cmbFECHA').setValue('');
-        
-        var cmbAuditor = Ext.getCmp(prototype.id + '-cmbAuditor');
-        cmbAuditor.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "All"],
-                ["SAP52", "JSOLANO"]
-//                ["YOLANDAQ", "YOLANDAQ"],
-//                ["ROSSANAR", "ROSSANAR"],
-//                ["AOTERO", "AOTERO"],
-//                ["WMARTINEZ", "WMARTINEZ"],
-//                ["JNAUPAS", "JNAUPAS"],
-//                ["DINAA", "DINAA"]
-            ]
-        }));
-        cmbAuditor.setValue("");
+        this.obtainData()
+//        var cmbAuditor = Ext.getCmp(prototype.id + '-cmbAuditor');
+//        cmbAuditor.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "All"],
+//                ["SAP52", "JSOLANO"]
+////                ["YOLANDAQ", "YOLANDAQ"],
+////                ["ROSSANAR", "ROSSANAR"],
+////                ["AOTERO", "AOTERO"],
+////                ["WMARTINEZ", "WMARTINEZ"],
+////                ["JNAUPAS", "JNAUPAS"],
+////                ["DINAA", "DINAA"]
+//            ]
+//        }));
+//        cmbAuditor.setValue("");  
 
+    },
+    obtainData: function () {
+
+        this.dataObtain.UAUDITS = 1;         
+        
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText); 
+                console.log(res, 'res')
+                if (res.success) {
+                    
+                    me.lstUaudits = res.lstUaudits;
+                    Ext.getCmp(prototype.id + '-cmbAuditor').bindStore(
+                        Ext.create('Ext.data.Store', {data: res.lstUaudits, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-cmbAuditor').setValue('');   
+                    
+                 
+                    me.btnSearch_click();
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });
     },
     btnSearch_click: function (obj, e) {
         
@@ -501,10 +528,10 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
                             msg: 'Data not found.'
                         });
                     }else{
-                        console.log(obj.data);
+                        
                         var data = obj.data.items[0].data;
-                        Ext.getCmp(prototype.id + '-gridDataDetailAll').setTitle('<center style="font-size:12px;">Process Date : ' + data.SDATE + '    -    User: ' + data.UAUDIT + '    - Produced: ' + data.totPRODUS + '    - Tot. Production: ' + data.totASG + '</center>');
-
+                        Ext.getCmp(prototype.id + '-gridDataDetailAll').setTitle('<center style="font-size:12px;">Process Date : ' + data.SDATE + '    -    User: ' + data.UAUDIT + '    - Produced: ' + data.totPRODUS + '    - Tot. Production: ' + data.TOTALASIG + '</center>');
+                        
                         var pag = Ext.getCmp(prototype.id + '-paggin4');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
