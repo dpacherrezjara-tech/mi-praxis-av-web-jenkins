@@ -935,8 +935,8 @@ public class StatementReconciliationsDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        double totNETO = 0;
-        long totQTYTRAS = 0;
+        double totNETO = 0, totNETOC = 0;
+        long totQTYTRAS = 0, totQTYTRAN1 = 0, totQTYTRAN3 = 0;
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", "Liq. Without EECC");
@@ -976,8 +976,11 @@ public class StatementReconciliationsDAO {
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
-                totQTYTRAS = rst.getLong("QTYTRAS");
                 totNETO = rst.getDouble("NETO");
+                totNETOC = rst.getDouble("NETOC");
+                totQTYTRAS = rst.getLong("QTYTRAS");
+                totQTYTRAN1 = rst.getLong("QTYTRAN1");
+                totQTYTRAN3 = rst.getLong("QTYTRAN3");
             }
             rst.close();
 
@@ -1012,17 +1015,17 @@ public class StatementReconciliationsDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
-//                    beanTkt.totNETO = totNETO;
-//                    beanTkt.totNETOC = totNETOC;
-////                    beanTkt.QTYTRAS = rst.getInt("QTYTRAS");
-//                    beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
-//                    beanTkt.totQTYTRAN1 = totQTYTRAN1;
-//                    beanTkt.QTYTRAN3 = rst.getInt("QTYTRAN3");
-//                    beanTkt.totQTYTRAN3 = totQTYTRAN3;
-//                    beanTkt.totQTYTRAS = totQTYTRAS;
+                    beanTkt.totNETO = totNETO;
+                    beanTkt.totNETOC = totNETOC;
+                    beanTkt.QTYTRAS = rst.getInt("QTYTRAS");
+                    beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
+                    beanTkt.totQTYTRAN1 = totQTYTRAN1;
+                    beanTkt.QTYTRAN3 = rst.getInt("QTYTRAN3");
+                    beanTkt.totQTYTRAN3 = totQTYTRAN3;
+                    beanTkt.totQTYTRAS = totQTYTRAS;
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
-//                    beanTkt.RED = rst.getString("RED").trim();
+                    beanTkt.RED = rst.getString("RED").trim();
 
 //                    if (filter.IN_DATE.trim().equals("VALDATE")) {
 //                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;

@@ -75,7 +75,7 @@ public class InputsLogic {
    public List<A1686Filter> loadPX264SQP002464(A1686Filter filter) throws SQLException, Exception {
         return InputsDAO.loadPX264SQP002464(filter);
     }
-   
+  
    public List<A1686Filter> loadPX264SQP00667(A1686Filter filter, String consulta) throws Exception {
         return InputsDAO.loadPX264SQP00667(filter, consulta);
     }

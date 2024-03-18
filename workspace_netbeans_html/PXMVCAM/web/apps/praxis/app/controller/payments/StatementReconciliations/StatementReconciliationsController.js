@@ -216,7 +216,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
-        this.setGridData();
+//        this.setGridData();
+        if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '') {
+                this.btnSearch_BANDOC();
+            } else {
+                this.setGridData();
+            }
     },
 
     setGridData: function () {
@@ -979,7 +984,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     },
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
-        console.log('rec', rec)
+        console.log('rec', rec);
         console.log(rec.data.STVAL, 'rec.data.STVAL')
 //        if (rec.data.STVAL == "Match") {
 //            global.Msg({

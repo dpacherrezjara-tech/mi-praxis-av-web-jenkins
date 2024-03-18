@@ -468,7 +468,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             margin: '4 4 4 4',
-                                            width: 90
+                                            width: 80
                                         },
                                         {
                                             xtype: 'checkboxfield',
@@ -479,6 +479,58 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             listeners: {
                                                 change: 'cambiaParams'
                                             }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Sales Date',
+                                            textAlign: 'center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '4 4 4 4',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'datefield',
+                                            id: prototype.id + '-txtFromDate',
+                                            fieldStyle: 'text-align:center',
+                                            format: 'Y/m/d',
+                                            formatText: '',
+                                            invalidText: 'Format valid YYYY/MM/DD',
+                                            minValue: new Date(1990, 00, 01),
+                                            maskRe: /[0-9/]/,
+                                            editable: false,
+                                            enforceMaxLength: true,
+                                            maxLength: 10,
+                                            inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            //margin: '4 4 4 4',
+                                            iconCls: 'prx-icon-search',
+                                            tooltip: 'Add',
+                                            listeners: {
+                                                click: 'cambiaParams'
+                                            }
+
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            //margin: '4 4 4 4',
+                                            iconCls: 'prx-icon-clear',
+                                            tooltip: 'Clean',
+                                            style: {
+                                                background: '#EFE5E5'
+                                            },
+                                            listeners: {
+                                                click: 'clear_keyDownHandler'
+                                            }
+
                                         },
                                         {
                                             xtype: 'button',
@@ -494,7 +546,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {
                                             xtype: 'button',
                                             width: 25,
-                                            margin: '4 4 4 810',
+                                            margin: '4 4 4 610',
                                             iconCls: 'prx-icon-excel',
                                             tooltip: 'Download excel',
                                             listeners: {
@@ -505,7 +557,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             xtype: 'button',
                                             width: 25,
                                             margin: '4 4 4 4',
-                                            iconCls: 'prx-icon-add',
+                                            iconCls: 'prx-icon-edit',
                                             tooltip: 'Calculate Differences',
                                             hidden: true,
                                             reference: 'calculateButton',

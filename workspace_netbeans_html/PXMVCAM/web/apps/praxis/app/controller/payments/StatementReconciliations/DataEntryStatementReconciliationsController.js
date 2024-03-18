@@ -19,6 +19,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
+        console.log(this.bean);
         this.lstCountry = this.p.lstCountry;
 //        this.obtainData();
     },
@@ -105,6 +106,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
+        console.log(meDE.bean.data.IN_UNICODE);
+        console.log(meDE.bean.data.IN_UNICODE);
+        console.log(meDE.bean.data.IN_UNICODE);
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
         meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
@@ -368,9 +372,20 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 //            console.log('El checkbox no está marcado');
         }
     },
-    cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
+    clear_keyDownHandler: function () {
+        this.setValue('txtFromDate', null);
 
-        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
+    },
+    cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
+        
+        var fecha_a_validar = "";
+        meDE.bean.data.ADATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
+        if(meDE.bean.data.ADATE !== '' && meDE.bean.data.ADATE !== null){
+            meDE.bean.data.IN_VALDATE = meDE.bean.data.ADATE;
+        }else{
+            meDE.bean.data.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+        }
+//        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
         meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
