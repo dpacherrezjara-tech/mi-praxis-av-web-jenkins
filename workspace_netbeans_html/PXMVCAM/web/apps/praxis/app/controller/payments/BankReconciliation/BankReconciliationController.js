@@ -1942,7 +1942,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-cmbTipoFecha').setValue('SDATE');
             
             this.setStoreDataTW();
-            this.obtainFields('MPF100');
+            this.obtainFields('MPF100','');
             this.imgClearFields();
             this.searchTW();
         } else {
@@ -1955,7 +1955,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         
     },
     
-    obtainFields: function (tabla) {
+    obtainFields: function (tabla,parametro) {
 
         Ext.Ajax.request({
             url: prototype.url + '/obtainFields',
@@ -2020,7 +2020,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 }
 //                Ext.getCmp(prototype.id + '-cmbSelection').bindStore(storeDataComboGB);
 //                Ext.getCmp(prototype.id + '-cmbSelection').setValue('');
-
+                if(parametro === 'back'){
+                    me.mostrarFiltrosMPF100();
+                }
             }
         });
 
@@ -2473,7 +2475,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         console.log('gridDetMPF101_clickHandler');
         me.guardaFiltroMPF100();
         me.beanDetailTW = x.record.data;
-        me.beanDetailTW.strSQL = this.armandoQuery();
+//        me.beanDetailTW.strSQL = this.armandoQuery();
+        me.beanDetailTW.strSQL = '';
         
         console.log(me.beanDetailTW);
         this.viewMPF101_clickHandler(me.beanDetailTW);
@@ -2551,7 +2554,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                        panelFilters2.setVisible(false);
                         gridDataTeleworking.setVisible(false);
                         panelDetailTW.setVisible(true);
-                        me.obtainFields('MPF101');
+                        me.obtainFields('MPF101','');
                         
                         me.imgClearRowAll();
                     } else {
@@ -2568,6 +2571,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     btnBackTW_click: function (obj, e) {
 
        
+        this.obtainFields('MPF100','back');
         var gridDataTeleworking = Ext.getCmp(prototype.id + '-gridDataTeleworking');
         var panelDetailTW = Ext.getCmp(prototype.id + '-panelDetailTW');
         var panelFilters2 = Ext.getCmp(prototype.id + '-panelFilters2');
@@ -2576,7 +2580,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         panelFilters2.setVisible(true);
         panelDetailTW.setVisible(false);
         
-        me.mostrarFiltrosMPF100();
+//        me.mostrarFiltrosMPF100();
         this.getPaggin();
         if (me.pagginActual !== '') {
             var pag = Ext.getCmp(prototype.id + me.pagginActual);
