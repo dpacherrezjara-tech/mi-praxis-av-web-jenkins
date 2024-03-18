@@ -446,5 +446,98 @@ public class MerchantNumberController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+//    @RequestMapping(value = "searchBanks")
+//    public @ResponseBody
+//    String searchBanks(ModelMap map, HttpServletRequest request) {
+//        System.out.println("-------------- MerchantNumber : searchBanks-------------");
+//
+//        Gson gson = new Gson();
+//        A2354Filter filter = new A2354Filter();
+//        A2354Filter result = new A2354Filter();
+//        List<A2354Filter> lst = new ArrayList<>(0);
+//        String beanString = request.getParameter("beanString");
+//        filter = gson.fromJson(beanString, A2354Filter.class);
+//
+//        logic = new MerchantNumberLogic();
+//        logic.setSession(this.serverSession.getServerSession());
+//        try {
+//            result = logic.loadPX305SQP00939(filter);
+//            map.put("result", result);
+//            map.put("success", true);
+//        } catch (Exception ex) {
+//            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+//            map.put("success", false);
+//        }
+//        return new Gson().toJson(map);
+//    }
+    
+    @RequestMapping(value = "searchBanks")
+    public @ResponseBody
+    String searchBanks(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- MerchantNumber : searchBanks-------------");
+
+        map.put("success", true);
+        List<A2354Filter> lst = this.getListBanks(request, false);
+//        System.out.println("Total : " + lst.size());
+//        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2354Filter> getListBanks(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2354Filter> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+
+            lst = logic.loadPX305SQP00939(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchIATAS")
+    public @ResponseBody
+    String searchIATAS(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- MerchantNumber : searchIATAS-------------");
+
+        map.put("success", true);
+        List<A2354Filter> lst = this.getListIATAS(request, false);
+//        System.out.println("Total : " + lst.size());
+//        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2354Filter> getListIATAS(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2354Filter> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+
+            lst = logic.loadPX305SQP00940(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 
 }

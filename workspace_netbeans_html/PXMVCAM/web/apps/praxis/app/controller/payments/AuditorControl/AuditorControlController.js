@@ -91,7 +91,6 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
     xpanel_afterrender: function (obj, e) {
         win.lblUser_toolTip(" ");
         this.setStoreData();
-        this.btnSearch_click();
         console.log('consoleaaaaaa')
     },
     afterRenderYear: function (obj) {
@@ -171,7 +170,7 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
 //            ]
 //        }));
 //        cmbAuditor.setValue("");  
-
+          
     },
     obtainData: function () {
 
@@ -184,20 +183,21 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
             params: {beanString: JSON.stringify(this.dataObtain)},
             success: function(response, options) {
                 var res = Ext.JSON.decode(response.responseText); 
-                console.log(res, 'res')
+                console.log(res, 'ressssssssssss')
                 if (res.success) {
                     
                     me.lstUaudits = res.lstUaudits;
                     Ext.getCmp(prototype.id + '-cmbAuditor').bindStore(
                         Ext.create('Ext.data.Store', {data: res.lstUaudits, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-cmbAuditor').setValue('');   
-                    
-                 
-                    me.btnSearch_click();
+                    Ext.getCmp(prototype.id + '-cmbAuditor').setValue(''); 
+                    console.log(Ext.getCmp(prototype.id + '-cmbAuditor').getValue(), 'valor de auditor gaaaaaaaaa')
+                    me.btnSearch_click()
                 } else
                     global.Msg({msg: res.sesion});
             }
         });
+        
+        
     },
     btnSearch_click: function (obj, e) {
         
@@ -225,7 +225,6 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
         
         this.setFormatParameter();
         this.search();
-        console.log('Holaaaaa infierno')
 
     },
 //    btnClear_click: function (obj, e) {
@@ -284,7 +283,6 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
 //        return params;
 //    },
     setFormatParameter: function (option) {
-
         me.bean = {};
         
         var yearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
@@ -294,6 +292,7 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
         var monthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         var dayTo = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         var auditor = Ext.getCmp(prototype.id + '-cmbAuditor').getValue();
+        console.log(auditor, 'auditor')
         if (monthFrom !== '') {
             if (monthFrom < 10) {
                 monthFrom = '0' + (monthFrom);
@@ -319,7 +318,7 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
         me.bean.IN_DATEFROM = yearFrom + '' + monthFrom + '' + dayFrom;
         me.bean.IN_DATETO = yearTo + '' + monthTo + '' + dayTo;
         me.bean.IN_USEAC = auditor;
-
+        
         var beanString = JSON.stringify(me.bean);
 
         searchParams = {

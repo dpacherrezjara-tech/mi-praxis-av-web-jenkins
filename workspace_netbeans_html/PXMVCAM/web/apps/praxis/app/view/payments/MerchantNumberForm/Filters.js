@@ -48,6 +48,26 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                 },
                 {
                     xtype: 'label',
+                    strong: true,
+                    html: '<strong>Branch Merchant :</strong>',
+                    padding: '7 0 0 20',
+                    width: 140,
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtBMERCHAN',
+                    fieldStyle: 'text-align:center',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9a-zA-Z]/,
+                    maxLength: 10,
+                    width: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'buscarFilter'
+                    }
+                },
+                {
+                    xtype: 'label',
                     html: '<strong>Cta Bank :</strong>',
                     padding: '7 0 0 20',
                     width: 87,

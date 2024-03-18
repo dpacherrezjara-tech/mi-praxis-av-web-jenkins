@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.lstCountry = this.p.lstCountry;
 //        console.log(this.p);
 //        this.obtainData();
-        this.dataStatic();
+        //this.dataStatic();
         
     },
     dataStatic: function () {
@@ -83,10 +83,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('de-txtFRANCH4', 'DS')
         
     },
-//    afterRender: function () {
-////        console.log('afterRender');
-//        switch (this.actionCode) {
-//            case 'I':
+    afterRender: function () {
+//        console.log('afterRender');
+        switch (this.actionCode) {
+            case 'I':
 //                var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
 //                cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
 //                    autoLoad: false,
@@ -140,38 +140,36 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                    ]
 //                }));
 //                cmbSCOUNTRY.setValue('');
-//                Ext.getCmp(prototype.id + '-btn-save').show();
-//                Ext.getCmp(prototype.id + '-btn-update').hide();
-//                Ext.getCmp(prototype.id + '-btn-delete').hide();
-//                Ext.getCmp(prototype.id + '-btn-cancel').show();
-//                break;
-//            case 'U':
-//                this.getData();
+                Ext.getCmp(prototype.id + '-btn-save').show();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-delete').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+            case 'U':
+                this.getData();
 //                this.DeshabilitarCampoClave();
-//                Ext.getCmp(prototype.id + '-btn-save').hide();
-//                Ext.getCmp(prototype.id + '-btn-update').show();
-//                Ext.getCmp(prototype.id + '-btn-delete').show();
-//                Ext.getCmp(prototype.id + '-btn-cancel').show();
-//                break;
-//        }
-//    },
+                Ext.getCmp(prototype.id + '-btn-save').hide();
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-delete').show();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+        }
+    },
     mostrarData: function () {
 //        console.log(meDE.beanResult);
 //        console.log(this.beanResult.CODEREJ);
-        this.setValue('de-txtMERCHN', this.beanResult.MERCHN);
-        this.setValue('de-txtMERCHP', this.beanResult.MERCHP);
-        this.setValue('de-txtDESCR', this.beanResult.DESCR);
-        this.setValue('de-txtRSOCIAL', this.beanResult.RSOCIAL);
-        this.setValue('de-cmbCANAL', this.beanResult.CANAL);
-        this.setValue('de-cmbSCOUNTRY', this.beanResult.SCOUNTRY);
-        this.setValue('de-txtNameCTRY', this.beanResult.strDescripCtry);
-        this.setValue('de-cmbUNIOPE', this.beanResult.UNIOPE);
-        this.setValue('de-cmbSTATUS', this.beanResult.STATUS);
-
-        this.setValue('de-txtCODCLIT1', this.beanResult.CODCLIT1);
-        this.setValue('de-txtDIRCLIT1', this.beanResult.DIRCLIT1);
-        this.setValue('de-txtDIRCLIT2', this.beanResult.DIRCLIT2);
-        this.setValue('de-txtCODCLIT2', this.beanResult.CODCLIT2);
+        this.setValue('de-txtMERCHN', this.beanResult.CMERCHAN)
+        this.setValue('de-txtSCOUNTRY', this.beanResult.SCOUNTRY)
+        this.setValue('de-txtCODEBANK', this.beanResult.CODEBANK)
+        this.setValue('de-txtCTABANK', this.beanResult.ACCNUMB)
+        this.setValue('de-txtAFBRANCH', this.beanResult.SUCMERCH)
+        this.setValue('de-txtACQPROC', this.beanResult.CORE)
+        this.setValue('de-txtAPCODE', this.beanResult.CODE)
+        this.setValue('de-txtDOWNREPORT', this.beanResult.DREPORT)
+        this.setValue('de-txtFRANCH1', this.beanResult.FRANC1)
+        this.setValue('de-txtFRANCH2', this.beanResult.FRANC2)
+        this.setValue('de-txtFRANCH3', this.beanResult.FRANC3)
+        this.setValue('de-txtFRANCH4', this.beanResult.FRANC4)
 
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -180,7 +178,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
 
-        this.setGridIATA(this.beanResult.MERCHN);
+//        this.setGridIATA(this.beanResult.MERCHN);
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
@@ -229,59 +227,59 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     },
     getData: function () {
 //        console.log('getData');
-        var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
-        cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "None"],
-                ["1", "Aerovias MX"],
-                ["2", "Aeromexico Cargo"],
-                ["3", "PLM"]
-            ]
-        }));
-        cmbUNIOPE.setValue('');
-        var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
-        cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "None"],
-                ["0", "Disabled"],
-                ["1", "Enabled"],
-            ]
-        }));
-        cmbSTATUS.setValue('');
-
-        var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
-        cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "none"],
-                ["ATO", "ATO - Aeropuert"],
-                ["CTO", "CTO - Oficina"],
-                ["CCT", "CCT - Reserva"],
-                ["WEB", "WEB - Web"],
-                ["GSA", "GSA - G.S.Agte"],
-                ["FRA", "FRA - Franquic"],
-            ]
-        }));
-
-        var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
-        cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "none"],
-                ["US", "US - UNITED STATES"],
-                ["CA", "CA - CANADA"],
-                ["AR", "AR - ARGENTINA"],
-                ["JP", "JP - JAPAN"],
-                ["ES", "ES - SPAIN"],
-                ["MX", "MX - MEXICO"],
-            ]
-        }));
+//        var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
+//        cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "None"],
+//                ["1", "Aerovias MX"],
+//                ["2", "Aeromexico Cargo"],
+//                ["3", "PLM"]
+//            ]
+//        }));
+//        cmbUNIOPE.setValue('');
+//        var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
+//        cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "None"],
+//                ["0", "Disabled"],
+//                ["1", "Enabled"],
+//            ]
+//        }));
+//        cmbSTATUS.setValue('');
+//
+//        var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
+//        cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "none"],
+//                ["ATO", "ATO - Aeropuert"],
+//                ["CTO", "CTO - Oficina"],
+//                ["CCT", "CCT - Reserva"],
+//                ["WEB", "WEB - Web"],
+//                ["GSA", "GSA - G.S.Agte"],
+//                ["FRA", "FRA - Franquic"],
+//            ]
+//        }));
+//
+//        var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
+//        cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "none"],
+//                ["US", "US - UNITED STATES"],
+//                ["CA", "CA - CANADA"],
+//                ["AR", "AR - ARGENTINA"],
+//                ["JP", "JP - JAPAN"],
+//                ["ES", "ES - SPAIN"],
+//                ["MX", "MX - MEXICO"],
+//            ]
+//        }));
 
 
         var beanString = JSON.stringify(meDE.bean.data);
@@ -298,6 +296,72 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 meDE.beanResult = res.result;
                 meDE.mostrarData();
 
+            }
+        });
+         
+        var paramDetailBanks = {};
+        paramDetailBanks.beanString = JSON.stringify(meDE.bean.data);
+        console.log('meDE.bean.data', meDE.bean.data)
+        console.log('MUESTRA EL PARAMS ');
+        console.log(paramDetailBanks, 'paramDetailBanks' );
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBanks',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramDetailBanks,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var resBank = Ext.JSON.decode(response.responseText);
+                console.log(resBank, 'res');
+                if (resBank.success) {
+                    console.log(resBank.data, 'res.data')
+                    //llenar grilla gridDataInfoScan
+                    var storeDataBank = Ext.create('Ext.data.Store', {
+                        data: resBank.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoBANCOS').bindStore(storeDataBank);
+                } else {
+                    global.Msg({msg: resBank.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+        
+        var paramDetailIatas = {};
+        paramDetailIatas.beanString = JSON.stringify(meDE.bean.data);
+        console.log('meDE.bean.data', meDE.bean.data)
+        console.log('MUESTRA EL PARAMS ');
+        console.log(paramDetailIatas, 'paramDetailBanks' );
+        Ext.Ajax.request({
+            url: prototype.url + '/searchIATAS',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramDetailIatas,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var resIata = Ext.JSON.decode(response.responseText);
+                console.log(resIata, 'res');
+                if (resIata.success) {
+                    console.log(resIata.data, 'resIata.data')
+                    //llenar grilla gridDataInfoScan
+                    var storeDataIatas = Ext.create('Ext.data.Store', {
+                        data: resIata.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoIATAS').bindStore(storeDataIatas);
+                } else {
+                    global.Msg({msg: resIata.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
     },

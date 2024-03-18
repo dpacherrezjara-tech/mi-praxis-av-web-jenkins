@@ -35,16 +35,42 @@ public String IN_COUNTRY = "";
 public String CODE = "";
 public String NAME = "";
 public String IN_CMERCHAN = "";
+public String IN_BMERCHAN = "";
 public String IN_SCARCOD = "";
 public String IN_CTABANK = "";
 public String IN_CODEBANK = "";
 public String IN_CODEBANKA = "";
 public String CMERCHAN = "";
+public String BMERCHAN = "";
 public String SCARCOD = "";
 public String CTABANK = "";
 public String CODEBANK = "";
 public String CODEBANKA = "";
 public String COUNTRY = "";
+public String SUCMERCH = "";
+
+public String CORE = "";
+public String DREPORT = "";
+public String FRANC1 = "";
+public String FRANC2 = "";
+public String FRANC3 = "";
+public String FRANC4 = "";
+
+public String BANKNAM = "";
+public String BANKCM = "";
+public String BANKCUR = "";
+public String ACCNUMB = "";
+public String ACCNUMA = "";
+public String BENCEN = "";
+public String DEUSAP = "";
+public String SAGENT = "";
+public String CANAL = "";
+public String PROCES = "";
+public String SCOUNTRY = "";
+
+public String SOCIETY = "";
+public String SCURRENCY = "";
+public String SBENCEN = "";
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);

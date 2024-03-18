@@ -134,6 +134,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         me.bean = {};
         me.bean.IN_CMERCHAN = Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue();
+        me.bean.IN_BMERCHAN = Ext.getCmp(prototype.id + '-txtBMERCHAN').getValue();
         me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbScarCode').getValue();
         me.bean.IN_CTABANK = Ext.getCmp(prototype.id + '-txtCTABANK').getValue();
         

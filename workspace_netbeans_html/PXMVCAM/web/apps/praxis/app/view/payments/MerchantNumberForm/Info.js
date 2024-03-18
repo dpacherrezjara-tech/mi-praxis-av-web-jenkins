@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                             padding: '1',
                             border: true,
                             height: 550,
-                            width: 790,
+                            width: 1600,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
                                     height: 510,
-                                    width: 790,
+                                    width: 1600,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -68,10 +68,18 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                         items: [
                                             
                                             {text: 'Nbr', dataIndex: 'RN', width: 40},
-                                            {text: 'Merchant Code', dataIndex: 'CMERCHAN', width: 210,
+                                            {text: 'Merchant Code', dataIndex: 'CMERCHAN', width: 145,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
-                                                    metaData.style = "text-align:left;";
+                                                    metaData.style = "text-align:center;";
+                                                    
+                                                    return  value;
+                                                }
+                                            },
+                                            {text: 'Merchant Branch', dataIndex: 'SUCMERCH', width: 128,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
                                                     
                                                     return  value;
                                                 }
@@ -84,8 +92,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'Code Card', dataIndex: 'SCARCOD', width: 90},
-                                                    {text: 'Cta Bank', dataIndex: 'CTABANK', width: 125 }
+                                                    {text: 'Code Card', dataIndex: 'CODE', width: 90},
+                                                    {text: 'Card Name', dataIndex: 'CORE', width: 136, align: 'left' }
                                                 ]
                                             },
 //                                          
@@ -96,11 +104,15 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Nrc Code', dataIndex: 'CODEBANKA', width: 70, align: 'center'},
-                                                    {text: 'Code', dataIndex: 'CODEBANK', width: 70, align: 'center'},
-                                                    {text: 'Country', dataIndex: 'COUNTRY', width: 140, align: 'center'}
+                                                    {text: 'Code Bank', dataIndex: 'CODEBANK', width: 79, align: 'center'},
+                                                    {text: 'Name Bank', dataIndex: 'BANKNAM', width: 317, align: 'left'},
+                                                    {text: 'Cta Bank', dataIndex: 'ACCNUMB', width: 124, align: 'center'}
                                                 ]
                                             },
+                                            {text: 'Deu. SAP', dataIndex: 'DEUSAP', width: 124},
+                                            {text: 'Agent', dataIndex: 'SAGENT', width: 124},
+                                            {text: 'Canal', dataIndex: 'CANAL', width: 124},
+                                            {text: 'Franchise', dataIndex: 'FRANC1', width: 124},
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
@@ -110,7 +122,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                 align: 'center',
                                                 items: [
                                                     {
-                                                        iconCls: 'prx-icon-edit',
+                                                        iconCls: 'prx-icon-eye',
                                                         tooltip: 'View',
                                                         handler: 'onEditClick'
                                                     }

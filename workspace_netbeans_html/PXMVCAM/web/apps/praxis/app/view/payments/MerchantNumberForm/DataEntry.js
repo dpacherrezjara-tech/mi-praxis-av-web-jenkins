@@ -70,9 +70,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtMERCHN',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[0-9]/,
@@ -112,20 +112,20 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 250},
                                     {
                                         xtype: 'label',
-                                        text: 'Code Card',
+                                        text: 'Code Bank',
                                         style: 'font-weight:bold;',
                                         width: 80
                                     },
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-de-txtSCARCOD',
-                                        fieldStyle: 'text-align:left',
+                                        id: prototype.id + '-de-txtCODEBANK',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
-                                        maskRe: /[0-9]/,
+                                        maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 80
                                     },
@@ -140,9 +140,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtCTABANK',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[0-9]/,
@@ -173,9 +173,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtAFBRANCH',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -195,7 +195,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         id: prototype.id + '-de-txtACQPROC',
                                         fieldStyle: 'text-align:left',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
 //                                        maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -213,9 +213,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtAPCODE',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -235,7 +235,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         id: prototype.id + '-de-txtDOWNREPORT',
                                         fieldStyle: 'text-align:left',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
 //                                        maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -271,9 +271,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtFRANCH1',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -291,9 +291,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtFRANCH2',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -311,9 +311,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtFRANCH3',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -331,9 +331,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtFRANCH4',
-                                        fieldStyle: 'text-align:left',
+                                        fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
-                                        editable: true,
+                                        editable: false,
                                         enabled: false,
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
@@ -529,31 +529,31 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                             items: [
                                                                 
                                                                 {
-                                                                    text: 'Debtor SAP', dataIndex: 'DSAP', width: 140
+                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 140
                                                                 },
                                                                 {
-                                                                    text: 'ATA', dataIndex: 'ATA', width: 148
+                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 148
                                                                 },
                                                                 {
                                                                     text: 'Channel', dataIndex: 'CANAL', width: 130
                                                                 },
                                                                 {
-                                                                    text: 'Process', dataIndex: 'PROCESS', width: 230
+                                                                    text: 'Process', dataIndex: 'PROCES', width: 230
                                                                 },
                                                                 {
-                                                                    text: 'Country Code', dataIndex: 'COUNTRY', width: 160
+                                                                    text: 'Country Code', dataIndex: 'SCOUNTRY', width: 160
                                                                 },
                                                                 {
-                                                                    text: 'Country', dataIndex: 'descCOUNTRY', width: 200
+                                                                    text: 'Country', dataIndex: 'NAME', width: 200, align: 'left'
                                                                 },
                                                                 {
-                                                                    text: 'Sales Company', dataIndex: 'SOCVENTA', width: 120
+                                                                    text: 'Sales Company', dataIndex: 'SOCIETY', width: 120
                                                                 },
                                                                 {
-                                                                    text: 'Currency', dataIndex: 'MONVENTA', width: 130
+                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 130
                                                                 },
                                                                 {
-                                                                    text: 'Profit Center', dataIndex: 'PROCENTER', width: 150
+                                                                    text: 'Profit Center', dataIndex: 'SBENCEN', width: 150
                                                                 },
                                                                 {
                                                                     sortable: false,
@@ -605,26 +605,39 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                             },
                                                             items: [
                                                                 {
-                                                                    text: 'Bank Code', dataIndex: 'BANKCODE', width: 173
+                                                                    text: 'Bank Code', dataIndex: 'CODEBANK', width: 100
                                                                 },
                                                                 {
-                                                                    text: 'Bank Name', dataIndex: 'BANKNAME', width: 260
+                                                                    text: 'Bank Name', dataIndex: 'BANKNAM', width: 317, align: 'left'
                                                                 },
                                                                 {
-                                                                    text: 'Bank Company', dataIndex: 'BANKCOMP', width: 185
+                                                                    text: 'Bank Company', dataIndex: 'BANKCM', width: 100
                                                                 },
                                                                 {
-                                                                    text: 'Deposit Currency', dataIndex: 'DEPCURR', width: 185
+                                                                    text: 'Deposit Currency', dataIndex: 'BANKCUR', width: 131
                                                                 },
                                                                 {
-                                                                    text: 'Account Number', dataIndex: 'ACCNUMBER', width: 205
+                                                                    text: 'Account Number', dataIndex: 'ACCNUMB', width: 120
                                                                 },
                                                                 {
-                                                                    text: 'Auxiliary Bank<br>Accounting Account', dataIndex: 'AUXACCACCO', width: 200
+                                                                    text: 'Auxiliary Bank<br>Accounting Account', dataIndex: 'ACCNUMA', width: 160
                                                                 },
                                                                 {
-                                                                    text: 'Profit Center Bank', dataIndex: 'AUXACCACCO', width: 200
+                                                                    text: 'Profit Center Bank', dataIndex: 'BENCEN', width: 160
                                                                 },
+                                                                {
+                                                                    text: 'Franchise 1', dataIndex: 'FRANC1', width: 80
+                                                                },
+                                                                {
+                                                                    text: 'Franchise 2', dataIndex: 'FRANC2', width: 80
+                                                                },
+                                                                {
+                                                                    text: 'Franchise 3', dataIndex: 'FRANC3', width: 80
+                                                                },
+                                                                {
+                                                                    text: 'Franchise 4', dataIndex: 'FRANC4', width: 80
+                                                                },
+                                                                
                                                                 {
                                                                     sortable: false,
                                                                     xtype: 'actioncolumn',

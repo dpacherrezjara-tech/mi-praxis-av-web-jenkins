@@ -69,4 +69,12 @@ public class MerchantNumberLogic {
     public A2354Filter loadPX305SQP00935(A2354Filter filter) throws Exception {
         return MerchantNumberDAO.loadPX305SQP00935(filter);
     }
+    
+    public List<A2354Filter> loadPX305SQP00939(A2354Filter filter) throws Exception {
+        return MerchantNumberDAO.loadPX305SQP00939(filter);
+    }
+    
+    public List<A2354Filter> loadPX305SQP00940(A2354Filter filter) throws Exception {
+        return MerchantNumberDAO.loadPX305SQP00940(filter);
+    }
 }
