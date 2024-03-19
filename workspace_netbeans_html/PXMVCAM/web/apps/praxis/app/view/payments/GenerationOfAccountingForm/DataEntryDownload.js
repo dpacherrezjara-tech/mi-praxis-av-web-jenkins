@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntryDownloa
                         {
                             xtype: 'panel',
                             id: prototype.id01 + '-form-radiofields',
-                            layout: 'hbox',
+                            layout: 'vbox',
                             border: false,
                             margin: '5 5 1 1',
                             width: 150,

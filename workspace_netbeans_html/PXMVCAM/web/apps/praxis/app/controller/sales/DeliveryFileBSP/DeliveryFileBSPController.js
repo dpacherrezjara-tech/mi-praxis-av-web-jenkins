@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.controller.sales.DeliveryFileBSP.DeliveryFileBSPControlle
     // <editor-fold defaultstate="collapsed" desc="Options">
     imgSearch_clickHandler: function(obj, e) {
         this.bean.IN_OPCION = this.getValue("cmbDate");;
-	this.bean.IN_CCUST = '139';
+	this.bean.IN_CCUST = '134';
 	this.bean.IN_SOURC = 'BSP';
 	this.bean.IN_PAIS = this.getValue("txtCampo2");
 	this.bean.IN_CITY = this.getValue("txtCampo3");
@@ -126,7 +126,7 @@ Ext.define('Ext.Praxis.controller.sales.DeliveryFileBSP.DeliveryFileBSPControlle
     imgTxt_clickHandler: function(obj, e) {
         var beanTXT = {};
         beanTXT.IN_OPCION = this.getValue("cmbDate");
-	beanTXT.IN_CCUST = '139';
+	beanTXT.IN_CCUST = '134';
 	beanTXT.IN_SOURC = 'BSP';
 	beanTXT.IN_PAIS = this.getValue("txtCampo2");
 	beanTXT.IN_CITY = this.getValue("txtCampo3");

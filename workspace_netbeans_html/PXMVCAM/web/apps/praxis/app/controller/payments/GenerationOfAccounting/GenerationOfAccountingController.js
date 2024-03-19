@@ -62,10 +62,9 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
     setFormatParameter: function () {
         var me = this;
         me.bean = {};
-        me.bean.VP_OPCION = Ext.getCmp(prototype.id + '-cmbfiltro').getValue();
-        //enviar siempre las mismas fechas
+        me.bean.VP_OPCION = Ext.getCmp(prototype.id + '-cmbfiltro').getValue();        
         me.bean.VP_FDATE1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha1').getValue(), 'Ymd');
-        me.bean.VP_FDATE2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha1').getValue(), 'Ymd'); //ojo
+        me.bean.VP_FDATE2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha2').getValue(), 'Ymd');  
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString

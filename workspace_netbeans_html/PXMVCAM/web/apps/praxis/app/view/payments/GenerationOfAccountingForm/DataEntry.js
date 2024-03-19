@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
         'Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGenerationOfAccountingController'
     ],
     controller: 'DataEntryGenerationOfAccountingController',
-    title: 'Generate file interface',
+    title: 'Processing',
     header: true,
 //    height:920,
     width: 550,
@@ -30,37 +30,90 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                 {
                     xtype: 'panel',
                     id: prototype.id + '-form01',
-                    layout: 'hbox',
+                    layout: 'vbox',
                     width: '100%',
                     padding: '5 0 0 0',
                     items: [
                         {
                             xtype: 'panel',
-                            layout: 'hbox',
+                            layout: 'vbox',
                             border: false,
-                            margin: '5 5 1 1',                            
-                            width: 150,
+                            margin: '5 5 1 1',
+                            //width: 150,
                             items: [
                                 {
                                     xtype: 'radiofield',
-                                    id: prototype.id + '-op01',
-                                    name: prototype.id + '-op',
-                                    boxLabel: 'File Interface',
+                                    id: prototype.id + '-op00',
+                                    name: prototype.id + '-op',                                    
+                                    boxLabel: 'Accounting',
                                     margin: '2 2 2 10',
-                                    checked: true
+                                    checked: false,
+                                    disabled:true,
+                                    hidden:true
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '5 5 1 1',
+                                    //width: 150,
+                                    items: [
+                                        {
+                                            xtype: 'radiofield',
+                                            id: prototype.id + '-op01',
+                                            name: prototype.id + '-op',
+                                            boxLabel: 'File Interface',
+                                            margin: '2 2 2 10',
+                                            checked: true                                            
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck01',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'Passage',
+                                            margin: '2 2 2 10',
+                                            checked: true
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck02',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'Cargo',
+                                            margin: '2 2 2 10',
+                                            checked: false
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck03',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'Mail',
+                                            margin: '2 2 2 10',
+                                            checked: false
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck04',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'Adjustment',
+                                            margin: '2 2 2 10',
+                                            checked: false
+                                        }
+                                    ]
+
                                 }
                             ]
                         },
                         {
                             xtype: 'panel',
                             layout: 'hbox',
-                            border: false,                            
-                            margin: '5 5 1 1',
+                            border: false,
+                            margin: '10 0 10 0', //top left bottom  righ
                             items: [
                                 {
                                     xtype: 'datefield',
                                     id: prototype.id + '-PSTGD1',
-                                    fieldLabel: 'Date', labelAlign: 'right', labelStyle: 'font-weight: bold;', labelWidth: 90,
+                                    fieldLabel: 'Date', labelAlign: 'right', labelStyle: 'font-weight: bold;', 
+                                    labelWidth: 50,
                                     width: 190, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
                                     format: 'Ymd',
                                     invalidText: 'Ingrese fecha valida en formato Ymd',
@@ -92,7 +145,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     value: new Date(),
                                     maskRe: /[0-9/]/,
                                     editable: true,
-                                    hidden:true,
+                                    hidden: true,
                                     enableKeyEvents: true,
                                     enforceMaxLength: true,
                                     maxLength: 12,
@@ -107,10 +160,10 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                             ]
                         }
                     ]
-                },               
+                },
                 {
                     xtype: 'label',
-                    padding: '0 0 0 5',
+                    padding: '10 0 10 0',                    
                     html: '<font color="green"><h3 id="GenerationOfAccountingFormMsg">...</h3></font>'
                 }
             ]

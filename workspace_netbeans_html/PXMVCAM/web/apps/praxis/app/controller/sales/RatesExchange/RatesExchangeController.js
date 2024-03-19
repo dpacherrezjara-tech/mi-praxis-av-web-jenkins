@@ -226,8 +226,8 @@ Ext.define('Ext.Praxis.controller.sales.RatesExchange.RatesExchangeController', 
                 ["A018", "IATA Rate"],
                 ["A110", "IATA Variation"],
                 ["A1343", "BSR Rate"],
-                ["A1526", "AM Rate"],
-                ["A4061", "AM Filtc"]
+                ["A1526", "AV Rate"],
+                ["A4061", "AV Filtc"]
             ]
         }));
         cmbSearch.setValue('A018');
