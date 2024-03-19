@@ -70,7 +70,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlASR.CalendarControlASRCon
                 res = res.data;
                 var panel = Ext.getCmp(prototype.id + '-contenedor-calendario');
                 var calendar = Ext.create('MtCalendar',{
-                    fuente:'ASR',
+                    fuente:'AMA',
                     year:bean.IN_A1528FPRO,
                     items: res,
                     listeners:{
@@ -95,7 +95,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlASR.CalendarControlASRCon
     getRegularization: function(year,week,fecha) {
         var winRegularization = Ext.create('Ext.window.Window', {
             id: prototype.id + '-win-regularization',
-            title: 'ASR - ' + fecha,
+            title: 'AMA - ' + fecha,
             header: true,
             height: 150,
             width: 470,

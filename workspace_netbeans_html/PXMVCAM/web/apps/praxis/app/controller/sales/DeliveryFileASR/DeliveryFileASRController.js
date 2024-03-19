@@ -61,7 +61,7 @@ Ext.define('Ext.Praxis.controller.sales.DeliveryFileASR.DeliveryFileASRControlle
         this.setData(obj, e);
     },
     setFormatParameter: function() {
-        var IN_CCUST = '139';
+        var IN_CCUST = '134';
         var IN_PRDA = Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtCampo').getValue(), 'Ymd');
 
         searchParams = {

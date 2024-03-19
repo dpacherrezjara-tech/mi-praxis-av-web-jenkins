@@ -13,7 +13,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
             var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
             panel.removeAll();
             for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
-                //console.log('i>>' + i);
+//                console.log('i>>' + i);
                 var radioField = Ext.create({
                     xtype: 'radiofield',
                     id: prototype.id01 + '-op' + i,
@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                     boxLabel: this.bean.A4556TFILE_0 + ' ' + i,
                     margin: '2 2 2 10',
                     checked: i === 1 ? true : false
-                });
+                });                
                 panel.add(radioField);
             }
         }
@@ -36,7 +36,25 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     llenarData: function (beanTemp) {
         beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
         beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
-        beanTemp.VP_TIPO = "*";  //ALL              
+        beanTemp.VP_TIPO = "";  
+        var vl_pasaje = "X";
+        var vl_carga = "X";
+        var vl_correo = "X";
+        var vl_ajuste = "X";
+        
+        var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
+        var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
+        var vl_ck03 = Ext.getCmp(prototype.id + '-ck03').getValue();
+        var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
+                
+        if(vl_ck01) vl_pasaje = 'P';
+        if(vl_ck02) vl_carga = 'A';
+        if(vl_ck03) vl_correo = 'C'; 
+        if(vl_ck04) vl_ajuste = 'J'; 
+        
+        beanTemp.VP_TIPO = vl_pasaje+vl_carga+vl_correo+vl_ajuste; 
+       
+        
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {

@@ -76,7 +76,7 @@ Ext.define('Ext.Praxis.controller.sales.DeliveryFileARC.DeliveryFileARCControlle
         this.setData(obj, e);
     },
     setFormatParameter: function() {
-        var IN_CCUST = '139';
+        var IN_CCUST = '134';
         var IN_SOURCEINF = Ext.getCmp(prototype.id + '-cmbBanco').getValue();
         var IN_PRDA = Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtCampo').getValue(), 'Ymd');
 

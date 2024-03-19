@@ -11,7 +11,7 @@ Ext.define('Ext.global.MtCalendar',{
 
         var vhtml = '';
 
-        if ( me.fuente == 'ARC' ){
+        if ( me.fuente === 'ARC' ){
             vhtml+='<div class="mt-calendar">';
                vhtml+='<div class="mt-header" align="right">';
                     vhtml+='<div align="center" style="width: 700px !important;">    ';
@@ -142,11 +142,11 @@ Ext.define('Ext.global.MtCalendar',{
                     me.addEvtListener();
                 }
             };
-        }else if( me.fuente == 'ASR' ){
+        }else if( me.fuente === 'AMA' ){
             vhtml+='<div class="mt-calendar" style="width: 590px !important;">';
                vhtml+='<div class="mt-header" align="right">';
                     vhtml+='<div align="center">    ';
-                        vhtml+='<span style="display: block !important; margin: 10px !important; font-size: 18px;">ASR CALENDAR ' + me.year + '</span>';
+                        vhtml+='<span style="display: block !important; margin: 10px !important; font-size: 18px;">AMADEUS CALENDAR ' + me.year + '</span>';
                     vhtml+='</div>';
                     vhtml+='<div>';
                         vhtml+='<div style="width: 40px;">Qtr</div>';
@@ -227,7 +227,7 @@ Ext.define('Ext.global.MtCalendar',{
                     me.addEvtListener();
                 }
             };
-        } else if( me.fuente == 'BSP' ){
+        } else if( me.fuente === 'BSP' ){
             vhtml+='<div class="mt-calendar" style="width: 1040px !important;">';
                vhtml+='<div class="mt-header" align="right">';
                     vhtml+='<div align="center">    ';
