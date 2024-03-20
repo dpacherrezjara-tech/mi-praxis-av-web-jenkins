@@ -64,9 +64,9 @@ public String ACCNUMA = "";
 public String BENCEN = "";
 public String DEUSAP = "";
 public String SAGENT = "";
-public String CANAL = "";
+
+public String CANALM = "";
 public String PROCES = "";
-public String SCOUNTRY = "";
 
 public String SOCIETY = "";
 public String SCURRENCY = "";

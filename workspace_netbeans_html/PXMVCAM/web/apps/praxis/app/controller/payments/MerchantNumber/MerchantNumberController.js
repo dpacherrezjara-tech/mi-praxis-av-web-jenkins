@@ -186,8 +186,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            console.log('---------bindstore-------------')
             console.log(storeGridDatas, 'storeGridDatas')
+            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            
         }
     },
     // </editor-fold>

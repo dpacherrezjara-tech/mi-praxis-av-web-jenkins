@@ -507,7 +507,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             xtype: 'label',
                             text: 'Status :',
                             padding: '3 0',
-                            hidden: true,
+                            hidden: false,
                             width: 74,
                             autoEl: {
                                 tag: 'label',
@@ -532,7 +532,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             editable: true,
                             width: 150,
                             value: "",
-                            hidden: true,
+                            hidden: false,
                             typeAhead: true,
                             valueField: 'value', displayField: 'description',
                             enableKeyEvents: true,
@@ -545,7 +545,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             xtype: 'label',
                             text: 'Amount :',
                             padding: '3 0',
-                            hidden: true,
+                            hidden: false,
                             width: 74,
                             autoEl: {
                                 tag: 'label',
@@ -559,7 +559,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             enforceMaxLength: true,
                             maskRe: /[0-9.]/, // Permitir solo números y el punto decimal
                             maxLength: 20,
-                            hidden: true,
+                            hidden: false,
                             width: 192,
                             enableKeyEvents: true,
                             listeners: {
