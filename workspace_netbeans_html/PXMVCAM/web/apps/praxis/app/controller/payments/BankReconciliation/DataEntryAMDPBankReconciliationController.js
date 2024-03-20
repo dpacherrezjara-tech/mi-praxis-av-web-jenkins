@@ -996,7 +996,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                DATEC: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
+                DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
 
                         // Agrega más campos según sea necesario
             };
@@ -1029,7 +1029,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
                     BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
                     CFUENTE: record.get('CFUENTE'), ///CFUENTE
-                    ADATEC: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue()
+                    ADATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue()
                 };
                 listaDeDatos.push(registro);
             });
