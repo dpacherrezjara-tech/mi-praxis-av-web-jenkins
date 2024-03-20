@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
 //                            padding: '1',
                             border: true,
                             height: 550,
-                            width: 1600,
+                            width: 1510,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
                                     height: 510,
-                                    width: 1600,
+                                    width: 1510,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -93,26 +93,29 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                 },
                                                 columns: [
                                                     {text: 'Code Card', dataIndex: 'CODE', width: 90},
-                                                    {text: 'Card Name', dataIndex: 'CORE', width: 136, align: 'left' }
+                                                    {text: 'Card Name', dataIndex: 'CORE', width: 191, align: 'left' }
                                                 ]
                                             },
 //                                          
-                                            {text: 'Bank',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Code Bank', dataIndex: 'CODEBANK', width: 79, align: 'center'},
-                                                    {text: 'Name Bank', dataIndex: 'BANKNAM', width: 317, align: 'left'},
-                                                    {text: 'Cta Bank', dataIndex: 'ACCNUMB', width: 124, align: 'center'}
-                                                ]
-                                            },
-                                            {text: 'Deu. SAP', dataIndex: 'DEUSAP', width: 124},
-                                            {text: 'Agent', dataIndex: 'SAGENT', width: 124},
-                                            {text: 'Canal', dataIndex: 'CANAL', width: 124},
-                                            {text: 'Franchise', dataIndex: 'FRANC1', width: 124},
+//                                            {text: 'Bank',
+//                                                defaults: {
+//                                                    menuDisabled: true,
+//                                                    sortable: true,
+//                                                    align: 'center'
+//                                                },
+//                                                columns: [
+//                                                    {text: 'Code Bank', dataIndex: 'CODEBANK', width: 79, align: 'center'},
+//                                                    {text: 'Name Bank', dataIndex: 'BANKNAM', width: 317, align: 'left'},
+//                                                    {text: 'Cta Bank', dataIndex: 'ACCNUMB', width: 124, align: 'center'}
+//                                                ]
+//                                            },
+//                                            {text: 'Deu. SAP', dataIndex: 'DEUSAP', width: 124},
+//                                            {text: 'Agent', dataIndex: 'SAGENT', width: 124},
+                                            {text: 'Mode Down Report', dataIndex: 'DREPORT', width: 378},
+                                            {text: 'Franchise 1', dataIndex: 'FRANC1', width: 124},
+                                            {text: 'Franchise 2', dataIndex: 'FRANC2', width: 124},
+                                            {text: 'Franchise 3', dataIndex: 'FRANC3', width: 124},
+                                            {text: 'Franchise 4', dataIndex: 'FRANC4', width: 124},
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
