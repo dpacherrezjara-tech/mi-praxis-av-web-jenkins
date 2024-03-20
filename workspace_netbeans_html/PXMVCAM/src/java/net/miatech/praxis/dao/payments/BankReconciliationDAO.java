@@ -507,41 +507,43 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698Detalle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698Detalle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(13, Types.INTEGER);
-            cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
             cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
+            cstmt.registerOutParameter(18, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_SDATE);
-            cstmt.setString(3, filter.IN_TDOC);
-            cstmt.setString(4, filter.IN_COUNTRY);
-            cstmt.setString(5, filter.IN_CARDN1.trim());
-            cstmt.setString(6, filter.IN_CARDN2.trim());
-            cstmt.setString(7, filter.IN_SCARDNCOR.trim());
-            cstmt.setString(8, filter.IN_SAUTHOC.trim());
-            cstmt.setString(9, filter.IN_STVAL.trim());
-            cstmt.setString(10, filter.IN_NEGOC.trim());
-            cstmt.setString(11, filter.IN_COMENT.trim());
-            cstmt.setString(12, filter.IN_AGENCY.trim());
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SDATE);
+            cstmt.setString(5, filter.IN_TDOC);
+            cstmt.setString(6, filter.IN_COUNTRY);
+            cstmt.setString(7, filter.IN_CARDN1.trim());
+            cstmt.setString(8, filter.IN_CARDN2.trim());
+            cstmt.setString(9, filter.IN_SCARDNCOR.trim());
+            cstmt.setString(10, filter.IN_SAUTHOC.trim());
+            cstmt.setString(11, filter.IN_STVAL.trim());
+            cstmt.setString(12, filter.IN_NEGOC.trim());
+            cstmt.setString(13, filter.IN_COMENT.trim());
+            cstmt.setString(14, filter.IN_AGENCY.trim());
 
-            cstmt.setInt(13, filter.page.PAGNUM);
-            cstmt.setInt(14, filter.page.PAGROW);
-            cstmt.setInt(15, filter.page.TOTPAG);
-            cstmt.setInt(16, filter.page.TOTROW);
+            cstmt.setInt(15, filter.page.PAGNUM);
+            cstmt.setInt(16, filter.page.PAGROW);
+            cstmt.setInt(17, filter.page.TOTPAG);
+            cstmt.setInt(18, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(13);
-            filter.page.PAGROW = cstmt.getInt(14);
-            filter.page.TOTPAG = cstmt.getInt(15);
-            filter.page.TOTROW = cstmt.getInt(16);
+            filter.page.PAGNUM = cstmt.getInt(15);
+            filter.page.PAGROW = cstmt.getInt(16);
+            filter.page.TOTPAG = cstmt.getInt(17);
+            filter.page.TOTROW = cstmt.getInt(18);
 
             rst = cstmt.getResultSet();
 
