@@ -548,7 +548,7 @@ public class MerchantNumberDAO {
                 bean.CANAL     = rst.getString("CANAL").trim();
                 bean.PROCES    = rst.getString("PROCES").trim();
                 bean.SCOUNTRY  = rst.getString("SCOUNTRY").trim();
-                bean.NAME      = rst.getString("NAME").trim();
+//                bean.NAME      = rst.getString("NAME").trim();
                 bean.SOCIETY   = rst.getString("SOCIETY").trim();
                 bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                 bean.SBENCEN   = rst.getString("SBENCEN").trim();
@@ -909,7 +909,7 @@ public class MerchantNumberDAO {
                 objRtn.CANAL     = rs01.getString("CANAL").trim();
                 objRtn.PROCES    = rs01.getString("PROCES").trim();
                 objRtn.SCOUNTRY  = rs01.getString("SCOUNTRY").trim();
-                objRtn.NAME      = rs01.getString("NAME").trim();
+//                objRtn.NAME      = rs01.getString("NAME").trim();
                 objRtn.SOCIETY   = rs01.getString("SOCIETY").trim();
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN   = rs01.getString("SBENCEN").trim();
@@ -1032,7 +1032,7 @@ public class MerchantNumberDAO {
                 objRtn.CANAL    = rs01.getString("CANAL").trim();
                 objRtn.PROCES    = rs01.getString("PROCES").trim();
                 objRtn.SCOUNTRY  = rs01.getString("SCOUNTRY").trim();
-                objRtn.NAME   = rs01.getString("NAME").trim();
+//                objRtn.NAME   = rs01.getString("NAME").trim();
                 objRtn.SOCIETY    = rs01.getString("SOCIETY").trim();
                 objRtn.SCURRENCY   = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN   = rs01.getString("SBENCEN").trim();

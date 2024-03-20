@@ -93,21 +93,14 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {
                                        xtype: 'textfield',
                                        id: prototype.id + '-de-txtSCOUNTRY',
-                                       queryMode: 'local',
-                                       width: 130,
-                                       fieldStyle: 'color:#074066;',
-                                       forceSelection: true,
-                                       selectOnFocus: false,
-                                       caseSensitive: false,
-                                       hidden: false,
-                                       autoSelect: true,
+                                       enforceMaxLength: true,
                                        editable: false,
-                                       disabled: false,
-                                       typeAhead: true,
-                                       valueField: 'code',
-                                       displayField: 'name',
-                                       enableKeyEvents: true,
-                                       triggerAction: 'all'
+                                       enabled: false,
+                                       maxLength: 2,
+                                       maskRe: /[a-zA-Z0-9]/,
+                                       readOnly: false,
+                                       width: 130
+
                                     },
                                     {xtype: 'tbspacer', width: 250},
                                     {

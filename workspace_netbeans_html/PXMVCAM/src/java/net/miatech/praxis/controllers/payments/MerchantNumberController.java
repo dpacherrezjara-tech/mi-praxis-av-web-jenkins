@@ -447,31 +447,6 @@ public class MerchantNumberController extends BaseController {
         return new Gson().toJson(map);
     }
     
-//    @RequestMapping(value = "searchBanks")
-//    public @ResponseBody
-//    String searchBanks(ModelMap map, HttpServletRequest request) {
-//        System.out.println("-------------- MerchantNumber : searchBanks-------------");
-//
-//        Gson gson = new Gson();
-//        A2354Filter filter = new A2354Filter();
-//        A2354Filter result = new A2354Filter();
-//        List<A2354Filter> lst = new ArrayList<>(0);
-//        String beanString = request.getParameter("beanString");
-//        filter = gson.fromJson(beanString, A2354Filter.class);
-//
-//        logic = new MerchantNumberLogic();
-//        logic.setSession(this.serverSession.getServerSession());
-//        try {
-//            result = logic.loadPX305SQP00939(filter);
-//            map.put("result", result);
-//            map.put("success", true);
-//        } catch (Exception ex) {
-//            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
-//            map.put("success", false);
-//        }
-//        return new Gson().toJson(map);
-//    }
-    
     @RequestMapping(value = "searchBanks")
     public @ResponseBody
     String searchBanks(ModelMap map, HttpServletRequest request) {
