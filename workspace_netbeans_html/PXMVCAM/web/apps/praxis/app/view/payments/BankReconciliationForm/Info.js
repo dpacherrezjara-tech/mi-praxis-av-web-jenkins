@@ -2227,6 +2227,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         iconCls: 'prx-icon-back',
                                         tooltip: 'Back'
                                     },
+                                    {xtype: 'label', id: prototype.id + '-labelMPF101', style: 'font-weight:bold;color:#0B333C;'},
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridDetailTeleworking',

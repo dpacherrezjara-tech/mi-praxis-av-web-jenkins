@@ -2479,6 +2479,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.beanDetailTW.strSQL = '';
         
         console.log(me.beanDetailTW);
+        me.imgClearRowAll();
+        me.obtainFields('MPF101','');
         this.viewMPF101_clickHandler(me.beanDetailTW);
         
     },
@@ -2550,13 +2552,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         var gridDataTeleworking = Ext.getCmp(prototype.id + '-gridDataTeleworking');
                         var panelDetailTW = Ext.getCmp(prototype.id + '-panelDetailTW');
                         var panelFilters2 = Ext.getCmp(prototype.id + '-panelFilters2');
-        
+                        
 //                        panelFilters2.setVisible(false);
                         gridDataTeleworking.setVisible(false);
                         panelDetailTW.setVisible(true);
-                        me.obtainFields('MPF101','');
+                        Ext.getCmp(prototype.id + '-labelMPF101').setText('Ticket : ' + me.beanDetailTW.strTicket);
                         
-                        me.imgClearRowAll();
                     } else {
                         global.Msg({msg: 'Data not found'});
                     }
