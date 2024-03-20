@@ -29,7 +29,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                     bodyStyle: 'background:#E5ECEF;',
                     layout: 'vbox',
                     width: 1450,
-                    margin: '5 0 0 0',
+                    margin: '0 0 0 20',
                     defaults: {
                         anchor: '100%'
                     },
@@ -42,7 +42,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
+                                margin: '20 20 20 20',
                                 defaults: {
                                     anchor: '100%',
                                     width: 1450
@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                        enforceMaxLength: true,
                                        editable: false,
                                        enabled: false,
-                                       maxLength: 2,
+                                       maxLength: 50,
                                        maskRe: /[a-zA-Z0-9]/,
                                        readOnly: false,
                                        width: 130
@@ -336,144 +336,144 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 45},
                                 ]
                             },
-                            {
-                                xtype: 'panel',
-                                layout: 'hbox',
-                                margin: '20 0 0 0',
-                                items: [
-                                    {
-                                        xtype: 'panel',
-                                        layout: 'hbox',
-                                        items: [
-                                            {
-                                                 xtype: 'panel',
-                                                 id: prototype.id + '-boxPaginacionDE',
-                                                 hidden: false,
-                                                 width: 100,
-                                                 border: false,
-                                                 margin: '0 0 0 1178',
-                                                 items: [
-                                                     {
-                                                         xtype: 'toolbar',
-                                                         cls: 'x-toolbar-pag',
-                                                         items: [
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btn-pag-firstDE',
-                                                                 iconCls: 'prx-icon-pagination-first',
-                                                                 tooltip: 'First Page'
-
-                                                             },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btn-pag-previousDE',
-                                                                 iconCls: 'prx-icon-pagination-previous',
-                                                                 tooltip: 'Previous Page'
-
-                                                             },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btn-pag-nextDE',
-                                                                 iconCls: 'prx-icon-pagination-next',
-                                                                 tooltip: 'Next Page'
-
-                                                             },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btn-pag-lastDE',
-                                                                 iconCls: 'prx-icon-pagination-last',
-                                                                 tooltip: 'Last Page'
-
-                                                             },
-                                                             {
-                                                                 xtype: 'pagingtoolbar',
-                                                                 id: prototype.id + '-pagginDE',
-                                                                 pageSize: 10,
-                                                                 border: false,
-                                                                 displayInfo: false,
-                                                                 hidden: true
-                                                             }
-
-                                                         ]
-                                                     }
-                                                 ]
-                                             },
-                                             {xtype: 'tbspacer', width: 20},
-                                             {
-                                                 xtype: 'panel',
-                                                 border: true,
-                                                 items: [
-                                                     {
-                                                         xtype: 'toolbar',
-                                                         items: [
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btnSearchDE',
-                                                                 iconCls: 'prx-icon-search',
-                                                                 tooltip: 'Search'
-                                                             },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btnFilterDE',
-                                                                 iconCls: 'prx-icon-filter',
-                                                                 tooltip: 'Display filter'
-
-                                                             },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btnAddDE',
-                                                                 iconCls: 'prx-icon-add',
-                                                                 tooltip: 'New'
-                                                             },
-                                     //                        {
-                                     //                            xtype:'button',
-                                     //                            id: prototype.id+'-btnDisplay',
-                                     //                            icon: 'resources/img/botones/FalseChart.png',
-                                     //                            tooltip: 'Display Charts',
-                                     //                            listeners: {
-                                     //                                click: 'btnDisplay_click'
-                                     //                            }
-                                     //                        },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btnExcelDE',
-                                                                 iconCls: 'prx-icon-excel',
-                                                                 tooltip: 'Export to Excel'
-                                                             },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btnClearDE',
-                                                                 iconCls: 'prx-icon-clear',
-                                                                 tooltip: 'Clear Options'
-                                                             },
-                                     //                        {
-                                     //                            xtype: 'button',
-                                     //                            id: prototype.id+'-btnQuery',
-                                     //                            icon: 'resources/img/botones/query.png',
-                                     //                            tooltip: 'Query',
-                                     //                            listeners: {
-                                     //                                click: 'btnQuery_click'
-                                     //                            }
-                                     //                        },
-                                                             {
-                                                                 xtype: 'button',
-                                                                 id: prototype.id + '-btnBackDE',
-                                                                 iconCls: 'prx-icon-back',
-                                                                 tooltip: 'Back'
-                                                             }
-                                                         ]
-                                                     }
-                                                 ]
-                                             }
-                                        ]
-                                     },
-                                ]
-                            },
+//                            {
+//                                xtype: 'panel',
+//                                layout: 'hbox',
+//                                margin: '20 0 0 0',
+//                                items: [
+//                                    {
+//                                        xtype: 'panel',
+//                                        layout: 'hbox',
+//                                        items: [
+//                                            {
+//                                                 xtype: 'panel',
+//                                                 id: prototype.id + '-boxPaginacionDE',
+//                                                 hidden: false,
+//                                                 width: 100,
+//                                                 border: false,
+//                                                 margin: '0 0 0 1178',
+//                                                 items: [
+//                                                     {
+//                                                         xtype: 'toolbar',
+//                                                         cls: 'x-toolbar-pag',
+//                                                         items: [
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btn-pag-firstDE',
+//                                                                 iconCls: 'prx-icon-pagination-first',
+//                                                                 tooltip: 'First Page'
+//
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btn-pag-previousDE',
+//                                                                 iconCls: 'prx-icon-pagination-previous',
+//                                                                 tooltip: 'Previous Page'
+//
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btn-pag-nextDE',
+//                                                                 iconCls: 'prx-icon-pagination-next',
+//                                                                 tooltip: 'Next Page'
+//
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btn-pag-lastDE',
+//                                                                 iconCls: 'prx-icon-pagination-last',
+//                                                                 tooltip: 'Last Page'
+//
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'pagingtoolbar',
+//                                                                 id: prototype.id + '-pagginDE',
+//                                                                 pageSize: 10,
+//                                                                 border: false,
+//                                                                 displayInfo: false,
+//                                                                 hidden: true
+//                                                             }
+//
+//                                                         ]
+//                                                     }
+//                                                 ]
+//                                             },
+//                                             {xtype: 'tbspacer', width: 20},
+//                                             {
+//                                                 xtype: 'panel',
+//                                                 border: true,
+//                                                 items: [
+//                                                     {
+//                                                         xtype: 'toolbar',
+//                                                         items: [
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btnSearchDE',
+//                                                                 iconCls: 'prx-icon-search',
+//                                                                 tooltip: 'Search'
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btnFilterDE',
+//                                                                 iconCls: 'prx-icon-filter',
+//                                                                 tooltip: 'Display filter'
+//
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btnAddDE',
+//                                                                 iconCls: 'prx-icon-add',
+//                                                                 tooltip: 'New'
+//                                                             },
+//                                     //                        {
+//                                     //                            xtype:'button',
+//                                     //                            id: prototype.id+'-btnDisplay',
+//                                     //                            icon: 'resources/img/botones/FalseChart.png',
+//                                     //                            tooltip: 'Display Charts',
+//                                     //                            listeners: {
+//                                     //                                click: 'btnDisplay_click'
+//                                     //                            }
+//                                     //                        },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btnExcelDE',
+//                                                                 iconCls: 'prx-icon-excel',
+//                                                                 tooltip: 'Export to Excel'
+//                                                             },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btnClearDE',
+//                                                                 iconCls: 'prx-icon-clear',
+//                                                                 tooltip: 'Clear Options'
+//                                                             },
+//                                     //                        {
+//                                     //                            xtype: 'button',
+//                                     //                            id: prototype.id+'-btnQuery',
+//                                     //                            icon: 'resources/img/botones/query.png',
+//                                     //                            tooltip: 'Query',
+//                                     //                            listeners: {
+//                                     //                                click: 'btnQuery_click'
+//                                     //                            }
+//                                     //                        },
+//                                                             {
+//                                                                 xtype: 'button',
+//                                                                 id: prototype.id + '-btnBackDE',
+//                                                                 iconCls: 'prx-icon-back',
+//                                                                 tooltip: 'Back'
+//                                                             }
+//                                                         ]
+//                                                     }
+//                                                 ]
+//                                             }
+//                                        ]
+//                                     },
+//                                ]
+//                            },
                             {
                                 xtype: 'panel',
                                 layout: 'hbox',
                                 border: false,
-                                margin: '0 0 0 0',
+                                margin: '35 0 0 0',
                                 
                                 //bodyStyle: 'background:#efe5e5;',
                                 items: [
@@ -489,85 +489,6 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         autoScroll: true,
                                         bodyStyle: 'background: transparent',
                                         items: [
-                                            
-                                            {
-                                                xtype: 'panel',
-                                                title: 'IATAS',
-                                                id: prototype.id + '-panelIATAS',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1450,
-                        //                                                            height: 180,
-                                                hidden: false,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoIATAS',
-                                                        width: 1450,
-                                                        height: 350,
-                                                        columnLines: true,
-                                                        plugins: [
-                                                            {
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
-                                                            },
-                                                            items: [
-                                                                
-                                                                {
-                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 140
-                                                                },
-                                                                {
-                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 148
-                                                                },
-                                                                {
-                                                                    text: 'Channel', dataIndex: 'CANAL', width: 130
-                                                                },
-                                                                {
-                                                                    text: 'Process', dataIndex: 'PROCES', width: 230
-                                                                },
-                                                                {
-                                                                    text: 'Country Code', dataIndex: 'SCOUNTRY', width: 160
-                                                                },
-                                                                {
-                                                                    text: 'Country', dataIndex: 'NAME', width: 200, align: 'left'
-                                                                },
-                                                                {
-                                                                    text: 'Sales Company', dataIndex: 'SOCIETY', width: 120
-                                                                },
-                                                                {
-                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 130
-                                                                },
-                                                                {
-                                                                    text: 'Profit Center', dataIndex: 'SBENCEN', width: 150
-                                                                },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridIATAView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-eye',
-                                                                            tooltip: 'View',
-                                                                            handler: 'onViewIATAClick'
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ]
-                                            },
                                             {
                                                 xtype: 'panel',
                                                 title: 'Bancos',
@@ -651,6 +572,85 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                     }
                                                 ]
                                             },
+                                            {
+                                                xtype: 'panel',
+                                                title: 'IATAS',
+                                                id: prototype.id + '-panelIATAS',
+                                                layout: 'vbox',
+                                                border: false,
+                                                width: 1450,
+                        //                                                            height: 180,
+                                                hidden: false,
+                                                autoScroll: true,
+                                                items: [
+                                                    {
+                                                        xtype: 'grid',
+                                                        id: prototype.id + '-gridDataInfoIATAS',
+                                                        width: 1450,
+                                                        height: 350,
+                                                        columnLines: true,
+                                                        plugins: [
+                                                            {
+                                                                ptype: 'cellediting',
+                                                                clicksToEdit: 1
+                                                            }
+                                                        ],
+                                                        columns: {
+                                                            defaults: {
+                                                                menuDisabled: true,
+                                                                sortable: true,
+                                                                align: 'center'
+                                                            },
+                                                            items: [
+                                                                
+                                                                {
+                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 140
+                                                                },
+                                                                {
+                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 148
+                                                                },
+                                                                {
+                                                                    text: 'Channel', dataIndex: 'CANAL', width: 130
+                                                                },
+                                                                {
+                                                                    text: 'Process', dataIndex: 'PROCES', width: 230
+                                                                },
+                                                                {
+                                                                    text: 'Country Code', dataIndex: 'SCOUNTRY', width: 160
+                                                                },
+                                                                {
+                                                                    text: 'Country', dataIndex: 'NAME', width: 200, align: 'left'
+                                                                },
+                                                                {
+                                                                    text: 'Sales Company', dataIndex: 'SOCIETY', width: 120
+                                                                },
+                                                                {
+                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 130
+                                                                },
+                                                                {
+                                                                    text: 'Profit Center', dataIndex: 'SBENCEN', width: 150
+                                                                },
+                                                                {
+                                                                    sortable: false,
+                                                                    xtype: 'actioncolumn',
+                                                                    id: prototype.id + '-gridIATAView',
+                                                                    width: 40,
+                                                                    text: 'View',
+                                                                    align: 'center',
+                                                                    items: [
+                                                                        {
+                                                                            iconCls: 'prx-icon-eye',
+                                                                            tooltip: 'View',
+                                                                            handler: 'onViewIATAClick'
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            
                                             
                                         ]
                                     }
@@ -1345,8 +1345,12 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                 // <editor-fold defaultstate="collapsed" desc="ControlData">
                 {
                     xtype: 'panel',
-                    layout: 'hbox',
+                    
                     border: false,
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center' 
+                    },
 //                                bodyStyle: 'background:#E5ECEF;',
 //                                bodyStyle: 'background:#efe5e5',
                     margin: '10 0 0 0',
@@ -1372,9 +1376,13 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                     items: [
                         {
                             xtype: 'panel',
-                            layout: 'hbox',
+//                            layout: 'hbox',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center' 
+                            },
                             border: false,
-                            margin: '10 2 4 50',
+                            margin: '30 0 4 0',
                             defaults: {
                                 labelAlign: 'left'
                             },
@@ -1433,8 +1441,12 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                         {
                             xtype: 'panel',
                             border: false,
-                            layout: 'hbox',
-                            margin: '5 0 10 50',
+//                            layout: 'hbox',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center' 
+                            },
+                            margin: '5 0 10 0',
                             defaults: {
                                 labelAlign: 'left'
                             },

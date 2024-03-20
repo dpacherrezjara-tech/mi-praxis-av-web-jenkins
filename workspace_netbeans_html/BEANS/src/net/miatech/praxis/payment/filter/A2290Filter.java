@@ -572,6 +572,7 @@ public class A2290Filter extends A2290 {
     public String IN_SALECOD = "";
     public String IN_TERM = "";
     public String IN_TRAN = "";
+    public String IN_strNETO = "";
     
 
     public String UASIG = "";

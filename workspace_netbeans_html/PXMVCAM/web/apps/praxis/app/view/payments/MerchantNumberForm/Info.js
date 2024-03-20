@@ -42,7 +42,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            padding: '1',
+//                            padding: '1',
                             border: true,
                             height: 550,
                             width: 1600,
