@@ -558,7 +558,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 100,
+                                            {text: 'Unique Code', dataIndex: 'UNICODE', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -712,7 +712,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Status', dataIndex: 'STVAL', width: 80, flex: 1, hidden: true,
+                                            {text: 'Status', dataIndex: 'STVAL', width: 80, flex: 1,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:left;";
@@ -720,7 +720,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 100,
+                                            {text: 'Unique Code', dataIndex: 'UNICODE', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -831,7 +831,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 803,
+                            width: 963,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -841,7 +841,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetails',
-                                    width: 803,
+                                    width: 963,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -860,7 +860,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Status', dataIndex: 'STVAL', width: 80, flex: 1, hidden: true,
+                                            {text: 'Status', dataIndex: 'STVAL', width: 80, flex: 1,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:left;";
@@ -868,7 +868,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 100,
+                                            {text: 'Unique Code', dataIndex: 'UNICODE', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";

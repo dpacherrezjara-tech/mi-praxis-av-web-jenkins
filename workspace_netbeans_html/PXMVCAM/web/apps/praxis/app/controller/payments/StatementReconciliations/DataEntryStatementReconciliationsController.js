@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1025);
             Ext.getCmp(prototype.id + '-panelScanCard').show();
         }
-        this.setValue('de-txtDATEC', this.beanResult.DATEC);
+        this.setValue('de-txtDATECI', this.beanResult.DATECI);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
         this.setValue('de-txtVALDATE', this.beanResult.VALDATE);
         this.setValue('de-txtUNICODE', this.beanResult.UNICODE);
@@ -62,7 +62,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtBANDOCL', this.beanResult.BANDOCL);
         this.setValue('de-txtSCURRENCYL', this.beanResult.SCURRENCY); //DEBERÍA SER DE LA 060 PERO NO HAY
         this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
-        this.setValue('de-txtSDATE', this.beanResult.SDATE);
+//        this.setValue('de-txtSDATE', this.beanResult.SDATE);
         this.setValue('de-txtACCNUMBER', this.beanResult.ACCNUMBER);
         this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.DIFF, '0,000.00'));
         this.setValue('txtUSCR', this.beanResult.USCR);
@@ -79,7 +79,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         bean.CODEBANKA = this.getValue("de-txtCODEBANKA");
         bean.NAME = this.getValue("de-txtNAME");
         bean.STVAL = this.getValue("de-txtSTVAL");
-        bean.DATEC = this.getValue("de-txtDATEC");
+        bean.DATECI = this.getValue("de-txtDATECI");
         bean.QTYTRAN1 = this.getValue("de-txtQTYTRAN1");
         bean.VALDATE = this.getValue("de-txtVALDATE");
         bean.UNICODE = this.getValue("de-txtUNICODE");
@@ -90,7 +90,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         bean.BANDOCL = this.getValue("de-txtBANDOCL");
         bean.SCURRENCYL = this.getValue("de-txtSCURRENCYL");
         bean.NETOL = this.getValue("de-txtNETOL");
-        bean.SDATE = this.getValue("de-txtSDATE");
+//        bean.SDATE = this.getValue("de-txtSDATE");
         bean.ACCNUMBER = this.getValue("de-txtACCNUMBER");
         bean.DIFF = this.getValue("de-txtDIFF");
         bean.USCR = this.getValue("txtUSCR").trim();
@@ -241,9 +241,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             } else {
                 this.desmarcarRegistros(records);
             }
-        } else {
-//            this.desmarcarRegistros(records);
-        }
+        } 
 
     },
 
@@ -280,9 +278,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             }
         });
     },
-//    getPruebaExcel: function () {
-//       global.getFileExcelPost('getXLSXEntry', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktMatch').config.columns.items);
-//    },
     exportExcel: function () {
         this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
         this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
@@ -296,52 +291,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         } else {
             this.beanDetails.IN_STVAL = 'P';
         }
-        this.beanDetails.BANDOC
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
         console.log(this.beanDetails);
         global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
 
 
     },
-//    enviarDatosAlServidor: function (datos) {
-//        Ext.Ajax.request({
-//            url: prototype.url + '/getXLSXEntry',
-//            method: 'POST',
-//            params: {
-//                beanString: datos
-//            },
-//            responseType: 'blob', // Especifica que esperamos un Blob como respuesta
-//            success: function (response) {
-//                console.log(response);
-//                console.log(response.responseText);
-//                var blob = new Blob([response.responseText], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-//                var url = window.URL.createObjectURL(blob);
-//
-//                var a = document.createElement('a');
-//                a.href = url;
-//                a.download = meDE.obtenerNombreArchivo(response); // Establece el nombre del archivo
-//                document.body.appendChild(a);
-//                a.click();
-//                window.URL.revokeObjectURL(url);
-//            },
-//
-//            failure: function (response) {
-//                console.error('Error al enviar los datos al servidor:', response.statusText);
-//            }
-//        });
-//    },
-
-// Función para obtener el nombre del archivo de la respuesta
-    obtenerNombreArchivo: function (response) {
-        var disposition = response.getResponseHeader('Content-Disposition');
-        var matches = /filename="?([^"]+)"?/.exec(disposition);
-        if (matches !== null && matches[1]) {
-            return matches[1];
-        } else {
-            return 'archivo.xlsx'; // Nombre predeterminado si no se puede obtener del encabezado
-        }
-    },
-
     mostrarCombinacionValida: function (combination, diff) {
         console.log('Se encontró una combinación válida:');
         console.log('Valor deseado:', diff);
@@ -363,7 +318,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         store_gridInfoScan.removeAt(rowIndex);
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
         this.calcularMontos();
-        var checkbox = Ext.getCmp(prototype.id01 + '-chkVALDATE');
+        var checkbox = Ext.getCmp(prototype.id01 + '-chkUNICODE');
         var estaMarcado = checkbox.getValue();
         if (estaMarcado) {
 //            console.log('El checkbox está marcado');
@@ -373,91 +328,78 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
     },
     clear_keyDownHandler: function () {
-        this.setValue('txtFromDate', null);
+        this.setValue('txtFromADATE', null);
+        this.setValue('txtFromSDATE', null);
+        this.setValue('cmbSCARCODE', '');
+        this.setValue('txtACCNUMBER', '');
 
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
-        
+
         var fecha_a_validar = "";
-        meDE.bean.data.ADATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
-        if(meDE.bean.data.ADATE !== '' && meDE.bean.data.ADATE !== null){
+        meDE.bean.data.IN_ADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromADATE"), 'Ymd');
+        meDE.bean.data.IN_SDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromSDATE"), 'Ymd');
+        meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+        meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+
+        if (meDE.bean.data.ADATE !== '' && meDE.bean.data.ADATE !== null) {
             meDE.bean.data.IN_VALDATE = meDE.bean.data.ADATE;
-        }else{
+        } else {
             meDE.bean.data.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         }
-//        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
+
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
+        meDE.bean.data.IN_NETO = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
+
         if (newValue) {
             console.log('El checkbox está marcado');
             meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
-            var beanString = JSON.stringify(meDE.bean.data);
-            Ext.Ajax.request({
-                url: prototype.url + '/searchBean_DETAIL',
-                method: 'POST',
-                timeout: 60000000,
-                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-                params: {beanString: beanString},
-                success: function (response, options) {
-                    Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                    var res = Ext.JSON.decode(response.responseText);
-                    if (res.success) {
-
-                        var storeData = Ext.create('Ext.data.Store', {
-                            data: res.data,
-                            autoLoad: true
-                        });
-                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
-                        meDE.calcularMontos();
-                        meDE.calcularDiferencias();
-                    } else {
-                        global.Msg({msg: res.Mensaje});
-                    }
-                }
-            });
         } else {
             console.log('El checkbox está desmarcado');
             meDE.bean.data.IN_UNICODE = '';
-            var beanString = JSON.stringify(meDE.bean.data);
-            Ext.Ajax.request({
-                url: prototype.url + '/searchBean_DETAIL',
-                method: 'POST',
-                timeout: 60000000,
-                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-                params: {beanString: beanString},
-                success: function (response, options) {
-                    Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                    var res = Ext.JSON.decode(response.responseText);
-                    if (res.success) {
-
-                        var storeData = Ext.create('Ext.data.Store', {
-                            data: res.data,
-                            autoLoad: true
-                        });
-                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
-                        meDE.calcularMontos();
-                        meDE.calcularDiferencias();
-                    } else {
-                        global.Msg({msg: res.Mensaje});
-                    }
-                }
-            });
         }
+
+        var beanString = JSON.stringify(meDE.bean.data);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBean_DETAIL',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            params: {beanString: beanString},
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    meDE.calcularMontos();
+                    meDE.calcularDiferencias();
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            }
+        });
+
 
     },
 //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {
         this.setValue('txtSCOUNTRY', '');
         this.setValue('cmbSTVAL', '');
-        this.setValue('txtSDATE', '');
+//        this.setValue('txtSDATE', '');
         this.setValue('txtADATE', '');
         this.setValue('txtCODEBANK', '');
         this.setValue('txtBANDOC', '');

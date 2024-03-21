@@ -1077,7 +1077,7 @@ public class StatementReconciliationsDAO {
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", "Liq. Without EECC");
-        hmDescEstados.put("", "Bank w/o Sett.");
+        hmDescEstados.put("3", "Bank w/o Sett.");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
         
@@ -1137,7 +1137,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.CODEBANKA = rst.getString("CODEBANKA").trim();
                     beanTkt.NAME = rst.getString("NAME").trim();
                     beanTkt.STVAL = rst.getString("STVAL").trim();
-                    beanTkt.DATEC = rst.getString("DATEC").trim();
+                    beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
@@ -1198,13 +1198,13 @@ public class StatementReconciliationsDAO {
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", "Liq. Without EECC");
-        hmDescEstados.put("", "Bank w/o Sett.");
+        hmDescEstados.put("3", "Bank w/o Sett.");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1218,7 +1218,10 @@ public class StatementReconciliationsDAO {
             cstmt.setString(5, filter.IN_BANDOC.trim());
             cstmt.setString(6, filter.IN_STVAL.trim());
             cstmt.setString(7, filter.IN_RED.trim());
-            cstmt.setDouble(8, filter.IN_NETO);
+            cstmt.setString(8, filter.IN_SCARCOD.trim());
+            cstmt.setString(9, filter.IN_ACCNUMBER.trim());
+            cstmt.setString(10, filter.IN_SDATE.trim());
+            cstmt.setDouble(11, filter.IN_NETO);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
