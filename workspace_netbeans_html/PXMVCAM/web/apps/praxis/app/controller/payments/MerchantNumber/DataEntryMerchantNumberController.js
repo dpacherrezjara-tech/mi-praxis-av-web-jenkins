@@ -160,9 +160,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //        console.log(this.beanResult.CODEREJ);
         console.log('dadsadasdadasdadad',meDE.beanResult )
         this.setValue('de-txtMERCHN', meDE.beanResult.CMERCHAN)
-        this.setValue('de-txtSCOUNTRY', meDE.beanResult.SCOUNTRY + ' - ' + meDE.beanResult.NAME)
-        this.setValue('de-txtCODEBANK', meDE.beanResult.CODEBANK)
-        this.setValue('de-txtCTABANK', meDE.beanResult.ACCNUMB)
+      
         this.setValue('de-txtAFBRANCH', meDE.beanResult.SUCMERCH)
         this.setValue('de-txtACQPROC', meDE.beanResult.CORE)
         this.setValue('de-txtAPCODE', meDE.beanResult.CODE)

@@ -71,6 +71,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     html: '<strong>Cta Bank :</strong>',
                     padding: '7 0 0 20',
                     width: 87,
+                    hidden: true,
                 },
                 {
                     xtype: 'textfield',
@@ -79,6 +80,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
                     maxLength: 15,
+                    hidden: true,
                     width: 100,
                     enableKeyEvents: true,
                     listeners: {

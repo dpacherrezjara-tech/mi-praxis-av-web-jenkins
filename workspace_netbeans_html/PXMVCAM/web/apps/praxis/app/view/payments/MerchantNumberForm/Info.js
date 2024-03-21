@@ -192,7 +192,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                             ]
                                         }
                                     ]
-                                }
+                                },
+                                
                             ]
                         }
                     ]
@@ -206,7 +207,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                         bodyStyle: 'background: transparent;',
                         border: false
                     }
-                }
+                },
+                
             ]
         }
     ]

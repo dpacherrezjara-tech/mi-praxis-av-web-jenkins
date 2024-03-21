@@ -968,10 +968,6 @@ public class MerchantNumberDAO {
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
                 objRtn = new A2354Filter();
-                objRtn.FRANC1    = rs01.getString("FRANC1").trim();
-                objRtn.FRANC2    = rs01.getString("FRANC2").trim();
-                objRtn.FRANC3    = rs01.getString("FRANC3").trim();
-                objRtn.FRANC4    = rs01.getString("FRANC4").trim();
                 objRtn.CODEBANK  = rs01.getString("CODEBANK").trim();
                 objRtn.BANKNAM   = rs01.getString("BANKNAM").trim();
                 objRtn.BANKCM    = rs01.getString("BANKCM").trim();

@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
     title: 'Merchant Number - Data Entry Form',
     header: true,
     height: 800,
-    width: 1500,
+    width: 1179,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                     xtype: 'panel',
                     bodyStyle: 'background:#E5ECEF;',
                     layout: 'vbox',
-                    width: 1450,
+                    width: 1129,
                     margin: '0 0 0 20',
                     defaults: {
                         anchor: '100%'
@@ -42,14 +42,14 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 20 20 20',
+                                margin: '20 2 4 20',
                                 defaults: {
                                     anchor: '100%',
-                                    width: 1450
+                                    width: 1129
                                 },
                                 items: [
                                     
-                                    {xtype: 'tbspacer', width: 5},
+                                    {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
                                         text: 'Merchant Nbr.',
@@ -79,83 +79,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 130
                                     },
-                                    {xtype: 'tbspacer', width: 125},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Country',
-                                        fontSize: 15,
-                                        textAlign: 'center',
-                                        paddingLeft: 3,
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                       xtype: 'textfield',
-                                       id: prototype.id + '-de-txtSCOUNTRY',
-                                       enforceMaxLength: true,
-                                       editable: false,
-                                       enabled: false,
-                                       maxLength: 50,
-                                       maskRe: /[a-zA-Z0-9]/,
-                                       readOnly: false,
-                                       width: 130
-
-                                    },
-                                    {xtype: 'tbspacer', width: 250},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Code Bank',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtCODEBANK',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 15,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 90},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Cta Bank',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtCTABANK',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 15,
-                                        maskRe: /[0-9]/,
-                                        readOnly: false,
-                                        width: 160
-                                    }, 
-                                ]
-                            },
-                            {
-                                xtype: 'panel',
-                                layout: 'hbox',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1450
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 5},
+                                    {xtype: 'tbspacer', width: 120},
+                                    
                                     {
                                         xtype: 'label',
                                         text: 'Branch Affiliate',
@@ -175,47 +100,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 130,
                                     },
-                                    {xtype: 'tbspacer', width: 90},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Acquirer/Processor',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtACQPROC',
-                                        fieldStyle: 'text-align:left',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-//                                        maxLength: 15,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 250},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Code AP',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtAPCODE',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 15,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 90},
+                                    {xtype: 'tbspacer', width: 120},
                                     {
                                         xtype: 'label',
                                         text: 'Mode Down. Report',
@@ -235,30 +120,67 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 160
                                     },
-                                    {xtype: 'tbspacer', width: 45},
+                                    
                                     
                                 ]
                             },
                             {
                                 xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
+                                layout: 'hbox',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
                                 defaults: {
                                     anchor: '100%',
-                                    width: 1450
+                                    width: 1129
                                 },
                                 items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Code AP',
+                                        style: 'font-weight:bold;',
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-de-txtAPCODE',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Acquirer/Processor',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
                                     {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-de-txtACQPROC',
+                                        fieldStyle: 'text-align:left',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+//                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
                                     {
                                         xtype: 'label',
                                         text: 'Franchise 1',
                                         style: 'font-weight:bold;',
-                                        width: 115
+                                        width: 110
                                     },
                                     {xtype: 'tbspacer', width: 5},
                                     {
@@ -273,7 +195,26 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 130,
                                     },
-                                    {xtype: 'tbspacer', width: 90},
+                                    
+                                    
+                                    
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
                                         text: 'Franchise 2',
@@ -293,14 +234,14 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 130
                                     },
-                                    {xtype: 'tbspacer', width: 250},
+                                    {xtype: 'tbspacer', width: 120},
                                     {
                                         xtype: 'label',
                                         text: 'Franchise 3',
                                         style: 'font-weight:bold;',
-                                        width: 80
+                                        width: 120
                                     },
-                                    {xtype: 'tbspacer', width: 5},
+                                    {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtFRANCH3',
@@ -311,16 +252,16 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 80
+                                        width: 120
                                     },
-                                    {xtype: 'tbspacer', width: 90},
+                                    {xtype: 'tbspacer', width: 120},
                                     {
                                         xtype: 'label',
                                         text: 'Franchise 4',
                                         style: 'font-weight:bold;',
                                         width: 80
                                     },
-                                    {xtype: 'tbspacer', width: 5},
+                                    {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtFRANCH4',
@@ -331,9 +272,11 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 160
+                                        width: 155
                                     },
-                                    {xtype: 'tbspacer', width: 45},
+                                    
+                                    
+                                    
                                 ]
                             },
 //                            {
@@ -481,7 +424,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'tabpanel',
                                         id: prototype.id + '-tabMain',
                                         deferredRender: true,
-                                        width: 1450,
+                                        width: 1129,
                                         border: false,
     //                                            height: 182, //820
     //                                            anchor: '100%',
@@ -495,14 +438,14 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                 id: prototype.id + '-panelBANCOS',
                                                 layout: 'vbox',
                                                 border: false,
-                                                width: 1450,
+                                                width: 1129,
                         //                                                            height: 180,
                                                 autoScroll: true,
                                                 items: [
                                                     {
                                                         xtype: 'grid',
                                                         id: prototype.id + '-gridDataInfoBANCOS',
-                                                        width: 1450,
+                                                        width: 1129,
                                                         height: 350,
                                                         columnLines: true,
                                                         plugins: [
@@ -528,7 +471,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     text: 'Bank Company', dataIndex: 'BANKCM', width: 100
                                                                 },
                                                                 {
-                                                                    text: 'Deposit Currency', dataIndex: 'BANKCUR', width: 131
+                                                                    text: 'Deposit Currency', dataIndex: 'BANKCUR', width: 130
                                                                 },
                                                                 {
                                                                     text: 'Account Number', dataIndex: 'ACCNUMB', width: 120
@@ -539,19 +482,6 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                 {
                                                                     text: 'Profit Center Bank', dataIndex: 'BENCEN', width: 160
                                                                 },
-                                                                {
-                                                                    text: 'Franchise 1', dataIndex: 'FRANC1', width: 80
-                                                                },
-                                                                {
-                                                                    text: 'Franchise 2', dataIndex: 'FRANC2', width: 80
-                                                                },
-                                                                {
-                                                                    text: 'Franchise 3', dataIndex: 'FRANC3', width: 80
-                                                                },
-                                                                {
-                                                                    text: 'Franchise 4', dataIndex: 'FRANC4', width: 80
-                                                                },
-                                                                
                                                                 {
                                                                     sortable: false,
                                                                     xtype: 'actioncolumn',
@@ -578,7 +508,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                 id: prototype.id + '-panelIATAS',
                                                 layout: 'vbox',
                                                 border: false,
-                                                width: 1450,
+                                                width: 1129,
                         //                                                            height: 180,
                                                 hidden: false,
                                                 autoScroll: true,
@@ -586,7 +516,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                     {
                                                         xtype: 'grid',
                                                         id: prototype.id + '-gridDataInfoIATAS',
-                                                        width: 1450,
+                                                        width: 1129,
                                                         height: 350,
                                                         columnLines: true,
                                                         plugins: [
@@ -604,22 +534,22 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                             items: [
                                                                 
                                                                 {
-                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 140
+                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 126
                                                                 },
                                                                 {
-                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 148
+                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 111
                                                                 },
                                                                 {
-                                                                    text: 'Channel', dataIndex: 'CANAL', width: 130
+                                                                    text: 'Channel', dataIndex: 'CANAL', width: 96
                                                                 },
                                                                 {
-                                                                    text: 'Process', dataIndex: 'PROCES', width: 230
+                                                                    text: 'Process', dataIndex: 'PROCES', width: 110
                                                                 },
                                                                 {
-                                                                    text: 'Country Code', dataIndex: 'SCOUNTRY', width: 160
+                                                                    text: 'Country Code', dataIndex: 'SCOUNTRY', width: 109
                                                                 },
                                                                 {
-                                                                    text: 'Country', dataIndex: 'NAME', width: 200, align: 'left'
+                                                                    text: 'Country', dataIndex: 'NAME', width: 135, align: 'left'
                                                                 },
                                                                 {
                                                                     text: 'Sales Company', dataIndex: 'SOCIETY', width: 120

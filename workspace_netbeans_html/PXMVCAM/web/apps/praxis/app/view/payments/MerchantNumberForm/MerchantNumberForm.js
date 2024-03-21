@@ -94,7 +94,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
                                                     ]
                                                 }
                                             ]
-                                        }
+                                        },
+                                        
                                    ]
                                 }
                             ]
