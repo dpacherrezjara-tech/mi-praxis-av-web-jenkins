@@ -146,7 +146,7 @@ public class A2290Filter extends A2290 {
     public double COMISION = 0;
     public double COMISIOC = 0;
     public double totCOMISION = 0;
-    
+
     public double IVA = 0;
     public double IVAC = 0;
     public double PROPINA = 0;
@@ -167,7 +167,7 @@ public class A2290Filter extends A2290 {
     public double totNETO = 0;
     public double totNETOC = 0;
     public double NETOC = 0;
-    
+
     public String EMISOR = "";
     public long lngQTYDOC = 0;
     public long lngQTYTKT = 0;
@@ -418,9 +418,9 @@ public class A2290Filter extends A2290 {
     public String INVSEQNO = "";
     public String SEREFNO = "";
     public String ELECREFNO = "";
-    
+
     public String SAUTHOC1 = "";
-    public String SCARCOD1 = "";        
+    public String SCARCOD1 = "";
 
     //A2240
     //A2240
@@ -485,7 +485,7 @@ public class A2290Filter extends A2290 {
     public String SVFOPINST = "";
     public String INSTPAY = "";
     public String INSTPLA = "";
-    
+
     public Pagination page = new Pagination();
     public String PRDA = "";
     public String PMERCHID = "";
@@ -545,14 +545,14 @@ public class A2290Filter extends A2290 {
     public String CODADJU = "";
     public String DES_CODADJU = "";
     public String FSELEC = "";
-    
+
     //PArametros view ticket
     public String option = "";
     public String PNR = "";
     public String CC1 = "";
     public String CC2 = "";
     public String AUTH = "";
-    
+
     //Campos de desglose
     public String A1531TKT = "";
     public String FDESGLOSE = "";
@@ -566,19 +566,22 @@ public class A2290Filter extends A2290 {
     public String A720PNR = "";
     public String A720AGENTE = "";
     public String IN_UNICODE = "";
-    public long IN_NETO = 0;
     public String IN_BANDOC = "";
     public String IN_VALDATE = "";
     public String IN_SALECOD = "";
     public String IN_TERM = "";
     public String IN_TRAN = "";
     public String IN_strNETO = "";
-    
+    public String IN_SCARCOD = "";
+    public String IN_ACCNUMBER = "";
+    public String DATECI = "";
+
+    public double IN_NETO = 0;
 
     public String UASIG = "";
     public String IN_ANALISTA = "";
     public String IN_WHERE = "";
-    
+
     public String bufferToString(String ccust) {
 
         String strValue = "";
