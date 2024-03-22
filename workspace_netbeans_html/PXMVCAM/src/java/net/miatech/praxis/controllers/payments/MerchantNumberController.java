@@ -276,12 +276,21 @@ public class MerchantNumberController extends BaseController {
             Cell CH1_4 = row1.createCell(4);
             Cell CH1_5 = row1.createCell(5);
             Cell CH1_6 = row1.createCell(6);
+            Cell CH1_7 = row1.createCell(7);
+            Cell CH1_8 = row1.createCell(8);
+            Cell CH1_9 = row1.createCell(9);
+            
             
 
             CH1_0.setCellValue("Nbr.");
             CH1_1.setCellValue("Merchant Code.");
-            CH1_2.setCellValue("Credit Card");
-            CH1_4.setCellValue("Bank");
+            CH1_2.setCellValue("Merchant Branch");
+            CH1_3.setCellValue("Credit Card");
+            CH1_5.setCellValue("Mode Down Report");
+            CH1_6.setCellValue("Franchise 1");
+            CH1_7.setCellValue("Franchise 2");
+            CH1_8.setCellValue("Franchise 3");
+            CH1_9.setCellValue("Franchise 4");
             
 
             CH1_0.setCellStyle(headerStyle);
@@ -291,12 +300,15 @@ public class MerchantNumberController extends BaseController {
             CH1_4.setCellStyle(headerStyle);
             CH1_5.setCellStyle(headerStyle);
             CH1_6.setCellStyle(headerStyle);
+            CH1_7.setCellStyle(headerStyle);
+            CH1_8.setCellStyle(headerStyle);
+            CH1_9.setCellStyle(headerStyle);
             
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 6));
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
             ++vj;
             //============================================
 
@@ -309,12 +321,12 @@ public class MerchantNumberController extends BaseController {
             Cell CH2_4 = row2.createCell(4);
             Cell CH2_5 = row2.createCell(5);
             Cell CH2_6 = row2.createCell(6);
+            Cell CH2_7 = row2.createCell(7);
+            Cell CH2_8 = row2.createCell(8);
+            Cell CH2_9 = row2.createCell(9);
 
-            CH2_2.setCellValue("Code Card");
-            CH2_3.setCellValue("Cta Bank");
-            CH2_4.setCellValue("Nrc Code");
-            CH2_5.setCellValue("Code");
-            CH2_6.setCellValue("Country");
+            CH2_3.setCellValue("Code Card");
+            CH2_4.setCellValue("Card Name");
             
 
             CH2_0.setCellStyle(headerStyle);
@@ -324,14 +336,15 @@ public class MerchantNumberController extends BaseController {
             CH2_4.setCellStyle(headerStyle);
             CH2_5.setCellStyle(headerStyle);
             CH2_6.setCellStyle(headerStyle);
+            CH2_7.setCellStyle(headerStyle);
+            CH2_8.setCellStyle(headerStyle);
+            CH2_9.setCellStyle(headerStyle);
             
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 2));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 3));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 5));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 6, 6));
+
             ++vj;
             //============================================
 
@@ -344,15 +357,21 @@ public class MerchantNumberController extends BaseController {
                 Cell rcell4 = row1.createCell(4);
                 Cell rcell5 = row1.createCell(5);
                 Cell rcell6 = row1.createCell(6);
+                Cell rcell7 = row1.createCell(7);
+                Cell rcell8 = row1.createCell(8);
+                Cell rcell9 = row1.createCell(9);
                 
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).CMERCHAN);
-                rcell2.setCellValue(listaData.get(vi).SCARCOD);
-                rcell3.setCellValue(listaData.get(vi).CTABANK);
-                rcell4.setCellValue(listaData.get(vi).CODEBANK);
-                rcell5.setCellValue(listaData.get(vi).CODEBANKA);
-                rcell6.setCellValue(listaData.get(vi).COUNTRY);
+                rcell2.setCellValue(listaData.get(vi).SUCMERCH);
+                rcell3.setCellValue(listaData.get(vi).CODE);
+                rcell4.setCellValue(listaData.get(vi).CORE);
+                rcell5.setCellValue(listaData.get(vi).DREPORT);
+                rcell6.setCellValue(listaData.get(vi).FRANC1);
+                rcell7.setCellValue(listaData.get(vi).FRANC2);
+                rcell8.setCellValue(listaData.get(vi).FRANC3);
+                rcell9.setCellValue(listaData.get(vi).FRANC4);
                 
                 iter.next();
                 ++vi;
@@ -366,6 +385,9 @@ public class MerchantNumberController extends BaseController {
             sheet.autoSizeColumn(4, true);
             sheet.autoSizeColumn(5, true);
             sheet.autoSizeColumn(6, true);
+            sheet.autoSizeColumn(7, true);
+            sheet.autoSizeColumn(8, true);
+            sheet.autoSizeColumn(9, true);
             
 
             //============================================

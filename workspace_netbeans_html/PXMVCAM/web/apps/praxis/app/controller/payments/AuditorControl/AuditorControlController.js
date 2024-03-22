@@ -877,44 +877,35 @@ Ext.define('Ext.Praxis.controller.payments.AuditorControl.AuditorControlControll
 //        Ext.getCmp(prototype.id + '-paggin10').bindStore(storeGridDatas);
 //    },
 //    
-//    btnExcel_click: function (obj, e) {
-//        
-//        Ext.Msg.show({
-//            title: '.:AVIANCA:.',
-//            msg: 'Download Excel ?',
-//            buttons: Ext.MessageBox.OKCANCEL,
-//            scope: this,
-//            icon: Ext.MessageBox.QUESTION,
-//            modal: true,
-//            fn: function (btn) {
-//                if (btn === 'ok') {
-//                    this.exportExcel();
-//                }
-//            }
-//        });
-//        
-//    },
-//    exportExcel: function () {
-//        
-//        console.log(me.panelActual);
-//        if(me.panelActual === '-panelMainProcess'){
-//            var parameters = this.setFormatParameterProcess();
-//            console.log(me.panelActual);
-//            switch (me.panelActual) {
-//                case  '-panelMainProcess':
-//                    global.getFile(prototype.url + '/getXLSX?beanString=' + parameters.beanString);
-//                    break;
-//            }
-//        }else{
-//            me.dw_excel = true;
-//            if (me.panelActual === '-boxProcessDay') {
-//                console.log(Ext.getCmp(prototype.id + '-gridProcessDay').config.columns.items);
-//                me.goURLpost('searchProcessDay', this.paramsProcessDay.beanString, Ext.getCmp(prototype.id + '-gridProcessDay').config.columns.items);
-//            } else {
-//                me.dw_excel = false;
-//            }
-//        }
-//    },
+    btnExcel_click: function (obj, e) {
+        
+        Ext.Msg.show({
+            title: '.:AVIANCA:.',
+            msg: 'Download Excel ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportExcel();
+                }
+            }
+        });
+        
+    },
+    exportExcel: function () {
+        this.setFormatParameter();
+        console.log(me.panelActual);
+        switch (me.panelActual) {
+            case  '-boxMainData':
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
+                break; 
+            case  '-boxMainDataDetailAll':
+                global.getFile(prototype.url + '/getXLSXDetailAll?beanString=' + encodeURI(paramsDetail.beanString));
+                break; 
+        }
+    },
 //    
 //    goURLpost: function(method, parms, columns) {
 //
