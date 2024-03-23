@@ -1198,6 +1198,7 @@ public class StatementReconciliationsDAO {
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", "Liq. Without EECC");
+        hmDescEstados.put("", "Bank w/o Sett.");
         hmDescEstados.put("3", "Bank w/o Sett.");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -1221,7 +1222,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(8, filter.IN_SCARCOD.trim());
             cstmt.setString(9, filter.IN_ACCNUMBER.trim());
             cstmt.setString(10, filter.IN_SDATE.trim());
-            cstmt.setDouble(11, filter.IN_NETO);
+            cstmt.setString(11, filter.IN_strNETO.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -1240,7 +1241,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.SAGENT = rst.getString("SAGENT");
                 beanTkt.TERMI = rst.getString("TERMI");
                 beanTkt.RED = rst.getString("RED");
-                beanTkt.CARDTYPE = rst.getString("CARDTYPE");
+//                beanTkt.CARDTYPE = rst.getString("CARDTYPE");
                 beanTkt.SCARDN = rst.getString("SCARDN");
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");

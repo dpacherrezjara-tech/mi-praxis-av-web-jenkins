@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.bean = this.p.rec;
         console.log(this.bean);
         this.lstCountry = this.p.lstCountry;
-//        this.obtainData();
+        this.obtainData();
     },
     afterRender: function () {
 //        this.obtainData();
@@ -35,6 +35,32 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
+    },
+    obtainData: function (){
+        
+        this.dataObtain.CARD = 2;
+        
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText); 
+                console.log(res, 'res')
+                if (res.success) {
+                    
+                    me.lstCard = res.lstCard;
+                    Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
+                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');   
+                    
+                 
+//                    me.btnSearch_click();
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });
     },
     mostrarData: function () {
         this.setValue('de-txtCODEBANK', this.beanResult.CODEBANK);
@@ -328,19 +354,24 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
     },
     clear_keyDownHandler: function () {
+        console.log('clean escoba')
         this.setValue('txtFromADATE', null);
         this.setValue('txtFromSDATE', null);
-        this.setValue('cmbSCARCODE', '');
+//        this.setValue('cmbSCARCODE', '');
         this.setValue('txtACCNUMBER', '');
+        this.setValue('txtNETO', '');
+        this.setValue('cmbSCARCOD', '');
 
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
-
+        let chkUnicode = Ext.getCmp(prototype.id01 + '-chkUNICODE').getValue();
+        console.log(chkUnicode, 'chkUnicode')
         var fecha_a_validar = "";
         meDE.bean.data.IN_ADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromADATE"), 'Ymd');
         meDE.bean.data.IN_SDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromSDATE"), 'Ymd');
         meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
         meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+        
 
         if (meDE.bean.data.ADATE !== '' && meDE.bean.data.ADATE !== null) {
             meDE.bean.data.IN_VALDATE = meDE.bean.data.ADATE;
@@ -350,7 +381,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+        meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
 
@@ -359,9 +390,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
-
-        if (newValue) {
+        console.log('valor checkbox', newValue)
+        console.log('checkbox', checkbox)
+        if ( chkUnicode ) {
             console.log('El checkbox está marcado');
+            
             meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
         } else {
             console.log('El checkbox está desmarcado');
@@ -378,6 +411,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             success: function (response, options) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
+                console.log(res, 'res')
                 if (res.success) {
 
                     var storeData = Ext.create('Ext.data.Store', {
@@ -388,6 +422,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
                 } else {
+                    console.log('entra aqui')
                     global.Msg({msg: res.Mensaje});
                 }
             }

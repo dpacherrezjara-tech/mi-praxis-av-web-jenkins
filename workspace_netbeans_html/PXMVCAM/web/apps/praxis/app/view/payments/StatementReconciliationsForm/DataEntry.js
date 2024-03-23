@@ -646,7 +646,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             triggerAction: 'all',
                                             valueField: 'CODE',
                                             displayField: 'NAME',
-                                            width: 60,
+                                            width: 200,
                                             labelWidth: 10,
                                             hidden: false,
                                             hiddenLabel: false,
