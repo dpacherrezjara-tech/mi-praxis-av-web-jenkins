@@ -547,6 +547,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -562,6 +563,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -584,7 +586,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     } else {
                                                         metaData.style = "text-align:center;";
                                                     }
-
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
 
@@ -601,6 +603,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:center;background-color:#c0e0fc;font-weight:bold";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -608,12 +611,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:center;background-color:#c0e0fc;font-weight:bold";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
                                                     {text: 'Neto EECC', dataIndex: 'NETO', width: 120,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return Ext.util.Format.number(value, '0,000');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -625,6 +630,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     {text: 'Neto Settlement', dataIndex: 'NETOC', width: 140,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return Ext.util.Format.number(value, '0,000');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {

@@ -638,7 +638,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 return false
             }
             if( win.getValue('txtSAGENT').trim() !== '' && win.getValue('txtSAGENT').trim().length !== 8 ){
-                win.setValue('txtSAGENT ', '');
+                win.setValue('txtSAGENT', '');
                 global.Msg({msg: 'Agent must contain 8 digits.'})
                 return false
             }

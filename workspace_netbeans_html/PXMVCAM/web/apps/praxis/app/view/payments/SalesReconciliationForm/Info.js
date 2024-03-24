@@ -1781,6 +1781,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                                    metaData.style = "background-color:#d5f4d5;";
                                                                             value = '<b>' + value + '</b>';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                         }
                                                                     }
@@ -1852,6 +1853,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -1872,6 +1874,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SCOUNTRY + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -1892,6 +1895,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     },
@@ -1914,6 +1918,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -1926,6 +1931,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                     metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             },
@@ -1935,6 +1941,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return win.formatDblNumber(value);
                                                                 }
                                                             },
@@ -1945,6 +1952,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                     metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             },
@@ -1963,6 +1971,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -2925,6 +2934,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -2945,6 +2955,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCountry + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -2965,6 +2976,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     },
@@ -2987,6 +2999,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -2999,6 +3012,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                     metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             },
@@ -3008,6 +3022,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return win.formatDblNumber(value);
                                                                 }
                                                             },
@@ -3018,6 +3033,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                     metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             },
@@ -3036,6 +3052,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -3239,6 +3256,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     },
@@ -3261,6 +3279,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }
@@ -3273,6 +3292,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                     metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             },
@@ -3282,6 +3302,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return win.formatDblNumber(value);
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -3297,6 +3318,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                     metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                     metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             },
@@ -3315,6 +3337,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                                             metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         }
                                                                     }

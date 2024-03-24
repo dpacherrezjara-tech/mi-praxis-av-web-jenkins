@@ -1097,6 +1097,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1115,6 +1116,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1127,6 +1129,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1136,6 +1139,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.SCARDN + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1146,6 +1150,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             }
@@ -1157,6 +1162,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     }
@@ -1171,6 +1177,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     }
@@ -1180,6 +1187,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Curr.', dataIndex: 'SCURRENCY', width: 50, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1187,6 +1195,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
@@ -1205,6 +1214,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1223,6 +1233,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     }
@@ -1312,6 +1323,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1321,6 +1333,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1333,6 +1346,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1342,6 +1356,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.SCARDN + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1352,6 +1367,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             }
@@ -1363,6 +1379,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     }
@@ -1372,6 +1389,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Curr.', dataIndex: 'SCURRENCY', width: 50, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1380,6 +1398,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
                                                     value = Ext.util.Format.number(value, '0,000.00');
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -1392,6 +1411,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'PNR', dataIndex: 'SPNR', width: 62, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1402,6 +1422,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#057ECB";;
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return '<a <a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
                                                 }
                                             },
@@ -1675,6 +1696,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1687,6 +1709,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1694,6 +1717,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'Number', dataIndex: 'SCARDN', width: 140, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";   
                                                             return value;
                                                         }
                                                     },
@@ -1704,6 +1728,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
                                                             }
@@ -1715,6 +1740,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Curr.', dataIndex: 'SCURRENCY', width: 50, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
                                             },
@@ -1722,6 +1748,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
@@ -1739,6 +1766,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
                                                             return value;
                                                         }
@@ -1748,6 +1776,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'PNR', dataIndex: 'SPNR', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
 
@@ -1761,6 +1790,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             if (data.SCARCOD == 'AX' && data.SCOUNTRY == 'MX') {
                                                                 return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                             } else {
@@ -1787,6 +1817,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -1805,6 +1836,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     }
