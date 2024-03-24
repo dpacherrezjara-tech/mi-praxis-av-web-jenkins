@@ -228,6 +228,56 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         keypress: 'eventKey_BANDOC'
                     }
                 },
+                
+                
+                
+            ]
+        },
+        {
+            xtype: 'form',
+            border: false,
+            bodyStyle: 'background: transparent',
+            margin: '10px 2px 10px 20px',
+            layout: 'column',
+            defaults: {
+//                labelStyle: 'font-weight:bold;',
+                fieldStyle: 'text-align: center;',
+                anchor: '100%',
+                hiddenLabel: false,
+                labelAlign: 'right',
+                xtype: 'textfield',
+                hidden: false,
+                selectOnFocus: true
+            },
+            items: [
+                {
+                    xtype: 'label',
+                    text: 'Doc. Type:',
+                    padding: '3 0 0 30',
+                    width: 120,
+                },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbTDOC',
+                    triggerAction: 'all',
+                    enableKeyEvents: true,
+                    readOnly: false,
+                    editable: true,
+                    valueField: 'value',
+                    displayField: 'description',
+                    fieldStyle: 'text-align: left;',
+                    width: 110,
+                    hidden: false,
+                    value: '',
+                     store: {
+                        fields: ['value', 'description'],
+                        data: [
+                            { value: '', description: 'All'},
+                            { value: 'S', description: 'Ventas' },
+                            { value: 'D', description: 'Débitos' }
+                        ]
+                    }
+                },
             ]
         }
 

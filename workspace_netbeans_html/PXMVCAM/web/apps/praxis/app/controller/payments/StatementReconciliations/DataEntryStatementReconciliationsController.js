@@ -71,10 +71,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(985);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
+            Ext.getCmp(prototype.id + '-panelScanCard2').hide();
+            Ext.getCmp(prototype.id + '-btn-update').hide();
         } else {
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1025);
             Ext.getCmp(prototype.id + '-panelScanCard').show();
+            Ext.getCmp(prototype.id + '-panelScanCard2').show();
+            Ext.getCmp(prototype.id + '-btn-update').show();
         }
         this.setValue('de-txtDATECI', this.beanResult.DATECI);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);

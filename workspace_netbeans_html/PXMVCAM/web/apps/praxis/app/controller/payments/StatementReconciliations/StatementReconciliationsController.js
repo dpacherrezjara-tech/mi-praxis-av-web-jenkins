@@ -892,7 +892,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         this.beanDetails.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         this.beanDetails.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
-
+        this.beanDetails.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
+ 
+        console.log(this.beanDetails, 'this.beanDetails')
+        
 
 //        this.beanDetails.strCREJEC = Ext.getCmp(prototype.id + '-StatementReconciliationsForm-gridDetLiquida_header-title-textEl').getValue();
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
