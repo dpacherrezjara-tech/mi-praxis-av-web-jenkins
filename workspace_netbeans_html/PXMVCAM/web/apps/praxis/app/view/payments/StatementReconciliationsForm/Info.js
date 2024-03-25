@@ -521,7 +521,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 963,
+                            width: 1033,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -531,7 +531,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetLiquida',
-                                    width: 963,
+                                    width: 1033,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -548,6 +548,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },
@@ -689,7 +696,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 883,
+                            width: 953,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -699,7 +706,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetLiquidaByS',
-                                    width: 883,
+                                    width: 953,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -712,6 +719,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                         },
                                         items: [
                                             {text: 'Country', dataIndex: 'SCOUNTRY', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -866,7 +880,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Doc. Type', dataIndex: 'TDOC', width: 70,
+                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";

@@ -513,7 +513,7 @@ public class A2290Filter extends A2290 {
     public String IDCONL = "";
     public String FCOMPL = "";
     public String descFCOMPL = "";
-    public String descTDOC = "";
+    
     public String descVOID = "";
     public String FREVERSA = "";
     public String descFREVERSA = "";

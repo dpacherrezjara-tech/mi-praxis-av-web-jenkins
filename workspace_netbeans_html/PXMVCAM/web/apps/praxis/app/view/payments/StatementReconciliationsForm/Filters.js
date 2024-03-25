@@ -273,8 +273,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         fields: ['value', 'description'],
                         data: [
                             { value: '', description: 'All'},
-                            { value: 'S', description: 'Ventas' },
-                            { value: 'D', description: 'Débitos' }
+                            { value: 'S', description: 'Sales' },
+                            { value: 'D', description: 'Debits' }
                         ]
                     }
                 },

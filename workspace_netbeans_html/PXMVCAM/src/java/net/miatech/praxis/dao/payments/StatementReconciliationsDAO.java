@@ -669,6 +669,9 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank whitout Liquidacion");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -734,6 +737,7 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
+                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim(); 
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.SDATE = rst.getString("SDATE").trim();
                     beanTkt.ADATE = rst.getString("ADATE").trim();
@@ -808,6 +812,9 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank whitout Liquidacion");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -869,6 +876,7 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
+                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim(); 
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 
                     beanTkt.SDATE = rst.getString("SDATE").trim();
@@ -943,6 +951,9 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank whitout Liquidacion");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
@@ -1007,6 +1018,8 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
+                    
+                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim(); 
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 
                     beanTkt.SDATE = rst.getString("SDATE").trim();

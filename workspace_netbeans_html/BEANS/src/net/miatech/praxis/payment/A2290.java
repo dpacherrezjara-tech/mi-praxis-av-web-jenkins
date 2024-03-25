@@ -15,6 +15,7 @@ public class A2290 {
     public String FORMA = "";
     public String SERIE = "";
     public String TDOC = "";
+    public String descTDOC = "";
     public String SEQ = "";
     public String STVAL = "";
     public String VALDATE = "";
