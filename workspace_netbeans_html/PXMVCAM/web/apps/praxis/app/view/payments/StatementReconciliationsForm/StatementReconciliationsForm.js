@@ -64,7 +64,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                         {
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter'
-                                        }
+                                        },
                                         ,
                                         {
                                             xtype: 'panel',

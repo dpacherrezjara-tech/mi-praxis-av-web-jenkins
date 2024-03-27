@@ -139,6 +139,7 @@ public class A2290 {
     
     //a2340
     public int QTYTKT = 0;
+    public int QTYSETT = 0;
     public double TOTALCOM = 0;
     public double TCOMISCA = 0;
     public double diffTCOMIS = 0;
@@ -150,6 +151,7 @@ public class A2290 {
     public double totTOTALCOM = 0;
     public double totTCOMISCA = 0;
     public double totDiffTCOMIS = 0;
+    public double TOTAMOUNT = 0;
     public String ADMNUM = "";
     public String NUMADM = "";
     public String DATEADM = "";

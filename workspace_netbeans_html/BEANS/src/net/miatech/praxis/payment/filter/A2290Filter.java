@@ -28,6 +28,7 @@ public class A2290Filter extends A2290 {
     public double VFOP = 0;
     //===============================
     public String IN_FECHA_FROM = "";
+    public String IN_ADATE = "";
     public String IN_FECHA_TO = "";
     public String strFecFiltro = "";
     public String strYearFrom = "";
@@ -162,6 +163,7 @@ public class A2290Filter extends A2290 {
     public double RTEICA = 0;
     public double RTEICAC = 0;
     public double NETO = 0;
+    
     public double NETOL = 0;
     public double DIFF = 0;
     public double totNETO = 0;
