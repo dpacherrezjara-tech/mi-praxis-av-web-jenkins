@@ -1476,10 +1476,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     return '<b>' + Ext.util.Format.number(data.totNETO, '0,000') + '<b>';
                                                 }
                                             },
-                                            {text: 'Neto Settlement', dataIndex: 'NETOC', width: 140,
+                                            {text: 'Status', dataIndex: 'STVAL', width: 140,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
-                                                    return Ext.util.Format.number(value, '0,000');
+                                                    return value
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                     var data = Ext.getCmp(prototype.id + '-gridDetLiquidaByS').getStore().getData().items[0].data;
