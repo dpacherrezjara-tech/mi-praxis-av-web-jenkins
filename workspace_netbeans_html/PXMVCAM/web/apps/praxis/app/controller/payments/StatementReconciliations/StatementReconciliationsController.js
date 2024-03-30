@@ -162,7 +162,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         cmbTTRAN.setValue("");
 
         this.dataObtain.BANK = 2;
-        this.dataObtain.CARD = 2;
+        
+        
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -179,9 +180,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 });
                 Ext.getCmp(prototype.id + '-cmbBank').bindStore(storeData);
                 Ext.getCmp(prototype.id + '-cmbBank').setValue('');
-                Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
-                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');
+                
+
                 me.btnSearch_click();
             }
         });
@@ -225,10 +225,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         var panelTW = Ext.getCmp(prototype.id + '-panelPendings');
         
         console.log(me.panelActual.includes('panelPendings'))
-        if(panelTW.isVisible()){
-           console.log('entraaa a pending')
-           this.setFormatParameterPendings() 
-        } else {
+        
             this.setFormatParameter();
     //        this.setGridData();
 
@@ -237,57 +234,38 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             } else {
                 this.setGridData();
             }
-        }
+        
         
     },
     
     onGridPending: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        var panelMain = Ext.getCmp(prototype.id + '-panelMain');
-        var panelTW = Ext.getCmp(prototype.id + '-panelPendings');
         
-        var filterMain_1 = Ext.getCmp(prototype.id + '-filterMain_1');
-        var filterMain_2 = Ext.getCmp(prototype.id + '-filterMain_2');
-        var filterMain_3 = Ext.getCmp(prototype.id + '-filterMain_3');
-        var filterPending_1 = Ext.getCmp(prototype.id + '-filterPending_1');
-        console.log(panelMain.isVisible(), 'es visible panel main')
-        if (panelMain.isVisible()) {
-            panelMain.setVisible(false);
-            filterMain_1.setVisible(false);
-            filterMain_2.setVisible(false);
-            filterMain_3.setVisible(false);
-            panelTW.setVisible(true);
-            filterPending_1.setVisible(true);
-            
-            
-            this.setFormatParameterPendings()
-            
-//            var lista = [{code:"SDATE",name:"Sale Date"}];
-//            var storeData = Ext.create('Ext.data.Store', {
-//                fields: ['data'],
-//                data: lista,
-//                autoLoad: true
-//            });
-//            Ext.getCmp(prototype.id + '-cmbTipoFecha').bindStore(storeData);//
-//            Ext.getCmp(prototype.id + '-cmbTipoFecha').setValue('SDATE');
-//            
-//            this.setStoreDataTW();
-//            this.obtainFields('MPF100','');
-//            this.imgClearFields();
-//            this.searchTW();
-        } else {
-            console.log('mostrarrrrr')
-            panelMain.setVisible(true);
-            filterMain_1.setVisible(true);
-            filterMain_2.setVisible(true);
-            filterMain_3.setVisible(true);
-            panelTW.setVisible(false);
-            filterPending_1.setVisible(false);
-        }
-//        if( !panelMain.isVisible() && panelTW.isVisible() ){
-//            
-//        }
+        this.winVentanaPend();
         
-        
+//        var panelMain = Ext.getCmp(prototype.id + '-panelMain');
+//        var panelTW = Ext.getCmp(prototype.id + '-panelPendings');
+//        var filterMain_1 = Ext.getCmp(prototype.id + '-filterMain_1');
+//        var filterMain_2 = Ext.getCmp(prototype.id + '-filterMain_2');
+//        var filterMain_3 = Ext.getCmp(prototype.id + '-filterMain_3');
+//        var filterPending_1 = Ext.getCmp(prototype.id + '-filterPending_1');
+//        
+//        if (panelMain.isVisible()) {
+//            panelMain.setVisible(false);
+//            filterMain_1.setVisible(false);
+//            filterMain_2.setVisible(false);
+//            filterMain_3.setVisible(false);
+//            panelTW.setVisible(true);
+//            filterPending_1.setVisible(true);
+//            this.setFormatParameterPendings()
+//        } else {
+//            console.log('mostrarrrrr')
+//            panelMain.setVisible(true);
+//            filterMain_1.setVisible(true);
+//            filterMain_2.setVisible(true);
+//            filterMain_3.setVisible(true);
+//            panelTW.setVisible(false);
+//            filterPending_1.setVisible(false);
+//        }   
     },
     setFormatParameterPendings: function () {
         me.beanPendings = {}
@@ -328,7 +306,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     },
                     load: function (obj) {
                         Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pag = Ext.getCmp(prototype.id + '-paggin10');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -352,7 +330,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataPendings').bindStore(storeGridDataPending);
-//            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin10').bindStore(storeGridDataPending);
         }
 
     },
@@ -1143,6 +1121,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }
         }).show();
     },
+    winVentanaPend: function () {
+ 
+        Ext.create('Ext.Praxis.view.payments.StatementReconciliationsForm.VentanaPend', {
+            id: prototype.id + '-ventanaPend',
+            params: {
+//                action: action,
+//                rec: rec,
+//                lstCountry: me.lstCountry
+            }
+        }).show();
+    },
     btnBack_click: function (obj, e) {
         if (me.drillDown.length > 0) {
             me.panelActual = me.drillDown.pop();
@@ -1168,13 +1157,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
         Ext.getCmp(prototype.id + '-txtLiquida').setValue('');
         Ext.getCmp(prototype.id + '-cmbTTRAN').setValue('');
-        Ext.getCmp(prototype.id + '-txtFromADATE').setValue('');
-        Ext.getCmp(prototype.id + '-txtFromSDATE').setValue('');
-        Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');
-        Ext.getCmp(prototype.id + '-txtACCNUMBER').setValue('');
-        Ext.getCmp(prototype.id + '-txtNETO').setValue('');
-        Ext.getCmp(prototype.id + '-txtUNICODE').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDocType').setValue('');
+
     },
     btnExcel_click: function (obj, e) {
 
@@ -1295,6 +1278,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             case '-panelGridDetDayByS':
                 me.pagginActual = '-paggin9';
                 break;
+            case '-panelPendings':
+                me.pagginActual = '-paggin10';
+            break;
+            
+        
         }
     },
     afterRenderYear: function (obj) {

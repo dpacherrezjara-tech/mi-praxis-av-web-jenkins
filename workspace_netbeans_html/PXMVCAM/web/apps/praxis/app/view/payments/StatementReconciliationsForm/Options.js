@@ -117,6 +117,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin10',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
 
                     ]
@@ -144,15 +152,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             tooltip: 'Display filter'
 
                         },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btn-pending',
-                            tooltip: 'Pendings',
-                            icon: 'resources/img/botones/grid.png',
-                            listeners: {
-                                click: 'onGridPending'
-                            }
-                        },
+                        
 //                        {
 //                            xtype: 'button',
 //                            id: prototype.id + '-btnAdd',
