@@ -24,6 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         console.log(this.bean);
         this.lstCountry = this.p.lstCountry;
         this.obtainData();
+
     },
     afterRender: function () {
 //        this.obtainData();
@@ -518,12 +519,20 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     },
     onGridPending: function(){
+        
         let formPend = Ext.getCmp(prototype.id + '-formQueryPend')
+        
         if(!formPend.isVisible()){
+            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1900)
+            Ext.getCmp(prototype.id + '-spacerPanel').show()
             Ext.getCmp(prototype.id + '-formQueryPend').show()
+            Ext.getCmp(prototype.id + '-dataEntry').setX(10);
             this.getDataQueryPend();
         }else{
+            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1100)
             Ext.getCmp(prototype.id + '-formQueryPend').hide()
+            Ext.getCmp(prototype.id + '-spacerPanel').hide()
+            Ext.getCmp(prototype.id + '-dataEntry').setX(410);
         }
         
     },

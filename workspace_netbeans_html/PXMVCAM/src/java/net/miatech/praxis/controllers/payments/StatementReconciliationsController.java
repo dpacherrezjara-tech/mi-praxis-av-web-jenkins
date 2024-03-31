@@ -2141,7 +2141,7 @@ public class StatementReconciliationsController extends BaseController {
     public @ResponseBody
     void getXLSXQueryPending(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSXQueryPending");
-        String fileNameDownload = String.format("Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Report  - Pending Settlements - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");

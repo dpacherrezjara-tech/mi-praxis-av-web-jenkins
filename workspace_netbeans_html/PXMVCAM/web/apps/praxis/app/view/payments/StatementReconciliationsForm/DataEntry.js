@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
     controller: 'DataEntryStatementReconciliationsController',
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
-    height: 770,
-    width: 1900,
+    height: 795,
+    width: 1100,
 //     x: 0, // Establecer la posición horizontal a la izquierda del contenedor principal
 //    y: 0,
     resizable: false,
@@ -26,6 +26,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
     items: [
         {
             xtype: 'form',
+            style: {
+                border: '1px solid #6c757d'
+            },
             defaults: {
                 style: 'margin: 3px;',
                 textDecoration: 'underline',
@@ -34,6 +37,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
             items: [
                 {
                     xtype: 'form',
+                    
                     defaults: {
 //                        style: 'margin: 3px;',
                         textDecoration: 'underline',
@@ -606,8 +610,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         click: 'calcularDiferencias'
                                                     }
                                                 },
+                                                {xtype: 'tbspacer', width: 5},
                                                 {
                                                     xtype: 'button',
+                                                    width: 25,
                                                     id: prototype.id + '-btn-pending',
                                                     tooltip: 'Pendings',
                                                     icon: 'resources/img/botones/grid.png',
@@ -866,18 +872,21 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                         },
                         // <editor-fold defaultstate="collapsed" desc="ControlData">
                         {
+                            xtype: 'tbspacer', higth: 20
+                        },
+                        {
                             xtype: 'label',
                             text: 'Control Data',
                             fontSize: '11',
                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                             width: 180,
-                            margin: '8 2 4 160'
+                            margin: '8 2 4 20'
                         },
                         {
                             xtype: 'panel',
                             layout: 'vbox',
                             border: false,
-                            margin: '0 2 0 160',
+                            margin: '0 2 0 30',
                             items: [
                                 {
                                     xtype: 'panel',
@@ -1003,19 +1012,25 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             }
                                         }
                                     ]
-                                }
+                                },
+                                
                             ]
-                        }
+                        },
+                        
                         // </editor-fold>
                     ]
-                }
+                },
+                
             ]
         },
-        {xtype: 'tbspacer', width: 20},
+        {id:  prototype.id + '-spacerPanel', xtype: 'tbspacer', width: 20, hidden: true},
         {
             xtype: 'form',
             hidden: true,
             id: prototype.id + '-formQueryPend',
+            style: {
+                border: '1px solid #6c757d'
+            },
             defaults: {
                 style: 'margin: 3px;',
                 textDecoration: 'underline',
@@ -1048,7 +1063,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                             items: [
                                 {
                                     xtype: 'label', // Componente label para el título
-                                    text: 'Query MPF060', // Texto del título
+                                    text: 'Pending Settlements', // Texto del título
                                     style: {
                                         'font-weight': 'bold', // Estilo opcional para el texto
                                         'font-size': '16px' // Estilo opcional para el texto
@@ -1583,6 +1598,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
         }
     ],
     dockedItems: [
+        
         {
             xtype: 'toolbar',
             dock: 'bottom',
