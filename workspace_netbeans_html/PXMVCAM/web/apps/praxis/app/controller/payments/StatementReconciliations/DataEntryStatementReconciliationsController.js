@@ -460,10 +460,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
         meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
         
-
-        if (meDE.bean.data.ADATE !== '' && meDE.bean.data.ADATE !== null) {
-            meDE.bean.data.IN_VALDATE = meDE.bean.data.ADATE;
+        if (meDE.bean.data.IN_ADATE !== '') {
+            meDE.bean.data.IN_VALDATE = meDE.bean.data.IN_ADATE;
         } else {
+            
             meDE.bean.data.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         }
 

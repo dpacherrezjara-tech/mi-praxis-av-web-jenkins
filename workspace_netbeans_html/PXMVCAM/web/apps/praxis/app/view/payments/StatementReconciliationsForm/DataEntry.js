@@ -564,7 +564,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         change: 'cambiaParams'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 130},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
@@ -598,6 +598,18 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         click: 'getExcel'
                                                     }
                                                 },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.id + '-btn-pending',
+                                                    tooltip: 'Pendings',
+                                                    icon: 'resources/img/botones/grid.png',
+                                                    listeners: {
+                                                        click: 'onGridPending'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
@@ -610,17 +622,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         click: 'calcularDiferencias'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    id: prototype.id + '-btn-pending',
-                                                    tooltip: 'Pendings',
-                                                    icon: 'resources/img/botones/grid.png',
-                                                    listeners: {
-                                                        click: 'onGridPending'
-                                                    }
-                                                },
+                                                
                                             ]
                                         },
                                         {
