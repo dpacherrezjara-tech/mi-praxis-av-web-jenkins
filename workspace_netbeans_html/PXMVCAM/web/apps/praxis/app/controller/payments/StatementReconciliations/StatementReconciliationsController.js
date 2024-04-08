@@ -195,16 +195,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         me.bean.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
         me.bean.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
 
-        var option = Ext.getCmp(prototype.id + '-rbgType').getValue();
-        switch (option) {
-            case 'rbSALES':
-                me.bean.IN_TDOC = 'S';
-                break;
-            case 'rbREFUND':
-                me.bean.IN_TDOC = 'R';
-                break;
-        }
+//        var option = Ext.getCmp(prototype.id + '-rbgType').getValue();
+//        switch (option) {
+//            case 'rbSALES':
+//                me.bean.IN_TDOC = 'S';
+//                break;
+//            case 'rbREFUND':
+//                me.bean.IN_TDOC = 'R';
+//                break;
+//        }
 
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
         me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtLiquida').getValue();
@@ -524,8 +525,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDetLiquida';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-
+        console.log('PRUEBAAAAAAAAAAAAAAAAAAAA')
+        console.log(rowData.data, 'rowData.data')
+        console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC')
         this.beanLiquida.IN_DATE = rowData.data.IN_DATE;
+        this.beanLiquida.IN_TDOC = rowData.data.IN_TDOC;
         this.beanLiquida.IN_STVAL = rowData.data.IN_STVAL;
         this.beanLiquida.IN_SDATE = rowData.data.SDATE;
         this.beanLiquida.IN_SDATEE = rowData.data.IN_SDATEE;
@@ -740,7 +744,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
             me.flag = 'all';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
+            console.log('OTRA PRUEBAAAA')
+            console.log(rowData.data, 'rowData.data')
+            console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC')
             this.beanDetBankByS.IN_DATE = rowData.data.IN_DATE;
+            this.beanDetBankByS.IN_TDOC = rowData.data.IN_TDOC;
             this.beanDetBankByS.IN_SDATE = rowData.data.SDATE;
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
             this.beanDetBankByS.IN_SDATEE = rowData.data.IN_SDATE;
@@ -791,8 +799,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDetDayByS';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-
+        console.log(rowData.data.IN_DATE, 'rowData.data.IN_DATE')
         this.beanDayByS.IN_DATE = rowData.data.IN_DATE;
+        this.beanDayByS.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDayByS.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK;
         this.beanDayByS.IN_SDATEE = rowData.data.IN_SDATE;
@@ -830,6 +839,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             global.selectedChild(me.childs, prototype.id + me.panelActual);
             this.beanDetBankByS.IN_DATE = rowData.data.IN_DATE;
             this.beanDetBankByS.IN_SDATE = rowData.data.IN_SDATE;
+            this.beanDetBankByS.IN_TDOC = rowData.data.IN_TDOC;
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
             this.beanDetBankByS.IN_SDATEE = rowData.data.IN_SDATE;
             this.beanDetBankByS.IN_CBANK = rowData.data.IN_CBANK;
