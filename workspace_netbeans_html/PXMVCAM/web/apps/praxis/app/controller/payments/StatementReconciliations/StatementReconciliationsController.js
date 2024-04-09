@@ -162,6 +162,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         cmbTTRAN.setValue("");
 
         this.dataObtain.BANK = 2;
+        this.dataObtain.COUNTRY = 2;
         
         
         Ext.Ajax.request({
@@ -180,6 +181,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 });
                 Ext.getCmp(prototype.id + '-cmbBank').bindStore(storeData);
                 Ext.getCmp(prototype.id + '-cmbBank').setValue('');
+                
+                var lstCountry = res.lstCountry;
+                var storeDataCountry = Ext.create('Ext.data.Store', {
+                    data: lstCountry,
+                    autoLoad: true
+                });
+                Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeDataCountry);
+                Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
                 
 
                 me.btnSearch_click();
@@ -212,12 +221,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.IN_AFTE = Ext.getCmp(prototype.id + '-cmbEFTE').getValue();
         me.bean.IN_TTRAN = Ext.getCmp(prototype.id + '-cmbTTRAN').getValue();
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
             bean: me.bean
         };
+        console.log(me.bean, 'me.bean')
     },
     
 
@@ -396,6 +407,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanBank.IN_MERCHN = rowData.data.IN_MERCHN;
         this.beanBank.IN_BANK = rowData.data.IN_BANK;
         this.beanBank.IN_TTRAN = rowData.data.IN_TTRAN;
+        this.beanBank.IN_COUNTRY = rowData.data.IN_TTRAN;
         this.beanBank.strFormatDate = rowData.data.strFormatDate;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanBank);
@@ -454,6 +466,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDay.IN_CBANK = rowData.data.IN_CBANK;
         this.beanDay.IN_MERCHN = rowData.data.IN_MERCHN;
         this.beanDay.IN_TTRAN = rowData.data.IN_TTRAN;
+        this.beanDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDay.strCREJEC = rowData.data.strCREJEC;
         console.log(this.beanDay, 'this.beanDay')
@@ -516,6 +529,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.IN_QTYTRAN1 = rowData.data.QTYTRAN1;
         this.beanLiquida.strFormatDate = rowData.data.strFormatDate;
         this.beanLiquida.strCREJEC = rowData.data.strCREJEC;
+        this.beanLiquida.IN_COUNTRY = rowData.data.IN_COUNTRY;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquida);
         this.setGridDataDetLiquida();
@@ -535,6 +549,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.IN_SDATEE = rowData.data.IN_SDATEE;
         this.beanLiquida.IN_CBANK = rowData.data.IN_CBANK;
         this.beanLiquida.IN_SCURRENCY = rowData.data.SCURRENCY;
+        this.beanLiquida.IN_COUNTRY = rowData.data.IN_COUNTRY;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquida);
         this.setGridDataDetLiquida();
@@ -608,6 +623,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanLiquidaByS.IN_CBANK = rowData.data.IN_CBANK;
             this.beanLiquidaByS.IN_SDATEE = rowData.data.IN_SDATEE;
             this.beanLiquidaByS.IN_STVAL = rowData.data.IN_STVAL;
+            this.beanLiquidaByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
 
             me.paramsDetail.beanString = JSON.stringify(this.beanLiquidaByS);
             this.setGridDataDetLiquidaByS();
@@ -753,6 +769,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanDetBankByS.IN_STVAL = rowData.data.IN_STVAL;
             this.beanDetBankByS.IN_SDATEE = rowData.data.IN_SDATE;
             this.beanDetBankByS.IN_BANK = rowData.data.IN_BANK;
+            this.beanDetBankByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
             this.setGridDataDetBankS();
 
@@ -807,6 +824,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDayByS.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDayByS.IN_SCURRENCY = rowData.data.SCURRENCY;
+        this.beanDayByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
         console.log(this.beanDayByS, 'this.beanDay')
         me.paramsDetail.beanString = JSON.stringify(this.beanDayByS);
         this.setGridDataDetDayByS();

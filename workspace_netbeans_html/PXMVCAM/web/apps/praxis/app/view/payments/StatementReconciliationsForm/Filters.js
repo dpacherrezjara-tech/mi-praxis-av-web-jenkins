@@ -281,6 +281,32 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         ]
                     }
                 },
+                
+                {
+                    xtype: 'label',
+                    text: 'Country:',
+                    padding: '3 0 0 30 ',
+                    width: 90
+                },
+                
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCountry',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 219,
+                    typeAhead: true,
+                    valueField: 'A006PAIS',
+                    displayField: 'A006NOMBRE',
+                    listConfig: {maxHeight: 111},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                },
             ]
         },
 
