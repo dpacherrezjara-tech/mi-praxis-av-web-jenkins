@@ -184,6 +184,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
         } else {
@@ -488,6 +489,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             console.log('El checkbox está desmarcado');
             meDE.bean.data.IN_UNICODE = '';
         }
+        
 
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({

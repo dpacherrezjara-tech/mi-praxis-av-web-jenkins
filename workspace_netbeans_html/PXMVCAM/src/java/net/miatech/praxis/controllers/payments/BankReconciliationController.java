@@ -416,6 +416,123 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "executeOption_REFND")
+    public @ResponseBody
+    String executeOption_REFND(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : executeOption_REFND-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            // Parsear directamente a JsonArray
+            // Deserializar directamente a una lista de A2290Filter
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP00834_REFND(filterList, user);
+            // ... (código existente)
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "executeOption_CHGBAK")
+    public @ResponseBody
+    String executeOption_CHGBAK(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : executeOption_CHGBAK-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            // Parsear directamente a JsonArray
+            // Deserializar directamente a una lista de A2290Filter
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP00834_CHGBAK(filterList, user);
+            // ... (código existente)
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "executeOption_ACREDIT")
+    public @ResponseBody
+    String executeOption_ACREDIT(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : executeOption_ACREDIT-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            // Parsear directamente a JsonArray
+            // Deserializar directamente a una lista de A2290Filter
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP00834_ACREDIT(filterList, user);
+            // ... (código existente)
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "reverseOption")
     public @ResponseBody
@@ -2995,6 +3112,108 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
+    
+    @RequestMapping(value = "searchBeanREFND_DETAIL")
+    public @ResponseBody
+    String searchBeanREFND_DETAIL(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanREFND_DETAIL-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListREFND_DETAIL(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListREFND_DETAIL(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_REFND_DETAIL(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchBeanCHGBAK_DETAIL")
+    public @ResponseBody
+    String searchBeanCHGBAK_DETAIL(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanCHGBAK_DETAIL-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListCHGBAK_DETAIL(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListCHGBAK_DETAIL(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_CHGBAK_DETAIL(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchBeanACREDIT_DETAIL")
+    public @ResponseBody
+    String searchBeanACREDIT_DETAIL(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanACREDIT_DETAIL-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListACREDIT_DETAIL(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListACREDIT_DETAIL(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_ACREDIT_DETAIL(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 
     @RequestMapping(value = "/obtainMessages")
     public @ResponseBody
@@ -3093,7 +3312,8 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-
+    
+    
     @RequestMapping(value = "searchBeanAMDP_SCAN_PENDING")
     public @ResponseBody
     String searchBeanAMDP_SCAN_PENDING(ModelMap map, HttpServletRequest request) {
@@ -3127,7 +3347,210 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
+    
+    
+    @RequestMapping(value = "searchBeanDebits_SCAN_PENDING")
+    public @ResponseBody
+    String searchBeanDebits_SCAN_PENDING(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanDebits_SCAN_PENDING-------------");
 
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDebits_SCAN_PENDING(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDebits_SCAN_PENDING(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_DEBITS_SCAN_PENDING(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    @RequestMapping(value = "searchBean_SCAN_PENDING_CHGBAK")
+    public @ResponseBody
+    String searchBean_SCAN_PENDING_CHGBAK(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBean_SCAN_PENDING_CHGBAK-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDebits_SCAN_PENDING_CHGBAK(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDebits_SCAN_PENDING_CHGBAK(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_DEBITS_SCAN_PENDING_CHGBAK(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchBean_SCAN_PENDING_ACREDIT")
+    public @ResponseBody
+    String searchBean_SCAN_PENDING_ACREDIT(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBean_SCAN_PENDING_ACREDIT-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDebits_SCAN_PENDING_ACREDIT(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDebits_SCAN_PENDING_ACREDIT(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_DEBITS_SCAN_PENDING_ACREDIT(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+            
+    @RequestMapping(value = "searchBeanDebits_SCAN")
+    public @ResponseBody
+    String searchBeanDebits_SCAN(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanDebits_SCAN-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDebits_SCAN(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDebits_SCAN(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_DEBITS_SCAN(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    @RequestMapping(value = "searchBeanDebits_SCAN_CHGBAK")
+    public @ResponseBody
+    String searchBeanDebits_SCAN_CHGBAK(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanDebits_SCAN_CHGBAK-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDebits_SCAN_CHGBAK(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDebits_SCAN_CHGBAK(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_DEBITS_SCAN_CHGBAK(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchBeanDebits_SCAN_ACREDIT")
+    public @ResponseBody
+    String searchBeanDebits_SCAN_ACREDIT(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanDebits_SCAN_ACREDIT-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListDebits_SCAN_ACREDIT(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDebits_SCAN_ACREDIT(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP00833_DEBITS_SCAN_ACREDIT(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
     @RequestMapping(value = "obtainFields")
     public @ResponseBody
     String obtainFields(ModelMap map, HttpServletRequest request, HttpServletResponse response) {

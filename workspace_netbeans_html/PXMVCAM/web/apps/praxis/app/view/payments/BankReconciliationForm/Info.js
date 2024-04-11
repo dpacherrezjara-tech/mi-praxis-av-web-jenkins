@@ -1051,7 +1051,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1303,
+                            width: 1373,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1070,7 +1070,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    width: 1303,
+                                    width: 1373,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -1088,6 +1088,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescStatus + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },

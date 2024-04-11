@@ -1354,10 +1354,13 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank w/o Sett.");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1375,6 +1378,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(9, filter.IN_ACCNUMBER.trim());
             cstmt.setString(10, filter.IN_SDATE.trim());
             cstmt.setString(11, filter.IN_strNETO.trim());
+            cstmt.setString(12, filter.IN_TDOC.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -1399,6 +1403,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.NETO = rst.getDouble("NETO");
+                beanTkt.TDOC = rst.getString("TDOC");
+                beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC"));
 
                 lstTkts.add(beanTkt);
             }

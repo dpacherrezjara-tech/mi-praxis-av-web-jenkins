@@ -730,6 +730,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
+                                                                    {text: 'Doc.Type', dataIndex: 'descTDOC', width: 110,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
                                                                     {text: 'Sales Date', dataIndex: 'SDATE', width: 90,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
@@ -783,13 +789,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return value;
-                                                                        }
-                                                                    },
+//                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 110,
+//                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                            metaData.style = "text-align:right;";
+//                                                                            value = Ext.util.Format.number(value, '0,000.00');
+//                                                                            return value;
+//                                                                        }
+//                                                                    },
                                                                     {
                                                                         text: 'Neto',
                                                                         dataIndex: 'NETO',

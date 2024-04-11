@@ -59,6 +59,17 @@ public class BankReconciliationLogic {
     public String loadPX269SQP00834(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00834(filters, user);
     }
+    public String loadPX269SQP00834_REFND(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00834_REFND(filters, user);
+    }
+    
+    public String loadPX269SQP00834_CHGBAK(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00834_CHGBAK(filters, user);
+    }
+    
+    public String loadPX269SQP00834_ACREDIT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00834_ACREDIT(filters, user);
+    }
 
     public String loadPX269SQP05117(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP05117(filters, user);
@@ -79,6 +90,7 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00871(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00871(filter);
     }
+    
 
     public String loadPX269SQP01950(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP01950(filter);
@@ -98,6 +110,15 @@ public class BankReconciliationLogic {
 
     public List<A2290Filter> loadPX269SQP00833_MDP_DETAIL(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_MDP_DETAIL(filter);
+    }
+    public List<A2290Filter> loadPX269SQP00833_REFND_DETAIL(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_REFND_DETAIL(filter);
+    }
+    public List<A2290Filter> loadPX269SQP00833_CHGBAK_DETAIL(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_CHGBAK_DETAIL(filter);
+    }
+    public List<A2290Filter> loadPX269SQP00833_ACREDIT_DETAIL(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_ACREDIT_DETAIL(filter);
     }
 
     public List<A2290Filter> loadPX269SQP05103(A2290Filter filter) throws SQLException, Exception {
@@ -119,7 +140,30 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_MDP_SCAN_PENDING(filter);
     }
-
+    //loadPX269SQP00833_DEBITS_SCAN_PENDING
+    public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN_PENDING(filter);
+    }
+    public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_PENDING_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN_PENDING_CHGBAK(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_PENDING_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN_PENDING_ACREDIT(filter);
+    }
+    
+    //loadPX269SQP00833_DEBITS_SCAN
+    public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN_CHGBAK(filter);
+    }
+    //loadPX269SQP00833_DEBITS_SCAN_ACREDIT
+    public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN_ACREDIT(filter);
+    }
     public List<A2290Filter> loadPX269SQP00871JT(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00871JT(filter);
     }

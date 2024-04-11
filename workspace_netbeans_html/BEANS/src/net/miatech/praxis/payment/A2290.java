@@ -14,6 +14,7 @@ public class A2290 {
     public String CCIA = "";
     public String FORMA = "";
     public String SERIE = "";
+    public String TKT = "";
     public String TDOC = "";
     public String descTDOC = "";
     public String SEQ = "";
@@ -73,6 +74,8 @@ public class A2290 {
     public String SINVN = "";
     public String SIDATE = "";
     public String SPNR = "";
+    public String MPF076TRAN = "";
+    public String MPF077TRAN = "";
     public String SPNRSP = "";
     public String FCONC = "";
     //Datos del archivo ACCB

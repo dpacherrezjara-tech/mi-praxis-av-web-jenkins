@@ -516,6 +516,7 @@ public class A2290Filter extends A2290 {
     public String FCOMPL = "";
     public String descFCOMPL = "";
     
+    
     public String descVOID = "";
     public String FREVERSA = "";
     public String descFREVERSA = "";
@@ -547,6 +548,7 @@ public class A2290Filter extends A2290 {
     public String CODADJU = "";
     public String DES_CODADJU = "";
     public String FSELEC = "";
+    public String DEBTYPE = "";
 
     //PArametros view ticket
     public String option = "";
