@@ -75,7 +75,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             console.log('entraa aqui en REFND')
             let debitType = 'REFND'  
             let callPendingDebit = 'searchBeanDebits_SCAN_PENDING'
-            this.onSearchPendingDetail(debitType,callPendingDebit ); 
+            this.onSearchPendingDetail(debitType,callPendingDebit );
+            Ext.getCmp(prototype.id + '-txtScanPNR').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtScanSAGENT').setDisabled(true);
+            Ext.getCmp(prototype.id + '-input-txtTKTScan1').setDisabled(false);
+            Ext.getCmp(prototype.id + '-txtApproval').setDisabled(false);
+            Ext.getCmp(prototype.id + '-txtFromDate').setDisabled(false);
+            
+
         }
            
     },
@@ -90,6 +97,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             let debitType = 'Chgbak'
             let callPendingDebit = 'searchBean_SCAN_PENDING_CHGBAK'
             this.onSearchPendingDetail(debitType,callPendingDebit );
+            Ext.getCmp(prototype.id + '-input-txtTKTScan1').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtApproval').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtFromDate').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtScanSAGENT').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtScanPNR').setDisabled(false);
+
         }
         
     },
@@ -103,7 +116,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         if (this.bean.STVAL === '3'){
             let debitType = 'Acredit'
             let callPendingDebit = 'searchBean_SCAN_PENDING_ACREDIT'
-            this.onSearchPendingDetail(debitType,callPendingDebit ); 
+            this.onSearchPendingDetail(debitType,callPendingDebit );
+            Ext.getCmp(prototype.id + '-input-txtTKTScan1').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtFromDate').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtApproval').setDisabled(false);
+            Ext.getCmp(prototype.id + '-txtScanPNR').setDisabled(false);
+            Ext.getCmp(prototype.id + '-txtScanSAGENT').setDisabled(false);
+
         }
         
     },

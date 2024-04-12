@@ -1394,7 +1394,11 @@ public class BankReconciliationDAO {
                     objRtn.strPEM = "Refund";
                 } else if( rs01.getString("TDOC").trim().equals("D")){
                     objRtn.strPEM = "Debits";
-                } else {
+                }else if( rs01.getString("TDOC").trim().equals("A")){
+                    objRtn.strPEM = "Acredit";
+                }else if( rs01.getString("TDOC").trim().equals("C")){
+                    objRtn.strPEM = "Chargebak";
+                }else {
                     objRtn.strPEM = "Sales";
                 }
 //                objRtn.descTDOC = hmDescTDOC.get(rs01.getString("TDOC").trim());

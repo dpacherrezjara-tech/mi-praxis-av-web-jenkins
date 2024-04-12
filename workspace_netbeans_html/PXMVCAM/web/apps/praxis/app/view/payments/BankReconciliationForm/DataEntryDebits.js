@@ -454,7 +454,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                 },
                                 {
                                     xtype: 'label',
-                                    text: 'Sales Information',
+                                    text: 'Debits Information',
                                     id: prototype.id + '-txtFromDateTITULO',
                                     style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                     bodyStyle: 'background:#E5ECEF;',
@@ -778,7 +778,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                         {xtype: 'tbspacer', width: 310},
                                         {
                                             xtype: 'label',
-                                            text: 'Id.Bank',
+                                            text: 'Doc SAP',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 70
@@ -1319,6 +1319,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             xtype: 'label',
                                             text: 'Add Ticket',
                                             textAlign: 'center',
+                                            id: prototype.id + '-lbl-TKTSCAN1',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             margin: '4 4 4 4',
                                             width: 80
@@ -1378,6 +1379,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                         {
                                             xtype: 'label',
                                             text: 'Authorization',
+                                            id: prototype.id + '-lblApproval',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             margin: '4 4 4 4',
@@ -1509,6 +1511,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                         {
                                             xtype: 'label',
                                             text: 'Agent',
+                                            id: prototype.id + '-lblScanSAGENT',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             margin: '4 4 4 4',
@@ -1524,7 +1527,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             maxLength: 8,
                                             width: 65,
                                         },
-                                        {xtype: 'tbspacer', width: 710},
+                                        {xtype: 'tbspacer', width: 710, id: prototype.id + '-spcGeneral'},
+                                        
                                     ]
                                 },
                                 {
