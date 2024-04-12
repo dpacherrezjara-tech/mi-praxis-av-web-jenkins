@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             
             this.onSearchCompleteDetail(debitType, callCompleteDebit);
             Ext.getCmp(prototype.id + '-btn-update').hide();
-            Ext.getCmp(prototype.id + '-btn-reverse').show();
+//            Ext.getCmp(prototype.id + '-btn-reverse').show();
         } 
         meDe.agregaTicket(meDe.bean);
     },

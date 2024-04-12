@@ -4254,6 +4254,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                             text: 'Reverse Match',
                             id: prototype.id + '-btn-reverse',
                             iconCls: 'prx-icon-delete',
+                            hidden: true,
                             listeners: {
                                 click: 'onReverseClick'
                             }

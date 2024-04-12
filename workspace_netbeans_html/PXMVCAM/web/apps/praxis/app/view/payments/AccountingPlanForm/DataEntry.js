@@ -422,7 +422,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.DataEntry', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Client Address',
+                                            text: 'Debit Type',
                                             style: 'font-weight:bold;color:#121E31;',
                                             width: 100,
                                             padding: '3 0'

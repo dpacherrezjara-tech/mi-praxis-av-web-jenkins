@@ -892,6 +892,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="onGridTicket">
     onGridTicket: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        if(rowData.data.lngQTYTKT == 0){
+            return false
+        }
+        let consultPath = ''
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataTicket';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -901,16 +905,28 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.DATEC = rowData.data.DATEC;
         this.beanDetDay.BANDOC = rowData.data.BANDOC;
         console.log(rowData.data);
-
+        if(rowData.data.TDOC == 'S'){
+            consultPath = 'searchTicket'
+        }else if(rowData.data.TDOC == 'R'){
+            consultPath = 'searchTable_REFND'
+        }else if (rowData.data.TDOC == 'C'){
+            consultPath = 'searchTable_CHGBAK'
+        }else if(rowData.data.TDOC == 'A'){
+            consultPath = 'searchTable_ACREDIT'
+        }else{
+            console.log('No se espera el TDOC: ', rowData.data.TDOC)
+            return false
+        }
+        //searchTicket
         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
-        this.setGridDataTicket();
+        this.setGridDataTicket(consultPath);
     },
-    setGridDataTicket: function (data) {
+    setGridDataTicket: function (consultPath) {
         win.lblUser_toolTip("Estructura: MPF100");
 //        me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
-                url: prototype.url + '/searchTicket'
+                url: prototype.url + `/${consultPath}`
             }, listeners: {
                 beforeload: function (obj) {
                     obj.proxy.extraParams = me.paramsDetail;
