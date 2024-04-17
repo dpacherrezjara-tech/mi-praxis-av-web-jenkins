@@ -7,6 +7,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanDetailTar: {},
     beanDetailAcc: {},
     beanDetailMer: {},
+    beanDebits: {},
     lstTarjetas: {},
     beanProMasterTicket: {},
     beanDetE: {},
@@ -343,6 +344,75 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         win.selectedChild('vskMain', 'boxDetCountryS');
         beanDet.IN_STVAL = '2';
         this.searchDetCountryByStval_1(beanDet);
+    },
+    gridDetCountry_clickHandler_MATCH_REFND: function (column, e, row, column, x, rowData) {
+        var beanREFND = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_REFND');
+        
+        beanREFND.IN_STVAL = '1';
+        console.log(beanREFND.IN_TDOC, 'IN_TDOC' )
+        console.log(beanREFND.strFecFiltro, 'strFecFiltro')
+        this.searchDetCountryByStval_REFND(beanREFND);
+    },
+    gridDetCountry_clickHandler_MANUAL_REFND: function (column, e, row, column, x, rowData) {
+        var beanREFND = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_REFND');
+        
+        beanREFND.IN_STVAL = '5';
+        this.searchDetCountryByStval_REFND(beanREFND);
+    },
+    gridDetCountry_clickHandler_PEND_REFND: function (column, e, row, column, x, rowData) {
+        var beanREFND = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_REFND');
+        
+        beanREFND.IN_STVAL = '';
+        this.searchDetCountryByStval_REFND(beanREFND);
+    },
+    gridDetCountry_clickHandler_MATCH_CHGBAK: function (column, e, row, column, x, rowData) {
+        var beanCHGBAK = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
+        
+        beanCHGBAK.IN_STVAL = '1';
+        console.log(beanCHGBAK.IN_TDOC, 'IN_TDOC' )
+        console.log(beanCHGBAK.strFecFiltro, 'strFecFiltro')
+        this.searchDetCountryByStval_CHGBAK(beanCHGBAK);
+    },
+    gridDetCountry_clickHandler_MANUAL_CHGBAK: function (column, e, row, column, x, rowData) {
+        var beanCHGBAK = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
+        
+        beanCHGBAK.IN_STVAL = '5';
+        this.searchDetCountryByStval_CHGBAK(beanREFND);
+    },
+    gridDetCountry_clickHandler_PEND_CHGBAK: function (column, e, row, column, x, rowData) {
+        var beanCHGBAK = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
+        
+        beanCHGBAK.IN_STVAL = '';
+        this.searchDetCountryByStval_CHGBAK(beanCHGBAK);
+    },
+    gridDetCountry_clickHandler_MATCH_ACREDIT: function (column, e, row, column, x, rowData) {
+        var beanACREDIT = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
+        
+        beanACREDIT.IN_STVAL = '1';
+        console.log(beanACREDIT.IN_TDOC, 'IN_TDOC' )
+        console.log(beanACREDIT.strFecFiltro, 'strFecFiltro')
+        this.searchDetCountryByStval_ACREDIT(beanACREDIT);
+    },
+    gridDetCountry_clickHandler_MANUAL_ACREDIT: function (column, e, row, column, x, rowData) {
+        var beanACREDIT = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
+        
+        beanACREDIT.IN_STVAL = '5';
+        this.searchDetCountryByStval_ACREDIT(beanACREDIT);
+    },
+    gridDetCountry_clickHandler_PEND_ACREDIT: function (column, e, row, column, x, rowData) {
+        var beanACREDIT = x.record.data;
+        win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
+        
+        beanACREDIT.IN_STVAL = '';
+        this.searchDetCountryByStval_ACREDIT(beanACREDIT);
     },
     gridDetCard_clickHandler: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
@@ -687,6 +757,26 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.beanDetailAcc.strMonthTo = win.getValue('cmbDateToMonth');
 
             this.searchAcc(this.beanDetailAcc);
+        }else if(win.getValue('cmbTDOC').trim() === 'D'){
+            this.beanDebits.strFecFiltro = win.getValue('cmbFecFiltro');
+            this.beanDebits.strYearFrom = win.getValue('cmbDateFromYear');
+            this.beanDebits.strMonthFrom = win.getValue('cmbDateFromMonth');
+            this.beanDebits.strYearTo = win.getValue('cmbDateToYear');
+            this.beanDebits.strMonthTo = win.getValue('cmbDateToMonth');
+            
+            this.beanDebits.IN_COUNTRY = win.getValue('cmbCountry');
+//            this.bean.IN_PAYMENT = win.getValue('cmbFOP');
+            this.beanDebits.IN_CARDC = win.getValue('cmbCardType');
+            this.beanDebits.IN_TICKET = win.getValue('txtTicket').trim();
+            this.beanDebits.IN_FTE = win.getValue('cmbSource');
+//            this.beanDebits.IN_AFTE = win.getValue('cmbAFTE');
+            this.beanDebits.IN_CARDN1 = win.getValue('txtCard1').trim();
+            this.beanDebits.IN_CARDN2 = win.getValue('txtCard2').trim();
+            this.beanDebits.IN_MERCHN = win.getValue('txtMERCHN').trim();
+            this.beanDebits.IN_AUTHNBR = win.getValue('txtAUTHNBR').trim();
+            this.beanDebits.IN_SAGENT = win.getValue('txtSAGENT').trim();
+            this.beanDebits.IN_SPNR = win.getValue('txtPNR').trim();
+            this.searchDebits(this.beanDebits)
         } else {
             
             this.bean.strFecFiltro = win.getValue('cmbFecFiltro');
@@ -967,6 +1057,40 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
         Ext.getCmp(prototype.id + '-gridDataAcc').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pagginAcc').bindStore(storeGridDatas);
+    },
+    searchDebits: function (beanDebits) {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDebits'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDebits)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                    win.lblUser_toolTip("Estructura: MPF111");
+
+                    me.selectedChild('vskMain', 'boxDebitsData');
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        console.log(obj.data.items, 'obj.data')
+                        if (obj.data.length > 0) {
+                            var obj = obj.data.items[0].data;
+
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+                    } else
+                        global.clear();
+                }
+            }
+        });
+        console.log(storeGridDatas, 'STORE DEBITOS')
+        Ext.getCmp(prototype.id + '-gridDebitsData').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pagginDebits').bindStore(storeGridDatas);
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchDetCountry">
@@ -1562,6 +1686,105 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
         Ext.getCmp(prototype.id + '-gridDetCountryS').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin6').bindStore(storeGridDatas);
+    },
+    searchDetCountryByStval_REFND: function (beanREFND) {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetCountryByStval_REFND'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanREFND)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+
+                    me.selectedChild('vskMain', 'boxDetCountryS_REFND');
+                    win.lblUser_toolTip("Estructura: MPF075");
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        var gridDetCountrySAC = res.data;
+                        if (gridDetCountrySAC.length > 0) {
+                            var Objtemp = gridDetCountrySAC[0];
+                            win.setTitle('gridDetCountryS_REFND', Objtemp.strTitulo);
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+
+                    } else
+//                        global.Msg({msg: res.sesion});
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDetCountryS_REFND').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin13').bindStore(storeGridDatas);
+    },
+    searchDetCountryByStval_CHGBAK: function (beanCHGBAK) {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetCountryByStval_CHGBAK'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanCHGBAK)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+
+                    me.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
+                    win.lblUser_toolTip("Estructura: MPF076");
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        var gridDetCountrySAC = res.data;
+                        if (gridDetCountrySAC.length > 0) {
+                            var Objtemp = gridDetCountrySAC[0];
+                            win.setTitle('gridDetCountryS_CHGBAK', Objtemp.strTitulo);
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+
+                    } else
+//                        global.Msg({msg: res.sesion});
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDetCountryS_CHGBAK').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin14').bindStore(storeGridDatas);
+    },
+    searchDetCountryByStval_ACREDIT: function (beanACREDIT) {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetCountryByStval_ACREDIT'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanACREDIT)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+
+                    me.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
+                    win.lblUser_toolTip("Estructura: MPF077");
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        var gridDetCountrySAC = res.data;
+                        if (gridDetCountrySAC.length > 0) {
+                            var Objtemp = gridDetCountrySAC[0];
+                            win.setTitle('gridDetCountryS_ACREDIT', Objtemp.strTitulo);
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+
+                    } else
+//                        global.Msg({msg: res.sesion});
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDetCountryS_ACREDIT').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin15').bindStore(storeGridDatas);
     },
     //<editor-fold defaultstate="collapsed" desc="searchDetCardCodeByStval">
     searchDetCardCodeByStval: function (beanDet) {

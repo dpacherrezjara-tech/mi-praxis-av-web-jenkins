@@ -28,6 +28,10 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263SQP00652(filter);
     }
     
+    public List<A2290Filter> loadPX263SQP00652DEBITS(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00652DEBITS(filter);
+    }
+    
     public List<A2370Filter> loadPX263SQP00899(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00899(filter);
     }
@@ -78,6 +82,18 @@ public class LoadConciliationLogic {
     
     public List<A2290Filter> loadPX263SQP00676(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00676(filter);
+    }
+    
+    public List<A2290Filter> loadPX263SQP00676_REFND(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00676_REFND(filter);
+    }
+    
+    public List<A2290Filter> loadPX263SQP00676_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00676_CHGBAK(filter);
+    }
+    
+    public List<A2290Filter> loadPX263SQP00676_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00676_ACREDIT(filter);
     }
     
     public List<A2290Filter> loadPX263SQP00894(A2290Filter filter) throws SQLException, Exception {

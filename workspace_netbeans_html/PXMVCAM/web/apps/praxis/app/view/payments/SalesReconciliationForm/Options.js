@@ -72,6 +72,14 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                         },
                         {
                             xtype: 'pagingtoolbar',
+                            id: prototype.id+'-pagginDebits',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
                             id: prototype.id+'-paggin2',
                             pageSize: 10,
                             border: false,
@@ -153,6 +161,30 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                         {
                             xtype: 'pagingtoolbar',
                             id: prototype.id+'-paggin12',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-paggin13',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-paggin14',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-paggin15',
                             pageSize: 10,
                             border: false,
                             displayInfo: false,

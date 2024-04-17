@@ -11,17 +11,23 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
             id: prototype.id+'-boxSearchFilter',
             margin: '0 7',
             border: false,
-            width: 1330,
+            width: 1700,
             bodyStyle: 'background: transparent',
             layout: 'vbox',
+//            layout: {
+//                type: 'vbox',
+//                align: 'center' // Alinea todos los elementos al centro horizontalmente
+//            },
             defaults: {
                 border: false
             },
             items: [
+                
                 {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
+                    padding: '0 0 0 200',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
@@ -337,6 +343,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
+                    padding: '0 0 0 200',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
@@ -496,6 +503,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
+                    padding: '0 0 0 200',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
@@ -503,6 +511,36 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     items: [
                         
                         {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'label',
+                            text: 'Doc. Type:',
+                            padding: '3 0 0 0',
+                            width: 60,
+                        },
+                        {xtype: 'tbspacer', width: 39},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbTDOC',
+                            triggerAction: 'all',
+                            enableKeyEvents: true,
+                            readOnly: false,
+                            editable: true,
+                            valueField: 'value',
+                            displayField: 'description',
+                            fieldStyle: 'text-align: left;',
+                            width: 123,
+                            hidden: false,
+                            value: 'S',
+                             store: {
+                                fields: ['value', 'description'],
+                                data: [
+                                    
+                                    { value: 'S', description: 'SALES' },
+                                    { value: 'D', description: 'DEBITS' },
+                                ]
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 35},
                         {
                             xtype: 'label',
                             text: 'Status :',
@@ -514,6 +552,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 'data-qtip': 'Status'
                             }
                         },
+                        {xtype: 'tbspacer', width: 5},
                         {
                             xtype:'combo',
                             id: prototype.id+'-cmbStatus',
@@ -540,7 +579,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             listeners:{
                             }
                         },
-                        {xtype: 'tbspacer', width: 10},
+                        {xtype: 'tbspacer', width: 20},
                         {
                             xtype: 'label',
                             text: 'Amount :',
@@ -586,6 +625,8 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 'data-qtip': 'Merchant Number'
                             }
                         },
+                        {xtype: 'tbspacer', width: 70},
+                        
                         {
                             xtype: 'textfield',
                             id: prototype.id+'-txtMERCHN',     
