@@ -1435,16 +1435,14 @@ public class BankReconciliationDAO {
                 objRtn.PAYDATE = rs01.getString("PAYDATE");
                 objRtn.DATEC = rs01.getString("DATEC");
                 objRtn.FSELEC = rs01.getString("FSELEC");
+                objRtn.STVALS = rs01.getString("STVALS");
                 objRtn.DEBTYPE = rs01.getString("DEBTYPE");
                 objRtn.descDEBTYPE = hmDescDebitType.get(rs01.getString("DEBTYPE").trim());
-                
-                
                 if (hmDescReglas.containsKey(rs01.getString("FREGLA").trim())) {
                     objRtn.descFREGLA = hmDescReglas.get(rs01.getString("FREGLA").trim()).toString();
                 } else {
                     objRtn.descFREGLA = rs01.getString("FREGLA").trim();
                 }
-
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
                 objRtn.SVFOPC = rs01.getDouble("SVFOPC");
                 objRtn.SVFOPD = rs01.getDouble("SVFOPD");

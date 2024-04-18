@@ -788,7 +788,23 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             readOnly: true,
                                             width: 100,
                                         },
-                                        {xtype: 'tbspacer', width: 310},
+                                        {xtype: 'tbspacer', width: 25},
+                                        {
+                                            xtype: 'label',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            text: 'Sales Status',
+                                            width: 95
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSTVALS',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
                                             text: 'Doc SAP',

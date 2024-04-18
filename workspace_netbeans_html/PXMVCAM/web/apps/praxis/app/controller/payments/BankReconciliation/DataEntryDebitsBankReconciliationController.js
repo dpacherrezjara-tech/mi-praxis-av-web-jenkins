@@ -489,6 +489,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
     onSearchPendingDetail: function ( prefixDeb, consultPath ) {
         
         var paramDetail = {};
+        
+        this.bean.SCARDNSIX = this.bean.SCARDN.substring(0, 6);
+        this.bean.SCARDNFOUR = this.bean.SCARDN.substring(this.bean.SCARDN.length - 4)
+        console.log(this.bean.SCARDN, 'this.bean.SCARDN')
+        console.log(this.bean.SCARDNSIX, 'this.bean.SCARDNSIX')
+        console.log(this.bean.SCARDNFOUR, 'this.bean.SCARDNFOUR')
         paramDetail.beanString = JSON.stringify(this.bean);
         console.log(paramDetail);
         Ext.Ajax.request({
@@ -615,6 +621,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtSTVALHide', this.bean.STVAL);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
+        this.setValue('de-txtSTVALS', this.bean.STVALS);
         this.setValue('de-txtDTYPE', this.bean.descDEBTYPE);
         this.lstAmounts = [];
         var fila1 = {};
