@@ -133,6 +133,10 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP05103(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP05103(filter);
     }
+    
+    public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP05103_DEBITYPE(filter);
+    }
 
     public List<A2290Filter> loadPX269SQP05103F(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP05103F(filter);

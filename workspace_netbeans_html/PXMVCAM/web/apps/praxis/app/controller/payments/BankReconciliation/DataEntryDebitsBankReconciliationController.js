@@ -422,6 +422,32 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                 Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
             }
         });
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainMessagesDT',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    meDe.bean_detail = res.result;
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbDebitType').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbDebitType').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
+            }
+        });
     },
     onSearchCompleteDetail: function ( prefixDeb, consultPath ) {
 
@@ -532,6 +558,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             this.hiddenByMatch()
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
+            Ext.getCmp(prototype.id + '-cmbDebitType').show();
+            Ext.getCmp(prototype.id + '-spcByDT').setWidth(1);
+            Ext.getCmp(prototype.id + '-de-txtDTYPE').hide();
             Ext.getCmp(prototype.id + '-labelScan').show();
             Ext.getCmp(prototype.id + '-panelScanCard').show();
             Ext.getCmp(prototype.id + '-panelScanCard_2').show();
@@ -586,7 +615,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtSTVALHide', this.bean.STVAL);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
-        this.setValue('de-txtDTYPE', this.bean.DEBTYPE);
+        this.setValue('de-txtDTYPE', this.bean.descDEBTYPE);
         this.lstAmounts = [];
         var fila1 = {};
         fila1.label1 = 'Comm. Sett.';
@@ -725,7 +754,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
     calcularSumAmount: function ( prefixDeb ) {
         var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan_' + prefixDeb); // Reemplaza 'tuGridId' con el ID de tu grilla
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan_' + prefixDeb).getStore(); // Reemplaza 'tuGridId' con el ID de tu grilla
-        var groupField = 'A720PNR'; // Campo por el cual quieres agrupar (PNR)
+        var groupField = 'A1531CAPL'; // Campo por el cual quieres agrupar (PNR)
 
         var sum = {};
 
@@ -896,6 +925,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         }else if(pestañaActiva.includes('Acredit')){
             prefixDeb = 'Acredit'
         }
+        console.log('combo debtype', Ext.getCmp(prototype.id + '-cmbDebitType').getValue())
         console.log(pestañaActiva, 'idPanelActivo')
         var deci = this.preexecuteOption(prefixDeb);
         if (deci) {
@@ -971,7 +1001,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         console.log(ASVFOP);
         console.log(BSVFOP);
         if (ASVFOP === BSVFOP) {
-
+            var debitType = Ext.getCmp(prototype.id + '-cmbDebitType').getValue();
+            if(!debitType || debitType == ''){
+                global.Msg({msg: 'Select the type of debit "Debit Type" '});
+                return false
+            }
             var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
             console.log(comment);
             if (comment !== '' && comment !== null) {
@@ -1182,6 +1216,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                 TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE_' + prefixDeb).getValue() ? Ext.getCmp(prototype.id + '-cmbADJTYPE_' + prefixDeb).getValue() : '', // Reemplaza 'nombre' con el campo correcto de tu modelo
+                DEBTYPE: Ext.getCmp(prototype.id + '-cmbDebitType').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 MPF077TRAN: record.get('MPF077TRAN') ? record.get('MPF077TRAN') : '',

@@ -583,7 +583,9 @@ public class A2290Filter extends A2290 {
     public String CODADJU = "";
     public String DES_CODADJU = "";
     public String FSELEC = "";
+    public String IN_DEBTYPE = "";
     public String DEBTYPE = "";
+    public String descDEBTYPE = "";
 
     //PArametros view ticket
     public String option = "";

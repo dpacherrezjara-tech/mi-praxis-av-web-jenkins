@@ -2484,6 +2484,337 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                         },
                                         {
                                             xtype: 'panel',
+                                            id: prototype.id + '-boxDetTicket_DEBITS',
+                                            hidden: true,
+                                            width: '100%',
+                                            bodyStyle: 'background: transparent;',
+                                            border: false,
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'center'
+                                            },
+                                            defaults: {
+                                                border: false,
+                                                height: '100%'
+                                            },
+                                            items: [
+                                                //<editor-fold defaultstate="collapsed" desc="gridDetTicket">
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDetTicket_DEBITS',
+                                                    bodyStyle: 'background: transparent;',
+                                                    width: 1305,
+                                                    titleAlign: 'center',
+                                                    columnLines: true,
+                                                    enableColumnMove: false,
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            resizable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Ticket',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    resizable: true,
+                                                                    align: 'center',
+                                                                    border: true
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Number', width: 120, dataIndex: 'strTicket',
+                                                                        listeners: {
+                                                                            click: 'viewMasterTkt3'
+                                                                        },
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "background-color:#d5f4d5;";
+                                                                            value = '<b>' + value + '</b>';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Type', dataIndex: 'strPEM', width: 90,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Status', dataIndex: 'STVAL', width: 140,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:left;color:" + color + ";";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.STVAL + '"';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Error',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'CERROR', width: 50,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:left;color:" + color + ";";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.CERROR + '"';
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Src', dataIndex: 'FTE', width: 35,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                id: prototype.id + '-hcDetTkt_DEBITS',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'SDATE', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Country',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SCOUNTRY', width: 50,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SCOUNTRY + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SCARCOD', width: 45,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Number', width: 130, dataIndex: 'strSCARDN',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = 'text-align:center;color:' + color + ';background-color:#CCFFFF;';
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strSCARDN + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Author.', dataIndex: 'SAUTHOC', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Cur.', dataIndex: 'SCURRENCY', width: 40,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOP', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return win.formatDblNumber(value);
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'PNR', dataIndex: 'SPNR', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Agent',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SAGENT', width: 65,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Transaction',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'TRNCU', width: 55,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Days', dataIndex: 'lngDays', width: 45,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = Number(data.lngDays) >= 4 ? '#c22428' : '#2BC224';
+                                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Bank',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Status', dataIndex: 'BSTVAL', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.BSTVAL + '"';
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Flag',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Status', dataIndex: 'strFlagStat', width: 50,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strFlagStat + '"';
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'View', dataIndex: '', width: 40,
+                                                                listeners: {
+                                                                    click: 'viewDataEntry_clickHandler'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.tdAttr = 'data-qtip="View"';
+                                                                    var src = 'resources/img/botones/16x16/1326498593_018.png';
+                                                                    return '<a href="#payments-sales-reconciliation-form"><img src="' + src + '"></a>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                                //</editor-fold>
+                                            ]
+                                        },
+                                        
+                                        {
+                                            xtype: 'panel',
                                             id: prototype.id + '-boxDetCountryS',
                                             hidden: true,
 //                                            width: '100%',
@@ -2781,7 +3112,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             {
                                                                                 text: 'Code', dataIndex: 'SCOUNTRY', width: 60,
                                                                                 listeners: {
-                                                                                    click: 'gridDetCardS_clickHandler'
+                                                                                    click: 'gridDet_REFND_clickHandler'
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
@@ -2927,7 +3258,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             {
                                                                                 text: 'Code', dataIndex: 'SCOUNTRY', width: 60,
                                                                                 listeners: {
-                                                                                    click: 'gridDetCardS_clickHandler'
+                                                                                    click: 'gridDet_CHGBAK_clickHandler'
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
@@ -3073,7 +3404,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             {
                                                                                 text: 'Code', dataIndex: 'SCOUNTRY', width: 60,
                                                                                 listeners: {
-                                                                                    click: 'gridDetCardS_clickHandler'
+                                                                                    click: 'gridDet_ACREDIT_clickHandler'
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
@@ -3928,6 +4259,401 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 columns: [
                                                                     {
                                                                         text: 'Code', dataIndex: 'TRNCU', width: 55
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Days', dataIndex: 'lngDays', width: 45,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = Number(data.lngDays) >= 4 ? '#c22428' : '#2BC224';
+                                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Flag',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Status', dataIndex: 'STVAL', width: 50,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strFlagStat + '"';
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+//                                                            {
+//                                                                text: 'View', dataIndex: '', width: 40,
+//                                                                listeners: {
+//                                                                    click: 'viewDataEntry_clickHandler'
+//                                                                },
+//                                                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    var data = record.data;
+//                                                                    metaData.tdAttr = 'data-qtip="' + (Number(data.lngQOBS) > 1 ? 'View' : 'View') + '"';
+//                                                                    var src = Number(data.lngQOBS) > 1 ? 'resources/img/botones/16x16/warning.png' : 'resources/img/botones/16x16/Change.png';
+//                                                                    return '<a href="#payments-sales-reconciliation-form"><img src="' + src + '"></a>';
+//                                                                }
+//                                                            },
+                                                            {
+                                                                text: 'View', dataIndex: '', width: 40,
+                                                                listeners: {
+                                                                    click: 'viewDataEntry_clickHandler'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.tdAttr = 'data-qtip="View"';
+                                                                    var src = 'resources/img/botones/16x16/1326498593_018.png';
+                                                                    return '<a href="#payments-sales-reconciliation-form"><img src="' + src + '"></a>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+//                                                    viewConfig: {
+//                                                        stripeRows: true,
+//                                                        enableTextSelection: true,
+//                                                        markDirty: false,
+//                                                        getRowClass: function (record, rowIndex, rowParams, store) {
+//                                                            if (rowIndex % 2 === 0)
+//                                                                return 'rowA';
+//                                                        }
+//                                                    },
+//                                                    trackMouseOver: true,
+//                                                    scope: this,
+//                                                    listeners: {
+//                                                        scope: this,
+//                                                        afterrender: function (obj) {
+//
+//                                                        }
+//                                                    }
+                                                }
+                                                //</editor-fold>
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-boxDetTktS_DEBITS',
+                                            hidden: true,
+                                            width: '100%',
+                                            bodyStyle: 'background: transparent;',
+                                            border: false,
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'center'
+                                            },
+                                            defaults: {
+                                                border: false,
+                                                height: '100%'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'panel',
+                                                    width: 1250,
+                                                    bodyStyle: 'background: #ECECEC;',
+                                                    border: true,
+                                                    hidden: true,
+                                                    layout: 'hbox',
+                                                    defaults: {
+                                                        border: false
+                                                    },
+                                                    items: [
+                                                        {
+                                                            xtype: 'label',
+                                                            id: prototype.id + '-lblTitDetTktByStval_DEBITS',
+                                                            text: '',
+                                                            padding: '6 0',
+                                                            style: 'font-weight:bold;text-align:center;',
+                                                            width: 900
+                                                        },
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Error:',
+                                                            padding: '6 0',
+                                                            style: 'text-align:left;',
+                                                            width: 74
+                                                        },
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-cmbError_DEBITS',
+                                                            queryMode: 'local',
+                                                            allowBlank: false,
+                                                            forceSelection: true,
+                                                            selectOnFocus: true,
+                                                            caseSensitive: false,
+                                                            autoSelect: true,
+                                                            editable: true,
+                                                            width: 100,
+                                                            typeAhead: true,
+                                                            valueField: 'code', displayField: 'name',
+                                                            enableKeyEvents: true,
+                                                            triggerAction: 'all',
+                                                            padding: '4 0',
+                                                            listeners: {
+                                                                change: 'cbxError_changeHandler',
+                                                            }
+                                                        },
+                                                        {xtype: 'tbspacer', width: 4},
+                                                        {
+                                                            xtype: 'image',
+                                                            id: prototype.id + '-imgSearchEM_DEBITS',
+                                                            src: 'resources/img/botones/search.png',
+                                                            mode: 'image',
+                                                            padding: '6 0',
+                                                            listeners: {
+                                                                afterrender: function (c) {
+                                                                    Ext.create('Ext.tip.ToolTip', {
+                                                                        target: c.getEl(),
+                                                                        html: 'Search'
+                                                                    });
+                                                                },
+                                                                el: {
+                                                                    click: 'cbxError_changeHandler',
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                //<editor-fold defaultstate="collapsed" desc="gridDetTktByStval">
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDetTktByStval_DEBITS',
+                                                    bodyStyle: 'background: transparent;',
+                                                    width: 1280,
+                                                    titleAlign: 'center',
+                                                    columnLines: true,
+                                                    enableColumnMove: false,
+                                                    plugins: {
+                                                        ptype: 'cellediting',
+                                                        clicksToEdit: 1
+                                                    },
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            resizable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Ticket', flex: 1,
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    resizable: true,
+                                                                    align: 'center',
+                                                                    border: true
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Number', flex: 1, /*width: 120,*/ dataIndex: 'strTicket', //enableTextSelection :true,
+                                                                        listeners: {
+                                                                            click: 'gridData_act1_clickHandler'
+                                                                        },
+//                                                                        editor: {
+//                                                                            xtype: 'textfield',
+//                                                                            editable: true,
+//                                                                            enableKeyEvents: true,
+//                                                                            listeners: {
+//                                                                                keypress: 'eventKeyTKT',
+//                                                                                specialkey: 'eventKeyTKT'
+//                                                                            }
+//                                                                        },
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;background-color:#d5f4d5;';
+                                                                            metaData.tdAttr = 'data-qtip="' + data.STVAL + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:none;">' + value + '</a>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Type', dataIndex: 'strPEM', width: 90,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Error',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'CERROR', width: 155,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:left;color:" + color + ";";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.CERROR + '"';
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Src', dataIndex: 'FTE', width: 32,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                id: prototype.id + '-hcDetTktS_DEBITS',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'SDATE', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Country',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SCOUNTRY', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCountry + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SCARCOD', width: 45,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Card Number', width: 150, dataIndex: 'strSCARDN',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = 'text-align:center;color:' + color + ';background-color:#CCFFFF;';
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strSCARDN + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Author.', dataIndex: 'SAUTHOC', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Cur.', dataIndex: 'SCURRENCY', width: 40,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOP', width: 105,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return win.formatDblNumber(value);
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'PNR', dataIndex: 'SPNR', width: 70,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Agent',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SAGENT', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
                                                                     }
                                                                 ]
                                                             },

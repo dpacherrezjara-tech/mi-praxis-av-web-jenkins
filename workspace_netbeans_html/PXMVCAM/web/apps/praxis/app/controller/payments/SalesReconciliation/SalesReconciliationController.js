@@ -626,6 +626,31 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         beanDetE.IN_STVAL = '2';
         this.searchDetTktByStval(beanDetE);
     },
+    gridDet_REFND_clickHandler: function (column, e, row, column, x, rowData) {
+        var beanDetE = x.record.data;
+        console.log('beanDetE', beanDetE)
+        console.log('JAJSDJASDHADHASDHASSDHSAJDSAJ', beanDetE.IN_STVAL)
+        let consultPath = 'searchDetTktByStval_REFND'
+        win.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+        let paggin = 'paggin17'
+        
+//        beanDetE.IN_STVAL = '1';
+        this.searchDetTktByStval_DEBITS(beanDetE, consultPath, paggin);
+    },
+    gridDet_CHGBAK_clickHandler: function (column, e, row, column, x, rowData) {
+        var beanDetE = x.record.data;
+        let consultPath = 'searchDetTktByStval_CHGBAK'
+        win.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+        let paggin = 'paggin17'
+        this.searchDetTktByStval_DEBITS(beanDetE, consultPath, paggin);
+    },
+    gridDet_ACREDIT_clickHandler: function (column, e, row, column, x, rowData) {
+        var beanDetE = x.record.data;
+        let consultPath = 'searchDetTktByStval_ACREDIT'
+        win.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+        let paggin = 'paggin17'
+        this.searchDetTktByStval_DEBITS(beanDetE, consultPath, paggin );
+    },
     btnQuery_click: function (obj, e) {
         var beanQuery = {};
 
@@ -2001,6 +2026,89 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             }
         });
     },
+    
+    searchDetTktByStval_DEBITS: function (beanDetE, consultPath, paggin) {
+        me.f_boxDetTktS = '2';
+        me.beanboxDetTktS2 = beanDetE;
+        let nameTable = ''
+        if(consultPath.includes('REFND')){
+            nameTable = 'MPF075'
+        } else if (consultPath.includes('CHGBAK')){
+            nameTable = 'MPF076'
+        } else if (consultPath.includes('ACREDIT')){
+            nameTable = 'MPF077'
+        }
+        Ext.Ajax.request({
+            url: prototype.url + '/' + consultPath,
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(me.beanboxDetTktS2)},
+            beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                win.lblUser_toolTip("Estructura: " + nameTable);
+//                me.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    var gridDetTktSAC = res.data;
+                    if (gridDetTktSAC.length > 0) {
+                        var obj = {};
+                        for (var l = 0; l < gridDetTktSAC.length; l++) {
+                            obj = gridDetTktSAC[l];
+                            if (obj.IN_STVAL === "4") {
+                                if (obj.strPEM === "ACCB") {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+                        if (obj !== null) {
+                            var storeGridDatas = Ext.create("Ext.Praxis.store.payments.GridData", {data: gridDetTktSAC, total: res.total});
+                            storeGridDatas.total = res.total;
+                            storeGridDatas.totalCount = res.total;
+//                                Ext.getCmp(prototype.id + '-gridDetTktByStval').bindStore(
+//                                        Ext.create("Ext.Praxis.store.payments.GridData", {data: gridDetTktSAC})
+//                                        );
+                            Ext.getCmp(prototype.id + '-gridDetTktByStval_DEBITS').bindStore(storeGridDatas);
+                            Ext.getCmp(prototype.id + '-paggin17').bindStore(storeGridDatas);
+                            Ext.getCmp(prototype.id + '-cmbError_DEBITS').show();
+                            me.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+                            win.setText('lblTitDetTktByStval_DEBITS', obj.strTitulo);
+                            if (obj.IN_TDOC === 'R') {
+                                win.setText('hcDetTktS_DEBITS', 'Refund');
+                            } else {
+                                win.setText('hcDetTktS_DEBITS', 'Sales');
+                            }
+                            
+                        }
+                        // Colocando los Errores ==============================================
+                        var lstError = res.lstError;
+                        var errors = new Array();
+                        errors.push(['', 'All']);
+                        lstError.forEach(function callback(currentValue, index, array) {
+                            errors.push([currentValue.CERROR, currentValue.strDescripcion]);
+                        });
+                        var store = Ext.create('Ext.data.ArrayStore', {
+                            storeId: 'errors', autoLoad: true, data: errors, fields: ['code', 'name']
+                        });
+                        Ext.getCmp(prototype.id + '-cmbError_DEBITS').bindStore(store);
+                        win.setValue('cmbError', '');
+                        // ====================================================================
+                    } else {
+                        win.setText('lblTitDetTktByStval_DEBITS', '');
+                        global.Msg({msg: 'Data not found'});
+                    }
+                } else
+//                    global.Msg({msg: res.sesion});
+                global.clear();
+            },
+            failure: function (response, opts) {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchDetTktByStval">
     searchDetTktByStval: function (beanDetE) {
@@ -2404,15 +2512,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginación">
     pagFirst: function (obj, e) {
         this.getPaggin().moveFirst();
+        console.log('BOTON PAGINADO')
     },
     pagPrevious: function (obj, e) {
         this.getPaggin().movePrevious();
+        console.log('BOTON PAGINADO')
     },
     pagNext: function (obj, e) {
         this.getPaggin().moveNext();
+        console.log('BOTON PAGINADO')
     },
     pagLast: function (obj, e) {
         this.getPaggin().moveLast();
+        console.log('BOTON PAGINADO')
     },
     // </editor-fold>
 
@@ -2426,6 +2538,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         if (paggin === null) {
             Ext.getCmp(prototype.id + '-boxPaginacion').hide();
             Ext.getCmp(prototype.id + '-boxPagDetail').hide();
+            console.log('NIKAAAAAAAAAA')
         } else {
             var pagData = paggin.getPageData();
             console.log('selectedChild');
@@ -2482,6 +2595,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 return Ext.getCmp(prototype.id + '-paggin11');
             case prototype.id + '-boxDetBySAGENT':
                 return Ext.getCmp(prototype.id + '-paggin12');
+            case prototype.id + '-gridDetCountryS_REFND':
+                return Ext.getCmp(prototype.id + '-paggin13');
+            case prototype.id + '-boxDetTktS_DEBITS':
+                return Ext.getCmp(prototype.id + '-paggin17');
             default:
                 return null;
         }

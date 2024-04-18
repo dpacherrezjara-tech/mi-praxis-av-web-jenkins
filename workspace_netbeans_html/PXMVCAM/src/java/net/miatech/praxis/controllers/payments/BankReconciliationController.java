@@ -3394,6 +3394,36 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "/obtainMessagesDT")
+    public @ResponseBody
+    String obtainMessagesDT(ModelMap map, HttpServletRequest request) {
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        List<A2290Filter> lst = new ArrayList<>(0);
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP05103_DEBITYPE(filter);
+
+            map.put("success", true);
+            System.out.println("Total : " + lst.size());
+            map.put("data", lst);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "/obtainMessagesF")
     public @ResponseBody

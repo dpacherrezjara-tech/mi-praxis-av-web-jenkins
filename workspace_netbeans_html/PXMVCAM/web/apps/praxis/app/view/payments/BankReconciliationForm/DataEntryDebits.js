@@ -473,7 +473,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                         {xtype: 'tbspacer', width: 7, height: 24},
                                         {
                                             xtype: 'label',
-                                            text: 'Sales Date',
+                                            text: 'Trans. Date',
                                             id: prototype.id + '-de-txtFromDateBSUMDATE',
                                             textAlign: 'center',
                                             paddingLeft: 3,
@@ -487,84 +487,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             style: 'font-weight:bold;color:#0B333C;',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 30},
-                                         {
-                                            xtype: 'label',
-                                            text: 'PNR',
-                                            textAlign: 'center',
-                                            paddingLeft: 3,
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSPNR',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            maxLength: 6,
-                                            width: 118,
-                                        },
-                                        {xtype: 'tbspacer', width: 30},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Doc. Type',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtTDOC',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 33},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Debit Type',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtDTYPE',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 1}
-                                    ]
-                                },
-                                {
-                                    xtype: 'panel',
-                                    layout: 'hbox',
-                                    border: false,
-                                    margin: '0 2 0 20',
-                                    bodyStyle: 'background:#efe5e5;',
-                                    items: [
-                                        {xtype: 'tbspacer', width: 7, height: 24},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Payment Date',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtPAYDATE',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
                                             width: 100
                                         },
                                         {xtype: 'tbspacer', width: 30},
@@ -586,7 +508,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Card Account Nbr.',
+                                            text: 'Account Nbr.',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
@@ -631,7 +553,98 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             readOnly: true,
                                             width: 57
                                         },
-                                        {xtype: 'tbspacer', width: 6},
+                                        {xtype: 'tbspacer', width: 1}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '0 2 0 20',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7, height: 24},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Payment Date',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtPAYDATE',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'PNR',
+                                            textAlign: 'center',
+                                            paddingLeft: 3,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 35
+                                        },
+                                        {xtype: 'tbspacer', width: 8},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSPNR',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            maxLength: 6,
+                                            width: 60,
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Doc. Type',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtTDOC',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 110
+                                        },
+                                        {xtype: 'tbspacer', width: 23},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Debit Type',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 70
+                                        },
+                                        {xtype: 'tbspacer', width: 25},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtDTYPE',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDebitType',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            width: 254,
+                                            hidden: true,
+                                            hiddenLabel: false
+                                        },
+                                        {xtype: 'tbspacer', width: 155, id: prototype.id + '-spcByDT'},
                                     ]
                                 },
                                 {
@@ -2401,7 +2414,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 75, id: prototype.id + '-gridA720FECVTA_Chgbak',
+                                                                                                    {text: 'Trans.<br>Date', dataIndex: 'A720FECVTA', width: 75, id: prototype.id + '-gridA720FECVTA_Chgbak',
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             return value;

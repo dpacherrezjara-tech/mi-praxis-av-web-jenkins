@@ -1118,10 +1118,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, align: 'center',
+                                                text: 'Sales<br>Date',dataIndex: 'SDATE', width: 80, align: 'center', id: prototype.id + '-ColumnDateDetalle',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
-                                                    var data = record.data;
+                                                    var data = record.data;   
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
