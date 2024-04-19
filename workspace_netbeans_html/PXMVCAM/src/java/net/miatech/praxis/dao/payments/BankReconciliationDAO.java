@@ -1012,7 +1012,7 @@ public class BankReconciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 //                    beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
                     beanTkt.SPNR = rst.getString("NOMPAX").trim();
-                    beanTkt.MPF076TRAN = rst.getString("TRAN").trim();
+                    beanTkt.MPF076TRAN = rst.getInt("TRAN");
 
                     beanTkt.DATEC = rst.getString("DATEC").trim();
                     beanTkt.TRANC = rst.getString("TRANC").trim();
@@ -1863,7 +1863,7 @@ public class BankReconciliationDAO {
                 cstmt2.setString(14, Functions.getFechaActual());
                 cstmt2.setString(15, Functions.getHoraActual());
                 cstmt2.setString(16, filter.strComment.toUpperCase());
-                cstmt2.setString(17, filterC.MPF076TRAN.trim());
+                cstmt2.setInt(17, filterC.MPF076TRAN);
                 cstmt2.setString(18, filterC.SPNR.trim());
                 
 
@@ -2000,7 +2000,7 @@ public class BankReconciliationDAO {
                 cstmt2.setString(14, Functions.getFechaActual());
                 cstmt2.setString(15, Functions.getHoraActual());
                 cstmt2.setString(16, filter.strComment.toUpperCase());
-                cstmt2.setString(17, filterC.MPF077TRAN.trim());
+                cstmt2.setInt(17, filterC.MPF077TRAN);
                 cstmt2.setString(18, filterC.SPNR.trim());
                 
 
@@ -3637,7 +3637,7 @@ public class BankReconciliationDAO {
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
-                beanTkt.MPF076TRAN = rst.getString("TRAN").trim();
+                beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";
@@ -3749,7 +3749,7 @@ public class BankReconciliationDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
-                beanTkt.MPF077TRAN = rst.getString("TRAN").trim();
+                beanTkt.MPF077TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";
@@ -4411,7 +4411,7 @@ public class BankReconciliationDAO {
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
-                beanTkt.MPF076TRAN = rst.getString("TRAN").trim();
+                beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";
@@ -4522,8 +4522,8 @@ public class BankReconciliationDAO {
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPNR = rst.getString("SPRN").trim();
-                beanTkt.MPF077TRAN = rst.getString("TRAN").trim();
+                beanTkt.SPNR = rst.getString("SPNR").trim();
+                beanTkt.MPF077TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";
@@ -4733,7 +4733,7 @@ public class BankReconciliationDAO {
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
-                beanTkt.MPF076TRAN = rst.getString("TRAN").trim();
+                beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 beanTkt.STVAL = rst.getString("STVAL").trim();
 
 //                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
@@ -4836,8 +4836,8 @@ public class BankReconciliationDAO {
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPNR = rst.getString("SPRN").trim();
-                beanTkt.MPF077TRAN = rst.getString("TRAN").trim();
+                beanTkt.SPNR = rst.getString("SPNR").trim();
+                beanTkt.MPF077TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";

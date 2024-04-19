@@ -74,8 +74,8 @@ public class A2290 {
     public String SINVN = "";
     public String SIDATE = "";
     public String SPNR = "";
-    public String MPF076TRAN = "";
-    public String MPF077TRAN = "";
+    public int MPF076TRAN = 0;
+    public int MPF077TRAN = 0;
     public String SPNRSP = "";
     public String FCONC = "";
     //Datos del archivo ACCB

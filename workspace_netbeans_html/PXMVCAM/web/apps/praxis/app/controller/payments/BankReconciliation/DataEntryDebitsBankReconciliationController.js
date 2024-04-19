@@ -1235,9 +1235,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                 DEBTYPE: Ext.getCmp(prototype.id + '-cmbDebitType').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                MPF077TRAN: record.get('MPF077TRAN') ? record.get('MPF077TRAN') : '',
-                MPF076TRAN: record.get('MPF076TRAN')? record.get('MPF076TRAN') : '',
-                SPNR: record.get('SPNR') ? record.get('SPNR') : '',
+                MPF077TRAN: record.get('MPF077TRAN') && record.get('MPF077TRAN') != '' ? record.get('MPF077TRAN') : 0,
+                MPF076TRAN: record.get('MPF076TRAN') && record.get('MPF076TRAN') != '' ? record.get('MPF076TRAN') : 0,
+                SPNR: record.get('A720PNR') ? record.get('A720PNR') : '',
                 TDOC: 'D'
 
                         // Agrega más campos según sea necesario
