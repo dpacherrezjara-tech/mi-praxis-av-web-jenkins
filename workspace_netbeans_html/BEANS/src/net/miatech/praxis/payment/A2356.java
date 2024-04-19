@@ -12,6 +12,10 @@ package net.miatech.praxis.payment;
  */
 public class A2356 {
         public String CCUST= "";  
+        public String NAME = "";  
+        public String TYPE = "";  
+        public String STVAL = "";  
+        public String DEBSTVAL = "";  
         public String CODTRAN  = "";                      
         public String DESCRI  = "";           
         public String TIPREG  = "";                                
@@ -19,6 +23,7 @@ public class A2356 {
         public String NROPOLIZ  = ""; 
         public String SCURRENCY  = "";    
         public String SCOUNTRY  = "";       
+        public String SOCIETYL  = "";       
         public String CODCLIT  = ""; 
         public String DIRCLIT = ""; 
         public String CLASE = ""; 
@@ -39,6 +44,18 @@ public class A2356 {
         public String TTRAN  = "";  
         public String TOPER  = "";  
         public String ACCNUMBER  = "";  
+        public String PAYDATE  = "";  
+        public String BANDOC  = "";  
+        public String REFERENCE  = "";  
+        public String CAR6  = "";  
+        public String CAR4  = "";  
+        public String SAUTHOC  = "";  
+        public String FTRAN  = "";  
+        public String MERCHAND  = "";  
+        public double TOTAL  = 0;  
+        public double NETO  = 0;  
+        public double totTOTAL  = 0;  
+        public double totNETO  = 0;  
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";
