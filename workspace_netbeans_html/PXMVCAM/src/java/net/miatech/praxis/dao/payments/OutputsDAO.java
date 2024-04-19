@@ -85,7 +85,7 @@ public class OutputsDAO {
                 bean.DDATA = rst.getString("DDATA").trim();
                 bean.DATEC = rst.getString("DATEC").trim();
                 bean.TRANC = rst.getString("TRANC").trim();
-                bean.NEGOC = rst.getString("NEGOC").trim();
+//                bean.NEGOC = rst.getString("NEGOC").trim();
 
                 lstData.add(bean);
             }
