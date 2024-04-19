@@ -47,7 +47,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1700,
+                                        width: 1900,
                                         align: 'center'
                                     },
                                     items: [

@@ -294,7 +294,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDebitsData',
-                                                    width: 1510,
+                                                    width: 1830,
                                                     columnLines: true,
                                                     features: [{
                                                             ftype: 'summary'
@@ -328,6 +328,114 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
+                                                                text: 'Settlement Reconciliation',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Match', menuDisabled: true,
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                listeners: {
+                                                                                    click: 'onGridDetCardSMain'
+                                                                                },
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCH, '0,000') + '<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: '%', dataIndex: 'lngQMATCHPercent', width: 60, align: 'center', menuDisabled: true, //flex: 1
+                //                                                                listeners: {
+                //                                                                    click: 'onGridDetCardS'
+                //                                                                },
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000.00') + '%</b>';
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000.00') + '%<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                listeners: {
+                                                                                    click: 'onGridDetCardSMain'
+                                                                                },
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                listeners: {
+                                                                                    click: 'onGridDetCardSMain'
+                                                                                },
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQDIFF, '0,000') + '<b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Settlement', menuDisabled: true,
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                listeners: {
+                                                                                    click: 'onGridDetCardSMain'
+                                                                                },
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '<b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Total', dataIndex: 'lngQSALES', width: 100, align: 'center', menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    
+                                                                ]
+                                                            },
+                                                            {
                                                                 text: 'Reconciliation By Refund',
                                                                 defaults: {
                                                                     menuDisabled: true,
@@ -344,7 +452,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'Auto', dataIndex: 'lngQMATCHRF', width: 100,
+                                                                                text: 'Auto', dataIndex: 'lngQMATCHRF', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_MATCH_REFND',
                                                                                 },
@@ -373,7 +481,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: 'Manual', dataIndex: 'lngQMANUALRF', width: 100,
+                                                                                text: 'Manual', dataIndex: 'lngQMANUALRF', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_MANUAL_REFND',
                                                                                 },
@@ -389,7 +497,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: 'Diff', dataIndex: 'lngQDIFFRF', width: 100,
+                                                                                text: 'Diff', dataIndex: 'lngQDIFFRF', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_DIFF_REFND',
                                                                                 },
@@ -415,7 +523,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDRF', width: 100,
+                                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDRF', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_PEND_REFND',
                                                                                 },
@@ -465,7 +573,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'Auto', dataIndex: 'lngQMATCHCH', width: 100,
+                                                                                text: 'Auto', dataIndex: 'lngQMATCHCH', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_MATCH_CHGBAK',
                                                                                 },
@@ -494,7 +602,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: 'Manual', dataIndex: 'lngQMANUALCH', width: 100,
+                                                                                text: 'Manual', dataIndex: 'lngQMANUALCH', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_MANUAL_CHGBAK',
                                                                                 },
@@ -510,7 +618,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: 'Diff', dataIndex: 'lngQDIFFCH', width: 100,
+                                                                                text: 'Diff', dataIndex: 'lngQDIFFCH', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_DIFF_CHGBAK',
                                                                                 },
@@ -528,7 +636,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Ticket',
+                                                                        text: 'Trans.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -536,7 +644,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDCH', width: 100,
+                                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDCH', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_PEND_CHGBAK',
                                                                                 },
@@ -586,7 +694,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'Auto', dataIndex: 'lngQMATCHAC', width: 100,
+                                                                                text: 'Auto', dataIndex: 'lngQMATCHAC', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_MATCH_ACREDIT',
                                                                                 },
@@ -615,7 +723,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: 'Manual', dataIndex: 'lngQMANUALAC', width: 100,
+                                                                                text: 'Manual', dataIndex: 'lngQMANUALAC', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_MANUAL_ACREDIT',
                                                                                 },
@@ -631,7 +739,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: 'Diff', dataIndex: 'lngQDIFFAC', width: 100,
+                                                                                text: 'Diff', dataIndex: 'lngQDIFFAC', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_DIFF_ACREDIT',
                                                                                 },
@@ -649,7 +757,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Ticket',
+                                                                        text: 'Trans.',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -657,7 +765,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDAC', width: 100,
+                                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDAC', width: 80,
                                                                                 listeners: {
                                                                                     click: 'gridDetCountry_clickHandler_PEND_ACREDIT',
                                                                                 },

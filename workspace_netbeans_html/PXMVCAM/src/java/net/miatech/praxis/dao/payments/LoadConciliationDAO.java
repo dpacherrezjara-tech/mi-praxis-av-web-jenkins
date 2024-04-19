@@ -185,6 +185,7 @@ public class LoadConciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0; 
         long lngTotQSALESRF = 0, lngTotQMATCHRF = 0, lngTotQMANUALRF = 0, lngTotQDIFFRF = 0, lngTotQPENDRF = 0; 
         long lngTotQSALESCH = 0, lngTotQMATCHCH = 0, lngTotQMANUALCH = 0, lngTotQDIFFCH = 0, lngTotQPENDCH = 0;
         long lngTotQSALESAC = 0, lngTotQMATCHAC = 0, lngTotQMANUALAC = 0, lngTotQDIFFAC = 0, lngTotQPENDAC = 0; 
@@ -246,6 +247,12 @@ public class LoadConciliationDAO {
             filter.page.TOTROW = cstmt.getInt(20);
 
             while (rst.next()) {
+                lngTotQSALES = rst.getLong("QSALES");
+                lngTotQMATCH = rst.getLong("QMATCH");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotQDIFF = rst.getLong("QDIFF");
+                lngTotQPEND = rst.getLong("QPEND");
+                
                lngTotQSALESRF = rst.getLong("QSALESRF");
                 lngTotQMATCHRF = rst.getLong("QMATCHRF");
                 lngTotQMANUALRF = rst.getLong("QMANUALRF");
@@ -291,6 +298,12 @@ public class LoadConciliationDAO {
                     beanTkt.IN_MERCHN = filter.IN_MERCHN.trim();
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    
+                    beanTkt.lngQSALES = rst.getLong("QSALES");
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
 
                     beanTkt.lngQSALESRF = rst.getLong("QSALESRF");
                     beanTkt.lngQMATCHRF = rst.getLong("QMATCHRF");
@@ -313,6 +326,11 @@ public class LoadConciliationDAO {
                     beanTkt.lngQPOLIC = rst.getLong("QPOLIC");
                     beanTkt.lngQPOLIPE = rst.getLong("QPOLIPE");
 
+                    beanTkt.lngTotQSALES = lngTotQSALES;
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
+                    beanTkt.lngTotQMANUAL = lngTotQMANUAL;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+                    
                     beanTkt.lngTotQSALESRF = lngTotQSALESRF;
                     beanTkt.lngTotQMATCHRF = lngTotQMATCHRF;
                     beanTkt.lngTotQMANUALRF = lngTotQMANUALRF;
@@ -331,9 +349,13 @@ public class LoadConciliationDAO {
                     beanTkt.lngTotQPOLIC = lngTotQPOLIC;
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
 
+                    beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
+                    
                     beanTkt.lngQMATCHPercentRF = (beanTkt.lngQSALESRF > 0) ? (beanTkt.lngQMATCHRF * 100.0) / beanTkt.lngQSALESRF : 0.00;
                     beanTkt.lngQMATCHPercentCH = (beanTkt.lngQSALESCH > 0) ? (beanTkt.lngQMATCHCH * 100.0) / beanTkt.lngQSALESCH : 0.00;
                     beanTkt.lngQMATCHPercentAC = (beanTkt.lngQSALESAC > 0) ? (beanTkt.lngQMATCHAC * 100.0) / beanTkt.lngQSALESAC : 0.00;
+                    
+                    beanTkt.lngTotQMATCHPercent = (lngTotQSALES > 0) ? (lngTotQMATCH * 100.0) / lngTotQSALES : 0.00;
                     beanTkt.lngTotQMATCHPercentRF = (lngTotQSALESRF > 0) ? (lngTotQMATCHRF * 100.0) / lngTotQSALESRF : 0.00;
                     beanTkt.lngTotQMATCHPercentCH = (lngTotQSALESCH > 0) ? (lngTotQMATCHCH * 100.0) / lngTotQSALESCH : 0.00;
                     beanTkt.lngTotQMATCHPercentAC = (lngTotQSALESAC > 0) ? (lngTotQMATCHAC * 100.0) / lngTotQSALESAC : 0.00;

@@ -77,7 +77,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             let callPendingDebit = 'searchBeanDebits_SCAN_PENDING'
             this.onSearchPendingDetail(debitType,callPendingDebit );
             Ext.getCmp(prototype.id + '-txtScanPNR').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtScanPNR').setValue('');
             Ext.getCmp(prototype.id + '-txtScanSAGENT').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtScanSAGENT').setValue('');
             Ext.getCmp(prototype.id + '-input-txtTKTScan1').setDisabled(false);
             Ext.getCmp(prototype.id + '-txtApproval').setDisabled(false);
             Ext.getCmp(prototype.id + '-txtFromDate').setDisabled(false);
@@ -98,9 +100,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             let callPendingDebit = 'searchBean_SCAN_PENDING_CHGBAK'
             this.onSearchPendingDetail(debitType,callPendingDebit );
             Ext.getCmp(prototype.id + '-input-txtTKTScan1').setDisabled(true);
+            Ext.getCmp(prototype.id + '-input-txtTKTScan1').setValue('');
             Ext.getCmp(prototype.id + '-txtApproval').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtApproval').setValue('');
             Ext.getCmp(prototype.id + '-txtFromDate').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtFromDate').setValue('');
             Ext.getCmp(prototype.id + '-txtScanSAGENT').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtScanSAGENT').setValue('');
             Ext.getCmp(prototype.id + '-txtScanPNR').setDisabled(false);
 
         }
@@ -118,7 +124,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             let callPendingDebit = 'searchBean_SCAN_PENDING_ACREDIT'
             this.onSearchPendingDetail(debitType,callPendingDebit );
             Ext.getCmp(prototype.id + '-input-txtTKTScan1').setDisabled(true);
+            Ext.getCmp(prototype.id + '-input-txtTKTScan1').setValue('');
             Ext.getCmp(prototype.id + '-txtFromDate').setDisabled(true);
+            Ext.getCmp(prototype.id + '-txtFromDate').setValue('');
             Ext.getCmp(prototype.id + '-txtApproval').setDisabled(false);
             Ext.getCmp(prototype.id + '-txtScanPNR').setDisabled(false);
             Ext.getCmp(prototype.id + '-txtScanSAGENT').setDisabled(false);
@@ -1096,6 +1104,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                                     //exito
                                     Ext.getCmp(prototype.id + '-dataEntryDebits').close();
                                     Ext.getCmp(prototype.id + '-cmbTDOC').setValue(filterTDOC)
+                                    Ext.getCmp(prototype.id + '-cmbStatus').setValue("5")
                                     Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
                                 }
                             });
@@ -1526,6 +1535,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         //var rowIndex = store_gridInfoScan.indexOf(record);
         store_gridInfoScan.removeAt(rowIndex);
         Ext.getCmp(prototype.id + '-gridDataInfoScan_Chgbak').getView().refresh();
+        this.calcularSumAmount(prefixDeb);
+        this.calcularMontos(prefixDeb);
+    },
+    removeTKT_Acredit: function (grid, rowIndex, colIndex) {
+        let prefixDeb = 'Acredit'
+        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan_Acredit').getStore();
+        //var rowIndex = store_gridInfoScan.indexOf(record);
+        store_gridInfoScan.removeAt(rowIndex);
+        Ext.getCmp(prototype.id + '-gridDataInfoScan_Acredit').getView().refresh();
         this.calcularSumAmount(prefixDeb);
         this.calcularMontos(prefixDeb);
     },

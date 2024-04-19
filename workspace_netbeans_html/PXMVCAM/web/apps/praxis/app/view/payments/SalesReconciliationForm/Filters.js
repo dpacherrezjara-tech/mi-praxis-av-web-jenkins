@@ -27,7 +27,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
-                    padding: '0 0 0 200',
+                    padding: '0 0 0 300',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
@@ -343,7 +343,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
-                    padding: '0 0 0 200',
+                    padding: '0 0 0 300',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
@@ -503,7 +503,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
-                    padding: '0 0 0 200',
+                    padding: '0 0 0 300',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
