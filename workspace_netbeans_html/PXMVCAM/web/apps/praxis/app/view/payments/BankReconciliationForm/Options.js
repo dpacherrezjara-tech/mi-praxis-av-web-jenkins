@@ -165,7 +165,31 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
-                        }
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-pagginDebits',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-pagginDebits_country',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-pagginDebits_detail',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
 
                     ]
                 }

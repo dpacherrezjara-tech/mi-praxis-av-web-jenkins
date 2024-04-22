@@ -180,7 +180,16 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00871JT(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00871JT(filter);
     }
-
+    //loadPX263SQP00652DEBITS
+    public List<A2290Filter> loadPX263SQP00652DEBITS(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX263SQP00652DEBITS(filter);
+    }
+    public List<A2290Filter> loadPX263SQP00676_DEBITS(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX263SQP00676_DEBITS(filter);
+    }
+    public HashMap<String, List<A2290Filter>> loadPX263SQP00715_DEBITS(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX263SQP00715_DEBITS(filter);
+    }
     public List<A1248> loadSQP03739(String tabla) throws Exception {
         return bankReconciliationDAO.loadSQP03739(tabla);
     }

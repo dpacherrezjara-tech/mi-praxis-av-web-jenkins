@@ -414,6 +414,51 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         beanACREDIT.IN_STVAL = '';
         this.searchDetCountryByStval_ACREDIT(beanACREDIT);
     },
+    gridDetCountry_clickHandler_DEBITS: function (column, e, row, column, x, rowData) {
+        //COUNTRY
+//        var beanACREDIT = x.record.data;
+//        win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
+//        
+//        beanACREDIT.IN_STVAL = '';
+//        this.searchDetCountryByStval_ACREDIT(beanACREDIT);
+    },
+    onGridDetCardSMain_DEBITS_MATCH: function (column, e, row, column, x, rowData){
+        
+        var beanDEBITS= x.record.data;
+        win.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
+        
+        beanDEBITS.IN_STVAL = '1';
+        this.searchDetCountryByStval_DEBITS(beanDEBITS);
+    },
+    onGridDetCardSMain_DEBITS_MATCH_MANUAL: function (column, e, row, column, x, rowData){
+        
+        var beanDEBITS= x.record.data;
+        win.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
+        
+        beanDEBITS.IN_STVAL = '5';
+        this.searchDetCountryByStval_DEBITS(beanDEBITS);
+    },
+    onGridDetCardSMain_DEBITS_PEND: function (column, e, row, column, x, rowData){
+        console.log('BAJADA POR MATCH EN SUMARY')
+        var beanDEBITS= x.record.data;
+        win.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
+        
+        beanDEBITS.IN_STVAL = '3';
+        this.searchDetCountryByStval_DEBITS(beanDEBITS);
+    },
+    gridDet_DEBITS_clickHandler: function (column, e, row, column, x, rowData){
+        var beanDetDebits = x.record.data;
+        if( beanDetDebits.IN_STVAL == '1' || beanDetDebits.IN_STVAL == '5' ){
+            beanDetDebits.IN_TDOC = 'M'
+        }else if( beanDetDebits.IN_STVAL == '3' ){
+            beanDetDebits.IN_TDOC = 'D'
+        }
+        console.log(beanDetDebits,'WADAFAADADADAD')
+        console.log(beanDetDebits.IN_STVAL, 'IN_STVAL')
+        console.log(beanDetDebits.IN_TDOC, 'IN_TDOC')
+        win.selectedChild('vskMain', 'panelGridDataDetalle_DEBITS');
+        this.searchDetByStval_DEBITS(beanDetDebits);
+    },
     gridDetCard_clickHandler: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCard');
@@ -628,8 +673,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     gridDet_REFND_clickHandler: function (column, e, row, column, x, rowData) {
         var beanDetE = x.record.data;
-        console.log('beanDetE', beanDetE)
-        console.log('JAJSDJASDHADHASDHASSDHSAJDSAJ', beanDetE.IN_STVAL)
         let consultPath = 'searchDetTktByStval_REFND'
         win.selectedChild('vskMain', 'boxDetTktS_DEBITS');
         let paggin = 'paggin17'
@@ -659,6 +702,71 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         controller.bean = beanQuery;
         controller.startDisplay();
         MatchTkt.show();
+    },
+    onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
+
+        item.disable()
+
+        var rec = grid.getStore().getAt(rowIndex);
+        console.log('RECDATA');
+        console.log(rec.data);
+        this.winDataEntryDebits()
+//        this.searchBeanDebits(rec) 
+        setTimeout(function() {
+            item.enable()
+        }, 1000); // Simular una tarea de 1 segundo
+       
+    },
+    winDataEntryDebits: function () {
+        //action, beanCons
+        action = action === null || action === undefined ? 'U' : action;
+
+        Ext.create('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryDebits', {
+            id: prototype.id + '-dataEntryDebits',
+            params: {
+//                action: action,
+//                lstCountry: me.lstCountry,
+//                lstCard: me.lstCard,
+//                lstBank: me.lstBank,
+//                beanCons: beanCons
+            }
+        }).show();
+    },
+    searchBeanDebits: function (rec) {
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDP',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(rec.data)},
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+//                console.log(response);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+//                console.log(res);
+//                if (res.success) {
+                if (res.success) {
+                    var beanCons = res.result;
+                    console.log('beanCons');
+                    console.log(beanCons);
+                    if (beanCons !== null) {
+                        me.winDataEntryDebits('U', beanCons);
+                    } else {
+                        global.Msg({
+                            msg: 'An error has ocurred. Please contact our System Department'
+                        });
+                    }
+
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
     },
     openQuery: function (column, e, row, column, x, rowData) {
 
@@ -1811,6 +1919,75 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         Ext.getCmp(prototype.id + '-gridDetCountryS_ACREDIT').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin15').bindStore(storeGridDatas);
     },
+    searchDetCountryByStval_DEBITS: function (beanDEBITS) {
+        console.log('ENTRA AL SEARCH DE BAJADA ')
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetCountryByStval_DEBITS'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDEBITS)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+
+                    me.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
+                    win.lblUser_toolTip("Estructura: MPF101");
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        var gridDetCountrySAC = res.data;
+                        if (gridDetCountrySAC.length > 0) {
+                            var Objtemp = gridDetCountrySAC[0];
+                            win.setTitle('gridDataDetCardByS_Debits', '<center>' + Objtemp.strTitulo + '</center>');
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+
+                    } else
+//                        global.Msg({msg: res.sesion});
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataDetCardByS_Debits').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-paggin15').bindStore(storeGridDatas);
+    },
+    searchDetByStval_DEBITS: function (beanDetDEBITS) {
+        me.f_boxDetTktS = '2';
+        me.beanboxDetTktS2 = beanDetDEBITS;
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetByStval_DEBITS'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDetDEBITS)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+
+                    me.selectedChild('vskMain', 'panelGridDataDetalle_DEBITS');
+                    win.lblUser_toolTip("Estructura: MPF101");
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        var gridDetCountrySAC = res.data;
+                        if (gridDetCountrySAC.length > 0) {
+                            var Objtemp = gridDetCountrySAC[0];
+                            win.setTitle('gridDataDetalle_DEBITS', '<center>' + Objtemp.strTitulo + '</center>');
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+
+                    } else
+//                        global.Msg({msg: res.sesion});
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataDetalle_DEBITS').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin18').bindStore(storeGridDatas);
+    },
     //<editor-fold defaultstate="collapsed" desc="searchDetCardCodeByStval">
     searchDetCardCodeByStval: function (beanDet) {
         this.beanDet2 = beanDet;
@@ -2028,8 +2205,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     
     searchDetTktByStval_DEBITS: function (beanDetE, consultPath, paggin) {
-        me.f_boxDetTktS = '2';
-        me.beanboxDetTktS2 = beanDetE;
+//        me.f_boxDetTktS = '2';
+//        me.beanboxDetTktS2 = beanDetE;
         let nameTable = ''
         if(consultPath.includes('REFND')){
             nameTable = 'MPF075'
@@ -2042,12 +2219,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             url: prototype.url + '/' + consultPath,
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: JSON.stringify(me.beanboxDetTktS2)},
+            params: {beanString: JSON.stringify(beanDetE)},
             beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-contentInfo').unmask();
                 win.lblUser_toolTip("Estructura: " + nameTable);
-//                me.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+                me.selectedChild('vskMain', 'boxDetTktS_DEBITS');
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     var gridDetTktSAC = res.data;
@@ -2073,7 +2250,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             Ext.getCmp(prototype.id + '-gridDetTktByStval_DEBITS').bindStore(storeGridDatas);
                             Ext.getCmp(prototype.id + '-paggin17').bindStore(storeGridDatas);
                             Ext.getCmp(prototype.id + '-cmbError_DEBITS').show();
-                            me.selectedChild('vskMain', 'boxDetTktS_DEBITS');
+//                            me.selectedChild('vskMain', 'boxDetTktS_DEBITS');
                             win.setText('lblTitDetTktByStval_DEBITS', obj.strTitulo);
                             if (obj.IN_TDOC === 'R') {
                                 win.setText('hcDetTktS_DEBITS', 'Refund');
@@ -2123,11 +2300,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             listeners: {
                 beforeload: function (obj) {
                     Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    obj.proxy.extraParams = {beanString: JSON.stringify(me.beanboxDetTktS2)};
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDetE)};
                 },
                 load: function (obj, obj2, success, response, obj5) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
-//                    me.selectedChild('vskMain', 'boxDetTktMatch');
+                    me.selectedChild('vskMain', 'boxDetTktMatch');
                     win.lblUser_toolTip("Estructura: MPF100");
 
                     var res = Ext.JSON.decode(response._response.responseText);
@@ -2595,10 +2772,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 return Ext.getCmp(prototype.id + '-paggin11');
             case prototype.id + '-boxDetBySAGENT':
                 return Ext.getCmp(prototype.id + '-paggin12');
-            case prototype.id + '-gridDetCountryS_REFND':
-                return Ext.getCmp(prototype.id + '-paggin13');
+//            case prototype.id + '-gridDetCountryS_REFND':
+//                return Ext.getCmp(prototype.id + '-paggin13');
             case prototype.id + '-boxDetTktS_DEBITS':
                 return Ext.getCmp(prototype.id + '-paggin17');
+            case prototype.id + '-panelGridDataDetalle_DEBITS':
+                return Ext.getCmp(prototype.id + '-paggin18');
             default:
                 return null;
         }
