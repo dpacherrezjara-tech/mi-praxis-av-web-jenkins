@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1600,
+                width: 1800,
                 height: 'auto',
                 align: 'center'
             },
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1582,
+                            width: 1782,
                             margin: '10 0 0 0',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1572,
+                                    width: 1772,
                                     columnLines: true,
                                     features: [{
                                         ftype: 'summary'
@@ -62,7 +62,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                         },
                                         items: [
                                             {text: 'Nbr.', dataIndex: 'RN', width: 40},
-                                            {text: 'Society', dataIndex: 'CCUST', width: 70,
+                                            {text: 'Society', dataIndex: 'CCUST', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                     return value;
                                                 },
                                             },
-                                            {text: 'Reference', dataIndex: 'REFERENCE', width: 100,
+                                            {text: 'Reference', dataIndex: 'REFERENCE', width: 140,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -116,7 +116,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: '6.dig', dataIndex: 'CAR6', width: 60,
+                                                    {text: '6.dig', dataIndex: 'CAR6', width: 65,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -124,7 +124,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                             return value;
                                                         },
                                                     },
-                                                    {text: '4.dig', dataIndex: 'CAR4', width: 90,
+                                                    {text: '4.dig', dataIndex: 'CAR4', width: 95,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -152,7 +152,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'Total', dataIndex: 'TOTAL', width: 100, align: 'center', menuDisabled: true,
+                                                text: 'Total', dataIndex: 'TOTAL', width: 110, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     return Ext.util.Format.number(value, '0,000');
@@ -164,7 +164,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Neto', dataIndex: 'NETO', width: 100, align: 'center', menuDisabled: true,
+                                                text: 'Neto', dataIndex: 'NETO', width: 110, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     return Ext.util.Format.number(value, '0,000');
@@ -175,7 +175,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                     return '<b>' + Ext.util.Format.number(data.totNETO, '0,000') + '<b>';
                                                 }
                                             },
-                                            {text: 'Curr.', dataIndex: 'SCURRENCY', width: 50,
+                                            {text: 'Curr.', dataIndex: 'SCURRENCY', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -198,7 +198,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                             return value;
                                                         },
                                                     },
-                                                    {text: 'Status', dataIndex: 'STVAL', width: 50,
+                                                    {text: 'Status', dataIndex: 'STVAL', width: 60,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             return value;
@@ -206,13 +206,13 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                     },
                                                 ]
                                             },
-                                            {text: 'Type', dataIndex: 'TYPE', width: 50,
+                                            {text: 'Type', dataIndex: 'TYPE', width: 150,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:left;";
                                                     return value;
                                                 },
                                             },
-                                            {text: 'Settl.<br>Status', dataIndex: 'STVAL', width: 50,
+                                            {text: 'Settl.<br>Status', dataIndex: 'STVAL', width: 65,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;

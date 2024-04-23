@@ -112,6 +112,7 @@ public class ReportsDAO {
                     bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
                     bean.PAYDATE = rst.getString("PAYDATE").trim();
                     bean.BANDOC = rst.getString("BANDOC").trim();
+                    bean.REFERENCE = rst.getString("REFER").trim();
                     bean.CAR6 = rst.getString("CAR6").trim();
                     bean.CAR4 = rst.getString("CAR4").trim();
                     bean.SAUTHOC = rst.getString("SAUTHOC").trim();

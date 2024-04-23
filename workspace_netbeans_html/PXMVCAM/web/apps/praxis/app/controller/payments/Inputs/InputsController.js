@@ -32,8 +32,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         prototype.id = 'InputsForm';
         prototype.url = CONTEXTPATH + '/Inputs';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-//        me.panelActual = '-boxMainAll';
-        me.panelActual = '-panelGridData';
+        me.panelActual = '-boxMainAll';
+//        me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
         this.control({
@@ -103,8 +103,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     ChangeVista_clickHandler: function () {
         var cmbVISTA = Ext.getCmp(prototype.id + '-cmbVISTA').getValue();
         if (cmbVISTA === 'D') {
-//            Ext.getCmp(prototype.id + '-boxMainAll').hide();
-            Ext.getCmp(prototype.id + '-panelGridData').hide();
+            Ext.getCmp(prototype.id + '-boxMainAll').hide();
+//            Ext.getCmp(prototype.id + '-panelGridData').hide();
         } else {
 //            Ext.getCmp(prototype.id + '-boxMainAll').hide();
             Ext.getCmp(prototype.id + '-panelGridData').hide();
@@ -112,20 +112,17 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         this.btnSearch_click();
     },
     selectCmbVista: function ( obj ) {
-        console.log(obj, 'obj xdddddddddddddddddddd')
-        console.log(obj.getValue(), 'obj raaaaaaaaaaa')
-        if(obj.getValue() == 'All'){
+        if(obj.getValue() === 'All'){
             global.Msg({msg: 'Select source'});
         }
-        if (obj.getValue() == 'C') {
+        if (obj.getValue() === 'C') {
             Ext.getCmp(prototype.id + '-Filters3_1').hide();
             Ext.getCmp(prototype.id + '-contentFilter2').show();
             Ext.getCmp(prototype.id + '-boxMainAll').hide();
-//                        Ext.getCmp(prototype.id + '-panelGridData').hide();
-            console.log('Entra a if de grid calendar')
+            console.log('Entra a if de grid calendar');
             this.gridCalendar_clickHandler();
         }
-        if(obj.getValue() == 'D'){
+        if(obj.getValue() === 'D'){
             Ext.getCmp(prototype.id + '-Filters3_2').show();
             Ext.getCmp(prototype.id + '-Filters3_1').show();
             Ext.getCmp(prototype.id + '-infoCalendar').hide();
@@ -252,7 +249,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         me.bean.IN_FECHA_FROM = yearFrom.getValue() + monthFrom.getValue() + dayFrom.getValue();
         me.bean.IN_FECHA_TO = yearTo.getValue() + monthTo.getValue() + dayTo.getValue();
 
-        var programas = new Array()
+        var programas = new Array();
         Ext.Ajax.request({
             url: prototype.url + '/obtainDataComboLog',
             method: 'POST',
@@ -393,9 +390,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                     if (FUENTE !== 'All') {
                         Ext.getCmp(prototype.id + '-Filters3_1').hide();
                         Ext.getCmp(prototype.id + '-contentFilter2').show();
-                        Ext.getCmp(prototype.id + '-boxMainAll').hide();
-//                        Ext.getCmp(prototype.id + '-panelGridData').hide();
-                        console.log('Entra a if de grid calendar')
+//                        Ext.getCmp(prototype.id + '-boxMainAll').hide();
+                        Ext.getCmp(prototype.id + '-panelGridData').hide();
                         this.gridCalendar_clickHandler();
                     } else {
                         global.Msg({msg: 'Select source'});
@@ -412,8 +408,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
 
 //        me.drillDown.push(me.panelActual);
         if (FUENTE === 'All') {
-//            me.panelActual = '-boxMainAll';
-            me.panelActual = '-panelGridData';
+            me.panelActual = '-boxMainAll';
+//            me.panelActual = '-panelGridData';
         } else {
             me.panelActual = '-panelGridData';
         }
@@ -673,7 +669,6 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     gridCalendar_clickHandler: function (obj) {
         Ext.getCmp(prototype.id + '-Filters3_2').show();
         Ext.getCmp(prototype.id + '-infoCalendar').show();
-        Ext.getCmp(prototype.id + '-panelGridData').hide();
 
         this.setCalendar2();
         global.clear();
@@ -990,7 +985,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     exportExcel: function () {
 
         switch (me.panelActual) {
-            case  '-panelGridData':
+            case  '-boxMainAll':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxDelivery':

@@ -300,11 +300,11 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                     url: prototype.url + '/search'
                 }, listeners: {
                     beforeload: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+//                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                         obj.proxy.extraParams = searchParams;
                     },
                     load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+//                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
