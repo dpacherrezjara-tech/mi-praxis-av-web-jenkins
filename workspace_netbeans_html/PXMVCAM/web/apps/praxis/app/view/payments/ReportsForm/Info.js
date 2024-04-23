@@ -212,7 +212,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                     return value;
                                                 },
                                             },
-                                            {text: 'Settl.<br>Status', dataIndex: 'STVAL', width: 65,
+                                            {text: 'Settl.<br>Status', dataIndex: 'STVAL', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
