@@ -123,13 +123,13 @@ public class ReportsDAO {
                     bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                     bean.TYPE = rst.getString("TYPE").trim();
                     bean.STVAL = rst.getString("STVAL").trim();
-                    if (bean.STVAL.equals("1")) {
+                    if (bean.STVAL.equals("1") || bean.STVAL.equals("5")) {
                         bean.STVAL = "Match";
                     } else {
                         bean.STVAL = "Pend.";
                     }
                     bean.DEBSTVAL = rst.getString("DEBSTVAL").trim();
-                    if (bean.DEBSTVAL.equals("1")) {
+                    if (bean.DEBSTVAL.equals("1") || bean.DEBSTVAL.equals("5")) {
                         bean.DEBSTVAL = "Match";
                     } else {
                         bean.DEBSTVAL = "Pend.";
