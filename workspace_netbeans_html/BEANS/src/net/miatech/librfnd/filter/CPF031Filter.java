@@ -20,6 +20,7 @@ public class CPF031Filter extends CPF031{
     public String IN_USEAC = "";
     public String IN_FASIG = "";
     public String NAME = "";
+    public String VALUE = "";
     
     
     public String desTMOTI = "";

@@ -92,6 +92,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-btn-update').show();
         }
         this.setValue('de-txtDATECI', this.beanResult.DATECI);
+        this.setValue('de-txtTRANCI', this.beanResult.TRANCI);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
         this.setValue('de-txtVALDATE', this.beanResult.VALDATE);
         this.setValue('de-txtUNICODE', this.beanResult.UNICODE);
@@ -147,13 +148,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
-        console.log(meDE.bean.data.IN_UNICODE);
-        console.log(meDE.bean.data.IN_UNICODE);
-        console.log(meDE.bean.data.IN_UNICODE);
+        meDE.bean.data.IN_TRANCI = meDE.bean.data.TRANCI;
+        meDE.bean.data.IN_DATECI = meDE.bean.data.DATECI;
+        console.log(meDE.bean.data.VALDATE, 'VALDATE')
+        console.log(meDE.bean.data.ADATE, ' ADATE ');
+        console.log(meDE.bean.data.SCURRENCY, 'SCURRENCY');
+        console.log(meDE.bean.data.IN_BANDOC, 'IN_BANDOC');
+        console.log(meDE.bean.data.IN_STVAL, 'IN_STVAL')
+        console.log(meDE.bean.data.IN_SCURRENCY, 'FILTRO SCURRENCY')
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
         meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
         } else {
@@ -806,12 +813,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 SCURRENCY: 'COP',
                 TOTAL: record.get('TOTAL'),
                 NETO: record.get('NETO'),
-                RED: record.get('RED').trim()
+                RED: record.get('RED').trim(),
+                SEQ: record.get('SEQ').trim()
             };
 //            console.log(registro);
+            
             listaDeDatos.push(registro);
+            
         });
         // Convertir la lista a JSON
+        console.log(listaDeDatos, 'listaDeDatos')
         var datosEnJSON = Ext.JSON.encode(listaDeDatos);
         return datosEnJSON;
     },

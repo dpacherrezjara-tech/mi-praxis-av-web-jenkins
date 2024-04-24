@@ -307,6 +307,31 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     enableKeyEvents: true,
                     triggerAction: 'all',
                 },
+                {
+                    xtype: 'label',
+                    text: 'Processor:',
+                    padding: '3 0 0 30 ',
+                    width: 90
+                },
+                
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCOREP',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 219,
+                    typeAhead: true,
+                    valueField: 'VALUE',
+                    displayField: 'NAME',
+                    listConfig: {maxHeight: 111},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                },
             ]
         },
 

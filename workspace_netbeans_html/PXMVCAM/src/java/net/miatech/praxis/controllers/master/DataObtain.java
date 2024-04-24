@@ -20,4 +20,5 @@ public class DataObtain {
     public byte TRANSCODE = 0;
     public byte CURRENCY = 0;
     public byte UAUDITS = 0;
+    public byte COREP = 0;
 }

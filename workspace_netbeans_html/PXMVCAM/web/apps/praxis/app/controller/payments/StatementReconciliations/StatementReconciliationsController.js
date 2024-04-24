@@ -163,6 +163,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         this.dataObtain.BANK = 2;
         this.dataObtain.COUNTRY = 2;
+        this.dataObtain.COREP = 2;
         
         
         Ext.Ajax.request({
@@ -189,6 +190,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 });
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeDataCountry);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                
+                var lstProcessor = res.lstProcessor;
+                var storeDataProcessor = Ext.create('Ext.data.Store', {
+                    data: lstProcessor,
+                    autoLoad: true
+                });
+                Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('');
                 
 
                 me.btnSearch_click();
@@ -459,11 +468,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.panelActual = '-boxDetDay';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
+
         this.beanDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDay.IN_DATE = rowData.data.IN_DATE;
         this.beanDay.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDay.IN_SDATE = rowData.data.IN_SDATE;
-        this.beanDay.IN_CBANK = rowData.data.IN_CBANK;
+        this.beanDay.IN_CBANK = rowData.data.CBANK == '**' ? this.beanDay.IN_CBANK = rowData.data.CBANK : this.beanDay.IN_CBANK = rowData.data.IN_CBANK; 
         this.beanDay.IN_MERCHN = rowData.data.IN_MERCHN;
         this.beanDay.IN_TTRAN = rowData.data.IN_TTRAN;
         this.beanDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
@@ -763,6 +773,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             console.log('OTRA PRUEBAAAA')
             console.log(rowData.data, 'rowData.data')
             console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC')
+            console.log(rowData.data.IN_BANK, 'rowData.data.IN_BANK')
+            
             this.beanDetBankByS.IN_DATE = rowData.data.IN_DATE;
             this.beanDetBankByS.IN_TDOC = rowData.data.IN_TDOC;
             this.beanDetBankByS.IN_SDATE = rowData.data.SDATE;
@@ -817,10 +829,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.panelActual = '-panelGridDetDayByS';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         console.log(rowData.data.IN_DATE, 'rowData.data.IN_DATE')
+        console.log(rowData.data.IN_CBANK, 'rowData.data.IN_CBANK')
+        console.log(rowData.data.CBANK, 'rowData.data.CBANK')
+        this.beanDayByS.IN_CBANK = rowData.data.CBANK == '**' ? this.beanDayByS.IN_CBANK = rowData.data.CBANK : this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK; 
         this.beanDayByS.IN_DATE = rowData.data.IN_DATE;
         this.beanDayByS.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDayByS.IN_SDATE = rowData.data.IN_SDATE;
-        this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK;
+//        this.beanDayByS.IN_CBANK = rowData.data.IN_CBANK;
         this.beanDayByS.IN_SDATEE = rowData.data.IN_SDATE;
         this.beanDayByS.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDayByS.IN_SCURRENCY = rowData.data.SCURRENCY;

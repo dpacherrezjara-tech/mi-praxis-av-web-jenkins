@@ -892,6 +892,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.totQTYTRAS = totQTYTRAS;
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
+                    beanTkt.DATECI = rst.getString("DATECI").trim();
+                    beanTkt.TRANCI = rst.getString("TRANCI").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -1033,6 +1035,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.totQTYTRAS = totQTYTRAS;
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
+                    beanTkt.TRANCI = rst.getString("TRANCI").trim();
+                    beanTkt.DATECI = rst.getString("DATECI").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -1178,7 +1182,9 @@ public class StatementReconciliationsDAO {
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
                     beanTkt.RED = rst.getString("RED").trim();
                     beanTkt.TDOC = rst.getString("TDOC").trim();
-
+                    beanTkt.TRANCI = rst.getString("TRANCI").trim();
+                    beanTkt.DATECI = rst.getString("DATECI").trim();
+                    
 //                    if (filter.IN_DATE.trim().equals("VALDATE")) {
 //                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;
 //                    } else {
@@ -1238,7 +1244,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00844(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00844(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1253,6 +1259,8 @@ public class StatementReconciliationsDAO {
             cstmt.setString(6, filter.IN_STVAL.trim());
             cstmt.setString(7, filter.IN_RED.trim());
             cstmt.setDouble(8, filter.IN_NETO);
+            cstmt.setString(9, filter.IN_DATECI.trim());
+            cstmt.setString(10, filter.IN_TRANCI.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -1290,6 +1298,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.NAME = rst.getString("NAME").trim();
                     beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
+                    beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
@@ -1360,7 +1369,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1379,6 +1388,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(10, filter.IN_SDATE.trim());
             cstmt.setString(11, filter.IN_strNETO.trim());
             cstmt.setString(12, filter.IN_TDOC.trim());
+            cstmt.setString(13, filter.IN_SEQ.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -1404,6 +1414,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.NETO = rst.getDouble("NETO");
                 beanTkt.TDOC = rst.getString("TDOC");
+                beanTkt.SEQ = rst.getString("SEQ");
                 beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC"));
 
                 lstTkts.add(beanTkt);
@@ -1473,7 +1484,7 @@ public class StatementReconciliationsDAO {
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF060(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF060(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -1498,6 +1509,7 @@ public class StatementReconciliationsDAO {
                 cstmt2.setString(13, user.getUserInfo().USR);
                 cstmt2.setString(14, Functions.getFechaActual());
                 cstmt2.setString(15, Functions.getHoraActual());
+                cstmt2.setString(16, filterC.SEQ);
 
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución

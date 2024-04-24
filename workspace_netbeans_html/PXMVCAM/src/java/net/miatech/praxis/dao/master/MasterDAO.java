@@ -1314,6 +1314,63 @@ public class MasterDAO {
 
         return listaUaudits;
     }
+    
+    public List<CPF031Filter> lstProcessor() {
+
+        //Connection con = null;
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<CPF031Filter> listaProcessor = new ArrayList<>();
+        CPF031Filter Processor;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            strSQL = "SELECT DISTINCT A.CODE,(SELECT MAX(CORE) FROM PRAXISMP.MPF109 WHERE CODE = A.CODE) AS CORE FROM PRAXISMP.MPF109 A";
+
+            //con = Proveedor.getConnectionIS(user);
+            stmt = cnx.createStatement();
+            rst = stmt.executeQuery(strSQL);
+            Processor = new CPF031Filter();
+            Processor.VALUE = "";
+            Processor.NAME = "All";
+            listaProcessor.add(Processor);
+
+            while (rst.next()) {
+                Processor = new CPF031Filter();
+                Processor.VALUE = rst.getString("CODE").trim();
+                Processor.NAME = Processor.VALUE + " - " + rst.getString("CORE").trim();
+
+                listaProcessor.add(Processor);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rst != null) {
+                    try {
+                        rst.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return listaProcessor;
+    }
 
     public List<A2287> loadRejections() {
 

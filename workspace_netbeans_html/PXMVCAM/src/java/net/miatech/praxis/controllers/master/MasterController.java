@@ -115,6 +115,10 @@ public class MasterController extends BaseController {
                 List<CPF031Filter> lstUaudits = masterDAO.loadUaudits();
                 map.put("lstUaudits", lstUaudits);
             }
+            if (data.COREP != 0) {
+                List<CPF031Filter> lstProcessor = masterDAO.lstProcessor();
+                map.put("lstProcessor", lstProcessor);
+            }
             
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
