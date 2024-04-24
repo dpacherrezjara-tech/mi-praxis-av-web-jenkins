@@ -3212,7 +3212,7 @@ public class BankReconciliationDAO {
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         List<A2290Filter> lstError = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         long lngTotCant = 0;
         long lngTotQTYTKT = 0, totSVFOP = 0;
         double dblTotSVFOP = 0, dblTotAVFOP = 0;
@@ -3236,6 +3236,14 @@ public class BankReconciliationDAO {
         hmDescEstadosSTVAL.put("3", "Settlement w/o Sales");
         hmDescEstadosSTVAL.put("4", "Match with Difference");
         hmDescEstadosSTVAL.put("5", "Match Manual");
+        
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
 
         HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
 
@@ -3326,6 +3334,15 @@ public class BankReconciliationDAO {
                     } else {
                         beanTkt.STCON = rst.getString("FREGLA").trim();
                     }
+                    if (beanTkt.strFecFiltro.equals("DATEC")) {
+                        beanTkt.strTitulo = "Conciliation Date : ";
+                    } else if (beanTkt.IN_TDOC.equals("R")) {
+                        beanTkt.strTitulo = "Refund Date : ";
+                    } else {
+                        beanTkt.strTitulo = "Sales Date : ";
+                    }
+                    
+                    beanTkt.strTitulo += filter.strFormatDate + " **" + hmDescEstados.get(filter.IN_STVAL) + "** " +" - "  + filter.strDescCountry;
                     beanTkt.FCONT = rst.getString("FCONT").trim();
                     beanTkt.NEGOC = rst.getString("NEGOC").trim();
                     if (beanTkt.NEGOC.equals("1")) {
@@ -4022,7 +4039,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -4132,7 +4149,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -4246,7 +4263,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -4694,7 +4711,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -4800,7 +4817,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -4910,7 +4927,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -5024,7 +5041,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -5134,7 +5151,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -5239,7 +5256,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
@@ -5346,7 +5363,7 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        String tipFecha = "Sales";
+        String tipFecha = "Debits";
         if (filter.TDOC.trim().equals("R")) {
             tipFecha = "Refund";
         }
