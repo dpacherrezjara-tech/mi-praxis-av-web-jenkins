@@ -1831,7 +1831,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,
+                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,hidden:true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             if (record.data.TDOC === 'A') {
@@ -1840,13 +1840,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Agent', dataIndex: 'A720AGENTE', width: 70,
-                                                                                                        editor: {xtype: 'textfield', editable: false},
-                                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                                            metaData.style = "text-align:center;";
-                                                                                                            return value;
-                                                                                                        }
-                                                                                                    },
+//                                                                                                    {text: 'Agent', dataIndex: 'A720AGENTE', width: 70,
+//                                                                                                        editor: {xtype: 'textfield', editable: false},
+//                                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                                                            metaData.style = "text-align:center;";
+//                                                                                                            return value;
+//                                                                                                        }
+//                                                                                                    },
                                                                                                     {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 75, id: prototype.id + '-gridA720FECVTA',
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
@@ -1923,6 +1923,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                         }
                                                                                                     },
                                                                                                     {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75, hidden: true,
+                                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                                            metaData.style = "text-align:center;";
+                                                                                                            return value;
+                                                                                                        }
+                                                                                                    },
+                                                                                                    {text: 'Authorization', dataIndex: 'SCLOSE', width: 90,
+                                                                                                        editor: {xtype: 'textfield', editable: false},
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             return value;
@@ -2225,7 +2232,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,
+                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,hidden:true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             if (record.data.TDOC === 'A') {
@@ -2312,6 +2319,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:right;";
                                                                                                             value = Ext.util.Format.number(value, '0,000.00');
+                                                                                                            return value;
+                                                                                                        }
+                                                                                                    },
+                                                                                                    {text: 'Authorization', dataIndex: 'SCLOSE', width: 90,
+                                                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                                            metaData.style = "text-align:center;";
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
@@ -2414,7 +2428,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 71,
+                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 71,hidden: true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             if (record.data.TDOC === 'A') {
@@ -2436,14 +2450,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 63,
+                                                                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 63,hidden:true,
                                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
+                                                                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 110, hidden: true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             return value;
@@ -2452,6 +2466,30 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                         //                                                                                    click: 'onGridDataViewTktFinal'
                         //                                                                                },
                                                                                                         //editor: {xtype: 'textfield', editable: false},
+                                                                                                    },
+                                                                                                    {
+                                                                                                        text: 'Charg. Concept',
+                                                                                                        defaults: {
+                                                                                                            menuDisabled: true,
+                                                                                                            sortable: false,
+                                                                                                            align: 'center'
+                                                                                                        },
+                                                                                                        columns: [
+                                                                                                            {text: 'ID', dataIndex: 'IDDEB', width: 70,
+                                                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                                                    metaData.style = "text-align:center;";
+                                                                                                                    return value;
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {text: 'Name', dataIndex: 'NOMCONCEP', width: 110,
+                                                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                                                    metaData.style = "text-align:center;";
+                                                                                                                    return value;
+                                                                                                                }
+                                                                                                            },
+
+                                                                                                        ]
                                                                                                     },
                                                                                                     {
                                                                                                         text: 'Credit Card',
@@ -2808,7 +2846,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 71,
+                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 71, hidden: true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             if (record.data.TDOC === 'A') {
@@ -2830,14 +2868,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 63,
+                                                                                                    {text: 'PNR', dataIndex: 'A720PNR', width: 63, hidden: true,
                                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
+                                                                                                    {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,hidden:true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             return value;
@@ -2846,6 +2884,30 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                         //                                                                                    click: 'onGridDataViewTktFinal'
                         //                                                                                },
                                                                                                         //editor: {xtype: 'textfield', editable: false},
+                                                                                                    },
+                                                                                                    {
+                                                                                                        text: 'Charg. Concept',
+                                                                                                        defaults: {
+                                                                                                            menuDisabled: true,
+                                                                                                            sortable: false,
+                                                                                                            align: 'center'
+                                                                                                        },
+                                                                                                        columns: [
+                                                                                                            {text: 'ID', dataIndex: 'IDDEB', width: 70,
+                                                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                                                    metaData.style = "text-align:center;";
+                                                                                                                    return value;
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {text: 'Name', dataIndex: 'NOMCONCEP', width: 110,
+                                                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                                                    metaData.style = "text-align:center;";
+                                                                                                                    return value;
+                                                                                                                }
+                                                                                                            },
+
+                                                                                                        ]
                                                                                                     },
                                                                                                     {
                                                                                                         text: 'Credit Card',
@@ -2997,7 +3059,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,
+                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,hidden: true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             if (record.data.TDOC === 'A') {
@@ -3391,7 +3453,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             return value;
                                                                                                         }
                                                                                                     },
-                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,
+                                                                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,hidden: true,
                                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                             metaData.style = "text-align:center;";
                                                                                                             if (record.data.TDOC === 'A') {

@@ -74,6 +74,8 @@ public class A2290 {
     public String SINVN = "";
     public String SIDATE = "";
     public String SPNR = "";
+    public String IDDEB = "";
+    public String NOMCONCEP = "";
     public int MPF076TRAN = 0;
     public int MPF077TRAN = 0;
     public String SPNRSP = "";

@@ -4099,6 +4099,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
+                beanTkt.SCLOSE = rst.getString("SCLOSE").trim().toUpperCase().contains("DENEGADO") ? "DENEGADO" : "APROBADO";
                 lstData.add(beanTkt);
             }
             rst.close();
@@ -4187,6 +4188,8 @@ public class BankReconciliationDAO {
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SDATE = rst.getString("IDATE").trim();
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
+                beanTkt.IDDEB = rst.getString("IDDEB").trim();
+                beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
 
@@ -4872,6 +4875,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
+                beanTkt.SCLOSE = rst.getString("SCLOSE").trim().toUpperCase().contains("DENEGADO") ? "DENEGADO" : "APROBADO";
 //                beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
 
                 lstData.add(beanTkt);
@@ -4961,6 +4965,8 @@ public class BankReconciliationDAO {
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SDATE = rst.getString("IDATE").trim();
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
+                beanTkt.IDDEB = rst.getString("IDDEB").trim();
+                beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
 
@@ -5198,6 +5204,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720FECVTA = rst.getString("SDATE").trim();
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
+                beanTkt.SCLOSE = rst.getString("SCLOSE").trim().toUpperCase().contains("DENEGADO") ? "DENEGADO" : "APROBADO";
 //                beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
 
                 lstData.add(beanTkt);
@@ -5284,6 +5291,8 @@ public class BankReconciliationDAO {
                 beanTkt.SDATE = rst.getString("IDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
+                beanTkt.IDDEB = rst.getString("IDDEB").trim();
+                beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
 
 //                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR

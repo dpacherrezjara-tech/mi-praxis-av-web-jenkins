@@ -89,10 +89,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
            
     },
     onWindowNormal_REFND: function (){
-        
+        //Evento de pestaña
     },
     onWindowBlocked_REFND: function (){
-        
+        //Evento de pestaña
     },
     onWindowChargebak: function (){
         if (this.bean.STVAL === '3'){
@@ -113,10 +113,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         
     },
     onWindowNormal_Chgbak: function (){
-
+        //Evento de pestaña
     },
     onWindowBlocked_Chgbak: function (){
-        
+        //Evento de pestaña
     },
     onWindowAcredit: function (){
         if (this.bean.STVAL === '3'){
@@ -135,10 +135,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         
     },
     onWindowNormal_Acredit: function (){
-        
+        //Evento de pestaña
     },
     onWindowBlocked_Acredit: function (){
-        
+        //Evento de pestaña
     },
     
     addCreditCard_keyDownHandler: function () {
@@ -271,6 +271,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                                 A1531VFOP: item.A1531VFOP,
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
+                                SCLOSE: item.SCLOSE,
+                                IDDEB: item.IDDEB,
+                                NOMCONCEP: item.NOMCONCEP
                             })
 
 
@@ -297,6 +300,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                                 A1531VFOP: item.A1531VFOP,
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
+                                SCLOSE: item.SCLOSE,
+                                IDDEB: item.IDDEB,
+                                NOMCONCEP: item.NOMCONCEP
                             })
 
                             console.log(lstNormal, 'lstNormalAfterPush')
