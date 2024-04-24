@@ -2332,7 +2332,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-panel_tab_Chgbak',
-                                                    title: 'CHARGEBAK',
+                                                    title: 'CHARGEBACK',
                                                     listeners: {
                                                         activate: 'onWindowChargebak'
                                                     },

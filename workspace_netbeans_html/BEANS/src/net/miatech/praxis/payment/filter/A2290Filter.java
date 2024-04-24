@@ -48,6 +48,7 @@ public class A2290Filter extends A2290 {
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
     public String IN_TDOC = "";
+    public String IN_SEQ = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
     public String IN_strSVFOP = "";
@@ -81,6 +82,8 @@ public class A2290Filter extends A2290 {
     public String IN_BANK = "";
     public String IN_ADYEN = "";
     public String IN_TTRAN = "";
+    public String IN_DATECI = "";
+    public String IN_TRANCI = "";
     public String IN_PNR = "";
     public String TTRAN = "";
     public String strDescTTRAN = "";
@@ -617,6 +620,7 @@ public class A2290Filter extends A2290 {
     public String IN_SCARCOD = "";
     public String IN_ACCNUMBER = "";
     public String DATECI = "";
+    public String TRANCI = "";
 
     public double IN_NETO = 0;
 

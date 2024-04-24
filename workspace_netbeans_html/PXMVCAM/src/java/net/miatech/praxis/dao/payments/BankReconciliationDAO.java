@@ -4185,7 +4185,7 @@ public class BankReconciliationDAO {
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
 //                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-//                beanTkt.SDATE = rst.getString("SDATE").trim();
+                beanTkt.SDATE = rst.getString("IDATE").trim();
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
@@ -4959,7 +4959,7 @@ public class BankReconciliationDAO {
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
 //                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-//                beanTkt.SDATE = rst.getString("SDATE").trim();
+                beanTkt.SDATE = rst.getString("IDATE").trim();
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
@@ -4980,7 +4980,7 @@ public class BankReconciliationDAO {
 //                beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
                 beanTkt.A1531VFOP = rst.getDouble("VALLOCAL");
 //                beanTkt.tot_VFOP = rst.getDouble("SVFOP");
-//                beanTkt.A720FECVTA = rst.getString("SDATE").trim();
+                beanTkt.A720FECVTA = rst.getString("IDATE").trim();
                 beanTkt.A720PNR = rst.getString("NOMPAX").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
@@ -5281,7 +5281,7 @@ public class BankReconciliationDAO {
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
 //                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 //                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-//                beanTkt.SDATE = rst.getString("SDATE").trim();
+                beanTkt.SDATE = rst.getString("IDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 beanTkt.STVAL = rst.getString("STVAL").trim();
@@ -5300,7 +5300,7 @@ public class BankReconciliationDAO {
 //                beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
                 beanTkt.A1531VFOP = rst.getDouble("VALLOCAL");
 //                beanTkt.tot_VFOP = rst.getDouble("SVFOP");
-//                beanTkt.A720FECVTA = rst.getString("SDATE").trim();
+                beanTkt.A720FECVTA = rst.getString("IDATE").trim();
                 beanTkt.A720PNR = rst.getString("NOMPAX").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
 //                beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
