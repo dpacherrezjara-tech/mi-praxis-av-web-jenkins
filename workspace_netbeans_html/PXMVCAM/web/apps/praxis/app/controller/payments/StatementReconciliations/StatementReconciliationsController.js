@@ -90,6 +90,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             '#StatementReconciliationsForm-cmbDateToMonth': {
 //                afterrender: this.afterRenderMonth,
                 select: this.selectComboToMonth
+            },
+            '#StatementReconciliationsForm-cmbCOREP': {
+//                afterrender: this.afterRenderMonth,
+                select: this.selectCombocmbCOREP
+            },
+            '#StatementReconciliationsForm-cmbBank': {
+//                afterrender: this.afterRenderMonth,
+                select: this.selectCombocmbBank
             }
 
         });
@@ -227,10 +235,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
         me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtLiquida').getValue();
-        me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
+//        me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.IN_AFTE = Ext.getCmp(prototype.id + '-cmbEFTE').getValue();
         me.bean.IN_TTRAN = Ext.getCmp(prototype.id + '-cmbTTRAN').getValue();
+        
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        if( Ext.getCmp(prototype.id + '-cmbBank').getValue() !== '' ){
+           me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue() 
+        } else if( Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== '' ){
+           me.bean.IN_BANK = 'XX'
+        }else {
+           me.bean.IN_BANK = ''
+        }
+        me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -1375,6 +1392,28 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     selectComboFromDay: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
+    },
+    selectCombocmbCOREP: function (obj) {
+        var comboBank = Ext.getCmp(prototype.id + '-cmbBank');
+        var comboCOREP = Ext.getCmp(prototype.id + '-cmbCOREP');
+        if( comboCOREP.getValue() !== '' && comboBank.getValue() !== '' ){
+            comboBank.setDisabled(true)
+            comboBank.setValue('')
+        } else if(comboCOREP.getValue() == '') {
+            comboBank.setDisabled(false)
+        }
+        
+    },
+    selectCombocmbBank: function (obj) {
+        var comboBank = Ext.getCmp(prototype.id + '-cmbBank');
+        var comboCOREP = Ext.getCmp(prototype.id + '-cmbCOREP');
+        if( comboBank.getValue() !== '' && comboCOREP.getValue() !== '' ){
+            comboCOREP.setDisabled(true)
+            comboCOREP.setValue('')
+        } else if(comboBank.getValue() == '') {
+            comboCOREP.setDisabled(false)
+        }
+        
     },
     /*     
      * Funciones para la paginacion     
