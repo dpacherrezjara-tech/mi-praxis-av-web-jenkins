@@ -95,6 +95,8 @@ public class A2290Filter extends A2290 {
     public String strFormatDate1 = "";
     public String strFormatDate2 = "";
     public String strDescripcion = "";
+    public String strDescripcionSCOUNTRY = "";
+    public String strDescripcionCOREP = "";
     public String strSCARF = "";
     public String strDescCountry = "";
     public String NAMEBANK = "";

@@ -311,17 +311,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00839(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00839_PROCESS(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_TDOC);
@@ -331,17 +331,18 @@ public class StatementReconciliationsDAO {
             cstmt.setString(6, filter.IN_BANK.trim());
             cstmt.setString(7, filter.IN_TTRAN.trim());
             cstmt.setString(8, filter.IN_COUNTRY.trim());
+            cstmt.setString(9, filter.IN_COREP.trim());
 
-            cstmt.setInt(9, filter.page.PAGNUM);
-            cstmt.setInt(10, filter.page.PAGROW);
-            cstmt.setInt(11, filter.page.TOTPAG);
-            cstmt.setInt(12, filter.page.TOTROW);
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(9);
-            filter.page.PAGROW = cstmt.getInt(10);
-            filter.page.TOTPAG = cstmt.getInt(11);
-            filter.page.TOTROW = cstmt.getInt(12);
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
 
             rst = cstmt.getResultSet();
 
@@ -376,6 +377,25 @@ public class StatementReconciliationsDAO {
                         beanTkt.CBANK = rst.getString("CBANK").trim();
                         beanTkt.strCREJEC = rst.getString("BANKN").trim();
                         beanTkt.strDescripcion = rst.getString("BANKN").trim();
+                    }
+                    
+                    if (rst.getString("SCOUNTRY").trim().isEmpty()) {
+                        beanTkt.SCOUNTRY = "**";
+//                        beanTkt.strCREJEC = "(Empty)";
+                        beanTkt.strDescripcionSCOUNTRY = "(Empty)";
+                    } else {
+                        beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+//                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+                        beanTkt.strDescripcionSCOUNTRY = rst.getString("SCOUNTRYN").trim();
+                    }
+                    if (rst.getString("COREP").trim().isEmpty()) {
+                        beanTkt.COREP = "**";
+//                        beanTkt.strCREJEC = "(Empty)";
+                        beanTkt.strDescripcionCOREP = "(Empty)";
+                    } else {
+                        beanTkt.COREP = rst.getString("COREP").trim();
+//                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+                        beanTkt.strDescripcionCOREP = rst.getString("COREPN").trim();
                     }
 
                     beanTkt.lngQMATCH = rst.getLong("QMATCH");
@@ -442,17 +462,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00839Stval(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00839STVAL_PROCESS(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_DATE);
@@ -461,17 +481,18 @@ public class StatementReconciliationsDAO {
             cstmt.setString(5, filter.IN_BANK.trim());
             cstmt.setString(6, filter.IN_TDOC.trim());
             cstmt.setString(7, filter.IN_COUNTRY.trim());
+            cstmt.setString(8, filter.IN_COREP.trim());
 
-            cstmt.setInt(8, filter.page.PAGNUM);
-            cstmt.setInt(9, filter.page.PAGROW);
-            cstmt.setInt(10, filter.page.TOTPAG);
-            cstmt.setInt(11, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(8);
-            filter.page.PAGROW = cstmt.getInt(9);
-            filter.page.TOTPAG = cstmt.getInt(10);
-            filter.page.TOTROW = cstmt.getInt(11);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             rst = cstmt.getResultSet();
 
@@ -493,6 +514,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.IN_SDATE);
                     beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_COREP = filter.IN_COREP.trim();
 
                     beanTkt.IN_CBANK = rst.getString("CBANK").trim();
 
@@ -505,7 +527,26 @@ public class StatementReconciliationsDAO {
                         beanTkt.strCREJEC = rst.getString("BANKN").trim();
                         beanTkt.strDescripcion = rst.getString("BANKN").trim();
                     }
-
+                    if (rst.getString("SCOUNTRY").trim().isEmpty()) {
+                        beanTkt.SCOUNTRY = "**";
+//                        beanTkt.strCREJEC = "(Empty)";
+                        beanTkt.strDescripcionSCOUNTRY = "(Empty)";
+                    } else {
+                        beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+//                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+                        beanTkt.strDescripcionSCOUNTRY = rst.getString("SCOUNTRYN").trim();
+                    }
+                    if (rst.getString("COREP").trim().isEmpty()) {
+                        beanTkt.COREP = "**";
+//                        beanTkt.strCREJEC = "(Empty)";
+                        beanTkt.strDescripcionCOREP = "(Empty)";
+                    } else {
+                        beanTkt.COREP = rst.getString("COREP").trim();
+//                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+                        beanTkt.strDescripcionCOREP = rst.getString("COREPN").trim();
+                    }
+//                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+//                    beanTkt.COREP = rst.getString("COREP").trim();
                     //beanTkt.lngTotTotal = total;
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
                         beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate;
@@ -562,17 +603,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00840(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00840(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_TDOC);
@@ -582,17 +623,18 @@ public class StatementReconciliationsDAO {
             cstmt.setString(6, filter.IN_MERCHN.trim());
             cstmt.setString(7, filter.IN_TTRAN.trim());
             cstmt.setString(8, filter.IN_COUNTRY.trim());
+            cstmt.setString(9, filter.IN_COREP.trim());
 
-            cstmt.setInt(9, filter.page.PAGNUM);
-            cstmt.setInt(10, filter.page.PAGROW);
-            cstmt.setInt(11, filter.page.TOTPAG);
-            cstmt.setInt(12, filter.page.TOTROW);
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(9);
-            filter.page.PAGROW = cstmt.getInt(10);
-            filter.page.TOTPAG = cstmt.getInt(11);
-            filter.page.TOTROW = cstmt.getInt(12);
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
 
             rst = cstmt.getResultSet();
 
@@ -620,7 +662,10 @@ public class StatementReconciliationsDAO {
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
                     beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
-
+                    beanTkt.strDescripcion = filter.strDescripcion.trim();
+                    beanTkt.strDescripcionSCOUNTRY = filter.strDescripcionSCOUNTRY.trim();
+                    beanTkt.strDescripcionCOREP = filter.strDescripcionCOREP.trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
                     beanTkt.SDATE = rst.getString("DATE").trim();
                     beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQDIFF = rst.getLong("QDIFF");
@@ -638,7 +683,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotTotal = total;
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -687,17 +732,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00840Stval(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00840Stval(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_TDOC);
@@ -708,17 +753,18 @@ public class StatementReconciliationsDAO {
             cstmt.setString(7, filter.IN_STVAL.trim());
             cstmt.setString(8, filter.IN_TTRAN.trim());
             cstmt.setString(9, filter.IN_COUNTRY.trim());
+            cstmt.setString(10, filter.IN_COREP.trim());
 
-            cstmt.setInt(10, filter.page.PAGNUM);
-            cstmt.setInt(11, filter.page.PAGROW);
-            cstmt.setInt(12, filter.page.TOTPAG);
-            cstmt.setInt(13, filter.page.TOTROW);
+            cstmt.setInt(11, filter.page.PAGNUM);
+            cstmt.setInt(12, filter.page.PAGROW);
+            cstmt.setInt(13, filter.page.TOTPAG);
+            cstmt.setInt(14, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(10);
-            filter.page.PAGROW = cstmt.getInt(11);
-            filter.page.TOTPAG = cstmt.getInt(12);
-            filter.page.TOTROW = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(11);
+            filter.page.PAGROW = cstmt.getInt(12);
+            filter.page.TOTPAG = cstmt.getInt(13);
+            filter.page.TOTROW = cstmt.getInt(14);
 
             rst = cstmt.getResultSet();
 
@@ -741,6 +787,10 @@ public class StatementReconciliationsDAO {
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
                     beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_COREP = filter.IN_COREP.trim();
+                    beanTkt.strDescripcion = filter.strDescripcion.trim();
+                    beanTkt.strDescripcionSCOUNTRY = filter.strDescripcionSCOUNTRY.trim();
+                    beanTkt.strDescripcionCOREP = filter.strDescripcionCOREP.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE);
 
                     beanTkt.SDATE = rst.getString("VALDATE");
@@ -752,7 +802,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotSVFOP = lngTotSVFOP;
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -811,17 +861,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00841(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00841(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_TDOC);
@@ -832,17 +882,18 @@ public class StatementReconciliationsDAO {
             cstmt.setString(7, filter.IN_STVAL);
             cstmt.setString(8, filter.IN_TTRAN.trim());
             cstmt.setString(9, filter.IN_COUNTRY.trim());
+            cstmt.setString(10, filter.IN_COREP.trim());
 
-            cstmt.setInt(10, filter.page.PAGNUM);
-            cstmt.setInt(11, filter.page.PAGROW);
-            cstmt.setInt(12, filter.page.TOTPAG);
-            cstmt.setInt(13, filter.page.TOTROW);
+            cstmt.setInt(11, filter.page.PAGNUM);
+            cstmt.setInt(12, filter.page.PAGROW);
+            cstmt.setInt(13, filter.page.TOTPAG);
+            cstmt.setInt(14, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(10);
-            filter.page.PAGROW = cstmt.getInt(11);
-            filter.page.TOTPAG = cstmt.getInt(12);
-            filter.page.TOTROW = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(11);
+            filter.page.PAGROW = cstmt.getInt(12);
+            filter.page.TOTPAG = cstmt.getInt(13);
+            filter.page.TOTROW = cstmt.getInt(14);
 
             rst = cstmt.getResultSet();
 
@@ -899,7 +950,7 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + filter.strDescripcionCOREP + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
                     }

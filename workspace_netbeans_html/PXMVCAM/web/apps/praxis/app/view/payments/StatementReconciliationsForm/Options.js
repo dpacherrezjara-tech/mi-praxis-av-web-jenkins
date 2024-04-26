@@ -125,6 +125,22 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin11',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin12',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
 
                     ]
