@@ -257,7 +257,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-imgMail',
                             icon: 'resources/img/botones/24x24/Forward.png',
-                            tooltip: 'Send Mail to Bank',
+                            tooltip: 'Send Mail to Iata',
                             listeners: {
                                 click: 'sendMail_clickHandler'
                             }
