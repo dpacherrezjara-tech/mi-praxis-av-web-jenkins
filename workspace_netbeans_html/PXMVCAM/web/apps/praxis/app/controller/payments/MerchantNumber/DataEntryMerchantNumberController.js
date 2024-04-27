@@ -87,6 +87,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //        console.log('afterRender');
         switch (this.actionCode) {
             case 'I':
+                
 //                var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
 //                cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
 //                    autoLoad: false,
@@ -140,6 +141,32 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                    ]
 //                }));
 //                cmbSCOUNTRY.setValue('');
+                Ext.getCmp(prototype.id + '-panelTabMain').hide();
+                Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtDOWNREPORT').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtAPCODE').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtACQPROC').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH1').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH2').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH3').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH4').setEditable(true);
+                Ext.getCmp(prototype.id + '-CODEBANK').setEditable(true);
+                Ext.getCmp(prototype.id + '-BANKNAM').setEditable(true);
+                Ext.getCmp(prototype.id + '-BANKCM').setEditable(true);
+                Ext.getCmp(prototype.id + '-BANKCUR').setEditable(true);
+                Ext.getCmp(prototype.id + '-ACCNUMB').setEditable(true);
+                Ext.getCmp(prototype.id + '-ACCNUMA').setEditable(true);
+                Ext.getCmp(prototype.id + '-BENCEN').setEditable(true);
+                Ext.getCmp(prototype.id + '-DEUSAP').setEditable(true);
+                Ext.getCmp(prototype.id + '-SAGENT').setEditable(true);
+                Ext.getCmp(prototype.id + '-CANAL').setEditable(true);
+                Ext.getCmp(prototype.id + '-PROCES').setEditable(true);
+                Ext.getCmp(prototype.id + '-SCOUNTRY').setEditable(true);
+                Ext.getCmp(prototype.id + '-SOCIETY').setEditable(true);
+                Ext.getCmp(prototype.id + '-SCURRENCY').setEditable(true);
+                Ext.getCmp(prototype.id + '-SBENCEN').setEditable(true);
+//                Ext.getCmp(prototype.id + '-de-txtMERCHN').setDisabled(false);
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
@@ -148,6 +175,15 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             case 'U':
                 this.getData();
 //                this.DeshabilitarCampoClave();
+                
+                Ext.getCmp(prototype.id + '-bankSection').hide();
+                Ext.getCmp(prototype.id + '-iataSection').hide();
+                Ext.getCmp(prototype.id + '-bSection_1').hide();
+                Ext.getCmp(prototype.id + '-bSection_2').hide();
+                Ext.getCmp(prototype.id + '-bSection_3').hide();
+                Ext.getCmp(prototype.id + '-iSection_1').hide();
+                Ext.getCmp(prototype.id + '-iSection_2').hide();
+                Ext.getCmp(prototype.id + '-iSection_3').hide();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-update').show();
                 Ext.getCmp(prototype.id + '-btn-delete').show();

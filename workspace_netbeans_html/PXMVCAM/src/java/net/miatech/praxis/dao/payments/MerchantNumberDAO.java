@@ -1032,6 +1032,7 @@ public class MerchantNumberDAO {
                 objRtn.SOCIETY    = rs01.getString("SOCIETY").trim();
                 objRtn.SCURRENCY   = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN   = rs01.getString("SBENCEN").trim();
+                objRtn.COSTCEN   = rs01.getString("COSTCEN").trim();
                 lstRtn.add(objRtn);
             }
         } catch (Exception e) {

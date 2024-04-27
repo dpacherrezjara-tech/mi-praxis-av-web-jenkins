@@ -279,142 +279,10 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     
                                 ]
                             },
-//                            {
-//                                xtype: 'panel',
-//                                layout: 'hbox',
-//                                margin: '20 0 0 0',
-//                                items: [
-//                                    {
-//                                        xtype: 'panel',
-//                                        layout: 'hbox',
-//                                        items: [
-//                                            {
-//                                                 xtype: 'panel',
-//                                                 id: prototype.id + '-boxPaginacionDE',
-//                                                 hidden: false,
-//                                                 width: 100,
-//                                                 border: false,
-//                                                 margin: '0 0 0 1178',
-//                                                 items: [
-//                                                     {
-//                                                         xtype: 'toolbar',
-//                                                         cls: 'x-toolbar-pag',
-//                                                         items: [
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btn-pag-firstDE',
-//                                                                 iconCls: 'prx-icon-pagination-first',
-//                                                                 tooltip: 'First Page'
-//
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btn-pag-previousDE',
-//                                                                 iconCls: 'prx-icon-pagination-previous',
-//                                                                 tooltip: 'Previous Page'
-//
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btn-pag-nextDE',
-//                                                                 iconCls: 'prx-icon-pagination-next',
-//                                                                 tooltip: 'Next Page'
-//
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btn-pag-lastDE',
-//                                                                 iconCls: 'prx-icon-pagination-last',
-//                                                                 tooltip: 'Last Page'
-//
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'pagingtoolbar',
-//                                                                 id: prototype.id + '-pagginDE',
-//                                                                 pageSize: 10,
-//                                                                 border: false,
-//                                                                 displayInfo: false,
-//                                                                 hidden: true
-//                                                             }
-//
-//                                                         ]
-//                                                     }
-//                                                 ]
-//                                             },
-//                                             {xtype: 'tbspacer', width: 20},
-//                                             {
-//                                                 xtype: 'panel',
-//                                                 border: true,
-//                                                 items: [
-//                                                     {
-//                                                         xtype: 'toolbar',
-//                                                         items: [
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btnSearchDE',
-//                                                                 iconCls: 'prx-icon-search',
-//                                                                 tooltip: 'Search'
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btnFilterDE',
-//                                                                 iconCls: 'prx-icon-filter',
-//                                                                 tooltip: 'Display filter'
-//
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btnAddDE',
-//                                                                 iconCls: 'prx-icon-add',
-//                                                                 tooltip: 'New'
-//                                                             },
-//                                     //                        {
-//                                     //                            xtype:'button',
-//                                     //                            id: prototype.id+'-btnDisplay',
-//                                     //                            icon: 'resources/img/botones/FalseChart.png',
-//                                     //                            tooltip: 'Display Charts',
-//                                     //                            listeners: {
-//                                     //                                click: 'btnDisplay_click'
-//                                     //                            }
-//                                     //                        },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btnExcelDE',
-//                                                                 iconCls: 'prx-icon-excel',
-//                                                                 tooltip: 'Export to Excel'
-//                                                             },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btnClearDE',
-//                                                                 iconCls: 'prx-icon-clear',
-//                                                                 tooltip: 'Clear Options'
-//                                                             },
-//                                     //                        {
-//                                     //                            xtype: 'button',
-//                                     //                            id: prototype.id+'-btnQuery',
-//                                     //                            icon: 'resources/img/botones/query.png',
-//                                     //                            tooltip: 'Query',
-//                                     //                            listeners: {
-//                                     //                                click: 'btnQuery_click'
-//                                     //                            }
-//                                     //                        },
-//                                                             {
-//                                                                 xtype: 'button',
-//                                                                 id: prototype.id + '-btnBackDE',
-//                                                                 iconCls: 'prx-icon-back',
-//                                                                 tooltip: 'Back'
-//                                                             }
-//                                                         ]
-//                                                     }
-//                                                 ]
-//                                             }
-//                                        ]
-//                                     },
-//                                ]
-//                            },
                             {
                                 xtype: 'panel',
                                 layout: 'hbox',
+                                id: prototype.id + '-panelTabMain',
                                 border: false,
                                 margin: '35 0 0 0',
                                 
@@ -546,19 +414,22 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     text: 'Process', dataIndex: 'PROCES', width: 110
                                                                 },
                                                                 {
-                                                                    text: 'Country Code', dataIndex: 'SCOUNTRY', width: 109
+                                                                    text: 'Country C.', dataIndex: 'SCOUNTRY', width: 79
                                                                 },
                                                                 {
                                                                     text: 'Country', dataIndex: 'NAME', width: 135, align: 'left'
                                                                 },
                                                                 {
-                                                                    text: 'Sales Company', dataIndex: 'SOCIETY', width: 120
+                                                                    text: 'Sales Comp.', dataIndex: 'SOCIETY', width: 90
                                                                 },
                                                                 {
-                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 130
+                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 100
                                                                 },
                                                                 {
                                                                     text: 'Profit Center', dataIndex: 'SBENCEN', width: 150
+                                                                },
+                                                                {
+                                                                    text: 'Cost Center', dataIndex: 'COSTCEN', width: 90
                                                                 },
                                                                 {
                                                                     sortable: false,
@@ -586,7 +457,469 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     }
                                 ]
                             },
-                            
+                             {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                id: prototype.id + '-bankSection',
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {
+                                        xtype: 'label',
+                                        text: 'BANK SECTION',
+                                        style: 'font-weight:bold; text-decoration:underline',
+                                        width: 115
+                                    },
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                id: prototype.id + '-bSection_1',
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Bank Code',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-CODEBANK',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Bank Name',
+                                        style: 'font-weight:bold;',
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-BANKNAM',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Bank Company',
+                                        style: 'font-weight:bold;',
+                                        width: 80
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-BANKCM',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 155
+                                    }, 
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                id: prototype.id + '-bSection_2',
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Deposit Curr.',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-BANKCUR',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Acc. Number',
+                                        style: 'font-weight:bold;',
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-ACCNUMB',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Aux Bank Acc',
+                                        style: 'font-weight:bold;',
+                                        width: 80
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-ACCNUMA',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 155
+                                    }, 
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                id: prototype.id + '-bSection_3',
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Prof. Cent. Bank',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-BENCEN',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                id: prototype.id + '-iataSection',
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {
+                                        xtype: 'label',
+                                        text: 'IATA SECTION',
+                                        style: 'font-weight:bold; text-decoration:underline',
+                                        width: 115
+                                    },
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                id: prototype.id + '-iSection_1',
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Debt. SAP',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-DEUSAP',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'IATA',
+                                        style: 'font-weight:bold;',
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-SAGENT',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Channel',
+                                        style: 'font-weight:bold;',
+                                        width: 80
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-CANAL',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 155
+                                    }, 
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                id: prototype.id + '-iSection_2',
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Process',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-PROCES',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Country',
+                                        style: 'font-weight:bold;',
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-SCOUNTRY',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Sales Comp.',
+                                        style: 'font-weight:bold;',
+                                        width: 80
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-SOCIETY',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 155
+                                    }, 
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                id: prototype.id + '-iSection_3',
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Currency',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-SCURRENCY',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Prof. Cent.',
+                                        style: 'font-weight:bold;',
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-SBENCEN',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                items: []
+                            }
 //                        {
 //                            xtype: 'panel',
 //                            layout: 'hbox',
