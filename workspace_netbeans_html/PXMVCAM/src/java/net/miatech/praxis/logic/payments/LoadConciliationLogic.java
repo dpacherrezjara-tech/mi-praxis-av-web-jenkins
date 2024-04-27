@@ -142,6 +142,10 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263SQP00XXXJT(filter);
     }
     
+    public List<MPF100Filter> loadPX263SQP00XXXJT2(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00XXXJT2(filter);
+    }
+    
     public List<MPF106Filter> loadPX263getCorreosAV(MPF100Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263getCorreosAV(filter);
     }
