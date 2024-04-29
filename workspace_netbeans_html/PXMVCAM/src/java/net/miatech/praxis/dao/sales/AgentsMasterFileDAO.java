@@ -87,7 +87,7 @@ public class AgentsMasterFileDAO {
 
             while (rs01.next()) {
                 objRtn = new A003();
-
+                objRtn.RN = rs01.getLong("RN");
                 objRtn.A003KEY = rs01.getString("A003KEY").trim();
                 objRtn.A003TIPO = rs01.getString("A003TIPO").trim();
                 objRtn.A003KEY3 = rs01.getString("A003KEY3").trim().toUpperCase();

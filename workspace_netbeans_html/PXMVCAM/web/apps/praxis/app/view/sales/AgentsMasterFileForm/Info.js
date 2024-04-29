@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.view.sales.AgentsMasterFileForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1300,
+                width: 1400,
                 height: 500,
                 align: 'center'
             },
@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.sales.AgentsMasterFileForm.Info', {
 
                         },
                         items: [
-                            {text: 'Nbr.', width: 60, dataIndex: 'pos'},
+                            {text: 'Nbr.', width: 60, dataIndex: 'RN'},
                             {text: 'Code', width: 70, dataIndex: 'A003KEY'},
                             {text: 'Type', width: 60, dataIndex: 'A003TIPO'},
                             {text: 'Channel', width: 60, dataIndex: 'A003CANAL'},

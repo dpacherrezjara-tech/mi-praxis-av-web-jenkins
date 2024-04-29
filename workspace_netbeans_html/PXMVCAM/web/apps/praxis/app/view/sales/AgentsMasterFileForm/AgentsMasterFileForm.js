@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.view.sales.AgentsMasterFileForm.AgentsMasterFileForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1300,
+                                        width: 1500,
                                         align: 'center'
                                     },
                                     items: [

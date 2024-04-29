@@ -343,6 +343,7 @@ Ext.define('Ext.Praxis.controller.sales.AgentsMasterFile.AgentsMasterFileControl
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(currentPage);
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(pageCount);
                     Ext.getCmp(prototype.id + '-lbl-total').setText(total);
+                    console.log(obj.data.length, 'obj.data.length')
                     if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'

@@ -12,6 +12,7 @@ import net.miatech.beans.Pagination;
  * @author rmayta
  */
 public class A003 {
+    public long RN = 0;
     public String A003KEY = "";
     public String A003TIPO = "";
     public String A003KEY3 = "";
