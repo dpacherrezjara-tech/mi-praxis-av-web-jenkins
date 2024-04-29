@@ -418,7 +418,7 @@ Ext.define('Ext.Praxis.controller.sales.AgentsMasterFile.AgentsMasterFileControl
     exportExcel: function () {
         this.setParams();
         var VP_A003TYPE = 'xlsx';
-        global.getFile(prototype.url + '/getFileTxt?VP_ACTION=' + searchParams.VP_ACTION + '&A003KEY1=' + searchParams.A003KEY1 + '&A003KEY2=' + searchParams.A003KEY2 + '&A003KEY3=' + searchParams.A003KEY3 + '&A003TYPE=' + VP_A003TYPE);
+        global.getFile(prototype.url + '/getFileTxt?VP_ACTION=' +  searchParams.VP_ACTION + '&A003KEY1=' + searchParams.A003KEY1 + '&A003KEY2=' + searchParams.A003KEY2 + '&A003KEY3=' + searchParams.A003KEY3 + '&A003TYPE=' + VP_A003TYPE);
     },
     btnTxt_click: function (obj, e) {
         Ext.Msg.show({

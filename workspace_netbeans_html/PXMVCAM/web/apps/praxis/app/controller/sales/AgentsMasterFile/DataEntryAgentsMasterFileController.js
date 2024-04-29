@@ -55,7 +55,8 @@ Ext.define('Ext.Praxis.controller.sales.AgentsMasterFile.DataEntryAgentsMasterFi
                 ["WEB", "WEB"],
                 ["GSA", "GSA"],
                 ["FRA", "FRA"],
-                ["CCT", "CCT"]
+                ["CCT", "CCT"],
+                ["ARO", "ARO"]
             ]
         }));
         cboA003CANAL.setValue("");
