@@ -14,6 +14,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     beanDay: {},
     beanDayByS: {},
     beanLiquida: {},
+    beanLiquidaDate: {},
     beanLiquidaByS: {},
     beanDetails: {},
     beanDetBankByS: {},
@@ -496,6 +497,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDay.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY
         this.beanDay.strDescripcionCOREP = rowData.data.strDescripcionCOREP
         console.log(this.beanDay, 'this.beanDay')
+        console.log(this.beanDay.IN_COREP, 'this.beanDay.IN_COREP')
         me.paramsDetail.beanString = JSON.stringify(this.beanDay);
         this.setGridDataDetDay();
     },
@@ -544,20 +546,24 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.panelActual = '-boxDetLiquida';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
-        this.beanLiquida.IN_TDOC = rowData.data.IN_TDOC;
-        this.beanLiquida.IN_DATE = rowData.data.IN_DATE;
-        this.beanLiquida.IN_SDATE = rowData.data.SDATE;
-        this.beanLiquida.IN_CBANK = rowData.data.IN_CBANK;
-        this.beanLiquida.IN_STVAL = "";
-        this.beanLiquida.IN_MERCHN = rowData.data.IN_MERCHN;
-        this.beanLiquida.IN_SDATEE = rowData.data.IN_SDATEE;
-        this.beanLiquida.IN_TTRAN = rowData.data.IN_TTRAN;
-        this.beanLiquida.IN_QTYTRAN1 = rowData.data.QTYTRAN1;
-        this.beanLiquida.strFormatDate = rowData.data.strFormatDate;
-        this.beanLiquida.strCREJEC = rowData.data.strCREJEC;
-        this.beanLiquida.IN_COUNTRY = rowData.data.IN_COUNTRY;
-
-        me.paramsDetail.beanString = JSON.stringify(this.beanLiquida);
+        this.beanLiquidaDate.IN_TDOC = rowData.data.IN_TDOC;
+        this.beanLiquidaDate.IN_DATE = rowData.data.IN_DATE;
+        this.beanLiquidaDate.IN_SDATE = rowData.data.SDATE;
+        this.beanLiquidaDate.IN_CBANK = rowData.data.IN_CBANK;
+        this.beanLiquidaDate.IN_STVAL = "";
+        this.beanLiquidaDate.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanLiquidaDate.IN_SDATEE = rowData.data.IN_SDATEE;
+        this.beanLiquidaDate.IN_TTRAN = rowData.data.IN_TTRAN;
+        this.beanLiquidaDate.IN_QTYTRAN1 = rowData.data.QTYTRAN1;
+        this.beanLiquidaDate.strFormatDate = rowData.data.strFormatDate;
+        this.beanLiquidaDate.strCREJEC = rowData.data.strCREJEC;
+        this.beanLiquidaDate.IN_COUNTRY = rowData.data.IN_COUNTRY;
+        this.beanLiquidaDate.IN_COREP = rowData.data.IN_COREP;
+        this.beanLiquidaDate.strDescripcion = rowData.data.strDescripcion
+        this.beanLiquidaDate.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY
+        this.beanLiquidaDate.strDescripcionCOREP = rowData.data.strDescripcionCOREP
+        console.log(rowData.data.IN_COREP, 'rowData.data.IN_COREP MARTESSS')
+        me.paramsDetail.beanString = JSON.stringify(this.beanLiquidaDate);
         this.setGridDataDetLiquida();
     },
 
@@ -582,6 +588,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquida.strDescripcionCOREP = rowData.data.strDescripcionCOREP
         console.log( rowData.data.IN_COUNTRY, 'rowData.data.IN_COUNTRY' )
         console.log( rowData.data.SCOUNTRY, 'rowData.data.SCOUNTRY' )
+        console.log(rowData.data.IN_COREP, 'rowData.data.IN_COREP WADAFAAAAAAAAAAA')
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquida);
         this.setGridDataDetLiquida();
@@ -657,6 +664,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanLiquidaByS.IN_SDATEE = rowData.data.IN_SDATEE;
             this.beanLiquidaByS.IN_STVAL = rowData.data.IN_STVAL;
             this.beanLiquidaByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
+            this.beanLiquidaByS.IN_COREP = rowData.data.IN_COREP;
+            this.beanLiquidaByS.strDescripcion = rowData.data.strDescripcion
+            this.beanLiquidaByS.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY
+            this.beanLiquidaByS.strDescripcionCOREP = rowData.data.strDescripcionCOREP
 
             me.paramsDetail.beanString = JSON.stringify(this.beanLiquidaByS);
             this.setGridDataDetLiquidaByS();
