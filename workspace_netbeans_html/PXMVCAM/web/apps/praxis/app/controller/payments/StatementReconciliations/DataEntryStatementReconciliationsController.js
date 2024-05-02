@@ -86,7 +86,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 //            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(985);
             Ext.getCmp(prototype.id + '-dataEntry').setHeight(735);
             Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1047);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1045);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1035);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -781,9 +781,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     preexecuteOption: function () {
 
         var decide = false;
-        var ASVFOP = Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', '');
-        var BSVFOP = Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', '');
-        if (ASVFOP === BSVFOP) {
+        var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
+        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
+        var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace('-',''));
+        var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
+        console.log(DIFF);
+        if (DIFF < 100  && MONEDA === 'COP') {
 
             let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
             let datos = {};
@@ -794,7 +797,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 console.log('modificable');
                 decide = true;
             }
-
 
         } else {
             global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});

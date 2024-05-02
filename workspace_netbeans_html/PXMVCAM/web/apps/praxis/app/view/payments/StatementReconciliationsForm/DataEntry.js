@@ -112,7 +112,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Bank Code',
+                                                    text: 'Bank',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     width: 120
                                                 },
@@ -803,7 +803,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Doc.Type', dataIndex: 'descTDOC', width: 85,
+                                                                    {text: 'Doc.Type', dataIndex: 'descTDOC', width: 75,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
