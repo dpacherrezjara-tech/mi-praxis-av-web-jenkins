@@ -51,6 +51,7 @@ public class A2290 {
     public String FCONT = "";
     public String NEGOC = "";
     public String ACCNUMBER = "";
+    public String ACCNUMBERL = "";
     public double SVFOP = 0;
     public double SVFOPC = 0;
     public double SVFOPD = 0;

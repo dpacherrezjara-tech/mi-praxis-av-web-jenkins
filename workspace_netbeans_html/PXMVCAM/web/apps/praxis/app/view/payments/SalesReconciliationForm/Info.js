@@ -186,7 +186,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                                    return Ext.util.Format.number(data.lngTotQMANUAL, '0,000');
+                                                                                    return Ext.util.Format.number(data.lngTotQDIFF, '0,000');
                                                                                 }
                                                                             }
                                                                         ]

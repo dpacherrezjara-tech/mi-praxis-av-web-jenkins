@@ -63,6 +63,7 @@ public class A2290Filter extends A2290 {
     public String IN_COUNTRY = "";
     public String IN_COREP = "";
     public String NAME = "";
+    public String NAMEP = "";
     public String IN_SDATE = "";
     public String IN_SDATEE = "";
     public String IN_CBANK = "";

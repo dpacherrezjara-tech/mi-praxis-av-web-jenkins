@@ -1359,7 +1359,8 @@ public class StatementReconciliationsDAO {
                     
                     beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
                     beanTkt.CODEBANKA = rst.getString("CODEBANKA").trim();
-                    beanTkt.NAME = rst.getString("NAME").trim();
+                    beanTkt.NAME = rst.getString("CODEBANK").trim() + " - " + rst.getString("NAME").trim();
+                    beanTkt.NAMEP = rst.getString("COREP").trim() + " - " + rst.getString("NAMEP").trim();
                     beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
@@ -1369,12 +1370,14 @@ public class StatementReconciliationsDAO {
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
+                    beanTkt.NETOC = rst.getDouble("NETOC");
                     beanTkt.VALDATEL = VALDATEL;
                     beanTkt.UNICODEL = UNICODEL;
                     beanTkt.BANDOCL = BANDOCL;
                     beanTkt.SCURRENCYL = SCURRENCYL;
                     beanTkt.NETOL = NETOL;
-                    beanTkt.ACCNUMBER = ACCNUMBER;
+                    beanTkt.ACCNUMBER = rst.getString("ACCCOMP").trim();
+                    beanTkt.ACCNUMBERL = ACCNUMBER;
                     beanTkt.SDATE = rst.getString("SDATE").trim();
                     beanTkt.SCARDN = rst.getString("SCARDN").trim();
                     beanTkt.DIFF = beanTkt.NETO - beanTkt.NETOL;
