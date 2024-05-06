@@ -83,7 +83,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                         {xtype: 'tbspacer', width: 27},
                                         {
                                             xtype: 'label',
-                                            text: 'Bandoc',
+                                            text: 'SAP Doc.',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 80
                                         },

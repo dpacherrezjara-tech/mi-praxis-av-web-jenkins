@@ -168,6 +168,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         let amountSettlement = Ext.getCmp(prototype.id + '-de-txtAMOUNT').getValue()
         if(amountStatement != amountSettlement){
             global.Msg({msg: "The amounts do not MATCH"});
+            Ext.getCmp(prototype.id + '-de-txtSumAmount').setFieldStyle('background-color: #F7F199;');
+            Ext.getCmp(prototype.id + '-de-txtAMOUNT').setFieldStyle('background-color: #F7F199;');
         }else{
             global.Msg({msg: "The amounts MATCH!"});
             Ext.getCmp(prototype.id + '-btn-update').show();
@@ -256,6 +258,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue('')
         Ext.getCmp(prototype.id + '-file').reset();
         Ext.getCmp(prototype.id + '-btn-upload').setDisabled(false);
+        Ext.getCmp(prototype.id + '-de-txtSumAmount').setFieldStyle('background-color: #CFE0EC;');
+        Ext.getCmp(prototype.id + '-de-txtAMOUNT').setFieldStyle('background-color: #CFE0EC;');
 
     },
     btnSearch_click: function (obj, e) {
@@ -276,7 +280,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                 var res = Ext.JSON.decode(response.responseText);
                 
                 if( res.result.BANDOC == ''){
-                    global.Msg({msg: "Bandoc not fund "});
+                    global.Msg({msg: "SAP Document not fund "});
                     Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
                 }else {
                     let formateadoNeto = me.formatNumberWithCommas_double(res.result.NETO)
