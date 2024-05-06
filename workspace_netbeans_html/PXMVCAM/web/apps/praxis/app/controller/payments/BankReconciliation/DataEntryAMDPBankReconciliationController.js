@@ -36,6 +36,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
             Ext.getCmp(prototype.id + '-btn-update').hide();
+//            this.bean.FCONT == '' ? Ext.getCmp(prototype.id + '-btn-reverse').show() : Ext.getCmp(prototype.id + '-btn-reverse').hide()
             Ext.getCmp(prototype.id + '-btn-reverse').show();
         } else {
             this.onSearchPendingDetail();
@@ -781,24 +782,30 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     onReverseClick: function (btn) {
-        Ext.Msg.show({
-            title: '.:Confirmation:.',
-            msg: 'Are you sure to Reverse?',
-            buttons: Ext.MessageBox.YESNO,
-            scope: this,
-//            animateTarget: btn,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        beanTemp = this.llenarData();
-                        beanTemp.option = 'R';
-                        beanTemp.beanString = JSON.stringify(meDe.bean);
-                        this.reverseOption(beanTemp);
-                    }
-            }
-        });
+        if(this.bean.FCONT == ''){
+            Ext.Msg.show({
+                title: '.:Confirmation:.',
+                msg: 'Are you sure to Reverse?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+    //            animateTarget: btn,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            var beanTemp = {};
+                            beanTemp = this.llenarData();
+                            beanTemp.option = 'R';
+                            beanTemp.beanString = JSON.stringify(meDe.bean);
+                            this.reverseOption(beanTemp);
+                        }
+                }
+            }); 
+        } else {
+            global.Msg({msg: 'Reversal not allowed'});
+            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
+        }
+        
     },
     onCancelClick: function (btn) {
         this.view.close();

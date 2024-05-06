@@ -39,8 +39,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     fieldStyle: 'text-align:center',
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
-                    maxLength: 10,
-                    width: 100,
+                    maxLength: 16,
+                    width: 130,
                     enableKeyEvents: true,
                     listeners: {
                         keypress: 'buscarFilter'
@@ -59,8 +59,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     fieldStyle: 'text-align:center',
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
-                    maxLength: 10,
-                    width: 100,
+                    maxLength: 16,
+                    width: 130,
                     enableKeyEvents: true,
                     listeners: {
                         keypress: 'buscarFilter'
