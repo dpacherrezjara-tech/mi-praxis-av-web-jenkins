@@ -632,6 +632,14 @@ public class A2290Filter extends A2290 {
     public String UASIG = "";
     public String IN_ANALISTA = "";
     public String IN_WHERE = "";
+    public String IN_SOCIETY = "";
+
+    public String IN_MERCHNC = "";
+    public String IN_SCOUNTRY = "";
+
+    public String getVariable() {
+       return BANDOC;
+    }
 
     public String bufferToString(String ccust) {
 

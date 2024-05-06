@@ -164,6 +164,8 @@ public class A2290 {
     public String DATEADM = "";
     public double TOTADM = 0;
     public String CURRADM = "";
+    public String SOCIETY = "";
+    public String AMOUNT = "";
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";
