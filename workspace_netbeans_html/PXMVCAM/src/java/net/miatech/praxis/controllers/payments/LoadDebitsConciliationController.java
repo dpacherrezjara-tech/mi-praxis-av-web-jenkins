@@ -204,7 +204,9 @@ public class LoadDebitsConciliationController extends BaseController {
 //                    if (i > 0) {
                         A2290Filter obj = new A2290Filter();
                         
-                        obj.AMOUNT = formatter.formatCellValue(row.getCell(18)).trim().replace(",", "");
+                        
+                        obj.AMOUNT = formatAmount(formatter.formatCellValue(row.getCell(18)).trim());
+                        
 //                        obj.AMOUNT = formatter.formatCellValue(row.getCell(1)).trim();
                         System.out.println(i);
                         System.out.println(obj.AMOUNT);
@@ -246,6 +248,19 @@ public class LoadDebitsConciliationController extends BaseController {
 
         return neto;
 
+    }
+    
+    public String formatAmount(String amount) {
+
+        if (amount.substring(amount.length() - 3).contains(",")) {
+           amount = amount.replace(".", "").replace(",", ".");
+        } else if (amount.substring(amount.length() - 3).contains(".")) {
+           amount = amount.replace(",", "");
+        }else{
+           amount = amount; 
+        }
+
+        return amount;
     }
     
     @RequestMapping(value = "/conciliationDebits", method = RequestMethod.POST)
@@ -339,13 +354,13 @@ public class LoadDebitsConciliationController extends BaseController {
                         obj.SAUTHOC = formatter.formatCellValue(row.getCell(9)).trim();
                         obj.SCARDN = formatter.formatCellValue(row.getCell(10)).trim().substring(0,6) + "***" + formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4) ;
                         obj.SCARDNCOR = formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4);
-                        obj.TOTAL = Double.parseDouble(formatter.formatCellValue(row.getCell(11)).replace(".", "").replace(",", "."));
-                        obj.COMISION = Double.parseDouble(formatter.formatCellValue(row.getCell(13)).replace(".", "").replace(",", "."));
-                        obj.IVA = Double.parseDouble(formatter.formatCellValue(row.getCell(14)).replace(".", "").replace(",", "."));
-                        obj.RTEFUE = Double.parseDouble(formatter.formatCellValue(row.getCell(15)).replace(".", "").replace(",", "."));
-                        obj.RTEIVA = Double.parseDouble(formatter.formatCellValue(row.getCell(16)).replace(".", "").replace(",", "."));
-                        obj.RTEICA = Double.parseDouble(formatter.formatCellValue(row.getCell(17)).replace(".", "").replace(",", "."));
-                        obj.NETO = Double.parseDouble(formatter.formatCellValue(row.getCell(18)).replace(".", "").replace(",", "."));
+                        obj.TOTAL = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(11))));
+                        obj.COMISION = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(13))));
+                        obj.IVA = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(14))));
+                        obj.RTEFUE = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(15))));
+                        obj.RTEIVA = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(16))));
+                        obj.RTEICA = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(17))));
+                        obj.NETO = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(18))));
                         obj.SEQ = "";
                         obj.NEGOC = "1";
                         obj.descTDOC = formatter.formatCellValue(row.getCell(19)).trim();

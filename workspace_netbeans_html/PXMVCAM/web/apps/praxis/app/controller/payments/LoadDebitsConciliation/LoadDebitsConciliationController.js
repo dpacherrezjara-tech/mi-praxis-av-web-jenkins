@@ -263,8 +263,13 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
 
     },
     btnSearch_click: function (obj, e) {
-        Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(true)
         
+        Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(true)
+        if( Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == '' || Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == undefined  ){
+             Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
+            global.Msg({msg: "enter the SAP document"});
+            return false
+        }
         let beanSearch = {}
         beanSearch.IN_BANDOC = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue()
         beanSearch.IN_TDOC = 'D'
