@@ -646,12 +646,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return Ext.util.Format.number(value, '0,000');
+                                                            return Ext.util.Format.number(value, '0,000.00');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDetLiquida').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000.00') + '<b>';
                                                         }
                                                     },
                                                 ]
@@ -801,12 +801,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     {text: 'Neto Settlement', dataIndex: 'NETOC', width: 140,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
-                                                            return Ext.util.Format.number(value, '0,000');
+                                                            return Ext.util.Format.number(value, '0,000.00');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDetLiquidaByS').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000.00') + '<b>';
                                                         }
                                                     },
                                                 ]
@@ -956,12 +956,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     {text: 'Neto Settlement', dataIndex: 'NETOC', width: 140,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
-                                                            return Ext.util.Format.number(value, '0,000');
+                                                            return Ext.util.Format.number(value, '0,000.00');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDetDetails').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000.00') + '<b>';
                                                         }
                                                     },
                                                 ]
