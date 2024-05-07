@@ -267,7 +267,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(true)
         if( Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == '' || Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == undefined  ){
              Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
-            global.Msg({msg: "enter the SAP document"});
+            global.Msg({msg: "Enter the SAP document"});
             return false
         }
         let beanSearch = {}
