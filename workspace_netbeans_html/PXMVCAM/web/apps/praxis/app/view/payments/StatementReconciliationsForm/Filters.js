@@ -223,7 +223,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     fieldStyle: 'text-align:center',
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
-                    maxLength: 20,
+                    maxLength: 10,
                     width: 100,
                     enableKeyEvents: true,
                     listeners: {

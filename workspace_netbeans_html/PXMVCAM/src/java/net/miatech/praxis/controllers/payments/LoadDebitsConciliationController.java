@@ -204,7 +204,7 @@ public class LoadDebitsConciliationController extends BaseController {
 //                    if (i > 0) {
                         A2290Filter obj = new A2290Filter();
                         
-                        obj.AMOUNT = formatter.formatCellValue(row.getCell(18)).trim().replace(".", "").replace(",", ".");
+                        obj.AMOUNT = formatter.formatCellValue(row.getCell(18)).trim().replace(",", "");
 //                        obj.AMOUNT = formatter.formatCellValue(row.getCell(1)).trim();
                         System.out.println(i);
                         System.out.println(obj.AMOUNT);

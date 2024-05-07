@@ -17,6 +17,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Options', {
                 {
                     xtype: 'toolbar',
                     cls: 'x-toolbar-pag',
+                    hidden:true,
                     items: [
                         {
                             xtype: 'button',
