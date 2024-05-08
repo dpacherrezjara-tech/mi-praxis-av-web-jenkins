@@ -89,7 +89,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
             if (filter.FLAG.equals("6")) {
-                cstmt01.setString(1, "134");
+                cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
                 cstmt01.setString(2, filter.TKT.substring(0, 3));
                 cstmt01.setString(3, filter.TKT.substring(3, 7));
                 cstmt01.setString(4, filter.TKT.substring(7, 13));
@@ -106,7 +106,7 @@ public class SalesReportDAO {
                 cstmt01.registerOutParameter(14, Types.INTEGER);
                 cstmt01.registerOutParameter(15, Types.INTEGER);
 
-                cstmt01.setString(1, filter.AIRLINE);
+                cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
                 cstmt01.setString(2, filter.FECHARPT);
                 cstmt01.setString(3, filter.FUENTE);
                 cstmt01.setString(4, filter.PAIS);
@@ -488,7 +488,7 @@ public class SalesReportDAO {
             cstmt01.registerOutParameter(9, Types.INTEGER);
 
             cstmt01.setInt(1, filter.IN_OPCION);
-            cstmt01.setString(2, filter.IN_AIRLIN);
+            cstmt01.setString(2, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(3, filter.IN_GRUPO);
             cstmt01.setString(4, filter.IN_TKT);
             cstmt01.setString(5, filter.IN_IATA);
@@ -573,7 +573,7 @@ public class SalesReportDAO {
             cstmt01.registerOutParameter(10, Types.INTEGER);
 
             cstmt01.setInt(1, filter.IN_OPCION);
-            cstmt01.setString(2, filter.IN_AIRLIN);
+            cstmt01.setString(2, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(3, filter.IN_GRUPO);
             cstmt01.setString(4, filter.IN_TKT);
             cstmt01.setString(5, filter.IN_IATA);
@@ -662,7 +662,7 @@ public class SalesReportDAO {
             cstmt01.registerOutParameter(10, Types.INTEGER);
 
             cstmt01.setInt(1, filter.IN_OPCION);
-            cstmt01.setString(2, filter.IN_AIRLIN);
+            cstmt01.setString(2, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(3, filter.IN_GRUPO);
             cstmt01.setString(4, filter.IN_TKT);
             cstmt01.setString(5, filter.IN_TRANSACTION);
@@ -876,7 +876,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -970,7 +970,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1062,7 +1062,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1179,7 +1179,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1278,7 +1278,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.VP_AIRLINE);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
@@ -1467,7 +1467,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.VP_AIRLINE);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
@@ -1587,7 +1587,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "134");
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.A720CIAI);
             cstmt01.setString(3, filter.A720FORMAI);
             cstmt01.setString(4, filter.A720SERIEI);
@@ -1646,7 +1646,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "134");
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
@@ -1702,7 +1702,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1788,7 +1788,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1862,7 +1862,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1929,7 +1929,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -1996,7 +1996,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2058,7 +2058,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2226,7 +2226,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2274,7 +2274,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2360,7 +2360,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2434,7 +2434,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2501,7 +2501,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2568,7 +2568,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2630,7 +2630,7 @@ public class SalesReportDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
-            cstmt01.setString(1, filter.IN_AIRLIN);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_CIA);
             cstmt01.setString(3, filter.IN_FORMA);
             cstmt01.setString(4, filter.IN_SERIE);
@@ -2681,7 +2681,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "134");
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.A720CIAI);
             cstmt01.setString(3, filter.A720FORMAI);
             cstmt01.setString(4, filter.A720SERIEI);
@@ -2746,7 +2746,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "134");
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
@@ -2805,7 +2805,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, "134");
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.A720CIAI);
             cstmt01.setString(3, filter.A720FORMAI);
             cstmt01.setString(4, filter.A720SERIEI);
@@ -2923,7 +2923,7 @@ public class SalesReportDAO {
             //cstmt01 = session.getCNXIBMDB2().getConnection().prepareCall(SQLCLL01);
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.setString(1, filter.VP_AIRLINE);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.VP_CIA);
             cstmt01.setString(3, filter.VP_FORMA);
             cstmt01.setString(4, filter.VP_SERIE);
