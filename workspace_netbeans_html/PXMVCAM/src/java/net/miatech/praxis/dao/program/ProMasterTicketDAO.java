@@ -1903,11 +1903,13 @@ public class ProMasterTicketDAO {
 
         String SQLCLL01 = "";
        
+            //PARA AVIANCA TODAS LAS COMPAÑIAS USAN EL MISMO PROCESO******************************************
         SQLCLL01 = "{CALL SQP00697(?,?,?,?,?,?,?,?,?)}"; 
-        if(filter.IN_TFILTER == 1 && !"134".equals(filter.IN_TEXT.substring(0, 3)))
-        {
-            SQLCLL01 = "{CALL SQP04574(?,?,?,?,?,?,?,?,?)}"; 
-        }
+//        if(filter.IN_TFILTER == 1 && !"134".equals(filter.IN_TEXT.substring(0, 3)))
+//        {
+//            SQLCLL01 = "{CALL SQP04574(?,?,?,?,?,?,?,?,?)}"; 
+//        }
+            //PARA AVIANCA TODAS LAS COMPAÑIAS USAN EL MISMO PROCESO******************************************
         
         Connection cnx = null;
         try {

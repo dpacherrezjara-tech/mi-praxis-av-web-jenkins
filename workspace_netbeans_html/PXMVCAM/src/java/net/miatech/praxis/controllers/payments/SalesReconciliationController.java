@@ -1437,13 +1437,13 @@ public class SalesReconciliationController extends BaseController {
                         obj.IN_AGENT = agent;
                         //Obtiene la lista de aclaraciones de esa fecha
                         listaData = logic.loadPX263SQP00XXXJT(obj);
-                        listaData_ADJUST = logic.loadPX263SQP00XXXJT2(obj);
+//                        listaData_ADJUST = logic.loadPX263SQP00XXXJT2(obj);
 
                         String ruta_file = obtenerExcel(listaData,agent_name);
-                        String ruta_file_adjust ="";
-                        if(listaData_ADJUST.size()>0){
-                            ruta_file_adjust = obtenerExcel_Adjust(listaData_ADJUST,agent_name);
-                        }
+//                        String ruta_file_adjust ="";
+//                        if(listaData_ADJUST.size()>0){
+//                            ruta_file_adjust = obtenerExcel_Adjust(listaData_ADJUST,agent_name);
+//                        }
 
 
                         //CODIGO DE MAIL Y SU ATTACHMENT
@@ -1453,9 +1453,9 @@ public class SalesReconciliationController extends BaseController {
 
                         if(!ruta_file.equals("")){
                             adjuntos.add(ruta_file);
-                            if(!ruta_file_adjust.equals("")){
-                                adjuntos.add(ruta_file_adjust);   
-                            }
+//                            if(!ruta_file_adjust.equals("")){
+//                                adjuntos.add(ruta_file_adjust);   
+//                            }
                         }
                         // Emails CC
                         List<String> CC = new ArrayList<String>();
@@ -1557,10 +1557,10 @@ public class SalesReconciliationController extends BaseController {
                         if (file.exists()) {
                             file.delete();
                         }
-                        File file2 = new File(ruta_file_adjust);
-                        if (file2.exists()) {
-                            file2.delete();
-                        }
+//                        File file2 = new File(ruta_file_adjust);
+//                        if (file2.exists()) {
+//                            file2.delete();
+//                        }
 
                     }
 
@@ -1883,7 +1883,6 @@ public class SalesReconciliationController extends BaseController {
 //            sheet.autoSizeColumn(13, true);
                 
             // Escritura del contenido en el archivo Excel
-       
             FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             workbook.write(fos);
             fos.close();

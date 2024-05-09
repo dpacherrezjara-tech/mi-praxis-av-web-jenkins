@@ -102,12 +102,16 @@ public class ProMasterTicketController extends BaseController {
             PX040S01A720Filter filterTKT;
             //PX040S01A720Filter filterTKT = logic.loadPX040S01A720(filter);
             //PX040S01A720Filter filterTKT = logic.loadPRO11013(filter);
-            if (filter.IN_CIA.equals("134")){
+            
+            
+            //PARA AVIANCA TODAS LAS COMPAÑIAS USAN EL MISMO PROCESO******************
+//            if (filter.IN_CIA.equals("134")){
                 filterTKT = logic.loadPX040S01A720(filter);
 //                filterTKT = logic.loadPRO11013(filter);
-            }else{
-                filterTKT = logic.loadSQP02665(filter);
-            }
+//            }else{
+//                filterTKT = logic.loadSQP02665(filter);
+//            }
+            //PARA AVIANCA TODAS LAS COMPAÑIAS USAN EL MISMO PROCESO*******************
 
             map.put("success", true);
             map.put("filterTKT", filterTKT);
