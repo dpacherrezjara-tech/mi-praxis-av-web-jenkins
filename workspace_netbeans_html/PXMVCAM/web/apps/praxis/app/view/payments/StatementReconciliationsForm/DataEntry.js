@@ -116,7 +116,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     width: 50
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 20},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtCODEBANK',
@@ -129,10 +129,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtNAME',
-                                                    fieldStyle: 'text-align:center',
+//                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
                                                     readOnly: true,
-                                                    width: 200,
+                                                    width: 160,
                                                 },
                                                 {xtype: 'tbspacer', width: 30},
                                                 {
@@ -145,12 +145,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtNAMEP',
-                                                    fieldStyle: 'text-align:center',
+//                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
                                                     readOnly: true,
-                                                    width: 200,
+                                                    width: 160,
                                                 },
-                                                {xtype: 'tbspacer', width: 165}
+                                                {xtype: 'tbspacer', width: 235}
                                             ]
                                         },
                                         {
@@ -182,7 +182,25 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     readOnly: true,
                                                     width: 110,
                                                 },
-                                                {xtype: 'tbspacer', width: 815}
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Country',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 40
+                                                },
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSCOUNTRY',
+                                                    fieldCls: 'detalle-Country',
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+//                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 160,
+                                                },
+                                                {xtype: 'tbspacer', width: 555}
                                             ]
                                         },
                                         {

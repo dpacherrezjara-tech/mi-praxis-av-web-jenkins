@@ -1361,6 +1361,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.CODEBANKA = rst.getString("CODEBANKA").trim();
                     beanTkt.NAME = rst.getString("CODEBANK").trim() + " - " + rst.getString("NAME").trim();
                     beanTkt.NAMEP = rst.getString("COREP").trim() + " - " + rst.getString("NAMEP").trim();
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.DESC_SCOUNTRY = rst.getString("SCOUNTRY").trim() + " - " +  rst.getString("SCOUNTRYN").trim();
                     beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
@@ -1524,7 +1526,7 @@ public class StatementReconciliationsDAO {
         Connection cnx2 = null;
         Connection cnx3 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF102(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF102(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -1546,9 +1548,10 @@ public class StatementReconciliationsDAO {
             cstmt.setString(10, filter.FECSELEC.trim());
             cstmt.setString(11, filter.FSELEC.trim());
             cstmt.setInt(12, filters.size());
-            cstmt.setString(13, user.getUserInfo().USR);
-            cstmt.setString(14, Functions.getFechaActual());
-            cstmt.setString(15, Functions.getHoraActual());
+            cstmt.setDouble(13, filter.NETOC);
+            cstmt.setString(14, user.getUserInfo().USR);
+            cstmt.setString(15, Functions.getFechaActual());
+            cstmt.setString(16, Functions.getHoraActual());
 
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución

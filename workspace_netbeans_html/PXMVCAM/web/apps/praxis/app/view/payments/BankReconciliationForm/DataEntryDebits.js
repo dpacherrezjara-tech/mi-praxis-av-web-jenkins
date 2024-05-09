@@ -302,6 +302,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             id: prototype.id + '-de-txtFCONT',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:left;',
+                                            border: true,
                                             readOnly: true,
                                             width: 100,
                                         },

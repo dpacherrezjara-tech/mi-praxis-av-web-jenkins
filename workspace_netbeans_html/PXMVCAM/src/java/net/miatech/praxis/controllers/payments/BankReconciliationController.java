@@ -720,6 +720,114 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "reverseOption_REFND")
+    public @ResponseBody
+    String reverseOption_REFND(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOption_REFND-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117_REFND(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "reverseOption_CHGBAK")
+    public @ResponseBody
+    String reverseOption_CHGBAK(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOption_CHGBAK-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117_CHGBAK(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "reverseOption_ACREDIT")
+    public @ResponseBody
+    String reverseOption_ACREDIT(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOption_ACREDIT-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117_ACREDIT(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "reverseOptionOnlyLiq")
     public @ResponseBody
@@ -758,6 +866,114 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "reverseOptionOnlyLiq_REFND")
+    public @ResponseBody
+    String reverseOptionOnlyLiq_REFND(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOptionOnlyLiq_REFND-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117OnlyLiq_REFND(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "reverseOptionOnlyLiq_CHGBAK")
+    public @ResponseBody
+    String reverseOptionOnlyLiq_CHGBAK(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOptionOnlyLiq_CHGBAK-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117OnlyLiq_CHGBAK(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+     @RequestMapping(value = "reverseOptionOnlyLiq_ACREDIT")
+    public @ResponseBody
+    String reverseOptionOnlyLiq_ACREDIT(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BankReconciliation : reverseOptionOnlyLiq_ACREDIT-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05117OnlyLiq_ACREDIT(filterList, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "searchBeanAdyen")
     public @ResponseBody
     List<A2290Filter> searchBeanAdyen(ModelMap map, HttpServletRequest request) {

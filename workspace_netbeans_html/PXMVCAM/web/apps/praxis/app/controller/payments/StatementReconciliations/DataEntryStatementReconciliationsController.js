@@ -81,6 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtNAME', this.beanResult.NAME);
         this.setValue('de-txtNAMEP', this.beanResult.NAMEP);
         this.setValue('de-txtSTVAL', this.beanResult.descSTVAL);
+        this.setValue('de-txtSCOUNTRY', this.beanResult.DESC_SCOUNTRY);
         this.setValue('de-txtSOCIETY', this.beanResult.CCUST);
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
@@ -800,44 +801,79 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="executeOption">
+//    preexecuteOption: function () {
+//
+//        var decide = false;
+//        var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
+//        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
+//        var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace('-', ''));
+//        var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
+//        var ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+//        var ACCNUMBERL = Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').getValue();
+//        console.log(DIFF);
+//        
+//        
+//        if (ACCNUMBER === ACCNUMBERL) {
+//            if (DIFF < 100 && MONEDA === 'COP') {
+//                let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//                let datos = {};
+//                datos = this.procesarRegistros(miGrilla);
+//                if (Array.isArray(datos) && datos.length === 0) {
+//                    // Nadine
+//                } else {
+//                    console.log('modificable');
+//                    decide = true;
+//                }
+//
+//            } else {
+//                global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
+//            }
+//            
+//        } else {
+//            
+//            global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
+//            
+//        }
+//        
+//        
+//        return decide;
+//    },
     preexecuteOption: function () {
-
-        var decide = false;
+        //Modificacion
         var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
         var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace('-', ''));
         var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
         var ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
         var ACCNUMBERL = Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').getValue();
-        console.log(DIFF);
+        let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        let datos = {};
+        datos = this.procesarRegistros(miGrilla);
         
+        if ( ACCNUMBER !== ACCNUMBERL) {
+             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
+             return false
+        }
         
-        if (ACCNUMBER === ACCNUMBERL) {
-            
-            if (DIFF < 100 && MONEDA === 'COP') {
-
-            let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-            let datos = {};
-            datos = this.procesarRegistros(miGrilla);
-            if (Array.isArray(datos) && datos.length === 0) {
-                // Nadine
-            } else {
-                console.log('modificable');
-                decide = true;
-            }
-
-        } else {
+        if( DIFF !== 0 && MONEDA !== 'COP' ){
             global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
-        }
-            
-        } else {
-            
-            global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
-            
-        }
+            return false
+        } 
         
+         if (Array.isArray(datos) && datos.length === 0){
+             global.Msg({msg: 'There is no data in the scan.'});
+             return false
+         }
         
-        return decide;
+        if( DIFF == 0 ){
+            return true
+        }else if( DIFF !== 0 && DIFF < 100 ) {
+            return true
+        }else{
+            global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
+            return false
+        }
+
     },
     maintenanceBean: function (option) {
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
@@ -909,12 +945,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 TOTAL: record.get('TOTAL'),
                 NETO: record.get('NETO'),
                 RED: record.get('RED').trim(),
-                SEQ: record.get('SEQ').trim()
+                SEQ: record.get('SEQ').trim(),
+                NETOC: parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''))
             };
 //            console.log(registro);
 
             listaDeDatos.push(registro);
-
+            console.log(registro.NETOC, 'NETOC')
         });
         // Convertir la lista a JSON
         console.log(listaDeDatos, 'listaDeDatos')
