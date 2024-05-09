@@ -1359,6 +1359,7 @@ public class StatementReconciliationsDAO {
                     
                     beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
                     beanTkt.CODEBANKA = rst.getString("CODEBANKA").trim();
+                    beanTkt.COREP = rst.getString("COREP").trim();
                     beanTkt.NAME = rst.getString("CODEBANK").trim() + " - " + rst.getString("NAME").trim();
                     beanTkt.NAMEP = rst.getString("COREP").trim() + " - " + rst.getString("NAMEP").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();

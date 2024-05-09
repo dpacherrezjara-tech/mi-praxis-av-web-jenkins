@@ -76,12 +76,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     mostrarData: function () {
         this.setValue('de-txtdescTDOC', this.beanResult.descTDOC);
         this.setValue('de-txtTDOC', this.beanResult.TDOC);
-//        this.setValue('de-txtCODEBANK', this.beanResult.CODEBANK);
+        this.setValue('de-txtCODEBANK', this.beanResult.CODEBANK);
+        console.log(this.beanResult.CODEBANK, 'this.beanResult.CODEBANK')
 //        this.setValue('de-txtCODEBANKA', this.beanResult.CODEBANKA);
         this.setValue('de-txtNAME', this.beanResult.NAME);
         this.setValue('de-txtNAMEP', this.beanResult.NAMEP);
+        this.setValue('de-txtCOREP', this.beanResult.COREP);
         this.setValue('de-txtSTVAL', this.beanResult.descSTVAL);
         this.setValue('de-txtSCOUNTRY', this.beanResult.DESC_SCOUNTRY);
+        this.setValue('de-txtSCOUNTRY_COD', this.beanResult.SCOUNTRY);
         this.setValue('de-txtSOCIETY', this.beanResult.CCUST);
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
@@ -132,7 +135,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         var bean = {};
         bean.TDOC = this.getValue("de-txtTDOC");
         bean.CODEBANK = this.getValue("de-txtCODEBANK");
-        bean.CODEBANKA = this.getValue("de-txtCODEBANKA");
+//        bean.CODEBANKA = this.getValue("de-txtCODEBANKA");
         bean.NAME = this.getValue("de-txtNAME");
         bean.STVAL = this.getValue("de-txtSTVAL");
         bean.CCUST = this.getValue("de-txtSOCIETY");
@@ -212,6 +215,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
+        console.log(meDE.bean.data.IN_UNICODE, 'meDE.bean.data.IN_UNICODE wadafaaaa')
+        console.log(meDE.bean.data.IN_BANDOC, 'meDE.bean.data.IN_BANDOC wadafaaaa')
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL',
@@ -328,8 +333,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
+            console.log(dataRow1.data.STMANUAL, 'dataRow1.data.STMANUAL')
+            console.log(dataRow1.data, 'dataRow1.data')
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-                this.sumAmount = this.sumAmount + dataRow1.data.NETO; //+ dataRow1.data.SADJUST;
+                let netoUnit = dataRow1.data.NETO
+                if(dataRow1.data.TDOC == 'D'){
+                   netoUnit = -netoUnit 
+                }
+                this.sumAmount = this.sumAmount + netoUnit //+ dataRow1.data.SADJUST;
             }
         }
         console.log(this.beanResult.NETO);
@@ -563,7 +574,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             console.log('El checkbox está desmarcado');
             meDE.bean.data.IN_UNICODE = '';
         }
-
+        console.log(meDE.bean.data.IN_UNICODE, 'meDE.bean.data.IN_UNICODE')
 
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({

@@ -144,6 +144,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtCOREP',
+//                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 160,
+                                                    hidden: true
+                                                },
+                                                {
+                                                    xtype: 'textfield',
                                                     id: prototype.id + '-de-txtNAMEP',
 //                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
@@ -190,6 +199,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     width: 40
                                                 },
                                                 {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSCOUNTRY_COD',
+                                                    fieldCls: 'detalle-Country',
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+//                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 160,
+                                                    hidden: true
+                                                },
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtSCOUNTRY',
