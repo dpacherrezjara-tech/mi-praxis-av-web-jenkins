@@ -1295,7 +1295,7 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
         
-        String VALDATEL = "", UNICODEL = "", BANDOCL = "", SCURRENCYL = "", ACCNUMBER = "";
+        String VALDATEL = "", UNICODEL = "", BANDOCL = "", SCURRENCYL = "", ACCNUMBER = "" , COREPL = "";
         Double NETOL = 0.0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -1327,6 +1327,7 @@ public class StatementReconciliationsDAO {
                 BANDOCL = rst.getString("BANDOC").trim();
                 SCURRENCYL = rst.getString("SCURRENCY").trim();
                 ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                COREPL = rst.getString("COREP").trim();
                 NETOL = rst.getDouble("NETO");
             }
             rst.close();
@@ -1378,6 +1379,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.UNICODEL = UNICODEL;
                     beanTkt.BANDOCL = BANDOCL;
                     beanTkt.SCURRENCYL = SCURRENCYL;
+                    beanTkt.COREPL = COREPL;
                     beanTkt.NETOL = NETOL;
                     beanTkt.ACCNUMBER = rst.getString("ACCCOMP").trim();
                     beanTkt.ACCNUMBERL = ACCNUMBER;
@@ -1527,7 +1529,7 @@ public class StatementReconciliationsDAO {
         Connection cnx2 = null;
         Connection cnx3 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF102(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF102(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -1550,9 +1552,10 @@ public class StatementReconciliationsDAO {
             cstmt.setString(11, filter.FSELEC.trim());
             cstmt.setInt(12, filters.size());
             cstmt.setDouble(13, filter.NETOC);
-            cstmt.setString(14, user.getUserInfo().USR);
-            cstmt.setString(15, Functions.getFechaActual());
-            cstmt.setString(16, Functions.getHoraActual());
+            cstmt.setString(14, filter.COREPL.trim());
+            cstmt.setString(15, user.getUserInfo().USR);
+            cstmt.setString(16, Functions.getFechaActual());
+            cstmt.setString(17, Functions.getHoraActual());
 
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución

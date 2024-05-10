@@ -118,6 +118,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATEL);
         this.setValue('de-txtUNICODEL', this.beanResult.UNICODEL);
         this.setValue('de-txtBANDOCL', this.beanResult.BANDOCL);
+        this.setValue('de-txtCOREPL', this.beanResult.COREPL);
+        console.log(this.beanResult.COREPL, 'this.beanResult.COREPL')
         this.setValue('de-txtSCURRENCYL', this.beanResult.SCURRENCY); //DEBERÍA SER DE LA 060 PERO NO HAY
 //        this.setValue('de-txtSDATE', this.beanResult.SDATE);
         this.setValue('de-txtACCNUMBERL', this.beanResult.ACCNUMBERL);
@@ -945,6 +947,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 TDOC: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(),
                 UNICODE: Ext.getCmp(prototype.id + '-de-txtUNICODE').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
+                COREPL: Ext.getCmp(prototype.id + '-de-txtCOREPL').getValue(),
 //                descSTVAL: record.get('descSTVAL').trim(),
                 SDATE: record.get('SDATE').trim(),
                 SAGENT: record.get('SAGENT').trim(),
@@ -962,7 +965,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 //            console.log(registro);
 
             listaDeDatos.push(registro);
-            console.log(registro.NETOC, 'NETOC')
+            console.log(registro.COREPL, 'COREPL')
         });
         // Convertir la lista a JSON
         console.log(listaDeDatos, 'listaDeDatos')

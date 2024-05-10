@@ -67,6 +67,7 @@ public class A2290 {
     public double TOTAL = 0;
     public String SCURRENCY = "";
     public String SCURRENCYL = "";
+    public String COREPL = "";
     public String SCARDNM = "";
     public String SCARDN = "";
     public String SDATEXP = "";

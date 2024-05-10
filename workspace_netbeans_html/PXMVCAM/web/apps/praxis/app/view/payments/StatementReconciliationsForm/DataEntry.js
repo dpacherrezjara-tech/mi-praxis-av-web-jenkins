@@ -153,6 +153,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtCOREPL',
+//                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 160,
+                                                    hidden: true
+                                                },
+                                                {
+                                                    xtype: 'textfield',
                                                     id: prototype.id + '-de-txtNAMEP',
 //                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
