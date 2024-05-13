@@ -1322,13 +1322,13 @@ public class StatementReconciliationsDAO {
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
-                VALDATEL = rst.getString("VALDATE").trim();
-                UNICODEL = rst.getString("UNICODE").trim();
-                BANDOCL = rst.getString("BANDOC").trim();
-                SCURRENCYL = rst.getString("SCURRENCY").trim();
-                ACCNUMBER = rst.getString("ACCNUMBER").trim();
-                COREPL = rst.getString("COREP").trim();
-                NETOL = rst.getDouble("NETO");
+//                VALDATEL = rst.getString("VALDATE").trim();
+//                UNICODEL = rst.getString("UNICODE").trim();
+//                BANDOCL = rst.getString("BANDOC").trim();
+//                SCURRENCYL = rst.getString("SCURRENCY").trim();
+//                ACCNUMBER = rst.getString("ACCNUMBER").trim();
+//                COREPL = rst.getString("COREP").trim();
+//                NETOL = rst.getDouble("NETO");
             }
             rst.close();
 
@@ -1375,12 +1375,12 @@ public class StatementReconciliationsDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
-                    beanTkt.VALDATEL = VALDATEL;
-                    beanTkt.UNICODEL = UNICODEL;
-                    beanTkt.BANDOCL = BANDOCL;
-                    beanTkt.SCURRENCYL = SCURRENCYL;
-                    beanTkt.COREPL = COREPL;
-                    beanTkt.NETOL = NETOL;
+//                    beanTkt.VALDATEL = VALDATEL;
+//                    beanTkt.UNICODEL = UNICODEL;
+//                    beanTkt.BANDOCL = BANDOCL;
+//                    beanTkt.SCURRENCYL = SCURRENCYL;
+//                    beanTkt.COREPL = COREPL;
+//                    beanTkt.NETOL = NETOL;
                     beanTkt.ACCNUMBER = rst.getString("ACCCOMP").trim();
                     beanTkt.ACCNUMBERL = ACCNUMBER;
                     beanTkt.SDATE = rst.getString("SDATE").trim();
@@ -1469,6 +1469,7 @@ public class StatementReconciliationsDAO {
 
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
+                beanTkt.CCUST = rst.getString("CCUST");
                 beanTkt.STVAL = rst.getString("STVAL");
                 if (hmDescEstados.containsKey(rst.getString("STVAL").trim())) {
                     beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -1483,6 +1484,10 @@ public class StatementReconciliationsDAO {
                 beanTkt.SCARDN = rst.getString("SCARDN");
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
+                beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
+                beanTkt.MERCHAND= rst.getString("MERCHAND");
+                beanTkt.ADATE = rst.getString("ADATE");
+                beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.NETO = rst.getDouble("NETO");
                 beanTkt.TDOC = rst.getString("TDOC");
