@@ -367,8 +367,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         var models = grid.getStore().getModel();
         var comg = '';
+        var MERCHAND = '';
+        var BANDOC = '';
+        var SCURRENCY = '';
+        var ACCNUMBER = '';
+        var ADATE = '';
         grid.getStore().each(function (record) {
-            comg = record.get('CCUST');
+            comg = record.get('CCUST').trim();
+            MERCHAND = record.get('MERCHAND').trim();
+            BANDOC = record.get('BANDOC').trim();
+            SCURRENCY = record.get('SCURRENCY').trim();
+            ACCNUMBER = record.get('ACCNUMBER').trim();
+            ADATE = record.get('ADATE').trim();
         });
 
         var comp = Ext.getCmp(prototype.id + '-de-txtSOCIETY').getValue();
@@ -382,7 +392,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.util.CSS.createStyleSheet('.detalle-society { background-color: transparent !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #ccdeeb !important; }');
         }
-
+        
+        Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').setValue(ACCNUMBER);
+        Ext.getCmp(prototype.id + '-de-txtVALDATEL').setValue(ADATE);
+        Ext.getCmp(prototype.id + '-de-txtUNICODEL').setValue(MERCHAND);
+        Ext.getCmp(prototype.id + '-de-txtSCURRENCYL').setValue(SCURRENCY);
+        Ext.getCmp(prototype.id + '-de-txtBANDOCL').setValue(BANDOC);
+        
         var acc = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
         var accL = Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').getValue();
 

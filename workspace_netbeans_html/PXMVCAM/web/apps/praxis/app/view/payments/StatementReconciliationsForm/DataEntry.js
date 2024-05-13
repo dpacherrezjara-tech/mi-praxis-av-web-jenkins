@@ -946,6 +946,34 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
+                                                                    {text: 'MERCHAND', dataIndex: 'MERCHAND', width: 60,hidden:true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+//                                                                            value = 'COP';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'BANDOC', dataIndex: 'BANDOC', width: 60,hidden:true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+//                                                                            value = 'COP';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'ACCNUMBER', dataIndex: 'ACCNUMBER', width: 60,hidden:true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+//                                                                            value = 'COP';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'ADATE', dataIndex: 'ADATE', width: 60,hidden:true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+//                                                                            value = 'COP';
+                                                                            return value;
+                                                                        }
+                                                                    },
 //                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 110,
 //                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                                            metaData.style = "text-align:right;";

@@ -1149,9 +1149,133 @@ public class ProMail {
             //Se junta el mensaje y los archivos adjuntos
             message.setContent(multipart);
 
-            boolean oK = this.transportSend(message);
-            while (!oK) {                
-                oK = this.transportSend(message);
+            envioExitoso = this.transportSend(message);
+            int v_intentos = 0;
+            while (!envioExitoso && v_intentos<25) {
+                v_intentos+=1;
+                envioExitoso = this.transportSend(message);
+            }
+       
+        } catch (Exception e) {
+            e.getMessage();
+            e.toString();
+            envioExitoso = false;
+        }
+        
+        return envioExitoso;
+    }
+    
+
+    
+    public boolean enviaCorreoMiatech(String emisor, String asunto, List<String> receptores, List<String> lstCopia, List<String> lstCopiaOculta, String mensaje, List<String> adjuntos,IServerSession ss) {
+        //Para alertas de insumo de medios de pago
+        boolean envioExitoso = true;
+                
+        try {
+//            String usuario = ss.getPropertySession().get("APP_SERVER_MAIL_EMAIL").toString(); //Correo con el que saldra el email enviado ("from")
+            String usuario = ss.getPropertySession().get("APP_SERVER_MAIL_EMAIL").toString(); //Correo con el que saldra el email enviado ("from")
+            //TEMPORAL
+            //emisor = "rmayta@miatech.net"; 
+            Properties props = System.getProperties();
+            //Se define el servidor de correos
+            /*props.put("mail.smtp.host", serverSession.getProperty("APP_SERVER_MAIL_HOST"));
+            props.put("mail.smtp.port", serverSession.getProperty("APP_SERVER_MAIL_PORT"));
+            props.put("mail.smtp.starttls.enable","true");*/
+            props.put("mail.smtp.host","m.outlook.com" );
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.starttls.enable","true");
+            
+            props.put("mail.smtp.ssl.protocols","TLSv1.2");
+            
+            //props.setProperty("mail.smtp.user", emisor);
+            props.setProperty("mail.smtp.user", "yo@mio.com");
+            props.setProperty("mail.smtp.auth", "true");
+            //Authenticator auth = new SMTPAuthenticator("notificaciones@miatech.net", "notificaciones123"); // Tener Clave del quien Envia 
+            Authenticator auth;
+            
+//            auth = new SMTPAuthenticator("jsolano@miatech.net", "Gutierrez_02");
+
+//            Authenticator auth = new SMTPAuthenticator("notificaciones@miatech.net", "Notific@ciones");
+//            auth = new SMTPAuthenticator(usuario, ss.getPropertySession().get("APP_SERVER_MAIL_PASSWORD").toString());
+            auth = new SMTPAuthenticator(usuario,  ss.getPropertySession().get("APP_SERVER_MAIL_PASSWORD").toString());
+            
+            Session session = Session.getInstance(props, auth);            
+            //Se obtiene sesi&amp;oacute;n desde el servidor de correos               
+            session.setDebug(true);
+            MimeMessage message = new MimeMessage(session);
+            InternetAddress[] dest = new InternetAddress[receptores.size()];
+            for (int i = 0; i < dest.length; i++) {
+                dest[i] = new InternetAddress(receptores.get(i));
+            }
+            // Correo con copy To
+            InternetAddress[] CC = new InternetAddress[lstCopia.size()];
+            for (int i = 0; i < CC.length; i++) {
+                CC[i] = new InternetAddress(lstCopia.get(i));
+            }
+            // Correo con copia Oculta
+            InternetAddress[] Ccp = new InternetAddress[lstCopiaOculta.size()];
+            for (int i = 0; i < Ccp.length; i++) {
+                Ccp[i] = new InternetAddress(lstCopiaOculta.get(i));
+            }
+            
+            //Se define qui&amp;eacute;n es el emisor del e-mail
+            message.setFrom(new InternetAddress(usuario));
+            InternetAddress[] replyTo = new InternetAddress[1];
+            replyTo[0] = new InternetAddress(usuario);
+            message.setReplyTo(replyTo);
+            //Se definen el o los destinatarios
+            message.addRecipients(Message.RecipientType.TO, dest);
+            message.addRecipients(Message.RecipientType.CC, CC );
+            message.addRecipients(Message.RecipientType.BCC, Ccp );
+            //message.addRecipients(Message.RecipientType.BCC, dest);
+            //Se defina el asunto del e-mail
+            message.setSubject(asunto);
+
+            //Se seteo el mensaje del e-mail
+            MimeBodyPart messageBodyPart = new MimeBodyPart();            
+            messageBodyPart.setContent(mensaje, "text/html;charset=utf-8");
+
+
+            Multipart multipart = new MimeMultipart("related");
+            multipart.addBodyPart(messageBodyPart);
+            
+            
+            File f_logo = new File("C:/Dumps/logo_miatech.png");
+            if (f_logo.exists()) {
+                
+                String cid = "logoM";
+                MimeBodyPart imagePart = new MimeBodyPart();
+//                imagePart.attachFile("C:/Dumps/logo_correo.png");
+                imagePart.attachFile("C:/Dumps/logo_miatech.png");
+                imagePart.setContentID("<" + cid + ">");
+                imagePart.setDisposition(MimeBodyPart.INLINE);
+                multipart.addBodyPart(imagePart);
+
+            }
+            
+
+            //Se adjuntan los archivos al correo
+            if (adjuntos != null && adjuntos.size() > 0) {
+                for (String rutaAdjunto : adjuntos) {
+                    messageBodyPart = new MimeBodyPart();
+                    File f = new File(rutaAdjunto);
+                    if (f.exists()) {
+                        DataSource source = new FileDataSource(rutaAdjunto);
+                        messageBodyPart.setDataHandler(new DataHandler(source));
+                        messageBodyPart.setFileName(f.getName());
+                        multipart.addBodyPart(messageBodyPart);
+                    }
+                }
+            }
+
+            //Se junta el mensaje y los archivos adjuntos
+            message.setContent(multipart);
+
+            envioExitoso = this.transportSend(message);
+            int v_intentos = 0;
+            while (!envioExitoso && v_intentos<25) {
+                v_intentos+=1;
+                envioExitoso = this.transportSend(message);
             }
        
         } catch (Exception e) {
