@@ -1,11 +1,11 @@
-Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
+Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
     extend: 'Ext.window.Window',
-    alias: 'widget.DataEntryMerchantNumberForm',
+    alias: 'widget.DataEntryMerchantNumberDetailForm',
     requires: [
-        'Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumberController'
+        'Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumberDetailController'
     ],
-    controller: 'DataEntryMerchantNumberController',
-    title: 'Merchant Number - Data Entry Form',
+    controller: 'DataEntryMerchantNumberDetailController',
+    title: 'Merchant Number - Data Entry Detail Form',
     header: true,
     height: 800,
     width: 1179,
@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-de-txtMERCHN',
+                                        id: prototype.id + '-de-txtMERCHN_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -90,7 +90,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-de-txtAFBRANCH',
+                                        id: prototype.id + '-de-txtAFBRANCH_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -110,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-de-txtDOWNREPORT',
+                                        id: prototype.id + '-de-txtDOWNREPORT_D',
                                         fieldStyle: 'text-align:left',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -145,7 +145,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'combo',
-                                        id: prototype.id + '-de-txtAPCODE',
+                                        id: prototype.id + '-de-txtAPCODE_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -167,7 +167,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-de-txtACQPROC',
+                                        id: prototype.id + '-de-txtACQPROC_D',
                                         fieldStyle: 'text-align:left',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -187,7 +187,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH1',
+                                        id: prototype.id + '-de-txtFRANCH1_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -228,7 +228,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH2',
+                                        id: prototype.id + '-de-txtFRANCH2_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -250,7 +250,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH3',
+                                        id: prototype.id + '-de-txtFRANCH3_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -272,7 +272,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH4',
+                                        id: prototype.id + '-de-txtFRANCH4_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -289,482 +289,13 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     
                                 ]
                             },
-                            {
-                                xtype: 'panel',
-                                layout: 'hbox',
-                                id: prototype.id + '-panelTabMain',
-                                border: false,
-                                margin: '35 0 0 0',
-                                
-                                //bodyStyle: 'background:#efe5e5;',
-                                items: [
-                                    {
-                                        xtype: 'tabpanel',
-                                        id: prototype.id + '-tabMain',
-                                        deferredRender: true,
-                                        width: 1129,
-                                        border: false,
-    //                                            height: 182, //820
-    //                                            anchor: '100%',
-                                        margin: '0 0 0 0',
-                                        autoScroll: true,
-                                        bodyStyle: 'background: transparent',
-                                        items: [
-                                            {
-                                                xtype: 'panel',
-                                                title: 'Merchant',
-                                                id: prototype.id + '-panelMerchant',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1129,
-                        //                                                            height: 180,
-                                                hidden: false,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoMerchant',
-                                                        width: 1129,
-                                                        height: 350,
-                                                        columnLines: true,
- 
-                                                        plugins: [
-                                                            {
-                                                                
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                                
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
-                                                            },
-                                                            items: [
-                                                                
-                                                                {
-                                                                    text: 'Merchant', dataIndex: 'CMERCHAN', width: 200,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Merchant Branch', dataIndex: 'SUCMERCH', width: 145,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Code Proces', dataIndex: 'CODE', width: 126,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Name Proces', dataIndex: 'CORE', width: 200,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Bank Code', dataIndex: 'CODEBANK', width: 96,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Acc. Number', dataIndex: 'ACCNUMB', width: 130,
-                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                        var data = record.data;
-                                                                        metaData.style = "text-align:left;";
-
-                                                                        return  value;
-                                                                    },
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                    
-                                                                },
-                                                                {
-                                                                    text: 'Bank Company', dataIndex: 'BANKCM', width: 110,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Agent.', dataIndex: 'SAGENT', width: 79,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridMERCHView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-edit',
-                                                                            tooltip: 'Edit',
-                                                                            handler: 'onViewMerchClick'
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                xtype: 'panel',
-                                                title: 'Bancos',
-                                                id: prototype.id + '-panelBANCOS',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1129,
-                        //                                                            height: 180,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoBANCOS',
-                                                        width: 1129,
-                                                        height: 350,
-                                                        columnLines: true,
-                                                        
-                                                        plugins: [
-                                                            {
-                                                                
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                                
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
-                                                            },
-                                                            items: [
-                                                                {
-                                                                    text: 'Bank Code', dataIndex: 'CODEBANK', width: 100,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Bank Name', dataIndex: 'BANKNAM', width: 317, align: 'left',
-//                                                                    editor: {
-//                                                                        xtype: 'textfield',
-//                                                                        editable: true,
-//                                                                        allowBlank: false,
-//                                                                        enableKeyEvents: true,
-////                                                                        maskRe: /[0-9\.-]/,
-//                                                                        selectOnFocus: true
-//                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Bank Company', dataIndex: 'BANKCM', width: 100,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Deposit Currency', dataIndex: 'BANKCUR', width: 130,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Account Number', dataIndex: 'ACCNUMB', width: 120,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Auxiliary Bank<br>Accounting Account', dataIndex: 'ACCNUMA', width: 160,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Profit Center Bank', dataIndex: 'BENCEN', width: 160,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridBANKView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-edit',
-                                                                            tooltip: 'Edit',
-                                                                            handler: 'onViewBANKClick'
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                xtype: 'panel',
-                                                title: 'IATAS',
-                                                id: prototype.id + '-panelIATAS',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1129,
-                        //                                                            height: 180,
-                                                hidden: false,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoIATAS',
-                                                        width: 1129,
-                                                        height: 350,
-                                                        columnLines: true,
- 
-                                                        plugins: [
-                                                            {
-                                                                
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                                
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
-                                                            },
-                                                            items: [
-                                                                
-                                                                {
-                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 126,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 111,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Channel', dataIndex: 'CANAL', width: 96,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Process', dataIndex: 'PROCES', width: 110,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Country C.', dataIndex: 'SCOUNTRY', width: 79,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Country', dataIndex: 'NAME', width: 135, align: 'left',
-//                                                                    editor: {
-//                                                                        xtype: 'textfield',
-//                                                                        editable: true,
-//                                                                        allowBlank: false,
-//                                                                        enableKeyEvents: true,
-////                                                                        maskRe: /[0-9\.-]/,
-//                                                                        selectOnFocus: true
-//                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Sales Comp.', dataIndex: 'SOCIETY', width: 90,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 100,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Profit Center', dataIndex: 'SBENCEN', width: 150,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Cost Center', dataIndex: 'COSTCEN', width: 90,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridIATAView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-edit',
-                                                                            tooltip: 'Edit',
-                                                                            handler: 'onViewIATAClick'
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            
-                                            
-                                        ]
-                                    }
-                                ]
-                            },
                              {
                                 xtype: 'panel',
                                 layout: {
                                     type: 'hbox',
                                     pack: 'center' 
                                 },
-                                id: prototype.id + '-bankSection',
+                                id: prototype.id + '-bankSection_D',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
@@ -787,7 +318,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     type: 'hbox',
                                     pack: 'center' 
                                 },
-                                id: prototype.id + '-bSection_1',
+                                id: prototype.id + '-bSection_1_D',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
@@ -806,7 +337,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-CODEBANK',
+                                        id: prototype.id + '-CODEBANK_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -826,12 +357,12 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-BANKNAM',
+                                        id: prototype.id + '-BANKNAM_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 30,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -846,7 +377,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-BANKCM',
+                                        id: prototype.id + '-BANKCM_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -864,7 +395,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     type: 'hbox',
                                     pack: 'center' 
                                 },
-                                id: prototype.id + '-bSection_2',
+                                id: prototype.id + '-bSection_2_D',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
@@ -883,7 +414,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-BANKCUR',
+                                        id: prototype.id + '-BANKCUR_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -903,7 +434,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-ACCNUMB',
+                                        id: prototype.id + '-ACCNUMB_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -923,7 +454,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-ACCNUMA',
+                                        id: prototype.id + '-ACCNUMA_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -960,7 +491,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-BENCEN',
+                                        id: prototype.id + '-BENCEN_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -978,7 +509,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     type: 'hbox',
                                     pack: 'center' 
                                 },
-                                id: prototype.id + '-iataSection',
+                                id: prototype.id + '-iataSection_D',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
@@ -1001,7 +532,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     type: 'hbox',
                                     pack: 'center' 
                                 },
-                                id: prototype.id + '-iSection_1',
+                                id: prototype.id + '-iSection_1_D',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
@@ -1020,7 +551,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-DEUSAP',
+                                        id: prototype.id + '-DEUSAP_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1040,7 +571,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-SAGENT',
+                                        id: prototype.id + '-SAGENT_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1060,7 +591,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-CANAL',
+                                        id: prototype.id + '-CANAL_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1078,7 +609,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     type: 'hbox',
                                     pack: 'center' 
                                 },
-                                id: prototype.id + '-iSection_2',
+                                id: prototype.id + '-iSection_2_D',
                                 border: false,
                                 bodyStyle: 'background:#E5ECEF;',
                                 margin: '20 2 4 20',
@@ -1097,7 +628,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-PROCES',
+                                        id: prototype.id + '-PROCES_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1117,7 +648,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-SCOUNTRY',
+                                        id: prototype.id + '-SCOUNTRY_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1137,7 +668,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-SOCIETY',
+                                        id: prototype.id + '-SOCIETY_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1162,7 +693,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     anchor: '100%',
                                     width: 1129
                                 },
-                                id: prototype.id + '-iSection_3',
+                                id: prototype.id + '-iSection_3_D',
                                 items: [
                                     {xtype: 'tbspacer', width: 60},
                                     {
@@ -1174,7 +705,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-SCURRENCY',
+                                        id: prototype.id + '-SCURRENCY_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1194,7 +725,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-SBENCEN',
+                                        id: prototype.id + '-SBENCEN_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1214,7 +745,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-COSTCEN',
+                                        id: prototype.id + '-COSTCEN_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
@@ -1981,7 +1512,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtUSCR',
+                                    id: prototype.id + '-txtUSCR_D',
                                     readOnly: true,
                                     width: 80,
                                     listeners: {
@@ -1997,7 +1528,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtFECR',
+                                    id: prototype.id + '-txtFECR_D',
                                     readOnly: true,
                                     width: 80,
                                     listeners: {
@@ -2013,7 +1544,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtHOCR',
+                                    id: prototype.id + '-txtHOCR_D',
                                     readOnly: true,
                                     width: 80,
                                     listeners: {
@@ -2044,7 +1575,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtUSUP',
+                                    id: prototype.id + '-txtUSUP_D',
                                     readOnly: true,
                                     width: 80,
                                     listeners: {
@@ -2060,7 +1591,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtFEUP',
+                                    id: prototype.id + '-txtFEUP_D',
                                     readOnly: true,
                                     width: 80,
                                     listeners: {
@@ -2076,7 +1607,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtHOUP',
+                                    id: prototype.id + '-txtHOUP_D',
                                     readOnly: true,
                                     width: 80,
                                     listeners: {
@@ -2107,34 +1638,34 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
             items: [
                 {
                     text: 'Save',
-                    id: prototype.id + '-btn-save',
+                    id: prototype.id + '-btn-save_D',
                     iconCls: 'prx-icon-save',
                     listeners: {
-                        click: 'onSaveClick'
+                        click: 'onSaveClick_D'
                     }
                 },
                 {
                     text: 'Update',
-                    id: prototype.id + '-btn-update',
+                    id: prototype.id + '-btn-update_D',
                     iconCls: 'prx-icon-update',
                     listeners: {
-                        click: 'onUpdateClick'
+                        click: 'onUpdateClick_D'
                     }
                 },
                 {
                     text: 'Delete',
-                    id: prototype.id + '-btn-delete',
+                    id: prototype.id + '-btn-delete_D',
                     iconCls: 'prx-icon-delete',
                     listeners: {
-                        click: 'onDeleteClick'
+                        click: 'onDeleteClick_D'
                     }
                 },
                 {
                     text: 'Cancel',
-                    id: prototype.id + '-btn-cancel',
+                    id: prototype.id + '-btn-cancel_D',
                     iconCls: 'prx-icon-cancel',
                     listeners: {
-                        click: 'onCancelClick'
+                        click: 'onCancelClick_D'
                     }
                 }
             ]

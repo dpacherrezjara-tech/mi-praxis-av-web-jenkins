@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumberController', {
+Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumberDetailController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.DataEntryMerchantNumberController',
+    alias: 'controller.DataEntryMerchantNumberDetailController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDE: '',
     actionCode: '',
@@ -10,7 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     searchParams: {},
     lstA1852: {},
     dataObtain: {},
-//    beanTemp:  {},
+    beanTemp:  {},
     // </editor-fold>
     init: function (view) {
         prototype.id = 'MerchantNumberForm';
@@ -19,12 +19,71 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
-        this.lstCountry = this.p.lstCountry;
+//        this.lstCountry = this.p.lstCountry;
 //        console.log(this.p);
 //        this.obtainData();
         //this.dataStatic();
         
     },
+//    dataStatic: function () {
+//        let miStoreIATA = Ext.create('Ext.data.Store', {
+//            fields: ['DSAP', 'ATA', 'CANAL', 'PROCESS', 'COUNTRY', 'descCOUNTRY', 'SOCVENTA', 'MONVENTA', 'PROCENTER'],
+//            data: [
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
+//            ]
+//        })
+//        let gridIata = Ext.getCmp(prototype.id + '-gridDataInfoIATAS');
+//        gridIata.bindStore(miStoreIATA)
+//        
+//        let miStoreBank = Ext.create('Ext.data.Store', {
+//            fields: ['BANKCODE', 'BANKNAME', 'BANKCOMP', 'DEPCURR', 'ACCNUMBER', 'AUXACCACCO', 'AUXACCACCO'],
+//            data: [
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
+//                
+//            ]
+//        }) 
+//        let gridBank = Ext.getCmp(prototype.id + '-gridDataInfoBANCOS');
+//        gridBank.bindStore(miStoreBank)
+//        
+//        this.setValue('de-txtMERCHN', '96455739')
+//        this.setValue('de-txtSCOUNTRY', '92690113')
+//        this.setValue('de-txtSCARCOD', '96455739')
+//        this.setValue('de-txtCTABANK', '96455739')
+//        this.setValue('de-txtAFBRANCH', '96455739')
+//        this.setValue('de-txtACQPROC', 'CREDOMATIC PANAMA')
+//        this.setValue('de-txtAPCODE', 'CM')
+//        this.setValue('de-txtDOWNREPORT', 'Plataforma Web - GAW / Correo Electronico - Orquestador')
+//        this.setValue('de-txtFRANCH1', 'VI')
+//        this.setValue('de-txtFRANCH2', 'CA')
+//        this.setValue('de-txtFRANCH3', 'DS')
+//        this.setValue('de-txtFRANCH4', 'DS')
+//        
+//    },
     afterRender: function () {
 //        console.log('afterRender');
         switch (this.actionCode) {
@@ -83,7 +142,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                    ]
 //                }));
 //                cmbSCOUNTRY.setValue('');
-                Ext.getCmp(prototype.id + '-panelTabMain').hide();
+//                Ext.getCmp(prototype.id + '-panelTabMain').hide();
                 Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtDOWNREPORT').setEditable(true);
@@ -108,38 +167,55 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SOCIETY').setEditable(true);
                 Ext.getCmp(prototype.id + '-SCURRENCY').setEditable(true);
                 Ext.getCmp(prototype.id + '-SBENCEN').setEditable(true);
-                Ext.getCmp(prototype.id + '-COSTCEN').setEditable(true);
 //                Ext.getCmp(prototype.id + '-de-txtMERCHN').setDisabled(false);
-                Ext.getCmp(prototype.id + '-btn-save').show();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-delete').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                Ext.getCmp(prototype.id + '-btn-save_D').show();
+                Ext.getCmp(prototype.id + '-btn-update_D').hide();
+                Ext.getCmp(prototype.id + '-btn-delete_D').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel_D').show();
                 break;
             case 'U':
-                this.getData();
+//                this.getData();
+                this.mostrarData();
                 
 //                this.DeshabilitarCampoClave();
-                Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtDOWNREPORT').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtAPCODE').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtACQPROC').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH1').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH2').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH3').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH4').setEditable(true);
-                Ext.getCmp(prototype.id + '-bankSection').hide();
-                Ext.getCmp(prototype.id + '-iataSection').hide();
-                Ext.getCmp(prototype.id + '-bSection_1').hide();
-                Ext.getCmp(prototype.id + '-bSection_2').hide();
-                Ext.getCmp(prototype.id + '-bSection_3').hide();
-                Ext.getCmp(prototype.id + '-iSection_1').hide();
-                Ext.getCmp(prototype.id + '-iSection_2').hide();
-                Ext.getCmp(prototype.id + '-iSection_3').hide();
-                Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-delete').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel').show();
+//                Ext.getCmp(prototype.id + '-panelTabMain').hide();
+                Ext.getCmp(prototype.id + '-de-txtMERCHN_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtAFBRANCH_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtDOWNREPORT_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtAPCODE_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtACQPROC_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH1_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH2_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH3_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH4_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-CODEBANK_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-BANKNAM_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-BANKCM_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-BANKCUR_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-ACCNUMB_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-ACCNUMA_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-BENCEN_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-DEUSAP_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-SAGENT_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-CANAL_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-PROCES_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-SCOUNTRY_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-SOCIETY_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-SCURRENCY_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(true);
+//                Ext.getCmp(prototype.id + '-bankSection').hide();
+//                Ext.getCmp(prototype.id + '-iataSection').hide();
+//                Ext.getCmp(prototype.id + '-bSection_1').hide();
+//                Ext.getCmp(prototype.id + '-bSection_2').hide();
+//                Ext.getCmp(prototype.id + '-bSection_3').hide();
+//                Ext.getCmp(prototype.id + '-iSection_1').hide();
+//                Ext.getCmp(prototype.id + '-iSection_2').hide();
+//                Ext.getCmp(prototype.id + '-iSection_3').hide();
+                Ext.getCmp(prototype.id + '-btn-save_D').hide();
+                Ext.getCmp(prototype.id + '-btn-update_D').show();
+                Ext.getCmp(prototype.id + '-btn-delete_D').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel_D').show();
                 break;
         }
     },
@@ -160,75 +236,85 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     
                     me.lstCountry = res.lstCountry;
                     me.lstBank = res.lstBank;
-                    Ext.getCmp(prototype.id + '-de-txtFRANCH1').bindStore(
+                    Ext.getCmp(prototype.id + '-de-txtFRANCH1_D').bindStore(
                         Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-de-txtFRANCH2').bindStore(
+                    Ext.getCmp(prototype.id + '-de-txtFRANCH2_D').bindStore(
                         Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-de-txtFRANCH3').bindStore(
+                    Ext.getCmp(prototype.id + '-de-txtFRANCH3_D').bindStore(
                         Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-de-txtFRANCH4').bindStore(
+                    Ext.getCmp(prototype.id + '-de-txtFRANCH4_D').bindStore(
                         Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-de-txtAPCODE').bindStore(
+                    Ext.getCmp(prototype.id + '-de-txtAPCODE_D').bindStore(
                         Ext.create('Ext.data.Store', { data: res.lstProcessor, autoLoad: true}));
                 } else
                     global.Msg({msg: res.sesion});
             }
         });
-        console.log('dadsadasdadasdadad',meDE.beanResult )
-        this.setValue('de-txtMERCHN', meDE.beanResult.CMERCHAN)
+        console.log('dadsadasdadasdadad',this.bean.data )
+        this.setValue('de-txtMERCHN_D', this.bean.data.CMERCHAN)
       
-        this.setValue('de-txtAFBRANCH', meDE.beanResult.SUCMERCH)
-        this.setValue('de-txtACQPROC', meDE.beanResult.CORE)
-        this.setValue('de-txtAPCODE', meDE.beanResult.CODE)
-        this.setValue('de-txtDOWNREPORT', meDE.beanResult.DREPORT)
-        this.setValue('de-txtFRANCH1', meDE.beanResult.FRANC1)
-        this.setValue('de-txtFRANCH2', meDE.beanResult.FRANC2)
-        this.setValue('de-txtFRANCH3', meDE.beanResult.FRANC3)
-        this.setValue('de-txtFRANCH4', meDE.beanResult.FRANC4)
+        this.setValue('de-txtAFBRANCH_D', this.bean.data.SUCMERCH)
+        this.setValue('de-txtACQPROC_D', this.bean.data.CORE)
+        this.setValue('de-txtAPCODE_D', this.bean.data.CODE)
+        this.setValue('de-txtDOWNREPORT_D', this.bean.data.DREPORT)
+        this.setValue('de-txtFRANCH1_D', this.bean.data.FRANC1)
+        this.setValue('de-txtFRANCH2_D', this.bean.data.FRANC2)
+        this.setValue('de-txtFRANCH3_D', this.bean.data.FRANC3)
+        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
+        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
+        this.setValue('CODEBANK_D', this.bean.data.CODEBANK)
+        this.setValue('BANKNAM_D', this.bean.data.BANKNAM)
+        this.setValue('BANKCM_D', this.bean.data.BANKCM)
+        this.setValue('BANKCUR_D', this.bean.data.BANKCUR)
+        this.setValue('ACCNUMB_D', this.bean.data.ACCNUMB)
+        this.setValue('BENCEN_D', this.bean.data.BENCEN)
+        this.setValue('DEUSAP_D', this.bean.data.DEUSAP)
+        this.setValue('SAGENT_D', this.bean.data.SAGENT)
+        this.setValue('CANAL_D', this.bean.data.CANAL)
+        this.setValue('PROCES_D', this.bean.data.PROCES)
+        this.setValue('SCOUNTRY_D', this.bean.data.SCOUNTRY)
+        this.setValue('SOCIETY_D', this.bean.data.SOCIETY)
+        this.setValue('SCURRENCY_D', this.bean.data.SCURRENCY)
+        this.setValue('SBENCEN_D', this.bean.data.SBENCEN)
+        this.setValue('COSTCEN_D', this.bean.data.SBENCEN)
+        
 
-        this.setValue('txtUSCR', meDE.beanResult.USCR);
-        this.setValue('txtFECR', meDE.beanResult.FECR);
-        this.setValue('txtHOCR', meDE.beanResult.HOCR);
-        this.setValue('txtUSUP', meDE.beanResult.USUP);
-        this.setValue('txtFEUP', meDE.beanResult.FEUP);
-        this.setValue('txtHOUP', meDE.beanResult.HOUP);
+        this.setValue('txtUSCR_D', this.bean.data.USCR);
+        this.setValue('txtFECR_D', this.bean.data.FECR);
+        this.setValue('txtHOCR_D', this.bean.data.HOCR);
+        this.setValue('txtUSUP_D', this.bean.data.USUP);
+        this.setValue('txtFEUP_D', this.bean.data.FEUP);
+        this.setValue('txtHOUP_D', this.bean.data.HOUP);
 
 //        this.setGridIATA(this.beanResult.MERCHN);
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
         console.log('llenarData');
-        beanTemp.CMERCHAN = this.getValue("de-txtMERCHN")
-        beanTemp.SUCMERCH = this.getValue("de-txtAFBRANCH")
-        beanTemp.DREPORT = this.getValue("de-txtDOWNREPORT")
-        beanTemp.CODE = this.getValue("de-txtAPCODE")
-        beanTemp.CORE = this.getValue("de-txtACQPROC")
-        beanTemp.FRANC1 = this.getValue("de-txtFRANCH1")
-        beanTemp.FRANC2 = this.getValue("de-txtFRANCH2")
-        beanTemp.FRANC3 = this.getValue("de-txtFRANCH3")
-        beanTemp.FRANC4 = this.getValue("de-txtFRANCH4")
-        beanTemp.CODEBANK = this.getValue("CODEBANK")
-        beanTemp.BANKCM = this.getValue("BANKCM")
-        beanTemp.BANKCUR = this.getValue("BANKCUR")
-        beanTemp.ACCNUMB = this.getValue("ACCNUMB")
-        beanTemp.ACCNUMA = this.getValue("ACCNUMA")
-        beanTemp.BENCEN = this.getValue("BENCEN")
-        beanTemp.DEUSAP = this.getValue("DEUSAP")
-        beanTemp.SAGENT = this.getValue("SAGENT")
-        beanTemp.CANAL = this.getValue("CANAL")
-        beanTemp.PROCES = this.getValue("PROCES")
-        beanTemp.SCOUNTRY = this.getValue("SCOUNTRY")
-        beanTemp.SOCIETY = this.getValue("SOCIETY")
-        beanTemp.SCURRENCY = this.getValue("SCURRENCY")
-        beanTemp.SBENCEN = this.getValue("SBENCEN")
-        beanTemp.COSTCEN = this.getValue("COSTCEN") 
+        beanTemp.CMERCHAN = this.bean.data.CMERCHAN
+        beanTemp.SUCMERCH = this.bean.data.SUCMERCH
+        beanTemp.CODEBANK = this.bean.data.CODEBANK
+        beanTemp.ACCNUMB = this.bean.data.ACCNUMB
+        beanTemp.SAGENT = this.bean.data.SAGENT
         
-        beanTemp.USCR = this.getValue("txtUSCR").trim();
-        beanTemp.FECR = this.getValue("txtFECR").trim();
-        beanTemp.HOCR = this.getValue("txtHOCR").trim();
-        beanTemp.USUP = this.getValue("txtUSUP").trim();
-        beanTemp.FEUP = this.getValue("txtFEUP").trim();
-        beanTemp.HOUP = this.getValue("txtHOUP").trim();
+        beanTemp.IN_CMERCHAN = this.getValue("de-txtMERCHN_D")
+        beanTemp.IN_SUCMERCH = this.getValue("de-txtAFBRANCH_D")
+        beanTemp.IN_CODEBANK = this.getValue("CODEBANK_D")
+        beanTemp.IN_ACCNUMB = this.getValue("ACCNUMB_D")
+        beanTemp.IN_SAGENT = this.getValue("SAGENT_D")
+//        beanTemp.DREPORT = this.getValue("de-txtDOWNREPORT")
+//        beanTemp.CODE = this.getValue("de-txtAPCODE")
+//        beanTemp.CORE = this.getValue("de-txtACQPROC")
+//        beanTemp.FRANC1 = this.getValue("de-txtFRANCH1")
+//        beanTemp.FRANC2 = this.getValue("de-txtFRANCH2")
+//        beanTemp.FRANC3 = this.getValue("de-txtFRANCH3")
+//        beanTemp.FRANC4 = this.getValue("de-txtFRANCH4")
+        beanTemp.USCR = this.getValue("txtUSCR_D").trim();
+        beanTemp.FECR = this.getValue("txtFECR_D").trim();
+        beanTemp.HOCR = this.getValue("txtHOCR_D").trim();
+        beanTemp.USUP = this.getValue("txtUSUP_D").trim();
+        beanTemp.FEUP = this.getValue("txtFEUP_D").trim();
+        beanTemp.HOUP = this.getValue("txtHOUP_D").trim();
 
 //        let grillaBank = Ext.getCmp(prototype.id + '-gridDataInfoBANCOS').getStore().data.items;
 //        console.log(grillaBank, 'grillaBank')
@@ -354,146 +440,126 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                ["MX", "MX - MEXICO"],
 //            ]
 //        }));
-        console.log(this.bean.data, 'this.bean')
-        console.log('antes al llamado')
-        console.log(prototype.url, 'prototype.url dataentry')
-        var beanString = JSON.stringify(meDE.bean.data);
-        console.log(beanString, 'beanString')
-        console.log(meDE.bean.data, 'meDE.bean.data')
-        Ext.Ajax.request({
-            url: prototype.url + '/searchCompleteDetail',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            params: {beanString: beanString},
-            success: function (response, options) {
-                console.log('dentro del llamada')
-                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                var resDETAIL = Ext.JSON.decode(response.responseText);
-                console.log(resDETAIL.result, 'watafaaaaaaaaaaaaaaaaaaaaaa')
-                meDE.beanResult = resDETAIL.result;
-                meDE.mostrarData();
-                 
-            },
-            failure: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-                console.error('Request failed:', response.statusText);
-                // Maneja el error de acuerdo a tus necesidades
-            }
-        });
-        console.log('después del llamado')
+
+
+//        var beanString = JSON.stringify(meDE.bean.data);
+//        console.log(meDE.bean.data, 'meDE.bean.data')
+//        Ext.Ajax.request({
+//            url: prototype.url + '/searchCompleteDetail',
+//            method: 'POST',
+//            timeout: 60000000,
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            params: {beanString: beanString},
+//            success: function (response, options) {
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+//                var resDETAIL = Ext.JSON.decode(response.responseText);
+//                console.log(resDETAIL.result, 'watafaaaaaaaaaaaaaaaaaaaaaa')
+//                meDE.beanResult = resDETAIL.result;
+//                meDE.mostrarData();
+//                 
+//            }
+//        });
         
-        var paramDetailMerchants = {};
-        paramDetailMerchants.beanString = JSON.stringify(meDE.bean.data);
-        console.log('meDE.bean.data', meDE.bean.data)
-        Ext.Ajax.request({
-            url: prototype.url + '/searchMerchants',
-            method: 'POST',
-            timeout: 60000000,
-            params: paramDetailMerchants,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-                var resMerchant = Ext.JSON.decode(response.responseText);
-                console.log(resMerchant, 'res');
-                if (resMerchant.success) {
-                    console.log(resMerchant.data, 'res.data')
-                    //llenar grilla gridDataInfoScan
-                    var storeDataMerchant = Ext.create('Ext.data.Store', {
-                        data: resMerchant.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-gridDataInfoMerchant').bindStore(storeDataMerchant);
-                } else {
-                    global.Msg({msg: resMerchant.Mensaje});
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-            }
-        });
+//        var paramDetailMerchants = {};
+//        paramDetailMerchants.beanString = JSON.stringify(meDE.bean.data);
+//        console.log('meDE.bean.data', meDE.bean.data)
+//        Ext.Ajax.request({
+//            url: prototype.url + '/searchMerchants',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: paramDetailMerchants,
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            success: function (response, opts) {
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//                var resMerchant = Ext.JSON.decode(response.responseText);
+//                console.log(resBank, 'res');
+//                if (resMerchant.success) {
+//                    console.log(resBank.data, 'res.data')
+//                    //llenar grilla gridDataInfoScan
+//                    var storeDataMerchant = Ext.create('Ext.data.Store', {
+//                        data: resMerchant.data,
+//                        autoLoad: true
+//                    });
+//                    Ext.getCmp(prototype.id + '-gridDataInfoMerchant').bindStore(storeDataMerchant);
+//                } else {
+//                    global.Msg({msg: resMerchant.Mensaje});
+//                }
+//            },
+//            failure: function (response, opts) {
+//                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//            }
+//        });
          
-        var paramDetailBanks = {};
-        paramDetailBanks.beanString = JSON.stringify(meDE.bean.data);
-        console.log('meDE.bean.data', meDE.bean.data)
-        Ext.Ajax.request({
-            url: prototype.url + '/searchBanks',
-            method: 'POST',
-            timeout: 60000000,
-            params: paramDetailBanks,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-                var resBank = Ext.JSON.decode(response.responseText);
-                console.log(resBank, 'res');
-                if (resBank.success) {
-                    console.log(resBank.data, 'res.data')
-                    //llenar grilla gridDataInfoScan
-                    var storeDataBank = Ext.create('Ext.data.Store', {
-                        data: resBank.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-gridDataInfoBANCOS').bindStore(storeDataBank);
-                } else {
-                    global.Msg({msg: resBank.Mensaje});
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-            }
-        });
+//        var paramDetailBanks = {};
+//        paramDetailBanks.beanString = JSON.stringify(meDE.bean.data);
+//        console.log('meDE.bean.data', meDE.bean.data)
+//        Ext.Ajax.request({
+//            url: prototype.url + '/searchBanks',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: paramDetailBanks,
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            success: function (response, opts) {
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//                var resBank = Ext.JSON.decode(response.responseText);
+//                console.log(resBank, 'res');
+//                if (resBank.success) {
+//                    console.log(resBank.data, 'res.data')
+//                    //llenar grilla gridDataInfoScan
+//                    var storeDataBank = Ext.create('Ext.data.Store', {
+//                        data: resBank.data,
+//                        autoLoad: true
+//                    });
+//                    Ext.getCmp(prototype.id + '-gridDataInfoBANCOS').bindStore(storeDataBank);
+//                } else {
+//                    global.Msg({msg: resBank.Mensaje});
+//                }
+//            },
+//            failure: function (response, opts) {
+//                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//            }
+//        });
+//        
+//        var paramDetailIatas = {};
+//        paramDetailIatas.beanString = JSON.stringify(meDE.bean.data);
+//        console.log('meDE.bean.data', meDE.bean.data)
+//        console.log('MUESTRA EL PARAMS ');
+//        console.log(paramDetailIatas, 'paramDetailIatas' );
+//        Ext.Ajax.request({
+//            url: prototype.url + '/searchIATAS',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: paramDetailIatas,
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            success: function (response, opts) {
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//                var resIata = Ext.JSON.decode(response.responseText);
+//                console.log(resIata, 'res');
+//                if (resIata.success) {
+//                    console.log(resIata.data, 'resIata.data')
+//                    //llenar grilla gridDataInfoScan
+//                    var storeDataIatas = Ext.create('Ext.data.Store', {
+//                        data: resIata.data,
+//                        autoLoad: true
+//                    });
+//                    Ext.getCmp(prototype.id + '-gridDataInfoIATAS').bindStore(storeDataIatas);
+//                } else {
+//                    global.Msg({msg: resIata.Mensaje});
+//                }
+//            },
+//            failure: function (response, opts) {
+//                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//            }
+//        });
+    },
+    onViewIATAClick: function( grid, rowIndex, colIndex, item, e, record ){
+
+    },
+    onViewBANKClick: function ( grid, rowIndex, colIndex, item, e, record ){
         
-        var paramDetailIatas = {};
-        paramDetailIatas.beanString = JSON.stringify(meDE.bean.data);
-        console.log('meDE.bean.data', meDE.bean.data)
-        console.log('MUESTRA EL PARAMS ');
-        console.log(paramDetailIatas, 'paramDetailIatas' );
-        Ext.Ajax.request({
-            url: prototype.url + '/searchIATAS',
-            method: 'POST',
-            timeout: 60000000,
-            params: paramDetailIatas,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-                var resIata = Ext.JSON.decode(response.responseText);
-                console.log(resIata, 'res');
-                if (resIata.success) {
-                    console.log(resIata.data, 'resIata.data')
-                    //llenar grilla gridDataInfoScan
-                    var storeDataIatas = Ext.create('Ext.data.Store', {
-                        data: resIata.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-gridDataInfoIATAS').bindStore(storeDataIatas);
-                } else {
-                    global.Msg({msg: resIata.Mensaje});
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-            }
-        });
-    },
-    onViewMerchClick: function( grid, rowIndex, colIndex, item, e, record ){
-        var rec = grid.getStore().getAt(rowIndex);
-        console.log('llega al view')
-        this.winDataEntry('U', rec);
-    },
-    winDataEntry: function (action, rec) {
-        action = action === null || action === undefined ? 'U' : action;
-        rec = rec === null || rec === undefined ? {} : rec;
-        console.log('llega antes del create')
-        Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
-            id: prototype.id + '-dataEntryDetail',
-            params: {
-                action: action,
-                rec: rec
-            }
-        }).show();
     },
     //</editor-fold>
 
@@ -520,7 +586,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //        console.log(opts);
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
-    onSaveClick: function (btn) {
+    onSaveClick_D: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to insert ?',
@@ -533,7 +599,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
-                        
+
                     if (msjResult === '') {
                         beanTemp.option = 'I';
                         this.MaintenanceA2354(beanTemp);
@@ -544,7 +610,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             }
         });
     },
-    onUpdateClick: function (btn) {
+    onUpdateClick_D: function (btn) {
         console.log('onUpdateClick');
         Ext.Msg.show(
                 {
@@ -557,11 +623,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            var beanTemp = {};
                             
+                            var beanTemp = {};
                             var msjResult = meDE.validacionUpdate(beanTemp);
                             if (msjResult === '') {
-//                                meDE.llenarData(beanTemp);
+                                meDE.llenarData(beanTemp);
                                 
                                 beanTemp.option = 'U';
                                 meDE.MaintenanceA2354(beanTemp);
@@ -572,7 +638,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     }
                 });
     },
-    onDeleteClick: function (btn) {
+    onDeleteClick_D: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to delete ?',
@@ -590,7 +656,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             }
         });
     },
-    onCancelClick: function (btn) {
+    onCancelClick_D: function (btn) {
         this.view.close();
     },
     // </editor-fold>
@@ -605,16 +671,17 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             timeout: 60000000,
 //            params: beanTemp,
             params: {beanString: beanString, option: beanTemp.option},
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryDetail').mask('Loading...'),
             success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                Ext.getCmp(prototype.id + '-dataEntryDetail').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 //                console.log(res);
                 if (res.success) {
                     global.Msg({msg: res.Mensaje});
-                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                    Ext.getCmp(prototype.id + '-dataEntryDetail').unmask();
+                    Ext.getCmp(prototype.id + '-dataEntryDetail').close();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
-                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+//                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
                 } else
                     global.Msg({msg: ''});
             }

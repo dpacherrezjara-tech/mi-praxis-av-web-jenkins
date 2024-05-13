@@ -58,6 +58,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                     width: 1510,
                                     hidden: false,
                                     columnLines: true,
+                                    
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -84,7 +85,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {text: 'Credit Card',
+                                            {text: 'Process',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
@@ -92,8 +93,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'Code Card', dataIndex: 'CODE', width: 90},
-                                                    {text: 'Card Name', dataIndex: 'CORE', width: 191, align: 'left' }
+                                                    {text: 'Code', dataIndex: 'CODE', width: 90},
+                                                    {text: 'Name', dataIndex: 'CORE', width: 191, align: 'left' }
                                                 ]
                                             },
 //                                          
@@ -125,8 +126,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                 align: 'center',
                                                 items: [
                                                     {
-                                                        iconCls: 'prx-icon-eye',
-                                                        tooltip: 'View',
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'Edit',
                                                         handler: 'onEditClick'
                                                     }
                                                 ]

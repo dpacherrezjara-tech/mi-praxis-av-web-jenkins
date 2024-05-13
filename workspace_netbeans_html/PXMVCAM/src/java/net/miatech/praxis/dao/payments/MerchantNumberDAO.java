@@ -763,63 +763,66 @@ public class MerchantNumberDAO {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
         String strMsj = "Operation was successful.";
-        List<A4202> lstDetalle = filter.lstDetalle;
-        A4202 beanDet;
+        
+//        List<A2354Filter> lstBank = filter.lstBank;
+//        List<A2354Filter> lstIata = filter.lstIata;
+//        A2354Filter beanDet;
 
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, option);
-            cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
-            cstmt.setString(3, filter.MERCHN.trim());
-            cstmt.setString(4, filter.DESCR.trim());
-            cstmt.setString(5, filter.RSOCIAL.trim());
-            cstmt.setString(6, filter.CIATA.trim());
-            cstmt.setString(7, filter.CANAL.trim());
-            cstmt.setString(8, filter.SCOUNTRY.trim());
-            cstmt.setString(9, filter.UNIOPE.trim());
-
-            cstmt.setString(10, filter.CODCLIT1.trim());
-            cstmt.setString(11, filter.DIRCLIT1.trim());
-            cstmt.setString(12, filter.CODCLIT2.trim());
-            cstmt.setString(13, filter.DIRCLIT2.trim());
-            cstmt.setString(14, filter.MERCHP.trim());
-            cstmt.setString(15, filter.STATUS.trim());
-
-            cstmt.setString(16, session.getUserView().getUserInfo().USR);
-            cstmt.setString(17, Functions.getFechaActual());
-            cstmt.setString(18, Functions.getHoraActual());
-            cstmt.execute();
+//            for (int i = 0; i < lstBank.size(); i++){
+                
+                
+                cstmt.setString(1, option);
+                cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
+                cstmt.setString(3, filter.CMERCHAN.trim());
+                cstmt.setString(4, filter.SUCMERCH.trim());
+                cstmt.setString(5, filter.CODEBANK.trim());
+                cstmt.setString(6, filter.ACCNUMB.trim());
+                cstmt.setString(7, filter.SAGENT.trim());
+                cstmt.setString(8, filter.IN_CMERCHAN.trim());
+                cstmt.setString(9, filter.IN_SUCMERCH.trim());
+                cstmt.setString(10, filter.IN_CODEBANK.trim());
+                cstmt.setString(11, filter.IN_ACCNUMB.trim());
+                cstmt.setString(12, filter.IN_SAGENT.trim());
+//                cstmt.setString(13, beanDet.BANKCM.trim());
+//                cstmt.setString(14, beanDet.BANKCUR.trim());
+//                cstmt.setString(15, beanDet.ACCNUMB.trim());
+//                cstmt.setString(16, beanDet.ACCNUMA.trim());
+//                cstmt.setString(17, beanDet.BENCEN.trim());
+                cstmt.setString(13, session.getUserView().getUserInfo().USR);
+                cstmt.setString(14, Functions.getFechaActual());
+                cstmt.setString(15, Functions.getHoraActual());
+                cstmt.execute();
+                cstmt.close();
+//            }
             
-            String SQL_DELETE = "DELETE FROM LIBSAP12.A4202 WHERE MERCHN = ?";
-            (pstmt = cnx.prepareStatement(SQL_DELETE)).setString(1, filter.MERCHN.trim());
-            pstmt.execute();
 
-            if (lstDetalle != null && lstDetalle.size() > 0 && !option.equals("D")) {
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP04436(?,?,?,?,?,?,?,?)}";
-                cstmt = cnx.prepareCall(SQLCLL02);
-                for (int i = 0; i < lstDetalle.size(); i++) {
-                    beanDet = lstDetalle.get(i);
-                    
-                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
-                    cstmt.setString(2, filter.MERCHN.trim());
-                    cstmt.setString(3, beanDet.CIATA.trim());
-                    cstmt.setString(4, beanDet.SCOUNTRY.trim());
-                    cstmt.setString(5, beanDet.CANAL.trim());
-                    cstmt.setString(6, session.getUserView().getUserInfo().USR);
-                    cstmt.setString(7, Functions.getFechaActual());
-                    cstmt.setString(8, Functions.getHoraActual());
-
-                    cstmt.execute();
-                }
-            }
+//            if (lstBank != null && lstBank.size() > 0 && !option.equals("D")) {
+//                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP04436(?,?,?,?,?,?,?,?)}";
+//                cstmt = cnx.prepareCall(SQLCLL02);
+//                for (int i = 0; i < lstDetalle.size(); i++) {
+//                    beanDet = lstDetalle.get(i);
+//                    
+//                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+//                    cstmt.setString(2, filter.MERCHN.trim());
+//                    cstmt.setString(3, beanDet.CIATA.trim());
+//                    cstmt.setString(4, beanDet.SCOUNTRY.trim());
+//                    cstmt.setString(5, beanDet.CANAL.trim());
+//                    cstmt.setString(6, session.getUserView().getUserInfo().USR);
+//                    cstmt.setString(7, Functions.getFechaActual());
+//                    cstmt.setString(8, Functions.getHoraActual());
+//
+//                    cstmt.execute();
+//                }
+//            }
 
         } catch (Exception e) {
             // e.printStackTrace();
@@ -947,6 +950,93 @@ public class MerchantNumberDAO {
         return objRtn;
     }
     
+    public List<A2354Filter> loadPX305SQP00938(A2354Filter filter) throws SQLException, Exception {
+
+        A2354Filter objRtn = new A2354Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        List<A2354Filter> lstRtn = new ArrayList<A2354Filter>(0);
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00938_MERCH(?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.CMERCHAN.trim());
+            cstmt01.setString(3, filter.SUCMERCH.trim());
+            cstmt01.setString(4, filter.CODE.trim());
+            cstmt01.setString(5, filter.CORE.trim());
+            cstmt01.setString(6, filter.DREPORT.trim());
+            cstmt01.setString(7, filter.FRANC1.trim());
+            cstmt01.setString(8, filter.FRANC2.trim());
+            cstmt01.setString(9, filter.FRANC3.trim());
+            cstmt01.setString(10, filter.FRANC4.trim());
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn = new A2354Filter();
+                objRtn.CMERCHAN  = rs01.getString("CMERCHAN").trim();
+                objRtn.SUCMERCH   = rs01.getString("SUCMERCH").trim();
+                objRtn.DREPORT   = rs01.getString("DREPORT").trim();
+                objRtn.CODE   = rs01.getString("CODE").trim();
+                objRtn.CORE   = rs01.getString("CORE").trim();
+                objRtn.FRANC1   = rs01.getString("FRANC1").trim();
+                objRtn.FRANC2   = rs01.getString("FRANC2").trim();
+                objRtn.FRANC3   = rs01.getString("FRANC3").trim();
+                objRtn.FRANC4   = rs01.getString("FRANC4").trim();
+                objRtn.CODEBANK    = rs01.getString("CODEBANK").trim();
+                objRtn.BANKNAM    = rs01.getString("BANKNAM").trim();
+                objRtn.BANKCM    = rs01.getString("BANKCM").trim();
+                objRtn.BANKCUR    = rs01.getString("BANKCUR").trim();
+                objRtn.ACCNUMB   = rs01.getString("ACCNUMB").trim();
+                objRtn.BENCEN   = rs01.getString("BENCEN").trim();
+                objRtn.DEUSAP   = rs01.getString("DEUSAP").trim();
+                objRtn.SAGENT   = rs01.getString("SAGENT").trim();
+                objRtn.CANAL   = rs01.getString("CANAL").trim();
+                objRtn.PROCES   = rs01.getString("PROCES").trim();
+                objRtn.SCOUNTRY   = rs01.getString("SCOUNTRY").trim();
+                objRtn.SOCIETY   = rs01.getString("SOCIETY").trim();
+                objRtn.SCURRENCY   = rs01.getString("SCURRENCY").trim();
+                objRtn.SBENCEN   = rs01.getString("SBENCEN").trim();
+                
+                objRtn.USCR = rs01.getString("USCR");
+                objRtn.FECR = rs01.getString("FECR");
+                objRtn.HOCR = rs01.getString("HOCR");
+                objRtn.USUP = rs01.getString("USUP");
+                objRtn.FEUP = rs01.getString("FEUP");
+                objRtn.HOUP = rs01.getString("HOUP");
+
+
+                lstRtn.add(objRtn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
+    
     public List<A2354Filter> loadPX305SQP00939(A2354Filter filter) throws SQLException, Exception {
 
         A2354Filter objRtn = new A2354Filter();
@@ -1016,7 +1106,7 @@ public class MerchantNumberDAO {
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt01.setString(2, filter.CMERCHAN.trim());
+            cstmt01.setString(2, filter.SUCMERCH.trim());
 
             cstmt01.execute();
 

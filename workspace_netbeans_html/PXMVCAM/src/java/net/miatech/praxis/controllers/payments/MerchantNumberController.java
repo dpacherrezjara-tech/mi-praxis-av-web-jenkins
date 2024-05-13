@@ -111,7 +111,7 @@ public class MerchantNumberController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getPaises")
     public @ResponseBody
     String getPaises(ModelMap map, HttpServletRequest request) {
@@ -184,7 +184,7 @@ public class MerchantNumberController extends BaseController {
         try {
             logic = new MerchantNumberLogic();
             logic.setSession(this.serverSession.getServerSession());
-            
+
             IATA = request.getParameter("IATA");
 
             lst = logic.loadPX305SQP04435(IATA);
@@ -279,8 +279,6 @@ public class MerchantNumberController extends BaseController {
             Cell CH1_7 = row1.createCell(7);
             Cell CH1_8 = row1.createCell(8);
             Cell CH1_9 = row1.createCell(9);
-            
-            
 
             CH1_0.setCellValue("Nbr.");
             CH1_1.setCellValue("Merchant Code.");
@@ -291,7 +289,6 @@ public class MerchantNumberController extends BaseController {
             CH1_7.setCellValue("Franchise 2");
             CH1_8.setCellValue("Franchise 3");
             CH1_9.setCellValue("Franchise 4");
-            
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -303,7 +300,7 @@ public class MerchantNumberController extends BaseController {
             CH1_7.setCellStyle(headerStyle);
             CH1_8.setCellStyle(headerStyle);
             CH1_9.setCellStyle(headerStyle);
-            
+
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
@@ -327,7 +324,6 @@ public class MerchantNumberController extends BaseController {
 
             CH2_3.setCellValue("Code Card");
             CH2_4.setCellValue("Card Name");
-            
 
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
@@ -339,7 +335,6 @@ public class MerchantNumberController extends BaseController {
             CH2_7.setCellStyle(headerStyle);
             CH2_8.setCellStyle(headerStyle);
             CH2_9.setCellStyle(headerStyle);
-            
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 3));
@@ -360,7 +355,6 @@ public class MerchantNumberController extends BaseController {
                 Cell rcell7 = row1.createCell(7);
                 Cell rcell8 = row1.createCell(8);
                 Cell rcell9 = row1.createCell(9);
-                
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).CMERCHAN);
@@ -372,7 +366,7 @@ public class MerchantNumberController extends BaseController {
                 rcell7.setCellValue(listaData.get(vi).FRANC2);
                 rcell8.setCellValue(listaData.get(vi).FRANC3);
                 rcell9.setCellValue(listaData.get(vi).FRANC4);
-                
+
                 iter.next();
                 ++vi;
                 ++vj;
@@ -388,7 +382,6 @@ public class MerchantNumberController extends BaseController {
             sheet.autoSizeColumn(7, true);
             sheet.autoSizeColumn(8, true);
             sheet.autoSizeColumn(9, true);
-            
 
             //============================================
             response.setContentType("application/vnd.openxml");
@@ -444,31 +437,76 @@ public class MerchantNumberController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    /**
+     *
+     * @param map
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "searchCompleteDetail")
     public @ResponseBody
     String searchCompleteDetail(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- MerchantNumber : searchCompleteDetail-------------");
 
-        Gson gson = new Gson();
-        A2354Filter filter = new A2354Filter();
-        A2354Filter result = new A2354Filter();
-
-        String beanString = request.getParameter("beanString");
-        filter = gson.fromJson(beanString, A2354Filter.class);
-
-        logic = new MerchantNumberLogic();
-        logic.setSession(this.serverSession.getServerSession());
         try {
-            result = logic.loadPX305SQP00935(filter);
-            map.put("result", result);
-            map.put("success", true);
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
-            map.put("success", false);
+            Gson gson = new Gson();
+            A2354Filter filter = new A2354Filter();
+            A2354Filter result = new A2354Filter();
+
+            String beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            try {
+                result = logic.loadPX305SQP00935(filter);
+                map.put("result", result);
+                map.put("success", true);
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+                map.put("success", false);
+            }
+        } catch (Exception e) {
+            System.out.println("pruebinha");
         }
+
         return new Gson().toJson(map);
     }
-    
+
+    @RequestMapping(value = "searchMerchants")
+    public @ResponseBody
+    String searchMerchants(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- MerchantNumber : searchMerchants-------------");
+
+        map.put("success", true);
+        List<A2354Filter> lst = this.getListMerchants(request, false);
+//        System.out.println("Total : " + lst.size());
+//        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2354Filter> getListMerchants(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2354Filter> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+
+            lst = logic.loadPX305SQP00938(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
     @RequestMapping(value = "searchBanks")
     public @ResponseBody
     String searchBanks(ModelMap map, HttpServletRequest request) {
@@ -502,7 +540,7 @@ public class MerchantNumberController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchIATAS")
     public @ResponseBody
     String searchIATAS(ModelMap map, HttpServletRequest request) {

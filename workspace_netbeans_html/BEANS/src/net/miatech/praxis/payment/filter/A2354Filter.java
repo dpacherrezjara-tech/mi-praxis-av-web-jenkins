@@ -35,6 +35,9 @@ public String IN_COUNTRY = "";
 public String CODE = "";
 public String NAME = "";
 public String IN_CMERCHAN = "";
+public String IN_SUCMERCH = "";
+public String IN_ACCNUMB = "";
+public String IN_SAGENT = "";
 public String IN_BMERCHAN = "";
 public String IN_SCARCOD = "";
 public String IN_CTABANK = "";
@@ -75,6 +78,8 @@ public String COSTCEN = "";
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);
+//public List lstBank = new ArrayList<>(0);
+//public List lstIata = new ArrayList<>(0);
 
 //A003
 public String A003KEY1 = "";

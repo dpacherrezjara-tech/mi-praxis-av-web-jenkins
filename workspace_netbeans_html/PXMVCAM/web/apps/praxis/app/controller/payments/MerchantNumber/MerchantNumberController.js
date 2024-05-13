@@ -153,7 +153,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     // <editor-fold defaultstate="collapsed" desc="setGridData">
 
     setGridData: function () {
-        
+        console.log(prototype.url, 'prototype.url')
         win.lblUser_toolTip("Estructura: MPF109");
         me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
