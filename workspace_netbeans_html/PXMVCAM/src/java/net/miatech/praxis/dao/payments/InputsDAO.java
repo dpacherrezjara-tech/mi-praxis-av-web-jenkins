@@ -884,7 +884,7 @@ public class InputsDAO {
                 }else{
                     objRtn.strFormatDate4 = filter.strFormatDate4;
                 }
-                if(!objRtn.strFormatDate4.equals("")){
+                if(!objRtn.strFormatDate4.equals("") && objRtn.strFormatDate4.contains(".")){
                     String[] fields = objRtn.strFormatDate4.split("\\.");
                     objRtn.strFormatDate4 = fields[1];
                 }

@@ -108,6 +108,10 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             metaData.style = "color:#057ECB;background-color:#d5f4d5;";
                                                                             value = '<b>' + value + '</b>';
                                                                             return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return 'Total';
                                                                         }
                                                                     }
                                                                 ]
@@ -553,7 +557,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
 //                                                                            return Ext.util.Format.number(data.lngTotQSALES, '0,000');
 //                                                                        }
 //                                                                    },
-                                                                    
+
                                                                 ]
                                                             },
                                                             {
@@ -674,7 +678,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
 //                                                                            return Ext.util.Format.number(data.lngTotQSALES, '0,000');
 //                                                                        }
 //                                                                    },
-                                                                    
+
                                                                 ]
                                                             },
                                                             {
@@ -795,7 +799,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
 //                                                                            return Ext.util.Format.number(data.lngTotQSALES, '0,000');
 //                                                                        }
 //                                                                    },
-                                                                    
+
                                                                 ]
                                                             },
                                                         ]
@@ -844,7 +848,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 listeners: {
                                                                     click: 'gridDet_DEBITS_clickHandler'
                                                                 }
-                                                                                
+
                                                             },
                                                             {
                                                                 text: 'Quantity', dataIndex: 'lngQACCB', width: 90, align: 'center',
@@ -958,10 +962,10 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Sales<br>Date',dataIndex: 'SDATE', width: 80, align: 'center', id: prototype.id + '-ColumnDateDetalle',
+                                                                text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, align: 'center', id: prototype.id + '-ColumnDateDetalle',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
-                                                                    var data = record.data;   
+                                                                    var data = record.data;
                                                                     metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
@@ -1173,7 +1177,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
 //                                                                            metaData.style = "color:#057ECB;background-color:#d5f4d5;";
                                                                             metaData.style = "background-color:#d5f4d5;";
                                                                             value = '<b>' + value + '</b>';
-                                                                            return  value ;
+                                                                            return  value;
                                                                         }
                                                                     }
                                                                 ]
@@ -1199,7 +1203,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
-                                                                                    return value ;
+                                                                                    return value;
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
@@ -1225,7 +1229,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
-                                                                                    return value ;
+                                                                                    return value;
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
@@ -1261,7 +1265,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
-                                                                                    return value ;
+                                                                                    return value;
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     metaData.style = "text-align:right;";
@@ -1942,7 +1946,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;color:#057ECB;background-color:#d5f4d5;";
                                                                             value = Ext.util.Format.number(value, '0,000');
-                                                                            return  value ;
+                                                                            return  value;
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;";
@@ -3243,7 +3247,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 //</editor-fold>
                                             ]
                                         },
-                                        
+
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-boxDetCountryS',
@@ -3624,7 +3628,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             }
                                                         },
-                                                        //</editor-fold>
+                                                                //</editor-fold>
                                                     ]
                                                 }
                                             ]
@@ -3770,7 +3774,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             }
                                                         },
-                                                        //</editor-fold>
+                                                                //</editor-fold>
                                                     ]
                                                 }
                                             ]
@@ -3916,7 +3920,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             }
                                                         },
-                                                        //</editor-fold>
+                                                                //</editor-fold>
                                                     ]
                                                 }
                                             ]
@@ -5502,7 +5506,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 height: '100%'
                                             },
                                             items: [
-                                                
+
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDetBySAGENT',

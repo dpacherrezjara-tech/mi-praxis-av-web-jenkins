@@ -403,11 +403,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         var accL = Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').getValue();
 
         if (acc !== accL && acc !== '') {
+            console.log('test1');
             Ext.util.CSS.createStyleSheet('.detalle-ACCNUMBER { background-color: #d5f4d5 !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-ACCNUMBERL-textfield { background-color: #d5f4d5 !important; }');
 
         } else {
-            Ext.util.CSS.createStyleSheet('.detalle-ACCNUMBER { background-color: transparent !important; }');
+            console.log('test2');
+            Ext.util.CSS.createStyleSheet('.detalle-ACCNUMBER { background-color: #ccdeeb !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-ACCNUMBERL-textfield { background-color: #ccdeeb !important; }');
 
         }

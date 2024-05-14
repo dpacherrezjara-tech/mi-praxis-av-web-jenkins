@@ -970,29 +970,25 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     imgExcel_clickHandler: function (obj, e) {
 
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: 'Download Excel ?',
-            buttons: Ext.MessageBox.OKCANCEL,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function (btn) {
-                if (btn === 'ok') {
-                    this.btnExcel_click();
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        this.exportExcel();
+                    }
                 }
-            }
-        });
-        //
+            });
     },
-    btnExcel_click: function () {
-
-        console.log(this.peek());
-        console.log(me.f_boxDetTktS);
+    exportExcel: function () {
 
         switch (this.peek()) {
-            case prototype.id + '-boxMainData':
-                global.getFileExcelPost('search', JSON.stringify(this.bean), Ext.getCmp(prototype.id + '-gridData').config.columns.items);
+            case  prototype.id + '-boxMainData':          
+                global.getFile(prototype.url + '/getXLSX?beanString=' + JSON.stringify(this.bean));
                 break;
             case prototype.id + '-boxDetCountryS':
                 global.getFileExcelPost('searchDetCountryByStval', JSON.stringify(me.beanDet), Ext.getCmp(prototype.id + '-gridDetCountryS').config.columns.items);
@@ -1024,32 +1020,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 global.getFileExcelPost('searchBySAGENT', JSON.stringify(beanDetailAgent), Ext.getCmp(prototype.id + '-gridDetBySAGENT').config.columns.items);
                 break;
             default:
-                break;
+                break;    
+            
         }
-//        console.log('Excel');
-//        me.dw_excel = true;
-//        if (me.boxActual === '-boxPostBilling') {
-//            console.log(Ext.getCmp(prototype.id + '-gridDataPostBilling').config.columns.items);
-//            me.goURLpost('searchPostBiling', this.searchParams, Ext.getCmp(prototype.id + '-gridDataPostBilling').config.columns.items);
-//        } else if (me.boxActual === '-boxStatus') {
-//            console.log(Ext.getCmp(prototype.id + '-gridDataStatus').config.columns.items);
-//            me.goURLpost(me._urlExcel, this.searchParams, Ext.getCmp(prototype.id + '-gridDataStatus').config.columns.items);
-//        } else if (me.boxActual === '-panelDetailCommentBsplink') {
-//            console.log(Ext.getCmp(prototype.id + '-gridDataDetailTCommnetBsplink').config.columns.items);
-//            me.goURLpost('searchDetailComment', this.searchParams, Ext.getCmp(prototype.id + '-gridDataDetailTCommnetBsplink').config.columns.items);
-//        } else if (me.boxActual === '-panelDetailTktBsplink') {
-////            global.getFile(prototype.url + '/getXLSXDetailComment?beanString=' + me.paramDetail.beanString);
-//            console.log(Ext.getCmp(prototype.id + '-gridDataDetailTktBsplink').config.columns.items);
-//            me.goURLpost('searchDetailTktBsplink', paramDetailProcess.beanString, Ext.getCmp(prototype.id + '-gridDataDetailTktBsplink').config.columns.items);
-//        } else {
-//            me.dw_excel = false;
-//        }
     },
     btnClear_click: function (obj, e) {
         this.initDate();
 
         win.setValue('cmbCountry', '');
-//        win.setValue('cmbFOP', 'CC');
         win.setValue('cmbCardType', '');
         win.setValue('txtTicket', '');
         win.setValue('txtCard1', '');
@@ -1059,15 +1037,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         win.setValue('cmbSource', '');
         win.setValue('txtPNR', '');
     },
-//    btnQuery_click: function (obj, e) {
-//        var beanQuery = {};
-//
-//        var MatchTkt = Ext.create('Ext.Praxis.view.program.ProMatchTktForm', {id: 'ProMatchTktForm'});
-//        var controller = MatchTkt.getController();
-//        controller.bean = beanQuery;
-//        controller.startDisplay();
-//        MatchTkt.show();
-//    },
+
     btnBack_click: function (obj, e) {
         if (this.peek() === prototype.id + '-boxMainData') {
 //        if (this.peek() === prototype.id + '-boxDetDay') {
@@ -1133,20 +1103,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     if (res.success) {
                         if (obj.data.length > 0) {
                             var obj = obj.data.items[0].data;
-//                            if (obj.strFecFiltro === 'DATEC') {
-//                                win.setText('adgSalDate', 'Reconciliation');
-//                            } else {
-//                                if (obj.IN_TDOC === 'R') {
-//                                    win.setText('adgSalDate', 'Refund');
-//                                } else {
-//                                    win.setText('adgSalDate', 'Sales');
-//                                }
-//                                me.DateControl = obj.strDescripcion;
-//                                win.setText('label_1', 'Sales Reconciliation ' + me.DateControl);
-//                                win.setText('ahDetCtry', 'Sales Reconciliation ' + me.DateControl);
-//                                win.setText('ahDetCard', 'Sales Reconciliation ' + me.DateControl);
-//                                win.setText('ahDetDay', 'Sales Reconciliation ' + me.DateControl);
-//                            }
                         } else {
                             global.Msg({msg: 'Data not found'});
                         }
@@ -2576,21 +2532,21 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         Ext.getCmp(prototype.id + '-gridDetTktByStval').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin10').bindStore(storeGridDatas);
     },
-    exportExcel: function (_path) {
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: 'Download Excel ?',
-            buttons: Ext.MessageBox.OKCANCEL,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function (btn) {
-                if (btn === 'ok') {
-                    global.getFile(_path);
-                }
-            }
-        });
-    },
+//    exportExcel: function (_path) {
+//        Ext.Msg.show({
+//            title: '.:PRAXIS:.',
+//            msg: 'Download Excel ?',
+//            buttons: Ext.MessageBox.OKCANCEL,
+//            scope: this,
+//            icon: Ext.MessageBox.QUESTION,
+//            modal: true,
+//            fn: function (btn) {
+//                if (btn === 'ok') {
+//                    global.getFile(_path);
+//                }
+//            }
+//        });
+//    },
     viewMasterTkt2: function (column, e, row, column, x, rowData) {
 
         var data = x.record.data;

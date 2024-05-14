@@ -119,7 +119,7 @@ public class LoadDebitsConciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "/updateA4527", method = RequestMethod.POST)
     public @ResponseBody
     String updateA4527(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request) throws IOException {
@@ -145,26 +145,24 @@ public class LoadDebitsConciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     private Double updateConsolidated(byte[] bytes) throws Exception {
 
         Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
         logic = new LoadDebitsConciliationLogic();
         List<A2290Filter> lstData = new ArrayList<>();
-//        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-        String ruta = "D:";
+        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//        String ruta = "D:";
         double neto = 0;
         String mensaje = "Hubo un error al actualizar los pagos", strHora = Functions.getHoraActual();
         String mensajePost = "";
-        double montoTotal = 0; 
+        double montoTotal = 0;
         int i = 0;
-        boolean isOk = false;
-        LoadDebitsConciliationDAO objDao = new LoadDebitsConciliationDAO();
-        List<A2290Filter> dataAgentsCatalog = new ArrayList<A2290Filter>(0);
+  
         try {
             String strSesion = UUID.randomUUID().toString();
-            String strNomExcel = "DocumentCarga.xlsx";
+            String strNomExcel = "DebitosDocument_Update.xlsx";
 
             String strArchivo = ruta + "\\" + strNomExcel;
             File archivo = new File(strArchivo);
@@ -176,44 +174,27 @@ public class LoadDebitsConciliationController extends BaseController {
             fs.close();
 
             DataFormatter formatter = new DataFormatter();
-            String primeraCelda = "";
-            boolean escribe = false;
-
             FileInputStream file = new FileInputStream(new File(strArchivo));
             XSSFWorkbook worbook = new XSSFWorkbook(file);
             XSSFSheet sheet = worbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
-            
-            Row row0 = rowIterator.next();
-//            String VALIDADOR = getCellValue(row0.getCell(0)).trim();
-            String ACCION = "";
-//            dataAgentsCatalog = objDao.dataCODEUNI();
 
-//            Map<String, A2290Filter> mapa = new HashMap<>();
-//            for (A2290Filter registro : dataAgentsCatalog) {
-//                mapa.put(registro.getVariable(), registro);
-//            }
-            //se borra la tabla y carga la informacion
-            System.out.println("SE CARGA EL HISTORICO");
-            ACCION = "CREATE";
+            Row row0 = rowIterator.next();
+
             try {
                 while (rowIterator.hasNext()) {
                     i++;
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 1) {
-//                    if (i > 0) {
                         A2290Filter obj = new A2290Filter();
-                        
-                        
+
                         obj.AMOUNT = formatAmount(formatter.formatCellValue(row.getCell(18)).trim());
-                        
-//                        obj.AMOUNT = formatter.formatCellValue(row.getCell(1)).trim();
+
                         System.out.println(i);
                         System.out.println(obj.AMOUNT);
-                        if(obj.AMOUNT != ""){
+                        if (obj.AMOUNT != "") {
                             lstData.add(obj);
                         }
-                        
                     }
                 }
                 file.close();
@@ -225,19 +206,14 @@ public class LoadDebitsConciliationController extends BaseController {
                     mensajePost = "Error en linea : " + i + " | error: " + e.getMessage();
                 }
             }
-            
+
             for (int j = 0; j < lstData.size(); j++) {
                 montoTotal = montoTotal + Double.parseDouble(lstData.get(j).AMOUNT);
                 System.out.println("monto actual: " + j + " " + montoTotal);
-                if(j == 255){
-                    System.out.println("wadafafa");
-                }
             }
 
-            
-            
             logic.setSession(this.serverSession.getServerSession());
-//            mensaje = logic.SQP05099(lstData);
+
             neto = montoTotal;
             //Eliminar temporal           
             archivo.delete();
@@ -249,20 +225,20 @@ public class LoadDebitsConciliationController extends BaseController {
         return neto;
 
     }
-    
+
     public String formatAmount(String amount) {
 
         if (amount.substring(amount.length() - 3).contains(",")) {
-           amount = amount.replace(".", "").replace(",", ".");
+            amount = amount.replace(".", "").replace(",", ".");
         } else if (amount.substring(amount.length() - 3).contains(".")) {
-           amount = amount.replace(",", "");
-        }else{
-           amount = amount; 
+            amount = amount.replace(",", "");
+        } else {
+            amount = amount;
         }
 
         return amount;
     }
-    
+
     @RequestMapping(value = "/conciliationDebits", method = RequestMethod.POST)
     public @ResponseBody
     String conciliationDebits(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request) throws IOException {
@@ -297,19 +273,16 @@ public class LoadDebitsConciliationController extends BaseController {
 
         logic = new LoadDebitsConciliationLogic();
         List<A2290Filter> lstData = new ArrayList<>();
-//        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-        String ruta = "D:";
+        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
         double neto = 0;
         String mensaje = "Hubo un error al actualizar la conciliación", strHora = Functions.getHoraActual();
         String mensajePost = "";
-        double montoTotal = 0; 
+        double montoTotal = 0;
         int i = 0;
-        boolean isOk = false;
-        LoadDebitsConciliationDAO objDao = new LoadDebitsConciliationDAO();
-        List<A2290Filter> dataAgentsCatalog = new ArrayList<A2290Filter>(0);
+   
         try {
             String strSesion = UUID.randomUUID().toString();
-            String strNomExcel = "DocumentCarga_Update.xlsx";
+            String strNomExcel = "DebitosDocument_Update.xlsx";
 
             String strArchivo = ruta + "\\" + strNomExcel;
             File archivo = new File(strArchivo);
@@ -321,38 +294,25 @@ public class LoadDebitsConciliationController extends BaseController {
             fs.close();
 
             DataFormatter formatter = new DataFormatter();
-            String primeraCelda = "";
-            boolean escribe = false;
 
             FileInputStream file = new FileInputStream(new File(strArchivo));
             XSSFWorkbook worbook = new XSSFWorkbook(file);
             XSSFSheet sheet = worbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
-            
-            Row row0 = rowIterator.next();
-//            String VALIDADOR = getCellValue(row0.getCell(0)).trim();
-            String ACCION = "";
-//            dataAgentsCatalog = objDao.dataCODEUNI();
 
-//            Map<String, A2290Filter> mapa = new HashMap<>();
-//            for (A2290Filter registro : dataAgentsCatalog) {
-//                mapa.put(registro.getVariable(), registro);
-//            }
-            //se borra la tabla y carga la informacion
-            System.out.println("SE CARGA EL HISTORICO");
-            ACCION = "CREATE";
+            Row row0 = rowIterator.next();
             try {
                 while (rowIterator.hasNext()) {
                     i++;
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 1) {
-//                    if (i > 0) {
+
                         A2290Filter obj = new A2290Filter();
                         obj.ADATE = FechaInator(formatter.formatCellValue(row.getCell(0)).trim());
                         obj.SDATE = formatter.formatCellValue(row.getCell(1)).trim().replace("-", "");
                         obj.ACCNUMBER = formatter.formatCellValue(row.getCell(5)).trim();
                         obj.SAUTHOC = formatter.formatCellValue(row.getCell(9)).trim();
-                        obj.SCARDN = formatter.formatCellValue(row.getCell(10)).trim().substring(0,6) + "***" + formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4) ;
+                        obj.SCARDN = formatter.formatCellValue(row.getCell(10)).trim().substring(0, 6) + "***" + formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4);
                         obj.SCARDNCOR = formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4);
                         obj.TOTAL = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(11))));
                         obj.COMISION = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(13))));
@@ -374,15 +334,6 @@ public class LoadDebitsConciliationController extends BaseController {
                         obj.IN_SOCIETY = filter.IN_SOCIETY;
                         obj.IN_DATECI = filter.IN_DATECI;
                         obj.IN_TRANCI = filter.IN_TRANCI;
-//                        obj.AMOUNT = formatter.formatCellValue(row.getCell(1)).trim();
-                        System.out.println(i);
-                        System.out.println(obj.SCARDN);
-                        System.out.println(obj.ADATE);
-                        System.out.println(obj.SDATE);
-                        System.out.println(obj.TOTAL);
-                        System.out.println(obj.COMISION);
-                        System.out.println(obj.IVA);
-                        System.out.println(obj.IN_DATECI);
                         lstData.add(obj);
                     }
                 }
@@ -396,22 +347,19 @@ public class LoadDebitsConciliationController extends BaseController {
                 }
             }
 
-            
             UserView user = this.serverSession.getServerSession().getUserView();
             logic.setSession(this.serverSession.getServerSession());
             mensaje = logic.SQP05099(lstData, user);
-//            neto = montoTotal;
             //Eliminar temporal           
             archivo.delete();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return mensaje;
 
     }
-    
+
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
@@ -470,30 +418,30 @@ public class LoadDebitsConciliationController extends BaseController {
             Cell CH1_00 = row.createCell(0);
             Cell CH1_01 = row.createCell(1);
             Cell CH1_02 = row.createCell(2);
-            
+
             CH1_00.setCellValue("Nbr");
             CH1_01.setCellValue("Terminal");
             CH1_02.setCellValue("Agent");
-            
+
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
             CH1_02.setCellStyle(headerStyle);
-            
+
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
-            
+
             ++vj;
             //*******************
-            
+
             while (iter.hasNext()) {
 
                 row = sheet.createRow(vj);
                 Cell rcell0 = row.createCell(0);
                 Cell rcell1 = row.createCell(1);
                 Cell rcell2 = row.createCell(2);
-                
+
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).TERMP);
                 rcell2.setCellValue(listaData.get(vi).SAGENT);
@@ -504,7 +452,7 @@ public class LoadDebitsConciliationController extends BaseController {
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
-            
+
             /**
              * fileNameDownload = Nombre de descarga
              */
@@ -535,7 +483,7 @@ public class LoadDebitsConciliationController extends BaseController {
             option = request.getParameter("option");
             filter.TERMP = request.getParameter("TERMP");
             filter.SAGENT = request.getParameter("SAGENT");
-           
+
             logic = new LoadDebitsConciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
             msj = logic.loadPX620SQP05108(filter, option);
@@ -552,8 +500,6 @@ public class LoadDebitsConciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    
-    
     @RequestMapping(value = "searchBandoc")
     public @ResponseBody
     String searchBandoc(ModelMap map, HttpServletRequest request) {
@@ -578,8 +524,8 @@ public class LoadDebitsConciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
-        public static String FechaInator(String FechaEntrada) {
+
+    public static String FechaInator(String FechaEntrada) {
         String fechaFormateada = "";
         String day = "", month = "", year = "";
         if (!"".equals(FechaEntrada)) {

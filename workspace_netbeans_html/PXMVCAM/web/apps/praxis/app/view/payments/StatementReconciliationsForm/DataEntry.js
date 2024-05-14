@@ -211,7 +211,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtSCOUNTRY_COD',
-                                                    fieldCls: 'detalle-Country',
                                                     style: 'font-weight:bold;color:#d5f4d5',
 //                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
@@ -222,7 +221,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtSCOUNTRY',
-                                                    fieldCls: 'detalle-Country',
                                                     style: 'font-weight:bold;color:#d5f4d5',
 //                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
