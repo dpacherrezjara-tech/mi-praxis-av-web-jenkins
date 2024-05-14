@@ -338,11 +338,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             console.log(dataRow1.data.STMANUAL, 'dataRow1.data.STMANUAL')
             console.log(dataRow1.data, 'dataRow1.data')
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-                let netoUnit = dataRow1.data.NETO
-                if(dataRow1.data.TDOC == 'D'){
-                   netoUnit = -netoUnit 
-                }
-                this.sumAmount = this.sumAmount + netoUnit //+ dataRow1.data.SADJUST;
+                this.sumAmount = this.sumAmount + dataRow1.data.NETO; //+ dataRow1.data.SADJUST;
             }
         }
         console.log(this.beanResult.NETO);
