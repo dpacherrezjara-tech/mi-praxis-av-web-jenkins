@@ -436,6 +436,47 @@ public class MerchantNumberController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "MaintenanceMPF109")
+    public @ResponseBody
+    String MaintenanceMPF109(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- MerchantNumber : MaintenanceMPF109-------------");
+
+        String option;
+        String beanString;
+        Gson gson = new Gson();
+
+        A2354Filter filter = new A2354Filter();
+        String msj = " ";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+//            filter.MERCHN = request.getParameter("MERCHN").trim();
+//            filter.DESCR = request.getParameter("DESCR").trim();
+//            filter.RSOCIAL = request.getParameter("RSOCIAL").trim();
+//            filter.CIATA = request.getParameter("CIATA").trim();
+//            filter.CANAL = request.getParameter("CANAL").trim();
+//            filter.SCOUNTRY = request.getParameter("SCOUNTRY").trim();
+
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX305SQP00934_INSERT(filter, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
     /**
      *

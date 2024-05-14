@@ -74,8 +74,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
-                                        maskRe: /[0-9]/,
+                                        maxLength: 16,
+                                        maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
                                     },
@@ -95,7 +95,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 16,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130,
@@ -115,6 +115,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
+                                        maxLength: 60,
 //                                        maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
@@ -140,7 +141,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'label',
                                         text: 'Code AP',
                                         style: 'font-weight:bold;',
-                                        width: 120
+                                        width: 110
                                     },
                                     {xtype: 'tbspacer', width: 10},
                                     {
@@ -155,7 +156,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         displayField: 'NAME',
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 120
+                                        width: 130
                                     },
                                     {xtype: 'tbspacer', width: 120},
                                     {
@@ -172,6 +173,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
+                                        maxLength: 30,
 //                                        maxLength: 15,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
@@ -182,7 +184,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'label',
                                         text: 'Franchise 1',
                                         style: 'font-weight:bold;',
-                                        width: 110
+                                        width: 80
                                     },
                                     {xtype: 'tbspacer', width: 5},
                                     {
@@ -197,7 +199,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         maxLength: 45,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130,
+                                        width: 160,
                                     },
                                     
                                     
@@ -245,7 +247,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'label',
                                         text: 'Franchise 3',
                                         style: 'font-weight:bold;',
-                                        width: 120
+                                        width: 110
                                     },
                                     {xtype: 'tbspacer', width: 10},
                                     {
@@ -260,7 +262,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         maxLength: 45,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 120
+                                        width: 130
                                     },
                                     {xtype: 'tbspacer', width: 120},
                                     {
@@ -269,7 +271,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         style: 'font-weight:bold;',
                                         width: 80
                                     },
-                                    {xtype: 'tbspacer', width: 10},
+                                    {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'combo',
                                         id: prototype.id + '-de-txtFRANCH4',
@@ -282,7 +284,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         maxLength: 45,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 155
+                                        width: 160
                                     },
                                     
                                     
@@ -811,7 +813,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 4,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
@@ -831,7 +833,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 50,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -851,7 +853,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 4,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 155
@@ -888,7 +890,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 3,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
@@ -908,7 +910,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 16,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -928,7 +930,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 6,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 155
@@ -965,7 +967,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
@@ -1025,7 +1027,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 9,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
@@ -1045,7 +1047,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -1102,7 +1104,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 40,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
@@ -1122,7 +1124,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 2,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -1142,7 +1144,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 4,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 155
@@ -1179,7 +1181,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 3,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 130
@@ -1199,7 +1201,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -1219,7 +1221,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 15,
+                                        maxLength: 10,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 155

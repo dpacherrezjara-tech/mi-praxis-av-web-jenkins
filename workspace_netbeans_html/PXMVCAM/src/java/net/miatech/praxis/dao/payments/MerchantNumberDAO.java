@@ -844,6 +844,82 @@ public class MerchantNumberDAO {
 
         return strMsj;
     }
+    
+    public String loadPX305SQP00934_INSERT(A2354Filter filter, String option) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
+        String strMsj = "Operation was successful.";
+        
+//        List<A2354Filter> lstBank = filter.lstBank;
+//        List<A2354Filter> lstIata = filter.lstIata;
+//        A2354Filter beanDet;
+
+        CallableStatement cstmt = null;
+        PreparedStatement pstmt = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+                 
+                cstmt.setString(1, option);
+                cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
+                cstmt.setString(3, filter.CMERCHAN.trim());
+                cstmt.setString(4, filter.SUCMERCH.trim());
+                cstmt.setString(5, filter.CODE.trim());
+                cstmt.setString(6, filter.CORE.trim());
+                cstmt.setString(7, filter.DREPORT.trim());
+                cstmt.setString(8, filter.FRANC1.trim());
+                cstmt.setString(9, filter.FRANC2.trim());
+                cstmt.setString(10, filter.FRANC3.trim());
+                cstmt.setString(11, filter.FRANC4.trim());
+                cstmt.setString(12, filter.CODEBANK.trim());
+                cstmt.setString(13, filter.BANKNAM.trim());
+                cstmt.setString(14, filter.BANKCM.trim());
+                cstmt.setString(15, filter.BANKCUR.trim());
+                cstmt.setString(16, filter.ACCNUMB.trim());
+                cstmt.setString(17, filter.ACCNUMA.trim());
+                cstmt.setString(18, filter.BENCEN.trim());
+                cstmt.setString(19, filter.DEUSAP.trim());
+                cstmt.setString(20, filter.SAGENT.trim());
+                cstmt.setString(21, filter.CANAL.trim());
+                cstmt.setString(22, filter.PROCES.trim());
+                cstmt.setString(23, filter.SCOUNTRY.trim());
+                cstmt.setString(24, filter.SOCIETY.trim());
+                cstmt.setString(25, filter.SCURRENCY.trim());
+                cstmt.setString(26, filter.SBENCEN.trim());
+                cstmt.setString(27, filter.COSTCEN.trim());
+                cstmt.setString(28, session.getUserView().getUserInfo().USR);
+                cstmt.setString(29, Functions.getFechaActual());
+                cstmt.setString(30, Functions.getHoraActual());
+                cstmt.execute();
+                cstmt.close();
+
+            
+
+
+        } catch (Exception e) {
+            // e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        if (strMsj.toLowerCase().contains("duplicada")) {
+            strMsj = "Error: Duplicated record.";
+        }
+
+        return strMsj;
+    }
 
     public A2354Filter loadPX305SQP00935(A2354Filter filter) throws SQLException, Exception {
 

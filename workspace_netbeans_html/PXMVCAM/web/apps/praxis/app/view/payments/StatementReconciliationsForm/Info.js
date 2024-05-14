@@ -1138,25 +1138,38 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 text: 'Process',
                                                 columns: [
                                                     {
-                                                        text: 'Code', dataIndex: 'COREP', width: 60, align: 'center', menuDisabled: true,
+                                                        text: 'Code', dataIndex: 'COREP', width: 60, align: 'center', menuDisabled: true, id: prototype.id + '-columBYS_COREP',
                                                         listeners: {
                                                             click: 'onGridDetDayBySS'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                            metaData.style = "color:#057ECB;text-align:center;background-color:#d5f4d5;";
-                                                            metaData.style = "text-align:center;background-color:#d5f4d5;";
-                                                            value = '<b>' + value + '</b>';
-                                                            return '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-//                                                            return  value;
+                                                            var data = record.data;
+                                                            console.log(data.IN_STVAL, 'gridDataDetProceByS')
+//                                                             if(data.IN_STVAL === 'P') {
+//                                                                Ext.getCmp(prototype.id + '-columBYS_COREP').hide()
+//                                                            } else {
+//                                                                Ext.getCmp(prototype.id + '-columBYS_COREP').show()
+                                                                metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                                value = '<b>' + value + '</b>';
+                                                                return '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                            }
                                                         }
                                                     },
                                                     {
-                                                        text: 'Name', dataIndex: 'strDescripcionCOREP', width: 200, align: 'center', menuDisabled: true,
+                                                        text: 'Name', dataIndex: 'strDescripcionCOREP', width: 200, align: 'center', menuDisabled: true,id: prototype.id + '-columBYS_strDescripcionCOREP',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:left;background-color:#d5f4d5;";
+                                                            
                                                             var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
-                                                            return value;
+//                                                            if(data.IN_STVAL === 'P'){
+//                                                                Ext.getCmp(prototype.id + '-columBYS_strDescripcionCOREP').hide()
+//                                                            }else {
+//                                                                Ext.getCmp(prototype.id + '-columBYS_strDescripcionCOREP').show()
+                                                                metaData.style = "text-align:left;background-color:#d5f4d5;";
+                                                                metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                                return value;
+//                                                            }
+                    
                                                         },
                                                     },
                                                 ]
@@ -1260,11 +1273,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                         },
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-boxDetProce',
+                            id: prototype.id + '-panelGridDetProceByPend',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
-                            width: 1322,
+                            width: 833,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1273,8 +1286,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id + '-gridDetProce',
-                                    width: 1322,
+                                    id: prototype.id + '-gridDataDetProceByPend',
+                                    width: 833,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -1287,12 +1300,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                         },
                                         items: [
                                             {
-                                                text: 'Process',
+                                                text: 'Country',
                                                 columns: [
                                                     {
-                                                        text: 'Code', dataIndex: 'COREP', width: 60, align: 'center', menuDisabled: true,
+                                                        text: 'Code', dataIndex: 'SCOUNTRY', width: 60, align: 'center', menuDisabled: true,
                                                         listeners: {
-                                                            click: 'onGridDetDay'
+                                                            click: 'onGridDetDayBySS'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                            metaData.style = "color:#057ECB;text-align:center;background-color:#d5f4d5;";
@@ -1303,7 +1316,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Name', dataIndex: 'strDescripcionCOREP', width: 200, align: 'center', menuDisabled: true,
+                                                        text: 'Name', dataIndex: 'strDescripcionSCOUNTRY', width: 200, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:left;background-color:#d5f4d5;";
                                                             var data = record.data;
@@ -1313,6 +1326,131 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     },
                                                 ]
                                             },
+                                            {
+                                                text: 'Bank',
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'CBANK', width: 60, align: 'center', menuDisabled: true,
+                                                        listeners: {
+                                                            click: 'onGridDetDayBySS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "color:#057ECB;text-align:center;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                            value = '<b>' + value + '</b>';
+                                                            return '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Name', dataIndex: 'strDescripcion', width: 200, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;background-color:#d5f4d5;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            return value;
+                                                        },
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: 'Quantity', dataIndex: 'lngQACCB', width: 90, align: 'center',
+//                                                listeners: {
+//                                                    click: 'onGridDetQtyByS'
+//                                                },
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "color:#057ECB;text-align:center;background-color:#d5f4d5;";
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    return value;
+
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataDetProceByPend').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.lngTotQACCB, '0,000') + '<b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Currency', dataIndex: 'SCURRENCY', width: 90, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount', dataIndex: 'SVFOP', width: 130, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataDetProceByPend').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.lngTotSVFOP, '0,000.00') + '<b>';
+                                                }
+                                            },
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxDetProce',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            height: 'auto',
+                            width: 1042,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDetProce',
+                                    width: 1042,
+                                    columnLines: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+//                                            {
+//                                                text: 'Process',
+//                                                columns: [
+//                                                    {
+//                                                        text: 'Code', dataIndex: 'COREP', width: 60, align: 'center', menuDisabled: true,
+//                                                        listeners: {
+//                                                            click: 'onGridDetDay'
+//                                                        },
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+////                                                            metaData.style = "color:#057ECB;text-align:center;background-color:#d5f4d5;";
+//                                                            metaData.style = "text-align:center;background-color:#d5f4d5;";
+//                                                            value = '<b>' + value + '</b>';
+//                                                            return '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+////                                                            return  value;
+//                                                        }
+//                                                    },
+//                                                    {
+//                                                        text: 'Name', dataIndex: 'strDescripcionCOREP', width: 200, align: 'center', menuDisabled: true,
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "text-align:left;background-color:#d5f4d5;";
+//                                                            var data = record.data;
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+//                                                            return value;
+//                                                        },
+//                                                    },
+//                                                ]
+//                                            },
                                             {
                                                 text: 'Country',
                                                 columns: [

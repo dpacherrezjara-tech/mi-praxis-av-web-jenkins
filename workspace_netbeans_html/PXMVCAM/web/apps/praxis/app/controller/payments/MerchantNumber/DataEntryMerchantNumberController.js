@@ -83,6 +83,39 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                    ]
 //                }));
 //                cmbSCOUNTRY.setValue('');
+            this.dataObtain.CARD = 2;
+            this.dataObtain.COREP = 2;
+            Ext.Ajax.request({
+                url: prototype.urlMaster + '/obtainData',
+                method: 'POST',
+                timeout: 60000000,
+                params: {beanString: JSON.stringify(this.dataObtain)},
+                success: function(response, options) {
+                    var res = Ext.JSON.decode(response.responseText); 
+                    console.log(res, 'res')
+                    if (res.success) {
+
+                        me.lstCountry = res.lstCountry;
+                        me.lstBank = res.lstBank;
+                        Ext.getCmp(prototype.id + '-de-txtFRANCH1').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                        Ext.getCmp(prototype.id + '-de-txtFRANCH2').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                        Ext.getCmp(prototype.id + '-de-txtFRANCH3').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                        Ext.getCmp(prototype.id + '-de-txtFRANCH4').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                        Ext.getCmp(prototype.id + '-de-txtAPCODE').bindStore(
+                            Ext.create('Ext.data.Store', { data: res.lstProcessor, autoLoad: true}));
+                    } else
+                        global.Msg({msg: res.sesion});
+                }
+            });
+                Ext.getCmp(prototype.id + '-de-txtFRANCH1').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtFRANCH2').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtFRANCH3').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtFRANCH4').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtAPCODE').setValue('')
                 Ext.getCmp(prototype.id + '-panelTabMain').hide();
                 Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
@@ -208,6 +241,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.FRANC3 = this.getValue("de-txtFRANCH3")
         beanTemp.FRANC4 = this.getValue("de-txtFRANCH4")
         beanTemp.CODEBANK = this.getValue("CODEBANK")
+        beanTemp.BANKNAM = this.getValue("BANKNAM")
         beanTemp.BANKCM = this.getValue("BANKCM")
         beanTemp.BANKCUR = this.getValue("BANKCUR")
         beanTemp.ACCNUMB = this.getValue("ACCNUMB")
@@ -536,7 +570,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                         
                     if (msjResult === '') {
                         beanTemp.option = 'I';
-                        this.MaintenanceA2354(beanTemp);
+                        this.MaintenanceMPF109(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -596,11 +630,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
-    MaintenanceA2354: function (beanTemp) {
+    MaintenanceMPF109: function (beanTemp) {
 //        console.log(beanTemp);
         var beanString = JSON.stringify(beanTemp);
         Ext.Ajax.request({
-            url: prototype.url + '/MaintenanceA2354',
+            url: prototype.url + '/MaintenanceMPF109',
             method: 'POST',
             timeout: 60000000,
 //            params: beanTemp,
@@ -627,7 +661,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         if (this.getValue("de-txtMERCHN") === '') {
             msjResult = "You must enter the required field.";
         }
-        if (this.getValue("de-txtMERCHP") === '') {
+        if (this.getValue("de-txtAFBRANCH") === '') {
             msjResult = "You must enter the required field.";
         }
         return msjResult;

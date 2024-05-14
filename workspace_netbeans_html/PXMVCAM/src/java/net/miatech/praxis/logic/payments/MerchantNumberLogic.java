@@ -66,6 +66,10 @@ public class MerchantNumberLogic {
         return MerchantNumberDAO.loadPX305SQP00934(filter, option);
     }
     
+    public String loadPX305SQP00934_INSERT(A2354Filter filter, String option) throws SQLException, Exception {
+        return MerchantNumberDAO.loadPX305SQP00934_INSERT(filter, option);
+    }
+    
     public A2354Filter loadPX305SQP00935(A2354Filter filter) throws Exception {
         return MerchantNumberDAO.loadPX305SQP00935(filter);
     }

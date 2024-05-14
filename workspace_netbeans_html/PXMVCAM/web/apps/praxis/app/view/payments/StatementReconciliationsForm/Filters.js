@@ -311,7 +311,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     xtype: 'label',
                     text: 'Processor:',
                     padding: '3 0 0 30 ',
-                    width: 90
+                    width: 90,
+                    hidden:true
                 },
                 
                 {
@@ -319,6 +320,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     id: prototype.id + '-cmbCOREP',
                     queryMode: 'local',
                     allowBlank: false,
+                    hidden: true,
                     forceSelection: true,
                     selectOnFocus: true,
                     caseSensitive: false,

@@ -388,15 +388,15 @@ public class StatementReconciliationsDAO {
 //                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
                         beanTkt.strDescripcionSCOUNTRY = rst.getString("SCOUNTRYN").trim();
                     }
-                    if (rst.getString("COREP").trim().isEmpty()) {
-                        beanTkt.COREP = "**";
-//                        beanTkt.strCREJEC = "(Empty)";
-                        beanTkt.strDescripcionCOREP = "(Empty)";
-                    } else {
-                        beanTkt.COREP = rst.getString("COREP").trim();
-//                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
-                        beanTkt.strDescripcionCOREP = rst.getString("COREPN").trim();
-                    }
+//                    if (rst.getString("COREP").trim().isEmpty()) {
+//                        beanTkt.COREP = "**";
+////                        beanTkt.strCREJEC = "(Empty)";
+//                        beanTkt.strDescripcionCOREP = "(Empty)";
+//                    } else {
+//                        beanTkt.COREP = rst.getString("COREP").trim();
+////                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+//                        beanTkt.strDescripcionCOREP = rst.getString("COREPN").trim();
+//                    }
 
                     beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQDIFF = rst.getLong("QDIFF");
@@ -593,6 +593,139 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
+    
+    public List<A2290Filter> loadPX287SQP00839ByPend(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        long lngTotQACCB = 0, lngTotSVFOP = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00839STVAL_PROCESS_PEND(?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_DATE);
+            cstmt.setString(3, filter.IN_SDATE);
+            cstmt.setString(4, filter.IN_STVAL.trim());
+            cstmt.setString(5, filter.IN_BANK.trim());
+            cstmt.setString(6, filter.IN_TDOC.trim());
+            cstmt.setString(7, filter.IN_COUNTRY.trim());
+            cstmt.setString(8, filter.IN_COREP.trim());
+
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                lngTotQACCB = rst.getLong("QTY");
+                lngTotSVFOP = rst.getLong("DAMOUNTR");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_DATE = filter.IN_DATE.trim();
+                    beanTkt.IN_SDATE = filter.IN_SDATE.trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.IN_SDATE);
+                    beanTkt.IN_STVAL = filter.IN_STVAL.trim();
+                    beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_COREP = filter.IN_COREP.trim();
+
+                    beanTkt.IN_CBANK = rst.getString("CBANK").trim();
+
+                    if (rst.getString("CBANK").trim().isEmpty()) {
+                        beanTkt.CBANK = "**";
+                        beanTkt.strCREJEC = "(Empty)";
+                        beanTkt.strDescripcion = "(Empty)";
+                    } else {
+                        beanTkt.CBANK = rst.getString("CBANK").trim();
+                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+                        beanTkt.strDescripcion = rst.getString("BANKN").trim();
+                    }
+                    if (rst.getString("SCOUNTRY").trim().isEmpty()) {
+                        beanTkt.SCOUNTRY = "**";
+//                        beanTkt.strCREJEC = "(Empty)";
+                        beanTkt.strDescripcionSCOUNTRY = "(Empty)";
+                    } else {
+                        beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+//                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
+                        beanTkt.strDescripcionSCOUNTRY = rst.getString("SCOUNTRYN").trim();
+                    }
+                    
+//                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+//                    beanTkt.COREP = rst.getString("COREP").trim();
+                    //beanTkt.lngTotTotal = total;
+                    if (filter.IN_DATE.trim().equals("VALDATE")) {
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate;
+                    } else {
+                        beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate;
+                    }
+                    beanTkt.lngQACCB = rst.getLong("QTY");
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY");
+                    beanTkt.SVFOP = rst.getLong("DAMOUNTR");
+
+                    beanTkt.lngTotQACCB = lngTotQACCB;
+                    beanTkt.lngTotSVFOP = lngTotSVFOP;
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
 
     public List<A2290Filter> loadPX287SQP00840(A2290Filter filter) throws SQLException, Exception {
 
@@ -684,7 +817,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotTotal = total;
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate +  " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -803,7 +936,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotSVFOP = lngTotSVFOP;
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process: " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -951,7 +1084,7 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + filter.strDescripcionCOREP + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate +" - Process: " + filter.strDescripcionCOREP + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -1096,7 +1229,7 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process : " + filter.strDescripcionCOREP + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
                     }
