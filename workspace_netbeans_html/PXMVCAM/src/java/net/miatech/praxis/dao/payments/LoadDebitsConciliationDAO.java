@@ -398,6 +398,7 @@ public class LoadDebitsConciliationDAO {
             }
         } catch (Exception e) {
             e.getMessage();
+            e.printStackTrace();
         } finally {
             if (rs01 != null) {
                 try {
