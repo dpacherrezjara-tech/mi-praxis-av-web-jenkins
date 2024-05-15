@@ -915,6 +915,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
+        console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC')
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
@@ -1014,6 +1015,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     ////<editor-fold defaultstate="collapsed" desc="onGridDay">
     setGridDataDayBySTVAL: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var cant = 0;
+        this.beanDetDay = {}
         switch (columnNum) {
             case 1:
                 console.log('ENTRA AL MATCH');
@@ -1043,11 +1045,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
             me.flag = 'all';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
+            
             this.beanDetDay.strFecFiltro = 'SDATE';
 //            this.beanDetCardByS.strFecFiltro = rowData.data.;
             this.beanDetDay.IN_SDATE = rowData.data.SDATE;
             this.beanDetDay.IN_TDOC = rowData.data.TDOC;
             this.beanDetDay.IN_COUNTRY = rowData.data.SCOUNTRY;
+            console.log(rowData.data.SCOUNTRY, 'rowData.data.SCOUNTRY')
+            console.log(this.beanDetDay.IN_COUNTRY, 'this.beanDetDay.IN_COUNTRY')
             this.beanDetDay.IN_CARDN1 = rowData.data.IN_CARDN1;
             this.beanDetDay.IN_CARDN2 = rowData.data.IN_CARDN2;
             this.beanDetDay.IN_CARDC = rowData.data.IN_CARDC;
@@ -1076,8 +1081,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
+        this.beanDetDay = {}
         this.beanDetDay.IN_SDATE = rowData.data.SDATE;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
+        console.log(this.beanDetDay.IN_STVAL, 'this.beanDetDay.IN_STVAL')
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDetDay.IN_NEGOC = "1";
@@ -1091,6 +1098,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
+        this.beanDetDay = {}
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDay.IN_COUNTRY = rowData.data.SCOUNTRY;
@@ -1106,6 +1114,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
+        this.beanDetDay = {}
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDay.IN_COUNTRY = rowData.data.SCOUNTRY;

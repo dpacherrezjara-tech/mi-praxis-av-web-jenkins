@@ -170,6 +170,7 @@ public class A2290Filter extends A2290 {
     public double RTEICA = 0;
     public double RTEICAC = 0;
     public double NETO = 0;
+    public double COMISTOTA = 0;
     
     public double NETOL = 0;
     public double DIFF = 0;

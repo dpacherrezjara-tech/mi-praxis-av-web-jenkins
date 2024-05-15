@@ -1623,6 +1623,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.NETO = rst.getDouble("NETO");
+                beanTkt.COMISTOTA = rst.getDouble("COMISTOTA");
                 beanTkt.TDOC = rst.getString("TDOC");
                 beanTkt.SEQ = rst.getString("SEQ");
                 beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC"));

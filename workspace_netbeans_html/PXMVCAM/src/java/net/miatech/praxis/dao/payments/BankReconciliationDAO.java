@@ -130,6 +130,7 @@ public class BankReconciliationDAO {
 
                     beanTkt = new A2290Filter();
                     beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.SDATE = rst.getString("DATE").trim();
                     beanTkt.IN_SDATE = rst.getString("DATE").trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
@@ -280,6 +281,7 @@ public class BankReconciliationDAO {
                     beanTkt.SDATE = filter.SDATE.trim();
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.IN_SDATE);
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.NAME = rst.getString("NAME").trim();
@@ -421,6 +423,7 @@ public class BankReconciliationDAO {
 //                    beanTkt.SDATE = filter.SDATE.trim();
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
 //                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 //                    beanTkt.NAME = rst.getString("NAME").trim();
                     beanTkt.SDATE = rst.getString("SDATE").trim();

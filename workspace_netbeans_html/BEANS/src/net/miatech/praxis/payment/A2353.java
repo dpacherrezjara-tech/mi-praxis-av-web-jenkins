@@ -12,6 +12,14 @@ public class A2353 {
 
     public String CCUST = "";
     public String CODEM = "";
+    public String INPNAME = "";
+    public String APLIC = "";
+    public String OUTNAME = "";
+    public String TABLA = "";
+    public String SEQNUM = "";
+    public String INPDESC = "";
+    public String INPTYPE = "";
+    public String LIBNAME = "";
     public String option = "";
     public String CPROGRAM = "";
     public String NPROGRAM = "";

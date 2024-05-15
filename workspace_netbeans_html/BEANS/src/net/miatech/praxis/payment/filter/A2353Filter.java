@@ -16,6 +16,10 @@ public class A2353Filter extends A2353 {
      public String IN_FILE = "";
      public String IN_PRDA = "";
      public String IN_DATE = "";
+     public String IN_APLIC = "";
+     public String IN_INPNAME = "";
+     public String IN_OUTNAME = "";
+     public String IN_TABLA = "";
      
      public long RN = 0; 
      public Pagination page = new Pagination();

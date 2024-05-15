@@ -858,7 +858,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                     align: 'center'
                                                                 },
                                                                 items: [
-                                                                    {text: 'Status', dataIndex: 'descSTVAL', width: 95,
+                                                                    {text: 'Status', dataIndex: 'descSTVAL', width: 95, 
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -985,8 +985,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                         width: 110,
                                                                         xtype: 'gridcolumn',
                                                                         cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record) {
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
                                                                             metaData.style = "text-align:right;";
+                                                                            console.log(data, 'dataaaaaaaaaaaaaaaaaaaa')
+                                                                            if(data.COMISTOTA != 0){
+           
+                                                                                metaData.style = "background-color: yellow;"
+                                                                                metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA+'"';
+                                                                            }
                                                                             if (record.get('isInValidCombination')) {
                                                                                 metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
                                                                             }

@@ -337,14 +337,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.lstSendManual.push(dataRow1.data);
             console.log(dataRow1.data.STMANUAL, 'dataRow1.data.STMANUAL')
             console.log(dataRow1.data, 'dataRow1.data')
+            console.log(dataRow1.data.COMISTOTA, 'dataRow1.data.COMISTOTA')
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-                this.sumAmount = this.sumAmount + dataRow1.data.NETO; //+ dataRow1.data.SADJUST;
+                if(dataRow1.data.COMISTOTA > 0){
+                   
+                }
+                this.sumAmount = this.sumAmount + dataRow1.data.NETO + dataRow1.data.COMISTOTA; //+ dataRow1.data.SADJUST;
             }
         }
         console.log(this.beanResult.NETO);
         console.log(this.beanResult.NETOC);
         if (this.beanResult.STVAL === '1') {
-            this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount, '0,000.00'));
+            this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.beanResult.NETOC, '0,000.00'));
         } else {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount, '0,000.00'));

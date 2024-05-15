@@ -119,6 +119,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             Ext.getCmp(prototype.id + '-Filters3_1').hide();
             Ext.getCmp(prototype.id + '-contentFilter2').show();
             Ext.getCmp(prototype.id + '-boxMainAll').hide();
+            Ext.getCmp(prototype.id + '-panelGridData').hide();
             console.log('Entra a if de grid calendar');
             this.gridCalendar_clickHandler();
         }
@@ -128,8 +129,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             Ext.getCmp(prototype.id + '-infoCalendar').hide();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-panelGridData').show();
+            this.setGridData();
         }
-        
     },
     obtainData: function () {
 
