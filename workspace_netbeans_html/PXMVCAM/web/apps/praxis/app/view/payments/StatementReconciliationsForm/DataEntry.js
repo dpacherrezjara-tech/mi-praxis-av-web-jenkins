@@ -991,10 +991,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             console.log(data, 'dataaaaaaaaaaaaaaaaaaaa')
                                                                             if(data.COMISTOTA != 0){
            
-                                                                                metaData.style = "background-color: yellow;"
+                                                                                metaData.style = "background-color: #A2F4FE;"
                                                                                 metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA+'"';
                                                                             }
-                                                                            if (record.get('isInValidCombination')) {
+                                                                            if (record.get('isInValidCombination') && data.STVAL == '3' ) {
                                                                                 metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
                                                                             }
                                                                             return Ext.util.Format.number(value, '0,000.00');

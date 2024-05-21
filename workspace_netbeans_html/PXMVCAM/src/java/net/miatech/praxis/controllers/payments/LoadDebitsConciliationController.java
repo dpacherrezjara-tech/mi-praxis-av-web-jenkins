@@ -11,7 +11,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -124,15 +126,20 @@ public class LoadDebitsConciliationController extends BaseController {
     public @ResponseBody
     String updateA4527(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request) throws IOException {
         byte[] bytes = null;
+        Gson gson = new Gson();
         Integer cont = 0;
-        double objResult = 0;
+        A2290Filter objResult = new A2290Filter();
+        A2290Filter filter = new A2290Filter();
+        
 
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             String filename = excelfile.getOriginalFilename();
-
+            String beanString = request.getParameter("beanString");
+            
+            filter = gson.fromJson(beanString, A2290Filter.class);
             byte[] dataFile = excelfile.getBytes();
-            objResult = updateConsolidated(dataFile);
+            objResult = updateConsolidated(dataFile, filter );
 
             map.put("success", true);
             map.put("objResult", objResult);
@@ -146,15 +153,18 @@ public class LoadDebitsConciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    private Double updateConsolidated(byte[] bytes) throws Exception {
+    private A2290Filter updateConsolidated(byte[] bytes, A2290Filter filter) throws Exception {
 
         Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
         logic = new LoadDebitsConciliationLogic();
         List<A2290Filter> lstData = new ArrayList<>();
+        A2290Filter respt = new A2290Filter();
         String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+        
 //        String ruta = "D:";
         double neto = 0;
+//        boolean isDiff = false;
         String mensaje = "Hubo un error al actualizar los pagos", strHora = Functions.getHoraActual();
         String mensajePost = "";
         double montoTotal = 0;
@@ -174,6 +184,7 @@ public class LoadDebitsConciliationController extends BaseController {
             fs.close();
 
             DataFormatter formatter = new DataFormatter();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             FileInputStream file = new FileInputStream(new File(strArchivo));
             XSSFWorkbook worbook = new XSSFWorkbook(file);
             XSSFSheet sheet = worbook.getSheetAt(0);
@@ -187,8 +198,13 @@ public class LoadDebitsConciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 1) {
                         A2290Filter obj = new A2290Filter();
-
+                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(5)).trim();
                         obj.AMOUNT = formatAmount(formatter.formatCellValue(row.getCell(18)).trim());
+//                        Date date = row.getCell(0).getDateCellValue();
+//                        obj.ADATE = FechaInator(dateFormat.format(date).trim());
+                        if( !obj.ACCNUMBER.equals(filter.IN_ACCNUMBER)  ){
+                            respt.isInvalid = true;
+                        }
 
                         System.out.println(i);
                         System.out.println(obj.AMOUNT);
@@ -214,7 +230,8 @@ public class LoadDebitsConciliationController extends BaseController {
 
             logic.setSession(this.serverSession.getServerSession());
 
-            neto = montoTotal;
+            respt.netoAcum = montoTotal;
+            
             //Eliminar temporal           
             archivo.delete();
 
@@ -222,7 +239,7 @@ public class LoadDebitsConciliationController extends BaseController {
             e.printStackTrace();
         }
 
-        return neto;
+        return respt;
 
     }
 
@@ -294,7 +311,7 @@ public class LoadDebitsConciliationController extends BaseController {
             fs.close();
 
             DataFormatter formatter = new DataFormatter();
-
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             FileInputStream file = new FileInputStream(new File(strArchivo));
             XSSFWorkbook worbook = new XSSFWorkbook(file);
             XSSFSheet sheet = worbook.getSheetAt(0);
@@ -308,7 +325,8 @@ public class LoadDebitsConciliationController extends BaseController {
                     if (row.getRowNum() > 1) {
 
                         A2290Filter obj = new A2290Filter();
-                        obj.ADATE = FechaInator(formatter.formatCellValue(row.getCell(0)).trim());
+                        Date date = row.getCell(0).getDateCellValue();
+                        obj.ADATE = FechaInator(dateFormat.format(date).trim());
                         obj.SDATE = formatter.formatCellValue(row.getCell(1)).trim().replace("-", "");
                         obj.ACCNUMBER = formatter.formatCellValue(row.getCell(5)).trim();
                         obj.SAUTHOC = formatter.formatCellValue(row.getCell(9)).trim();

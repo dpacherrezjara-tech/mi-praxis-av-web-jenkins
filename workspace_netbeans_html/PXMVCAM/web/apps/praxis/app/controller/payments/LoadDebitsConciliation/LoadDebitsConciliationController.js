@@ -83,10 +83,12 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
     
     onFileLoad: function () {
         var me = this;
-
+        let beanValidation = {}
+        
+        beanValidation.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMB').getValue()
         var fileField = Ext.getCmp(prototype.id + '-file');
         var file = fileField.fileInputEl.dom.files[0];
-
+        let beanString = JSON.stringify(beanValidation);
         if (!file) {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
                 if (btn === 'ok' || btn === 'cancel')
@@ -98,12 +100,13 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         // Crear una instancia de FormData para enviar el archivo
         var formData = new FormData();
         formData.append('excelfile', file);
-
+        
         // Realizar una solicitud AJAX para cargar el archivo
         Ext.Ajax.request({
             url: prototype.url + '/updateA4527',
             method: 'POST',
             rawData: formData,
+            params: {beanString: beanString},
             // Configurar el tipo de contenido adecuado y el encabezado
             headers: {
                 'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
@@ -112,8 +115,15 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                 var res = Ext.decode(response.responseText);
                 console.log(res);
                 if (res.success) {
-                    let montoAcum = res.objResult;
-                    let numberWithCommas = me.formatNumberWithCommas_string(montoAcum);
+                    
+                    let objResult = res.objResult;
+                    if(objResult.isInvalid){
+                        global.Msg({msg: "The account number is different"});
+                        return false;
+                    }
+                    console.log(objResult.netoAcum, 'objResult.netoAcum')
+                    console.log( 'objResult.isInvalid')
+                    let numberWithCommas = me.formatNumberWithCommas_string(objResult.netoAcum);
                     Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(numberWithCommas);
                     me.validationAmount();
                     // No es necesario restaurar el archivo ya que no se borra el campo de archivo
@@ -256,6 +266,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         Ext.getCmp(prototype.id + '-de-txtTDOC').setValue('')
         Ext.getCmp(prototype.id + '-de-txtSTVAL').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue('')
         Ext.getCmp(prototype.id + '-file').reset();
         Ext.getCmp(prototype.id + '-btn-upload').setDisabled(false);
         Ext.getCmp(prototype.id + '-de-txtSumAmount').setFieldStyle('background-color: #CFE0EC;');
@@ -303,6 +314,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                     Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(res.result.descTDOC)
                     Ext.getCmp(prototype.id + '-de-txtSTVAL').setValue(res.result.strDescStatus)
                     Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue(res.result.QTYTRAN1)
+                    Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue(res.result.ACCNUMBER)
                     if( res.result.STVAL == '1'){
                         global.Msg({msg: "REGISTRATION IN MATCH STATUS"});
                         Ext.getCmp(prototype.id + '-file').setDisabled(true)

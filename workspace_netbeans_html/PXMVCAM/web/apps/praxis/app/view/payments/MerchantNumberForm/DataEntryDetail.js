@@ -54,18 +54,18 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         xtype: 'label',
                                         text: 'Merchant Nbr.',
                                         style: 'font-weight:bold;',
-                                        width: 110
+                                        width: 90
                                     },
-//                                    {
-//                                        xtype: 'label',
-//                                        text: '(*)',
-//                                        style: 'font-weight:bold;color:red;',
-//                                        width: 20,
-//                                        autoEl: {
-//                                            tag: 'label',
-//                                            'data-qtip': 'Mandatory Field'
-//                                        }
-//                                    },
+                                    {
+                                        xtype: 'label',
+                                        text: '(*)',
+                                        style: 'font-weight:bold;color:red;',
+                                        width: 20,
+                                        autoEl: {
+                                            tag: 'label',
+                                            'data-qtip': 'Mandatory Field'
+                                        }
+                                    },
                                     {xtype: 'tbspacer', width: 10},
                                     {
                                         xtype: 'textfield',
@@ -77,28 +77,30 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         maxLength: 16,
                                         maskRe: /[0-9]/,
                                         readOnly: false,
-                                        width: 130
+                                        width: 130,
+                                        border: true
                                     },
-                                    {xtype: 'tbspacer', width: 120},
-                                    
+                                    {xtype: 'tbspacer', width: 120},                                 
                                     {
                                         xtype: 'label',
-                                        text: 'Branch Affiliate',
+                                        text: 'Code AP',
                                         style: 'font-weight:bold;',
-                                        width: 115
+                                        width: 110
                                     },
-                                    {xtype: 'tbspacer', width: 5},
+                                    {xtype: 'tbspacer', width: 10},
                                     {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtAFBRANCH_D',
+                                        xtype: 'combo',
+                                        id: prototype.id + '-de-txtAPCODE_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 16,
+                                        maxLength: 45,
+                                        valueField: 'VALUE',
+                                        displayField: 'NAME',
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130,
+                                        width: 130
                                     },
                                     {xtype: 'tbspacer', width: 120},
                                     {
@@ -138,25 +140,34 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                     {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
-                                        text: 'Code AP',
+                                        text: 'Branch Affiliate',
                                         style: 'font-weight:bold;',
-                                        width: 110
+                                        width: 95
                                     },
-                                    {xtype: 'tbspacer', width: 10},
                                     {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtAPCODE_D',
-                                        fieldStyle: 'text-align:center',
+                                        xtype: 'label',
+                                        text: '(*)',
+                                        style: 'font-weight:bold;color:red;',
+                                        width: 20,
+                                        autoEl: {
+                                            tag: 'label',
+                                            'data-qtip': 'Mandatory Field'
+                                        }
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-de-txtAFBRANCH_D',
+                                        fieldStyle: 'text-align:center; border-color: red;',
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 45,
-                                        valueField: 'VALUE',
-                                        displayField: 'NAME',
+                                        maxLength: 16,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130
+                                        width: 130,
                                     },
+                                    
                                     {xtype: 'tbspacer', width: 120},
                                     {
                                         xtype: 'label',
@@ -332,7 +343,17 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         xtype: 'label',
                                         text: 'Bank Code',
                                         style: 'font-weight:bold;',
-                                        width: 115
+                                        width: 95
+                                    },
+                                    {
+                                        xtype: 'label',
+                                        text: '(*)',
+                                        style: 'font-weight:bold;color:red;',
+                                        width: 20,
+                                        autoEl: {
+                                            tag: 'label',
+                                            'data-qtip': 'Mandatory Field'
+                                        }
                                     },
                                     {xtype: 'tbspacer', width: 5},
                                     {
@@ -407,29 +428,19 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                     {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
-                                        text: 'Deposit Curr.',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-BANKCUR_D',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 3,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
                                         text: 'Acc. Number',
                                         style: 'font-weight:bold;',
-                                        width: 120
+                                        width: 90
+                                    },
+                                    {
+                                        xtype: 'label',
+                                        text: '(*)',
+                                        style: 'font-weight:bold;color:red;',
+                                        width: 20,
+                                        autoEl: {
+                                            tag: 'label',
+                                            'data-qtip': 'Mandatory Field'
+                                        }
                                     },
                                     {xtype: 'tbspacer', width: 10},
                                     {
@@ -440,6 +451,27 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         editable: false,
                                         enabled: false,
                                         maxLength: 16,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Deposit Curr.',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 15},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-BANKCUR_D',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 3,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
@@ -544,29 +576,19 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                     {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
-                                        text: 'Debt. SAP',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-DEUSAP_D',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 9,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
                                         text: 'IATA',
                                         style: 'font-weight:bold;',
-                                        width: 120
+                                        width: 90
+                                    },
+                                    {
+                                        xtype: 'label',
+                                        text: '(*)',
+                                        style: 'font-weight:bold;color:red;',
+                                        width: 20,
+                                        autoEl: {
+                                            tag: 'label',
+                                            'data-qtip': 'Mandatory Field'
+                                        }
                                     },
                                     {xtype: 'tbspacer', width: 10},
                                     {
@@ -577,6 +599,26 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         editable: false,
                                         enabled: false,
                                         maxLength: 8,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Debt. SAP',
+                                        style: 'font-weight:bold;',
+                                        width: 125
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-DEUSAP_D',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 9,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120

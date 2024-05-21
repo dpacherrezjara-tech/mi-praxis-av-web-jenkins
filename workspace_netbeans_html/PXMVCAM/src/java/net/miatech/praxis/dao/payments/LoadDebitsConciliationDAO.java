@@ -378,6 +378,7 @@ public class LoadDebitsConciliationDAO {
                 objRtn.TRANCI = rs01.getString("TRANCI").trim();
                 objRtn.TDOC = rs01.getString("TDOC").trim();
                 objRtn.STVAL = rs01.getString("STVAL").trim();
+                objRtn.ACCNUMBER = rs01.getString("ACCCOMP").trim();
                 objRtn.QTYTRAN1 = rs01.getInt("QTYTRAN1");
                 if(hmDescDocType.containsKey(objRtn.TDOC)){
                    objRtn.descTDOC = hmDescDocType.get(objRtn.TDOC);

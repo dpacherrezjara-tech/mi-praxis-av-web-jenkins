@@ -1353,7 +1353,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             this.beanDetCardByS.IN_MERCHN = rowData.data.IN_MERCHN;
             this.beanDetCardByS.IN_AGENT = rowData.data.IN_AGENT;
             this.beanDetCardByS.IN_BANK = rowData.data.IN_BANK;
-            this.beanDetCardByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
+            this.beanDetCardByS.IN_COUNTRY = rowData.data.SCOUNTRY;
+            console.log(rowData.data.IN_COUNTRY, 'rowData.data.IN_COUNTRY -------------------')
+            
             this.beanDetCardByS.IN_FTE = rowData.data.IN_FTE;
             this.beanDetCardByS.IN_ADYEN = rowData.data.IN_ADYEN;
             this.beanDetCardByS.IN_CODEBANK = rowData.data.CODEBANK;

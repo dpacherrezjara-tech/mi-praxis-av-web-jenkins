@@ -177,6 +177,7 @@ public class A2290Filter extends A2290 {
     public double totNETO = 0;
     public double totNETOC = 0;
     public double NETOC = 0;
+    public double netoAcum = 0;
 
     public String EMISOR = "";
     public long lngQTYDOC = 0;
@@ -524,6 +525,7 @@ public class A2290Filter extends A2290 {
     public int totQTYTKT_8 = 0;
 
     public boolean check = false;
+    public boolean isInvalid = false;
     public String color = "";
     public String weight = "";
     public String select = "";

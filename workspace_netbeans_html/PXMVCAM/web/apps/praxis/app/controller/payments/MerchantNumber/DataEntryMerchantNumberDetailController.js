@@ -179,7 +179,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 
 //                this.DeshabilitarCampoClave();
 //                Ext.getCmp(prototype.id + '-panelTabMain').hide();
-                Ext.getCmp(prototype.id + '-de-txtMERCHN_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtMERCHN_D').setEditable(false);
                 Ext.getCmp(prototype.id + '-de-txtAFBRANCH_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtDOWNREPORT_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtAPCODE_D').setEditable(true);

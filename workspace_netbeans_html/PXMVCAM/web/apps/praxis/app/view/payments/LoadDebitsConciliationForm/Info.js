@@ -399,7 +399,26 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
         //                                        width: 1080
                                     },
                                     items: [
-                                        
+                                        {xtype: 'tbspacer', width: 27},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Acc. Numb.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtACCNUMB',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '16',
+                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            width: 100
+                                        },
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtDATECI',
