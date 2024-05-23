@@ -3444,7 +3444,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-
+    
     @RequestMapping(value = "searchBeanAMDP_DETAIL")
     public @ResponseBody
     String searchBeanAMDP_DETAIL(ModelMap map, HttpServletRequest request) {

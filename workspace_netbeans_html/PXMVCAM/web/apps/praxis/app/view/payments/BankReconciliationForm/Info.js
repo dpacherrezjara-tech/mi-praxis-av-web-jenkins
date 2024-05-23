@@ -1130,17 +1130,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Author.',
-                                                        columns: [
-                                                            {
-                                                                text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
+//                                                        text: 'Author.',
+//                                                        columns: [
+//                                                            {
+                                                                text: 'Author.<br>Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     return value;
                                                                 }
-                                                            }
-                                                        ]
+//                                                            }
+//                                                        ]
                                                     },
                                                     {
                                                         text: 'Bank', dataIndex: 'CODEBANK', width: 60, align: 'center', menuDisabled: true,

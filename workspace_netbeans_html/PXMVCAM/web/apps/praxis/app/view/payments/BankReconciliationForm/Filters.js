@@ -108,10 +108,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             queryMode: 'local',
                             triggerAction: 'all',
                             editable: false,
+                            disabled: true,
                             autoSelect: false,
                             enableKeyEvents: true,
                             caseSensitive: true,
-                            hidden: true,
+//                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
@@ -172,7 +173,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             autoSelect: false,
                             enableKeyEvents: true,
                             caseSensitive: true,
-                            hidden: true,
+                            disabled: true,
+//                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
@@ -563,7 +565,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             triggerAction: 'all',
                             valueField: 'CODE',
                             displayField: 'NAME',
-                            width: 400,
+                            width: 350,
                             labelWidth: 10,
                             hidden: false,
                             hiddenLabel: false
@@ -576,7 +578,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             text: 'Agent:',
                             width: 55
                         },
-                        {xtype: 'tbspacer', width: 35},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'textfield',
                             id: prototype.id+'-txtAGENCY',     
@@ -634,7 +636,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             text: 'Amount :',
                             padding: '3 0',
                             hidden: false,
-                            width: 80,
+                            width: 75,
                             autoEl: {
                                 tag: 'label',
                                 'data-qtip': 'Amount'
@@ -648,7 +650,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             maskRe: /[0-9.]/, // Permitir solo números y el punto decimal
                             maxLength: 20,
                             hidden: false,
-                            width: 192,
+                            width: 120,
                             enableKeyEvents: true,
                             listeners: {
                                 keyup: function(field) {
@@ -661,6 +663,38 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                     field.setValue(parts.join('.'));
                                 },
                                 keypress: 'eventKey'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 20},
+                        {
+                            xtype: 'label',
+                            text: 'Source:',
+                            padding: '3 0',
+                            width: 80
+                        },
+                        {
+                            xtype:'combo',
+                            id: prototype.id+'-cmbSource',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['code', 'name'],
+                                data: [
+                                    ["", "All"], ["A", "ARC"], ["B", "BSP"], ["S", "ASR"], ["T", "TC"]
+                                ]
+                            }),
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 100,
+                            value: "",
+                            typeAhead: true,
+                            valueField: 'code', displayField: 'name',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            listeners:{
                             }
                         },
 //                        {

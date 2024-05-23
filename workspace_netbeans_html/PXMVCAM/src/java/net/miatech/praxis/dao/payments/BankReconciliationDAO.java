@@ -516,17 +516,17 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698Detalle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698Detalle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(16, Types.INTEGER);
             cstmt.registerOutParameter(17, Types.INTEGER);
             cstmt.registerOutParameter(18, Types.INTEGER);
             cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -543,17 +543,18 @@ public class BankReconciliationDAO {
             cstmt.setString(13, filter.IN_COMENT.trim());
             cstmt.setString(14, filter.IN_AGENCY.trim());
             cstmt.setString(15, filter.IN_strSVFOP.trim());
+            cstmt.setString(16, filter.IN_FTE.trim());
 
-            cstmt.setInt(16, filter.page.PAGNUM);
-            cstmt.setInt(17, filter.page.PAGROW);
-            cstmt.setInt(18, filter.page.TOTPAG);
-            cstmt.setInt(19, filter.page.TOTROW);
+            cstmt.setInt(17, filter.page.PAGNUM);
+            cstmt.setInt(18, filter.page.PAGROW);
+            cstmt.setInt(19, filter.page.TOTPAG);
+            cstmt.setInt(20, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(16);
-            filter.page.PAGROW = cstmt.getInt(17);
-            filter.page.TOTPAG = cstmt.getInt(18);
-            filter.page.TOTROW = cstmt.getInt(19);
+            filter.page.PAGNUM = cstmt.getInt(17);
+            filter.page.PAGROW = cstmt.getInt(18);
+            filter.page.TOTPAG = cstmt.getInt(19);
+            filter.page.TOTROW = cstmt.getInt(20);
 
             rst = cstmt.getResultSet();
 

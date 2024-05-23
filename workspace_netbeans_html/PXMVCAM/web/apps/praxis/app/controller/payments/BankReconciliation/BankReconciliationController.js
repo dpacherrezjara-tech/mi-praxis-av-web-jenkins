@@ -166,6 +166,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         console.log(obj, 'obj from month')
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToMonth.setValue(obj.getValue());
+        if(obj.getValue() != ''){
+            Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
+        }else {
+            Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
+        }
+        
     },
     selectComboToMonth: function (obj) {
         console.log(obj, 'obj to month')
@@ -218,7 +226,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
 
 
         /*Teleworking*/
@@ -474,11 +482,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         if( Ext.getCmp(prototype.id + '-panelTW').isVisible()){
             this.searchTW();
         }else{
-            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '') {
-                this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
-                this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbSource').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' )  {
+                this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
+                this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
                 this.beanDetDay.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
                 this.beanDetDay.IN_STVAL = win.getValue('cmbStatus');
+                this.beanDetDay.IN_FTE = win.getValue('cmbSource');
                 this.beanDetDay.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
                 
                 me.panelActual = '-panelGridDataDetalle';
@@ -760,7 +769,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDetalle_DEBITS';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.searchDetByStval_DEBITS(beanDetDebits);
+        me.paramsDetail.beanString = JSON.stringify(beanDetDebits);
+        this.searchDetByStval_DEBITS();
     },
     searchDetCountryByStval_DEBITS: function (beanDEBITS) {
         console.log('ENTRA AL SEARCH DE BAJADA ')
@@ -807,7 +817,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             },
             listeners: {
                 beforeload: function (obj) {
-                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDetDEBITS)};
+                    obj.proxy.extraParams =  me.paramsDetail;
                 },
                 load: function (obj, obj2, success, response, obj5) {
                     var pag = Ext.getCmp(prototype.id + '-pagginDebits_detail');
@@ -2188,6 +2198,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     break;
                 case '-panelGridDetCardNbrByS':
                     global.getFile(prototype.url + '/getXLSXDetCardNbrByS?beanString=' + encodeURI(me.paramsDetail.beanString));
+                    break; 
+                case '-panelGridDataDetalle_DEBITS':
+                    global.getFileExcelPost('searchDetByStval_DEBITS', me.paramsDetail.beanString, Ext.getCmp(prototype.id + '-gridDataDetalle_DEBITS').config.columns.items);
+//                    global.getFile(prototype.url + '/getXLSXDetByStval_DEBITS?beanString=' + encodeURI(me.paramsDetail.beanString));
                     break;
                 default:
                     global.Msg(
