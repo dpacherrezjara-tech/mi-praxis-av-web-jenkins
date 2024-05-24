@@ -945,6 +945,545 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                         },
                         {
                             xtype: 'panel',
+                            id: prototype.id + '-boxDebitsDataCountry',
+                            hidden: true,
+//                            width: '100%',
+                            width: 1600,
+                            bodyStyle: 'background: transparent;',
+                            border: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            defaults: {
+                                border: false,
+                                height: '100%'
+                            },
+                            items: [
+                                // <editor-fold defaultstate="collapsed" desc="gridData">
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDebitsDataCountry',
+                                    width: 1600,
+                                    columnLines: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Country',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SCOUNTRY', width: 60,
+                                                        listeners: {
+                                                            click: 'gridDet_DEBITS_clickHandler_2'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
+                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Name', dataIndex: 'NAME', width: 198,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:left;background-color:#d5f4d5;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCountry + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Settlement Reconciliation',
+                                                columns: [
+                                                    {
+                                                        text: 'Match', menuDisabled: true,
+                                                        columns: [
+                                                            {
+                                                                text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCH, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '%', dataIndex: 'lngQMATCHPercent', width: 60, align: 'center', menuDisabled: true, //flex: 1
+    //                                                                listeners: {
+    //                                                                    click: 'onGridDetCardS'
+    //                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000.00') + '%</b>';
+                                                                    return value;
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000.00') + '%<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, //flex: 1
+    //                                                                                listeners: {
+    //                                                                                    click: 'onGridDetCardSMain_DEBITS'
+    //                                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQDIFF, '0,000') + '<b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Settlement', menuDisabled: true,
+                                                        columns: [
+                                                            {
+                                                                text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '<b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Total', dataIndex: 'lngQSALES', width: 100, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            return Ext.util.Format.number(value, '0,000');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '<b>';
+                                                        }
+                                                    },
+
+                                                ]
+                                            },
+                                            {
+                                                text: 'Reconciliation By Refund',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Match',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Auto', dataIndex: 'lngQMATCHRF', width: 80,
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2',
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    return Ext.util.Format.number(data.lngTotQMATCHRF, '0,000');
+                                                                }
+                                                            },
+//                                                            {
+//                                                                text: '%', dataIndex: 'lngQMATCHPercentRF', width: 70, align: 'center', menuDisabled: true,
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000.00') + '%</b>';
+//                                                                    return value;
+//                                                                },
+//                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+//                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercentRF, '0,000.00') + '%<b>';
+//                                                                }
+//                                                            },
+                                                            {
+                                                                text: 'Manual', dataIndex: 'lngQMANUALRF', width: 80,
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2',
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    return Ext.util.Format.number(data.lngTotQMANUALRF, '0,000');
+                                                                }
+                                                            },
+//                                                            {
+//                                                                text: 'Diff', dataIndex: 'lngQDIFFRF', width: 80,
+//                                                                listeners: {
+//                                                                    click: 'gridDetCountry_clickHandler_DIFF_REFND',
+//                                                                },
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#d5f4d5;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+//                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+//                                                                },
+//    //                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//    //                                                                                    metaData.style = "text-align:right;";
+//    //                                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//    //                                                                                    return Ext.util.Format.number(data.lngTotQMANUALRF, '0,000');
+//    //                                                                                }
+//                                                            }
+                                                        ]
+                                                    },
+//                                                    {
+//                                                        text: 'Ticket',
+//                                                        defaults: {
+//                                                            menuDisabled: true,
+//                                                            sortable: false,
+//                                                            align: 'center'
+//                                                        },
+//                                                        columns: [
+//                                                            {
+//                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDRF', width: 80,
+//                                                                listeners: {
+//                                                                    click: 'gridDetCountry_clickHandler_PEND_REFND',
+//                                                                },
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#d5f4d5;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+//                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+//                                                                },
+//                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                                    metaData.style = "text-align:right;";
+//                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//                                                                    return Ext.util.Format.number(data.lngTotQPENDRF, '0,000');
+//                                                                }
+//                                                            }
+//                                                        ]
+//                                                    },
+                                                                        {
+                                                                            text: 'Total<br>Trans.', dataIndex: 'lngQSALESRF', width: 100,
+                                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+                                                                                value = Ext.util.Format.number(value, '0,000');
+                                                                                return value;
+                                                                            },
+                                                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                metaData.style = "text-align:right;";
+                                                                                var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+                                                                                return Ext.util.Format.number(data.lngTotQSALESRF, '0,000');
+                                                                            }
+                                                                        },
+
+                                                ]
+                                            },
+                                            {
+                                                text: 'Reconciliation By Chgbak',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Match',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Auto', dataIndex: 'lngQMATCHCH', width: 80,
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2',
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#FFFFFF;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    return Ext.util.Format.number(data.lngTotQMATCHCH, '0,000');
+                                                                }
+                                                            },
+//                                                            {
+//                                                                text: '%', dataIndex: 'lngQMATCHPercentCH', width: 70, align: 'center', menuDisabled: true,
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#FFFFFF;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000.00') + '%</b>';
+//                                                                    return value;
+//                                                                },
+//                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+//                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercentCH, '0,000.00') + '%<b>';
+//                                                                }
+//                                                            },
+                                                            {
+                                                                text: 'Manual', dataIndex: 'lngQMANUALCH', width: 80,
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2',
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#FFFFFF;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    return Ext.util.Format.number(data.lngTotQMANUALCH, '0,000');
+                                                                }
+                                                            },
+//                                                            {
+//                                                                text: 'Diff', dataIndex: 'lngQDIFFCH', width: 80,
+//                                                                listeners: {
+//                                                                    click: 'gridDetCountry_clickHandler_DIFF_CHGBAK',
+//                                                                },
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#FFFFFF;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+//                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+//                                                                },
+//    //                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//    //                                                                                    metaData.style = "text-align:right;";
+//    //                                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//    //                                                                                    return Ext.util.Format.number(data.lngTotQMANUALCH, '0,000');
+//    //                                                                                }
+//                                                            }
+                                                        ]
+                                                    },
+//                                                    {
+//                                                        text: 'Trans.',
+//                                                        defaults: {
+//                                                            menuDisabled: true,
+//                                                            sortable: false,
+//                                                            align: 'center'
+//                                                        },
+//                                                        columns: [
+//                                                            {
+//                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDCH', width: 80,
+//                                                                listeners: {
+//                                                                    click: 'gridDetCountry_clickHandler_PEND_CHGBAK',
+//                                                                },
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#FFFFFF;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+//                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+//                                                                },
+//                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                                    metaData.style = "text-align:right;";
+//                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//                                                                    return Ext.util.Format.number(data.lngTotQPENDCH, '0,000');
+//                                                                }
+//                                                            }
+//                                                        ]
+//                                                    },
+                                                                        {
+                                                                            text: 'Total<br>Trans.', dataIndex: 'lngQSALESCH', width: 100,
+                                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                metaData.style = "text-align:right;color:#057ECB;background-color:#FFFFFF;";
+                                                                                value = Ext.util.Format.number(value, '0,000');
+                                                                                return value;
+                                                                            },
+                                                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                metaData.style = "text-align:right;";
+                                                                                var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                                return Ext.util.Format.number(data.lngTotQSALESCH, '0,000');
+                                                                            }
+                                                                        },
+
+                                                ]
+                                            },
+                                            {
+                                                text: 'Reconciliation By Acredit',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Match',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Auto', dataIndex: 'lngQMATCHAC', width: 80,
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2',
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    return Ext.util.Format.number(data.lngTotQMATCHAC, '0,000');
+                                                                }
+                                                            },
+//                                                            {
+//                                                                text: '%', dataIndex: 'lngQMATCHPercentAC', width: 70, align: 'center', menuDisabled: true,
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#A4E7EC;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000.00') + '%</b>';
+//                                                                    return value;
+//                                                                },
+//                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+//                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercentAC, '0,000.00') + '%<b>';
+//                                                                }
+//                                                            },
+                                                            {
+                                                                text: 'Manual', dataIndex: 'lngQMANUALAC', width: 80,
+                                                                listeners: {
+                                                                    click: 'gridDet_DEBITS_clickHandler_2',
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                    return Ext.util.Format.number(data.lngTotQMANUALAC, '0,000');
+                                                                }
+                                                            },
+//                                                            {
+//                                                                text: 'Diff', dataIndex: 'lngQDIFFAC', width: 80,
+//                                                                listeners: {
+//                                                                    click: 'gridDetCountry_clickHandler_DIFF_ACREDIT',
+//                                                                },
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+//                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+//                                                                },
+//    //                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//    //                                                                                    metaData.style = "text-align:right;";
+//    //                                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//    //                                                                                    return Ext.util.Format.number(data.lngTotQMANUALAC, '0,000');
+//    //                                                                                }
+//                                                            }
+                                                        ]
+                                                    },
+//                                                    {
+//                                                        text: 'Trans.',
+//                                                        defaults: {
+//                                                            menuDisabled: true,
+//                                                            sortable: false,
+//                                                            align: 'center'
+//                                                        },
+//                                                        columns: [
+//                                                            {
+//                                                                text: 'w/o Sett.', dataIndex: 'lngQPENDAC', width: 80,
+//                                                                listeners: {
+//                                                                    click: 'gridDetCountry_clickHandler_PEND_ACREDIT',
+//                                                                },
+//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+//                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+//                                                                },
+//                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                                    metaData.style = "text-align:right;";
+//                                                                    var data = Ext.getCmp(prototype.id + '-gridDebitsData').getStore().getData().items[0].data;
+//                                                                    return Ext.util.Format.number(data.lngTotQPENDAC, '0,000');
+//                                                                }
+//                                                            }
+//                                                        ]
+//                                                    },
+                                                                        {
+                                                                            text: 'Total<br>Trans.', dataIndex: 'lngQSALESAC', width: 100,
+                                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                metaData.style = "text-align:right;color:#057ECB;background-color:#A4E7EC;";
+                                                                                value = Ext.util.Format.number(value, '0,000');
+                                                                                return value;
+                                                                            },
+                                                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                metaData.style = "text-align:right;";
+                                                                                var data = Ext.getCmp(prototype.id + '-gridDebitsDataCountry').getStore().getData().items[0].data;
+                                                                                return Ext.util.Format.number(data.lngTotQSALESAC, '0,000');
+                                                                            }
+                                                                        },
+
+                                                ]
+                                            },
+                                        ]
+                                    }
+                                }
+                                // </editor-fold>
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
                             id: prototype.id + '-panelGridDetCardByS_Debits',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,

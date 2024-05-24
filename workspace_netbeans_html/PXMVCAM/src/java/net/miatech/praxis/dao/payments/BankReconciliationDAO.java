@@ -354,6 +354,203 @@ public class BankReconciliationDAO {
         return lstTkts;
     }
 
+    public List<A2290Filter> loadPX269SQP00698CountryDebits(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0; 
+        long lngTotQSALESRF = 0, lngTotQMATCHRF = 0, lngTotQMANUALRF = 0, lngTotQDIFFRF = 0, lngTotQPENDRF = 0; 
+        long lngTotQSALESCH = 0, lngTotQMATCHCH = 0, lngTotQMANUALCH = 0, lngTotQDIFFCH = 0, lngTotQPENDCH = 0;
+        long lngTotQSALESAC = 0, lngTotQMATCHAC = 0, lngTotQMANUALAC = 0, lngTotQDIFFAC = 0, lngTotQPENDAC = 0; 
+        long lngTotQPOLIC = 0, lngTotQPOLIPE = 0;
+
+        // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
+        filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");//YYYY
+        filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+        filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");//YYYY
+        filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+        //</editor-fold>
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698COUNTRY_DEBITS(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_SDATE);
+            cstmt.setString(3, filter.IN_TDOC);
+            cstmt.setString(4, filter.IN_COUNTRY);
+
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                lngTotQSALES = rst.getLong("QSALES");
+                lngTotQMATCH = rst.getLong("QMATCH");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotQDIFF = rst.getLong("QDIFF");
+                lngTotQPEND = rst.getLong("QPEND");
+                
+               lngTotQSALESRF = rst.getLong("QSALESRF");
+                lngTotQMATCHRF = rst.getLong("QMATCHRF");
+                lngTotQMANUALRF = rst.getLong("QMANUALRF");
+                lngTotQDIFFRF = rst.getLong("QDIFFRF");
+                lngTotQPENDRF = rst.getLong("QPENDRF");
+                
+                lngTotQSALESCH = rst.getLong("QSALESCH");
+                lngTotQMATCHCH = rst.getLong("QMATCHCH");
+                lngTotQMANUALCH = rst.getLong("QMANUALCH");
+                lngTotQDIFFCH = rst.getLong("QDIFFCH");
+                lngTotQPENDCH = rst.getLong("QPENDCH");
+                
+                lngTotQSALESAC = rst.getLong("QSALESAC");
+                lngTotQMATCHAC = rst.getLong("QMATCHAC");
+                lngTotQMANUALAC = rst.getLong("QMANUALAC");
+                lngTotQDIFFAC = rst.getLong("QDIFFAC");
+                lngTotQPENDAC = rst.getLong("QPENDAC");
+                
+                lngTotQPOLIC = rst.getLong("QPOLIC");
+                lngTotQPOLIPE = rst.getLong("QPOLIPE");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.SDATE = filter.SDATE.trim();
+                    beanTkt.IN_SDATE = filter.IN_SDATE.trim();
+                    beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.IN_SDATE);
+                    
+//                    if (rst.getString("COUNTRY").trim().isEmpty()) {
+//                        beanTkt.SCOUNTRY = "**";
+//                    }else {
+//                        
+//                    }
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.NAME = rst.getString("NAME").trim();
+
+                    beanTkt.lngQSALES = rst.getLong("QSALES");
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+
+                    beanTkt.lngQSALESRF = rst.getLong("QSALESRF");
+                    beanTkt.lngQMATCHRF = rst.getLong("QMATCHRF");
+                    beanTkt.lngQDIFFRF = rst.getLong("QDIFFRF");
+                    beanTkt.lngQMANUALRF = rst.getLong("QMANUALRF");
+                    beanTkt.lngQPENDRF = rst.getLong("QPENDRF");
+
+                    beanTkt.lngQSALESCH = rst.getLong("QSALESCH");
+                    beanTkt.lngQMATCHCH = rst.getLong("QMATCHCH");
+                    beanTkt.lngQDIFFCH = rst.getLong("QDIFFCH");
+                    beanTkt.lngQMANUALCH = rst.getLong("QMANUALCH");
+                    beanTkt.lngQPENDCH = rst.getLong("QPENDCH");
+
+                    beanTkt.lngQSALESAC = rst.getLong("QSALESAC");
+                    beanTkt.lngQMATCHAC = rst.getLong("QMATCHAC");
+                    beanTkt.lngQDIFFAC = rst.getLong("QDIFFAC");
+                    beanTkt.lngQMANUALAC = rst.getLong("QMANUALAC");
+                    beanTkt.lngQPENDAC = rst.getLong("QPENDAC");
+
+                    beanTkt.lngQPOLIC = rst.getLong("QPOLIC");
+                    beanTkt.lngQPOLIPE = rst.getLong("QPOLIPE");
+
+                    beanTkt.lngTotQSALES = lngTotQSALES;
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
+                    beanTkt.lngTotQMANUAL = lngTotQMANUAL;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+                    
+                    beanTkt.lngTotQSALESRF = lngTotQSALESRF;
+                    beanTkt.lngTotQMATCHRF = lngTotQMATCHRF;
+                    beanTkt.lngTotQMANUALRF = lngTotQMANUALRF;
+                    beanTkt.lngTotQPENDRF = lngTotQPENDRF;
+
+                    beanTkt.lngTotQSALESCH = lngTotQSALESCH;
+                    beanTkt.lngTotQMATCHCH = lngTotQMATCHCH;
+                    beanTkt.lngTotQMANUALCH = lngTotQMANUALCH;
+                    beanTkt.lngTotQPENDCH = lngTotQPENDCH;
+
+                    beanTkt.lngTotQSALESAC = lngTotQSALESAC;
+                    beanTkt.lngTotQMATCHAC = lngTotQMATCHAC;
+                    beanTkt.lngTotQMANUALAC = lngTotQMANUALAC;
+                    beanTkt.lngTotQPENDAC = lngTotQPENDAC;
+
+                    beanTkt.lngTotQPOLIC = lngTotQPOLIC;
+                    beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
+
+                    beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
+                    
+                    beanTkt.lngQMATCHPercentRF = (beanTkt.lngQSALESRF > 0) ? (beanTkt.lngQMATCHRF * 100.0) / beanTkt.lngQSALESRF : 0.00;
+                    beanTkt.lngQMATCHPercentCH = (beanTkt.lngQSALESCH > 0) ? (beanTkt.lngQMATCHCH * 100.0) / beanTkt.lngQSALESCH : 0.00;
+                    beanTkt.lngQMATCHPercentAC = (beanTkt.lngQSALESAC > 0) ? (beanTkt.lngQMATCHAC * 100.0) / beanTkt.lngQSALESAC : 0.00;
+                    
+                    beanTkt.lngTotQMATCHPercent = (lngTotQSALES > 0) ? (lngTotQMATCH * 100.0) / lngTotQSALES : 0.00;
+                    beanTkt.lngTotQMATCHPercentRF = (lngTotQSALESRF > 0) ? (lngTotQMATCHRF * 100.0) / lngTotQSALESRF : 0.00;
+                    beanTkt.lngTotQMATCHPercentCH = (lngTotQSALESCH > 0) ? (lngTotQMATCHCH * 100.0) / lngTotQSALESCH : 0.00;
+                    beanTkt.lngTotQMATCHPercentAC = (lngTotQSALESAC > 0) ? (lngTotQMATCHAC * 100.0) / lngTotQSALESAC : 0.00;
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
     public List<A2290Filter> loadPX269SQP00698Day(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -3773,7 +3970,7 @@ public class BankReconciliationDAO {
                         beanTkt.strTitulo = "Sales Date : ";
                     }
                     
-                    beanTkt.strTitulo += filter.strFormatDate + " **" + hmDescEstados.get(filter.IN_STVAL) + "** " +" - "  + filter.strDescCountry;
+                    beanTkt.strTitulo += filter.strFormatDate + " **" + hmDescEstados.get(filter.IN_STVAL) + "** " +" - "  + filter.NAME;
                     beanTkt.FCONT = rst.getString("FCONT").trim();
                     beanTkt.NEGOC = rst.getString("NEGOC").trim();
                     if (beanTkt.NEGOC.equals("1")) {
