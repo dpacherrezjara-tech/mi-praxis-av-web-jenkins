@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.LoadControlForm.DataEntry',{
+Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
     extend: 'Ext.window.Window',
-    alias: 'widget.DataEntryLoadControlForm',
+    alias: 'widget.DataEntryInsumosMDPForm',
     requires:[
-        'Ext.Praxis.controller.payments.LoadControl.DataEntryLoadControlController'
+        'Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPController'
     ],
-    controller: 'DataEntryLoadControlController',
+    controller: 'DataEntryInsumosMDPController',
     title:'Code Message - Data Entry Form',
     header:true,
     height:268,

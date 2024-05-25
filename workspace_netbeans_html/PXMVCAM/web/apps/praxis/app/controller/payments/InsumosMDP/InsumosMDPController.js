@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-Ext.define('Ext.Praxis.controller.payments.LoadControl.LoadControlController', {
+Ext.define('Ext.Praxis.controller.payments.InsumosMDP.InsumosMDPController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.LoadControlController',
+    alias: 'controller.InsumosMDPController',
     fecha: new Date(),
     childs: '5',
     bean: '',
@@ -22,8 +22,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadControl.LoadControlController', {
     dataObtain: {},
     init: function(view) {
         me = this;
-        prototype.id = 'LoadControlForm';
-        prototype.url = CONTEXTPATH + '/LoadControl';
+        prototype.id = 'InsumosMDPForm';
+        prototype.url = CONTEXTPATH + '/InsumosMDP';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
         me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -32,37 +32,37 @@ Ext.define('Ext.Praxis.controller.payments.LoadControl.LoadControlController', {
 
         this.control({
             //   -------------------Eventos Genericos --------------------
-            '#LoadControlForm-xpanel': {
+            '#InsumosMDPForm-xpanel': {
                 afterrender: this.xpanel_afterrender            
             },
-            '#LoadControlForm-btnSearch': {
+            '#InsumosMDPForm-btnSearch': {
                 click: this.btnSearch_click
             },
-            '#LoadControlForm-btnClear': {
+            '#InsumosMDPForm-btnClear': {
                 click: this.btnClear_click
             },
-            '#LoadControlForm-btnExcel': {
+            '#InsumosMDPForm-btnExcel': {
                 click: this.btnExcel_click
             },
-            '#LoadControlForm-btnFilter': {
+            '#InsumosMDPForm-btnFilter': {
                 click: this.btnFilter_click
             },
-            '#LoadControlForm-btnAdd': {
+            '#InsumosMDPForm-btnAdd': {
                 click: this.btnAdd_click
             },
-            '#LoadControlForm-btnBack': {
+            '#InsumosMDPForm-btnBack': {
                 click: this.btnBack_click
             },
-            '#LoadControlForm-btn-pag-first': {
+            '#InsumosMDPForm-btn-pag-first': {
                 click: this.pagFirst
             },
-            '#LoadControlForm-btn-pag-previous': {
+            '#InsumosMDPForm-btn-pag-previous': {
                 click: this.pagPrevious
             },
-            '#LoadControlForm-btn-pag-next': {
+            '#InsumosMDPForm-btn-pag-next': {
                 click: this.pagNext
             },
-            '#LoadControlForm-btn-pag-last': {
+            '#InsumosMDPForm-btn-pag-last': {
                 click: this.pagLast
             }
 //            //-----------------Eventos Especificos -------------------    
@@ -178,7 +178,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadControl.LoadControlController', {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
 
-        Ext.create('Ext.Praxis.view.payments.LoadControlForm.DataEntry', {
+        Ext.create('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry', {
             id: prototype.id + '-dataEntry',
             params: {
                 action: action,

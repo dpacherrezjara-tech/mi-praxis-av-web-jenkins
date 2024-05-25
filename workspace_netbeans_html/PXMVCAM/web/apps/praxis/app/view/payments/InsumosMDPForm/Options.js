@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.LoadControlForm.Options', {
+Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,

@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.TableMessage.DataEntryTableMessageController', {
+Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.DataEntryTableMessageController',
+    alias: 'controller.DataEntryInsumosMDPController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDE: '',
     actionCode: '',
@@ -12,8 +12,8 @@ Ext.define('Ext.Praxis.controller.payments.TableMessage.DataEntryTableMessageCon
     dataObtain: {},
     // </editor-fold>
     init: function(view) {
-        prototype.id = 'TableMessageForm';
-        prototype.url = CONTEXTPATH + '/TableMessage';
+        prototype.id = 'InsumosMDPForm';
+        prototype.url = CONTEXTPATH + '/InsumosMDP';
         meDE = this;
         this.p = this.view.params;
         this.actionCode = this.p.action;

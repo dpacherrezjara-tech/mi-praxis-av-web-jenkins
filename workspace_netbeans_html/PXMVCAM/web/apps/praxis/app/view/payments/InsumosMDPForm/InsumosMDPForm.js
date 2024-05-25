@@ -1,17 +1,17 @@
 
-prototype.id = 'LoadControlForm';
-prototype.url = CONTEXTPATH + '/LoadControl';
+prototype.id = 'InsumosMDPForm';
+prototype.url = CONTEXTPATH + '/InsumosMDP';
 
-Ext.define('Ext.Praxis.view.payments.LoadControlForm.LoadControlForm', {
+Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.InsumosMDPForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.LoadControlForm',
+    alias: 'widget.InsumosMDPForm',
     requires: [
-        'Ext.Praxis.view.payments.LoadControlForm.Options',
-        'Ext.Praxis.view.payments.LoadControlForm.Filters',
-        'Ext.Praxis.view.payments.LoadControlForm.Info',
-        'Ext.Praxis.controller.payments.LoadControl.LoadControlController'
+        'Ext.Praxis.view.payments.InsumosMDPForm.Options',
+        'Ext.Praxis.view.payments.InsumosMDPForm.Filters',
+        'Ext.Praxis.view.payments.InsumosMDPForm.Info',
+        'Ext.Praxis.controller.payments.InsumosMDP.InsumosMDPController'
     ],
-    controller: 'LoadControlController',
+    controller: 'InsumosMDPController',
     layout: {
         type: 'fit'
     },
