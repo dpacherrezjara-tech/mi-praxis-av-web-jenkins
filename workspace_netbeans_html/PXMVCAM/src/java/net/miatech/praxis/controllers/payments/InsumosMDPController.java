@@ -8,11 +8,14 @@ package net.miatech.praxis.controllers.payments;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 //import net.miatech.praxis.logic.payments.InsumosMDPLogic;
+import net.miatech.praxis.logic.payments.InsumosMDPLogic;
+import net.miatech.praxis.logic.payments.TableMessageLogic;
 import net.miatech.praxis.payment.filter.A2353Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -33,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class InsumosMDPController extends BaseController {
 
     private static final Logger logError = Logger.getLogger("errorLog");
-//    private InsumosMDPLogic logic;
+    private InsumosMDPLogic logic;
     private MasterDAO masterDAO;
 
     @RequestMapping(method = RequestMethod.POST)
@@ -59,35 +62,61 @@ public class InsumosMDPController extends BaseController {
 
         List<A2353Filter> lst = new ArrayList<>(0);
         A2353Filter filter = new A2353Filter();
-
-        try {
         Gson gson = new Gson();
-//            logic = new InsumosMDPLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//
-//            beanString = request.getParameter("beanString");
-//            filter = gson.fromJson(beanString, A2353Filter.class);
-//            filter.page.TOTROW = -1;
-//            filter.page.START = 0;
-//            filter.page.LIMIT = 0;
-//
-//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-//
-//            if (!bExcel) {
-//                filter.page.PAGROW = 20;
-//                start = (start != 0 ? start : 0);
-//                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-//            } else {
-//                filter.page.PAGROW = -1;
-//                filter.page.PAGNUM = 1;
-//            }
-//
-//            lst = logic.loadPX285SQP00827_LOADCONTROL(filter);
+        String beanString = "";
+        try {
+        
+            logic = new InsumosMDPLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX285SQP00827_InsumosMDPDAO(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
+    }
+    
+    @RequestMapping(value = "searchCompleteDetail")
+    public @ResponseBody
+    String searchCompleteDetail(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- TableMessage : searchCompleteDetail-------------");
+
+        Gson gson = new Gson();
+        A2353Filter filter = new A2353Filter();
+        A2353Filter result = new A2353Filter();
+
+        String beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2353Filter.class);
+
+        logic = new InsumosMDPLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        try {
+            result = logic.loadPX285SQP00829_InsumosMDPDAO(filter);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
     }
 
 }

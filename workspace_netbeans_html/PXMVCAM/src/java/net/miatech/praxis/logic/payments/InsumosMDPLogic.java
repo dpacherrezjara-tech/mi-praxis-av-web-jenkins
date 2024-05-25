@@ -28,6 +28,10 @@ public class InsumosMDPLogic {
         return InsumosMDPDAO.loadPX285SQP00827_InsumosMDPDAO(filter);
     }
     
+    public A2353Filter loadPX285SQP00829_InsumosMDPDAO(A2353Filter filter) throws Exception {
+        return InsumosMDPDAO.loadPX285SQP00829_InsumosMDPDAO(filter);
+    }
+    
 
 }
 

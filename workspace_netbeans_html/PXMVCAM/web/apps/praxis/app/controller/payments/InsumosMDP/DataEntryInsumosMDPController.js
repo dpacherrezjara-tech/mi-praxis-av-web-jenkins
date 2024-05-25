@@ -18,36 +18,44 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
-        this.lstCountry = this.p.lstCountry;
+//        this.lstCountry = this.p.lstCountry;
 //        this.obtainData();
     },
     afterRender: function() {
         switch (this.actionCode) {
             case 'I':
-                Ext.getCmp(prototype.id + '-btn-save').show();
+                Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
             case 'U':
+//                console.log(meDE.bean.data, 'meDE.bean' )
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-delete').show();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
     },
     mostrarData: function() {
-        this.setValue('de-txtCODEM', this.beanResult.CODEM);
-        this.setValue('de-txtDESCR', this.beanResult.DESCR);
-//        this.setValue('de-txtRSOCIAL', this.beanResult.RSOCIAL);
-//        this.setValue('de-txtCIATA', this.beanResult.CIATA);
-//        this.setValue('de-txtCANAL', this.beanResult.CANAL);
-//        this.setValue('de-txtNameIATA', this.beanResult.strDescrip);
-//        this.setValue('de-txtSCOUNTRY', this.beanResult.SCOUNTRY);
-//        this.setValue('de-txtNameCTRY', this.beanResult.strDescripCtry);
+        this.setValue('de-txtAPLIC', this.beanResult.APLIC);
+        this.setValue('de-txtINPNAME', this.beanResult.INPNAME);
+        this.setValue('de-txtSEQNUM', this.beanResult.SEQNUM);
+        this.setValue('de-txtDENV', this.beanResult.DENV);
+        this.setValue('de-txtNETDIR', this.beanResult.NETDIR);
+        this.setValue('de-txtINPEXTE', this.beanResult.INPEXTE);
+        this.setValue('de-txtINPTYPE', this.beanResult.INPTYPE);
+        this.setValue('de-txtINPDESC', this.beanResult.INPDESC);
+        this.setValue('de-txtLIBNAME', this.beanResult.LIBNAME);
+        this.setValue('de-txtOUTNAME', this.beanResult.OUTNAME);
+        this.setValue('de-txtFECPROC', this.beanResult.FECPROC);
+        this.setValue('de-txtSTAT', this.beanResult.STAT);
+        this.setValue('de-txtTABLA', this.beanResult.TABLA);
+        this.setValue('de-txtQTYREG', this.beanResult.QTYREG);
+        this.setValue('de-txtFASE', this.beanResult.FASE);
 
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -60,8 +68,8 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function(beanTemp) {
-        beanTemp.CODEM = this.getValue("de-txtCODEM");
-        beanTemp.DESCR = this.getValue("de-txtDESCR");
+//        beanTemp.CODEM = this.getValue("de-txtCODEM");
+//        beanTemp.DESCR = this.getValue("de-txtDESCR");
 
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
@@ -215,7 +223,8 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     },
     DeshabilitarCampoClave: function() {
 
-        Ext.getCmp(prototype.id + '-de-txtCODEM').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtAPLIC').setReadOnly(true);
+        Ext.getCmp(prototype.id + '-de-txtINPNAME').setReadOnly(true);
     },
     Habilitarlbl: function() {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();

@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Filters', {
                     allowBlank: true,
                     readOnly: false,
                     editable: true, 
-                    maskRe: /[0-9a-zA-Z]/,
+//                    maskRe: /[0-9a-zA-Z]/,
                     maxLength:30,
                     labelWidth: 100,
                     width: 300,

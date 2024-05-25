@@ -177,13 +177,13 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.InsumosMDPController', {
     winDataEntry: function(action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
-
+        //CREACION DEL DATA ENTRY
         Ext.create('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry', {
             id: prototype.id + '-dataEntry',
             params: {
                 action: action,
                 rec: rec,
-                lstCountry: me.lstCountry
+//                lstCountry: me.lstCountry
             }
         }).show();
     },

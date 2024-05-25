@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
     controller: 'DataEntryInsumosMDPController',
     title:'Code Message - Data Entry Form',
     header:true,
-    height:268,
-    width:750,
+    height:400,
+    width:930,
     resizable:false,
     layout:'fit',
     modal:true,
@@ -33,7 +33,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                         anchor: '100%'
                     },
                     items: [
-                        {
+                        {   
                             xtype: 'panel',
                             layout: 'hbox',
                             border: false,
@@ -47,7 +47,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
-                                    text: 'Code Information',
+                                    text: 'Insumo Information',
                                     style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
                                     width: 130,
                                     height: 25
@@ -69,43 +69,93 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
-                                    text: 'Code Message.',
+                                    text: 'Aplic. Group',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 130
+                                    width: 80
                                 },
                                 {
                                     xtype: 'label',
                                     text: '(*)',
                                     style: 'font-weight:bold;color:red;',
-                                    width: 20,
+                                    width: 15,
                                     autoEl: {
                                         tag: 'label',
                                         'data-qtip': 'Mandatory Field'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 5 },
+                                { xtype: 'tbspacer', width: 10 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtCODEM',
+                                    id:prototype.id+'-de-txtAPLIC',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
                                     enabled: false,
-                                    maxLength: 2,
-                                    maskRe: /[0-9]/,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:10,
                                     readOnly: false,
-                                    width: 50
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Inp. Name',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                {
+                                    xtype: 'label',
+                                    text: '(*)',
+                                    style: 'font-weight:bold;color:red;',
+                                    width: 15,
+                                    autoEl: {
+                                        tag: 'label',
+                                        'data-qtip': 'Mandatory Field'
+                                    }
+                                },
+                                { xtype: 'tbspacer', width: 10 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtINPNAME',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: true,
+                                    enabled: false,
+                                    maxLength: 30,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Seq. Num',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 10 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtSEQNUM',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 2,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
                                 }
                                 ,
-                                { xtype: 'tbspacer', width: 459 }
+                                { xtype: 'tbspacer', width: 24 }
                             ]
-                        }, 
+                        },
                         {
                             xtype: 'panel',
                             layout: 'hbox',
                             border: false,
                             bodyStyle: 'background:#E5ECEF;',
-                            margin: '0 2 4 30',
+                            margin: '0 2 2 30',
                             defaults: {
                                 anchor: '100%',
                                 width: 1080
@@ -114,24 +164,293 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
-                                    text: 'Description',
+                                    text: 'Days Env.',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 150
+                                    width: 80
                                 },
-                                { xtype: 'tbspacer', width: 4 },
+                                { xtype: 'tbspacer', width: 25 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtDESCR',
+                                    id:prototype.id+'-de-txtDENV',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:7,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Net. Direc.',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:left;',
-                                    maxChars: '40',
-                                    width: 500,
-//                                    maskRe: /[a-zA-Z]/
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtNETDIR',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 50,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Ext. Name',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 10 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtINPEXTE',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 4,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
                                 }
                                 ,
-                                { xtype: 'tbspacer', width: 10 }
+                                { xtype: 'tbspacer', width: 24 }
                             ]
-                        }
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '0 2 2 30',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1080
+                            },
+                            items: [                                                       
+                                { xtype: 'tbspacer', width: 7 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Input Desc.',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtINPDESC',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:50,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Input Type',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtINPTYPE',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 1,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Library',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 10 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtLIBNAME',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 10,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                }
+                                ,
+                                { xtype: 'tbspacer', width: 24 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '0 2 2 30',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1080
+                            },
+                            items: [                                                       
+                                { xtype: 'tbspacer', width: 7 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Out. Name',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtOUTNAME',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:10,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Data Last.',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtFECPROC',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 8,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Status',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 10 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtSTAT',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 1,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                }
+                                ,
+                                { xtype: 'tbspacer', width: 24 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '0 2 2 30',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1080
+                            },
+                            items: [                                                       
+                                { xtype: 'tbspacer', width: 7 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Tabla',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtTABLA',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:10,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Qty Recor.',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 25 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtQTYREG',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 50,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                },
+                                { xtype: 'tbspacer', width: 20 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Fase',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 10 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtFASE',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength:1,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 100
+                                }
+                                ,
+                                { xtype: 'tbspacer', width: 24 }
+                            ]
+                        },
+                        
                     ]
                 },
                 // <editor-fold defaultstate="collapsed" desc="ControlData">

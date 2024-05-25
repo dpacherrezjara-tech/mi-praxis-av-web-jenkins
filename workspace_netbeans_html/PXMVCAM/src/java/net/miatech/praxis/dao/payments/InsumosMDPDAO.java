@@ -18,6 +18,7 @@ import java.util.List;
 import net.miatech.beans.ReportEmdDetailsA1530Filter;
 
 import net.miatech.beans.spring.implement.IServerSession;
+import static net.miatech.praxis.dao.payments.TableMessageDAO.pasarGarbageCollector;
 import net.miatech.praxis.interline.filter.SFI021Filter;
 import net.miatech.praxis.interline.filter.WRF016Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
@@ -688,7 +689,7 @@ public class InsumosMDPDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00827_InsumosMDPDAO(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00827_LOADCONTROL(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -761,6 +762,77 @@ public class InsumosMDPDAO {
         }
 
         return lstData;
+    }
+    
+    public A2353Filter loadPX285SQP00829_InsumosMDPDAO(A2353Filter filter) throws SQLException, Exception {
+
+        A2353Filter objRtn = new A2353Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00829_A2358DETAIL(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.APLIC.trim());
+            cstmt01.setString(3, filter.INPNAME.trim());
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn.CCUST = rs01.getString("CCUST");
+                objRtn.APLIC = rs01.getString("APLIC").trim();
+                objRtn.SEQNUM = rs01.getString("SEQNUM").trim();
+                objRtn.DENV = rs01.getString("DENV").trim();
+                objRtn.INPNAME = rs01.getString("INPNAME").trim();
+                objRtn.NETDIR = rs01.getString("NETDIR").trim();
+                objRtn.INPEXTE = rs01.getString("INPEXTE").trim();
+                objRtn.INPDESC = rs01.getString("INPDESC").trim();
+                objRtn.INPTYPE = rs01.getString("INPTYPE").trim();
+                objRtn.LIBNAME = rs01.getString("LIBNAME").trim();
+                objRtn.OUTNAME = rs01.getString("OUTNAME").trim();
+                objRtn.FECPROC = rs01.getString("FECPROC").trim();
+                objRtn.STAT = rs01.getString("STAT").trim();
+                objRtn.TABLA = rs01.getString("TABLA").trim();
+                objRtn.QTYREG = rs01.getInt("QTYREG");
+                objRtn.FASE = rs01.getString("FASE").trim();
+
+                objRtn.USCR = rs01.getString("USCR");
+                objRtn.FECR = rs01.getString("FECR");
+                objRtn.HOCR = rs01.getString("HOCR");
+                objRtn.USUP = rs01.getString("USUP");
+                objRtn.FEUP = rs01.getString("FEUP");
+                objRtn.HOUP = rs01.getString("HOUP");
+
+                //lstRtn.add(objRtn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return objRtn;
     }
     
 //    public String loadPX285SQP00828(A2353Filter filter, String option) throws SQLException, Exception {
