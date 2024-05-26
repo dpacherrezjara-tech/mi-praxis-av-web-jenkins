@@ -161,7 +161,6 @@ public class LoadDebitsConciliationController extends BaseController {
         List<A2290Filter> lstData = new ArrayList<>();
         A2290Filter respt = new A2290Filter();
         String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-        
 //        String ruta = "D:";
         double neto = 0;
 //        boolean isDiff = false;
@@ -291,6 +290,7 @@ public class LoadDebitsConciliationController extends BaseController {
         logic = new LoadDebitsConciliationLogic();
         List<A2290Filter> lstData = new ArrayList<>();
         String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//        String ruta = "D:";
         double neto = 0;
         String mensaje = "Hubo un error al actualizar la conciliación", strHora = Functions.getHoraActual();
         String mensajePost = "";
@@ -323,8 +323,11 @@ public class LoadDebitsConciliationController extends BaseController {
                     i++;
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 1) {
-
+                        System.out.println(i);
                         A2290Filter obj = new A2290Filter();
+                        if (row.getCell(0) == null) {
+                            break;
+                        }
                         Date date = row.getCell(0).getDateCellValue();
                         obj.ADATE = FechaInator(dateFormat.format(date).trim());
                         obj.SDATE = formatter.formatCellValue(row.getCell(1)).trim().replace("-", "");
