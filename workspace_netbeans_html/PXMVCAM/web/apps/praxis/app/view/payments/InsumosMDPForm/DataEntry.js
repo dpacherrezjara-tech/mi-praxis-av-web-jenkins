@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 width: 1080
                             },
                             items: [                                                       
-                                { xtype: 'tbspacer', width: 7 },
+                                { xtype: 'tbspacer', width: 8 },
                                 {
                                     xtype: 'label',
                                     text: 'Aplic. Group',
