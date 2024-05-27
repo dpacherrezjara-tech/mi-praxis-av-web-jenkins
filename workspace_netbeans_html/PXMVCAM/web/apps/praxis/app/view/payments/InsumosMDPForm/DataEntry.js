@@ -5,10 +5,10 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
         'Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPController'
     ],
     controller: 'DataEntryInsumosMDPController',
-    title:'Code Message - Data Entry Form',
+    title:'INSUMOS MDP - Data Entry Form',
     header:true,
     height:400,
-    width:930,
+    width:1074,
     resizable:false,
     layout:'fit',
     modal:true,
@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                     xtype: 'panel',
                     bodyStyle: 'background: transparent;"',
                     layout: 'vbox',
-                    width:930,
+                    width:1090,
                     defaults: {
                         anchor: '100%'
                     },
@@ -49,10 +49,10 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     xtype: 'label',
                                     text: 'Insumo Information',
                                     style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
-                                    width: 130,
-                                    height: 25
+                                    width: 200,
+                                    height: 30
                                 },
-                                { xtype: 'tbspacer', width: 534 }
+                                { xtype: 'tbspacer', width: 786 }
                             ]
                         },
                         {
@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 width: 1080
                             },
                             items: [                                                       
-                                { xtype: 'tbspacer', width: 8 },
+                                { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
                                     text: 'Aplic. Group',
@@ -94,9 +94,9 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
 //                                    maskRe: /[0-9a-zA-Z]/,
                                     maxLength:10,
                                     readOnly: false,
-                                    width: 100
+                                    width: 60
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'tbspacer', width: 192 },
                                 {
                                     xtype: 'label',
                                     text: 'Inp. Name',
@@ -113,7 +113,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                         'data-qtip': 'Mandatory Field'
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 10 },
+                                { xtype: 'tbspacer', width: 22 },
                                 {
                                     xtype: 'textfield',
                                     id:prototype.id+'-de-txtINPNAME',
@@ -126,27 +126,27 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     readOnly: false,
                                     width: 100
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'tbspacer', width: 236 },
                                 {
                                     xtype: 'label',
-                                    text: 'Seq. Num',
+                                    text: 'Tabla',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
+                                    width: 20
                                 },
-                                { xtype: 'tbspacer', width: 10 },
+                                { xtype: 'tbspacer', width: 72 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtSEQNUM',
+                                    id:prototype.id+'-de-txtTABLA',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: false,
                                     enabled: false,
-                                    maxLength: 2,
-//                                    maskRe: /[0-9]/,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:10,
                                     readOnly: false,
-                                    width: 100
-                                }
-                                ,
+                                    width: 60
+                                },
+                                
                                 { xtype: 'tbspacer', width: 24 }
                             ]
                         },
@@ -160,35 +160,15 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 anchor: '100%',
                                 width: 1080
                             },
-                            items: [                                                       
+                            items: [
                                 { xtype: 'tbspacer', width: 7 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Days Env.',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 25 },
-                                {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-de-txtDENV',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-//                                    maskRe: /[0-9a-zA-Z]/,
-                                    maxLength:7,
-                                    readOnly: false,
-                                    width: 100
-                                },
-                                { xtype: 'tbspacer', width: 20 },
                                 {
                                     xtype: 'label',
                                     text: 'Net. Direc.',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
+                                    width: 90
                                 },
-                                { xtype: 'tbspacer', width: 25 },
+                                { xtype: 'tbspacer', width: 15 },
                                 {
                                     xtype: 'textfield',
                                     id:prototype.id+'-de-txtNETDIR',
@@ -199,29 +179,49 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     maxLength: 50,
 //                                    maskRe: /[0-9]/,
                                     readOnly: false,
-                                    width: 100
+                                    width: 200
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'tbspacer', width: 52 },
                                 {
                                     xtype: 'label',
-                                    text: 'Ext. Name',
+                                    text: 'Input Desc.',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
-                                { xtype: 'tbspacer', width: 10 },
+                                { xtype: 'tbspacer', width: 37},
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtINPEXTE',
+                                    id:prototype.id+'-de-txtINPDESC',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: false,
                                     enabled: false,
-                                    maxLength: 4,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:50,
+                                    readOnly: false,
+                                    width: 280
+                                },
+                                 { xtype: 'tbspacer', width: 57 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Status',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 40
+                                },
+                                { xtype: 'tbspacer', width: 51 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtSTAT',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 1,
 //                                    maskRe: /[0-9]/,
                                     readOnly: false,
-                                    width: 100
+                                    width: 60
                                 }
-                                ,
+                                ,                  
                                 { xtype: 'tbspacer', width: 24 }
                             ]
                         },
@@ -239,24 +239,82 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
-                                    text: 'Input Desc.',
+                                    text: 'Ext. Name',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 { xtype: 'tbspacer', width: 25 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtINPDESC',
+                                    id:prototype.id+'-de-txtINPEXTE',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 4,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 60
+                                }
+                                ,
+                                
+                                { xtype: 'tbspacer', width: 193 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Out. Name',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 37 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtOUTNAME',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: false,
                                     enabled: false,
 //                                    maskRe: /[0-9a-zA-Z]/,
-                                    maxLength:50,
+                                    maxLength:10,
                                     readOnly: false,
                                     width: 100
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'tbspacer', width: 237 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Fase',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 20
+                                },
+                                { xtype: 'tbspacer', width: 70 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtFASE',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength:1,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 60
+                                }
+                                ,  
+                                
+                                { xtype: 'tbspacer', width: 24 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '0 2 2 30',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1080
+                            },
+                            items: [
+                                { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
                                     text: 'Input Type',
@@ -274,71 +332,17 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     maxLength: 1,
 //                                    maskRe: /[0-9]/,
                                     readOnly: false,
-                                    width: 100
+                                    width: 60
                                 },
-                                { xtype: 'tbspacer', width: 20 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Library',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 10 },
-                                {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-de-txtLIBNAME',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-                                    maxLength: 10,
-//                                    maskRe: /[0-9]/,
-                                    readOnly: false,
-                                    width: 100
-                                }
-                                ,
-                                { xtype: 'tbspacer', width: 24 }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            bodyStyle: 'background:#E5ECEF;',
-                            margin: '0 2 2 30',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [                                                       
-                                { xtype: 'tbspacer', width: 7 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Out. Name',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 25 },
-                                {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-de-txtOUTNAME',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-//                                    maskRe: /[0-9a-zA-Z]/,
-                                    maxLength:10,
-                                    readOnly: false,
-                                    width: 100
-                                },
-                                { xtype: 'tbspacer', width: 20 },
+                                
+                                { xtype: 'tbspacer', width: 193 },
                                 {
                                     xtype: 'label',
                                     text: 'Data Last.',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
-                                { xtype: 'tbspacer', width: 25 },
+                                { xtype: 'tbspacer', width: 37 },
                                 {
                                     xtype: 'textfield',
                                     id:prototype.id+'-de-txtFECPROC',
@@ -351,27 +355,27 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     readOnly: false,
                                     width: 100
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                
+                                { xtype: 'tbspacer', width: 237 },
                                 {
                                     xtype: 'label',
-                                    text: 'Status',
+                                    text: 'Days Env.',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 { xtype: 'tbspacer', width: 10 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtSTAT',
+                                    id:prototype.id+'-de-txtDENV',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: false,
                                     enabled: false,
-                                    maxLength: 1,
-//                                    maskRe: /[0-9]/,
+//                                    maskRe: /[0-9a-zA-Z]/,
+                                    maxLength:7,
                                     readOnly: false,
-                                    width: 100
-                                }
-                                ,
+                                    width: 60
+                                },
                                 { xtype: 'tbspacer', width: 24 }
                             ]
                         },
@@ -386,27 +390,8 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                 width: 1080
                             },
                             items: [                                                       
+                                
                                 { xtype: 'tbspacer', width: 7 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Tabla',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 25 },
-                                {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-de-txtTABLA',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-//                                    maskRe: /[0-9a-zA-Z]/,
-                                    maxLength:10,
-                                    readOnly: false,
-                                    width: 100
-                                },
-                                { xtype: 'tbspacer', width: 20 },
                                 {
                                     xtype: 'label',
                                     text: 'Qty Recor.',
@@ -424,29 +409,51 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     maxLength: 50,
 //                                    maskRe: /[0-9]/,
                                     readOnly: false,
-                                    width: 100
+                                    width: 60
                                 },
-                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'tbspacer', width: 193 },
                                 {
                                     xtype: 'label',
-                                    text: 'Fase',
+                                    text: 'Library',
                                     style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
+                                    width: 60
                                 },
-                                { xtype: 'tbspacer', width: 10 },
+                                { xtype: 'tbspacer', width: 57 },
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-de-txtFASE',
+                                    id:prototype.id+'-de-txtLIBNAME',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: false,
                                     enabled: false,
-                                    maxLength:1,
+                                    maxLength: 10,
 //                                    maskRe: /[0-9]/,
                                     readOnly: false,
                                     width: 100
                                 }
                                 ,
+                                { xtype: 'tbspacer', width: 237 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Seq. Num',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 60
+                                },
+                                { xtype: 'tbspacer', width: 30 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtSEQNUM',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 2,
+//                                    maskRe: /[0-9]/,
+                                    readOnly: false,
+                                    width: 60
+                                }
+                                ,
+                                     
                                 { xtype: 'tbspacer', width: 24 }
                             ]
                         },
@@ -471,7 +478,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                             xtype: 'panel',
                             layout: 'hbox',
                             border: false,
-                            margin: '10 2 10 50',
+                            margin: '10 2 10 180',
                             defaults: {
                                 labelAlign: 'left'
                             },
@@ -531,7 +538,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                             xtype: 'panel',
                             border:false,
                             layout: 'hbox',
-                            margin: '5 0 10 50',
+                            margin: '5 0 10 180',
                             
                             defaults: {
                                 labelAlign: 'left'
