@@ -43,6 +43,7 @@ public String IN_SCARCOD = "";
 public String IN_CTABANK = "";
 public String IN_CODEBANK = "";
 public String IN_CODEBANKA = "";
+public String IN_BANKNAM = "";
 public String CMERCHAN = "";
 public String BMERCHAN = "";
 public String SCARCOD = "";

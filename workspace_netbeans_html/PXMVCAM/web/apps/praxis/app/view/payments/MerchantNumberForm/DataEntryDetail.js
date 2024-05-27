@@ -384,7 +384,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         editable: false,
                                         enabled: false,
                                         maxLength: 50,
-                                        maskRe: /[a-zA-Z0-9]/,
+//                                        maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 120
                                     },
@@ -511,12 +511,12 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                     anchor: '100%',
                                     width: 1129
                                 },
-                                id: prototype.id + '-bSection_3',
+                                id: prototype.id + '-bSection_3_D',
                                 items: [
                                     {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
-                                        text: 'Prof. Cent. Bank',
+                                        text: 'Prof. Cent',
                                         style: 'font-weight:bold;',
                                         width: 115
                                     },

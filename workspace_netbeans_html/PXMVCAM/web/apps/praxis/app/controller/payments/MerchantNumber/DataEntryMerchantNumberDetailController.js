@@ -261,12 +261,13 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('de-txtFRANCH2_D', this.bean.data.FRANC2)
         this.setValue('de-txtFRANCH3_D', this.bean.data.FRANC3)
         this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
-        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
+//        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
         this.setValue('CODEBANK_D', this.bean.data.CODEBANK)
         this.setValue('BANKNAM_D', this.bean.data.BANKNAM)
         this.setValue('BANKCM_D', this.bean.data.BANKCM)
         this.setValue('BANKCUR_D', this.bean.data.BANKCUR)
         this.setValue('ACCNUMB_D', this.bean.data.ACCNUMB)
+        this.setValue('ACCNUMA_D', this.bean.data.ACCNUMA)
         this.setValue('BENCEN_D', this.bean.data.BENCEN)
         this.setValue('DEUSAP_D', this.bean.data.DEUSAP)
         this.setValue('SAGENT_D', this.bean.data.SAGENT)
@@ -276,7 +277,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('SOCIETY_D', this.bean.data.SOCIETY)
         this.setValue('SCURRENCY_D', this.bean.data.SCURRENCY)
         this.setValue('SBENCEN_D', this.bean.data.SBENCEN)
-        this.setValue('COSTCEN_D', this.bean.data.SBENCEN)
+        this.setValue('COSTCEN_D', this.bean.data.COSTCEN)
         
 
         this.setValue('txtUSCR_D', this.bean.data.USCR);
@@ -302,6 +303,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.IN_CODEBANK = this.getValue("CODEBANK_D")
         beanTemp.IN_ACCNUMB = this.getValue("ACCNUMB_D")
         beanTemp.IN_SAGENT = this.getValue("SAGENT_D")
+        beanTemp.IN_BANKNAM = this.getValue("BANKNAM_D")
 //        beanTemp.DREPORT = this.getValue("de-txtDOWNREPORT")
 //        beanTemp.CODE = this.getValue("de-txtAPCODE")
 //        beanTemp.CORE = this.getValue("de-txtACQPROC")

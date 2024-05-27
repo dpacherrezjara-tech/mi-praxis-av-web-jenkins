@@ -771,7 +771,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -792,14 +792,14 @@ public class MerchantNumberDAO {
                 cstmt.setString(10, filter.IN_CODEBANK.trim());
                 cstmt.setString(11, filter.IN_ACCNUMB.trim());
                 cstmt.setString(12, filter.IN_SAGENT.trim());
-//                cstmt.setString(13, beanDet.BANKCM.trim());
+                cstmt.setString(13, filter.IN_BANKNAM.trim());
 //                cstmt.setString(14, beanDet.BANKCUR.trim());
 //                cstmt.setString(15, beanDet.ACCNUMB.trim());
 //                cstmt.setString(16, beanDet.ACCNUMA.trim());
 //                cstmt.setString(17, beanDet.BENCEN.trim());
-                cstmt.setString(13, session.getUserView().getUserInfo().USR);
-                cstmt.setString(14, Functions.getFechaActual());
-                cstmt.setString(15, Functions.getHoraActual());
+                cstmt.setString(14, session.getUserView().getUserInfo().USR);
+                cstmt.setString(15, Functions.getFechaActual());
+                cstmt.setString(16, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
 //            }
@@ -992,6 +992,7 @@ public class MerchantNumberDAO {
                 objRtn.SOCIETY   = rs01.getString("SOCIETY").trim();
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN   = rs01.getString("SBENCEN").trim();
+                objRtn.COSTCEN   = rs01.getString("COSTCEN").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -1069,6 +1070,7 @@ public class MerchantNumberDAO {
                 objRtn.BANKCM    = rs01.getString("BANKCM").trim();
                 objRtn.BANKCUR    = rs01.getString("BANKCUR").trim();
                 objRtn.ACCNUMB   = rs01.getString("ACCNUMB").trim();
+                objRtn.ACCNUMA   = rs01.getString("ACCNUMA").trim();
                 objRtn.BENCEN   = rs01.getString("BENCEN").trim();
                 objRtn.DEUSAP   = rs01.getString("DEUSAP").trim();
                 objRtn.SAGENT   = rs01.getString("SAGENT").trim();
@@ -1078,6 +1080,7 @@ public class MerchantNumberDAO {
                 objRtn.SOCIETY   = rs01.getString("SOCIETY").trim();
                 objRtn.SCURRENCY   = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN   = rs01.getString("SBENCEN").trim();
+                objRtn.COSTCEN   = rs01.getString("COSTCEN").trim();
                 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
