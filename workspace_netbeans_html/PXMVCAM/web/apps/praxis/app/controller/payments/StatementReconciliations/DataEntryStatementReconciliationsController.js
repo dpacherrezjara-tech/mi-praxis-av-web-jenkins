@@ -211,14 +211,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        meDE.bean.data.IN_DATECI = meDE.beanResult.DATECI
+        meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI 
 
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
-        console.log(meDE.bean.data.IN_UNICODE, 'meDE.bean.data.IN_UNICODE wadafaaaa')
-        console.log(meDE.bean.data.IN_BANDOC, 'meDE.bean.data.IN_BANDOC wadafaaaa')
+        console.log(meDE.bean.data.IN_UNICODE, 'meDE.bean.data.IN_UNICODE ')
+        console.log(meDE.bean.data.IN_BANDOC, 'meDE.bean.data.IN_BANDOC ')
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL',
