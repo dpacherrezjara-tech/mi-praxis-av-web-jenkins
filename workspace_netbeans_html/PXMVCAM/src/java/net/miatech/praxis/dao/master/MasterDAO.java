@@ -2,7 +2,7 @@ package net.miatech.praxis.dao.master;
 
 // <editor-fold defaultstate="collapsed" desc="import">
 import static com.ibm.as400.data.PcmlMessageLog.logError;
-import static com.sun.corba.se.impl.activation.ServerMain.logError;
+//import static com.sun.corba.se.impl.activation.ServerMain.logError;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
