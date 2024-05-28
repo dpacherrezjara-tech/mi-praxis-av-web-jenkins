@@ -33,6 +33,7 @@ public class MPF106 {
     public String EMAILS5 = "";
     public String TERMP = "";
     public String SAGENT = "";
+    public String NEW_SAGENT = "";
     public String BANDOC = "";
     public String AMOUNT = "";
     

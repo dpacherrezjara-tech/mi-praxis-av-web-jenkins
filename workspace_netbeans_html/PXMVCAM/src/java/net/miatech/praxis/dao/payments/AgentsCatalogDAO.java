@@ -263,8 +263,11 @@ public class AgentsCatalogDAO {
     public List<MPF106Filter>  loadPX616SQP04943Citys(MPF106Filter filter) throws SQLException, Exception {
 
         MPF106Filter objRtn = new MPF106Filter();
-        List<MPF106Filter> lstData = new ArrayList<MPF106Filter>(0);
+        objRtn.CODE = "";
+        objRtn.NAME = "All";
         
+        List<MPF106Filter> lstData = new ArrayList<MPF106Filter>(0);
+        lstData.add(objRtn);
 //        MPF106Filter objRtn0;
 //        objRtn0 = new MPF106Filter();
 //        objRtn0.CODE = "";
@@ -285,7 +288,6 @@ public class AgentsCatalogDAO {
             cstmt01.setString(2, filter.COUNTRY.trim());
 
             cstmt01.execute();
-
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
                 objRtn = new MPF106Filter();

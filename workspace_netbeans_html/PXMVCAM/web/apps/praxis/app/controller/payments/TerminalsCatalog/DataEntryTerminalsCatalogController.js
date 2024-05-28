@@ -34,13 +34,14 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.DataEntryTerminalsCa
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-delete').hide();
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-delete').show();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
     },
     mostrarData: function() {
+        console.log(this.beanResult, 'this.beanResult')
         this.setValue('de-txtTERMP', this.beanResult.TERMP);
         this.setValue('de-txtSAGENT', this.beanResult.SAGENT);
 //        this.setValue('de-txtRSOCIAL', this.beanResult.RSOCIAL);
@@ -60,11 +61,14 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.DataEntryTerminalsCa
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function(beanTemp) {
         beanTemp.TERMP = this.getValue("de-txtTERMP");
-        beanTemp.SAGENT = this.getValue("de-txtSAGENT");
+        beanTemp.SAGENT = this.beanResult.SAGENT
+        beanTemp.NEW_SAGENT = this.getValue("de-txtSAGENT");
+        
 
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
         beanTemp.HOCR = this.getValue("txtHOCR").trim();
+        console.log(beanTemp, 'beanTemp')
         
     },
     getData: function() {
@@ -211,7 +215,7 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.DataEntryTerminalsCa
     DeshabilitarCampoClave: function() {
 
         Ext.getCmp(prototype.id + '-de-txtTERMP').setReadOnly(true);
-        Ext.getCmp(prototype.id + '-de-txtSAGENT').setReadOnly(true);
+//        Ext.getCmp(prototype.id + '-de-txtSAGENT').setReadOnly(true);
     },
     Habilitarlbl: function() {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();

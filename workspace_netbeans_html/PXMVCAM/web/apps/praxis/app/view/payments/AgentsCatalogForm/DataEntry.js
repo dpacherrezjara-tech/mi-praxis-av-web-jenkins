@@ -184,6 +184,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             emptyText: 'All',
                                             valueField: 'CODE',
                                             displayField: 'NAME',
+//                                            value: ''
                                             
                                         },
                                         {xtype: 'tbspacer', width: 40},

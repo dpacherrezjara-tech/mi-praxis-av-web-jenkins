@@ -1304,12 +1304,15 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryRfndController', {
         var bean = {};
         bean.TDNR = Ext.getCmp(prototype.idRfnd + '-det-lblCia').getValue().trim() + Ext.getCmp(prototype.idRfnd + '-det-lblDocumento').getValue().trim();
         bean.FUENTE = Ext.getCmp(prototype.idRfnd + '-det-lblSource').getValue().trim().substr(0, 3);
+        console.log(bean.TDNR, 'bean.TDNR')
+        console.log(bean.FUENTE, 'bean.FUENTE')
         if (bean.TDNR !== '' && bean.FUENTE !== '') {
             bean.A720TKVOID = '';//this.gloA720TKVOID;
             this.searchDelivery(bean);
         }
     },
     searchDelivery: function (bean) {
+        console.log('entra a searchDelivery')
         Ext.Ajax.request({
             url: prototype.ProrrateoNew.url + '/searchDeliveryRFND',
             method: 'POST',
@@ -1317,9 +1320,12 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryRfndController', {
             params: {beanString: JSON.stringify(bean)},
             success: function (response, opts) {
                 var res = Ext.JSON.decode(response.responseText);
+                console.log(res, 'res')
                 if (res.success) {
                     var texto = res.strTextoBSP;
+                    console.log('texto', texto)
                     if (texto !== '') {
+                        
                         Ext.create('Ext.Praxis.view.screens.CtrlDeliveryOrigForm', {
                             id: 'CtrlDeliveryOrigForm',
                             params: {
@@ -1328,6 +1334,7 @@ Ext.define('Ext.Praxis.controller.sales.SalesReport.DataEntryRfndController', {
                             }
                         }).show();
                     }else{
+                        
                         if (Ext.getCmp(prototype.idRfnd + '-det-lblConjuction').getValue() === 'C'){
                             var ticket = '';
                             var inttkt = Ext.getCmp(prototype.idRfnd + '-det-lblDocumento').getValue().substr(2, 8);

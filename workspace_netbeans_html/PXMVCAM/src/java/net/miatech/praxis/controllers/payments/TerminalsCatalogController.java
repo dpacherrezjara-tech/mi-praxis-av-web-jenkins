@@ -233,6 +233,7 @@ public class TerminalsCatalogController extends BaseController {
             option = request.getParameter("option");
             filter.TERMP = request.getParameter("TERMP");
             filter.SAGENT = request.getParameter("SAGENT");
+            filter.NEW_SAGENT = request.getParameter("NEW_SAGENT");
            
             logic = new TerminalsCatalogLogic();
             logic.setSession(this.serverSession.getServerSession());

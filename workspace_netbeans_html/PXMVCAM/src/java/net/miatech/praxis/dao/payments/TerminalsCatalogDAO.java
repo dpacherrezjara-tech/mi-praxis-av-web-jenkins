@@ -123,7 +123,7 @@ public class TerminalsCatalogDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05108(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05108(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -134,11 +134,12 @@ public class TerminalsCatalogDAO {
             cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
             cstmt.setString(3, filter.TERMP.trim());
             cstmt.setString(4, filter.SAGENT.trim());
+            cstmt.setString(5, filter.NEW_SAGENT.trim());
             
 
-            cstmt.setString(5, session.getUserView().getUserInfo().USR);
-            cstmt.setString(6, Functions.getFechaActual());
-            cstmt.setString(7, Functions.getHoraActual());
+            cstmt.setString(6, session.getUserView().getUserInfo().USR);
+            cstmt.setString(7, Functions.getFechaActual());
+            cstmt.setString(8, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {

@@ -145,7 +145,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
                             autoLoad: true
                         });
                         Ext.getCmp(prototype.id + '-de-cmbCITY').bindStore(storeData);
-//                        Ext.getCmp(prototype.id + '-de-cmbCITY').setValue('');
+                        Ext.getCmp(prototype.id + '-de-cmbCITY').setValue('');
 
                     } else {
                         global.Msg({msg: res.Mensaje});
