@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1782,
+                            width: 1772,
                             margin: '10 0 0 0',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1772,
+                                    width: 1762,
                                     columnLines: true,
                                     features: [{
                                         ftype: 'summary'
@@ -206,7 +206,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                     },
                                                 ]
                                             },
-                                            {text: 'Type', dataIndex: 'TYPE', width: 150,
+                                            {text: 'Type', dataIndex: 'TYPE', width: 140,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:left;";
                                                     return value;

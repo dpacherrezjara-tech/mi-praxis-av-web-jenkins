@@ -128,7 +128,7 @@ public class ReportsDAO {
                     bean.STVAL = rst.getString("STVAL").trim();
                     if (bean.STVAL.equals("1")) {
                         bean.STVAL = "Match";
-                    }if (bean.STVAL.equals("5")) {
+                    }else if (bean.STVAL.equals("5")) {
                         bean.STVAL = "Match Manual";
                     } else {
                         bean.STVAL = "Pend.";
@@ -136,7 +136,7 @@ public class ReportsDAO {
                     bean.DEBSTVAL = rst.getString("DEBSTVAL").trim();
                     if (bean.DEBSTVAL.equals("1")) {
                         bean.DEBSTVAL = "Match";
-                    }if (bean.DEBSTVAL.equals("5")) {
+                    }else if (bean.DEBSTVAL.equals("5")) {
                         bean.DEBSTVAL = "Manual";
                     } else {
                         bean.DEBSTVAL = "Pend.";
