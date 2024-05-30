@@ -195,6 +195,32 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             ]
         }));
         cmbFecFiltro.setValue("SDATE");
+        
+        var cmbSTVAL = Ext.getCmp(prototype.id + '-cmbSTVAL');
+        cmbSTVAL.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["1", "Match Automatic"],
+                ["5", "Match Manual"],
+                ["3", "Pending"]
+            ]
+        }));
+        cmbSTVAL.setValue("");
+        
+        var cmbTDOC = Ext.getCmp(prototype.id + '-cmbTDOC');
+        cmbTDOC.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["R", "Refund"],
+                ["C", "Chargeback"],
+                ["A", "Acreditaciones"]
+            ]
+        }));
+        cmbTDOC.setValue("");
 
         this.paramsObtainData.BANK = 2;
         this.paramsObtainData.COUNTRY = 2;
@@ -243,6 +269,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
+        me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbSTVAL').getValue();
+        me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
         if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '') {
             if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim().length === 6 && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim().length === 4) {
                 me.bean.IN_CARDN1 = Ext.getCmp(prototype.id + '-txtCard1').getValue().trim();
@@ -289,7 +317,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
 
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A2356");
+        win.lblUser_toolTip("Estructura: MPF101");
         var msj = this.validateFields();
         if (msj !== '') {
             global.Msg({msg: msj

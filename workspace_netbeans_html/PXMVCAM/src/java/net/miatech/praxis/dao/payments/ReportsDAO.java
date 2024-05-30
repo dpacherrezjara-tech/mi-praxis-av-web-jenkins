@@ -57,17 +57,17 @@ public class ReportsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05120(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05120(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(10, Types.INTEGER);
-            cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
+            cstmt.registerOutParameter(15, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -78,18 +78,21 @@ public class ReportsDAO {
             cstmt.setString(7, filter.IN_SCARDNCOR.trim());
             cstmt.setString(8, filter.IN_SAUTHOC.trim());
             cstmt.setString(9, filter.IN_CODEBANK.trim());
+            cstmt.setString(9, filter.IN_CODEBANK.trim());
+            cstmt.setString(10, filter.IN_STVAL.trim());
+            cstmt.setString(11, filter.IN_TDOC.trim());
 
-            cstmt.setInt(10, filter.page.PAGNUM);
-            cstmt.setInt(11, filter.page.PAGROW);
-            cstmt.setInt(12, filter.page.TOTPAG);
-            cstmt.setInt(13, filter.page.TOTROW);
+            cstmt.setInt(12, filter.page.PAGNUM);
+            cstmt.setInt(13, filter.page.PAGROW);
+            cstmt.setInt(14, filter.page.TOTPAG);
+            cstmt.setInt(15, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(10);
-            filter.page.PAGROW = cstmt.getInt(11);
-            filter.page.TOTPAG = cstmt.getInt(12);
-            filter.page.TOTROW = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(12);
+            filter.page.PAGROW = cstmt.getInt(13);
+            filter.page.TOTPAG = cstmt.getInt(14);
+            filter.page.TOTROW = cstmt.getInt(15);
 
             rst = cstmt.getResultSet();
 
@@ -123,14 +126,18 @@ public class ReportsDAO {
                     bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                     bean.TYPE = rst.getString("TYPE").trim();
                     bean.STVAL = rst.getString("STVAL").trim();
-                    if (bean.STVAL.equals("1") || bean.STVAL.equals("5")) {
+                    if (bean.STVAL.equals("1")) {
                         bean.STVAL = "Match";
+                    }if (bean.STVAL.equals("5")) {
+                        bean.STVAL = "Match Manual";
                     } else {
                         bean.STVAL = "Pend.";
                     }
                     bean.DEBSTVAL = rst.getString("DEBSTVAL").trim();
-                    if (bean.DEBSTVAL.equals("1") || bean.DEBSTVAL.equals("5")) {
+                    if (bean.DEBSTVAL.equals("1")) {
                         bean.DEBSTVAL = "Match";
+                    }if (bean.DEBSTVAL.equals("5")) {
+                        bean.DEBSTVAL = "Manual";
                     } else {
                         bean.DEBSTVAL = "Pend.";
                     }

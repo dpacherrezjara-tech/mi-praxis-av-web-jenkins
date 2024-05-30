@@ -135,13 +135,13 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                             items: [
                                 {
                                     xtype: 'label',
-                                    text: 'SCOUNTRY',
+                                    text: 'SCARCOD',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSCOUNTRY',
+                                    id: prototype.id + '-de-txtSCARCOD',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -152,7 +152,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSCOUNTRY',
+                                    id: prototype.id + '-de-txtRSCARCOD',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -164,13 +164,13 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
-                                    text: 'CODEBANK',
+                                    text: 'SCARDN',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtCODEBANK',
+                                    id: prototype.id + '-de-txtSCARDN',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -181,7 +181,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRCODEBANK',
+                                    id: prototype.id + '-de-txtRSCARDN',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -193,13 +193,13 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
-                                    text: 'PRDA',
+                                    text: 'SCARDNCOR',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtPRDA',
+                                    id: prototype.id + '-de-txtSCARDNCOR',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -210,7 +210,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRPRDA',
+                                    id: prototype.id + '-de-txtRSCARDNCOR',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -222,13 +222,13 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
-                                    text: 'TRAN',
+                                    text: 'SAUTHOC',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtTRAN',
+                                    id: prototype.id + '-de-txtSAUTHOC',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -239,7 +239,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRTRAN',
+                                    id: prototype.id + '-de-txtRSAUTHOC',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -251,13 +251,13 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'label',
-                                    text: 'TDOC',
+                                    text: 'SPNR',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtTDOC',
+                                    id: prototype.id + '-de-txtSPNR',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -268,7 +268,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRTDOC',
+                                    id: prototype.id + '-de-txtRSPNR',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: true,
@@ -277,6 +277,20 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                     readOnly: false,
                                     width: 150
                                 },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '0 2 2 30',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1080
+                            },
+                            items: [
+                                
                             ]
                         },
                         {
@@ -466,163 +480,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                             ]
                         },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            bodyStyle: 'background:#E5ECEF;',
-                            margin: '0 2 2 30',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-                                {
-                                    xtype: 'label',
-                                    text: 'SCARCOD',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSCARCOD',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSCARCOD',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'SCARDN',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSCARDN',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSCARDN',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'SCARDNCOR',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSCARDNCOR',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSCARDNCOR',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'SAUTHOC',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSAUTHOC',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSAUTHOC',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'SPNR',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSPNR',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSPNR',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                            ]
-                        },
+                        
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -751,134 +609,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 },
                             ]
                         },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            bodyStyle: 'background:#E5ECEF;',
-                            margin: '0 2 2 30',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-                                {
-                                    xtype: 'label',
-                                    text: 'CCIA',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtCCIA',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRCCIA',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'FORMA',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtFORMA',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRFORMA',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'SERIE',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSERIE',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSERIE',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'SCURRENCY',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSCURRENCY',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 2,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtRSCURRENCY',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: true,
-                                    maxLength: 20,
-                                    readOnly: false,
-                                    width: 150
-                                },
-                            ]
-                        },
+                        
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -1277,6 +1008,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {
                                     xtype: 'label',
                                     text: 'FLOAD',
+                                    hidden:true,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
@@ -1288,6 +1020,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                     editable: true,
                                     enabled: true,
                                     maxLength: 2,
+                                    hidden:true,
                                     readOnly: false,
                                     width: 50
                                 },
@@ -1295,6 +1028,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {
                                     xtype: 'label',
                                     text: 'LDATE',
+                                    hidden:true,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
@@ -1306,6 +1040,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                     editable: true,
                                     enabled: true,
                                     maxLength: 2,
+                                    hidden:true,
                                     readOnly: false,
                                     width: 50
                                 },
@@ -1313,6 +1048,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {
                                     xtype: 'label',
                                     text: 'TDATE',
+                                    hidden:true,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
@@ -1324,6 +1060,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                     editable: true,
                                     enabled: true,
                                     maxLength: 2,
+                                    hidden:true,
                                     readOnly: false,
                                     width: 50
                                 },
@@ -1331,6 +1068,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                 {
                                     xtype: 'label',
                                     text: 'SORIG',
+                                    hidden:true,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 80
                                 },
@@ -1341,6 +1079,7 @@ Ext.define('Ext.Praxis.view.payments.InputsDesignForm.DataEntry', {
                                     enforceMaxLength: true,
                                     editable: true,
                                     enabled: true,
+                                    hidden:true,
                                     maxLength: 2,
                                     readOnly: false,
                                     width: 50
