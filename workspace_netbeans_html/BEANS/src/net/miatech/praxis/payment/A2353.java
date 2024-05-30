@@ -38,6 +38,10 @@ public class A2353 {
     public String TRANC = "";
     public String TRAMA = "";
     public String NEGOC = "";
+    public double MAXF1 = 0;
+    public double MINF1 = 0;
+    public double MAXF2 = 0;
+    public double MINF2 = 0;
     public double SVFOP = 0;
 
     public String CAMP00 = "";
