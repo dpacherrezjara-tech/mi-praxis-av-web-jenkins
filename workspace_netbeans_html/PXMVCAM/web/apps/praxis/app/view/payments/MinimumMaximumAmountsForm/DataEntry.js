@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.DataEntry',{
     title:'Data Entry',
     header:true,
     height:550,
-    width:800,
+    width:900,
     resizable:false,
     layout:'fit',
     modal:true,
@@ -30,7 +30,7 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.DataEntry',{
                             bodyStyle: 'background: transparent;"',
                             layout: 'vbox',
                             margin: '0 0 40 0',
-                            width: 750,
+                            width: 850,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -86,20 +86,29 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.DataEntry',{
                                         'data-qtip': 'Mandatory Field'
                                     }
                                 },
-                                        {xtype: 'tbspacer', width: 30},                                        
+                                        {xtype: 'tbspacer', width: 30},
                                         {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSCURRENCY',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            maxLength: '3',
-                                            editable: true,
-                                            enabled: false,
+                                            xtype: 'combo',
+                                            id: prototype.id+'-de-txtSCURRENCY',                                   
+                                            enableKeyEvents: true,                    
+                                            caseSensitive: true,
+                                            allowBlank: true,
                                             readOnly: false,
-                                            width: 100,
-                                            maskRe: /[a-zA-Z]/
-                                        }
-                                        ,
+                                            editable: false, 
+                        //                    maskRe: /[0-9]/,
+                        //                    maxLength:10,
+                                            queryMode: 'local',
+                                            labelWidth: 100,
+                                            width: 255,
+                                            hidden: false,
+                                            triggerAction: 'all',
+                                            valueField: 'A005KEY',
+                                            displayField: 'A005KEY2',
+                                            hiddenLabel: false,
+                        //                    listeners:{
+                        //                        keypress: 'eventKey'
+                        //                    }
+                                        },                                        
                                         {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
@@ -118,22 +127,28 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.DataEntry',{
                                                 }
                                         },
                                         {xtype: 'tbspacer', width: 36},
-                                        
                                         {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSCOUNTRY',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            maxLength: '2',
-                                            width: 100,
-//                                            maskRe: /[0-9]/,
-                                            editable: true,
-                                            enabled: false,
+                                            xtype: 'combo',
+                                            id: prototype.id+'-de-txtSCOUNTRY',                                   
+                                            enableKeyEvents: true,                    
+                                            caseSensitive: true,
+                                            allowBlank: true,
                                             readOnly: false,
-                                            maskRe: /[a-zA-Z]/
+                                            editable: false, 
+                        //                    maskRe: /[0-9]/,
+                        //                    maxLength:10,
+                                            queryMode: 'local',
+                                            labelWidth: 100,
+                                            width: 250,
+                                            hidden: false,
+                                            triggerAction: 'all',
+                                            valueField: 'A006PAIS',
+                                            displayField: 'A006NOMBRE',
+                                            hiddenLabel: false,
+                        //                    listeners:{
+                        //                        keypress: 'eventKey'
+                        //                    }
                                         },
-
                                         {xtype: 'tbspacer', width: 409}
                                     ]
                                 },
@@ -191,14 +206,14 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.DataEntry',{
                                             width: 100
                                         }
                                         ,
-                                        {xtype: 'tbspacer', width: 50},
+                                        {xtype: 'tbspacer', width: 200},
                                         {
                                             xtype: 'label',
                                             text: 'Min. Amount',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 25},
+                                        {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtMINF1',
@@ -271,14 +286,14 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.DataEntry',{
                                             width: 100
                                         }
                                         ,
-                                        {xtype: 'tbspacer', width: 50},
+                                        {xtype: 'tbspacer', width: 200},
                                         {
                                             xtype: 'label',
                                             text: 'Min. Amount',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 25},
+                                        {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtMINF2',

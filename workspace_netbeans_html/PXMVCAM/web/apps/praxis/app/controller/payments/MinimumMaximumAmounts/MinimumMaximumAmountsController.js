@@ -117,8 +117,9 @@ Ext.define('Ext.Praxis.controller.payments.MinimumMaximumAmounts.MinimumMaximumA
     obtainData: function(){
        
         this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.CURRENCY = 2;
         
-        Ext.Ajax.request({
+        Ext.Ajax.request({  
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
             timeout: 60000000,
@@ -128,17 +129,24 @@ Ext.define('Ext.Praxis.controller.payments.MinimumMaximumAmounts.MinimumMaximumA
             },
             success: function (response, options) {
                 Ext.getBody().unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
+                var res = Ext.JSON.decode(response.responseText); //obtener respuesta de la conusulta
 
-                me.lstCountry = res.lstCountry;
+                me.lstCountry = res.lstCountry;  //almacena la lista de paises en el country
+                me.lstSCURRENCY = res.lstCurrencies;  //almacena la lista de paises en el country
 
-                var storeData3 = Ext.create('Ext.data.Store', {
-                    data: me.lstCountry,
+                var storeData3 = Ext.create('Ext.data.Store', {   //estrura la lista(informacion)
+                    data: me.lstCountry, //coloca la lista
+                    autoLoad: true
+                });
+                var storeData4 = Ext.create('Ext.data.Store', {   //estrura la lista(informacion)
+                    data: me.lstSCURRENCY, //coloca la lista
                     autoLoad: true
                 });
 
-                Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3); // asignar todos los valores(opciones)
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                Ext.getCmp(prototype.id + '-txtSCURRENCY').bindStore(storeData4); // asignar todos los valores(opciones)
+                Ext.getCmp(prototype.id + '-txtSCURRENCY').setValue('');
                 global.clear();
                 me.btnSearch_click();
             }
