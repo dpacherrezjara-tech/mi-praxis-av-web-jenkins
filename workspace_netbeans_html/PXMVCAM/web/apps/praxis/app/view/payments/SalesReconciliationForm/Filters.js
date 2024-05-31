@@ -104,27 +104,29 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 change: 'cbxDateFromMonth_changeHandler'
                             }
                         },
-//                        {
-//                            xtype: 'combo',
-//                            id: prototype.id+'-cmbDateFromDay',
-//                            fieldStyle: 'text-align: left;',
-//                            labelAlign: 'right',
-//                            queryMode: 'local',
-//                            triggerAction: 'all',
-//                            editable: false,
-//                            autoSelect: false,
-//                            enableKeyEvents: true,
-//                            caseSensitive: true,
-//                            valueField: 'code', displayField: 'name',
-//                            emptyText: 'All',
-//                            labelWidth: 0,
-//                            width: 60,
-//                            anchor: '100%',
-//                            listConfig: {maxHeight: 111, minWidth: 60},
-//                            listeners: {
-//                                change: 'cbxDateFromDay_changeHandler'
-//                            }
-//                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            //cmbDateFromDay
+                            id: prototype.id+'-cmbDateDay',
+                            fieldStyle: 'text-align: left;',
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            editable: false,
+                            autoSelect: false,
+                            enableKeyEvents: true,
+                            caseSensitive: true,
+                            valueField: 'code', displayField: 'name',
+                            emptyText: 'All',
+                            labelWidth: 0,
+                            width: 60,
+                            anchor: '100%',
+                            listConfig: {maxHeight: 111, minWidth: 60},
+                            listeners: {
+                                change: 'cbxDateFromDay_changeHandler'
+                            }
+                        },
                         {xtype: 'tbspacer', width: 5},
                         {
                             xtype: 'combo',
@@ -168,24 +170,26 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 change: 'cbxDateToMonth_changeHandler'
                             }
                         },
-//                        {
-//                            xtype: 'combo',
-//                            id: prototype.id+'-cmbDateToDay',
-//                            fieldStyle: 'text-align: left;',
-//                            labelAlign: 'right',
-//                            queryMode: 'local',
-//                            triggerAction: 'all',
-//                            editable:false,
-//                            autoSelect: false,
-//                            enableKeyEvents: true,
-//                            caseSensitive: true,
-//                            valueField: 'code', displayField: 'name',
-//                            emptyText: 'All',
-//                            labelWidth: 0,
-//                            width: 60,
-//                            anchor: '100%',
-//                            listConfig: {maxHeight: 111, minWidth: 60}
-//                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            //cmbDateToDay
+                            id: prototype.id+'-cmbDateToDay',
+                            fieldStyle: 'text-align: left;',
+                            labelAlign: 'right',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            editable:false,
+                            autoSelect: false,
+                            enableKeyEvents: true,
+                            caseSensitive: true,
+                            valueField: 'code', displayField: 'name',
+                            emptyText: 'All',
+                            labelWidth: 0,
+                            width: 60,
+                            anchor: '100%',
+                            listConfig: {maxHeight: 111, minWidth: 60}
+                        },
                         //</editor-fold>
                         {xtype: 'tbspacer', width: 10},
 //                        {
@@ -220,12 +224,12 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
 //                                change: 'cbxFOPAC_changeHandler'
 //                            }
 //                        },
-                        {xtype: 'tbspacer', width: 80},
+//                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
                             text: 'Source:',
                             padding: '3 0',
-                            width: 100
+                            width: 40
                         },
                         {
                             xtype:'combo',

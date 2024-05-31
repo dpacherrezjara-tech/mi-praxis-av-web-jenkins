@@ -32,12 +32,24 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
         prototypeProgram.modulo = '';
+        this.control({
+            // -------------------Eventos Genericos --------------------
+            
+            '#SalesReconciliationForm-cmbDateDay': {
+                select: this.selectComboFromDay
+            },
+            '#SalesReconciliationForm-cmbDateToDay': {
+                select: this.selectComboToDay
+            },
+
+        });
         
     },
     afterRender: function () {
         this.setStoreData();
         this.initDate();
         this.obtainData();
+        console.log(prototype.id, 'prototype.id')
     },
     // <editor-fold defaultstate="collapsed" desc="Combo Date">
     initDate: function () {
@@ -74,10 +86,17 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     cbxDateFromMonth_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue());
+        if(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() != ''){
+            Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
+        }else {
+            Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
+        }
     },
-    cbxDateFromDay_changeHandler: function () {
-        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue());
-    },
+//    cbxDateFromDay_changeHandler: function () {
+//        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue());
+//    },
     cbxDateToMonth_changeHandler: function () {
         let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
@@ -89,6 +108,29 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             }
         }
     },
+    selectComboFromDay: function (obj) {
+        console.log(obj, 'obj day from')
+        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        comboToDay.setValue(obj.getValue());
+        console.log('sdadsadadsad')
+    },
+    selectComboToDay: function (obj) {
+        console.log('wadafa')
+        var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        var comboFromDay = Ext.getCmp(prototype.id + '-cmbDateDay');
+        if (comboFromMonth.getValue() === comboToMonth.getValue()) {
+            if (obj.getValue() < comboFromDay.getValue()) {
+                comboFromDay.setValue(obj.getValue());
+            }
+        }
+        if(comboFromDay.getValue() === ''){
+            
+            comboFromDay.setValue(obj.getValue())
+        }
+    },
     setStoreData: function () {
         var storeComboDataYear = win.getStoreYear(false);
         Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(storeComboDataYear);
@@ -97,7 +139,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         var storeComboDataMonth = win.getStoreMonth(true);
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
         Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
-
+        
+        Ext.getCmp(prototype.id + '-cmbDateDay').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
         //        var storeComboDataMonth = win.getStoreDays(true);
         //        Ext.getCmp(prototype.id+'-cmbDateFromDay').bindStore(storeComboDataMonth);
         //        Ext.getCmp(prototype.id+'-cmbDateToDay').bindStore(storeComboDataMonth);
@@ -813,7 +859,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
          
         if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== '' || win.getValue('txtSAGENT').trim() !== ''
                 || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '' || win.getValue('cmbSource').trim() !== ''
-                || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' ) {
+                || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''  ) {
 
             if( win.getValue('txtTicket').trim() !== '' && win.getValue('txtTicket').trim().length !== 13 ){
                 win.setValue('txtTicket', '');
@@ -862,6 +908,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.beanDetailTar.strMonthFrom = win.getValue('cmbDateFromMonth');
             this.beanDetailTar.strYearTo = win.getValue('cmbDateToYear');
             this.beanDetailTar.strMonthTo = win.getValue('cmbDateToMonth');
+            this.beanDetailTar.strDayFrom = win.getValue('cmbDateDay');
+            this.beanDetailTar.strDayTo = win.getValue('cmbDateToDay');
             this.beanDetailTar.IN_CARDN1 = win.getValue('txtCard1');
             this.beanDetailTar.IN_CARDN2 = win.getValue('txtCard2');
             this.beanDetailTar.IN_AUTHNBR = win.getValue('txtAUTHNBR');
@@ -2441,7 +2489,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         var gridDetDaySAC = res.data;
                         if (gridDetDaySAC.length > 0) {
                             var obj = gridDetDaySAC[0];
-//                            win.setText('lblTitDetTktByStval', obj.strTitulo);
+//                            win.setTitle('gridDetTktByStval', "Sales Date: " + obj.SDATE);
 
                             if (obj.IN_TDOC === 'R') {
                                 win.setText('hcDetTktS', 'Refund');
