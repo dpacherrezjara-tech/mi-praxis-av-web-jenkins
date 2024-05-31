@@ -1188,8 +1188,8 @@ public class LoadConciliationDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
-            cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom);
-            cstmt.setString(4, filter.strYearTo + filter.strMonthTo);
+            cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom + filter.strDayFrom);
+            cstmt.setString(4, filter.strYearTo + filter.strMonthTo + filter.strDayTo);
             
             cstmt.setString(5, filter.IN_TDOC);//SERIE
             cstmt.setString(6, filter.IN_CARDN1);//PRIMEROS 6 DIGITOS DE LA TARJETA

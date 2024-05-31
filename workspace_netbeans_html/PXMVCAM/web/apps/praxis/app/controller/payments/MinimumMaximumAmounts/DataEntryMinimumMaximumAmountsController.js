@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.controller.payments.MinimumMaximumAmounts.DataEntryMinimu
     beanResult: {},
     lstCountry: [],
     searchParams: {},
+    paramsObtainData: {},
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
@@ -24,12 +25,16 @@ Ext.define('Ext.Praxis.controller.payments.MinimumMaximumAmounts.DataEntryMinimu
     afterRender: function() {
         switch (this.actionCode) {
             case 'I':
+                this.obtainData()
+                Ext.getCmp(prototype.id + '-de-txtSCURRENCY').setValue('');
+                Ext.getCmp(prototype.id + '-de-txtSCOUNTRY').setValue('');
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
             case 'U':
+                this.obtainData()
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
@@ -39,6 +44,44 @@ Ext.define('Ext.Praxis.controller.payments.MinimumMaximumAmounts.DataEntryMinimu
                 break;
         }
     },
+    
+    obtainData: function(){
+        this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.CURRENCY = 2;
+        
+        Ext.Ajax.request({  
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                beanString: JSON.stringify(this.paramsObtainData)
+            },
+            success: function (response, options) {
+                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText); //obtener respuesta de la conusulta
+
+                me.lstCountry = res.lstCountry;  //almacena la lista de paises en el country
+                me.lstCURRENCY = res.lstCurrencies;  //almacena la lista de paises en el country
+
+                var storeData3 = Ext.create('Ext.data.Store', {   //estrura la lista(informacion)
+                    data: me.lstCountry, //coloca la lista
+                    autoLoad: true
+                });
+                var storeData4 = Ext.create('Ext.data.Store', {   //estrura la lista(informacion)
+                    data: me.lstCURRENCY, //coloca la lista
+                    autoLoad: true
+                });
+
+                Ext.getCmp(prototype.id + '-de-txtSCURRENCY').bindStore(storeData4); // asignar todos los valores(opciones)
+                Ext.getCmp(prototype.id + '-de-txtSCOUNTRY').bindStore(storeData3); // asignar todos los valores(opciones)
+   
+                global.clear();
+                
+            }
+        }); 
+    },
+    
     mostrarData: function() {
         this.setValue('de-txtSCURRENCY', this.beanResult.SCURRENCY);
         this.setValue('de-txtSCOUNTRY', this.beanResult.SCOUNTRY);
@@ -77,7 +120,7 @@ Ext.define('Ext.Praxis.controller.payments.MinimumMaximumAmounts.DataEntryMinimu
     getData: function() {
         
         var beanString = JSON.stringify(meDE.bean.data);
-        console.log(meDE.bean.data,"hola") //ver algun error 
+        //console.log(meDE.bean.data,"hola") //ver algun error 
         Ext.Ajax.request({
             url: prototype.url + '/searchCompleteDetail',
             method: 'POST',

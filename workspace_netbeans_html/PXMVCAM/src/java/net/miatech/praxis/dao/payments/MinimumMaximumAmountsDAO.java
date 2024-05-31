@@ -129,7 +129,10 @@ public class MinimumMaximumAmountsDAO {
             while (rs01.next()) {
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
+                objRtn.descCurrency = rs01.getString("descCurrency").trim();
+                objRtn.NAMEA = rs01.getString("NAMEA").trim();               
                 objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
+                objRtn.descCountry = rs01.getString("descCountry").trim();
                 objRtn.MAXF1 = rs01.getDouble("MAXF1");
                 objRtn.MINF1 = rs01.getDouble("MINF1");
                 objRtn.MAXF2 = rs01.getDouble("MAXF2");
@@ -774,7 +777,8 @@ public class MinimumMaximumAmountsDAO {
             cstmt.setInt(6, filter.page.TOTPAG);
             cstmt.setInt(7, filter.page.TOTROW);
 
-            cstmt.execute();
+
+            cstmt.execute(); //CUANDO SALE EL ERRO AQUI ES EL PROCEDURE
 
             filter.page.PAGNUM = cstmt.getInt(4);
             filter.page.PAGROW = cstmt.getInt(5);
@@ -786,7 +790,11 @@ public class MinimumMaximumAmountsDAO {
                 bean = new A2353Filter();
                 bean.RN = rst.getLong("RN");
                 bean.SCURRENCY = rst.getString("SCURRENCY").trim();
+                bean.NAMEA = rst.getString("NAMEA").trim();
+                bean.NAMEC = rst.getString("NAMEC").trim();
                 bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                bean.descCurrency = bean.SCURRENCY + " - " + bean.NAMEC;
+                bean.descCountry = bean.SCOUNTRY + " - " + bean.NAMEA;
                 bean.MAXF1 = rst.getDouble("MAXF1");
                 bean.MINF1 = rst.getDouble("MINF1");
                 bean.MAXF2 = rst.getDouble("MAXF2");
@@ -895,7 +903,7 @@ public class MinimumMaximumAmountsDAO {
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
                 objRtn.CCUST = rs01.getString("CCUST");
-                objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
+                objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();              
                 objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
                 objRtn.MAXF1 = rs01.getDouble("MAXF1");
                 objRtn.MINF1 = rs01.getDouble("MINF1");

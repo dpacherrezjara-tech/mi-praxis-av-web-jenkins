@@ -38,6 +38,10 @@ public class A2353 {
     public String TRANC = "";
     public String TRAMA = "";
     public String NEGOC = "";
+    public String NAMEA = "";
+    public String NAMEC = "";
+    public String descCurrency = "";
+    public String descCountry = "";
     public double MAXF1 = 0;
     public double MINF1 = 0;
     public double MAXF2 = 0;

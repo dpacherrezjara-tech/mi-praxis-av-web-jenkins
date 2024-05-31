@@ -1,6 +1,6 @@
 Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.'+prototype.id+'-info',
+    alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
     align: 'center',
     bodyStyle: 'background-color: #E3EAEF;',
@@ -23,7 +23,7 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
                 height: 700,
                 align: 'center'
             },
-            
+
             items: [
                 {
                     xtype: 'panel',
@@ -38,26 +38,26 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
                     items: [
                         // --------------------------   GRID MAIN DATA---------------------
                         //-----------------------------------------------------------------
-           {
+                        {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             padding: '1',
-                            border:true,
+                            border: true,
 //                            margin: '1',
-                             height: 550,
-                             width: 1000,  
+                            height: 550,
+                            width: 1075,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
                             },
-                            
+
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id+'-gridDataAirport',
+                                    id: prototype.id + '-gridDataAirport',
                                     height: 510,
-                                    width:677,
+                                    width: 1090,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -68,38 +68,54 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
 
                                         },
                                         items: [
-                                            {text: 'Nbr', dataIndex: 'RN', width: 50},                                            
-                                            {text: 'Scurrency', dataIndex: 'SCURRENCY', width: 100},
-                                            {text: 'Scountry', dataIndex: 'SCOUNTRY', width: 100},
+                                            {text: 'Nbr', dataIndex: 'RN', width: 50},
+                                            {
+                                                text: 'Currency', dataIndex: 'descCurrency', width: 300,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    
+                                                    return value
+                                                },
+                                                
+                                            },
+                                            {
+                                                text: 'Country', dataIndex: 'descCountry', width: 300,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    
+                                                    return value
+                                                },
+                                                
+                                            },
                                             {text: 'Max.Fase I', dataIndex: 'MAXF1', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-	
-                                                        value =  Ext.util.Format.number(value, '0.00') 
-                                                        return value ;
+
+                                                    value = Ext.util.Format.number(value, '0.00')
+                                                    return value;
                                                 },
                                             },
                                             {text: 'Min.Fase I', dataIndex: 'MINF1', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-	
-                                                        value =  Ext.util.Format.number(value, '0.00') 
-                                                        return value ;
+
+                                                    value = Ext.util.Format.number(value, '0.00')
+                                                    return value;
                                                 },
                                             },
                                             {text: 'Max.Fase II', dataIndex: 'MAXF2', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-	
-                                                        value =  Ext.util.Format.number(value, '0.00') 
-                                                        return value ;
+
+                                                    value = Ext.util.Format.number(value, '0.00')
+                                                    return value;
                                                 },
                                             },
                                             {text: 'Min.Fase II', dataIndex: 'MINF2', width: 90,
-                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-	
-                                                        value =  Ext.util.Format.number(value, '0.00') 
-                                                        return value ;
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+
+                                                    value = Ext.util.Format.number(value, '0.00')
+                                                    return value;
                                                 },
-                                            },                                           
-                                            
+                                            },
+
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
@@ -117,10 +133,10 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
                                         ]
                                     }
                                 },
-                                { xtype: 'tbspacer', width: 7, height: 10},
+                                {xtype: 'tbspacer', width: 7, height: 10},
                                 {
                                     xtype: 'panel',
-                                    id: prototype.id +'-pie',
+                                    id: prototype.id + '-pie',
                                     layout: {
                                         type: 'hbox',
                                         pack: 'center'
@@ -137,7 +153,7 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            width: 998,
+                                            width: 1085,
                                             height: 25,
                                             layout: {
                                                 type: 'hbox',
@@ -176,29 +192,29 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
                                                     text: '0',
                                                     width: 50
                                                 }
-                                             ]
+                                            ]
                                         }
                                     ]
                                 }
-                            ]  
+                            ]
                         }
-                   ],
-        },
-        
-        {
-            region: 'south',
-            layout: 'border',
-            height: 0,
-            defaults: {
-                style: 'margin: 1px;',
-                bodyStyle: 'background: transparent;',
-                border: false
-            }
-          }
-        ]
-      }
-    ] 
-  }   
+                    ],
+                },
+
+                {
+                    region: 'south',
+                    layout: 'border',
+                    height: 0,
+                    defaults: {
+                        style: 'margin: 1px;',
+                        bodyStyle: 'background: transparent;',
+                        border: false
+                    }
+                }
+            ]
+        }
+    ]
+}
 );
 
 

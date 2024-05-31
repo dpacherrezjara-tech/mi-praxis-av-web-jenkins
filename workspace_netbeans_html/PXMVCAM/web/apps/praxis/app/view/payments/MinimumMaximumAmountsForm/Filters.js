@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Filters', {
 //                    maxLength:10,
                     queryMode: 'local',
                     labelWidth: 100,
-                    width: 280,
+                    width: 300,
                     hidden: false,
                     triggerAction: 'all',
                     valueField: 'A006PAIS',
@@ -77,7 +77,7 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Filters', {
 //                    }
                 },
                 {
-                    xtype: 'textfield',
+                    xtype: 'combo',
                     fieldLabel: 'Currency ',
                     id: prototype.id+'-txtSCURRENCY',                                   
                     enableKeyEvents: true,                    
@@ -88,8 +88,10 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Filters', {
 //                    maskRe: /[A-Z]/,
 //                    maskRe: /[0-9]/,
                     maxLength:3,
+                    valueField: 'A005KEY',
+                    displayField: 'A005KEY2',
                     labelWidth: 100,
-                    width: 190,
+                    width: 300,
                     hidden: false,
                     hiddenLabel: false,
                     listeners:{
