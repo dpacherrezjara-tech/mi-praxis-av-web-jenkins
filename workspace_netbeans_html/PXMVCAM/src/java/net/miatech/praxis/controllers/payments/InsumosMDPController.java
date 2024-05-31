@@ -6,6 +6,7 @@
 package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -118,5 +119,44 @@ public class InsumosMDPController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+@RequestMapping(value = "MaintenanceA2358")
+    public @ResponseBody
+    String MaintenanceA2358(ModelMap map, HttpServletRequest request) {
+        
+        System.out.println("-------------- MinimumMaximumAmounts : MaintenanceA2358-------------");
+        
+        String option;
+        String beanString;
+        Gson gson = new Gson();
 
+        A2353Filter filter = new A2353Filter();
+        String msj = " ";
+
+        try {
+            
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
+//            filter.CODEM = request.getParameter("CODEM").trim();
+//            filter.DESCR = request.getParameter("DESCR").trim();
+//            filter.RSOCIAL = request.getParameter("RSOCIAL").trim();
+//            filter.CIATA = request.getParameter("CIATA").trim();
+//            filter.CANAL = request.getParameter("CANAL").trim();
+//            filter.SCOUNTRY = request.getParameter("SCOUNTRY").trim();
+
+            logic = new InsumosMDPLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX285SQP00828_A2358_CRUD(filter, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 }

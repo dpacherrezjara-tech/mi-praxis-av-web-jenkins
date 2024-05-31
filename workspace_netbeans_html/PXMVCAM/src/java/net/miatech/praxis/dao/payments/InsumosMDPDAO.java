@@ -835,49 +835,49 @@ public class InsumosMDPDAO {
         return objRtn;
     }
     
-//    public String loadPX285SQP00828(A2353Filter filter, String option) throws SQLException, Exception {
-//        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2284.
-//        String strMsj = "Operation was successful.";
-//
-//        CallableStatement cstmt = null;
-//
-//        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00828(?,?,?,?,?,?,?)}";
-//
-//        Connection cnx = null;
-//        try {
-//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-//            cstmt = cnx.prepareCall(SQLCLL01);
-//
-//            cstmt.setString(1, option);
-//            cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
-//            cstmt.setString(3, filter.CODEM.trim());
-//            cstmt.setString(4, filter.DESCR.trim());
-//
-//            cstmt.setString(5, session.getUserView().getUserInfo().USR);
-//            cstmt.setString(6, Functions.getFechaActual());
-//            cstmt.setString(7, Functions.getHoraActual());
-//            cstmt.execute();
-//
-//        } catch (Exception e) {
-//            //e.printStackTrace();
-//            strMsj = e.getMessage();
-//        } finally {
-//            if (cstmt != null) {
-//                try {
-//                    cstmt.close();
-//                } catch (SQLException e) {
-//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-//                }
-//            }
-//            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-//            pasarGarbageCollector();
-//        }
-//        if (strMsj.toLowerCase().contains("duplicada")) {
-//            strMsj = "Error: Duplicated record.";
-//        }
-//
-//        return strMsj;
-//    }
+    public String loadPX285SQP00828_A2358_CRUD(A2353Filter filter, String option) throws SQLException, Exception {
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2284.
+        String strMsj = "Operation was successful.";
+
+        CallableStatement cstmt = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00828_A2358_CRUD(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, option);
+            cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(3, filter.CODEM.trim());
+            cstmt.setString(4, filter.DESCR.trim());
+
+            cstmt.setString(5, session.getUserView().getUserInfo().USR);
+            cstmt.setString(6, Functions.getFechaActual());
+            cstmt.setString(7, Functions.getHoraActual());
+            cstmt.execute();
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        if (strMsj.toLowerCase().contains("duplicada")) {
+            strMsj = "Error: Duplicated record.";
+        }
+
+        return strMsj;
+    }
 //    
 //    
 //    public A2353Filter loadPX285SQP00829(A2353Filter filter) throws SQLException, Exception {

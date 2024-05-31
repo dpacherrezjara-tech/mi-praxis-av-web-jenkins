@@ -24,7 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     afterRender: function() {
         switch (this.actionCode) {
             case 'I':
-                Ext.getCmp(prototype.id + '-btn-save').hide();
+                Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
@@ -34,8 +34,8 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-delete').hide();
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-delete').show();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
@@ -71,6 +71,22 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
 //        beanTemp.CODEM = this.getValue("de-txtCODEM");
 //        beanTemp.DESCR = this.getValue("de-txtDESCR");
 
+        beanTemp.APLIC = this.getValue("de-txtAPLIC").trim();
+        beanTemp.INPNAME = this.getValue("de-txtINPNAME").trim();
+        beanTemp.TABLA = this.getValue("de-txtTABLA").trim();
+        beanTemp.NETDIR = this.getValue("de-txtNETDIR").trim();
+        beanTemp.INPDESC = this.getValue("de-txtINPDESC").trim();
+        beanTemp.STAT = this.getValue("de-txtSTAT").trim();
+        beanTemp.INPEXTE = this.getValue("de-txtINPEXTE").trim();
+        beanTemp.OUTNAME = this.getValue("de-txtOUTNAME").trim();
+        beanTemp.FASE = this.getValue("de-txtFASE").trim();
+        beanTemp.INPTYPE = this.getValue("de-txtINPTYPE").trim();
+        beanTemp.FECPROC = this.getValue("de-txtFECPROC").trim();
+        beanTemp.DENV = this.getValue("de-txtDENV").trim();
+        beanTemp.QTYREG = this.getValue("de-txtQTYREG").trim();
+        beanTemp.LIBNAME = this.getValue("de-txtLIBNAME").trim();
+        beanTemp.SEQNUM = this.getValue("de-txtSEQNUM").trim();     
+        
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
         beanTemp.HOCR = this.getValue("txtHOCR").trim();
@@ -136,7 +152,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                     
                     if (msjResult === '') {
                         beanTemp.option = 'I';
-                        this.MaintenanceA2353(beanTemp);
+                        this.MaintenanceA2358(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -159,7 +175,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                             var beanTemp = {};
                             this.llenarData(beanTemp);
                             beanTemp.option = 'U';
-                            this.MaintenanceA2353(beanTemp);
+                            this.MaintenanceA2358(beanTemp);
                         }
                     }
                 });
@@ -177,7 +193,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     beanTemp.option = 'D';
-                    this.MaintenanceA2353(beanTemp);
+                    this.MaintenanceA2358(beanTemp);
                 }
             }
         });
@@ -188,7 +204,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
-    MaintenanceA2353: function(beanTemp) {
+    MaintenanceA2358: function(beanTemp) {
 //        var beanString = JSON.stringify(beanTemp);
         Ext.Ajax.request({
             url: prototype.url + '/MaintenanceA2353',
@@ -215,8 +231,8 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     //</editor-fold>
 
     validacionInsert: function(beanTemp) {
-        var msjResult = '';
-        if (this.getValue("de-txtCODEM") === '') {
+        var msjResult = ''; //DECLARACION DE VARIABLE VACIA
+        if (this.getValue("de-txtAPLIC") === '' || this.getValue("de-txtINPNAME") === '') { //CONDICION
             msjResult = "You must enter the required field.";
         }
         return msjResult;

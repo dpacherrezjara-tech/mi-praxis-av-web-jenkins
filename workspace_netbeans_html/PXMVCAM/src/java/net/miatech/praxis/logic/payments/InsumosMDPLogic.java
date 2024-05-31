@@ -32,6 +32,10 @@ public class InsumosMDPLogic {
         return InsumosMDPDAO.loadPX285SQP00829_InsumosMDPDAO(filter);
     }
     
+    public String loadPX285SQP00828_A2358_CRUD(A2353Filter filter, String option) throws SQLException, Exception {
+        return InsumosMDPDAO.loadPX285SQP00828_A2358_CRUD(filter, option);
+    }
+    
 
 }
 
