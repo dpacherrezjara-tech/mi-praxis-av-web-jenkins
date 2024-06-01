@@ -24,16 +24,16 @@ public class InsumosMDPLogic {
     }
     
     
-    public List<A2353Filter> loadPX285SQP00827_InsumosMDPDAO(A2353Filter filter) throws SQLException, Exception {
-        return InsumosMDPDAO.loadPX285SQP00827_InsumosMDPDAO(filter);
+    public List<A2353Filter> loadPX633MPS010(A2353Filter filter) throws SQLException, Exception {
+        return InsumosMDPDAO.loadPX633MPS010(filter);
     }
     
-    public A2353Filter loadPX285SQP00829_InsumosMDPDAO(A2353Filter filter) throws Exception {
-        return InsumosMDPDAO.loadPX285SQP00829_InsumosMDPDAO(filter);
+    public A2353Filter loadPX633MPS011(A2353Filter filter) throws Exception {
+        return InsumosMDPDAO.loadPX633MPS011(filter);
     }
     
-    public String loadPX285SQP00828_A2358_CRUD(A2353Filter filter, String option) throws SQLException, Exception {
-        return InsumosMDPDAO.loadPX285SQP00828_A2358_CRUD(filter, option);
+    public String loadPX633MPS012(A2353Filter filter, String option) throws SQLException, Exception {
+        return InsumosMDPDAO.loadPX633MPS012(filter, option);
     }
     
 

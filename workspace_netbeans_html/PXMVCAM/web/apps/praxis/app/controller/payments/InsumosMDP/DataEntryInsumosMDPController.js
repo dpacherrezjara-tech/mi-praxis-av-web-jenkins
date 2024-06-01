@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
-    init: function(view) {
+    init: function (view) {
         prototype.id = 'InsumosMDPForm';
         prototype.url = CONTEXTPATH + '/InsumosMDP';
         meDE = this;
@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
 //        this.lstCountry = this.p.lstCountry;
 //        this.obtainData();
     },
-    afterRender: function() {
+    afterRender: function () {
         switch (this.actionCode) {
             case 'I':
                 Ext.getCmp(prototype.id + '-btn-save').show();
@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                 break;
         }
     },
-    mostrarData: function() {
+    mostrarData: function () {
         this.setValue('de-txtAPLIC', this.beanResult.APLIC);
         this.setValue('de-txtINPNAME', this.beanResult.INPNAME);
         this.setValue('de-txtSEQNUM', this.beanResult.SEQNUM);
@@ -64,10 +64,9 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
     },
-    
-    
+
     //<editor-fold defaultstate="collapsed" desc="llenarData">
-    llenarData: function(beanTemp) {
+    llenarData: function (beanTemp) {
 //        beanTemp.CODEM = this.getValue("de-txtCODEM");
 //        beanTemp.DESCR = this.getValue("de-txtDESCR");
 
@@ -83,10 +82,16 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
         beanTemp.INPTYPE = this.getValue("de-txtINPTYPE").trim();
         beanTemp.FECPROC = this.getValue("de-txtFECPROC").trim();
         beanTemp.DENV = this.getValue("de-txtDENV").trim();
-        beanTemp.QTYREG = this.getValue("de-txtQTYREG").trim();
+        var qty = this.getValue("de-txtQTYREG").trim();
+        if (qty.trim() === '') {
+            beanTemp.QTYREG = 0;
+        } else {
+            beanTemp.QTYREG = this.getValue("de-txtQTYREG").trim();
+        }
+
         beanTemp.LIBNAME = this.getValue("de-txtLIBNAME").trim();
-        beanTemp.SEQNUM = this.getValue("de-txtSEQNUM").trim();     
-        
+        beanTemp.SEQNUM = this.getValue("de-txtSEQNUM").trim();
+
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
         beanTemp.HOCR = this.getValue("txtHOCR").trim();
@@ -94,8 +99,8 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
         beanTemp.FEUP = this.getValue("txtFEUP").trim();
         beanTemp.HOUP = this.getValue("txtHOUP").trim();
     },
-    getData: function() {
-        
+    getData: function () {
+
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({
             url: prototype.url + '/searchCompleteDetail',
@@ -103,7 +108,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
             timeout: 60000000,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             params: {beanString: beanString},
-            success: function(response, options) {
+            success: function (response, options) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 meDE.beanResult = res.result;
@@ -115,7 +120,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
-    limpiarData: function() {
+    limpiarData: function () {
         this.setValue('txtCODSOUR', '');
         this.setValue('txtDESSOU', '');
         this.setValue('txtGRUSOR', '');
@@ -130,13 +135,13 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
         this.setValue('txtHOUP', '');
     },
     //</editor-fold>
-    toUpperCase: function(obj, value, opts) {
+    toUpperCase: function (obj, value, opts) {
         console.log(obj);
         console.log(value);
         console.log(opts);
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
-    onSaveClick: function(btn) {
+    onSaveClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to insert ?',
@@ -144,12 +149,12 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
-                    
+
                     if (msjResult === '') {
                         beanTemp.option = 'I';
                         beanTemp.beanString = JSON.stringify(beanTemp);  // JSON:CONVERTIR
@@ -161,7 +166,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
             }
         });
     },
-    onUpdateClick: function(btn) {
+    onUpdateClick: function (btn) {
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -171,7 +176,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                     animateTarget: btn,
                     icon: Ext.MessageBox.QUESTION,
                     modal: true,
-                    fn: function(btn) {
+                    fn: function (btn) {
                         if (btn === 'yes') {
                             var beanTemp = {};
                             this.llenarData(beanTemp);
@@ -182,7 +187,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                     }
                 });
     },
-    onDeleteClick: function(btn) {
+    onDeleteClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to delete ?',
@@ -190,7 +195,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     var beanTemp = {};
                     this.llenarData(beanTemp);
@@ -201,22 +206,22 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
             }
         });
     },
-    onCancelClick: function(btn) {
+    onCancelClick: function (btn) {
         this.view.close();
     },
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">  
-    MaintenanceA2358: function(beanTemp) {
+    MaintenanceA2358: function (beanTemp) {
 //        var beanString = JSON.stringify(beanTemp);
-        Ext.Ajax.request({  //Es un llamado
+        Ext.Ajax.request({//Es un llamado
             url: prototype.url + '/MaintenanceA2358', //ruta donde conecto con el controller.java
             method: 'POST',
             timeout: 60000000,
             params: beanTemp, //objeto temporal
 //            params: {beanString: beanString},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function(response, opts) {
+            success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText); //cobierta la informacion para poder usarlo
                 console.log(res);
@@ -233,31 +238,31 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     },
     //</editor-fold>
 
-    validacionInsert: function(beanTemp) {
+    validacionInsert: function (beanTemp) {
         var msjResult = ''; //DECLARACION DE VARIABLE VACIA
         if (this.getValue("de-txtAPLIC") === '' || this.getValue("de-txtINPNAME") === '') { //CONDICION 
             msjResult = "You must enter the required field.";
         }
         return msjResult;
     },
-    DeshabilitarCampoClave: function() {
+    DeshabilitarCampoClave: function () {
 
         Ext.getCmp(prototype.id + '-de-txtAPLIC').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtINPNAME').setReadOnly(true);
     },
-    Habilitarlbl: function() {
+    Habilitarlbl: function () {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();
         Ext.getCmp(prototype.id + '-txtDESSOU').hide();
         Ext.getCmp(prototype.id + '-lbldes2').show();
     },
-    desHabilitartxt: function() {
+    desHabilitartxt: function () {
         if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
             Ext.getCmp(prototype.id + '-lbldes').hide();
         } else {
             Ext.getCmp(prototype.id + '-lbldes').show();
         }
     },
-    Habilitarlbl1: function() {
+    Habilitarlbl1: function () {
         Ext.getCmp(prototype.id + '-lbldes').hide();
         if (this.getValue("txtCODSOUR") === '') {
             Ext.getCmp(prototype.id + '-lbldes2').hide();
@@ -266,19 +271,19 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
         }
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getValue: function(id) {
+    getValue: function (id) {
         return Ext.getCmp(prototype.id + '-' + id).getValue();
     },
-    focus: function(id) {
+    focus: function (id) {
         Ext.getCmp(prototype.id + '-' + id).focus();
     },
-    setValue: function(id, txt) {
+    setValue: function (id, txt) {
         Ext.getCmp(prototype.id + '-' + id).setValue(txt);
     },
-    onUpperValue: function(field, newValue, oldValue) {
+    onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    onTextKeypress: function(obj, e, eOpts) {
+    onTextKeypress: function (obj, e, eOpts) {
         if (e.getKey() === e.ENTER) {
 //            this.btnSearch_click();
         }

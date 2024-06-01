@@ -85,22 +85,18 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                                                 text: 'Input Name', dataIndex: 'INPNAME', width: 118,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:left;";
-                                                    
-                                                    return value
-                                                },
-                                                
+                                                    return value;
+                                                }   
                                             },     
                                              {
                                                 text: 'Input Desc.', dataIndex: 'INPDESC', width: 335,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:left;";
-                                                    
-                                                    return value
-                                                },
-                                                
+                                                    return value;
+                                                }
                                             },                                            
                                             {text: 'Input Type', dataIndex: 'INPTYPE', width: 75},
-                                            {text: 'Lybrary', dataIndex: 'LIBNAME', width: 100},
+                                            {text: 'Library', dataIndex: 'LIBNAME', width: 100},
                                             {text: 'Output Name', dataIndex: 'OUTNAME', width: 100},
                                             {text: 'Table', dataIndex: 'TABLA', width: 100},
                                             
@@ -148,7 +144,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                                                 pack: 'center'
                                             },
                                             defaults: {
-                                                xtype: 'label',
+                                                xtype: 'label'
 //                                                margin: '3px 0px 0px 5px'
                                             },
                                             items: [
