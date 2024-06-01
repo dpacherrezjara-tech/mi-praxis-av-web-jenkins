@@ -841,7 +841,7 @@ public class InsumosMDPDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00828_A2358_CRUD(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00829_A2358_CRUD(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}"; // LLAMA AL PROCEDURE
 
         Connection cnx = null;
         try {
@@ -850,13 +850,26 @@ public class InsumosMDPDAO {
 
             cstmt.setString(1, option);
             cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
-            cstmt.setString(3, filter.CODEM.trim());
-            cstmt.setString(4, filter.DESCR.trim());
+            cstmt.setString(3, filter.APLIC.trim());
+            cstmt.setString(4, filter.INPNAME.trim());
+            cstmt.setString(5, filter.TABLA.trim());
+            cstmt.setString(6, filter.NETDIR.trim());
+            cstmt.setString(7, filter.INPDESC.trim());
+            cstmt.setString(8, filter.STAT.trim());
+            cstmt.setString(9, filter.INPEXTE.trim());
+            cstmt.setString(10, filter.OUTNAME.trim());
+            cstmt.setString(11, filter.FASE.trim());
+            cstmt.setString(12, filter.INPTYPE.trim());
+            cstmt.setString(13, filter.FECPROC.trim());
+            cstmt.setString(14, filter.DENV.trim());
+            cstmt.setInt(15, filter.QTYREG);
+            cstmt.setString(16, filter.LIBNAME.trim());
+            cstmt.setString(17, filter.SEQNUM.trim());
 
-            cstmt.setString(5, session.getUserView().getUserInfo().USR);
-            cstmt.setString(6, Functions.getFechaActual());
-            cstmt.setString(7, Functions.getHoraActual());
-            cstmt.execute();
+            cstmt.setString(18, session.getUserView().getUserInfo().USR);
+            cstmt.setString(19, Functions.getFechaActual());
+            cstmt.setString(20, Functions.getHoraActual());
+            cstmt.execute(); // se ejcuta
 
         } catch (Exception e) {
             //e.printStackTrace();

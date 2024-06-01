@@ -122,7 +122,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     editable: true,
                                     enabled: false,
                                     maxLength: 30,
-                                    maskRe: /[0-9]/,
+//                                   maskRe: /[0-9]/,
                                     readOnly: false,
                                     width: 100
                                 },
@@ -177,7 +177,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     editable: true,
                                     enabled: false,
                                     maxLength: 50,
-                                    maskRe: /[0-9]/,
+//                                    maskRe: /[0-9a-zA-Z]/,
                                     readOnly: false,
                                     width: 200
                                 },
@@ -252,7 +252,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.DataEntry',{
                                     editable: true,
                                     enabled: false,
                                     maxLength: 4,
-                                    maskRe: /[0-9]/,
+//                                    maskRe: /[0-9]/,
                                     readOnly: false,
                                     width: 60
                                 }

@@ -129,7 +129,7 @@ public class InsumosMDPController extends BaseController {
         String beanString;
         Gson gson = new Gson();
 
-        A2353Filter filter = new A2353Filter();
+        A2353Filter filter = new A2353Filter(); //es una instancia de la clase = objeto
         String msj = " ";
 
         try {
@@ -137,12 +137,7 @@ public class InsumosMDPController extends BaseController {
             option = request.getParameter("option");
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2353Filter.class);
-//            filter.CODEM = request.getParameter("CODEM").trim();
-//            filter.DESCR = request.getParameter("DESCR").trim();
-//            filter.RSOCIAL = request.getParameter("RSOCIAL").trim();
-//            filter.CIATA = request.getParameter("CIATA").trim();
-//            filter.CANAL = request.getParameter("CANAL").trim();
-//            filter.SCOUNTRY = request.getParameter("SCOUNTRY").trim();
+
 
             logic = new InsumosMDPLogic();
             logic.setSession(this.serverSession.getServerSession());

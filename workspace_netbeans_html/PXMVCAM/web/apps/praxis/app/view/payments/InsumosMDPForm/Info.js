@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                 bodyStyle: 'background: transparent;',
                 border: false,
                 width: 1400,
-                height: 700,
+                height: 900,
                 align: 'center'
             },
             
@@ -46,7 +46,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                             border:true,
 //                            margin: '1',
                              height: 550,
-                             width: 1000,  
+                             width: 1100,  
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -57,7 +57,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id+'-gridDataAirport',
                                     height: 510,
-                                    width: 1000,
+                                    width: 1100,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -81,8 +81,24 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                                             }
                                             ,
                                             {text: 'Seq', dataIndex: 'SEQNUM', width: 50},
-                                            {text: 'Input Name', dataIndex: 'INPNAME', width: 100},
-                                            {text: 'Input Desc.', dataIndex: 'INPDESC', width: 250},
+                                            {
+                                                text: 'Input Name', dataIndex: 'INPNAME', width: 118,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    
+                                                    return value
+                                                },
+                                                
+                                            },     
+                                             {
+                                                text: 'Input Desc.', dataIndex: 'INPDESC', width: 335,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    
+                                                    return value
+                                                },
+                                                
+                                            },                                            
                                             {text: 'Input Type', dataIndex: 'INPTYPE', width: 75},
                                             {text: 'Lybrary', dataIndex: 'LIBNAME', width: 100},
                                             {text: 'Output Name', dataIndex: 'OUTNAME', width: 100},
@@ -111,7 +127,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                                     id: prototype.id +'-pie',
                                     layout: {
                                         type: 'hbox',
-                                        pack: 'center'
+                                        pack: 'left'
                                     },
                                     border: true,
                                     width: 998,
@@ -125,7 +141,7 @@ Ext.define('Ext.Praxis.view.payments.InsumosMDPForm.Info', {
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            width: 998,
+                                            width: 1100,
                                             height: 25,
                                             layout: {
                                                 type: 'hbox',

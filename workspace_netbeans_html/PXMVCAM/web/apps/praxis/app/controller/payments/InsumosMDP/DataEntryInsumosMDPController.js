@@ -152,9 +152,10 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                     
                     if (msjResult === '') {
                         beanTemp.option = 'I';
+                        beanTemp.beanString = JSON.stringify(beanTemp);  // JSON:CONVERTIR
                         this.MaintenanceA2358(beanTemp);
                     } else {
-                        global.Msg({msg: msjResult});
+                        global.Msg({msg: msjResult}); // golbla.Msg: es una funcion que se muestre un cuadro 
                     }
                 }
             }
@@ -175,6 +176,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                             var beanTemp = {};
                             this.llenarData(beanTemp);
                             beanTemp.option = 'U';
+                            beanTemp.beanString = JSON.stringify(beanTemp);
                             this.MaintenanceA2358(beanTemp);
                         }
                     }
@@ -193,6 +195,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     beanTemp.option = 'D';
+                    beanTemp.beanString = JSON.stringify(beanTemp);
                     this.MaintenanceA2358(beanTemp);
                 }
             }
@@ -203,19 +206,19 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
     },
     // </editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
+    //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">  
     MaintenanceA2358: function(beanTemp) {
 //        var beanString = JSON.stringify(beanTemp);
-        Ext.Ajax.request({
-            url: prototype.url + '/MaintenanceA2353',
+        Ext.Ajax.request({  //Es un llamado
+            url: prototype.url + '/MaintenanceA2358', //ruta donde conecto con el controller.java
             method: 'POST',
             timeout: 60000000,
-            params: beanTemp,
+            params: beanTemp, //objeto temporal
 //            params: {beanString: beanString},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             success: function(response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
+                var res = Ext.JSON.decode(response.responseText); //cobierta la informacion para poder usarlo
                 console.log(res);
 
                 if (res.success) {
@@ -232,7 +235,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.DataEntryInsumosMDPControl
 
     validacionInsert: function(beanTemp) {
         var msjResult = ''; //DECLARACION DE VARIABLE VACIA
-        if (this.getValue("de-txtAPLIC") === '' || this.getValue("de-txtINPNAME") === '') { //CONDICION
+        if (this.getValue("de-txtAPLIC") === '' || this.getValue("de-txtINPNAME") === '') { //CONDICION 
             msjResult = "You must enter the required field.";
         }
         return msjResult;
