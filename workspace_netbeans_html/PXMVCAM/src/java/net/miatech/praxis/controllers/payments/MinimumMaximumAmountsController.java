@@ -230,13 +230,13 @@ public class MinimumMaximumAmountsController extends BaseController {
 
             
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
             ++vj;
             //============================================
 
