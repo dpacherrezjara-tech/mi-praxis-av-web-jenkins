@@ -1742,28 +1742,17 @@ public class MasterDAO {
     
 
     public Connection getIBMDB2Connection() {
-        //Connection cnx;    
 
-        
-        //String url = "jdbc:as400://10.0.0.47/PRAXIS;libraries=PRAXISMP"; //DESARROLLO
         String url = "jdbc:as400://10.0.0.25/PRAXIS;libraries=PRAXIS"; //PRODUCCION
 
         try {
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
             DriverManager.setLoginTimeout(60 * 10); // 10min
-            
-            //String strUser = (String)session.getPropertySession().get("DB_SERVER_" + session.getAttribute("DB_SERVER_DEFAULT_CALF").toString() + "_"+ session.getAttribute("DB_SERVER_DEFAULT_TYPE").toString() +"_CUST_USER");
-            //String strPass = (String)session.getPropertySession().get("DB_SERVER_" + session.getAttribute("DB_SERVER_DEFAULT_CALF").toString() + "_"+ session.getAttribute("DB_SERVER_DEFAULT_TYPE").toString() +"_CUST_PASS");
-  
-            //return DriverManager.getConnection(url, strUser, strPass);
-            //return DriverManager.getConnection(url, "RBTAVIANCA", "rbtavia"); //DESARROLLO
-            return DriverManager.getConnection(url, "SAP52", "AEROMEXICO1");//PRODUCCION
-            /*Context ctx = (Context) new InitialContext(); //.lookup("java:comp/env");
-             return ((DataSource) ctx.lookup("jdbc/praxisDB")).getConnection();*/
+
+            return DriverManager.getConnection(url, "USRWEBAV", "gt23yv90");//PRODUCCION
         } catch (Exception ex) {
             return null;
         }
-        //return cnx ;
     }
 
     private void setClose() {
