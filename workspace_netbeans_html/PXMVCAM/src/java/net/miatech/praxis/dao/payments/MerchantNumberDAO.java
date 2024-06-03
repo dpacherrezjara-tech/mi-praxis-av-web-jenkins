@@ -771,15 +771,14 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 //            for (int i = 0; i < lstBank.size(); i++){
-                
-                
+
                 cstmt.setString(1, option);
                 cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
                 cstmt.setString(3, filter.CMERCHAN.trim());
@@ -793,13 +792,28 @@ public class MerchantNumberDAO {
                 cstmt.setString(11, filter.IN_ACCNUMB.trim());
                 cstmt.setString(12, filter.IN_SAGENT.trim());
                 cstmt.setString(13, filter.IN_BANKNAM.trim());
-//                cstmt.setString(14, beanDet.BANKCUR.trim());
-//                cstmt.setString(15, beanDet.ACCNUMB.trim());
-//                cstmt.setString(16, beanDet.ACCNUMA.trim());
-//                cstmt.setString(17, beanDet.BENCEN.trim());
-                cstmt.setString(14, session.getUserView().getUserInfo().USR);
-                cstmt.setString(15, Functions.getFechaActual());
-                cstmt.setString(16, Functions.getHoraActual());
+                cstmt.setString(14, filter.IN_DREPORT.trim());
+                cstmt.setString(15, filter.IN_CODE.trim());
+                cstmt.setString(16, filter.IN_CORE.trim());
+                cstmt.setString(17, filter.IN_FRANC1.trim());
+                cstmt.setString(18, filter.IN_FRANC2.trim());
+                cstmt.setString(19, filter.IN_FRANC3.trim());
+                cstmt.setString(20, filter.IN_FRANC4.trim());
+                cstmt.setString(21, filter.IN_BANKCM.trim());
+                cstmt.setString(22, filter.IN_BANKCUR.trim());
+                cstmt.setString(23, filter.IN_ACCNUMA.trim());
+                cstmt.setString(24, filter.IN_BENCEN.trim());
+                cstmt.setString(25, filter.IN_DEUSAP.trim());
+                cstmt.setString(26, filter.IN_CANAL.trim());
+                cstmt.setString(27, filter.IN_PROCES.trim());
+                cstmt.setString(28, filter.IN_SCOUNTRY.trim());
+                cstmt.setString(29, filter.IN_SOCIETY.trim());
+                cstmt.setString(30, filter.IN_SCURRENCY.trim());
+                cstmt.setString(31, filter.IN_SBENCEN.trim());
+                cstmt.setString(32, filter.IN_COSTCEN.trim());
+                cstmt.setString(33, session.getUserView().getUserInfo().USR);
+                cstmt.setString(34, Functions.getFechaActual());
+                cstmt.setString(35, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
 //            }
