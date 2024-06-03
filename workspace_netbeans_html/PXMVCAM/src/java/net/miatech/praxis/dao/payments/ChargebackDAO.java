@@ -89,10 +89,10 @@ public class ChargebackDAO {
             rs01 = cstmt.getResultSet();
 
             while (rs01.next()) {
-                dblAUTAMOUNT = rs01.getDouble("AUTAMOUNT");
-                dblOPEAMOUNT = rs01.getDouble("OPEAMOUNT");
-                dblIVA = rs01.getDouble("IVA");
-                intQTYTRNX = rs01.getInt("QTYTRNX");
+//                dblAUTAMOUNT = rs01.getDouble("AUTAMOUNT");
+//                dblOPEAMOUNT = rs01.getDouble("OPEAMOUNT");
+//                dblIVA = rs01.getDouble("IVA");
+//                intQTYTRNX = rs01.getInt("QTYTRNX");
             }
 
             try {
@@ -110,35 +110,33 @@ public class ChargebackDAO {
                     objRtn.IN_DATE_FROM = filter.IN_DATE_FROM;
                     objRtn.IN_DATE_TO = filter.IN_DATE_TO;
 
-                    objRtn.STATT = rs01.getString("STVAL").trim();
-                    objRtn.strDescripcion = rs01.getString("DES_STVAL").trim();
-                    objRtn.MERCHNREC = rs01.getString("MERCHN");
-                    objRtn.MERCHNAM = rs01.getString("MERCHNAM").trim();
-                    objRtn.AUTAMOUNT = rs01.getDouble("AUTAMOUNT");
-                    objRtn.OPEAMOUNT = rs01.getDouble("OPEAMOUNT");
-                    objRtn.IVA = rs01.getDouble("IVA");
-                    objRtn.APLIDATE = rs01.getString("APLIDATE").trim();
-                    objRtn.strFormatDate = Functions.getMonthConvert(objRtn.APLIDATE);
-                    objRtn.NATURE = rs01.getString("NATURE").trim();
-                    objRtn.CONCEPT = rs01.getString("CONCEPT").trim();
-                    objRtn.QTYTRNX = rs01.getInt("QTYTRNX");
-                    objRtn.CURRAUTH = rs01.getString("CURRAUTH");
-                    objRtn.REMESA = rs01.getString("REMESA").trim();
-                    objRtn.REMEDATE = rs01.getString("REMEDATE").trim();
-                    objRtn.strDayTo = Functions.getMonthConvert(objRtn.REMEDATE);
-                    objRtn.REMETIPO = rs01.getString("REMETIPO").trim();
-                    objRtn.REMEFOLIO = rs01.getString("REMEFOLIO").trim();
-                    objRtn.CODEBANK = rs01.getString("CODEBANK").trim();
-                    objRtn.strSCARF = rs01.getString("DES_CODEBANK").trim();
-                    objRtn.SCARCOD = rs01.getString("SCARCOD").trim();
-                    objRtn.strDescCard = rs01.getString("DES_SCARCOD").trim();
-                    objRtn.CARDNBR = rs01.getString("CARDNBR").trim();
-                    objRtn.AUTHNBR = rs01.getString("AUTHNBR").trim();
+                    objRtn.CHARNBR = rs01.getString("CHARNBR").trim();
+                    objRtn.CHGDATE = rs01.getString("CHGDATE").trim();
+                    objRtn.CHGAMOUNT = rs01.getString("CHGAMOUNT").trim();
+                    objRtn.CHGCURREN = rs01.getString("CHGCURREN").trim();
+                    objRtn.CARDTYPE = rs01.getString("CARDTYPE").trim();
+                    objRtn.SCARDN = rs01.getString("SCARDN").trim();
+                    objRtn.SCARDNCOR = rs01.getString("SCARDNCOR").trim();
+                    objRtn.TKTNUMER = rs01.getString("TKTNUMER").trim();
+                    objRtn.PRDA = rs01.getString("PRDA").trim();
+                    objRtn.SAUTHOC = rs01.getString("SAUTHOC").trim();
+                    objRtn.ADATE = rs01.getString("ADATE").trim();
+                    objRtn.SDATE = rs01.getString("SDATE").trim();
+                    objRtn.SAGENT = rs01.getString("SAGENT").trim();
+                    objRtn.STVAL = rs01.getString("STVAL").trim();
+                    objRtn.PROCESA = rs01.getString("PROCESA").trim();
+                    objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
+                    objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
+                    objRtn.ACCNUMBER = rs01.getString("ACCNUMBER").trim();
+                    objRtn.CODEBANK = rs01.getString("SAUTHOC").trim();                  
+                    objRtn.SOCIETY = rs01.getString("SOCIETY").trim();
+                    objRtn.SOCIETYL = rs01.getString("SOCIETYL").trim();
+                    objRtn.CANAL = rs01.getString("CANAL").trim();
+                    objRtn.COREP = rs01.getString("COREP").trim();
+                    objRtn.SEQ = rs01.getString("SEQ").trim();
+                    objRtn.COMPANYID = rs01.getString("COMPANYID").trim();
+                    objRtn.ARN = rs01.getString("ARN").trim();
 
-                    objRtn.dblTotAUTAMOUNT = dblAUTAMOUNT;
-                    objRtn.dblTotDISAMOUNT = dblOPEAMOUNT;
-                    objRtn.dblTotAMOUNT = dblIVA;
-                    objRtn.dblTotIMPAMOUNT = intQTYTRNX;
 
                     objRtn.page.PAGNUM = filter.page.PAGNUM;
                     objRtn.page.PAGROW = filter.page.PAGROW;
@@ -190,7 +188,7 @@ public class ChargebackDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00854(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00852(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -198,11 +196,15 @@ public class ChargebackDAO {
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt01.setString(2, filter.REMEDATE.trim());
-            cstmt01.setString(3, filter.MERCHNREC);
-            cstmt01.setString(4, filter.CARDNBR.trim());
-            cstmt01.setString(5, filter.AUTHNBR.trim());
-            cstmt01.setString(6, filter.SQCRFILE.trim());
+            cstmt01.setString(2, filter.CHGDATE.trim());
+            cstmt01.setString(3, filter.CHARNBR);
+            cstmt01.setString(4, filter.SCOUNTRY.trim());
+            cstmt01.setString(5, filter.COMPANYID.trim());
+            cstmt01.setString(6, filter.SCARDN.trim());
+            cstmt01.setString(7, filter.SAUTHOC.trim());
+            cstmt01.setString(8, filter.ARN.trim());
+            cstmt01.setString(9, filter.TKTNUMER.trim());
+            cstmt01.setString(10, filter.SEQ.trim());
               
 
             cstmt01.execute();
@@ -210,38 +212,41 @@ public class ChargebackDAO {
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
 
-                objRtn.CCUST = rs01.getString("CCUST");
-                objRtn.STATT = rs01.getString("STVAL").trim();
-               
-                objRtn.MERCHNREC = rs01.getString("MERCHN");
-                objRtn.MERCHNAM = rs01.getString("MERCHNAM").trim();
-                objRtn.AUTAMOUNT = rs01.getDouble("AUTAMOUNT");
-                objRtn.OPEAMOUNT = rs01.getDouble("OPEAMOUNT");
-                objRtn.IVA = rs01.getDouble("IVA");
-                objRtn.APLIDATE = rs01.getString("APLIDATE").trim();
-              
-                objRtn.NATURE = rs01.getString("NATURE").trim();
-                objRtn.CONCEPT = rs01.getString("CONCEPT").trim();
-                objRtn.QTYTRNX = rs01.getInt("QTYTRNX");
-                objRtn.REMESA = rs01.getString("REMESA").trim();
-                objRtn.REMEDATE = rs01.getString("REMEDATE").trim();
-                objRtn.REMETIPO = rs01.getString("REMETIPO").trim();
-                objRtn.REMEFOLIO = rs01.getString("REMEFOLIO").trim();
-                objRtn.CODEBANK = rs01.getString("CODEBANK").trim();
-                objRtn.SCARCOD = rs01.getString("SCARCOD").trim();
-                objRtn.CARDNBR = rs01.getString("CARDNBR").trim();
-                objRtn.AUTHNBR = rs01.getString("AUTHNBR").trim();
-                objRtn.CURRAUTH = "MXN";
-                objRtn.FSELEC = rs01.getString("FSELEC").trim();
-                objRtn.FECSELEC = rs01.getString("FECSELEC").trim();
-                objRtn.SQCRFILE = rs01.getString("SQCRFILE").trim();
+                    objRtn.CCUST = rs01.getString("CCUST");
+                    objRtn.CHARNBR = rs01.getString("CHARNBR").trim();
+                    objRtn.CHGDATE = rs01.getString("CHGDATE").trim();
+                    objRtn.CHGAMOUNT = rs01.getString("CHGAMOUNT").trim();
+                    objRtn.CHGCURREN = rs01.getString("CHGCURREN").trim();
+                    objRtn.CARDTYPE = rs01.getString("CARDTYPE").trim();
+                    objRtn.SCARDN = rs01.getString("SCARDN").trim();
+                    objRtn.SCARDNCOR = rs01.getString("SCARDNCOR").trim();
+                    objRtn.TKTNUMER = rs01.getString("TKTNUMER").trim();
+                    objRtn.PRDA = rs01.getString("PRDA").trim();
+                    objRtn.SAUTHOC = rs01.getString("SAUTHOC").trim();
+                    objRtn.ADATE = rs01.getString("ADATE").trim();
+                    objRtn.SDATE = rs01.getString("SDATE").trim();
+                    objRtn.SAGENT = rs01.getString("SAGENT").trim();
+                    objRtn.STVAL = rs01.getString("STVAL").trim();
+                    objRtn.PROCESA = rs01.getString("PROCESA").trim();
+                    objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
+                    objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
+                    objRtn.ACCNUMBER = rs01.getString("ACCNUMBER").trim();
+                    objRtn.CODEBANK = rs01.getString("SAUTHOC").trim();                  
+                    objRtn.SOCIETY = rs01.getString("SOCIETY").trim();
+                    objRtn.SOCIETYL = rs01.getString("SOCIETYL").trim();
+                    objRtn.CANAL = rs01.getString("CANAL").trim();
+                    objRtn.COREP = rs01.getString("COREP").trim();
+                    objRtn.SEQ = rs01.getString("SEQ").trim();
+                    objRtn.COMPANYID = rs01.getString("COMPANYID").trim();
+                    objRtn.ARN = rs01.getString("ARN").trim();
                 
-                objRtn.USCR = rs01.getString("USCR");
-                objRtn.FECR = rs01.getString("FECR");
-                objRtn.HOCR = rs01.getString("HOCR");
-                objRtn.USUP = rs01.getString("USUP");
-                objRtn.FEUP = rs01.getString("FEUP");
-                objRtn.HOUP = rs01.getString("HOUP");
+                
+                    objRtn.USCR = rs01.getString("USCR");
+                    objRtn.FECR = rs01.getString("FECR");
+                    objRtn.HOCR = rs01.getString("HOCR");
+                    objRtn.USUP = rs01.getString("USUP");
+                    objRtn.FEUP = rs01.getString("FEUP");
+                    objRtn.HOUP = rs01.getString("HOUP");
 
                 //lstRtn.add(objRtn);
             }

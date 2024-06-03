@@ -108,7 +108,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtAUTHNBR',
+                                    id: prototype.id + '-txtSAUTHOC',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
@@ -128,7 +128,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 5},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtSCARCOD',
+                                    id: prototype.id + '-txtSCARDN',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[aA-zZ]/,
@@ -175,7 +175,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtMERCHNREC',
+                                    id: prototype.id + '-txtCHARNBR',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
@@ -195,7 +195,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 45},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtMERCHNAM',
+                                    id: prototype.id + '-txtMERCHNAM', //consultar y cambiar
                                     fieldStyle: 'text-align:left',
                                     maxLength: 40,
                                     maskRe: /[a-zA-Z0-9\ s]/,
@@ -227,7 +227,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 20},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtCURRAUTH',
+                                    id: prototype.id + '-txtSCURRENCY',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[a-zA-Z]/,
@@ -263,7 +263,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 35},
                                 {
                                     xtype: 'label',
-                                    text: 'Status',
+                                    text: 'Proces', //preguntar como cambiar
                                     style: 'font-weight:bold;color:#121E31;',
                                     width: 50,
                                     padding: '3 0'
@@ -297,7 +297,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
-                                    text: 'Concept',
+                                    text: 'Num. Ticket',
                                     style: 'font-weight:bold;color:#121E31;',
                                     width: 60,
                                     padding: '3 0',
@@ -305,7 +305,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 60},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtCONCEPT',
+                                    id: prototype.id + '-txtTKTNUMER',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maxLength: 40,
@@ -321,7 +321,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 35},
                                 {
                                     xtype: 'label',
-                                    text: 'Nature',
+                                    text: 'Country',
                                     style: 'font-weight:bold;color:#121E31;',
                                     width: 60,
                                     padding: '3 0'
@@ -329,7 +329,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 50},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtNATURE',
+                                    id: prototype.id + '-txtSCOUNTRY',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[a-zA-Z]/,
@@ -411,7 +411,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
-                                    text: 'Case Number',
+                                    text: 'ADATE',
                                     style: 'font-weight:bold;color:#121E31;',
                                     width: 110,
                                     padding: '3 0'
@@ -419,7 +419,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 10},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtREMEFOLIO',
+                                    id: prototype.id + '-txtADATE',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
@@ -431,34 +431,24 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 100},
                                 {
                                     xtype: 'label',
-                                    text: 'Case Date',
+                                    text: 'SDATE',
                                     style: 'font-weight:bold;color:#121E31;',
                                     width: 80,
                                     padding: '3 0'
                                 },
                                 {xtype: 'tbspacer', width: 35},
                                 {
-                                    xtype: 'label',
-                                    labelAlign: 'center',
-                                    padding: '3px 2px 3px 5px',
-                                    html: '<strong style="color:#AC4546;font-size:13px;">(*)</strong>',
-                                    width: 30,
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Required field'
-                                     }
-                                },
-                                {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtREMEDATE',
+                                    id: prototype.id + '-txtSDATE',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
-                                    maxLength: 8,
+                                    maxLength: 6,
 //                                    readOnly: true,
                                     padding: '3 0',
-                                    width: 80
+                                    width: 60,
                                 },
+                                
                                 {xtype: 'tbspacer', width: 55},
                                 {
                                     xtype: 'label',

@@ -71,18 +71,10 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                 columns: [
                                                     {text: 'Code', dataIndex: 'strSCARF', width: 90}
                                                 ]
-                                            },
-                                            {
-                                                text: 'Application',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Date', dataIndex: 'strFormatDate', width: 100}
-                                                ]
-                                            },
+                                            },                                            
+                                            {text: 'Applic. Date', dataIndex: 'CHGDATE', width: 100},
+                                            {text: 'Adate', dataIndex: 'ADATE', width: 100},
+                                            {text: 'Sdate', dataIndex: 'SDATE', width: 100},
                                             {
                                                 text: 'Card',
                                                 defaults: {
@@ -91,7 +83,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Type', dataIndex: 'strDescCard', width: 60,
+                                                    {text: 'Type', dataIndex: 'CARDTYPE', width: 60,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:left;";
@@ -101,7 +93,8 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     }
                                                 ]
                                             },
-                                            {text: 'Credit Card', dataIndex: 'CARDNBR', width: 145},
+                                            {text: 'Credit Card', dataIndex: 'SCARDN', width: 145},
+                                            {text: 'Cardncor', dataIndex: 'SCARDNCOR', width: 145},
                                             {
                                                 text: 'Authorization',
                                                 defaults: {
@@ -110,7 +103,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Code', dataIndex: 'AUTHNBR', width: 90}
+                                                    {text: 'Code', dataIndex: 'SAUTHOC', width: 90}
                                                 ]
                                             },
                                             {
@@ -121,8 +114,8 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'Nbr.', dataIndex: 'MERCHNREC', width: 70},
-                                                    {text: 'Name', dataIndex: 'MERCHNAM', width: 180,
+//                                                    {text: 'Nbr.', dataIndex: 'CHARNBR', width: 70},
+                                                    {text: 'Name', dataIndex: 'CHARNBR', width: 180,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:left;";
@@ -132,43 +125,39 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     }
                                                 ]
                                             },
-                                            {text: 'Concept', dataIndex: 'CONCEPT', width: 220,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:left;";
-                                                    metaData.tdAttr = 'data-qtip="' + data.CONCEPT + '"';
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Currency', dataIndex: 'CURRAUTH', width: 75},
-                                            {text: 'Amount', dataIndex: 'AUTAMOUNT', width: 100,
+                                            {text: 'Sub Merchant', dataIndex: 'SUCMERCH', width: 180},
+//                                            {text: 'Concept', dataIndex: 'CONCEPT', width: 220,
+//                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                    var data = record.data;
+//                                                    metaData.style = "text-align:left;";
+//                                                    metaData.tdAttr = 'data-qtip="' + data.CONCEPT + '"';
+//                                                    return value;
+//                                                }
+//                                            },
+                                            {text: 'CHGAMOUNT', dataIndex: 'CHGAMOUNT', width: 75},
+                                            {text: 'CHGCURREN', dataIndex: 'CHGCURREN', width: 75},
+                                            {text: 'Num. Ticket', dataIndex: 'TKTNUMER', width: 75},
+                                            {text: 'Prda', dataIndex: 'PRDA', width: 75},
+                                            {text: 'Agent', dataIndex: 'SAGENT', width: 75},
+                                            {text: 'Stval', dataIndex: 'STVAL', width: 75},
+                                            {text: 'Proces', dataIndex: 'PROCESA', width: 75},
+                                            {text: 'Auth. Currency', dataIndex: 'SCURRENCY', width: 75},
+                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 75},
+                                            {text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 75},
+                                            {text: 'Code Bank', dataIndex: 'CODEBANK', width: 75},
+                                            {text: 'Auth. Amount', dataIndex: 'AUTAMOUNT', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                             },
-                                            {
-                                                text: 'Case',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Date', dataIndex: 'strDayTo', width: 90},
-                                                    {text: 'Type', dataIndex: 'REMETIPO', width: 50},
-                                                    {text: 'Nbr.', dataIndex: 'REMEFOLIO', width: 60}
-                                                ]
-                                            },
-                                            {text: 'Status', dataIndex: 'strDescripcion', width: 150,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:left;";
-                                                    metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
-                                                    return value;
-                                                }
-                                            },
+                                                    {text: 'Society', dataIndex: 'SOCIETY', width: 90},
+                                                    {text: 'Societyl', dataIndex: 'SOCIETYL', width: 90},
+                                                    {text: 'Canal', dataIndex: 'CANAL', width: 50},
+                                                    {text: 'Correp', dataIndex: 'COREP', width: 60},
+                                                    {text: 'Companyid', dataIndex: 'COMPANYID', width: 60},
+                                            
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',

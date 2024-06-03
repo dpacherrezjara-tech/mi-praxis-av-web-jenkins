@@ -31,6 +31,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.DataEntryChargebackControl
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
             case 'U':
+                console.log(meDE.bean.data, 'meDE.bean')
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
