@@ -68,9 +68,23 @@ Ext.define('Ext.Praxis.view.payments.MinimumMaximumAmountsForm.Info', {
 
                                         },
                                         items: [
-                                            {text: 'Nbr', dataIndex: 'RN', width: 50},                                            
-                                            {text: 'Currency', dataIndex: 'descCurrency', width: 300, align: 'left'},
-                                            {text: 'Country', dataIndex: 'descCountry', width: 300, align: 'left'},
+                                            {text: 'Nbr', dataIndex: 'RN', width: 50},
+                                            {
+                                                text: 'Currency', dataIndex: 'descCurrency', width: 300,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    
+                                                    return value
+                                                },
+                                            },
+                                            {
+                                                text: 'Country', dataIndex: 'descCountry', width: 300,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    
+                                                    return value
+                                                },
+                                            },
                                             {text: 'Max.Fase I', dataIndex: 'MAXF1', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 	

@@ -145,29 +145,22 @@ public class MinimumMaximumAmountsController extends BaseController {
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("MinimumMaximumAmounts : getXLSX");
-
-        String fileNameDownload = String.format("MinimumMaximumAmounts - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
-
+        System.out.println("Report : getXLSX");
+        String fileNameDownload = String.format("Maximun Minimun Amount Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
-
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
             List<A2353Filter> listaData = this.getList(request, true);
-
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
-
             workbook = new XSSFWorkbook();
-
-            Sheet sheet = workbook.createSheet("ReasonCodeReport");
-
+            Sheet sheet = workbook.createSheet("Report");
             XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
-            CellStyle bodyStyle = workbook.createCellStyle();
+            XSSFCellStyle bodyStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle totalStyle = (XSSFCellStyle) workbook.createCellStyle();
+//            CellStyle bodyStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
-
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
             headerFont.setColor(IndexedColors.BLACK.getIndex());
-
             headerStyle.setBorderRight(CellStyle.BORDER_THIN);
             headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -181,7 +174,19 @@ public class MinimumMaximumAmountsController extends BaseController {
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle.setFont(headerFont);
-
+            totalStyle.setBorderRight(CellStyle.BORDER_THIN);
+            totalStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            totalStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            totalStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setBorderTop(CellStyle.BORDER_THIN);
+            totalStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+            totalStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            totalStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            totalStyle.setVerticalAlignment(CellStyle.ALIGN_RIGHT);
+            totalStyle.setFont(headerFont);
             bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -193,107 +198,110 @@ public class MinimumMaximumAmountsController extends BaseController {
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
-
             // ====== CREANDO TITULOS ======================================
-            Row row = sheet.createRow(vj);
 
-            Cell CH1_00 = row.createCell(0);
-            Cell CH1_01 = row.createCell(1);
-            Cell CH1_02 = row.createCell(2);
-//            Cell CH1_03 = row.createCell(3);
-//            Cell CH1_04 = row.createCell(4);
-//            Cell CH1_05 = row.createCell(5);
-//            Cell CH1_06 = row.createCell(6);
+            // ======  Nivel 1 ==========
+            Row row1 = sheet.createRow(vj);
+            Cell CH1_0 = row1.createCell(0);
+            Cell CH1_1 = row1.createCell(1);
+            Cell CH1_2 = row1.createCell(2);
+            Cell CH1_3 = row1.createCell(3);
+            Cell CH1_4 = row1.createCell(4);
+            Cell CH1_5 = row1.createCell(5);
+            Cell CH1_6 = row1.createCell(6);
 
-            CH1_00.setCellValue("Nbr");
-            CH1_01.setCellValue("Code");
-            CH1_02.setCellValue("Description");
-//            CH1_03.setCellValue("Canal");
-//            CH1_04.setCellValue("Social");
-//            CH1_05.setCellValue("IATA");
-
-            CH1_00.setCellStyle(headerStyle);
-            CH1_01.setCellStyle(headerStyle);
-            CH1_02.setCellStyle(headerStyle);
-//            CH1_03.setCellStyle(headerStyle);
-//            CH1_04.setCellStyle(headerStyle);
-//            CH1_05.setCellStyle(headerStyle);
-//            CH1_06.setCellStyle(headerStyle);
+            
+            CH1_0.setCellValue("Nbr");
+            CH1_1.setCellValue("Currency");
+            CH1_2.setCellValue("Country");
+            CH1_3.setCellValue("Max.Fase I");
+            CH1_4.setCellValue("Min.FaseI");
+            CH1_5.setCellValue("Max.FaseII");
+            CH1_6.setCellValue("Min.FaseII");
 
 
+            CH1_0.setCellStyle(headerStyle);
+            CH1_1.setCellStyle(headerStyle);
+            CH1_2.setCellStyle(headerStyle);
+            CH1_3.setCellStyle(headerStyle);
+            CH1_4.setCellStyle(headerStyle);
+            CH1_5.setCellStyle(headerStyle);
+            CH1_6.setCellStyle(headerStyle);
+
+            
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
-//            sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
-//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
-            
-
-            //*******************
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
             ++vj;
-            Row row2 = sheet.createRow(vj);
-            Cell CH2_00 = row2.createCell(0);
-            Cell CH2_01 = row2.createCell(1);
-            Cell CH2_02 = row2.createCell(2);
-//            Cell CH2_03 = row2.createCell(3);
-//            Cell CH2_04 = row2.createCell(4);
-//            Cell CH2_05 = row2.createCell(5);
-//            Cell CH2_06 = row2.createCell(6);
+            //============================================
 
-         
-            
-            CH2_01.setCellValue("Message");
-//            CH2_05.setCellValue("Code");
-//            CH2_06.setCellValue("Name");
+//            // ======  Nivel 2 ==========
+//            Row row2 = sheet.createRow(vj);
+//            Cell CH2_0 = row2.createCell(0);
+//            Cell CH2_1 = row2.createCell(1);
+//            Cell CH2_2 = row2.createCell(2);
+//            Cell CH2_3 = row2.createCell(3);
+//            Cell CH2_4 = row2.createCell(4);
+//            Cell CH2_5 = row2.createCell(5);
+//            Cell CH2_6 = row2.createCell(6);
+//            Cell CH2_7 = row2.createCell(7);
+//            Cell CH2_8 = row2.createCell(8);
+//            
+//            CH2_1.setCellValue("Group");
+//
+//            CH2_0.setCellStyle(headerStyle);
+//            CH2_1.setCellStyle(headerStyle);
+//            CH2_2.setCellStyle(headerStyle);
+//            CH2_3.setCellStyle(headerStyle);
+//            CH2_4.setCellStyle(headerStyle);
+//            CH2_5.setCellStyle(headerStyle);
+//            CH2_6.setCellStyle(headerStyle);
+//            CH2_7.setCellStyle(headerStyle);
+//            CH2_8.setCellStyle(headerStyle);
+//
+//            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 1));
+//            ++vj;
+            //============================================
 
-            CH2_00.setCellStyle(headerStyle);
-            CH2_01.setCellStyle(headerStyle);
-            CH2_02.setCellStyle(headerStyle);
-//            CH2_03.setCellStyle(headerStyle);
-//            CH2_04.setCellStyle(headerStyle);
-//            CH2_05.setCellStyle(headerStyle);
-//            CH2_06.setCellStyle(headerStyle);
-
-
-            //          ========================================================
-            ++vj;
             while (iter.hasNext()) {
-
-                row = sheet.createRow(vj);
-                Cell rcell0 = row.createCell(0);
-                Cell rcell1 = row.createCell(1);
-                Cell rcell2 = row.createCell(2);
-//                Cell rcell3 = row.createCell(3);
-//                Cell rcell4 = row.createCell(4);
-//                Cell rcell5 = row.createCell(5);
-//                Cell rcell6 = row.createCell(6);
+                row1 = sheet.createRow(vj);
+                Cell rcell0 = row1.createCell(0);
+                Cell rcell1 = row1.createCell(1);
+                Cell rcell2 = row1.createCell(2);
+                Cell rcell3 = row1.createCell(3);
+                Cell rcell4 = row1.createCell(4);
+                Cell rcell5 = row1.createCell(5);
+                Cell rcell6 = row1.createCell(6);
 
 
                 rcell0.setCellValue(listaData.get(vi).RN);
-                rcell1.setCellValue(listaData.get(vi).CODEM);
-                rcell2.setCellValue(listaData.get(vi).DESCR);
-//                rcell3.setCellValue(listaData.get(vi).CANAL);
-//                rcell4.setCellValue(listaData.get(vi).RSOCIAL);
-//                rcell5.setCellValue(listaData.get(vi).CIATA);
-//                rcell6.setCellValue(listaData.get(vi).strDescrip);
-
+                rcell1.setCellValue(listaData.get(vi).descCurrency);
+                rcell2.setCellValue(listaData.get(vi).descCountry);
+                rcell3.setCellValue(listaData.get(vi).MAXF1);
+                rcell4.setCellValue(listaData.get(vi).MINF1);
+                rcell5.setCellValue(listaData.get(vi).MAXF2);
+                rcell6.setCellValue(listaData.get(vi).MINF2);
                 iter.next();
                 ++vi;
                 ++vj;
             }
+
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
-//            sheet.autoSizeColumn(3, true);
-//            sheet.autoSizeColumn(4, true);
-//            sheet.autoSizeColumn(5, true);
-//            sheet.autoSizeColumn(6, true);
+            sheet.autoSizeColumn(3, true);
+            sheet.autoSizeColumn(4, true);
+            sheet.autoSizeColumn(5, true);
+            sheet.autoSizeColumn(6, true);
 
 
-            /**
-             * fileNameDownload = Nombre de descarga
-             */
+            //============================================
             response.setContentType("application/vnd.openxml");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
 

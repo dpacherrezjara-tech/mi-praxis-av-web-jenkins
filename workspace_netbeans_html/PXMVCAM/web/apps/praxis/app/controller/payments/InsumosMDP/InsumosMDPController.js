@@ -241,7 +241,7 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.InsumosMDPController', {
 //        console.log(me.panelActual);
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
                 global.Msg(
