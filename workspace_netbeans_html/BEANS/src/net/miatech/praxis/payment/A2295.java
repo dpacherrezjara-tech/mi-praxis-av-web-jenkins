@@ -33,6 +33,7 @@ public class A2295 {
     public String CHARNBR = "";
     public String SOCIETY = "";
     public String CANAL= "";
+    public String SUCMERCH= "";
     public String COREP = "";
     public String CHGDATE = "";
     public String CHGAMOUNT = "";

@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.ChargebackForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1600,
+                                        width: 1750,
                                         align: 'center'
                                     },
                                     items: [
@@ -67,13 +67,13 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.ChargebackForm', {
                                         {
                                             xtype: 'panel',
                                             height: 600,
-                                            width: 1600,
+                                            width: 1750,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1600,
+                                                    width: 1750,
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,

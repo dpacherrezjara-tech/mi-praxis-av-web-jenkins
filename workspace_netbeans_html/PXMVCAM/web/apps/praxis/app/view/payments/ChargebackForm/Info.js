@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1600,
+                width: 1750,
                 height: 'auto',
                 align: 'center'
             },
@@ -37,10 +37,10 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxMainData',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
-                            width: 1522,
-                            margin: '0 0 0 0 ',
+                            width: 1700,
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1522,
+                                    width: 1695,
                                     columnLines: true,
 //                                    features: [{
 //                                        ftype: 'summary'
@@ -61,89 +61,121 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {
-                                                text: 'Source',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Code', dataIndex: 'strSCARF', width: 90}
-                                                ]
-                                            },                                            
-                                            {text: 'Applic. Date', dataIndex: 'CHGDATE', width: 100},
-                                            {text: 'Adate', dataIndex: 'ADATE', width: 100},
-                                            {text: 'Sdate', dataIndex: 'SDATE', width: 100},
-                                            {
-                                                text: 'Card',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Type', dataIndex: 'CARDTYPE', width: 60,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            metaData.style = "text-align:left;";
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
-                                                            return value;
-                                                        }
-                                                    }
-                                                ]
+                                            {text: 'Chargeback<br>Date', dataIndex: 'CHGDATE', width: 90,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
                                             },
-                                            {text: 'Credit Card', dataIndex: 'SCARDN', width: 145},
-                                            {text: 'Cardncor', dataIndex: 'SCARDNCOR', width: 145},
-                                            {
-                                                text: 'Authorization',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Code', dataIndex: 'SAUTHOC', width: 90}
-                                                ]
+                                            {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 90,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
                                             },
-                                            {
-                                                text: 'Merchant',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-//                                                    {text: 'Nbr.', dataIndex: 'CHARNBR', width: 70},
-                                                    {text: 'Name', dataIndex: 'CHARNBR', width: 180,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            metaData.style = "text-align:left;";
-                                                            metaData.tdAttr = 'data-qtip="' + data.MERCHNAM + '"';
-                                                            return value;
-                                                        }
-                                                    }
-                                                ]
+                                            {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 90,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
                                             },
-                                            {text: 'Sub Merchant', dataIndex: 'SUCMERCH', width: 180},
-//                                            {text: 'Concept', dataIndex: 'CONCEPT', width: 220,
-//                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                    var data = record.data;
-//                                                    metaData.style = "text-align:left;";
-//                                                    metaData.tdAttr = 'data-qtip="' + data.CONCEPT + '"';
-//                                                    return value;
-//                                                }
-//                                            },
-                                            {text: 'CHGAMOUNT', dataIndex: 'CHGAMOUNT', width: 75},
-                                            {text: 'CHGCURREN', dataIndex: 'CHGCURREN', width: 75},
-                                            {text: 'Num. Ticket', dataIndex: 'TKTNUMER', width: 75},
-                                            {text: 'Prda', dataIndex: 'PRDA', width: 75},
-                                            {text: 'Agent', dataIndex: 'SAGENT', width: 75},
-                                            {text: 'Stval', dataIndex: 'STVAL', width: 75},
-                                            {text: 'Proces', dataIndex: 'PROCESA', width: 75},
-                                            {text: 'Auth. Currency', dataIndex: 'SCURRENCY', width: 75},
+                                            {text: 'Card<br>Code', dataIndex: 'CARDTYPE', width: 55,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Credit Card', dataIndex: 'SCARDN', width: 135,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Auth.<br>Code', dataIndex: 'SAUTHOC', width: 60,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Merchant', dataIndex: 'SUCMERCH', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Charge.<br>Amount', dataIndex: 'CHGAMOUNT', width: 75,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Charge.<br>Currency', dataIndex: 'CHGCURREN', width: 75,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Ticket', dataIndex: 'TKTNUMER', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Proces.<br>Date', dataIndex: 'PRDA', width: 75,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+
+                                            {text: 'Agent', dataIndex: 'SAGENT', width: 75,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Status', dataIndex: 'STVAL', width: 75,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Proces', dataIndex: 'PROCESA', width: 75,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
                                             {text: 'Country', dataIndex: 'SCOUNTRY', width: 75},
-                                            {text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 75},
+                                            {text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 90},
                                             {text: 'Code Bank', dataIndex: 'CODEBANK', width: 75},
                                             {text: 'Auth. Amount', dataIndex: 'AUTAMOUNT', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -152,53 +184,32 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     return value;
                                                 },
                                             },
-                                                    {text: 'Society', dataIndex: 'SOCIETY', width: 90},
-                                                    {text: 'Societyl', dataIndex: 'SOCIETYL', width: 90},
-                                                    {text: 'Canal', dataIndex: 'CANAL', width: 50},
-                                                    {text: 'Correp', dataIndex: 'COREP', width: 60},
-                                                    {text: 'Companyid', dataIndex: 'COMPANYID', width: 60},
-                                            
-                                            {
-                                                sortable: false,
-                                                xtype: 'actioncolumn',
-                                                width: 40,
-                                                text: 'Edit',
-                                                align: 'center',
-                                                items: [
-                                                    {
-                                                        iconCls: 'prx-icon-edit',
-                                                        tooltip: 'Edit',
-                                                        handler: 'onEditClick'
-                                                    }
-                                                ]
+                                            {text: 'Society', dataIndex: 'SOCIETY', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Societyl', dataIndex: 'SOCIETYL', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Canal', dataIndex: 'CANAL', width: 62,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
                                             }
                                         ]
                                     }
-                                },
-                                {
-                                    xtype: 'panel',
-                                    id: prototype.id + '-panelDataSummary',
-                                    width: 1522,
-                                    align: 'left',
-                                    margin: '0 0 0 0 ',
-                                    layout: {
-                                        type: 'hbox',
-                                        align: 'center'
-                                    },
-                                    defaults: {
-                                        xtype: 'label',
-                                        align: 'center',
-                                        html: '' + '&nbsp',
-                                        height: 25,
-                                        padding: '5 5 5 0',
-                                        style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:10px'
-                                    },
-                                    items: [
-
-                                        {width: 1030},
-                                        {width: 100, id: prototype.id + '-dblTotAUTAMOUNT'},
-                                        {width: 390}
-                                    ]
                                 },
                             ]
                         },
@@ -210,15 +221,11 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                 type: 'hbox',
                                 pack: 'center'
                             },
-                            border: true,
+                            border: false,
                             width: 1522,
+                            margin: '10 0 0 0 ',
                             height: 25,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-//                                    defaults: {
-//                                        border: true,
-//                                        padding: '0px 5px 0px 5px'
-//                                    },
-//                                    padding: '1px 5px 1px 5px',
                             items: [
                                 {
                                     xtype: 'panel',
@@ -230,7 +237,6 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                     },
                                     defaults: {
                                         xtype: 'label',
-//                                                margin: '3px 0px 0px 5px'
                                     },
                                     items: [
                                         {

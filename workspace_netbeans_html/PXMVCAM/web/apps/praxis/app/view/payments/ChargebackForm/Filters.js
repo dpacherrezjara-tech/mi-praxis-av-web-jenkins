@@ -1,19 +1,19 @@
 Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.'+prototype.id+'-filters',
+    alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
     layout: 'column',
     items: [
-        {   
+        {
             xtype: 'form',
             id: prototype.id + '-contFilter',
             border: false,
             bodyStyle: 'background: transparent',
             padding: '2px 5px 1px 5px',
             layout: 'column',
-            defaults:  {
+            defaults: {
                 labelStyle: 'font-weight:bold;',
                 fieldStyle: 'text-align: center;',
                 padding: '5px 1px 5px 1px',
@@ -23,13 +23,33 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
                 hidden: false
             },
             items: [
+                {xtype: 'tbspacer', width: 100},
                 {
                     xtype: 'label',
-                    html: '<strong style="color:#000;">Appli. Date</strong>',
-                    align: 'left',
-                    fieldStyle: 'text-align: left;',
-                    padding: '8px 30px 0px 10px',
-                    hidden: false
+                    text: 'Search By:',
+                    padding: '8 0 0 0',
+                    width: 65
+                },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbFecFiltro',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 150,
+                    value: "CHGDATE",
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    listConfig: {minWidth: 130},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    listeners: {
+                    }
                 },
                 {
                     xtype: 'combo',
@@ -80,9 +100,9 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
                     valueField: 'code', displayField: 'name',
                     emptyText: 'All',
                     width: 60,
-                    typeAhead: true,                            
+                    typeAhead: true,
                     listeners: {
-                        change: 'onFromDayChange',                                
+                        change: 'onFromDayChange',
                         keypress: 'onTextKeypress'
                     }
                 },
@@ -144,11 +164,12 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Source Code',
-                    id: prototype.id+'-cmbIN_FTE',
+                    id: prototype.id + '-cmbIN_FTE',
                     fieldStyle: 'text-align: left;',
                     queryMode: 'local',
                     editable: false,
                     valueField: 'code',
+                    hidden:true,
                     displayField: 'name',
                     labelWidth: 110,
                     width: 220
@@ -156,13 +177,14 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Auth. Code:',
-                    id: prototype.id+'-txtTDOC',                                   
+                    id: prototype.id + '-txtSAUTHOC',
                     allowBlank: true,
-                    maskRe: /[0-9]/,
+//                    maskRe: /[0-9]/,
                     enforceMaxLength: true,
-                    maxLength:6,
+                    maxLength: 6,
                     labelWidth: 100,
                     width: 210,
+//                    hidden:true,
                     enableKeyEvents: true,
                     listeners: {
                         keypress: 'eventKey'
@@ -171,13 +193,14 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Merchant Nbr.:',
-                    id: prototype.id+'-txtMERCHN',                                   
+                    id: prototype.id + '-txtMERCHN',
                     allowBlank: true,
                     maskRe: /[0-9]/,
                     enforceMaxLength: true,
-                    maxLength:10,
+                    maxLength: 10,
                     labelWidth: 130,
                     width: 250,
+//                    hidden:true,
                     enableKeyEvents: true,
                     listeners: {
                         keypress: 'eventKey'
@@ -186,11 +209,12 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Status',
-                    id: prototype.id+'-cmbSTATT',
+                    id: prototype.id + '-cmbSTATT',
                     fieldStyle: 'text-align: left;',
                     queryMode: 'local',
                     editable: false,
                     valueField: 'code',
+                    hidden:true,
                     displayField: 'name',
                     labelWidth: 80,
                     width: 270

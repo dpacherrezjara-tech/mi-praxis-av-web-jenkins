@@ -70,7 +70,7 @@ public class ChargebackDAO {
             cstmt.setString(2, Functions.getFechaActual().substring(0, 4));
             cstmt.setString(3, filter.IN_DATE_FROM.trim());
             cstmt.setString(4, filter.IN_DATE_TO.trim());
-            cstmt.setString(5, filter.IN_TDOC.trim());
+            cstmt.setString(5, filter.IN_SAUTHOC.trim());
             cstmt.setString(6, filter.IN_MERCHN.trim());
             cstmt.setString(7, filter.IN_FTE.trim());
             cstmt.setString(8, filter.IN_STATT.trim());
@@ -132,6 +132,7 @@ public class ChargebackDAO {
                     objRtn.SOCIETY = rs01.getString("SOCIETY").trim();
                     objRtn.SOCIETYL = rs01.getString("SOCIETYL").trim();
                     objRtn.CANAL = rs01.getString("CANAL").trim();
+                    objRtn.SUCMERCH = rs01.getString("SUCMERCH").trim();
                     objRtn.COREP = rs01.getString("COREP").trim();
                     objRtn.SEQ = rs01.getString("SEQ").trim();
                     objRtn.COMPANYID = rs01.getString("COMPANYID").trim();

@@ -64,13 +64,13 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
             '#ChargebackForm-btn-pag-last': {
                 click: this.pagLast
             },
-//            '#ChargebackForm-cmbDateFromYear': {
-//                afterrender: this.afterRenderYear,
-//                select: this.selectComboFromYear
-//            },
-//            '#ChargebackForm-cmbDateToYear': {
-//                afterrender: this.afterRenderYear
-//            },
+            '#ChargebackForm-cmbDateFromYear': {
+                afterrender: this.afterRenderYear,
+                select: this.selectComboFromYear
+            },
+            '#ChargebackForm-cmbDateToYear': {
+                afterrender: this.afterRenderYear
+            },
             '#ChargebackForm-cmbDateFromMonth': {
                 afterrender: this.afterRenderMonth,
                 select: this.selectComboFromMonth
@@ -78,10 +78,10 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
             '#ChargebackForm-cmbDateToMonth': {
                 afterrender: this.afterRenderMonth,
                 select: this.selectComboToMonth
+            },
+            '#ChargebackForm-cmbDateFromDay': {
+                select: this.selectComboFromDay
             }
-//            '#ChargebackForm-cmbDateFromDay': {
-//                select: this.selectComboFromDay
-//            }
 
         });
     },
@@ -93,11 +93,11 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
             this.btnSearch_click();
         }
     },
-    
+
     onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    
+
     obtainData: function () {
 
         var storeComboDataYear = win.getStoreYear(false);
@@ -119,7 +119,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(''); 
+        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 
         var cmbIN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE');
         cmbIN_FTE.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -150,26 +150,40 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
             ]
         }));
         cmbSTATT.setValue("");
-        
+
+        var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
+        cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["CHGDATE", "Chargeback Date"],
+//                ["SDATE", "Sale Date"],
+//                ["ADATE", "Payment Date"],
+//                ["PRDA", "Processing Date"]
+            ]
+        }));
+        cmbFecFiltro.setValue("CHGDATE");
+
+
         me.btnSearch_click();
     },
 
     setFormatParameter: function () {
         me.bean = {};
 
-        me.bean.IN_DATE_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + 
-                                Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() +
-                                Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
-                        
-        me.bean.IN_DATE_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() +
-                              Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() +
-                              Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+        me.bean.IN_DATE_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
 
-        me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-txtTDOC').getValue();
-        me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtMERCHN').getValue();
-        me.bean.IN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE').getValue();
-        me.bean.IN_STATT = Ext.getCmp(prototype.id + '-cmbSTATT').getValue( );
-                
+        me.bean.IN_DATE_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+
+        me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
+        me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtMERCHN').getValue().trim();
+//        me.bean.IN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE').getValue();
+//        me.bean.IN_STATT = Ext.getCmp(prototype.id + '-cmbSTATT').getValue( );
+
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
@@ -177,7 +191,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         };
         console.log(searchParams);
     },
-    
+
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
         this.setGridData();
@@ -185,13 +199,12 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
 
     setGridData: function () {
         win.lblUser_toolTip("Estructura: A2295");
-        
+
         var msj = this.validateFields();
         if (msj !== '') {
             global.Msg({msg: msj
             });
-        }
-        else {
+        } else {
             var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
                 proxy: {
                     url: prototype.url + '/search'
@@ -213,8 +226,8 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
                             });
                         } else {
                             var data = obj.data.items[0].data;
-                            
-                                Ext.getCmp(prototype.id + '-dblTotAUTAMOUNT').setText(Ext.util.Format.number(data.dblTotAUTAMOUNT, '0,000'));
+
+//                                Ext.getCmp(prototype.id + '-dblTotAUTAMOUNT').setText(Ext.util.Format.number(data.dblTotAUTAMOUNT, '0,000'));
                         }
                         me.setWidthPie();
                     }
@@ -225,15 +238,14 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
-    
+
     setGridDataTKT: function () {
         win.lblUser_toolTip("Estructura: A2271");
         var msj = this.validateFields();
         if (msj !== '') {
             global.Msg({msg: msj
             });
-        }
-        else {
+        } else {
             var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
                 proxy: {
                     url: prototype.url + '/searchTKT'
@@ -256,12 +268,12 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
                         } else {
                             var data = obj.data.items[0].data;
 //                            console.log(data);
-                            if(dup){
+                            if (dup) {
                                 me.panelActual = '-boxMainDataDupli';
                                 global.selectedChild(me.childs, prototype.id + me.panelActual);
                                 Ext.getCmp(prototype.id + '-dblAMOUNTDupli').setText(Ext.util.Format.number(data.dblAMOUNT, '0,000'));
-                                
-                            }else{ 
+
+                            } else {
                                 me.panelActual = '-boxMainData';
                                 global.selectedChild(me.childs, prototype.id + me.panelActual);
                                 Ext.getCmp(prototype.id + '-dblAMOUNT').setText(Ext.util.Format.number(data.dblAMOUNT, '0,000'));
@@ -296,7 +308,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
-        
+
         Ext.create('Ext.Praxis.view.payments.ChargebackForm.DataEntry', {
             id: prototype.id + '-dataEntry',
             params: {
@@ -376,7 +388,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         }
     },
     setWidthPie: function () {
-        
+
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
         Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
@@ -422,26 +434,26 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
     },
-    
+
     /*     
      * Funciones para la paginacion     
      */
-    
-    pagFirst: function(obj, e) {
+
+    pagFirst: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveFirst();
-    }, pagPrevious: function(obj, e) {
+    }, pagPrevious: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.movePrevious();
     },
-    pagNext: function(obj, e) {
+    pagNext: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveNext();
     },
-    pagLast: function(obj, e) {
+    pagLast: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveLast();
