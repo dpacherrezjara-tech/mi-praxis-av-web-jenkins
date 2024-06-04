@@ -55,16 +55,16 @@ public class ChargebackDAO {
 
         double dblAUTAMOUNT = 0, dblOPEAMOUNT = 0, dblIVA = 0;
         int intQTYTRNX = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00852(?,?,?,?,?,?,?,?,?,?,?,?)}";//" + session.getMainLibrary() + "
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00852(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";//" + session.getMainLibrary() + "
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(9, Types.INTEGER);
-            cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, Functions.getFechaActual().substring(0, 4));
@@ -74,17 +74,19 @@ public class ChargebackDAO {
             cstmt.setString(6, filter.IN_MERCHN.trim());
             cstmt.setString(7, filter.IN_FTE.trim());
             cstmt.setString(8, filter.IN_STATT.trim());
+            cstmt.setString(9, filter.IN_SCOUNTRY.trim());
+            cstmt.setString(10, filter.IN_CARDTYPE.trim());
 
-            cstmt.setInt(9, filter.page.PAGNUM);
-            cstmt.setInt(10, filter.page.PAGROW);
-            cstmt.setInt(11, filter.page.TOTPAG);
-            cstmt.setInt(12, filter.page.TOTROW);
+            cstmt.setInt(11, filter.page.PAGNUM);
+            cstmt.setInt(12, filter.page.PAGROW);
+            cstmt.setInt(13, filter.page.TOTPAG);
+            cstmt.setInt(14, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(9);
-            filter.page.PAGROW = cstmt.getInt(10);
-            filter.page.TOTPAG = cstmt.getInt(11);
-            filter.page.TOTROW = cstmt.getInt(12);
+            filter.page.PAGNUM = cstmt.getInt(11);
+            filter.page.PAGROW = cstmt.getInt(12);
+            filter.page.TOTPAG = cstmt.getInt(13);
+            filter.page.TOTROW = cstmt.getInt(14);
 
             rs01 = cstmt.getResultSet();
 

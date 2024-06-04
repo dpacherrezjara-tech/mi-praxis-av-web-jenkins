@@ -109,7 +109,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Merchant', dataIndex: 'SUCMERCH', width: 80,
+                                            {text: 'Merchant', dataIndex: 'COMPANYID', width: 96,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -158,7 +158,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Status', dataIndex: 'STVAL', width: 75,
+                                            {text: 'Status', dataIndex: 'STVAL', width: 65,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -166,7 +166,7 @@ Ext.define('Ext.Praxis.view.payments.ChargebackForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Proces', dataIndex: 'PROCESA', width: 75,
+                                            {text: 'Proces', dataIndex: 'PROCESA', width: 69,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";

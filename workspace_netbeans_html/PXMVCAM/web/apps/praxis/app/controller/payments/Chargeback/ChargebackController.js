@@ -156,7 +156,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["CHGDATE", "Chargeback Date"],
+                ["CHGDATE", "Chargeback Date"], //EL VALOR
 //                ["SDATE", "Sale Date"],
 //                ["ADATE", "Payment Date"],
 //                ["PRDA", "Processing Date"]
@@ -165,9 +165,40 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         cmbFecFiltro.setValue("CHGDATE");
 
 
-        me.btnSearch_click();
+//        me.btnSearch_click();
+        
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {
+                beanString: JSON.stringify({
+                    COUNTRY: 2, CARD: 2
+                })
+            },
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    Ext.getCmp(prototype.id + '-cmbCountry').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
+                            );
+                    me.lstTarjetas = res.lstCard;
+                    Ext.getCmp(prototype.id + '-cmbCardType').bindStore(
+                            Ext.create('Ext.data.Store', {data: me.lstTarjetas, autoLoad: true})
+                            );
+                    win.setValue('cmbCountry', '');
+                    win.setValue('cmbCardType', '');
+                    me.btnSearch_click();
+                } else
+//                    global.Msg({msg: res.sesion});
+                    global.clear();
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
     },
-
+    
     setFormatParameter: function () {
         me.bean = {};
 
@@ -178,7 +209,8 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         me.bean.IN_DATE_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
-
+        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.bean.IN_CARDTYPE = Ext.getCmp(prototype.id + '-cmbCardType').getValue();
         me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
         me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtMERCHN').getValue().trim();
 //        me.bean.IN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE').getValue();
@@ -192,13 +224,13 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         console.log(searchParams);
     },
 
-    btnSearch_click: function (obj, e) {
-        this.setFormatParameter();
+    btnSearch_click: function (obj, e) {  
+        this.setFormatParameter();  //obtengo los Parametros
         this.setGridData();
     },
 
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A2295");
+        win.lblUser_toolTip("Estructura: MPF123");
 
         var msj = this.validateFields();
         if (msj !== '') {
@@ -207,7 +239,7 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         } else {
             var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
                 proxy: {
-                    url: prototype.url + '/search'
+                    url: prototype.url + '/search'  //ES LA RUTA // CONECTO AL JAVA
                 }, listeners: {
                     beforeload: function (obj) {
                         Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
@@ -375,8 +407,12 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         console.log(me.panelActual);
         switch (me.panelActual) {
             case  '-boxMainData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
+                default:
+                global.Msg(
+                        {msg: 'Under Construction'
+                        });
         }
     },
     btnFilter_click: function (obj) {
