@@ -121,35 +121,35 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 
-        var cmbIN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE');
-        cmbIN_FTE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "ALL"],
-                ["BX", "BANAMEX"],
-                ["AX", "AMEX"],
-                ["ST", "SANTANDER"],
-                ["P", "PAYPAL"]
-            ]
-        }));
-        cmbIN_FTE.setValue("");
+//        var cmbIN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE');
+//        cmbIN_FTE.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "ALL"],
+//                ["BX", "BANAMEX"],
+//                ["AX", "AMEX"],
+//                ["ST", "SANTANDER"],
+//                ["P", "PAYPAL"]
+//            ]
+//        }));
+//        cmbIN_FTE.setValue("");
 
-        var cmbSTATT = Ext.getCmp(prototype.id + '-cmbSTATT');
-        cmbSTATT.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", "ALL"],
-                ["1", "Match"],
-                ["2", "Sin aclaracion"],
-                ["3", "Aviso sin EECC"],
-                ["4", "EECC sin Aclaracion"],
-                ["5", "Reversa ChargeBack(Pendiente)"],
-                ["6", "Reversa ChargeBack(Aplicada)"]
-            ]
-        }));
-        cmbSTATT.setValue("");
+//        var cmbSTATT = Ext.getCmp(prototype.id + '-cmbSTATT');
+//        cmbSTATT.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["", "ALL"],
+//                ["1", "Match"],
+//                ["2", "Sin aclaracion"],
+//                ["3", "Aviso sin EECC"],
+//                ["4", "EECC sin Aclaracion"],
+//                ["5", "Reversa ChargeBack(Pendiente)"],
+//                ["6", "Reversa ChargeBack(Aplicada)"]
+//            ]
+//        }));
+//        cmbSTATT.setValue("");
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -376,10 +376,12 @@ Ext.define('Ext.Praxis.controller.payments.Chargeback.ChargebackController', {
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
 //        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
 //        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
-        Ext.getCmp(prototype.id + '-cmbIN_FTE').setValue('');
-        Ext.getCmp(prototype.id + '-txtTDOC').setValue('');
+        //Ext.getCmp(prototype.id + '-cmbIN_FTE').setValue('');
+        Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+        Ext.getCmp(prototype.id + '-cmbCardType').setValue('');
+        Ext.getCmp(prototype.id + '-txtSAUTHOC').setValue('');
         Ext.getCmp(prototype.id + '-txtMERCHN').setValue('');
-        Ext.getCmp(prototype.id + '-cmbSTATT').setValue('');
+        //Ext.getCmp(prototype.id + '-cmbSTATT').setValue('');
     },
     btnExcel_click: function (obj, e) {
         this.setFormatParameter();
