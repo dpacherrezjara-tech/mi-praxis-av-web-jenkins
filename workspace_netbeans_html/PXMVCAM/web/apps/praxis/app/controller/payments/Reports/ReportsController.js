@@ -404,7 +404,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+        Ext.getCmp(prototype.id + '-txtCard1').setValue('');
+        Ext.getCmp(prototype.id + '-txtAUTHOC').setValue('');
+        Ext.getCmp(prototype.id + '-txtCard2').setValue('');
         Ext.getCmp(prototype.id + '-cmbBank').setValue('');
+        Ext.getCmp(prototype.id + '-cmbSTVAL').setValue('');
+        Ext.getCmp(prototype.id + '-cmbTDOC').setValue('');
     },
     btnExcel_click: function (obj, e) {
         this.setFormatParameter();
