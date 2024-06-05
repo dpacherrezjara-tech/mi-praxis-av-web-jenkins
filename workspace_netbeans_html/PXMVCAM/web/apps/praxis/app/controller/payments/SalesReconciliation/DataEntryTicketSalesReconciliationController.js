@@ -48,6 +48,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
     
     //<editor-fold defaultstate="collapsed" desc="mostrarData">
     mostrarData: function() {
+        console.log(this.bean, 'this.bean')
         var res = '';
         win.setValue('2-txtSCARCOD', this.bean.SCARCOD.trim()+" - "+this.bean.strSDescCard.trim());
         Ext.create('Ext.tip.ToolTip', {
@@ -55,7 +56,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
             html: this.bean.SCARCOD.trim()+" - "+this.bean.strSDescCard.trim()
         });
         
-        win.setValue('2-txtACARCOD', this.bean.ACARCOD.trim()+" - "+this.bean.strADescCard.trim());
+        win.setValue('2-txtACARCOD', this.bean.SCARCODL.trim());
         Ext.create('Ext.tip.ToolTip', {
             target: prototype.id+'-2-txtACARCOD',
             html: this.bean.ACARCOD.trim()+" - "+this.bean.strADescCard.trim()
@@ -230,25 +231,25 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
 //        win.setText('2-lblAFTE', this.bean.strDescAFTE.trim());
         win.setValue('2-txtADATEL', this.bean.ADATEL.trim());
         win.setValue('2-cmbAFLOAD', this.bean.AFLOAD==="M"?this.bean.AFLOAD:"A");
-        win.setValue('2-txtACOUNTRY', this.bean.ACOUNTRY.trim());
-        win.setValue('2-txtAAGENT', this.bean.AAGENT.trim());
-        win.setValue('2-txtADATE', this.bean.ADATE.trim());
+        win.setValue('2-txtACOUNTRY', this.bean.SCOUNTRYL.trim());
+        win.setValue('2-txtAAGENT', this.bean.SAGENTL.trim());
+        win.setValue('2-txtADATE', this.bean.SDATEL.trim());
         win.setValue('2-txtAPAYMENT', this.bean.APAYMENT.trim());
         win.setValue('2-txtATCNTR', this.bean.ATCNTR.trim());
-        win.setValue('2-txtAVFOP', win.formatDblNumber(this.bean.AVFOP));
+        win.setValue('2-txtAVFOP', win.formatDblNumber(this.bean.NETOL));
         win.setValue('2-txtACURRENCY', this.bean.ACURRENCY.trim());
-        win.setValue('2-txtACARDN', this.bean.ACARDN.trim());
+        win.setValue('2-txtACARDN', this.bean.SCARDNL.trim());
         win.setValue('2-txtADATEXP', this.bean.ADATEXP.trim());
-        win.setValue('2-txtAAUTHOC', this.bean.AAUTHOC.trim());
+        win.setValue('2-txtAAUTHOC', this.bean.SAUTHOCL.trim());
         win.setValue('2-txtAINVN', this.bean.AINVN.trim());
         win.setValue('2-txtAIDATE', this.bean.AIDATE.trim());
-        win.setValue('2-txtAPNR', this.bean.APNR.trim());
+        win.setValue('2-txtAPNR', this.bean.SPNRL.trim());
 	if(this.bean.strDescMerchn.trim() !== ''){
-            win.setValue('2-txtMERCHN', this.bean.MERCHN.trim()+' - '+this.bean.strDescMerchn.trim());
+            win.setValue('2-txtMERCHN', this.bean.MERCHNCL.trim()+' - '+this.bean.strDescMerchn.trim());
 	}else{
-            win.setValue('2-txtMERCHN', this.bean.MERCHN.trim());
+            win.setValue('2-txtMERCHN', this.bean.MERCHNCL.trim());
 	}
-        win.setValue('2-txtSEQNUM', this.bean.SEQNUM.trim());
+        win.setValue('2-txtSEQNUM', this.bean.SEQL.trim());
         win.setValue('2-txtSEQCOUNT', this.bean.SEQCOUNT.trim());
         win.setValue('2-txtComment', this.bean.strComment.trim());
 	//TEF ===================================

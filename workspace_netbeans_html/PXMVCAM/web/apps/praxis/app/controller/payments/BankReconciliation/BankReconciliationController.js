@@ -170,9 +170,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         if(obj.getValue() != ''){
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
+            
         }else {
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
+            Ext.getCmp(prototype.id + '-cmbDateDay').setValue('');
         }
         
     },

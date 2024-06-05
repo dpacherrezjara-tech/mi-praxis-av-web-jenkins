@@ -536,7 +536,6 @@ public class A2290Filter extends A2290 {
     public Pagination page = new Pagination();
     public String PRDA = "";
     public String PMERCHID = "";
-    public String PAYDATE = "";
     public String PCURRENCY = "";
     public String AXPAYNBR = "";
     public String SMERCHID = "";

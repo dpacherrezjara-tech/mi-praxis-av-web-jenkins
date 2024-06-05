@@ -791,6 +791,9 @@ public class BankReconciliationDAO {
                     beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC").trim());
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();
+                    beanTkt.PAYDATE = rst.getString("BDATEP").trim();
+                    beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                    beanTkt.TERMI = rst.getString("TERMI").trim();
                     beanTkt.STCON = rst.getString("STCON").trim();
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
@@ -3312,6 +3315,9 @@ public class BankReconciliationDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("SVFOP");
                     beanTkt.TDATE = rst.getString("TDATE").trim();
+                    beanTkt.PAYDATE = rst.getString("PAYDATE").trim();
+                    beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                    beanTkt.TERMI = rst.getString("TERMI").trim();
                     beanTkt.DATEF = rst.getString("DATEF").trim();
                     if (rst.getString("BDATEP").trim().length() == 6) {
                         beanTkt.BDATEP = Functions.FormatFecha(rst.getString("BDATEP").trim(), "yyMMdd", "yyyyMMdd");

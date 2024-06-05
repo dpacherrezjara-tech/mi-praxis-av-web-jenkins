@@ -2148,7 +2148,18 @@ public class LoadConciliationDAO {
                 beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
                 beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
                 beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
-
+                    
+                //SETTLEMENT
+                beanTkt.SDATEL = rst.getString("SDATEL").trim();
+                beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
+                beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
+                beanTkt.SCARCODL = rst.getString("SCARCODL").trim();
+                beanTkt.SCOUNTRYL = rst.getString("SCOUNTRYL").trim();
+                beanTkt.SAUTHOCL = rst.getString("SAUTHOCL").trim();
+                beanTkt.SPNRL = rst.getString("SPNRL").trim();
+                beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
+                beanTkt.SEQL = rst.getString("SEQL").trim();
+                beanTkt.NETOL = rst.getDouble("NETOL");
                 //TEF
                 beanTkt.TDATE = rst.getString("TDATE").trim();
                 beanTkt.DATEF = rst.getString("DATEF").trim();

@@ -31,6 +31,14 @@ public class A2290 {
     public String CARD2 = "";    
     //Datos de la Venta
     public String SDATEL = "";
+    public String SCARDNL = "";
+    public String MERCHNCL = "";
+    public String SCARCODL = "";
+    public String SCOUNTRYL = "";
+    public String SAUTHOCL = "";
+    public String SPNRL = "";
+    public String SAGENTL = "";
+    public String SEQL = "";
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String COREP = "";
@@ -92,6 +100,7 @@ public class A2290 {
     public String AAGENT = "";
     public String ADATE = "";
     public String APAYMENT = "";
+    public String PAYDATE = "";
     public String ACARCOD = "";
     public String ATCNTR = "";
     public double AVFOP = 0;
