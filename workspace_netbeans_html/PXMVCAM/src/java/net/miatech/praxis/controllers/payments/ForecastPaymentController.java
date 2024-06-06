@@ -104,82 +104,18 @@ public class ForecastPaymentController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
 
-            lst = logic.loadPX290SQP00852(filter);
+            lst = logic.loadPX290MPS074(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
     }
 
-    @RequestMapping(value = "searchCompleteDetail")
-    public @ResponseBody
-    String searchCompleteDetail(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- ForecastPayment : searchCompleteDetail-------------");
-
-        Gson gson = new Gson();
-        A2295Filter filter = new A2295Filter();
-        A2295Filter result = new A2295Filter();
-
-        String beanString = request.getParameter("beanString");
-        filter = gson.fromJson(beanString, A2295Filter.class);
-
-        logic = new ForecastPaymentLogic();
-        logic.setSession(this.serverSession.getServerSession());
-        try {
-            result = logic.loadPX290SQP00854(filter);
-            map.put("result", result);
-            map.put("success", true);
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
-            map.put("success", false);
-        }
-        return new Gson().toJson(map);
-    }
-
-    @RequestMapping(value = "MaintenanceA2295")
-    public @ResponseBody
-    String MaintenanceA2295(ModelMap map, HttpServletRequest request) {
-
-        System.out.println("-------------- ForecastPayment : MaintenanceA2295-------------");
-        String option;
-        String beanString;
-        Gson gson = new Gson();
-
-        A2295Filter filter = new A2295Filter();
-        String msj = "";
-
-        try {
-
-            option = request.getParameter("option");
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2295Filter.class);
-
-            logic = new ForecastPaymentLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX290SQP00853(filter, option);
-
-            if (msj.toLowerCase().contains("duplicada")) {
-                msj = "Error: Duplicated record. Record was not registered.";
-            }
-
-            map.put("success", true);
-            map.put("Mensaje", msj);
-        } catch (NumberFormatException | SQLException ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        } catch (Exception ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        }
-
-        return new Gson().toJson(map);
-    }
-
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSX");
-        String fileNameDownload = String.format("ForecastPayment Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Forecast Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
@@ -239,30 +175,28 @@ public class ForecastPaymentController extends BaseController {
             Cell CH1_16 = row1.createCell(16);
             Cell CH1_17 = row1.createCell(17);
             Cell CH1_18 = row1.createCell(18);
-            Cell CH1_19 = row1.createCell(19);
-            Cell CH1_20 = row1.createCell(20);
 
-            CH1_0.setCellValue("ForecastPayment Date");
-            CH1_1.setCellValue("Sale Date");
-            CH1_2.setCellValue("Payment Date");
-            CH1_3.setCellValue("Card Code");
-            CH1_4.setCellValue("Credit Card");
-            CH1_5.setCellValue("Auth. Code");
-            CH1_6.setCellValue("Merchant");
-            CH1_7.setCellValue("Charge. Amount");
-            CH1_8.setCellValue("Charge. Currency");
-            CH1_9.setCellValue("Ticket");
-            CH1_10.setCellValue("Proces. Date");
-            CH1_11.setCellValue("Agent");
-            CH1_12.setCellValue("Status");
-            CH1_13.setCellValue("Proces");
-            CH1_14.setCellValue("Country");
-            CH1_15.setCellValue("Acc. Number");
-            CH1_16.setCellValue("Code Bank");
-            CH1_17.setCellValue("Auth. Amount");
-            CH1_18.setCellValue("Society");
-            CH1_19.setCellValue("Societyl");
-            CH1_20.setCellValue("Canal");
+
+            CH1_0.setCellValue("Country");
+            CH1_1.setCellValue("Ticket");
+            CH1_2.setCellValue("SEQ");
+            CH1_3.setCellValue("Correlativo");
+            CH1_4.setCellValue("TD");
+            CH1_5.setCellValue("Fuente");
+            CH1_6.setCellValue("Sub Fte");
+            CH1_7.setCellValue("Sale Date");
+            CH1_8.setCellValue("Agent");
+            CH1_9.setCellValue("Agent Cons.");
+            CH1_10.setCellValue("Currency Cash");
+            CH1_11.setCellValue("Cash");
+            CH1_12.setCellValue("Credit");
+            CH1_13.setCellValue("Credit Card");
+            CH1_14.setCellValue("Card Code");
+            CH1_15.setCellValue("Others Sales");
+            CH1_16.setCellValue("Invoice Cash");
+            CH1_17.setCellValue("Invoice Card"); 
+            CH1_18.setCellValue("Net Remit");
+
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -283,8 +217,7 @@ public class ForecastPaymentController extends BaseController {
             CH1_16.setCellStyle(headerStyle);
             CH1_17.setCellStyle(headerStyle);
             CH1_18.setCellStyle(headerStyle);
-            CH1_19.setCellStyle(headerStyle);
-            CH1_20.setCellStyle(headerStyle);
+
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -306,8 +239,7 @@ public class ForecastPaymentController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 20));
+
 
             ++vj;
             //============================================
@@ -380,30 +312,28 @@ public class ForecastPaymentController extends BaseController {
                 Cell rcell16 = row1.createCell(16);
                 Cell rcell17 = row1.createCell(17);
                 Cell rcell18 = row1.createCell(18);
-                Cell rcell19 = row1.createCell(19);
-                Cell rcell20 = row1.createCell(20);
 
-                rcell0.setCellValue(listaData.get(vi).CHGDATE);
-                rcell1.setCellValue(listaData.get(vi).SDATE);
-                rcell2.setCellValue(listaData.get(vi).ADATE);
-                rcell3.setCellValue(listaData.get(vi).CARDTYPE);
-                rcell4.setCellValue(listaData.get(vi).SCARDN);
-                rcell5.setCellValue(listaData.get(vi).SAUTHOC);
-                rcell6.setCellValue(listaData.get(vi).COMPANYID);
-                rcell7.setCellValue(listaData.get(vi).CHGAMOUNT);
-                rcell8.setCellValue(listaData.get(vi).CHGCURREN);
-                rcell9.setCellValue(listaData.get(vi).TKTNUMER);
-                rcell10.setCellValue(listaData.get(vi).PRDA);
-                rcell11.setCellValue(listaData.get(vi).SAGENT);
-                rcell12.setCellValue(listaData.get(vi).STVAL);
-                rcell13.setCellValue(listaData.get(vi).PROCESA);
-                rcell14.setCellValue(listaData.get(vi).SCOUNTRY);
-                rcell15.setCellValue(listaData.get(vi).ACCNUMBER);
-                rcell16.setCellValue(listaData.get(vi).CODEBANK);
-                rcell17.setCellValue(listaData.get(vi).AUTAMOUNT);
-                rcell18.setCellValue(listaData.get(vi).SOCIETY);
-                rcell19.setCellValue(listaData.get(vi).SOCIETYL);
-                rcell20.setCellValue(listaData.get(vi).CANAL);
+
+                rcell0.setCellValue(listaData.get(vi).SCOUNTRY);
+                rcell1.setCellValue(listaData.get(vi).TKT);
+                rcell2.setCellValue(listaData.get(vi).SEQ);
+                rcell3.setCellValue(listaData.get(vi).CORRL);
+                rcell4.setCellValue(listaData.get(vi).TDOC);
+                rcell5.setCellValue(listaData.get(vi).CFUENTE);
+                rcell6.setCellValue(listaData.get(vi).SUBFTE);
+                rcell7.setCellValue(listaData.get(vi).SDATE);
+                rcell8.setCellValue(listaData.get(vi).SAGENT);
+                rcell9.setCellValue(listaData.get(vi).SCONSOL);
+                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell11.setCellValue(listaData.get(vi).SVFOPCA);
+                rcell12.setCellValue(listaData.get(vi).SVFOPCC);
+                rcell13.setCellValue(listaData.get(vi).SCARDN1);
+                rcell14.setCellValue(listaData.get(vi).SCARCOD1);
+                rcell15.setCellValue(listaData.get(vi).SVFOPOT);
+                rcell16.setCellValue(listaData.get(vi).INVOICE0);
+                rcell17.setCellValue(listaData.get(vi).INVOICE1);
+                rcell18.setCellValue(listaData.get(vi).SVFOPNETR);
+
                 iter.next();
                 ++vi;
                 ++vj;
@@ -428,8 +358,7 @@ public class ForecastPaymentController extends BaseController {
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
             sheet.autoSizeColumn(18, true);
-            sheet.autoSizeColumn(19, true);
-            sheet.autoSizeColumn(20, true);
+
 
 
             //============================================

@@ -112,60 +112,35 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
 
+        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
 
-//        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
-//        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
-//        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
+        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 
-//        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-//        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-//        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
-
-//        var cmbIN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE');
-//        cmbIN_FTE.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "ALL"],
-//                ["BX", "BANAMEX"],
-//                ["AX", "AMEX"],
-//                ["ST", "SANTANDER"],
-//                ["P", "PAYPAL"]
-//            ]
-//        }));
-//        cmbIN_FTE.setValue("");
-
-//        var cmbSTATT = Ext.getCmp(prototype.id + '-cmbSTATT');
-//        cmbSTATT.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "ALL"],
-//                ["1", "Match"],
-//                ["2", "Sin aclaracion"],
-//                ["3", "Aviso sin EECC"],
-//                ["4", "EECC sin Aclaracion"],
-//                ["5", "Reversa ChargeBack(Pendiente)"],
-//                ["6", "Reversa ChargeBack(Aplicada)"]
-//            ]
-//        }));
-//        cmbSTATT.setValue("");
-
-//        var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
-//        cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["CHGDATE", "ForecastPayment Date"], //EL VALOR
-////                ["SDATE", "Sale Date"],
-////                ["ADATE", "Payment Date"],
-////                ["PRDA", "Processing Date"]
-//            ]
-//        }));
-//        cmbFecFiltro.setValue("CHGDATE");
-
-
-//        me.btnSearch_click();
+        var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
+        cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["SDATE", "Sale Date"]
+            ]
+        }));
+        cmbFecFiltro.setValue("SDATE");
+        
+        var cmbSPAYMENT = Ext.getCmp(prototype.id + '-cmbSPAYMENT');
+        cmbSPAYMENT.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["CC", "Credit Card"],
+                ["CH", "Cash"]
+            ]
+        }));
+        cmbSPAYMENT.setValue("");
         
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -183,14 +158,13 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
                             Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
                             );
                     me.lstTarjetas = res.lstCard;
-                    Ext.getCmp(prototype.id + '-cmbCardType').bindStore(
-                            Ext.create('Ext.data.Store', {data: me.lstTarjetas, autoLoad: true})
-                            );
+//                    Ext.getCmp(prototype.id + '-cmbCardType').bindStore(
+//                            Ext.create('Ext.data.Store', {data: me.lstTarjetas, autoLoad: true})
+//                            );
                     win.setValue('cmbCountry', '');
-                    win.setValue('cmbCardType', '');
+//                    win.setValue('cmbCardType', '');
                     me.btnSearch_click();
                 } else
-//                    global.Msg({msg: res.sesion});
                     global.clear();
             },
             failure: function (response, opts) {
@@ -210,11 +184,14 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
-        me.bean.IN_CARDTYPE = Ext.getCmp(prototype.id + '-cmbCardType').getValue();
+        me.bean.IN_SPAYMENT = Ext.getCmp(prototype.id + '-cmbSPAYMENT').getValue();
+        me.bean.IN_TKT = Ext.getCmp(prototype.id + '-txtTKT').getValue();
+        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
         me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
-        me.bean.IN_MERCHN = Ext.getCmp(prototype.id + '-txtMERCHN').getValue().trim();
-//        me.bean.IN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE').getValue();
-//        me.bean.IN_STATT = Ext.getCmp(prototype.id + '-cmbSTATT').getValue( );
+        me.bean.IN_SPNR = Ext.getCmp(prototype.id + '-txtSPNR').getValue().trim();
+        me.bean.IN_SCARDN1 = Ext.getCmp(prototype.id + '-txtCard1').getValue().trim();
+        me.bean.IN_SCARDN2 = Ext.getCmp(prototype.id + '-txtCard2').getValue().trim();
+
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -230,7 +207,7 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
     },
 
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: MPF123");
+        win.lblUser_toolTip("Estructura: MPF074");
 
         var msj = this.validateFields();
         if (msj !== '') {
@@ -259,7 +236,6 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
                         } else {
                             var data = obj.data.items[0].data;
 
-//                                Ext.getCmp(prototype.id + '-dblTotAUTAMOUNT').setText(Ext.util.Format.number(data.dblTotAUTAMOUNT, '0,000'));
                         }
                         me.setWidthPie();
                     }
@@ -267,58 +243,6 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
-        }
-    },
-
-    setGridDataTKT: function () {
-        win.lblUser_toolTip("Estructura: A2271");
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchTKT'
-                }, listeners: {
-                    beforeload: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                        obj.proxy.extraParams = me.paramsTKT;
-                    },
-                    load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        } else {
-                            var data = obj.data.items[0].data;
-//                            console.log(data);
-                            if (dup) {
-                                me.panelActual = '-boxMainDataDupli';
-                                global.selectedChild(me.childs, prototype.id + me.panelActual);
-                                Ext.getCmp(prototype.id + '-dblAMOUNTDupli').setText(Ext.util.Format.number(data.dblAMOUNT, '0,000'));
-
-                            } else {
-                                me.panelActual = '-boxMainData';
-                                global.selectedChild(me.childs, prototype.id + me.panelActual);
-                                Ext.getCmp(prototype.id + '-dblAMOUNT').setText(Ext.util.Format.number(data.dblAMOUNT, '0,000'));
-                            }
-                            Ext.getCmp(prototype.id + '-dblAMOUNT').setText(Ext.util.Format.number(data.dblAMOUNT, '0,000'));
-                        }
-                        me.setWidthPie();
-                    }
-                }
-            });
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-gridDataDupli').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
@@ -371,17 +295,16 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
-//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('');
-//        Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-//        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-//        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
-        //Ext.getCmp(prototype.id + '-cmbIN_FTE').setValue('');
+
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
-        Ext.getCmp(prototype.id + '-cmbCardType').setValue('');
+        Ext.getCmp(prototype.id + '-cmbSPAYMENT').setValue('');
+        Ext.getCmp(prototype.id + '-txtSAGENT').setValue('');
+        Ext.getCmp(prototype.id + '-txtTKT').setValue('');
+        Ext.getCmp(prototype.id + '-txtCard1').setValue('');
+        Ext.getCmp(prototype.id + '-txtCard2').setValue('');
         Ext.getCmp(prototype.id + '-txtSAUTHOC').setValue('');
-        Ext.getCmp(prototype.id + '-txtMERCHN').setValue('');
-        //Ext.getCmp(prototype.id + '-cmbSTATT').setValue('');
+        Ext.getCmp(prototype.id + '-txtSPNR').setValue('');
     },
     btnExcel_click: function (obj, e) {
         this.setFormatParameter();
@@ -436,9 +359,6 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
         switch (me.panelActual) {
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
-                break;
-            case '-boxMainDataDupli':
-                me.pagginActual = '-paggin2';
                 break;
         }
     },

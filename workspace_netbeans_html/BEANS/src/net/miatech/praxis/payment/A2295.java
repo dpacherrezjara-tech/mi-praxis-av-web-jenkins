@@ -73,6 +73,32 @@ public class A2295 {
     public String REFFNBR = "";
     public String STATKT = "";
     public String STATT = "";
+    
+    public double SVFOPOT = 0;
+    public double SVFOPNETR = 0;
+    public double TOT_SVFOPOT = 0;
+    public double TOT_SVFOPNETR = 0;
+    public double TOT_SVFOPCA = 0;
+    public double TOT_SVFOPCC = 0;
+    
+
+    public String TKT = "";
+    public String CORRL = "";
+    public String TDOC = "";
+    public String CFUENTE = "";
+    public String descTDOC = "";
+    public String SUBFTE = "";
+    public String SCONSOL = "";
+    public String SVFOPCA = "";
+    public String SVFOPCC = "";
+    public String INVOICE1 = "";
+    public String INVOICE0 = "";
+    public String SCARDN1 = "";
+    public String SCARCOD1 = "";
+    public String SCARDN2 = "";
+    public double SPAYMENT = 0;
+
+
 
     //A2335
     public int MERCHN = 0;
