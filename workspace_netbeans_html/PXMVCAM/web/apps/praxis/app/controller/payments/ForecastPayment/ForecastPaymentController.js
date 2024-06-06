@@ -113,13 +113,13 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
 
 
-        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
-        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
+//        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
+//        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
+//        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
 
-        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
+//        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
+//        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
+//        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 
 //        var cmbIN_FTE = Ext.getCmp(prototype.id + '-cmbIN_FTE');
 //        cmbIN_FTE.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -151,18 +151,18 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
 //        }));
 //        cmbSTATT.setValue("");
 
-        var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
-        cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["CHGDATE", "ForecastPayment Date"], //EL VALOR
-//                ["SDATE", "Sale Date"],
-//                ["ADATE", "Payment Date"],
-//                ["PRDA", "Processing Date"]
-            ]
-        }));
-        cmbFecFiltro.setValue("CHGDATE");
+//        var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
+//        cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ["CHGDATE", "ForecastPayment Date"], //EL VALOR
+////                ["SDATE", "Sale Date"],
+////                ["ADATE", "Payment Date"],
+////                ["PRDA", "Processing Date"]
+//            ]
+//        }));
+//        cmbFecFiltro.setValue("CHGDATE");
 
 
 //        me.btnSearch_click();
