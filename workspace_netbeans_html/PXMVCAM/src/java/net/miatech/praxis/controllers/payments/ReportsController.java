@@ -331,7 +331,7 @@ public class ReportsController extends BaseController {
                 rcell13.setCellValue(listaData.get(vi).NETO);
                 rcell14.setCellValue(listaData.get(vi).SCURRENCY);
                 rcell15.setCellValue(listaData.get(vi).FTRAN);
-                rcell16.setCellValue(listaData.get(vi).STVAL);
+                rcell16.setCellValue(listaData.get(vi).DEBSTVAL);
                 rcell17.setCellValue(listaData.get(vi).TYPE);
                 rcell18.setCellValue(listaData.get(vi).STVAL);
                 iter.next();
