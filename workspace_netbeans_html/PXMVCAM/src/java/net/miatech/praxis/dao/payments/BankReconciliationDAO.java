@@ -1045,7 +1045,7 @@ public class BankReconciliationDAO {
 
             while (rst.next()) {
 //                lngTotQTYTKT = rst.getLong("QTYTKT");
-                totSVFOP = rst.getLong("SUBTOTAL");
+                totSVFOP = rst.getLong("TOTAL");
             }
             rst.close();
 
@@ -1641,7 +1641,7 @@ public class BankReconciliationDAO {
                 objRtn.FSELEC = rs01.getString("FSELEC");
                 objRtn.STVALS = rs01.getString("STVALS");
                 objRtn.DEBTYPE = rs01.getString("DEBTYPE");
-                objRtn.descDEBTYPE = hmDescDebitType.get(rs01.getString("DEBTYPE").trim());
+                objRtn.descDEBTYPE = rs01.getString("strDEBTYPE").trim();
                 if (hmDescReglas.containsKey(rs01.getString("FREGLA").trim())) {
                     objRtn.descFREGLA = hmDescReglas.get(rs01.getString("FREGLA").trim()).toString();
                 } else {

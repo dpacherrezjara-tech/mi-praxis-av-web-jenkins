@@ -333,7 +333,7 @@ public class LoadDebitsConciliationController extends BaseController {
                         obj.SDATE = formatter.formatCellValue(row.getCell(1)).trim().replace("-", "");
                         obj.ACCNUMBER = formatter.formatCellValue(row.getCell(5)).trim();
                         obj.SAUTHOC = formatter.formatCellValue(row.getCell(9)).trim();
-                        obj.SCARDN = formatter.formatCellValue(row.getCell(10)).trim().substring(0, 6) + "***" + formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4);
+                        obj.SCARDN = formatter.formatCellValue(row.getCell(10)).trim().substring(0, 6) + "XXXXXX" + formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4);
                         obj.SCARDNCOR = formatter.formatCellValue(row.getCell(10)).trim().substring(formatter.formatCellValue(row.getCell(10)).trim().length() - 4);
                         obj.TOTAL = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(11))));
                         obj.COMISION = Double.parseDouble(formatAmount(formatter.formatCellValue(row.getCell(13))));

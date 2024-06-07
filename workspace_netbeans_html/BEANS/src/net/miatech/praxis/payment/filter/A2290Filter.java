@@ -44,6 +44,8 @@ public class A2290Filter extends A2290 {
     public String IN_SCARDNCOR = "";
     public String CODE = "";
     public String DESCR = "";
+    public String TabMPF = "";
+    
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";

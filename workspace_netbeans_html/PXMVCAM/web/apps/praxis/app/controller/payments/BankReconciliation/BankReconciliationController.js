@@ -116,7 +116,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             },
             '#BankReconciliationForm-btnBackTW': {
                 click: this.btnBackTW_click
-            }
+            },
+            
+            
         });
     },
     xpanel_afterrender: function (obj, e) {
@@ -212,6 +214,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             comboFromDay.setValue(obj.getValue())
         }
     },
+    
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
         var month = this.fecha.getMonth() + 1;
@@ -1341,10 +1344,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             consultPath = 'searchTicket'
         }else if(rowData.data.TDOC == 'R'){
             consultPath = 'searchTable_REFND'
+            console.log('entra a searchTable_REFND')
         }else if (rowData.data.TDOC == 'C'){
             consultPath = 'searchTable_CHGBAK'
+            console.log('entra a searchTable_CHGBAK')
         }else if(rowData.data.TDOC == 'A'){
             consultPath = 'searchTable_ACREDIT'
+            console.log('entra a searchTable_ACREDIT')
         }else{
             console.log('No se espera el TDOC: ', rowData.data.TDOC)
             return false

@@ -520,11 +520,13 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             text: 'Doc. Type:',
                             padding: '3 0 0 0',
                             width: 60,
+                            
                         },
                         {xtype: 'tbspacer', width: 39},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbTDOC',
+                            
                             triggerAction: 'all',
                             enableKeyEvents: true,
                             readOnly: false,
@@ -541,6 +543,9 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                     
                                     { value: 'S', description: 'SALES' },
                                     { value: 'D', description: 'DEBITS' },
+                                    { value: 'R', description: 'REFUND' },
+                                    { value: 'C', description: 'CHBCK' },
+                                    { value: 'A', description: 'ACREDIT' },
                                 ]
                             }
                         },
@@ -617,6 +622,29 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 },
                                 keypress: 'BuscarTKT_keyDownHandler'
                             }
+                        },
+                        {xtype: 'tbspacer', width: 25},
+                        {
+                            xtype: 'label',
+                            text: 'Deb. Type',
+//                            style: 'font-weight:bold;color:#0B333C;',
+                            width: 60,
+                            hidden: true,
+                            id: prototype.id + '-lblTDOC'
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDebitType',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            fieldStyle: 'text-align:left;',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            width: 254,
+                            hidden: true,
+                            hiddenLabel: false
                         },
                         {
                             xtype: 'label',
