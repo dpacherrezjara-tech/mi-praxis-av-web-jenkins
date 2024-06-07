@@ -62,6 +62,7 @@ public class A2356Filter extends A2356 {
     public String IN_CARDN2 = "";
     public String IN_SAUTHOC = "";
     public String IN_SCARDNCOR = "";
+    public String IN_DEBTYPE = "";
 
     public int RN = 0;
 

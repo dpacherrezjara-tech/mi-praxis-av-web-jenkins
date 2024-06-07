@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.ReportsDAO;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2356Filter;
 
 /**
@@ -35,5 +36,7 @@ public class ReportsLogic {
     public String loadSQP02857(A2356Filter filter, String option) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP02857(filter, option);
     }
-
+    public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadPX269SQP05103_DEBITYPE(filter);
+    }
 }

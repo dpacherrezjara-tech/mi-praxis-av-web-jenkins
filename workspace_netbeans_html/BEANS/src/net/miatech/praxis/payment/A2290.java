@@ -50,6 +50,7 @@ public class A2290 {
     public String SDATE = "";
     public String SDATEC = "";
     public String SDATEVTA = "";
+    public String DEBTYPE = "";
     public String SPAYMENT = "";
     public String SCARCOD = "";
     public String STCNTR = "";

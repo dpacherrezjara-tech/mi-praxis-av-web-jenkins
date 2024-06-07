@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.controller.payments.Reports.DataEntryReportsController', {
+obExt.define('Ext.Praxis.controller.payments.Reports.DataEntryReportsController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.DataEntryReportsController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
