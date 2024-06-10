@@ -321,12 +321,12 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     {
                                                                         text: 'Date', dataIndex: 'strFormatDate', width: 100,
                                                                         listeners: {
-                                                                            click: 'gridDetCountry_clickHandler_DEBITS'
+//                                                                            click: 'gridDetCountry_clickHandler_DEBITS'
                                                                         },
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "color:#057ECB;background-color:#d5f4d5;";
                                                                             value = '<b>' + value + '</b>';
-                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                            return  value ;
                                                                         }
                                                                     }
                                                                 ]
@@ -3537,6 +3537,19 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                                 items: [
                                                                     {
+                                                                        text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
+                                                                        listeners: {
+                                                                            click: 'gridDet_REFND_clickHandler'
+                                                                        },
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                            metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
+                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
                                                                         text: 'Country', flex: 1,
                                                                         defaults: {
                                                                             menuDisabled: true,
@@ -3577,14 +3590,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             return win.formatLngNumber(data.lngTotQACCB);
                                                                         }
                                                                     },
-                                                                    {
-                                                                        text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
-                                                                            return value;
-                                                                        }
-                                                                    },
+                                                                    
                                                                     {
                                                                         text: 'Refund',
                                                                         id: prototype.id + '-label_10_REFND',
@@ -3683,6 +3689,19 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                                 items: [
                                                                     {
+                                                                        text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
+                                                                        listeners: {
+                                                                            click: 'gridDet_CHGBAK_clickHandler'
+                                                                        },
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                            metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
+                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
                                                                         text: 'Country', flex: 1,
                                                                         defaults: {
                                                                             menuDisabled: true,
@@ -3723,14 +3742,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             return win.formatLngNumber(data.lngTotQACCB);
                                                                         }
                                                                     },
-                                                                    {
-                                                                        text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
-                                                                            return value;
-                                                                        }
-                                                                    },
+                                                                    
                                                                     {
                                                                         text: 'Sales',
                                                                         id: prototype.id + '-label_10_CHGBAK',
@@ -3829,6 +3841,19 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                                 items: [
                                                                     {
+                                                                        text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
+                                                                        listeners: {
+                                                                            click: 'gridDet_ACREDIT_clickHandler'
+                                                                        },
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                                            metaData.style = "text-align:center;color:#057ECB;font-weight:bold;background-color:#d5f4d5;";
+                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
                                                                         text: 'Country', flex: 1,
                                                                         defaults: {
                                                                             menuDisabled: true,
@@ -3869,14 +3894,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                             return win.formatLngNumber(data.lngTotQACCB);
                                                                         }
                                                                     },
-                                                                    {
-                                                                        text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
-                                                                            return value;
-                                                                        }
-                                                                    },
+                                                                    
                                                                     {
                                                                         text: 'Sales',
                                                                         id: prototype.id + '-label_10_ACREDIT',

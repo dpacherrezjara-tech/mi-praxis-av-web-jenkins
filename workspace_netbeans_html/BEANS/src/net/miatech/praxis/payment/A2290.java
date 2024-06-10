@@ -175,6 +175,7 @@ public class A2290 {
     public String NUMADM = "";
     public String DATEADM = "";
     public double TOTADM = 0;
+    public double SUBTOTAL = 0;
     public String CURRADM = "";
     public String SOCIETY = "";
     public String AMOUNT = "";

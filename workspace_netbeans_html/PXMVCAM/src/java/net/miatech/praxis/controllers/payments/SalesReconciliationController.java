@@ -1330,6 +1330,61 @@ public class SalesReconciliationController extends BaseController {
         return (dw_excel) ? null : (new Gson().toJson(map));
     }
     
+    @RequestMapping(value = "/searchDetail_ALLDEBITS")
+    public @ResponseBody
+    String searchDetail_ALLDEBITS(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        A2290Filter filter = new A2290Filter();
+        HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
+        boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+
+            if (!dw_excel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            hmResultado = logic.loadPX263SQP01828_ALLDEBITS(filter);
+
+            if (dw_excel) {
+                ExportUtil.exportFields(request, response, hmResultado.get("TKT"));
+//                map.put("nameExcel", nameExcel);
+            } else {
+                map.put("success", true);
+                List<A2290Filter> listaData = hmResultado.get("TKT");
+                List<A2290Filter> listaError = hmResultado.get("ERROR");
+                map.put("success", true);
+                map.put("data", listaData);
+                map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
+                map.put("lstError", listaError);
+            }
+
+//            map.put("success", true);
+//            map.put("lstDetTkyByStval", listaData);
+//            map.put("lstError", listaError);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return (dw_excel) ? null : (new Gson().toJson(map));
+    }
+    
     @RequestMapping(value = "/obtainMessagesDT")
     public @ResponseBody
     String obtainMessagesDT(ModelMap map, HttpServletRequest request) {
@@ -1675,6 +1730,8 @@ public class SalesReconciliationController extends BaseController {
                 hmResultado = logic.loadPX263SQP01828_CHGBAK(filter); 
             }else if(tabMPF.equals("MPF077")){
                 hmResultado = logic.loadPX263SQP01828_ACREDIT(filter); 
+            }else if(tabMPF.equals("DEBITS")){
+                hmResultado = logic.loadPX263SQP01828_ALLDEBITS(filter); 
             }
             filter.page.PAGROW = -1;
             filter.page.PAGNUM = 1;

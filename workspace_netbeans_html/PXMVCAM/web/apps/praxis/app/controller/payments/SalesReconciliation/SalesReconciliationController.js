@@ -879,7 +879,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== '' || win.getValue('txtSAGENT').trim() !== ''
                 || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '' || win.getValue('cmbSource').trim() !== '' || win.getValue('cmbDebitType') !== ''
                 || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''  ) {
-
+            //***********CONSULTA A DETALLE***********
             if( win.getValue('txtTicket').trim() !== '' && win.getValue('txtTicket').trim().length !== 13 ){
                 win.setValue('txtTicket', '');
                 global.Msg({msg: 'Ticket number must contain 13 digits.'});
@@ -954,8 +954,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     consultPath = 'searchDetTARJETA'
                     break;
                 case 'D':
-                    global.Msg({msg: 'Search not allowed'})
-                    return false
+                    consultPath = 'searchDetail_ALLDEBITS'
                     break;
                 case 'R':
                     consultPath = 'searchDetail_REFND'
@@ -970,6 +969,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             
             this.searchDetTARJETA(this.beanDetailTar, consultPath);
         } else if (win.getValue('cmbFecFiltro').trim() === 'FCONT') {
+            //***********CONSULTA A SUMARIO CONTAB.***********
             this.beanDetailAcc.strFecFiltro = win.getValue('cmbFecFiltro');
             this.beanDetailAcc.strYearFrom = win.getValue('cmbDateFromYear');
             this.beanDetailAcc.strMonthFrom = win.getValue('cmbDateFromMonth');
@@ -977,7 +977,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.beanDetailAcc.strMonthTo = win.getValue('cmbDateToMonth');
 
             this.searchAcc(this.beanDetailAcc);
-        }else if(win.getValue('cmbTDOC').trim() === 'D'){
+        }else if(win.getValue('cmbTDOC').trim() === 'D' || win.getValue('cmbTDOC').trim() === 'R' || win.getValue('cmbTDOC').trim() === 'C' || win.getValue('cmbTDOC').trim() === 'A' ){
+            //***********CONSULTA A SUMARIO DEBITOS***********
             this.beanDebits.strFecFiltro = win.getValue('cmbFecFiltro');
             this.beanDebits.strYearFrom = win.getValue('cmbDateFromYear');
             this.beanDebits.strMonthFrom = win.getValue('cmbDateFromMonth');
@@ -998,7 +999,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.beanDebits.IN_SPNR = win.getValue('txtPNR').trim();
             this.searchDebits(this.beanDebits)
         } else {
-            
+            //***********CONSULTA A SUMARIO VENTA***********
             this.bean.strFecFiltro = win.getValue('cmbFecFiltro');
             this.bean.strYearFrom = win.getValue('cmbDateFromYear');
             this.bean.strMonthFrom = win.getValue('cmbDateFromMonth');
@@ -1106,6 +1107,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             break;
                         case 'A':
                             me.beanboxDetTktS3.TabMPF = 'MPF077'
+                            break;
+                        case 'D':
+                            me.beanboxDetTktS3.TabMPF = 'DEBITS'
                             break;
                         default:
                             me.beanboxDetTktS3.TabMPF = 'MPF100'
@@ -1798,6 +1802,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         controller.actionCode = win.DE_ACT_SELECT;
                         DataEntryTicket.show();
                     } else {
+                        console.log('error en la matrix')
                         global.Msg({msg: 'An error has ocurred. Please contact our System Department'});
                     }
                 } else
@@ -2638,6 +2643,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         } else if (consultPath.includes('ACREDIT')){
            nameTable = 'MPF077'
            hideTkt = true
+        } else if (consultPath.includes('ALLDEBITS')){
+            nameTable = 'AllDebits'
+            hideTkt = false
         }else{
             nameTable = 'MPF100'
             hideTkt = false
@@ -2655,7 +2663,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 load: function (obj, obj2, success, response, obj5) {
                     Ext.getCmp(prototype.id + '-contentInfo').unmask();
                     me.selectedChild('vskMain', 'boxDetTktS');
-                    win.lblUser_toolTip("Estructura: MPF100");
+                    win.lblUser_toolTip("Estructura: " + nameTable);
 
                     var res = Ext.JSON.decode(response._response.responseText);
                     if (res.success) {
