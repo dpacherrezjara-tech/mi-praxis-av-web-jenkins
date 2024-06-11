@@ -17,6 +17,9 @@ public class A2290 {
     public String TKT = "";
     public String TDOC = "";
     public String descTDOC = "";
+    public String DATABASE = "";
+    public String CASOCVS = "";
+//    public double IDDEB = 0;
     public String SEQ = "";
     public String STVAL = "";
     public String VALDATE = "";
@@ -107,6 +110,7 @@ public class A2290 {
     public double AVFOP = 0;
     public double COMMFAREC = 0;
     public double TOTAL_ADM = 0;
+    public double IDDEBF = 0;
     public String ACURRENCY = "";
     public String ACARDN = "";
     public String ADATEXP = "";

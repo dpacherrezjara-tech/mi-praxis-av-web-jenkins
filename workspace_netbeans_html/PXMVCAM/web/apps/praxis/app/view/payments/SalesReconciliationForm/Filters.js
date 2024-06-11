@@ -568,7 +568,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['value', 'description'],
                                 data: [
-                                    ["", "All"], ["1", "Match"], ["2", "Sales Without Liqui."],["5", "Match Manual"]
+                                    ["", "All"], ["1", "Match"], ["2", "Sales Without Liqui."], ["3", "Pendings"],["5", "Match Manual"]
                                 ]
                             }),
                             queryMode: 'local',

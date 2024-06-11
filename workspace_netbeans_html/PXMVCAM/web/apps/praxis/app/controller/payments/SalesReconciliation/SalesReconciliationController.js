@@ -43,7 +43,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             },
             '#SalesReconciliationForm-cmbTDOC': {
                 select: this.selectDocType
-            }
+            },
+     
 
         });
         
@@ -156,7 +157,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     // </editor-fold>
     selectDocType: function (obj) {
         console.log('wadafafafa')
-        if( obj.getValue() == 'R' || obj.getValue() == 'C' || obj.getValue() == 'A' ){
+        if( obj.getValue() == 'D' || obj.getValue() == 'R' || obj.getValue() == 'C' || obj.getValue() == 'A' ){
             Ext.getCmp(prototype.id + '-cmbDebitType').show()
             Ext.getCmp(prototype.id + '-lblTDOC').show()
         }else{
@@ -164,6 +165,43 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
            Ext.getCmp(prototype.id + '-lblTDOC').hide()
            Ext.getCmp(prototype.id + '-cmbDebitType').setValue('')
         }
+        
+        switch (obj.getValue()) {
+            case 'D':
+                Ext.getCmp(prototype.id + '-txtTicket').setDisabled(true)
+                Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtTicket').setValue('')
+                break;
+            case 'R':
+                Ext.getCmp(prototype.id + '-txtTicket').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
+                
+                break;
+            case 'C':
+                Ext.getCmp(prototype.id + '-txtTicket').setDisabled(true)
+                Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(true)
+                Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(true)
+                Ext.getCmp(prototype.id + '-txtTicket').setValue('')
+                Ext.getCmp(prototype.id + '-txtAUTHNBR').setValue('')
+                Ext.getCmp(prototype.id + '-txtSAGENT').setValue('')
+                break;
+             case 'A':
+                Ext.getCmp(prototype.id + '-txtTicket').setDisabled(true)
+                Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtTicket').setValue('')
+                break;
+            case 'S':
+                Ext.getCmp(prototype.id + '-txtTicket').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
+                Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
+                
+                break;
+        }
+        
+        
     },
     cmbTranType_changeHandler: function () {
         var filtro = win.getValue('cmbFecFiltro');
@@ -1156,6 +1194,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         win.setValue('txtMERCHN', '');
         win.setValue('cmbSource', '');
         win.setValue('txtPNR', '');
+        win.setValue('txtSAGENT', '');
+        win.setValue('txtAMOUNT', '');
+        win.setValue('cmbDebitType', '');
+        win.setValue('cmbStatus', '');
     },
 
     btnBack_click: function (obj, e) {
@@ -1790,8 +1832,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     var beanCons = res.beanCons;
-
-                    if (beanCons !== undefined && beanCons.strTicket !== '') {
+                    console.log(beanCons, 'beanCons')
+                    console.log(beanCons.DATABASE, 'DATABASE')
+                    if (beanCons !== undefined ) {
                         var DataEntryTicket = Ext.create('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             id: 'DataEntryTicketSalesReconciliationForm'
                         });
@@ -1802,7 +1845,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         controller.actionCode = win.DE_ACT_SELECT;
                         DataEntryTicket.show();
                     } else {
-                        console.log('error en la matrix')
+                        
                         global.Msg({msg: 'An error has ocurred. Please contact our System Department'});
                     }
                 } else

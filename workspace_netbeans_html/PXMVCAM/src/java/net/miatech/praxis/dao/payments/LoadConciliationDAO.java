@@ -1251,6 +1251,7 @@ public class LoadConciliationDAO {
                     beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
                     if (rst.getString("TDOC").trim().equals("R")) {
                         beanTkt.strPEM = "REFUND";
                     } else {
@@ -1497,6 +1498,7 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = "R";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -1689,6 +1691,8 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = "C";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    beanTkt.IDDEB = rst.getString("IDDEB").trim();
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -1881,6 +1885,8 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = "A";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    beanTkt.CASOCVS = rst.getString("CASOCVS").trim();
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -2071,8 +2077,11 @@ public class LoadConciliationDAO {
                     beanTkt.TKT = rst.getString("TKT").trim();
 //                    beanTkt.FORMA = rst.getString("FORMA").trim();
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
-
+            
                     beanTkt.TDOC = "D";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    beanTkt.IDDEB = rst.getString("IDDEB").trim();
+                    beanTkt.CASOCVS = rst.getString("CASOCVS").trim();
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -3068,7 +3077,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_REFND(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3080,7 +3089,7 @@ public class LoadConciliationDAO {
             cstmt.setString(3, filter.TKT.trim());
             cstmt.setString(4, filter.SCARDN.trim());
             cstmt.setString(5, filter.SAUTHOC.trim());
-            cstmt.setDouble(6, filter.SUBTOTAL);
+            cstmt.setDouble(6, filter.SVFOP);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3092,42 +3101,52 @@ public class LoadConciliationDAO {
                 beanTkt.strSCARF = strSCARF;
                 beanTkt.strDescCountry = filter.strDescCountry.trim();
 
-                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
+                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
-                beanTkt.FORMA = rst.getString("FORMA").trim();
-                beanTkt.SERIE = rst.getString("SERIE").trim();
+                beanTkt.TKT = rst.getString("TKT").trim();
+//                beanTkt.SERIE = rst.getString("SERIE").trim();
 
                 beanTkt.TDOC = rst.getString("TDOC").trim();
-                beanTkt.SEQ = rst.getString("SEQ").trim();
+//                beanTkt.SEQ = rst.getString("SEQ").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
                 beanTkt.FTE = rst.getString("FTE").trim();
                 beanTkt.DATEC = rst.getString("DATEC").trim();
-                beanTkt.FADYEN = rst.getString("FADYEN").trim();
+                beanTkt.TRANC = rst.getString("TRANC").trim();
+//                beanTkt.FADYEN = rst.getString("FADYEN").trim();
 
                 //SALES
-                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+//                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
                 beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                 beanTkt.SAGENT = rst.getString("SAGENT").trim();
                 beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+//                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
                 beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
 
                 beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
 
-                beanTkt.STCNTR = rst.getString("STCNTR").trim();
+//                beanTkt.STCNTR = rst.getString("STCNTR").trim();
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                beanTkt.SVFOP = rst.getDouble("SVFOP");
+                beanTkt.SVFOP = rst.getDouble("SUBTOTAL");
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
                 beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
-                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+//                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 
                 beanTkt.SPNR = rst.getString("SPNR").trim();
-                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
-                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
-                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
+//                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+//                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+//                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
                     
-
+                beanTkt.SDATEL = rst.getString("SDATEL").trim();
+                beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
+                beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
+                beanTkt.SCARCODL = rst.getString("SCARCODL").trim();
+                beanTkt.SCOUNTRYL = rst.getString("SCOUNTRYL").trim();
+                beanTkt.SAUTHOCL = rst.getString("SAUTHOCL").trim();
+                beanTkt.SPNRL = rst.getString("SPNRL").trim();
+                beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
+                beanTkt.SEQL = rst.getString("SEQL").trim();
+                beanTkt.NETOL = rst.getDouble("NETOL");
 
                 beanTkt.USCR = rst.getString("USCR").trim();
                 beanTkt.FECR = rst.getString("FECR").trim();
@@ -3190,7 +3209,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_CHGBAK(?,?)}";
 
         Connection cnx = null;
         try {
@@ -3198,62 +3217,54 @@ public class LoadConciliationDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.CCIA.trim());
-            cstmt.setString(3, filter.FORMA.trim());
-            cstmt.setString(4, filter.SERIE.trim());
-            cstmt.setString(5, filter.TDOC.trim());
-            cstmt.setString(6, filter.SPAYMENT.trim());
-            cstmt.setString(7, filter.APAYMENT.trim());
-            cstmt.setString(8, filter.SCARCOD.trim());
-            cstmt.setString(9, filter.ACARCOD.trim());
-            cstmt.setString(10, filter.STVAL.trim());
+            cstmt.setString(2, filter.IDDEB.trim());
+
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
 
-                beanTkt.TRNCU = rst.getString("TRNCU");
                 beanTkt.strFormatDate = filter.strFormatDate.trim();
                 beanTkt.strSCARF = strSCARF;
                 beanTkt.strDescCountry = filter.strDescCountry.trim();
 
-                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
+//                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
-                beanTkt.FORMA = rst.getString("FORMA").trim();
-                beanTkt.SERIE = rst.getString("SERIE").trim();
+//                beanTkt.TKT = rst.getString("TKT").trim();
+//                beanTkt.SERIE = rst.getString("SERIE").trim();
 
                 beanTkt.TDOC = rst.getString("TDOC").trim();
-                beanTkt.SEQ = rst.getString("SEQ").trim();
+//                beanTkt.SEQ = rst.getString("SEQ").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
                 beanTkt.FTE = rst.getString("FTE").trim();
                 beanTkt.DATEC = rst.getString("DATEC").trim();
-                beanTkt.FADYEN = rst.getString("FADYEN").trim();
+                beanTkt.TRANC = rst.getString("TRANC").trim();
+//                beanTkt.FADYEN = rst.getString("FADYEN").trim();
 
                 //SALES
-                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+//                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
                 beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                 beanTkt.SAGENT = rst.getString("SAGENT").trim();
-                beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+//                beanTkt.SDATE = rst.getString("SDATE").trim();
+//                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
                 beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
 
                 beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
 
-                beanTkt.STCNTR = rst.getString("STCNTR").trim();
-                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                beanTkt.SVFOP = rst.getDouble("SVFOP");
+//                beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                beanTkt.SCURRENCY = rst.getString("CURRLOCAL").trim();
+                beanTkt.SVFOP = rst.getDouble("VALLOCAL");
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
                 beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
-                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
-                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+//                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+//                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 
-                beanTkt.SPNR = rst.getString("SPNR").trim();
-                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
-                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
-                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
+                beanTkt.SPNR = rst.getString("NOMPAX").trim();
+//                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+//                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+//                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
                     
-                //SETTLEMENT
                 beanTkt.SDATEL = rst.getString("SDATEL").trim();
                 beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
                 beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
@@ -3264,25 +3275,6 @@ public class LoadConciliationDAO {
                 beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
                 beanTkt.SEQL = rst.getString("SEQL").trim();
                 beanTkt.NETOL = rst.getDouble("NETOL");
-                //TEF
-                beanTkt.TDATE = rst.getString("TDATE").trim();
-                beanTkt.DATEF = rst.getString("DATEF").trim();
-                //Banks
-                beanTkt.BDATEL = rst.getString("BDATEL").trim();
-                beanTkt.BSTVAL = rst.getString("BSTVAL").trim();
-                beanTkt.BDATEP = rst.getString("BDATEP").trim();
-                beanTkt.BSTVALP = rst.getString("BSTVALP").trim();
-
-                if (rst.getString("MENSA") != null) {
-                    beanTkt.strComment = rst.getString("MENSA").trim();
-                }
-                beanTkt.CREJEC = rst.getString("CREJEC").trim();
-                if (!rst.getString("DESCREJ").trim().isEmpty()) {
-                    beanTkt.CREJEC += " : " + rst.getString("DESCREJ").trim();
-                }
-                beanTkt.FNOBANK = rst.getString("FNOBANK").trim();
-                beanTkt.DATEC2 = rst.getString("DATEC2").trim();
-                beanTkt.DATEC3 = rst.getString("DATEC3").trim();
 
                 beanTkt.USCR = rst.getString("USCR").trim();
                 beanTkt.FECR = rst.getString("FECR").trim();
@@ -3344,7 +3336,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_ACREDIT(?,?)}";
 
         Connection cnx = null;
         try {
@@ -3352,62 +3344,54 @@ public class LoadConciliationDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.CCIA.trim());
-            cstmt.setString(3, filter.FORMA.trim());
-            cstmt.setString(4, filter.SERIE.trim());
-            cstmt.setString(5, filter.TDOC.trim());
-            cstmt.setString(6, filter.SPAYMENT.trim());
-            cstmt.setString(7, filter.APAYMENT.trim());
-            cstmt.setString(8, filter.SCARCOD.trim());
-            cstmt.setString(9, filter.ACARCOD.trim());
-            cstmt.setString(10, filter.STVAL.trim());
+            cstmt.setString(2, filter.CASOCVS.trim());
+
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
 
-                beanTkt.TRNCU = rst.getString("TRNCU");
                 beanTkt.strFormatDate = filter.strFormatDate.trim();
                 beanTkt.strSCARF = strSCARF;
                 beanTkt.strDescCountry = filter.strDescCountry.trim();
 
-                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
+//                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
-                beanTkt.FORMA = rst.getString("FORMA").trim();
-                beanTkt.SERIE = rst.getString("SERIE").trim();
+//                beanTkt.TKT = rst.getString("TKT").trim();
+//                beanTkt.SERIE = rst.getString("SERIE").trim();
 
                 beanTkt.TDOC = rst.getString("TDOC").trim();
-                beanTkt.SEQ = rst.getString("SEQ").trim();
+//                beanTkt.SEQ = rst.getString("SEQ").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
                 beanTkt.FTE = rst.getString("FTE").trim();
                 beanTkt.DATEC = rst.getString("DATEC").trim();
-                beanTkt.FADYEN = rst.getString("FADYEN").trim();
+                beanTkt.TRANC = rst.getString("TRANC").trim();
+//                beanTkt.FADYEN = rst.getString("FADYEN").trim();
 
                 //SALES
-                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+//                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
                 beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
-                beanTkt.SAGENT = rst.getString("SAGENT").trim();
-                beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                beanTkt.SAGENT = rst.getString("IATA").trim();
+//                beanTkt.SDATE = rst.getString("SDATE").trim();
+//                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
                 beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
 
                 beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
 
-                beanTkt.STCNTR = rst.getString("STCNTR").trim();
+//                beanTkt.STCNTR = rst.getString("STCNTR").trim();
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                beanTkt.SVFOP = rst.getDouble("SVFOP");
+                beanTkt.SVFOP = rst.getDouble("VALOR");
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
                 beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
-                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+//                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
 
                 beanTkt.SPNR = rst.getString("SPNR").trim();
-                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
-                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
-                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
+//                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+//                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+//                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
                     
-                //SETTLEMENT
                 beanTkt.SDATEL = rst.getString("SDATEL").trim();
                 beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
                 beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
@@ -3418,25 +3402,6 @@ public class LoadConciliationDAO {
                 beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
                 beanTkt.SEQL = rst.getString("SEQL").trim();
                 beanTkt.NETOL = rst.getDouble("NETOL");
-                //TEF
-                beanTkt.TDATE = rst.getString("TDATE").trim();
-                beanTkt.DATEF = rst.getString("DATEF").trim();
-                //Banks
-                beanTkt.BDATEL = rst.getString("BDATEL").trim();
-                beanTkt.BSTVAL = rst.getString("BSTVAL").trim();
-                beanTkt.BDATEP = rst.getString("BDATEP").trim();
-                beanTkt.BSTVALP = rst.getString("BSTVALP").trim();
-
-                if (rst.getString("MENSA") != null) {
-                    beanTkt.strComment = rst.getString("MENSA").trim();
-                }
-                beanTkt.CREJEC = rst.getString("CREJEC").trim();
-                if (!rst.getString("DESCREJ").trim().isEmpty()) {
-                    beanTkt.CREJEC += " : " + rst.getString("DESCREJ").trim();
-                }
-                beanTkt.FNOBANK = rst.getString("FNOBANK").trim();
-                beanTkt.DATEC2 = rst.getString("DATEC2").trim();
-                beanTkt.DATEC3 = rst.getString("DATEC3").trim();
 
                 beanTkt.USCR = rst.getString("USCR").trim();
                 beanTkt.FECR = rst.getString("FECR").trim();
@@ -3444,6 +3409,7 @@ public class LoadConciliationDAO {
                 beanTkt.USUP = rst.getString("USUP").trim();
                 beanTkt.FEUP = rst.getString("FEUP").trim();
                 beanTkt.HOUP = rst.getString("HOUP").trim();
+
 
             }
             rst.close();
@@ -5152,6 +5118,7 @@ public class LoadConciliationDAO {
                     beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF100";
                     beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -5411,8 +5378,9 @@ public class LoadConciliationDAO {
                     beanTkt.TKT = rst.getString("TKT").trim();
 //                    beanTkt.FORMA = rst.getString("FORMA").trim();
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
-
+            
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF075";
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -5673,6 +5641,9 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF076";
+                    beanTkt.IDDEB = rst.getString("IDDEB").trim();;
+                    
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -5933,6 +5904,8 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF077";
+                    beanTkt.CASOCVS = rst.getString("CASOCVS").trim();
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();

@@ -402,8 +402,17 @@ public class SalesReconciliationController extends BaseController {
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
 
             LoadConciliationLogic logic = new LoadConciliationLogic();
+            A2290Filter bean = new A2290Filter();
             logic.setSession(this.serverSession.getServerSession());
-            A2290Filter bean = logic.loadPX263SQP00659(filter);
+            if(filter.DATABASE.equals("MPF100")){
+                bean = logic.loadPX263SQP00659(filter);
+            }else if(filter.DATABASE.equals("MPF075")){
+                bean = logic.loadPX263SQP00659_REFND(filter);
+            }else if(filter.DATABASE.equals("MPF076")){
+                bean = logic.loadPX263SQP00659_CHGBAK(filter);
+            }else if(filter.DATABASE.equals("MPF077")){
+                bean = logic.loadPX263SQP00659_ACREDIT(filter);
+            }
 
             map.put("success", true);
             map.put("beanCons", bean);
