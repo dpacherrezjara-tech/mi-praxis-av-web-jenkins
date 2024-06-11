@@ -2278,6 +2278,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-cmbNEGOC').setValue('');
         Ext.getCmp(prototype.id + '-cmbCOMENTF').setValue('');
         Ext.getCmp(prototype.id + '-txtAGENCY').setValue('');
+        Ext.getCmp(prototype.id + '-cmbStatus').setValue('');
+        Ext.getCmp(prototype.id + '-txtAMOUNT').setValue('');
+        Ext.getCmp(prototype.id + '-cmbSource').setValue('');
 
     },
     btnExcel_click: function (obj, e) {
