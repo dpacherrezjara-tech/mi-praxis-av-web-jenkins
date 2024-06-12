@@ -598,6 +598,7 @@ public class A2290Filter extends A2290 {
     public String IN_DEBTYPE = "";
     public String DEBTYPE = "";
     public String descDEBTYPE = "";
+    public String MESSAGE = "";
 
     //PArametros view ticket
     public String option = "";
@@ -630,6 +631,21 @@ public class A2290Filter extends A2290 {
     public String IN_ACCNUMBER = "";
     public String DATECI = "";
     public String TRANCI = "";
+    
+    public String CCUST = "";
+    public String TREG = "";
+    public String CURRENCY1 = "";
+    public String CURRENCY2 = "";
+    public String DATECH = "";
+    public String SIGN = "";
+    public String RATE = "";
+    public String FACTORD = "";
+    public String FACTORA = "";
+    public String TCCOTIND = "";
+    public String TCCOTDIR = "";
+    public String TCCOTIND2 = "";
+    public String TCCOTDIR2 = "";
+    public int Contador = 0;
 
     public double IN_NETO = 0;
 
