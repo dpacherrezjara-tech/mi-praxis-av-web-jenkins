@@ -355,6 +355,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         } else {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount, '0,000.00'));
             this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.sumAmount, '0,000.00'));
+            console.log(Ext.util.Format.number(this.beanResult.NETO - this.sumAmount, '0,000.00'), 'hallar monto')
         }
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
 
@@ -875,7 +876,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         //Modificacion
         var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
-        var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace('-', ''));
+        var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
         var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
         var ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
         var ACCNUMBERL = Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').getValue();
@@ -899,10 +900,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
          }
         
         if( DIFF == 0 ){
+            console.log('entra a DIF = 0', DIFF)
             return true
         }else if( DIFF !== 0 && DIFF < 100 ) {
+            console.log('entra a DIF < 100', DIFF)
             return true
         }else{
+            console.log('entra a ELSE', DIFF)
             global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
             return false
         }
