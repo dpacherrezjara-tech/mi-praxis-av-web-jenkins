@@ -115,9 +115,9 @@ Ext.define('Ext.Praxis.controller.payments.LoadExchangeRate.LoadExchangeRateCont
                 var res = Ext.decode(response.responseText);
                 console.log(res);
                 if (res.success) {
-                    
+                    console.log(res.success, 'res.success')
                     let objResult = res.objResult;
-                    Ext.getCmp(prototype.id + '-panelGridData').unmask('Loading...')
+                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
                     global.Msg({msg: objResult.MESSAGE});
                     // No es necesario restaurar el archivo ya que no se borra el campo de archivo
                 } else {

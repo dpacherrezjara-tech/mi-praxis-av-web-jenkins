@@ -268,11 +268,11 @@ public class LoadExchangeRateDAO {
         double NETOC = 0;
         String mensajePost = "";
         CallableStatement cstmt = null;
-        CallableStatement cstmt2 = null;
         Connection cnx = null;
-        Connection cnx2 = null;
         int cantReg = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS033(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        int updatedCount = 0;
+        int insertedCount = 0;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS033(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         try {
             int QTYTRAN1 = lstdata.size();
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -297,18 +297,27 @@ public class LoadExchangeRateDAO {
                         cstmt.setString(15, Functions.getFechaActual());
                         cstmt.setString(16, Functions.getHoraActual());
                         cstmt.setString(17, "MPPWEB");
+                        
+                        cstmt.registerOutParameter(18, Types.INTEGER);
+                        cstmt.registerOutParameter(19, Types.INTEGER);
                         cantReg++;
-
                         System.out.println(i);
                         if(i == 1289){
                             System.out.println(i);
                         }
                         cstmt.execute();
+                        updatedCount =  updatedCount + cstmt.getInt(18);
+                        insertedCount = insertedCount + cstmt.getInt(19);
+                        System.out.println("Updated Count: " + updatedCount);
+                        System.out.println("Inserted Count: " + insertedCount);
                     } catch (Exception e) {
                         System.out.println("errorSQL");
                         System.out.println(e);
                     }
                 }
+                System.out.println("Updated final: " + updatedCount);
+                System.out.println("Inserted final: " + insertedCount);
+                mensaje = "" + mensaje + "<br><b>Read records: " + cantReg + "<br><b>Updated records: " + updatedCount+ "<br><b>Created records: " + insertedCount;
             } catch (Exception e2) {
                 System.out.println("error" + e2);
                 System.out.println("error" + cantReg);
@@ -337,7 +346,7 @@ public class LoadExchangeRateDAO {
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             pasarGarbageCollector();
         }
-
+        System.out.println("mensaje: " + mensaje);
         return mensaje;
     }
 

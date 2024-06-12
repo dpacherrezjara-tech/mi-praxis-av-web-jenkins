@@ -131,7 +131,7 @@ public class LoadExchangeRateController extends BaseController {
         byte[] bytes = null;
         Gson gson = new Gson();
         Integer cont = 0;
-            A2290Filter objResult = new A2290Filter();
+        A2290Filter objResult = new A2290Filter();
         A2290Filter filter = new A2290Filter();
         
 
@@ -167,7 +167,7 @@ public class LoadExchangeRateController extends BaseController {
 //        String ruta = "D:";
         double neto = 0;
 //        boolean isDiff = false;
-        String mensaje = "Hubo un error al actualizar los pagos", strHora = Functions.getHoraActual();
+        String mensaje = "Hubo un error al cargar", strHora = Functions.getHoraActual();
         String mensajePost = "";
         double montoTotal = 0;
         int i = 0;
