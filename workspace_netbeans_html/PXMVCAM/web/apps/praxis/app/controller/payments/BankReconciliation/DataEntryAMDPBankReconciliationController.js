@@ -55,6 +55,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
         this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue()
         this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue()
+        this.bean_scan.SCURRENCY = this.bean.SCURRENCY
+        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard')
+        
         // Validación: Verificar si todos los campos son vacíos
         if (
                 !this.bean_scan.TICKET &&
@@ -359,6 +362,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
+        console.log(this.bean.SCURRENCY, 'scurrrency en this bean')
         console.log(paramDetail);
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanAMDP_SCAN_PENDING',
