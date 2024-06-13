@@ -343,12 +343,21 @@ public class ExchangeRateController extends BaseController {
                 rcell0.setCellValue(listaData.get(vi).DATECH);
                 rcell1.setCellValue(listaData.get(vi).SCURRENCY1);
                 rcell2.setCellValue(listaData.get(vi).SCURRENCY2);
-                rcell3.setCellValue(listaData.get(vi).RATE);
-                rcell4.setCellValue(listaData.get(vi).FACTORD);
+                rcell3.setCellValue(listaData.get(vi).FACTORD);               
+                rcell4.setCellValue(listaData.get(vi).RATE);
+
                 rcell5.setCellValue(listaData.get(vi).TCCOTIND);
-                rcell6.setCellValue(listaData.get(vi).TCCOTIND2);
-                rcell7.setCellValue(listaData.get(vi).TCCOTDIR);
+                rcell5.setCellValue("0E-8".equals(listaData.get(vi).TCCOTIND) ? "0.00000000" : listaData.get(vi).TCCOTIND);
+
+                rcell6.setCellValue(listaData.get(vi).TCCOTDIR);
+                rcell6.setCellValue("0E-8".equals(listaData.get(vi).TCCOTDIR) ? "0.00000000" : listaData.get(vi).TCCOTDIR);
+                
+                rcell7.setCellValue(listaData.get(vi).TCCOTIND2);
+                rcell7.setCellValue("0E-8".equals(listaData.get(vi).TCCOTIND2) ? "0.00000000" : listaData.get(vi).TCCOTIND2);
+                
                 rcell8.setCellValue(listaData.get(vi).TCCOTDIR2);
+                rcell8.setCellValue("0E-8".equals(listaData.get(vi).TCCOTDIR2) ? "0.00000000" : listaData.get(vi).TCCOTDIR2);
+              
                 rcell9.setCellValue(listaData.get(vi).FECR);
                 rcell10.setCellValue(listaData.get(vi).FEUP);
 

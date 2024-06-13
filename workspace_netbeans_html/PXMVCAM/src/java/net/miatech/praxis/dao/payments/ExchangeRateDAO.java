@@ -116,8 +116,8 @@ public class ExchangeRateDAO {
                     objRtn.DATECH = rs01.getString("DATECH").trim();
                     objRtn.SCURRENCY1 = rs01.getString("CURRENCY1").trim();
                     objRtn.SCURRENCY2 = rs01.getString("CURRENCY2").trim();
-                    objRtn.RATE = rs01.getString("RATE").trim();
                     objRtn.FACTORD = rs01.getString("FACTORD").trim();
+                    objRtn.RATE = rs01.getString("RATE").trim();
                     objRtn.TCCOTIND = rs01.getString("TCCOTIND").trim();
                     objRtn.TCCOTIND2 = rs01.getString("TCCOTIND2").trim();
                     objRtn.TCCOTDIR = rs01.getString("TCCOTDIR").trim();
@@ -199,8 +199,8 @@ public class ExchangeRateDAO {
                 objRtn.DATECH = rs01.getString("DATECH").trim();
                 objRtn.SCURRENCY1 = rs01.getString("CURRENCY1").trim();
                 objRtn.SCURRENCY2 = rs01.getString("CURRENCY2").trim();
-                objRtn.RATE = rs01.getString("RATE").trim();
                 objRtn.FACTORD = rs01.getString("FACTORD").trim();
+                objRtn.RATE = rs01.getString("RATE").trim();
                 objRtn.FACTORA = rs01.getString("FACTORA").trim();
                 objRtn.TCCOTIND = rs01.getString("TCCOTIND").trim();
                 objRtn.TCCOTIND2 = rs01.getString("TCCOTIND2").trim();
