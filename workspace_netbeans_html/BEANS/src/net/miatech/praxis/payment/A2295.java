@@ -47,7 +47,16 @@ public class A2295 {
     public String STVAL = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
+    public String SCURRENCY1 = "";
+    public String SCURRENCY2= "";
     public String SCOUNTRY = "";
+    public String DATECH = "";
+    public String RATE = "";
+    public String FACTORD = "";
+    public String TCCOTIND = "";
+    public String TCCOTIND2 = "";
+    public String TCCOTDIR = "";
+    public String TCCOTDIR2 = "";
     public String ACCNUMBER = "";
     public String SOCIETYL = "";
     public double CCAMOUNT = 0;

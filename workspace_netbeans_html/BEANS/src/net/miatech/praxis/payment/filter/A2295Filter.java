@@ -18,6 +18,8 @@ public class A2295Filter  extends A2295{
     public String strDayTo = "";
     public String IN_DATE_FROM = "";
     public String IN_DATE_TO = "";
+    public String IN_CURRENCY1 = "";
+    public String IN_CURRENCY2 = "";
     public String IN_SPAYMENT = "";
     public String IN_TKT = "";
     public String IN_SAGENT = "";
