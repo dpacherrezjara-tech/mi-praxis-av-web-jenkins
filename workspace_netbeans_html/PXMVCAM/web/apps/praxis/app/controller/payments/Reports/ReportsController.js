@@ -294,6 +294,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
     setFormatParameter: function () {
         me.bean = {};
+        me.bean.IN_FECFILTRO = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'SDATE' ? 'S' : 'A';
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
@@ -333,6 +334,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim();
         console.log(Ext.getCmp(prototype.id + '-cmbDebitType').getValue(), 'wadafa')
         me.bean.IN_DEBTYPE = Ext.getCmp(prototype.id + '-cmbDebitType').getValue();
+        
 
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
