@@ -332,6 +332,10 @@ Ext.define('Ext.Praxis.controller.payments.ExchangeRate.ExchangeRateController',
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 
 //        Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
         Ext.getCmp(prototype.id + '-cmbCURRENCY1').setValue('');

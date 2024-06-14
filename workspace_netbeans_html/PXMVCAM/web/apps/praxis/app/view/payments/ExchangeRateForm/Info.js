@@ -1,4 +1,3 @@
-valor = '0';
 Ext.define('Ext.Praxis.view.payments.ExchangeRateForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
@@ -146,7 +145,7 @@ Ext.define('Ext.Praxis.view.payments.ExchangeRateForm.Info', {
                                             },
                                             {text: 'Create<br>Date', dataIndex: 'FECR', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
@@ -154,7 +153,7 @@ Ext.define('Ext.Praxis.view.payments.ExchangeRateForm.Info', {
                                             },        
                                             {text: 'Update<br>date', dataIndex: 'FEUP', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
