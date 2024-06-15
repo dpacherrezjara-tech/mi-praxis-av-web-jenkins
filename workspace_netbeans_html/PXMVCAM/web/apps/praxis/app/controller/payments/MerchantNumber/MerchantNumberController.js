@@ -258,12 +258,12 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     },
     btnClear_click: function (obj, e) {
 
-        Ext.getCmp(prototype.id + '-txtMERCHN').setValue('');
-        Ext.getCmp(prototype.id + '-txtRSOCIAL').setValue('');
-        Ext.getCmp(prototype.id + '-cmbUNIOPE').setValue('');
-        Ext.getCmp(prototype.id + '-cmbSTATUS').setValue('');
-        Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
-        Ext.getCmp(prototype.id + '-txtCANAL').setValue('');
+        Ext.getCmp(prototype.id + '-txtBMERCHAN').setValue('');
+        Ext.getCmp(prototype.id + '-txtCMERCHAN').setValue('');
+        Ext.getCmp(prototype.id + '-cmbScarCode').setValue('');
+//        Ext.getCmp(prototype.id + '-cmbSTATUS').setValue('');
+//        Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+//        Ext.getCmp(prototype.id + '-txtCANAL').setValue('');
 
     },
     btnExcel_click: function (obj, e) {
