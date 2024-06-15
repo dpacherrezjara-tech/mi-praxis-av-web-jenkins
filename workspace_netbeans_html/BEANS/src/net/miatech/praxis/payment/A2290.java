@@ -63,6 +63,7 @@ public class A2290 {
     public String FCONT = "";
     public String NEGOC = "";
     public String ACCNUMBER = "";
+    public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
     public double SVFOP = 0;
@@ -183,6 +184,8 @@ public class A2290 {
     public String CURRADM = "";
     public String SOCIETY = "";
     public String AMOUNT = "";
+    public String USERAV = "";
+    public String TYPETRAN = "";
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";

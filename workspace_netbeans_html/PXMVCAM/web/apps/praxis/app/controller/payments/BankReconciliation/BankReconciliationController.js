@@ -3063,7 +3063,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     viewMPF101_clickHandler: function (beanDet) {
         console.log('viewMPF101_clickHandler');
-        
+        console.log(beanDet,'beanDet')
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
                 url: prototype.url + '/searchMPF101Teleworking'
@@ -3095,8 +3095,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                        panelFilters2.setVisible(false);
                         gridDataTeleworking.setVisible(false);
                         panelDetailTW.setVisible(true);
-                        Ext.getCmp(prototype.id + '-labelMPF101').setText('Ticket : ' + me.beanDetailTW.strTicket + '  Authorization : ' + + me.beanDetailTW.SAUTHOC);
-                        
+//                        Ext.getCmp(prototype.id + '-labelMPF101').setText('Ticket : ' + me.beanDetailTW.strTicket + '  Authorization : ' + + me.beanDetailTW.SAUTHOC);
+                        Ext.getCmp(prototype.id + '-lblSCARCOD_TW').setText( me.beanDetailTW.SCARCOD);
+                        Ext.getCmp(prototype.id + '-lblSCARDN_TW').setText( me.beanDetailTW.SCARDN);
+                        Ext.getCmp(prototype.id + '-lblSAUTHOC_TW').setText( me.beanDetailTW.SAUTHOC);
+                        Ext.getCmp(prototype.id + '-lblSCURRENCY_TW').setText( me.beanDetailTW.SCURRENCY);
+                        Ext.getCmp(prototype.id + '-lblSVFOP_TW').setText( Ext.util.Format.number(me.beanDetailTW.SVFOP, '0,000.00'));
+                        Ext.getCmp(prototype.id + '-lblSPNR_TW').setText( me.beanDetailTW.SPNR);
+                        Ext.getCmp(prototype.id + '-lblSAGENT_TW').setText( me.beanDetailTW.SAGENT);
+                        Ext.getCmp(prototype.id + '-lblTKT_TW').setText('Ticket : '+     me.beanDetailTW.strTicket);
                     } else {
                         global.Msg({msg: 'Data not found'});
                     }

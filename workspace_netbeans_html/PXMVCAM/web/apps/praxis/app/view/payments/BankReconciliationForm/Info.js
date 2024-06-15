@@ -3725,13 +3725,34 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         xtype: 'button',
                                         id: prototype.id + '-btnBackTW',
                                         iconCls: 'prx-icon-back',
-                                        tooltip: 'Back'
+                                        tooltip: 'Back',
+//                                        align: 'center'
                                     },
-                                    {xtype: 'label', id: prototype.id + '-labelMPF101', style: 'font-weight:bold;color:#0B333C;'},
+//                                    {xtype: 'label', id: prototype.id + '-labelMPF101', style: 'font-weight:bold;color:#0B333C;'},
+                                    {
+                                        xtype: 'toolbar',
+                                        items: [
+                                            {xtype: 'tbspacer', width: 120},
+                                            {xtype: 'label', id: prototype.id + '-lblSCARCOD_TW', width: 45, style: 'font-weight:bold; text-align:center;'},
+//                                            {xtype: 'tbspacer', width: 50},
+                                            {xtype: 'label', id: prototype.id + '-lblSCARDN_TW', width: 140, style: 'font-weight:bold;'},
+//                                            {xtype: 'tbspacer', width: 220},
+                                            {xtype: 'label', id: prototype.id + '-lblSAUTHOC_TW', width: 90, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'label', id: prototype.id + '-lblSCURRENCY_TW', width: 50, style: 'font-weight:bold; text-align:left;'},
+                                            {xtype: 'label', id: prototype.id + '-lblSVFOP_TW', width: 100, style: 'font-weight:bold; text-align:left; '},
+                                            {xtype: 'tbspacer', width: 120},
+                                            {xtype: 'label', id: prototype.id + '-lblSPNR_TW', width: 80, style: 'font-weight:bold;'},
+                                            {xtype: 'label', id: prototype.id + '-lblSAGENT_TW', width: 70, style: 'font-weight:bold; text-align:left;'},
+                                            {xtype: 'tbspacer', width: 70},
+                                            {xtype: 'label', id: prototype.id + '-lblTKT_TW', width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'tbspacer', width: 144},
+
+                                        ]
+                                    },
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridDetailTeleworking',
-                                        width: 1177,
+                                        width: 1237,
                                         columnLines: true,
                                         features: [{
                                                 ftype: 'summary'
@@ -3749,6 +3770,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                         var data = record.data;
                                                         metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'TD', dataIndex: 'TDOC', width: 60, align: 'center', menuDisabled: true,
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                        var data = record.data;
+                                                        let strTDOC = value == 'S' ? 'Sales' : 'Debits'
+                                                        metaData.tdAttr = 'data-qtip="' + strTDOC + '"';
                                                         return value;
                                                     }
                                                 },
