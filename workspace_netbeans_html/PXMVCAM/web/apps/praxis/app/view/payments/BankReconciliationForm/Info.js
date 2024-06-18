@@ -3729,7 +3729,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
 //                                        align: 'center'
                                     },
 //                                    {xtype: 'label', id: prototype.id + '-labelMPF101', style: 'font-weight:bold;color:#0B333C;'},
-                                    {
+                                    {   
                                         xtype: 'toolbar',
                                         items: [
                                             {xtype: 'tbspacer', width: 120},
@@ -3745,7 +3745,26 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {xtype: 'label', id: prototype.id + '-lblSAGENT_TW', width: 70, style: 'font-weight:bold; text-align:left;'},
                                             {xtype: 'tbspacer', width: 70},
                                             {xtype: 'label', id: prototype.id + '-lblTKT_TW', width: 180, style: 'font-weight:bold; text-align:center;'},
-                                            {xtype: 'tbspacer', width: 144},
+                                            {xtype: 'textfield', id: prototype.id + '-lblCCUST_TW',hidden: true, width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'textfield', id: prototype.id + '-lblCCIA_TW', hidden: true,width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'textfield', id: prototype.id + '-lblFORMA_TW', hidden: true,width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'textfield', id: prototype.id + '-lblSERIE_TW', hidden: true,width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'textfield', id: prototype.id + '-lblTDOC_TW', hidden: true,width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'textfield', id: prototype.id + '-lblSCARDNCOR_TW', hidden : true,width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            {xtype: 'textfield', id: prototype.id + '-txtSAUTHOC_TW', hidden : true,width: 180, style: 'font-weight:bold; text-align:center;'},
+                                            
+                                            {xtype: 'tbspacer', width: 104},
+                                            {
+                                                sortable: false,
+                                                xtype: 'button',
+                                                width: 40,
+                                                align: 'center',
+                                                iconCls: 'prx-icon-edit',
+                                                tooltip: 'View',
+                                                listeners: {
+                                                    click: 'onEditClick_ticket_TW'
+                                                },
+                                            },
 
                                         ]
                                     },

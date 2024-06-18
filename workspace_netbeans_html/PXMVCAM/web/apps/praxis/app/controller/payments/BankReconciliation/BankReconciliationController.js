@@ -1897,6 +1897,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             }
         }).show();
     },
+    winDataEntryTktTw: function (action, beanCons) {
+        action = action === null || action === undefined ? 'U' : action;
+
+        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryTktTw', {
+            id: prototype.id + '-dataEntryTktTw',
+            params: {
+                action: action,
+                lstCountry: me.lstCountry,
+                lstCard: me.lstCard,
+                lstBank: me.lstBank,
+                beanCons: beanCons
+            }
+        }).show();
+    },
     searchBeanAdyen: function (rec) {
 
         Ext.Ajax.request({
@@ -3104,6 +3118,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         Ext.getCmp(prototype.id + '-lblSPNR_TW').setText( me.beanDetailTW.SPNR);
                         Ext.getCmp(prototype.id + '-lblSAGENT_TW').setText( me.beanDetailTW.SAGENT);
                         Ext.getCmp(prototype.id + '-lblTKT_TW').setText('Ticket : '+     me.beanDetailTW.strTicket);
+                        Ext.getCmp(prototype.id + '-lblCCUST_TW').setValue(me.beanDetailTW.CCUST);
+                        Ext.getCmp(prototype.id + '-lblCCIA_TW').setValue(me.beanDetailTW.CCIA);
+                        Ext.getCmp(prototype.id + '-lblFORMA_TW').setValue(me.beanDetailTW.FORMA);
+                        Ext.getCmp(prototype.id + '-lblSERIE_TW').setValue(me.beanDetailTW.SERIE);
+                        Ext.getCmp(prototype.id + '-lblTDOC_TW').setValue(me.beanDetailTW.TDOC);
+                        Ext.getCmp(prototype.id + '-lblSCARDNCOR_TW').setValue(me.beanDetailTW.SCARDNCOR);
+                        Ext.getCmp(prototype.id + '-txtSAUTHOC_TW').setValue(me.beanDetailTW.SAUTHOC);
                     } else {
                         global.Msg({msg: 'Data not found'});
                     }
@@ -3114,6 +3135,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDetailTeleworking').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pagginMPF101TW').bindStore(storeGridDatas);
          
+    },
+    onEditClick_ticket_TW: function () {
+      let beanTicket = {}
+      beanTicket.CCIA = Ext.getCmp(prototype.id + '-lblCCIA_TW').getValue()
+      beanTicket.FORMA = Ext.getCmp(prototype.id + '-lblFORMA_TW').getValue()
+      beanTicket.SERIE = Ext.getCmp(prototype.id + '-lblSERIE_TW').getValue()
+      beanTicket.TDOC = Ext.getCmp(prototype.id + '-lblTDOC_TW').getValue()
+      beanTicket.SCARDNCOR = Ext.getCmp(prototype.id + '-lblSCARDNCOR_TW').getValue()
+      beanTicket.SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC_TW').getValue()
+      console.log(beanTicket, 'beanTicket')
+      this.winDataEntryTktTw('U',beanTicket)
     },
     btnBackTW_click: function (obj, e) {
 

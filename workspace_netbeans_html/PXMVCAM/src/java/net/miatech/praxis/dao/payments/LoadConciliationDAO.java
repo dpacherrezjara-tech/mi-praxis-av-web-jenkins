@@ -1252,8 +1252,8 @@ public class LoadConciliationDAO {
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.DATABASE = rst.getString("DATABASE").trim();
-                    if (rst.getString("TDOC").trim().equals("R")) {
-                        beanTkt.strPEM = "REFUND";
+                    if (rst.getString("TDOC").trim().equals("A")) {
+                        beanTkt.strPEM = "ADJUST.";
                     } else {
                         beanTkt.strPEM = "SALES";
                     }

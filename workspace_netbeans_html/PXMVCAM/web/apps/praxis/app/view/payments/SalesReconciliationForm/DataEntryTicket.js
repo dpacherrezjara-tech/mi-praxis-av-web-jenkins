@@ -83,7 +83,8 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                 data: [
                                     [null, "&nbsp;"],
                                     ["S", "Sales"],
-                                    ["R", "Refund"]
+                                    ["R", "Refund"],
+                                    ["A", "Adjust."]
                                 ]
                             }),
                             fieldStyle: 'color:#074066;',
