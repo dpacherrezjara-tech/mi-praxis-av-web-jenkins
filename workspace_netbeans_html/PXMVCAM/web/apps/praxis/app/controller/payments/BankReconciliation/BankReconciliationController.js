@@ -691,6 +691,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.panelActual = '-panelGridDetCardByS_Debits';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         beanDEBITS.IN_STVAL = '3';
+        beanDEBITS.IN_TDOC = '';
         this.searchDetCountryByStval_DEBITS(beanDEBITS);
     },
     gridDetCountry_clickHandler_MATCH_REFND: function (column, e, row, column, x, rowData){
