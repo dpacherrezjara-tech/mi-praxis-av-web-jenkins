@@ -52,7 +52,7 @@ public class SalesConciliationManualDAO {
 
         List<A2295Filter> lstTkts = new ArrayList<A2295Filter>(0);
         A2295Filter beanTkt;
-        long lngTotTkt = 0, lngTotSett = 0, lngTotProc = 0, lngTotNotProc = 0, totalTran = 0, totalProc = 0;
+        long lngTotTkt = 0, lngTotSett = 0, lngTotsettmatch = 0, lngTotSettpend = 0, lngTotTktmatch = 0, lngTotTktpend = 0;
 
 
         CallableStatement cstmt = null;
@@ -90,10 +90,11 @@ public class SalesConciliationManualDAO {
             while (rst.next()) {
                 lngTotSett = rst.getLong("QSETT");
                 lngTotTkt = rst.getLong("QTKT");
-                lngTotProc = rst.getLong("QPROC");
-                lngTotNotProc = rst.getLong("QNPROC");
-                totalTran = lngTotTkt + lngTotSett;
-                totalProc = lngTotProc + lngTotNotProc ;
+                lngTotsettmatch = rst.getLong("QSETTMATCH");
+                lngTotSettpend = rst.getLong("QSETTPEND");
+                lngTotTktmatch = rst.getLong("QTKTMATCH");
+                lngTotTktpend = rst.getLong("QTKTPEND");
+
             }
             rst.close();
 
@@ -109,18 +110,19 @@ public class SalesConciliationManualDAO {
                     beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
                     beanTkt.lngQSETT = rst.getLong("QSETT");
                     beanTkt.lngQTKT = rst.getLong("QTKT");
-                    beanTkt.lngQPROC = rst.getLong("QPROC");
-                    beanTkt.lngQNPROC = rst.getLong("QNPROC");
-                    beanTkt.lngTotalTran = rst.getLong("QSETT") + rst.getLong("QTKT");
-                    beanTkt.lngTotalProc = rst.getLong("QPROC") + rst.getLong("QNPROC");
+                    beanTkt.lngQSETTMATCH = rst.getLong("QSETTMATCH");
+                    beanTkt.lngQSETTPEND = rst.getLong("QSETTPEND");
+                    beanTkt.lngQTKTMATCH = rst.getLong("QTKTMATCH");
+                    beanTkt.lngQTKTPEND = rst.getLong("QTKTPEND");
 
 
                     beanTkt.lngTotQSETT = lngTotSett;
                     beanTkt.lngTotQTKT = lngTotTkt;
-                    beanTkt.lngTotQPROC = lngTotProc;
-                    beanTkt.lngTotQNPROC = lngTotNotProc;
-                    beanTkt.lngTotTotalTran = totalTran;
-                    beanTkt.lngTotTotalProc = totalProc;
+                    beanTkt.lngTotQSETTMATCH = lngTotsettmatch;
+                    beanTkt.lngTotQSETTPEND = lngTotSettpend;
+                    beanTkt.lngTotQTKTMATCH = lngTotTktmatch;
+                    beanTkt.lngTotQTKTPEND = lngTotTktpend;
+
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -181,7 +183,7 @@ public class SalesConciliationManualDAO {
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_PRDA.trim());
             cstmt.setString(3, filter.IN_FCONCEP.trim());
-            cstmt.setString(4, filter.IN_FSELEC.trim());
+            cstmt.setString(4, filter.IN_STVAL.trim());
             
             cstmt.setInt(5, filter.page.PAGNUM);
             cstmt.setInt(6, filter.page.PAGROW);
@@ -393,7 +395,7 @@ public class SalesConciliationManualDAO {
             cstmt.setString(2, filter.IN_PRDA.trim());
             cstmt.setString(3, filter.IN_SCURRENCY.trim());
             cstmt.setString(4, filter.IN_FCONCEP.trim());
-            cstmt.setString(5, filter.IN_FSELEC.trim());
+            cstmt.setString(5, filter.IN_STVAL.trim());
 
             cstmt.setInt(6, filter.page.PAGNUM);
             cstmt.setInt(7, filter.page.PAGROW);
