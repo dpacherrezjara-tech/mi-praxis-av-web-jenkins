@@ -139,8 +139,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             fields: ['code', 'name'],
             data: [
                 ["", "All"],
-                ["I", "Liquidacion"],
-                ["V", "Venta"]
+                ["I", "Settlement"],
+                ["V", "Sales"]
             ]
         }));
         cmbFCONCEP.setValue("");

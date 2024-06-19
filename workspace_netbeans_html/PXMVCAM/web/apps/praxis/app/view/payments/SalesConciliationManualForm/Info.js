@@ -336,9 +336,12 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                             
                                             {text: 'Concep', dataIndex: 'FCONCEP', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    let strConcep = ''
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
+                                                    strConcep = value == 'I' ? 'Settlement' : 'Sales';
+                                                    metaData.tdAttr = 'data-qtip="' + strConcep + '"';
                                                     return value;
                                                 }
                                             },
