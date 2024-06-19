@@ -16,6 +16,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.payment.filter.SQP05252Filter;
 import net.miatech.praxis.payment.filter.SQP05253Filter;
+import net.miatech.praxis.payment.filter.SQP05343Filter;
 import org.apache.log4j.Logger;
 
 /**
@@ -63,6 +64,38 @@ public class AccountingDAO {
             cstmt.execute();
             filter.dbException.SQLCODE = cstmt.getString(5);
             filter.dbException.MESSAGE = cstmt.getString(6);
+
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return filter;
+    }
+    
+    public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
+        CallableStatement cstmt = null;
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05343(?,?,?,?,?,?)}";
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(6, Types.VARCHAR);
+            cstmt.registerOutParameter(7, Types.VARCHAR);
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.VP_FECHA_INI);
+            cstmt.setString(3, filter.VP_FECHA_FIN);
+            cstmt.setString(4, filter.VP_FECHA_CIE);
+            cstmt.setString(5, filter.VP_USER);
+            cstmt.execute();
+            filter.dbException.SQLCODE = cstmt.getString(6);
+            filter.dbException.MESSAGE = cstmt.getString(7);
 
         } finally {
             if (cstmt != null) {
