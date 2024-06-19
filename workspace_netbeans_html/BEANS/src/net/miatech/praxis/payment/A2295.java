@@ -85,6 +85,7 @@ public class A2295 {
     public String REFFNBR = "";
     public String STATKT = "";
     public String STATT = "";
+    public String strTitulo = "";
     
     public double SVFOPOT = 0;
     public double SVFOPNETR = 0;
@@ -92,6 +93,10 @@ public class A2295 {
     public double TOT_SVFOPNETR = 0;
     public double TOT_SVFOPCA = 0;
     public double TOT_SVFOPCC = 0;
+    public double TOT_SVFOP = 0;
+    public double TOT_QTY = 0;
+    public double lngTotAmount = 0;
+    public double lngTotQty = 0;
     
 
     public String TKT = "";
@@ -129,6 +134,20 @@ public class A2295 {
     public String SCARCOD = "";
     public String AUTHNBR = "";
     public String SQCRFILE = "";
+    
+    public long lngTotQSETT = 0;
+    public long lngTotQTKT = 0;
+    public long lngTotQPROC = 0;
+    public long lngTotQNPROC = 0;
+    public long lngTotTotalTran = 0;
+    public long lngTotTotalProc = 0;
+    public long lngQSETT = 0;
+    public long lngQTKT = 0;
+    public long lngQPROC = 0;
+    public long lngQNPROC = 0;
+    public long lngTotalTran = 0;
+    public long lngTotalProc = 0;
+    
     
     public String USCR = "";
     public String FECR = "";

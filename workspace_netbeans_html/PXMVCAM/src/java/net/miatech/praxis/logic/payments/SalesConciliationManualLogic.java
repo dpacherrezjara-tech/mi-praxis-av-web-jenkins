@@ -27,6 +27,18 @@ public class SalesConciliationManualLogic {
         return SalesConciliationManualDAO.loadPX290MPS077(filter);
     }
     
+    public List<A2295Filter> loadPX290MPS077_DAY(A2295Filter filter) throws SQLException, Exception {
+        return SalesConciliationManualDAO.loadPX290MPS077_DAY(filter);
+    }
+    
+    public List<A2295Filter> loadPX290MPS077_DET(A2295Filter filter) throws SQLException, Exception {
+        return SalesConciliationManualDAO.loadPX290MPS077_DET(filter);
+    }
+    
+    public List<A2295Filter> loadPX290MPS077_DET_BYF(A2295Filter filter) throws SQLException, Exception {
+        return SalesConciliationManualDAO.loadPX290MPS077_DET_BYF(filter);
+    }
+    
 
     
 }

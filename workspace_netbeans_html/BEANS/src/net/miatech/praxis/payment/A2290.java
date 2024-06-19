@@ -186,6 +186,8 @@ public class A2290 {
     public String AMOUNT = "";
     public String USERAV = "";
     public String TYPETRAN = "";
+    public String FCONCEP = "";
+    public String USERF = "";
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";

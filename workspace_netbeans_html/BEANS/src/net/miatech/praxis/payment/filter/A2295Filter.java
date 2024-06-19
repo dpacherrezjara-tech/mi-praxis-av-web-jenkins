@@ -23,7 +23,9 @@ public class A2295Filter  extends A2295{
     public String IN_FORMA = "";
     public String IN_SERIE = "";
     public String IN_FCONCEP = "";
+    public String IN_FSELEC = "";
     public String IN_CURRENCY1 = "";
+    public String IN_SCURRENCY = "";
     public String IN_CURRENCY2 = "";
     public String IN_SPAYMENT = "";
     public String IN_TKT = "";
@@ -53,6 +55,9 @@ public class A2295Filter  extends A2295{
     public String strDescCountry = "";
     public String strDescCard = "";
     public String strNUMREF = "";
+    public String IN_TITLE = "";
+    
+
     
     public  double dblAMOUNT = 0;
     public  double dblTotAMOUNT = 0;

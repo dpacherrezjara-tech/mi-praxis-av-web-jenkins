@@ -61,11 +61,11 @@ public class SalesConciliationManualController extends BaseController {
         map.put("vp_serverTime", Functions.getHoraActual());
         return "sales/SalesConciliationManual/form_index";
     }
-
+    
     @RequestMapping(value = "search")
     public @ResponseBody
     String search(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- SalesConciliationManual : Search-------------");
+        System.out.println("-------------- Sales Conciliation Manual : Search-------------");
 
         map.put("success", true);
         List<A2295Filter> lst = this.getList(request, false);
@@ -103,8 +103,154 @@ public class SalesConciliationManualController extends BaseController {
                 filter.page.PAGROW = -1;
                 filter.page.PAGNUM = 1;
             }
-
             lst = logic.loadPX290MPS077(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchDetDay")
+    public @ResponseBody
+    String searchDetDay(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- SalesConciliationManual : searchDetDay-------------");
+
+        map.put("success", true);
+        List<A2295Filter> lst = this.getListDetDay(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2295Filter> getListDetDay(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2295Filter> lst = new ArrayList<>(0);
+        A2295Filter filter = new A2295Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new SalesConciliationManualLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2295Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX290MPS077_DAY(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchDetail")
+    public @ResponseBody
+    String searchDetail(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- SalesConciliationManual : Search-------------");
+
+        map.put("success", true);
+        List<A2295Filter> lst = this.getListDetail(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2295Filter> getListDetail(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2295Filter> lst = new ArrayList<>(0);
+        A2295Filter filter = new A2295Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new SalesConciliationManualLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2295Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX290MPS077_DET(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchDetailByF")
+    public @ResponseBody
+    String searchDetailByF(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- SalesConciliationManual : searchDetailByF-------------");
+
+        map.put("success", true);
+        List<A2295Filter> lst = this.getListDetailByF(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2295Filter> getListDetailByF(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2295Filter> lst = new ArrayList<>(0);
+        A2295Filter filter = new A2295Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new SalesConciliationManualLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2295Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX290MPS077_DET_BYF(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
