@@ -45,6 +45,9 @@ public class A2295 {
     public String SDATE = "";
     public String SAGENT = "";
     public String STVAL = "";
+    public String FCONCEP = "";
+    public String SVFOP = "";
+    public String USERF = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
     public String SCURRENCY1 = "";
