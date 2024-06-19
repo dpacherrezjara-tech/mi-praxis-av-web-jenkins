@@ -22,6 +22,18 @@ public class A2353Filter extends A2353 {
      public String IN_TABLA = "";
      public String IN_SCOUNTRY = "";
      public String IN_SCURRENCY = "";
+     public String DATECH = "";
+     public String SCURRENCY1 = "";
+     public String SCURRENCY2 = "";
+     public String RATE = "";
+     public String FACTORD = "";
+     public String FACTORA = "";
+     public String TCCOTIND = "";
+     public String TCCOTIND2 = "";
+     public String TCCOTDIR = "";
+     public String TCCOTDIR2 = "";
+     public String TREG = "";
+     public String SIGN = "";
 //     public String IN_TABLA = "";
      
      public long RN = 0; 

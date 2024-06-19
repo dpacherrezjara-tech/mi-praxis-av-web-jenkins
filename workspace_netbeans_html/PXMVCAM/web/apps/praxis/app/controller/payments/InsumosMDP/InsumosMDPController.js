@@ -207,9 +207,10 @@ Ext.define('Ext.Praxis.controller.payments.InsumosMDP.InsumosMDPController', {
         }
     },
     btnClear_click: function(obj, e) {
-//        Ext.getCmp(prototype.id + '-cmbCode').setValue('');
-//        Ext.getCmp(prototype.id + '-txtMERCHN').setValue('');
-        Ext.getCmp(prototype.id + '-txtCODEM').setValue('');
+        Ext.getCmp(prototype.id + '-txtAPLIC').setValue('');
+        Ext.getCmp(prototype.id + '-txtINPNAME').setValue('');
+        Ext.getCmp(prototype.id + '-txtOUTNAME').setValue('');
+        Ext.getCmp(prototype.id + '-txtTABLA').setValue('');
 
     },
     btnExcel_click: function(obj, e) {

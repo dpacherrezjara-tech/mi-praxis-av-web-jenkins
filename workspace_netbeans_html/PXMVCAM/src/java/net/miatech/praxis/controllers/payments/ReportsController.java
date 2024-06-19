@@ -21,6 +21,7 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.ReportsLogic;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2356Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -58,6 +59,37 @@ public class ReportsController extends BaseController {
         return "sales/Reports/form_index";
     }
 
+    @RequestMapping(value = "/obtainMessagesDT")
+    public @ResponseBody
+    String obtainMessagesDT(ModelMap map, HttpServletRequest request) {
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        List<A2290Filter> lst = new ArrayList<>(0);
+        try {
+            logic = new ReportsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP05103_DEBITYPE(filter);
+
+            map.put("success", true);
+            System.out.println("Total : " + lst.size());
+            map.put("data", lst);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    
     @RequestMapping(value = "search")
     public @ResponseBody
     String search(ModelMap map, HttpServletRequest request) {
@@ -179,15 +211,15 @@ public class ReportsController extends BaseController {
             CH1_5.setCellValue("Doc.SAP Bank");
             CH1_6.setCellValue("Reference");
             CH1_7.setCellValue("Payment");
-            CH1_8.setCellValue("Card");
-            CH1_9.setCellValue("");
+            CH1_8.setCellValue("Card 6.dig");
+            CH1_9.setCellValue("Card 4.dig");
             CH1_10.setCellValue("Auth. Code");
             CH1_11.setCellValue("Merchand");
             CH1_12.setCellValue("Total");
             CH1_13.setCellValue("Neto");
             CH1_14.setCellValue("Curr.");
-            CH1_15.setCellValue("Sales");
-            CH1_16.setCellValue("");
+            CH1_15.setCellValue("Sales Date");
+            CH1_16.setCellValue("Sales Status");
             CH1_17.setCellValue("Type");
             CH1_18.setCellValue("Settl.");
 
@@ -212,83 +244,85 @@ public class ReportsController extends BaseController {
             CH1_18.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 10, 10));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 11, 11));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 12, 12));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 13, 13));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 14, 14));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 16));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 17, 17));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
             ++vj;
             //============================================
 
             // ======  Nivel 2 ==========
-            Row row2 = sheet.createRow(vj);
-            Cell CH2_0 = row2.createCell(0);
-            Cell CH2_1 = row2.createCell(1);
-            Cell CH2_2 = row2.createCell(2);
-            Cell CH2_3 = row2.createCell(3);
-            Cell CH2_4 = row2.createCell(4);
-            Cell CH2_5 = row2.createCell(5);
-            Cell CH2_6 = row2.createCell(6);
-            Cell CH2_7 = row2.createCell(7);
-            Cell CH2_8 = row2.createCell(8);
-            Cell CH2_9 = row2.createCell(9);
-            Cell CH2_10 = row2.createCell(10);
-            Cell CH2_11 = row2.createCell(11);
-            Cell CH2_12 = row2.createCell(12);
-            Cell CH2_13 = row2.createCell(13);
-            Cell CH2_14 = row2.createCell(14);
-            Cell CH2_15 = row2.createCell(15);
-            Cell CH2_16 = row2.createCell(16);
-            Cell CH2_17 = row2.createCell(17);
-            Cell CH2_18 = row2.createCell(18);
-
-            CH2_7.setCellValue("Date");
-            CH2_8.setCellValue("6.dig");
-            CH2_9.setCellValue("4.dig");
-            CH2_15.setCellValue("Date");
-            CH2_16.setCellValue("Status");
-            CH2_18.setCellValue("Status");
-
-            CH2_0.setCellStyle(headerStyle);
-            CH2_1.setCellStyle(headerStyle);
-            CH2_2.setCellStyle(headerStyle);
-            CH2_3.setCellStyle(headerStyle);
-            CH2_4.setCellStyle(headerStyle);
-            CH2_5.setCellStyle(headerStyle);
-            CH2_6.setCellStyle(headerStyle);
-            CH2_7.setCellStyle(headerStyle);
-            CH2_8.setCellStyle(headerStyle);
-            CH2_9.setCellStyle(headerStyle);
-            CH2_10.setCellStyle(headerStyle);
-            CH2_11.setCellStyle(headerStyle);
-            CH2_12.setCellStyle(headerStyle);
-            CH2_13.setCellStyle(headerStyle);
-            CH2_14.setCellStyle(headerStyle);
-            CH2_15.setCellStyle(headerStyle);
-            CH2_16.setCellStyle(headerStyle);
-            CH2_17.setCellStyle(headerStyle);
-            CH2_18.setCellStyle(headerStyle);
-
-            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 7));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 8));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 9));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 15, 15));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 16, 16));
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 18, 18));
-            ++vj;
+//            Row row2 = sheet.createRow(vj);
+//            Cell CH2_0 = row2.createCell(0);
+//            Cell CH2_1 = row2.createCell(1);
+//            Cell CH2_2 = row2.createCell(2);
+//            Cell CH2_3 = row2.createCell(3);
+//            Cell CH2_4 = row2.createCell(4);
+//            Cell CH2_5 = row2.createCell(5);
+//            Cell CH2_6 = row2.createCell(6);
+//            Cell CH2_7 = row2.createCell(7);
+//            Cell CH2_8 = row2.createCell(8);
+//            Cell CH2_9 = row2.createCell(9);
+//            Cell CH2_10 = row2.createCell(10);
+//            Cell CH2_11 = row2.createCell(11);
+//            Cell CH2_12 = row2.createCell(12);
+//            Cell CH2_13 = row2.createCell(13);
+//            Cell CH2_14 = row2.createCell(14);
+//            Cell CH2_15 = row2.createCell(15);
+//            Cell CH2_16 = row2.createCell(16);
+//            Cell CH2_17 = row2.createCell(17);
+//            Cell CH2_18 = row2.createCell(18);
+//
+//            CH2_7.setCellValue("Date");
+//            CH2_8.setCellValue("6.dig");
+//            CH2_9.setCellValue("4.dig");
+//            CH2_15.setCellValue("Date");
+//            CH2_16.setCellValue("Status");
+//            CH2_18.setCellValue("Status");
+//
+//            CH2_0.setCellStyle(headerStyle);
+//            CH2_1.setCellStyle(headerStyle);
+//            CH2_2.setCellStyle(headerStyle);
+//            CH2_3.setCellStyle(headerStyle);
+//            CH2_4.setCellStyle(headerStyle);
+//            CH2_5.setCellStyle(headerStyle);
+//            CH2_6.setCellStyle(headerStyle);
+//            CH2_7.setCellStyle(headerStyle);
+//            CH2_8.setCellStyle(headerStyle);
+//            CH2_9.setCellStyle(headerStyle);
+//            CH2_10.setCellStyle(headerStyle);
+//            CH2_11.setCellStyle(headerStyle);
+//            CH2_12.setCellStyle(headerStyle);
+//            CH2_13.setCellStyle(headerStyle);
+//            CH2_14.setCellStyle(headerStyle);
+//            CH2_15.setCellStyle(headerStyle);
+//            CH2_16.setCellStyle(headerStyle);
+//            CH2_17.setCellStyle(headerStyle);
+//            CH2_18.setCellStyle(headerStyle);
+//
+//            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 7));
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 8));
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 9));
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 15, 15));
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 16, 16));
+//            sheet.addMergedRegion(new CellRangeAddress(1, 1, 18, 18));
+//            ++vj;
             //============================================
 
             while (iter.hasNext()) {
@@ -329,7 +363,7 @@ public class ReportsController extends BaseController {
                 rcell13.setCellValue(listaData.get(vi).NETO);
                 rcell14.setCellValue(listaData.get(vi).SCURRENCY);
                 rcell15.setCellValue(listaData.get(vi).FTRAN);
-                rcell16.setCellValue(listaData.get(vi).STVAL);
+                rcell16.setCellValue(listaData.get(vi).DEBSTVAL);
                 rcell17.setCellValue(listaData.get(vi).TYPE);
                 rcell18.setCellValue(listaData.get(vi).STVAL);
                 iter.next();

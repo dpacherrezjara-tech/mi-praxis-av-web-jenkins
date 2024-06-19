@@ -243,7 +243,9 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.MiscellaneousController
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
+//                global.getFileExcelPost('search', JSON.stringify(me.bean), Ext.getCmp(prototype.id + '-gridDataAirport').config.columns.items);
+                console.log('prueba excel')
                 break;
             default:
                 global.Msg(

@@ -89,60 +89,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         switch (this.actionCode) {
             case 'I':
                 
-//                var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
-//                cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "None"],
-//                        ["1", "Aerovias MX"],
-//                        ["2", "Aeromexico Cargo"],
-//                        ["3", "PLM"]
-//                    ]
-//                }));
-//                cmbUNIOPE.setValue('');
-//                var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
-//                cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "None"],
-//                        ["0", "Disabled"],
-//                        ["1", "Enabled"],
-//                    ]
-//                }));
-//                cmbSTATUS.setValue('');
-//                var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
-//                cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "none"],
-//                        ["ATO", "ATO - Aeropuert"],
-//                        ["CTO", "CTO - Oficina"],
-//                        ["CCT", "CCT - Reserva"],
-//                        ["WEB", "WEB - Web"],
-//                        ["GSA", "GSA - G.S.Agte"],
-//                        ["FRA", "FRA - Franquic"],
-//                    ]
-//                }));
-//                cmbCANAL.setValue('');
-//                var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
-//                cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "none"],
-//                        ["US", "US - UNITED STATES"],
-//                        ["CA", "CA - CANADA"],
-//                        ["AR", "AR - ARGENTINA"],
-//                        ["JP", "JP - JAPAN"],
-//                        ["ES", "ES - SPAIN"],
-//                        ["MX", "MX - MEXICO"],
-//                    ]
-//                }));
-//                cmbSCOUNTRY.setValue('');
-//                Ext.getCmp(prototype.id + '-panelTabMain').hide();
                 Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtDOWNREPORT').setEditable(true);
@@ -214,7 +160,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                Ext.getCmp(prototype.id + '-iSection_3').hide();
                 Ext.getCmp(prototype.id + '-btn-save_D').hide();
                 Ext.getCmp(prototype.id + '-btn-update_D').show();
-                Ext.getCmp(prototype.id + '-btn-delete_D').hide();
+                Ext.getCmp(prototype.id + '-btn-delete_D').show();
                 Ext.getCmp(prototype.id + '-btn-cancel_D').show();
                 break;
         }

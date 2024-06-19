@@ -45,9 +45,21 @@ public class A2295 {
     public String SDATE = "";
     public String SAGENT = "";
     public String STVAL = "";
+    public String FCONCEP = "";
+    public String SVFOP = "";
+    public String USERF = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
+    public String SCURRENCY1 = "";
+    public String SCURRENCY2= "";
     public String SCOUNTRY = "";
+    public String DATECH = "";
+    public String RATE = "";
+    public String FACTORD = "";
+    public String TCCOTIND = "";
+    public String TCCOTIND2 = "";
+    public String TCCOTDIR = "";
+    public String TCCOTDIR2 = "";
     public String ACCNUMBER = "";
     public String SOCIETYL = "";
     public double CCAMOUNT = 0;
@@ -73,6 +85,37 @@ public class A2295 {
     public String REFFNBR = "";
     public String STATKT = "";
     public String STATT = "";
+    public String strTitulo = "";
+    
+    public double SVFOPOT = 0;
+    public double SVFOPNETR = 0;
+    public double TOT_SVFOPOT = 0;
+    public double TOT_SVFOPNETR = 0;
+    public double TOT_SVFOPCA = 0;
+    public double TOT_SVFOPCC = 0;
+    public double TOT_SVFOP = 0;
+    public double TOT_QTY = 0;
+    public double lngTotAmount = 0;
+    public double lngTotQty = 0;
+    
+
+    public String TKT = "";
+    public String CORRL = "";
+    public String TDOC = "";
+    public String CFUENTE = "";
+    public String descTDOC = "";
+    public String SUBFTE = "";
+    public String SCONSOL = "";
+    public String SVFOPCA = "";
+    public String SVFOPCC = "";
+    public String INVOICE1 = "";
+    public String INVOICE0 = "";
+    public String SCARDN1 = "";
+    public String SCARCOD1 = "";
+    public String SCARDN2 = "";
+    public double SPAYMENT = 0;
+
+
 
     //A2335
     public int MERCHN = 0;
@@ -91,6 +134,20 @@ public class A2295 {
     public String SCARCOD = "";
     public String AUTHNBR = "";
     public String SQCRFILE = "";
+    
+    public long lngTotQSETT = 0;
+    public long lngTotQTKT = 0;
+    public long lngTotQPROC = 0;
+    public long lngTotQNPROC = 0;
+    public long lngTotTotalTran = 0;
+    public long lngTotTotalProc = 0;
+    public long lngQSETT = 0;
+    public long lngQTKT = 0;
+    public long lngQPROC = 0;
+    public long lngQNPROC = 0;
+    public long lngTotalTran = 0;
+    public long lngTotalProc = 0;
+    
     
     public String USCR = "";
     public String FECR = "";

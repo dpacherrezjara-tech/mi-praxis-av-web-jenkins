@@ -1273,6 +1273,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
         Ext.getCmp(prototype.id + '-txtLiquida').setValue('');
         Ext.getCmp(prototype.id + '-cmbTTRAN').setValue('');
+        Ext.getCmp(prototype.id + '-txtBANDOC').setValue('');
+        Ext.getCmp(prototype.id + '-cmbEFTE').setValue('');
+        Ext.getCmp(prototype.id + '-cmbTDOC').setValue('');
+        Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+        Ext.getCmp(prototype.id + '-cmbBank').setValue('');
 
     },
     btnExcel_click: function (obj, e) {

@@ -574,6 +574,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
             Ext.getCmp(prototype.id + '-panelDataInfoScan_Chgbak' ).setWidth(944);
             Ext.getCmp(prototype.id + '-panelDataInfoScan_Acredit' ).setWidth(944);
             Ext.getCmp(prototype.id + '-vacioComment').show();
+            Ext.getCmp(prototype.id + '-de-txtDTYPE').setWidth(254);
             this.hiddenByMatch()
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();

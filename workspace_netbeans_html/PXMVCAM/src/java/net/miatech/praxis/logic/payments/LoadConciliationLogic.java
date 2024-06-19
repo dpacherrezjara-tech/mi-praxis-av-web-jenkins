@@ -44,6 +44,26 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263SQP01828(filter);
     }
     
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_REFND(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP01828_REFND(filter);
+    }
+    
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP01828_CHGBAK(filter);
+    }
+    
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP01828_ACREDIT(filter);
+    }
+    
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_ALLDEBITS(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP01828_ALLDEBITS(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX269SQP05103_DEBITYPE(filter);
+    }
+    
     public HashMap<String, List<A2290Filter>> loadPX263SQP01976(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP01976(filter);
     }
@@ -74,6 +94,17 @@ public class LoadConciliationLogic {
     
     public A2290Filter loadPX263SQP00659(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00659(filter);
+    }
+    
+    public A2290Filter loadPX263SQP00659_REFND(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00659_REFND(filter);
+    }
+    
+    public A2290Filter loadPX263SQP00659_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00659_CHGBAK(filter);
+    }
+    public A2290Filter loadPX263SQP00659_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00659_ACREDIT(filter);
     }
     
     public List<A2290Filter> loadPX263SQP00817(A2290Filter filter) throws SQLException, Exception {

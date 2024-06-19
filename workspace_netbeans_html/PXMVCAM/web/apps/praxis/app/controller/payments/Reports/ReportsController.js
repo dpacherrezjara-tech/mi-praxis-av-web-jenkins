@@ -19,6 +19,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     paramsTKT: {},
     dataObtain: {},
     beanTKT: {},
+    bean_detail: {},
     dataGrid: [],
     init: function (view) {
         me = this;
@@ -184,6 +185,34 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
     },
     obtainData: function () {
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainMessagesDT',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+//                    me.bean_detail = res.result;
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    console.log(res.data, 'res.data')
+                    console.log(storeData, 'storeData')
+                    Ext.getCmp(prototype.id + '-cmbDebitType').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbDebitType').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -265,6 +294,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
     setFormatParameter: function () {
         me.bean = {};
+        me.bean.IN_FECFILTRO = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'SDATE' ? 'S' : 'A';
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
@@ -302,6 +332,9 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             }
         }
         me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim();
+        console.log(Ext.getCmp(prototype.id + '-cmbDebitType').getValue(), 'wadafa')
+        me.bean.IN_DEBTYPE = Ext.getCmp(prototype.id + '-cmbDebitType').getValue();
+        
 
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
@@ -404,7 +437,13 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+        Ext.getCmp(prototype.id + '-txtCard1').setValue('');
+        Ext.getCmp(prototype.id + '-txtAUTHOC').setValue('');
+        Ext.getCmp(prototype.id + '-txtCard2').setValue('');
         Ext.getCmp(prototype.id + '-cmbBank').setValue('');
+        Ext.getCmp(prototype.id + '-cmbSTVAL').setValue('');
+        Ext.getCmp(prototype.id + '-cmbTDOC').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDebitType').setValue('');
     },
     btnExcel_click: function (obj, e) {
         this.setFormatParameter();

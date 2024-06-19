@@ -56,12 +56,14 @@ public class A2356Filter extends A2356 {
     public String IN_CODEBANK = "";
     public String IN_STVAL = "";
     public String IN_TDOC = "";
+    public String IN_FECFILTRO = "";
     public String IN_SCURRENCY = "";
     public String IN_SCOUNTRY = "";
     public String IN_CARDN1 = "";
     public String IN_CARDN2 = "";
     public String IN_SAUTHOC = "";
     public String IN_SCARDNCOR = "";
+    public String IN_DEBTYPE = "";
 
     public int RN = 0;
 

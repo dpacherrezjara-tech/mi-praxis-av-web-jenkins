@@ -116,7 +116,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             },
             '#BankReconciliationForm-btnBackTW': {
                 click: this.btnBackTW_click
-            }
+            },
+            
+            
         });
     },
     xpanel_afterrender: function (obj, e) {
@@ -170,9 +172,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         if(obj.getValue() != ''){
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
+            
         }else {
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
+            Ext.getCmp(prototype.id + '-cmbDateDay').setValue('');
         }
         
     },
@@ -209,6 +214,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             comboFromDay.setValue(obj.getValue())
         }
     },
+    
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
         var month = this.fecha.getMonth() + 1;
@@ -685,6 +691,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.panelActual = '-panelGridDetCardByS_Debits';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         beanDEBITS.IN_STVAL = '3';
+        beanDEBITS.IN_TDOC = '';
         this.searchDetCountryByStval_DEBITS(beanDEBITS);
     },
     gridDetCountry_clickHandler_MATCH_REFND: function (column, e, row, column, x, rowData){
@@ -1338,10 +1345,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             consultPath = 'searchTicket'
         }else if(rowData.data.TDOC == 'R'){
             consultPath = 'searchTable_REFND'
+            console.log('entra a searchTable_REFND')
         }else if (rowData.data.TDOC == 'C'){
             consultPath = 'searchTable_CHGBAK'
+            console.log('entra a searchTable_CHGBAK')
         }else if(rowData.data.TDOC == 'A'){
             consultPath = 'searchTable_ACREDIT'
+            console.log('entra a searchTable_ACREDIT')
         }else{
             console.log('No se espera el TDOC: ', rowData.data.TDOC)
             return false
@@ -1888,6 +1898,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             }
         }).show();
     },
+    winDataEntryTktTw: function (action, beanCons) {
+        action = action === null || action === undefined ? 'U' : action;
+
+        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryTktTw', {
+            id: prototype.id + '-dataEntryTktTw',
+            params: {
+                action: action,
+                lstCountry: me.lstCountry,
+                lstCard: me.lstCard,
+                lstBank: me.lstBank,
+                beanCons: beanCons
+            }
+        }).show();
+    },
     searchBeanAdyen: function (rec) {
 
         Ext.Ajax.request({
@@ -2269,6 +2293,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-cmbNEGOC').setValue('');
         Ext.getCmp(prototype.id + '-cmbCOMENTF').setValue('');
         Ext.getCmp(prototype.id + '-txtAGENCY').setValue('');
+        Ext.getCmp(prototype.id + '-cmbStatus').setValue('');
+        Ext.getCmp(prototype.id + '-txtAMOUNT').setValue('');
+        Ext.getCmp(prototype.id + '-cmbSource').setValue('');
 
     },
     btnExcel_click: function (obj, e) {
@@ -3051,7 +3078,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     viewMPF101_clickHandler: function (beanDet) {
         console.log('viewMPF101_clickHandler');
-        
+        console.log(beanDet,'beanDet')
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
                 url: prototype.url + '/searchMPF101Teleworking'
@@ -3083,8 +3110,22 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                        panelFilters2.setVisible(false);
                         gridDataTeleworking.setVisible(false);
                         panelDetailTW.setVisible(true);
-                        Ext.getCmp(prototype.id + '-labelMPF101').setText('Ticket : ' + me.beanDetailTW.strTicket + '  Authorization : ' + + me.beanDetailTW.SAUTHOC);
-                        
+//                        Ext.getCmp(prototype.id + '-labelMPF101').setText('Ticket : ' + me.beanDetailTW.strTicket + '  Authorization : ' + + me.beanDetailTW.SAUTHOC);
+                        Ext.getCmp(prototype.id + '-lblSCARCOD_TW').setText( me.beanDetailTW.SCARCOD);
+                        Ext.getCmp(prototype.id + '-lblSCARDN_TW').setText( me.beanDetailTW.SCARDN);
+                        Ext.getCmp(prototype.id + '-lblSAUTHOC_TW').setText( me.beanDetailTW.SAUTHOC);
+                        Ext.getCmp(prototype.id + '-lblSCURRENCY_TW').setText( me.beanDetailTW.SCURRENCY);
+                        Ext.getCmp(prototype.id + '-lblSVFOP_TW').setText( Ext.util.Format.number(me.beanDetailTW.SVFOP, '0,000.00'));
+                        Ext.getCmp(prototype.id + '-lblSPNR_TW').setText( me.beanDetailTW.SPNR);
+                        Ext.getCmp(prototype.id + '-lblSAGENT_TW').setText( me.beanDetailTW.SAGENT);
+                        Ext.getCmp(prototype.id + '-lblTKT_TW').setText('Ticket : '+     me.beanDetailTW.strTicket);
+                        Ext.getCmp(prototype.id + '-lblCCUST_TW').setValue(me.beanDetailTW.CCUST);
+                        Ext.getCmp(prototype.id + '-lblCCIA_TW').setValue(me.beanDetailTW.CCIA);
+                        Ext.getCmp(prototype.id + '-lblFORMA_TW').setValue(me.beanDetailTW.FORMA);
+                        Ext.getCmp(prototype.id + '-lblSERIE_TW').setValue(me.beanDetailTW.SERIE);
+                        Ext.getCmp(prototype.id + '-lblTDOC_TW').setValue(me.beanDetailTW.TDOC);
+                        Ext.getCmp(prototype.id + '-lblSCARDNCOR_TW').setValue(me.beanDetailTW.SCARDNCOR);
+                        Ext.getCmp(prototype.id + '-txtSAUTHOC_TW').setValue(me.beanDetailTW.SAUTHOC);
                     } else {
                         global.Msg({msg: 'Data not found'});
                     }
@@ -3095,6 +3136,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDetailTeleworking').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pagginMPF101TW').bindStore(storeGridDatas);
          
+    },
+    onEditClick_ticket_TW: function () {
+      let beanTicket = {}
+      beanTicket.CCIA = Ext.getCmp(prototype.id + '-lblCCIA_TW').getValue()
+      beanTicket.FORMA = Ext.getCmp(prototype.id + '-lblFORMA_TW').getValue()
+      beanTicket.SERIE = Ext.getCmp(prototype.id + '-lblSERIE_TW').getValue()
+      beanTicket.TDOC = Ext.getCmp(prototype.id + '-lblTDOC_TW').getValue()
+      beanTicket.SCARDNCOR = Ext.getCmp(prototype.id + '-lblSCARDNCOR_TW').getValue()
+      beanTicket.SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC_TW').getValue()
+      console.log(beanTicket, 'beanTicket')
+      this.winDataEntryTktTw('U',beanTicket)
     },
     btnBackTW_click: function (obj, e) {
 

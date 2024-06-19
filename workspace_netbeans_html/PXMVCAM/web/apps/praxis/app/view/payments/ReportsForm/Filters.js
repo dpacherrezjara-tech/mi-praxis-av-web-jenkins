@@ -385,6 +385,27 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             listeners: {
                             }
                         },
+                        {xtype: 'tbspacer', width: 23},
+                        {
+                            xtype: 'label',
+                            text: 'Debit Type:',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            width: 70
+                        },
+                        {xtype: 'tbspacer', width: 25},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDebitType',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            fieldStyle: 'text-align:left;',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            width: 190,
+//                                            hidden: true,
+                            hiddenLabel: false
+                        },
                     ]
                 },
             ]

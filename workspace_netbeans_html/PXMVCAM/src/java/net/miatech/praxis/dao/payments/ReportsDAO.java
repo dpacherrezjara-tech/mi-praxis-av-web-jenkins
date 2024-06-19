@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miatech.beans.spring.implement.IServerSession;
+import static net.miatech.praxis.dao.payments.BankReconciliationDAO.pasarGarbageCollector;
 import net.miatech.praxis.payment.A2281;
 import net.miatech.praxis.payment.filter.A2280Filter;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2356Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -57,17 +59,17 @@ public class ReportsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05120(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05120(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(12, Types.INTEGER);
-            cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -76,23 +78,24 @@ public class ReportsDAO {
             cstmt.setString(5, filter.IN_CARDN1.trim());
             cstmt.setString(6, filter.IN_CARDN2.trim());
             cstmt.setString(7, filter.IN_SCARDNCOR.trim());
-            cstmt.setString(8, filter.IN_SAUTHOC.trim());
-            cstmt.setString(9, filter.IN_CODEBANK.trim());
-            cstmt.setString(9, filter.IN_CODEBANK.trim());
-            cstmt.setString(10, filter.IN_STVAL.trim());
-            cstmt.setString(11, filter.IN_TDOC.trim());
+            cstmt.setString(8, filter.IN_DEBTYPE.trim());
+            cstmt.setString(9, filter.IN_SAUTHOC.trim());
+            cstmt.setString(10, filter.IN_CODEBANK.trim());
+            cstmt.setString(11, filter.IN_STVAL.trim());
+            cstmt.setString(12, filter.IN_TDOC.trim());
+            cstmt.setString(13, filter.IN_FECFILTRO.trim());
 
-            cstmt.setInt(12, filter.page.PAGNUM);
-            cstmt.setInt(13, filter.page.PAGROW);
-            cstmt.setInt(14, filter.page.TOTPAG);
-            cstmt.setInt(15, filter.page.TOTROW);
+            cstmt.setInt(14, filter.page.PAGNUM);
+            cstmt.setInt(15, filter.page.PAGROW);
+            cstmt.setInt(16, filter.page.TOTPAG);
+            cstmt.setInt(17, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(12);
-            filter.page.PAGROW = cstmt.getInt(13);
-            filter.page.TOTPAG = cstmt.getInt(14);
-            filter.page.TOTROW = cstmt.getInt(15);
+            filter.page.PAGNUM = cstmt.getInt(14);
+            filter.page.PAGROW = cstmt.getInt(15);
+            filter.page.TOTPAG = cstmt.getInt(16);
+            filter.page.TOTROW = cstmt.getInt(17);
 
             rst = cstmt.getResultSet();
 
@@ -352,4 +355,63 @@ public class ReportsDAO {
 
     }
 
+        public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05103_DEBITYPE(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+            beanTkt = new A2290Filter();
+
+            beanTkt.CODE = "";
+            beanTkt.NAME = "All";
+            lstData.add(beanTkt);
+            while (rst.next()) {
+
+                beanTkt = new A2290Filter();
+
+                beanTkt.CODE = rst.getString("CODE").trim();
+                beanTkt.NAME = rst.getString("NAME").trim();
+
+                lstData.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
 }

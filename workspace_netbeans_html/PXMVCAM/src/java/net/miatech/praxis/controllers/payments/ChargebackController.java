@@ -179,7 +179,7 @@ public class ChargebackController extends BaseController {
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSX");
-        String fileNameDownload = String.format("Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Chargeback Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
@@ -234,18 +234,35 @@ public class ChargebackController extends BaseController {
             Cell CH1_11 = row1.createCell(11);
             Cell CH1_12 = row1.createCell(12);
             Cell CH1_13 = row1.createCell(13);
+            Cell CH1_14 = row1.createCell(14);
+            Cell CH1_15 = row1.createCell(15);
+            Cell CH1_16 = row1.createCell(16);
+            Cell CH1_17 = row1.createCell(17);
+            Cell CH1_18 = row1.createCell(18);
+            Cell CH1_19 = row1.createCell(19);
+            Cell CH1_20 = row1.createCell(20);
 
-            CH1_0.setCellValue("Source");
-            CH1_1.setCellValue("Application");
-            CH1_2.setCellValue("Card");
-            CH1_3.setCellValue("Credit Card");
-            CH1_4.setCellValue("Authorization");
-            CH1_5.setCellValue("Merchant");
-            CH1_7.setCellValue("Concept");
-            CH1_8.setCellValue("Currency");
-            CH1_9.setCellValue("Amount");
-            CH1_10.setCellValue("Case");
-            CH1_13.setCellValue("Status");
+            CH1_0.setCellValue("Chargeback Date");
+            CH1_1.setCellValue("Sale Date");
+            CH1_2.setCellValue("Payment Date");
+            CH1_3.setCellValue("Card Code");
+            CH1_4.setCellValue("Credit Card");
+            CH1_5.setCellValue("Auth. Code");
+            CH1_6.setCellValue("Merchant");
+            CH1_7.setCellValue("Charge. Amount");
+            CH1_8.setCellValue("Charge. Currency");
+            CH1_9.setCellValue("Ticket");
+            CH1_10.setCellValue("Proces. Date");
+            CH1_11.setCellValue("Agent");
+            CH1_12.setCellValue("Status");
+            CH1_13.setCellValue("Proces");
+            CH1_14.setCellValue("Country");
+            CH1_15.setCellValue("Acc. Number");
+            CH1_16.setCellValue("Code Bank");
+            CH1_17.setCellValue("Auth. Amount");
+            CH1_18.setCellValue("Society");
+            CH1_19.setCellValue("Societyl");
+            CH1_20.setCellValue("Canal");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -261,67 +278,85 @@ public class ChargebackController extends BaseController {
             CH1_11.setCellStyle(headerStyle);
             CH1_12.setCellStyle(headerStyle);
             CH1_13.setCellStyle(headerStyle);
+            CH1_14.setCellStyle(headerStyle);
+            CH1_15.setCellStyle(headerStyle);
+            CH1_16.setCellStyle(headerStyle);
+            CH1_17.setCellStyle(headerStyle);
+            CH1_18.setCellStyle(headerStyle);
+            CH1_19.setCellStyle(headerStyle);
+            CH1_20.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 7, 7));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 12));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 13, 13));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 20));
+
             ++vj;
             //============================================
 
             // ======  Nivel 2 ==========
-            Row row2 = sheet.createRow(vj);
-            Cell CH2_0 = row2.createCell(0);
-            Cell CH2_1 = row2.createCell(1);
-            Cell CH2_2 = row2.createCell(2);
-            Cell CH2_3 = row2.createCell(3);
-            Cell CH2_4 = row2.createCell(4);
-            Cell CH2_5 = row2.createCell(5);
-            Cell CH2_6 = row2.createCell(6);
-            Cell CH2_7 = row2.createCell(7);
-            Cell CH2_8 = row2.createCell(8);
-            Cell CH2_9 = row2.createCell(9);
-            Cell CH2_10 = row2.createCell(10);
-            Cell CH2_11 = row2.createCell(11);
-            Cell CH2_12 = row2.createCell(12);
-            Cell CH2_13 = row2.createCell(13);
-
-            CH2_0.setCellValue("Code");
-            CH2_1.setCellValue("Date");
-            CH2_2.setCellValue("Type");
-            CH2_4.setCellValue("Code");
-            CH2_5.setCellValue("Nbr.");
-            CH2_6.setCellValue("Name");
-            CH2_10.setCellValue("Date");
-            CH2_11.setCellValue("Type");
-            CH2_12.setCellValue("Nbr.");
-
-            CH2_0.setCellStyle(headerStyle);
-            CH2_1.setCellStyle(headerStyle);
-            CH2_2.setCellStyle(headerStyle);
-            CH2_3.setCellStyle(headerStyle);
-            CH2_4.setCellStyle(headerStyle);
-            CH2_5.setCellStyle(headerStyle);
-            CH2_6.setCellStyle(headerStyle);
-            CH2_7.setCellStyle(headerStyle);
-            CH2_8.setCellStyle(headerStyle);
-            CH2_9.setCellStyle(headerStyle);
-            CH2_10.setCellStyle(headerStyle);
-            CH2_11.setCellStyle(headerStyle);
-            CH2_12.setCellStyle(headerStyle);
-            CH2_13.setCellStyle(headerStyle);
+//            Row row2 = sheet.createRow(vj);
+//            Cell CH2_0 = row2.createCell(0);
+//            Cell CH2_1 = row2.createCell(1);
+//            Cell CH2_2 = row2.createCell(2);
+//            Cell CH2_3 = row2.createCell(3);
+//            Cell CH2_4 = row2.createCell(4);
+//            Cell CH2_5 = row2.createCell(5);
+//            Cell CH2_6 = row2.createCell(6);
+//            Cell CH2_7 = row2.createCell(7);
+//            Cell CH2_8 = row2.createCell(8);
+//            Cell CH2_9 = row2.createCell(9);
+//            Cell CH2_10 = row2.createCell(10);
+//            Cell CH2_11 = row2.createCell(11);
+//            Cell CH2_12 = row2.createCell(12);
+//            Cell CH2_13 = row2.createCell(13);
+//
+//            CH2_0.setCellValue("Code");
+//            CH2_1.setCellValue("Date");
+//            CH2_2.setCellValue("Type");
+//            CH2_4.setCellValue("Code");
+//            CH2_5.setCellValue("Nbr.");
+//            CH2_6.setCellValue("Name");
+//            CH2_10.setCellValue("Date");
+//            CH2_11.setCellValue("Type");
+//            CH2_12.setCellValue("Nbr.");
+//
+//            CH2_0.setCellStyle(headerStyle);
+//            CH2_1.setCellStyle(headerStyle);
+//            CH2_2.setCellStyle(headerStyle);
+//            CH2_3.setCellStyle(headerStyle);
+//            CH2_4.setCellStyle(headerStyle);
+//            CH2_5.setCellStyle(headerStyle);
+//            CH2_6.setCellStyle(headerStyle);
+//            CH2_7.setCellStyle(headerStyle);
+//            CH2_8.setCellStyle(headerStyle);
+//            CH2_9.setCellStyle(headerStyle);
+//            CH2_10.setCellStyle(headerStyle);
+//            CH2_11.setCellStyle(headerStyle);
+//            CH2_12.setCellStyle(headerStyle);
+//            CH2_13.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             //sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
-            ++vj;
+//            ++vj;
             //============================================
 
             while (iter.hasNext()) {
@@ -340,21 +375,35 @@ public class ChargebackController extends BaseController {
                 Cell rcell11 = row1.createCell(11);
                 Cell rcell12 = row1.createCell(12);
                 Cell rcell13 = row1.createCell(13);
+                Cell rcell14 = row1.createCell(14);
+                Cell rcell15 = row1.createCell(15);
+                Cell rcell16 = row1.createCell(16);
+                Cell rcell17 = row1.createCell(17);
+                Cell rcell18 = row1.createCell(18);
+                Cell rcell19 = row1.createCell(19);
+                Cell rcell20 = row1.createCell(20);
 
-                rcell0.setCellValue(listaData.get(vi).strSCARF);
-                rcell1.setCellValue(listaData.get(vi).strFormatDate);
-                rcell2.setCellValue(listaData.get(vi).strDescCard);
-                rcell3.setCellValue(listaData.get(vi).CARDNBR);
-                rcell4.setCellValue(listaData.get(vi).AUTHNBR);
-                rcell5.setCellValue(listaData.get(vi).MERCHNREC);
-                rcell6.setCellValue(listaData.get(vi).MERCHNAM);
-                rcell7.setCellValue(listaData.get(vi).CONCEPT);
-                rcell8.setCellValue(listaData.get(vi).CURRAUTH);
-                rcell9.setCellValue(listaData.get(vi).AUTAMOUNT);
-                rcell10.setCellValue(listaData.get(vi).strDayTo);
-                rcell11.setCellValue(listaData.get(vi).REMETIPO);
-                rcell12.setCellValue(listaData.get(vi).REMEFOLIO);
-                rcell13.setCellValue(listaData.get(vi).strDescripcion);
+                rcell0.setCellValue(listaData.get(vi).CHGDATE);
+                rcell1.setCellValue(listaData.get(vi).SDATE);
+                rcell2.setCellValue(listaData.get(vi).ADATE);
+                rcell3.setCellValue(listaData.get(vi).CARDTYPE);
+                rcell4.setCellValue(listaData.get(vi).SCARDN);
+                rcell5.setCellValue(listaData.get(vi).SAUTHOC);
+                rcell6.setCellValue(listaData.get(vi).COMPANYID);
+                rcell7.setCellValue(listaData.get(vi).CHGAMOUNT);
+                rcell8.setCellValue(listaData.get(vi).CHGCURREN);
+                rcell9.setCellValue(listaData.get(vi).TKTNUMER);
+                rcell10.setCellValue(listaData.get(vi).PRDA);
+                rcell11.setCellValue(listaData.get(vi).SAGENT);
+                rcell12.setCellValue(listaData.get(vi).STVAL);
+                rcell13.setCellValue(listaData.get(vi).PROCESA);
+                rcell14.setCellValue(listaData.get(vi).SCOUNTRY);
+                rcell15.setCellValue(listaData.get(vi).ACCNUMBER);
+                rcell16.setCellValue(listaData.get(vi).CODEBANK);
+                rcell17.setCellValue(listaData.get(vi).AUTAMOUNT);
+                rcell18.setCellValue(listaData.get(vi).SOCIETY);
+                rcell19.setCellValue(listaData.get(vi).SOCIETYL);
+                rcell20.setCellValue(listaData.get(vi).CANAL);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -374,6 +423,14 @@ public class ChargebackController extends BaseController {
             sheet.autoSizeColumn(11, true);
             sheet.autoSizeColumn(12, true);
             sheet.autoSizeColumn(13, true);
+            sheet.autoSizeColumn(14, true);
+            sheet.autoSizeColumn(15, true);
+            sheet.autoSizeColumn(16, true);
+            sheet.autoSizeColumn(17, true);
+            sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
+            sheet.autoSizeColumn(20, true);
+
 
             //============================================
             response.setContentType("application/vnd.openxml");

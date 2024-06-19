@@ -17,6 +17,9 @@ public class A2290 {
     public String TKT = "";
     public String TDOC = "";
     public String descTDOC = "";
+    public String DATABASE = "";
+    public String CASOCVS = "";
+//    public double IDDEB = 0;
     public String SEQ = "";
     public String STVAL = "";
     public String VALDATE = "";
@@ -31,6 +34,14 @@ public class A2290 {
     public String CARD2 = "";    
     //Datos de la Venta
     public String SDATEL = "";
+    public String SCARDNL = "";
+    public String MERCHNCL = "";
+    public String SCARCODL = "";
+    public String SCOUNTRYL = "";
+    public String SAUTHOCL = "";
+    public String SPNRL = "";
+    public String SAGENTL = "";
+    public String SEQL = "";
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String COREP = "";
@@ -42,6 +53,7 @@ public class A2290 {
     public String SDATE = "";
     public String SDATEC = "";
     public String SDATEVTA = "";
+    public String DEBTYPE = "";
     public String SPAYMENT = "";
     public String SCARCOD = "";
     public String STCNTR = "";
@@ -51,6 +63,7 @@ public class A2290 {
     public String FCONT = "";
     public String NEGOC = "";
     public String ACCNUMBER = "";
+    public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
     public double SVFOP = 0;
@@ -92,11 +105,13 @@ public class A2290 {
     public String AAGENT = "";
     public String ADATE = "";
     public String APAYMENT = "";
+    public String PAYDATE = "";
     public String ACARCOD = "";
     public String ATCNTR = "";
     public double AVFOP = 0;
     public double COMMFAREC = 0;
     public double TOTAL_ADM = 0;
+    public double IDDEBF = 0;
     public String ACURRENCY = "";
     public String ACARDN = "";
     public String ADATEXP = "";
@@ -165,9 +180,14 @@ public class A2290 {
     public String NUMADM = "";
     public String DATEADM = "";
     public double TOTADM = 0;
+    public double SUBTOTAL = 0;
     public String CURRADM = "";
     public String SOCIETY = "";
     public String AMOUNT = "";
+    public String USERAV = "";
+    public String TYPETRAN = "";
+    public String FCONCEP = "";
+    public String USERF = "";
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";

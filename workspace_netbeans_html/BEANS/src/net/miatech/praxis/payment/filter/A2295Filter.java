@@ -18,6 +18,21 @@ public class A2295Filter  extends A2295{
     public String strDayTo = "";
     public String IN_DATE_FROM = "";
     public String IN_DATE_TO = "";
+    public String IN_PRDA = "";
+    public String IN_CCIA = "";
+    public String IN_FORMA = "";
+    public String IN_SERIE = "";
+    public String IN_FCONCEP = "";
+    public String IN_FSELEC = "";
+    public String IN_CURRENCY1 = "";
+    public String IN_SCURRENCY = "";
+    public String IN_CURRENCY2 = "";
+    public String IN_SPAYMENT = "";
+    public String IN_TKT = "";
+    public String IN_SAGENT = "";
+    public String IN_PNR = "";
+    public String IN_SCARDN1 = "";
+    public String IN_SCARDN2 = "";
     public String IN_CARDN = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
@@ -31,6 +46,8 @@ public class A2295Filter  extends A2295{
     public String IN_SAUTHOC = "";
     public String IN_DATE = "";
     public String IN_STATT = "";
+    public String IN_SCOUNTRY = "";
+    public String IN_CARDTYPE = "";
     public String strTicket = "";
     public String strFormatDate = "";
     public String strDescripcion = "";
@@ -38,6 +55,9 @@ public class A2295Filter  extends A2295{
     public String strDescCountry = "";
     public String strDescCard = "";
     public String strNUMREF = "";
+    public String IN_TITLE = "";
+    
+
     
     public  double dblAMOUNT = 0;
     public  double dblTotAMOUNT = 0;

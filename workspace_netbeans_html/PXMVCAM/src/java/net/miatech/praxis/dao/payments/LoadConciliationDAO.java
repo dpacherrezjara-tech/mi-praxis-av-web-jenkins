@@ -1251,8 +1251,9 @@ public class LoadConciliationDAO {
                     beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
-                    if (rst.getString("TDOC").trim().equals("R")) {
-                        beanTkt.strPEM = "REFUND";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    if (rst.getString("TDOC").trim().equals("A")) {
+                        beanTkt.strPEM = "ADJUST.";
                     } else {
                         beanTkt.strPEM = "SALES";
                     }
@@ -1391,7 +1392,842 @@ public class LoadConciliationDAO {
 
         return hmResultado;
     }
+    
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_REFND(A2290Filter filter) throws SQLException, Exception {
 
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        List<A2290Filter> lstError = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        String tipFecha = "Sales";
+        long lngTotCant = 0;
+        double dblTotSVFOP = 0, dblTotAVFOP = 0;
+        if (filter.IN_TDOC.trim().equals("R")) {
+            tipFecha = "Refund";
+        }
+
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+
+        HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.registerOutParameter(21, Types.INTEGER);
+            cstmt.registerOutParameter(22, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strFecFiltro);
+            cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom + filter.strDayFrom);
+            cstmt.setString(4, filter.strYearTo + filter.strMonthTo + filter.strDayTo);
+            
+            cstmt.setString(5, filter.IN_TDOC);//SERIE
+            cstmt.setString(6, filter.IN_CARDN1);//PRIMEROS 6 DIGITOS DE LA TARJETA
+            cstmt.setString(7, filter.IN_CARDN2);//ULTIMOS 4 DIGITOS DE LA TARJETA
+            cstmt.setString(8, filter.IN_AUTHNBR);//NUMERO AUTORIZACION
+            cstmt.setString(9, filter.IN_ADYEN);
+            cstmt.setString(10, filter.IN_SAGENT);
+            cstmt.setString(11, filter.IN_SPNR);
+            cstmt.setString(12, filter.IN_TICKET);
+            cstmt.setString(13, filter.IN_COUNTRY);
+            cstmt.setString(14, filter.IN_CARDC);
+            cstmt.setString(15, filter.IN_FTE);
+            cstmt.setString(16, filter.IN_STVAL);
+            cstmt.setString(17, filter.IN_strSVFOP);
+            cstmt.setString(18, filter.IN_DEBTYPE);
+            
+
+
+            cstmt.setInt(19, filter.page.PAGNUM);
+            cstmt.setInt(20, filter.page.PAGROW);
+            cstmt.setInt(21, filter.page.TOTPAG);
+            cstmt.setInt(22, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            filter.page.PAGNUM = cstmt.getInt(19);
+            filter.page.PAGROW = cstmt.getInt(20);
+            filter.page.TOTPAG = cstmt.getInt(21);
+            filter.page.TOTROW = cstmt.getInt(22);
+
+            while (rst.next()) {
+                lngTotCant += rst.getLong("CANT");
+                dblTotSVFOP += rst.getDouble("SVFOP");
+                dblTotAVFOP += rst.getDouble("AVFOP");
+            }
+            rst.close();
+            
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    //PRESENTACION SEGUN ESTADO
+                    beanTkt = new A2290Filter();
+
+                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.strYearFrom = filter.strYearFrom.trim();
+                    beanTkt.strMonthFrom = filter.strMonthFrom.trim();
+                    beanTkt.strYearTo = filter.strYearTo.trim();
+                    beanTkt.strMonthTo = filter.strMonthTo.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_CARDN1 = filter.IN_CARDN1.trim();
+                    beanTkt.IN_CARDN2 = filter.IN_CARDN2.trim();
+                    beanTkt.IN_AUTHNBR = filter.IN_AUTHNBR.trim();
+                    beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
+                    beanTkt.strPEM = "Refund";
+                    beanTkt.TYPE = rst.getString("TYPE").trim();
+                    beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
+                    beanTkt.CCIA = rst.getString("CCIA").trim();
+                    beanTkt.TKT = rst.getString("TKT").trim();
+//                    beanTkt.FORMA = rst.getString("FORMA").trim();
+//                    beanTkt.SERIE = rst.getString("SERIE").trim();
+
+                    beanTkt.TDOC = "R";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+//                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
+                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                    } else {
+                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                    }
+                    if (!rst.getString("ERROR").trim().isEmpty()) {
+                        beanTkt.CERROR = rst.getString("CERROR").trim() + " : " + rst.getString("ERROR").trim();
+                    } else {
+                        beanTkt.CERROR = rst.getString("CERROR").trim();
+                    }
+                    beanTkt.FTE = rst.getString("FTE").trim();
+                    if (rst.getString("FTE").trim().equals("A")) {
+                        beanTkt.strSORIG = "ARC";
+                    } else if (rst.getString("FTE").trim().equals("B")) {
+                        beanTkt.strSORIG = "BSP";
+                    } else if (rst.getString("FTE").trim().equals("S")) {
+                        beanTkt.strSORIG = "ASR";
+                    } else if (rst.getString("FTE").trim().equals("M")) {
+                        beanTkt.strSORIG = "Manual";
+                    }
+
+//                    beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.strDescCountry = rst.getString("NAMES").trim();
+                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
+//                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+//                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.SVFOP = rst.getDouble("SUBTOTAL");
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
+                    beanTkt.strDescCard = rst.getString("NAMECARS").trim();
+                    //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                    beanTkt.SPNR = rst.getString("SPNR").trim();
+
+                    //Banks
+
+                    beanTkt.lngTotQACCB = lngTotCant;
+                    beanTkt.dblTotSVFOP = dblTotSVFOP;
+                    beanTkt.dblTotAVFOP = dblTotAVFOP;
+
+
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+
+                }
+            }
+            
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        hmResultado.put("TKT", lstTkts);
+        hmResultado.put("ERROR", lstError);
+
+        return hmResultado;
+    }
+    
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        List<A2290Filter> lstError = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        String tipFecha = "Sales";
+        long lngTotCant = 0;
+        double dblTotSVFOP = 0, dblTotAVFOP = 0;
+        if (filter.IN_TDOC.trim().equals("R")) {
+            tipFecha = "Refund";
+        }
+
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+
+        HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.registerOutParameter(21, Types.INTEGER);
+            cstmt.registerOutParameter(22, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strFecFiltro);
+            cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom + filter.strDayFrom);
+            cstmt.setString(4, filter.strYearTo + filter.strMonthTo + filter.strDayTo);
+            
+            cstmt.setString(5, filter.IN_TDOC);//SERIE
+            cstmt.setString(6, filter.IN_CARDN1);//PRIMEROS 6 DIGITOS DE LA TARJETA
+            cstmt.setString(7, filter.IN_CARDN2);//ULTIMOS 4 DIGITOS DE LA TARJETA
+            cstmt.setString(8, filter.IN_AUTHNBR);//NUMERO AUTORIZACION
+            cstmt.setString(9, filter.IN_ADYEN);
+            cstmt.setString(10, filter.IN_SAGENT);
+            cstmt.setString(11, filter.IN_SPNR);
+            cstmt.setString(12, filter.IN_TICKET);
+            cstmt.setString(13, filter.IN_COUNTRY);
+            cstmt.setString(14, filter.IN_CARDC);
+            cstmt.setString(15, filter.IN_FTE);
+            cstmt.setString(16, filter.IN_STVAL);
+            cstmt.setString(17, filter.IN_strSVFOP);
+            cstmt.setString(18, filter.IN_DEBTYPE);
+            
+
+
+            cstmt.setInt(19, filter.page.PAGNUM);
+            cstmt.setInt(20, filter.page.PAGROW);
+            cstmt.setInt(21, filter.page.TOTPAG);
+            cstmt.setInt(22, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            filter.page.PAGNUM = cstmt.getInt(19);
+            filter.page.PAGROW = cstmt.getInt(20);
+            filter.page.TOTPAG = cstmt.getInt(21);
+            filter.page.TOTROW = cstmt.getInt(22);
+
+            while (rst.next()) {
+                lngTotCant += rst.getLong("CANT");
+                dblTotSVFOP += rst.getDouble("SVFOP");
+                dblTotAVFOP += rst.getDouble("AVFOP");
+            }
+            rst.close();
+            
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    //PRESENTACION SEGUN ESTADO
+                    beanTkt = new A2290Filter();
+
+                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.strYearFrom = filter.strYearFrom.trim();
+                    beanTkt.strMonthFrom = filter.strMonthFrom.trim();
+                    beanTkt.strYearTo = filter.strYearTo.trim();
+                    beanTkt.strMonthTo = filter.strMonthTo.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_CARDN1 = filter.IN_CARDN1.trim();
+                    beanTkt.IN_CARDN2 = filter.IN_CARDN2.trim();
+                    beanTkt.IN_AUTHNBR = filter.IN_AUTHNBR.trim();
+                    beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
+                    beanTkt.strPEM = "Chargeback";
+                    beanTkt.TYPE = rst.getString("TYPE").trim();
+//                    beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
+                    beanTkt.CCIA = rst.getString("CCIA").trim();
+//                    beanTkt.TKT = rst.getString("TKT").trim();
+//                    beanTkt.FORMA = rst.getString("FORMA").trim();
+//                    beanTkt.SERIE = rst.getString("SERIE").trim();
+
+                    beanTkt.TDOC = "C";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    beanTkt.IDDEB = rst.getString("IDDEB").trim();
+//                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
+                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                    } else {
+                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                    }
+                    if (!rst.getString("ERROR").trim().isEmpty()) {
+                        beanTkt.CERROR = rst.getString("CERROR").trim() + " : " + rst.getString("ERROR").trim();
+                    } else {
+                        beanTkt.CERROR = rst.getString("CERROR").trim();
+                    }
+                    beanTkt.FTE = rst.getString("FTE").trim();
+                    if (rst.getString("FTE").trim().equals("A")) {
+                        beanTkt.strSORIG = "ARC";
+                    } else if (rst.getString("FTE").trim().equals("B")) {
+                        beanTkt.strSORIG = "BSP";
+                    } else if (rst.getString("FTE").trim().equals("S")) {
+                        beanTkt.strSORIG = "ASR";
+                    } else if (rst.getString("FTE").trim().equals("M")) {
+                        beanTkt.strSORIG = "Manual";
+                    }
+
+//                    beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.strDescCountry = rst.getString("NAMES").trim();
+                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                    beanTkt.SDATE = rst.getString("IDATE").trim();
+//                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+//                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
+//                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.SVFOP = rst.getDouble("VALLOCAL");
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
+                    beanTkt.strDescCard = rst.getString("NAMECARS").trim();
+                    //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+//                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                    beanTkt.SPNR = rst.getString("NOMPAX").trim();
+
+                    //Banks
+
+                    beanTkt.lngTotQACCB = lngTotCant;
+                    beanTkt.dblTotSVFOP = dblTotSVFOP;
+                    beanTkt.dblTotAVFOP = dblTotAVFOP;
+
+
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+
+                }
+            }
+            
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        hmResultado.put("TKT", lstTkts);
+        hmResultado.put("ERROR", lstError);
+
+        return hmResultado;
+    }
+
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        List<A2290Filter> lstError = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        String tipFecha = "Sales";
+        long lngTotCant = 0;
+        double dblTotSVFOP = 0, dblTotAVFOP = 0;
+        if (filter.IN_TDOC.trim().equals("R")) {
+            tipFecha = "Refund";
+        }
+
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+
+        HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.registerOutParameter(21, Types.INTEGER);
+            cstmt.registerOutParameter(22, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strFecFiltro);
+            cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom + filter.strDayFrom);
+            cstmt.setString(4, filter.strYearTo + filter.strMonthTo + filter.strDayTo);
+            
+            cstmt.setString(5, filter.IN_TDOC);//SERIE
+            cstmt.setString(6, filter.IN_CARDN1);//PRIMEROS 6 DIGITOS DE LA TARJETA
+            cstmt.setString(7, filter.IN_CARDN2);//ULTIMOS 4 DIGITOS DE LA TARJETA
+            cstmt.setString(8, filter.IN_AUTHNBR);//NUMERO AUTORIZACION
+            cstmt.setString(9, filter.IN_ADYEN);
+            cstmt.setString(10, filter.IN_SAGENT);
+            cstmt.setString(11, filter.IN_SPNR);
+            cstmt.setString(12, filter.IN_TICKET);
+            cstmt.setString(13, filter.IN_COUNTRY);
+            cstmt.setString(14, filter.IN_CARDC);
+            cstmt.setString(15, filter.IN_FTE);
+            cstmt.setString(16, filter.IN_STVAL);
+            cstmt.setString(17, filter.IN_strSVFOP);
+            cstmt.setString(18, filter.IN_DEBTYPE);
+            
+
+
+            cstmt.setInt(19, filter.page.PAGNUM);
+            cstmt.setInt(20, filter.page.PAGROW);
+            cstmt.setInt(21, filter.page.TOTPAG);
+            cstmt.setInt(22, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            filter.page.PAGNUM = cstmt.getInt(19);
+            filter.page.PAGROW = cstmt.getInt(20);
+            filter.page.TOTPAG = cstmt.getInt(21);
+            filter.page.TOTROW = cstmt.getInt(22);
+
+            while (rst.next()) {
+                lngTotCant += rst.getLong("CANT");
+                dblTotSVFOP += rst.getDouble("SVFOP");
+                dblTotAVFOP += rst.getDouble("AVFOP");
+            }
+            rst.close();
+            
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    //PRESENTACION SEGUN ESTADO
+                    beanTkt = new A2290Filter();
+
+                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.strYearFrom = filter.strYearFrom.trim();
+                    beanTkt.strMonthFrom = filter.strMonthFrom.trim();
+                    beanTkt.strYearTo = filter.strYearTo.trim();
+                    beanTkt.strMonthTo = filter.strMonthTo.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_CARDN1 = filter.IN_CARDN1.trim();
+                    beanTkt.IN_CARDN2 = filter.IN_CARDN2.trim();
+                    beanTkt.IN_AUTHNBR = filter.IN_AUTHNBR.trim();
+                    beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
+                    beanTkt.strPEM = "Acredit";
+                    beanTkt.TYPE = rst.getString("TYPE").trim();
+//                    beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
+                    beanTkt.CCIA = rst.getString("CCIA").trim();
+//                    beanTkt.TKT = rst.getString("TKT").trim();
+//                    beanTkt.FORMA = rst.getString("FORMA").trim();
+//                    beanTkt.SERIE = rst.getString("SERIE").trim();
+
+                    beanTkt.TDOC = "A";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    beanTkt.CASOCVS = rst.getString("CASOCVS").trim();
+//                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
+                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                    } else {
+                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                    }
+//                    if (!rst.getString("ERROR").trim().isEmpty()) {
+//                        beanTkt.CERROR = rst.getString("CERROR").trim() + " : " + rst.getString("ERROR").trim();
+//                    } else {
+//                        beanTkt.CERROR = rst.getString("CERROR").trim();
+//                    }
+                    beanTkt.FTE = rst.getString("FTE").trim();
+                    if (rst.getString("FTE").trim().equals("A")) {
+                        beanTkt.strSORIG = "ARC";
+                    } else if (rst.getString("FTE").trim().equals("B")) {
+                        beanTkt.strSORIG = "BSP";
+                    } else if (rst.getString("FTE").trim().equals("S")) {
+                        beanTkt.strSORIG = "ASR";
+                    } else if (rst.getString("FTE").trim().equals("M")) {
+                        beanTkt.strSORIG = "Manual";
+                    }
+
+//                    beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.strDescCountry = rst.getString("NAMES").trim();
+                    beanTkt.SAGENT = rst.getString("IATA").trim();
+                    beanTkt.SDATE = rst.getString("PRDA").trim();
+//                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+//                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.SVFOP = rst.getDouble("VALOR");
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
+                    beanTkt.strDescCard = rst.getString("NAMECARS").trim();
+                    //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDSATEXP").trim(), "MMyy", "yyyyMM");
+                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                    beanTkt.SPNR = rst.getString("SPNR").trim();
+
+                    //Banks
+
+                    beanTkt.lngTotQACCB = lngTotCant;
+                    beanTkt.dblTotSVFOP = dblTotSVFOP;
+                    beanTkt.dblTotAVFOP = dblTotAVFOP;
+
+
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+
+                }
+            }
+            
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        hmResultado.put("TKT", lstTkts);
+        hmResultado.put("ERROR", lstError);
+
+        return hmResultado;
+    }
+    
+    public HashMap<String, List<A2290Filter>> loadPX263SQP01828_ALLDEBITS(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        List<A2290Filter> lstError = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        String tipFecha = "Sales";
+        long lngTotCant = 0;
+        double dblTotSVFOP = 0, dblTotAVFOP = 0;
+        if (filter.IN_TDOC.trim().equals("R")) {
+            tipFecha = "Refund";
+        }
+
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("", tipFecha + " without Reconcili.");
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without " + tipFecha);
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+
+        HashMap<String, List<A2290Filter>> hmResultado = new HashMap<String, List<A2290Filter>>();
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828_ALLDEBITS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.registerOutParameter(21, Types.INTEGER);
+            cstmt.registerOutParameter(22, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strFecFiltro);
+            cstmt.setString(3, filter.strYearFrom + filter.strMonthFrom + filter.strDayFrom);
+            cstmt.setString(4, filter.strYearTo + filter.strMonthTo + filter.strDayTo);
+            
+            cstmt.setString(5, filter.IN_TDOC);//SERIE
+            cstmt.setString(6, filter.IN_CARDN1);//PRIMEROS 6 DIGITOS DE LA TARJETA
+            cstmt.setString(7, filter.IN_CARDN2);//ULTIMOS 4 DIGITOS DE LA TARJETA
+            cstmt.setString(8, filter.IN_AUTHNBR);//NUMERO AUTORIZACION
+            cstmt.setString(9, filter.IN_ADYEN);
+            cstmt.setString(10, filter.IN_SAGENT);
+            cstmt.setString(11, filter.IN_SPNR);
+            cstmt.setString(12, filter.IN_TICKET);
+            cstmt.setString(13, filter.IN_COUNTRY);
+            cstmt.setString(14, filter.IN_CARDC);
+            cstmt.setString(15, filter.IN_FTE);
+            cstmt.setString(16, filter.IN_STVAL);
+            cstmt.setString(17, filter.IN_strSVFOP);
+            cstmt.setString(18, filter.IN_DEBTYPE);
+            
+
+
+            cstmt.setInt(19, filter.page.PAGNUM);
+            cstmt.setInt(20, filter.page.PAGROW);
+            cstmt.setInt(21, filter.page.TOTPAG);
+            cstmt.setInt(22, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            filter.page.PAGNUM = cstmt.getInt(19);
+            filter.page.PAGROW = cstmt.getInt(20);
+            filter.page.TOTPAG = cstmt.getInt(21);
+            filter.page.TOTROW = cstmt.getInt(22);
+
+            while (rst.next()) {
+                lngTotCant += rst.getLong("CANT");
+                dblTotSVFOP += rst.getDouble("SVFOP");
+                dblTotAVFOP += rst.getDouble("AVFOP");
+            }
+            rst.close();
+            
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    //PRESENTACION SEGUN ESTADO
+                    beanTkt = new A2290Filter();
+
+                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
+                    beanTkt.strYearFrom = filter.strYearFrom.trim();
+                    beanTkt.strMonthFrom = filter.strMonthFrom.trim();
+                    beanTkt.strYearTo = filter.strYearTo.trim();
+                    beanTkt.strMonthTo = filter.strMonthTo.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_CARDN1 = filter.IN_CARDN1.trim();
+                    beanTkt.IN_CARDN2 = filter.IN_CARDN2.trim();
+                    beanTkt.IN_AUTHNBR = filter.IN_AUTHNBR.trim();
+                    beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
+                    beanTkt.strPEM = rst.getString("TDOC").trim();
+                    beanTkt.TYPE = rst.getString("TYPE").trim();
+                    beanTkt.strTicket = !rst.getString("TKT").trim().equals("") ? rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim() : "without ticket";
+                    beanTkt.CCIA = rst.getString("CCIA").trim();
+                    beanTkt.TKT = rst.getString("TKT").trim();
+//                    beanTkt.FORMA = rst.getString("FORMA").trim();
+//                    beanTkt.SERIE = rst.getString("SERIE").trim();
+            
+                    beanTkt.TDOC = "D";
+                    beanTkt.DATABASE = rst.getString("DATABASE").trim();
+                    beanTkt.IDDEB = rst.getString("IDDEB").trim();
+                    beanTkt.CASOCVS = rst.getString("CASOCVS").trim();
+//                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
+                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                    } else {
+                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                    }
+                    if (!rst.getString("ERROR").trim().isEmpty()) {
+                        beanTkt.CERROR = rst.getString("CERROR").trim() + " : " + rst.getString("ERROR").trim();
+                    } else {
+                        beanTkt.CERROR = rst.getString("CERROR").trim();
+                    }
+                    beanTkt.FTE = rst.getString("FTE").trim();
+                    if (rst.getString("FTE").trim().equals("A")) {
+                        beanTkt.strSORIG = "ARC";
+                    } else if (rst.getString("FTE").trim().equals("B")) {
+                        beanTkt.strSORIG = "BSP";
+                    } else if (rst.getString("FTE").trim().equals("S")) {
+                        beanTkt.strSORIG = "ASR";
+                    } else if (rst.getString("FTE").trim().equals("M")) {
+                        beanTkt.strSORIG = "Manual";
+                    }
+
+//                    beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.strDescCountry = rst.getString("NAMES").trim();
+                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
+//                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+//                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.SVFOP = rst.getDouble("SUBTOTAL");
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
+                    beanTkt.strDescCard = rst.getString("NAMECARS").trim();
+                    //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDSATEXP").trim(), "MMyy", "yyyyMM");
+                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                    beanTkt.SPNR = rst.getString("SPNR").trim();
+
+                    //Banks
+
+                    beanTkt.lngTotQACCB = lngTotCant;
+                    beanTkt.dblTotSVFOP = dblTotSVFOP;
+                    beanTkt.dblTotAVFOP = dblTotAVFOP;
+
+
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+
+                }
+            }
+            
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        hmResultado.put("TKT", lstTkts);
+        hmResultado.put("ERROR", lstError);
+
+        return hmResultado;
+    }
+    
+    public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05103_DEBITYPE(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+            beanTkt = new A2290Filter();
+            beanTkt.CODE = "";
+            beanTkt.NAME = "All";
+            lstData.add(beanTkt);
+            while (rst.next()) {
+
+                beanTkt = new A2290Filter();
+
+                beanTkt.CODE = rst.getString("CODE").trim();
+                beanTkt.NAME = rst.getString("NAME").trim();
+
+                lstData.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
     public HashMap<String, List<A2290Filter>> loadPX263SQP01976(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -2148,7 +2984,18 @@ public class LoadConciliationDAO {
                 beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
                 beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
                 beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
-
+                    
+                //SETTLEMENT
+                beanTkt.SDATEL = rst.getString("SDATEL").trim();
+                beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
+                beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
+                beanTkt.SCARCODL = rst.getString("SCARCODL").trim();
+                beanTkt.SCOUNTRYL = rst.getString("SCOUNTRYL").trim();
+                beanTkt.SAUTHOCL = rst.getString("SAUTHOCL").trim();
+                beanTkt.SPNRL = rst.getString("SPNRL").trim();
+                beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
+                beanTkt.SEQL = rst.getString("SEQL").trim();
+                beanTkt.NETOL = rst.getDouble("NETOL");
                 //TEF
                 beanTkt.TDATE = rst.getString("TDATE").trim();
                 beanTkt.DATEF = rst.getString("DATEF").trim();
@@ -2175,6 +3022,394 @@ public class LoadConciliationDAO {
                 beanTkt.USUP = rst.getString("USUP").trim();
                 beanTkt.FEUP = rst.getString("FEUP").trim();
                 beanTkt.HOUP = rst.getString("HOUP").trim();
+
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return beanTkt;
+    }
+    
+    
+    public A2290Filter loadPX263SQP00659_REFND(A2290Filter filter) throws SQLException, Exception {
+
+        A2290Filter beanTkt = new A2290Filter();
+        String strSCARF = "";
+
+        if (filter.STVAL.trim().length() > 1) {
+            if (filter.STVAL.trim().equals("Match")) {
+                filter.STVAL = "1";
+            } else if (filter.STVAL.trim().equals("Sales without Reconcili.") || filter.STVAL.trim().equals("Refund without Reconcili.")) {
+                filter.STVAL = "";
+            } else if (filter.STVAL.trim().equals("Reconcili. without Sales") || filter.STVAL.trim().equals("Reconcili. without Refund")) {
+                filter.STVAL = "3";
+            } else if (filter.STVAL.trim().equals("Match with Differences")) {
+                filter.STVAL = "4";
+            } else if (filter.STVAL.trim().equals("Match Manual")) {
+                filter.STVAL = "5";
+            }
+        }
+
+        /*if (!filter.STVAL.equals("2")) {
+         filter.APAYMENT = filter.SPAYMENT;
+         filter.SPAYMENT = "";
+         }*/
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_REFND(?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.CCIA.trim());
+            cstmt.setString(3, filter.TKT.trim());
+            cstmt.setString(4, filter.SCARDN.trim());
+            cstmt.setString(5, filter.SAUTHOC.trim());
+            cstmt.setDouble(6, filter.SVFOP);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+//                beanTkt.TRNCU = rst.getString("TRNCU");
+                beanTkt.strFormatDate = filter.strFormatDate.trim();
+                beanTkt.strSCARF = strSCARF;
+                beanTkt.strDescCountry = filter.strDescCountry.trim();
+
+                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
+                beanTkt.CCIA = rst.getString("CCIA").trim();
+                beanTkt.TKT = rst.getString("TKT").trim();
+//                beanTkt.SERIE = rst.getString("SERIE").trim();
+
+                beanTkt.TDOC = rst.getString("TDOC").trim();
+//                beanTkt.SEQ = rst.getString("SEQ").trim();
+                beanTkt.STVAL = rst.getString("STVAL").trim();
+                beanTkt.FTE = rst.getString("FTE").trim();
+                beanTkt.DATEC = rst.getString("DATEC").trim();
+                beanTkt.TRANC = rst.getString("TRANC").trim();
+//                beanTkt.FADYEN = rst.getString("FADYEN").trim();
+
+                //SALES
+//                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                beanTkt.SDATE = rst.getString("SDATE").trim();
+//                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+
+                beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
+
+//                beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                beanTkt.SVFOP = rst.getDouble("SUBTOTAL");
+                beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
+//                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                beanTkt.SPNR = rst.getString("SPNR").trim();
+//                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+//                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+//                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
+                    
+                beanTkt.SDATEL = rst.getString("SDATEL").trim();
+                beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
+                beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
+                beanTkt.SCARCODL = rst.getString("SCARCODL").trim();
+                beanTkt.SCOUNTRYL = rst.getString("SCOUNTRYL").trim();
+                beanTkt.SAUTHOCL = rst.getString("SAUTHOCL").trim();
+                beanTkt.SPNRL = rst.getString("SPNRL").trim();
+                beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
+                beanTkt.SEQL = rst.getString("SEQL").trim();
+                beanTkt.NETOL = rst.getDouble("NETOL");
+
+                beanTkt.USCR = rst.getString("USCR").trim();
+                beanTkt.FECR = rst.getString("FECR").trim();
+                beanTkt.HOCR = rst.getString("HOCR").trim();
+                beanTkt.USUP = rst.getString("USUP").trim();
+                beanTkt.FEUP = rst.getString("FEUP").trim();
+                beanTkt.HOUP = rst.getString("HOUP").trim();
+
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return beanTkt;
+    }
+    
+    
+    public A2290Filter loadPX263SQP00659_CHGBAK(A2290Filter filter) throws SQLException, Exception {
+
+        A2290Filter beanTkt = new A2290Filter();
+        String strSCARF = "";
+
+        if (filter.STVAL.trim().length() > 1) {
+            if (filter.STVAL.trim().equals("Match")) {
+                filter.STVAL = "1";
+            } else if (filter.STVAL.trim().equals("Sales without Reconcili.") || filter.STVAL.trim().equals("Refund without Reconcili.")) {
+                filter.STVAL = "";
+            } else if (filter.STVAL.trim().equals("Reconcili. without Sales") || filter.STVAL.trim().equals("Reconcili. without Refund")) {
+                filter.STVAL = "3";
+            } else if (filter.STVAL.trim().equals("Match with Differences")) {
+                filter.STVAL = "4";
+            } else if (filter.STVAL.trim().equals("Match Manual")) {
+                filter.STVAL = "5";
+            }
+        }
+
+        /*if (!filter.STVAL.equals("2")) {
+         filter.APAYMENT = filter.SPAYMENT;
+         filter.SPAYMENT = "";
+         }*/
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_CHGBAK(?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IDDEB.trim());
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                beanTkt.strFormatDate = filter.strFormatDate.trim();
+                beanTkt.strSCARF = strSCARF;
+                beanTkt.strDescCountry = filter.strDescCountry.trim();
+
+//                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
+                beanTkt.CCIA = rst.getString("CCIA").trim();
+//                beanTkt.TKT = rst.getString("TKT").trim();
+//                beanTkt.SERIE = rst.getString("SERIE").trim();
+
+                beanTkt.TDOC = rst.getString("TDOC").trim();
+//                beanTkt.SEQ = rst.getString("SEQ").trim();
+                beanTkt.STVAL = rst.getString("STVAL").trim();
+                beanTkt.FTE = rst.getString("FTE").trim();
+                beanTkt.DATEC = rst.getString("DATEC").trim();
+                beanTkt.TRANC = rst.getString("TRANC").trim();
+//                beanTkt.FADYEN = rst.getString("FADYEN").trim();
+
+                //SALES
+//                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                beanTkt.SAGENT = rst.getString("SAGENT").trim();
+//                beanTkt.SDATE = rst.getString("SDATE").trim();
+//                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+
+                beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
+
+//                beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                beanTkt.SCURRENCY = rst.getString("CURRLOCAL").trim();
+                beanTkt.SVFOP = rst.getDouble("VALLOCAL");
+                beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
+//                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+//                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                beanTkt.SPNR = rst.getString("NOMPAX").trim();
+//                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+//                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+//                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
+                    
+                beanTkt.SDATEL = rst.getString("SDATEL").trim();
+                beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
+                beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
+                beanTkt.SCARCODL = rst.getString("SCARCODL").trim();
+                beanTkt.SCOUNTRYL = rst.getString("SCOUNTRYL").trim();
+                beanTkt.SAUTHOCL = rst.getString("SAUTHOCL").trim();
+                beanTkt.SPNRL = rst.getString("SPNRL").trim();
+                beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
+                beanTkt.SEQL = rst.getString("SEQL").trim();
+                beanTkt.NETOL = rst.getDouble("NETOL");
+
+                beanTkt.USCR = rst.getString("USCR").trim();
+                beanTkt.FECR = rst.getString("FECR").trim();
+                beanTkt.HOCR = rst.getString("HOCR").trim();
+                beanTkt.USUP = rst.getString("USUP").trim();
+                beanTkt.FEUP = rst.getString("FEUP").trim();
+                beanTkt.HOUP = rst.getString("HOUP").trim();
+
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return beanTkt;
+    }
+    
+     public A2290Filter loadPX263SQP00659_ACREDIT(A2290Filter filter) throws SQLException, Exception {
+
+        A2290Filter beanTkt = new A2290Filter();
+        String strSCARF = "";
+
+        if (filter.STVAL.trim().length() > 1) {
+            if (filter.STVAL.trim().equals("Match")) {
+                filter.STVAL = "1";
+            } else if (filter.STVAL.trim().equals("Sales without Reconcili.") || filter.STVAL.trim().equals("Refund without Reconcili.")) {
+                filter.STVAL = "";
+            } else if (filter.STVAL.trim().equals("Reconcili. without Sales") || filter.STVAL.trim().equals("Reconcili. without Refund")) {
+                filter.STVAL = "3";
+            } else if (filter.STVAL.trim().equals("Match with Differences")) {
+                filter.STVAL = "4";
+            } else if (filter.STVAL.trim().equals("Match Manual")) {
+                filter.STVAL = "5";
+            }
+        }
+
+        /*if (!filter.STVAL.equals("2")) {
+         filter.APAYMENT = filter.SPAYMENT;
+         filter.SPAYMENT = "";
+         }*/
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_ACREDIT(?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.CASOCVS.trim());
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                beanTkt.strFormatDate = filter.strFormatDate.trim();
+                beanTkt.strSCARF = strSCARF;
+                beanTkt.strDescCountry = filter.strDescCountry.trim();
+
+//                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
+                beanTkt.CCIA = rst.getString("CCIA").trim();
+//                beanTkt.TKT = rst.getString("TKT").trim();
+//                beanTkt.SERIE = rst.getString("SERIE").trim();
+
+                beanTkt.TDOC = rst.getString("TDOC").trim();
+//                beanTkt.SEQ = rst.getString("SEQ").trim();
+                beanTkt.STVAL = rst.getString("STVAL").trim();
+                beanTkt.FTE = rst.getString("FTE").trim();
+                beanTkt.DATEC = rst.getString("DATEC").trim();
+                beanTkt.TRANC = rst.getString("TRANC").trim();
+//                beanTkt.FADYEN = rst.getString("FADYEN").trim();
+
+                //SALES
+//                beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
+                beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                beanTkt.SAGENT = rst.getString("IATA").trim();
+//                beanTkt.SDATE = rst.getString("SDATE").trim();
+//                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
+                beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+
+                beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
+
+//                beanTkt.STCNTR = rst.getString("STCNTR").trim();
+                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                beanTkt.SVFOP = rst.getDouble("VALOR");
+                beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
+//                beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
+                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+
+                beanTkt.SPNR = rst.getString("SPNR").trim();
+//                beanTkt.SVFOPINST = rst.getString("SVFOPINST").trim();
+//                beanTkt.INSTPAY = rst.getString("INSTPAY").trim();
+//                beanTkt.INSTPLA = rst.getString("INSTPLA").trim();
+                    
+                beanTkt.SDATEL = rst.getString("SDATEL").trim();
+                beanTkt.SCARDNL = rst.getString("SCARDNL").trim();
+                beanTkt.MERCHNCL = rst.getString("MERCHNCL").trim();
+                beanTkt.SCARCODL = rst.getString("SCARCODL").trim();
+                beanTkt.SCOUNTRYL = rst.getString("SCOUNTRYL").trim();
+                beanTkt.SAUTHOCL = rst.getString("SAUTHOCL").trim();
+                beanTkt.SPNRL = rst.getString("SPNRL").trim();
+                beanTkt.SAGENTL = rst.getString("SAGENTL").trim();
+                beanTkt.SEQL = rst.getString("SEQL").trim();
+                beanTkt.NETOL = rst.getDouble("NETOL");
+
+                beanTkt.USCR = rst.getString("USCR").trim();
+                beanTkt.FECR = rst.getString("FECR").trim();
+                beanTkt.HOCR = rst.getString("HOCR").trim();
+                beanTkt.USUP = rst.getString("USUP").trim();
+                beanTkt.FEUP = rst.getString("FEUP").trim();
+                beanTkt.HOUP = rst.getString("HOUP").trim();
+
 
             }
             rst.close();
@@ -2597,7 +3832,7 @@ public class LoadConciliationDAO {
 
                     if (rst.getString("COUNTRY").trim().isEmpty()) {
                         beanTkt.SCOUNTRY = "**";
-                        beanTkt.strDescCountry = "(Sales without Reconcili.)";
+                        beanTkt.strDescCountry = "(Empty)";
                     } else {
                         beanTkt.SCOUNTRY = rst.getString("COUNTRY").trim();
                         /*if (hmPaises.containsKey(rst.getString("COUNTRY").trim().toUpperCase())) {
@@ -2755,7 +3990,7 @@ public class LoadConciliationDAO {
 
                     if (rst.getString("COUNTRY").trim().isEmpty()) {
                         beanTkt.SCOUNTRY = "**";
-                        beanTkt.strDescCountry = "(Sales without Reconcili.)";
+                        beanTkt.strDescCountry = "(Empty)";
                     } else {
                         beanTkt.SCOUNTRY = rst.getString("COUNTRY").trim();
                         /*if (hmPaises.containsKey(rst.getString("COUNTRY").trim().toUpperCase())) {
@@ -2763,12 +3998,12 @@ public class LoadConciliationDAO {
                          }*/
                         beanTkt.strDescCountry = rst.getString("NAME").trim();
                     }
-//                    beanTkt.SCURRENCY = rst.getString("CURRENCY").trim();
-                    /*if (hmCurr.containsKey(rst.getString("CURRENCY").trim().toUpperCase())) {
-                     beanTkt.strMoneda = hmCurr.get(rst.getString("CURRENCY").trim()).toString();
-                     } else {
-                     beanTkt.strMoneda = rst.getString("CURRENCY").trim();
-                     }*/
+                    beanTkt.SCURRENCY = rst.getString("CURRENCY").trim();
+//                    if (hmCurr.containsKey(rst.getString("CURRENCY").trim().toUpperCase())) {
+//                     beanTkt.strMoneda = hmCurr.get(rst.getString("CURRENCY").trim()).toString();
+//                     } else {
+//                     beanTkt.strMoneda = rst.getString("CURRENCY").trim();
+//                     }
 //                    if (rst.getString("MONEDA").trim().length() > 3) {
 //                        beanTkt.strMoneda = rst.getString("MONEDA").trim().substring(3);
 //                    } else {
@@ -2913,7 +4148,7 @@ public class LoadConciliationDAO {
 
                     if (rst.getString("COUNTRY").trim().isEmpty()) {
                         beanTkt.SCOUNTRY = "**";
-                        beanTkt.strDescCountry = "(Sales without Reconcili.)";
+                        beanTkt.strDescCountry = "(Empty)";
                     } else {
                         beanTkt.SCOUNTRY = rst.getString("COUNTRY").trim();
                         /*if (hmPaises.containsKey(rst.getString("COUNTRY").trim().toUpperCase())) {
@@ -3883,6 +5118,7 @@ public class LoadConciliationDAO {
                     beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF100";
                     beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -4142,8 +5378,9 @@ public class LoadConciliationDAO {
                     beanTkt.TKT = rst.getString("TKT").trim();
 //                    beanTkt.FORMA = rst.getString("FORMA").trim();
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
-
+            
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF075";
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -4172,7 +5409,7 @@ public class LoadConciliationDAO {
                     beanTkt.SAGENT = rst.getString("SAGENT").trim();
                     beanTkt.SDATE = rst.getString("SDATE").trim();
 //                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
-                    beanTkt.SCARCOD = rst.getString("FRANQUICIA").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
 //                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("SUBTOTAL");
@@ -4223,15 +5460,14 @@ public class LoadConciliationDAO {
                     beanTkt.lngQOBS = rst.getLong("QOB");
                     //Armando Título del Detalle
                     if (beanTkt.strFecFiltro.equals("DATEC")) {
-                        beanTkt.strTitulo = "Conciliation Date : ";
+                        beanTkt.strTitulo = "Refund - Conciliation Date : ";
                     } else if (beanTkt.IN_TDOC.equals("R")) {
-                        beanTkt.strTitulo = "Refund Date : ";
+                        beanTkt.strTitulo = "Refund - Process Date : ";
                     } else {
-                        beanTkt.strTitulo = "Sales Date : ";
+                        beanTkt.strTitulo = "Refund - Process Date : ";
                     }
                     try {
-                        beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
-                                + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
+                        beanTkt.strTitulo += filter.strFormatDate.trim() + " - Country : " + filter.strDescCountry.trim() + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** "+ " Currency: "+ filter.SCURRENCY;
                     } catch (Exception e) {
                     }
 
@@ -4405,6 +5641,9 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF076";
+                    beanTkt.IDDEB = rst.getString("IDDEB").trim();;
+                    
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -4433,9 +5672,9 @@ public class LoadConciliationDAO {
                     beanTkt.SAGENT = rst.getString("SAGENT").trim();
                     beanTkt.SDATE = rst.getString("IDATE").trim();
 //                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
-                    beanTkt.SCARCOD = rst.getString("FRANQUICIA").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
 //                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
-//                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.SCURRENCY = rst.getString("CURRLOCAL").trim();
                     beanTkt.SVFOP = rst.getDouble("VALLOCAL");
                     beanTkt.SCARDN = rst.getString("SCARDN").trim();
                     beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
@@ -4484,15 +5723,14 @@ public class LoadConciliationDAO {
                     beanTkt.lngQOBS = rst.getLong("QOB");
                     //Armando Título del Detalle
                     if (beanTkt.strFecFiltro.equals("DATEC")) {
-                        beanTkt.strTitulo = "Conciliation Date : ";
+                        beanTkt.strTitulo = "Chargeback - Conciliation Date : ";
                     } else if (beanTkt.IN_TDOC.equals("R")) {
-                        beanTkt.strTitulo = "Refund Date : ";
+                        beanTkt.strTitulo = "Chargeback - Process Date : ";
                     } else {
-                        beanTkt.strTitulo = "Sales Date : ";
+                        beanTkt.strTitulo = "Chargeback - Process Date : ";
                     }
                     try {
-                        beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
-                                + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
+                        beanTkt.strTitulo += filter.strFormatDate.trim() + " - Country : " + filter.strDescCountry.trim() + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** "+ " Currency: "+ filter.SCURRENCY;
                     } catch (Exception e) {
                     }
 
@@ -4666,6 +5904,8 @@ public class LoadConciliationDAO {
 //                    beanTkt.SERIE = rst.getString("SERIE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.DATABASE = "MPF077";
+                    beanTkt.CASOCVS = rst.getString("CASOCVS").trim();
 //                    beanTkt.SEQ = rst.getString("SEQ").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -4694,7 +5934,7 @@ public class LoadConciliationDAO {
 //                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
                     beanTkt.SDATE = rst.getString("PRDA").trim();
 //                    beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
-                    beanTkt.SCARCOD = rst.getString("FRANQUICIA").trim();
+                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
 //                    beanTkt.STCNTR = rst.getString("STCNTR").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("VALOR");
@@ -4744,16 +5984,16 @@ public class LoadConciliationDAO {
 
                     beanTkt.lngQOBS = rst.getLong("QOB");
                     //Armando Título del Detalle
+                    
                     if (beanTkt.strFecFiltro.equals("DATEC")) {
-                        beanTkt.strTitulo = "Conciliation Date : ";
+                        beanTkt.strTitulo = "Acredit. - Conciliation Date : ";
                     } else if (beanTkt.IN_TDOC.equals("R")) {
-                        beanTkt.strTitulo = "Refund Date : ";
+                        beanTkt.strTitulo = "Acredit. - Process Date : ";
                     } else {
-                        beanTkt.strTitulo = "Sales Date : ";
+                        beanTkt.strTitulo = "Acredit. - Process Date : ";
                     }
                     try {
-                        beanTkt.strTitulo += beanTkt.SDATE + " - Country : " + filter.strDescCountry.trim() + " - Card : "
-                                + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** ";
+                        beanTkt.strTitulo += filter.strFormatDate.trim() + " - Country : " + filter.strDescCountry.trim() + " **" + hmDescEstados.get(beanTkt.IN_STVAL).toString() + "** "+ " Currency: "+ filter.SCURRENCY;
                     } catch (Exception e) {
                     }
 
