@@ -257,15 +257,15 @@ public class SalesConciliationManualController extends BaseController {
         return lst;
     }
 
-    @RequestMapping(value = "getXLSX")
+    @RequestMapping(value = "getXLSXDetailByF")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSX");
-        String fileNameDownload = String.format("Forecast Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Conciliation Manual Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
-            List<A2295Filter> listaData = this.getList(request, true);
+            List<A2295Filter> listaData = this.getListDetailByF(request, true);
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Report");
@@ -312,36 +312,22 @@ public class SalesConciliationManualController extends BaseController {
             Cell CH1_7 = row1.createCell(7);
             Cell CH1_8 = row1.createCell(8);
             Cell CH1_9 = row1.createCell(9);
-            Cell CH1_10 = row1.createCell(10);
-            Cell CH1_11 = row1.createCell(11);
-            Cell CH1_12 = row1.createCell(12);
-            Cell CH1_13 = row1.createCell(13);
-            Cell CH1_14 = row1.createCell(14);
-            Cell CH1_15 = row1.createCell(15);
-            Cell CH1_16 = row1.createCell(16);
-            Cell CH1_17 = row1.createCell(17);
-            Cell CH1_18 = row1.createCell(18);
 
 
-            CH1_0.setCellValue("Country");
-            CH1_1.setCellValue("Ticket");
-            CH1_2.setCellValue("SEQ");
-            CH1_3.setCellValue("Correlativo");
-            CH1_4.setCellValue("TD");
-            CH1_5.setCellValue("Fuente");
-            CH1_6.setCellValue("Sub Fte");
-            CH1_7.setCellValue("Sale Date");
-            CH1_8.setCellValue("Agent");
-            CH1_9.setCellValue("Agent Cons.");
-            CH1_10.setCellValue("Currency Cash");
-            CH1_11.setCellValue("Cash");
-            CH1_12.setCellValue("Credit");
-            CH1_13.setCellValue("Credit Card");
-            CH1_14.setCellValue("Card Code");
-            CH1_15.setCellValue("Others Sales");
-            CH1_16.setCellValue("Invoice Cash");
-            CH1_17.setCellValue("Invoice Card"); 
-            CH1_18.setCellValue("Net Remit");
+
+
+            CH1_0.setCellValue("Date");
+            CH1_1.setCellValue("Status");
+            CH1_2.setCellValue("Concep");
+            CH1_3.setCellValue("Ticket");
+            CH1_4.setCellValue("Sales Date");
+            CH1_5.setCellValue("Card Number");
+            CH1_6.setCellValue("Currency");
+            CH1_7.setCellValue("Amount");
+            CH1_8.setCellValue("Seq.");
+            CH1_9.setCellValue("User");
+
+
 
 
             CH1_0.setCellStyle(headerStyle);
@@ -354,15 +340,8 @@ public class SalesConciliationManualController extends BaseController {
             CH1_7.setCellStyle(headerStyle);
             CH1_8.setCellStyle(headerStyle);
             CH1_9.setCellStyle(headerStyle);
-            CH1_10.setCellStyle(headerStyle);
-            CH1_11.setCellStyle(headerStyle);
-            CH1_12.setCellStyle(headerStyle);
-            CH1_13.setCellStyle(headerStyle);
-            CH1_14.setCellStyle(headerStyle);
-            CH1_15.setCellStyle(headerStyle);
-            CH1_16.setCellStyle(headerStyle);
-            CH1_17.setCellStyle(headerStyle);
-            CH1_18.setCellStyle(headerStyle);
+
+
 
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
@@ -376,15 +355,8 @@ public class SalesConciliationManualController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+
+
 
 
             ++vj;
@@ -449,36 +421,22 @@ public class SalesConciliationManualController extends BaseController {
                 Cell rcell7 = row1.createCell(7);
                 Cell rcell8 = row1.createCell(8);
                 Cell rcell9 = row1.createCell(9);
-                Cell rcell10 = row1.createCell(10);
-                Cell rcell11 = row1.createCell(11);
-                Cell rcell12 = row1.createCell(12);
-                Cell rcell13 = row1.createCell(13);
-                Cell rcell14 = row1.createCell(14);
-                Cell rcell15 = row1.createCell(15);
-                Cell rcell16 = row1.createCell(16);
-                Cell rcell17 = row1.createCell(17);
-                Cell rcell18 = row1.createCell(18);
 
 
-                rcell0.setCellValue(listaData.get(vi).SCOUNTRY);
-                rcell1.setCellValue(listaData.get(vi).TKT);
-                rcell2.setCellValue(listaData.get(vi).SEQ);
-                rcell3.setCellValue(listaData.get(vi).CORRL);
-                rcell4.setCellValue(listaData.get(vi).TDOC);
-                rcell5.setCellValue(listaData.get(vi).CFUENTE);
-                rcell6.setCellValue(listaData.get(vi).SUBFTE);
-                rcell7.setCellValue(listaData.get(vi).SDATE);
-                rcell8.setCellValue(listaData.get(vi).SAGENT);
-                rcell9.setCellValue(listaData.get(vi).SCONSOL);
-                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell11.setCellValue(listaData.get(vi).SVFOPCA);
-                rcell12.setCellValue(listaData.get(vi).SVFOPCC);
-                rcell13.setCellValue(listaData.get(vi).SCARDN1);
-                rcell14.setCellValue(listaData.get(vi).SCARCOD1);
-                rcell15.setCellValue(listaData.get(vi).SVFOPOT);
-                rcell16.setCellValue(listaData.get(vi).INVOICE0);
-                rcell17.setCellValue(listaData.get(vi).INVOICE1);
-                rcell18.setCellValue(listaData.get(vi).SVFOPNETR);
+
+
+                rcell0.setCellValue(listaData.get(vi).PRDA);
+                rcell1.setCellValue(listaData.get(vi).STVAL);
+                rcell2.setCellValue(listaData.get(vi).FCONCEP);
+                rcell3.setCellValue(listaData.get(vi).TKT);
+                rcell4.setCellValue(listaData.get(vi).SDATE);
+                rcell5.setCellValue(listaData.get(vi).SCARDN);
+                rcell6.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell7.setCellValue(listaData.get(vi).SVFOP);
+                rcell8.setCellValue(listaData.get(vi).SEQ);
+                rcell9.setCellValue(listaData.get(vi).USERF);
+
+
 
                 iter.next();
                 ++vi;
@@ -496,14 +454,7 @@ public class SalesConciliationManualController extends BaseController {
             sheet.autoSizeColumn(8, true);
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
-            sheet.autoSizeColumn(11, true);
-            sheet.autoSizeColumn(12, true);
-            sheet.autoSizeColumn(13, true);
-            sheet.autoSizeColumn(14, true);
-            sheet.autoSizeColumn(15, true);
-            sheet.autoSizeColumn(16, true);
-            sheet.autoSizeColumn(17, true);
-            sheet.autoSizeColumn(18, true);
+
 
 
 

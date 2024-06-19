@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         prototype.url = CONTEXTPATH + '/SalesConciliationManual';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-panelGridDataMain';
+        me.panelActual = '-panelGridDataMainDt';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
@@ -215,16 +215,16 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             bean: me.bean
         };
         console.log(searchParams, 'searchParamss' );
+        
+    },
+
+    btnSearch_click: function (obj, e) {  
+        this.setFormatParameter();  //obtengo los Parametros
         if( Ext.getCmp(prototype.id + '-txtTKT').getValue() != '' || Ext.getCmp(prototype.id + '-cmbFCONCEP').getValue() != ''){
             this.setGridDataDetail()
         }else{
             this.setGridData(); 
         }
-    },
-
-    btnSearch_click: function (obj, e) {  
-        this.setFormatParameter();  //obtengo los Parametros
-        
     },
 
     setGridData: function () {
@@ -323,32 +323,32 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         console.log(columnNum, 'columnNum')
         switch (columnNum) {
             case 1:
-                console.log('ENTRA AL SETT');
+                console.log('ENTRA AL MATCH');
                 this.beanDetDay.IN_FCONCEP = 'I'
-                this.beanDetDay.IN_FSELEC = ''
-                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Settlements'
-                cantidad = rowData.data.lngQSETT;
+                this.beanDetDay.IN_STVAL = '5'
+                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Settlements Processed'
+                cantidad = rowData.data.lngQSETTMATCH;
                 break;
             case 2:
-                console.log('ENTRA AL TKT');
-                this.beanDetDay.IN_FCONCEP = 'V'
-                this.beanDetDay.IN_FSELEC = ''
-                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Tickets'
-                cantidad = rowData.data.lngQTKT;
+                console.log('ENTRA AL NPROC');
+                this.beanDetDay.IN_FCONCEP = 'I'
+                this.beanDetDay.IN_STVAL = '3'
+                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Settlements Not Processed'
+                cantidad = rowData.data.lngQSETTPEND;
                 break;
             case 4:
-                console.log('ENTRA AL PROC');
-                this.beanDetDay.IN_FSELEC = 'L'
-                this.beanDetDay.IN_FCONCEP = ''
-                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Processed'
-                cantidad = rowData.data.lngQPROC;
+                console.log('ENTRA AL MATCH');
+                this.beanDetDay.IN_STVAL = '5'
+                this.beanDetDay.IN_FCONCEP = 'V'
+                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Ticket Processed'
+                cantidad = rowData.data.lngQTKTMATCH;
                 break;
             case 5:
                 console.log('ENTRA AL NPROC');
-                this.beanDetDay.IN_FSELEC = 'N'
-                this.beanDetDay.IN_FCONCEP = ''
-                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Not Processed'
-                cantidad = rowData.data.lngQNPROC;
+                this.beanDetDay.IN_STVAL = '3'
+                this.beanDetDay.IN_FCONCEP = 'V'
+                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Ticket Not Processed'
+                cantidad = rowData.data.lngQTKTPEND;
                 break;
         }
         console.log(cantidad, 'cantidad')
@@ -410,13 +410,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
     onGridDetail: function (obj, metaData, rowNum, columnNum, obj2, rowData){
         
         me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDet'
+        me.panelActual = '-panelGridDataDetByF'
         me.flag = 'all';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.beanDetailByF.IN_PRDA = rowData.data.PRDA;
         this.beanDetailByF.IN_SCURRENCY = rowData.data.SCURRENCY;
         this.beanDetailByF.IN_FCONCEP = rowData.data.IN_FCONCEP;
-        this.beanDetailByF.IN_FSELEC = rowData.data.IN_FSELEC;
+        this.beanDetailByF.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetailByF.IN_TITLE = rowData.data.strTitulo;
         console.log( this.beanDetailByF, ' this.beanDetailByF')
         me.paramsDetail.beanString = JSON.stringify(this.beanDetailByF);
@@ -450,14 +450,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                             });
                         } else {
                             var data = obj.data.items[0].data;
-                            Ext.getCmp(prototype.id + '-gridDataDet').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
+                            Ext.getCmp(prototype.id + '-gridDataDetByF').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
 //                            win.setText('lblTittleByDayS', data.strTitulo);
                         }
                     }
                 }
             });
             global.clear();
-            Ext.getCmp(prototype.id + '-gridDataDet').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-gridDataDetByF').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         }
     },
@@ -548,8 +548,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
     exportExcel: function () {
         console.log(me.panelActual);
         switch (me.panelActual) {
-            case  '-boxMainData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
+            case  '-panelGridDataDet':
+                global.getFile(prototype.url + '/getXLSXDetailByF?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
                 default:
                 global.Msg(
@@ -582,6 +582,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                 break;
             case  '-panelGridDataDet':
                 me.pagginActual = '-paggin3';
+                break;
+            case  '-panelGridDataDetByF':
+                me.pagginActual = '-paggin4';
                 break;
         }
     },
