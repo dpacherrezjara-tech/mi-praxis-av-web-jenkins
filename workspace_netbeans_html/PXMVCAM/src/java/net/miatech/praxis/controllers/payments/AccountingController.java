@@ -28,6 +28,7 @@ import net.miatech.praxis.logic.payments.AccountingLogic;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.payment.filter.SQP05252Filter;
 import net.miatech.praxis.payment.filter.SQP05253Filter;
+import net.miatech.praxis.payment.filter.SQP05343Filter;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
@@ -60,6 +61,32 @@ public class AccountingController extends BaseController {
             logic.setSession(this.serverSession.getServerSession());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
             objRtn = logic.setSQP05233Filter(filter);
+            map.put("objRtn", objRtn);
+            map.put("success", true);
+
+        } catch (Exception ex) {
+            objRtn.dbException.SQLCODE = "0";
+            objRtn.dbException.MESSAGE = ex.getMessage();
+            map.put("objRtn", objRtn);
+            map.put("success", true);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+
+    }
+    
+    @RequestMapping(value = "cargarArchivos")
+    public @ResponseBody
+    String cargarArchivos(ModelMap map, HttpServletRequest request) {
+
+        SQP05343Filter filter = new SQP05343Filter();
+        SQP05343Filter objRtn = new SQP05343Filter();
+
+        try {
+            logic = new AccountingLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            objRtn = logic.setSQP05343Filter(filter);
             map.put("objRtn", objRtn);
             map.put("success", true);
 

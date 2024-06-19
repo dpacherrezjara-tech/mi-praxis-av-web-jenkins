@@ -41,18 +41,25 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         var vl_carga = "X";
         var vl_correo = "X";
         var vl_ajuste = "X";
+        var vl_debito = "X";
+        var vl_banco = "X";
+        
         
         var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
         var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
         var vl_ck03 = Ext.getCmp(prototype.id + '-ck03').getValue();
         var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
+        var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
+        var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
                 
         if(vl_ck01) vl_pasaje = 'P';
         if(vl_ck02) vl_carga = 'A';
         if(vl_ck03) vl_correo = 'C'; 
-        if(vl_ck04) vl_ajuste = 'J'; 
+        if(vl_ck04) vl_ajuste = 'J';
+        if(vl_ck05) vl_debito = 'D'; 
+        if(vl_ck06) vl_banco = 'B'; 
         
-        beanTemp.VP_TIPO = vl_pasaje+vl_carga+vl_correo+vl_ajuste; 
+        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_banco; 
        
         
     },
@@ -151,7 +158,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         var bean = {};
         bean.IN_TIPO = rec.A4556TFILE;
         bean.IN_LEXT = in_NARCH;
-        bean.FNAME = rec.A4556TFILE_0 + in_NARCH;
+        bean.FNAME = '134' + rec.A4556TFILE_0 + in_NARCH;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',

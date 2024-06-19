@@ -97,6 +97,22 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             boxLabel: 'Adjustment',
                                             margin: '2 2 2 10',
                                             checked: false
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck05',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'Debit',
+                                            margin: '2 2 2 10',
+                                            checked: false
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck06',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'Bank',
+                                            margin: '2 2 2 10',
+                                            checked: false
                                         }
                                     ]
 
@@ -137,7 +153,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     xtype: 'datefield',
                                     id: prototype.id + '-PSTGD2',
                                     fieldLabel: 'To', labelAlign: 'right', labelStyle: 'font-weight: bold;', labelWidth: 50,
-                                    width: 160, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
+                                    width: 200, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
                                     format: 'Ymd',
                                     invalidText: 'Ingrese fecha valida en formato Ymd',
                                     minValue: new Date(1990, 00, 01),
@@ -145,7 +161,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     value: new Date(),
                                     maskRe: /[0-9/]/,
                                     editable: true,
-                                    hidden: true,
+                                    hidden: false,
                                     enableKeyEvents: true,
                                     enforceMaxLength: true,
                                     maxLength: 12,
