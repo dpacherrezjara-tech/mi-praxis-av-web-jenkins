@@ -18,8 +18,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
     paramsTKT: {},
     dataObtain: {},
     beanTKT: {},
+    beanDetDayMain: {},
     beanDetDay: {},
     beanDetail: {},
+    beanDetailByS: {},
+    beanDetailByD: {},
     beanDetailByF: {},
     dataGrid: [],
     init: function (view) {
@@ -321,8 +324,51 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataMainDay'
         me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);  
+        global.selectedChild(me.childs, prototype.id + me.panelActual); 
+        this.beanDetDayMain.IN_PRDA = rowData.data.PRDA;
+        console.log(this.beanDetDayMain, 'this.beanDetDayMain')
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetDayMain);
+        this.setGridDataMainDay();
         
+    },
+    setGridDataMainDay: function () {
+        win.lblUser_toolTip("Estructura: MPF114");
+        me.setWidthPie();
+        
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchMainDay'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin5');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-gridDataMainDay').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
+//                            win.setText('lblTittleByDayS', data.strTitulo);
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataMainDay').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+        }
     },
     onGridDay: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         let cantidad = 0
@@ -363,7 +409,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             global.Msg({ msg: 'Data not found.'})
             return false
         }
-        
+        //CAMBIO DE GRILLA A OTRA AL BAJAR
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDate'
         me.flag = 'all';
@@ -412,6 +458,142 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataDate').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
+        }
+    },
+    onGridDetalleByDay: function (obj, metaData, rowNum, columnNum, obj2, rowData){
+        //PARAMETROS Y FUNCIONES PARA CAMBIAR GRILLA
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataDetByD'
+        me.flag = 'all';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.beanDetailByD.IN_PRDA = rowData.data.PRDA;
+        console.log( this.beanDetailByD, ' this.beanDetailByF')
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetailByD);
+        this.setGridDataDetailByD();
+    },
+    setGridDataDetailByD: function (){
+        win.lblUser_toolTip("Estructura: MPF114");
+        me.setWidthPie();
+        
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetailByD'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin6');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-gridDataDetByD').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
+//                            win.setText('lblTittleByDayS', data.strTitulo);
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataDetByD').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin6').bindStore(storeGridDatas);
+        }
+    },
+    onGridDetalleByS: function (obj, metaData, rowNum, columnNum, obj2, rowData){
+        //PARAMETROS Y FUNCIONES PARA CAMBIAR GRILLA
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataDetByS'
+        me.flag = 'all';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        switch (columnNum) {
+            case 1:
+
+                this.beanDetailByS.IN_PRDA = rowData.data.PRDA
+                this.beanDetailByS.IN_FCONCEP = 'I'
+                this.beanDetailByS.IN_STVAL = '5'
+//                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Settlements Processed'
+//                cantidad = rowData.data.lngQSETTMATCH;
+                break;
+            case 2:
+
+                this.beanDetailByS.IN_PRDA = rowData.data.PRDA
+                this.beanDetailByS.IN_FCONCEP = 'I'
+                this.beanDetailByS.IN_STVAL = '3'
+//                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Settlements Not Processed'
+//                cantidad = rowData.data.lngQSETTPEND;
+                break;
+            case 4:
+
+                this.beanDetailByS.IN_PRDA = rowData.data.PRDA
+                this.beanDetailByS.IN_FCONCEP = 'V'
+                this.beanDetailByS.IN_STVAL = '5'
+//                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Ticket Processed'
+//                cantidad = rowData.data.lngQTKTMATCH;
+                break;
+            case 5:
+
+                this.beanDetailByS.IN_PRDA = rowData.data.PRDA
+                this.beanDetailByS.IN_STVAL = '3'
+                this.beanDetailByS.IN_FCONCEP = 'V'
+//                this.beanDetDay.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Ticket Not Processed'
+//                cantidad = rowData.data.lngQTKTPEND;
+                break;
+        }
+        
+        
+
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetailByS);
+        this.setGridDataDetailByS();
+    },
+    setGridDataDetailByS: function (){
+        win.lblUser_toolTip("Estructura: MPF114");
+        me.setWidthPie();
+        
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetailByS'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin7');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-gridDataDetByS').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
+//                            win.setText('lblTittleByDayS', data.strTitulo);
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataDetByS').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
         }
     },
     onGridDetail: function (obj, metaData, rowNum, columnNum, obj2, rowData){
@@ -595,6 +777,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                 break
             case  '-panelGridDataMainDay':
                 me.pagginActual = '-paggin5';
+                break;
+            case  '-panelGridDataDetByD':
+                me.pagginActual = '-paggin6';
+                break;
+            case  '-panelGridDataDetByS':
+                me.pagginActual = '-paggin7';
                 break;
         }
     },
