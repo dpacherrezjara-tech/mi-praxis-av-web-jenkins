@@ -1013,6 +1013,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             this.beanDetailAcc.strMonthFrom = win.getValue('cmbDateFromMonth');
             this.beanDetailAcc.strYearTo = win.getValue('cmbDateToYear');
             this.beanDetailAcc.strMonthTo = win.getValue('cmbDateToMonth');
+            this.beanDetailAcc.IN_COUNTRY = win.getValue('cmbCountry');
 
             this.searchAcc(this.beanDetailAcc);
         }else if(win.getValue('cmbTDOC').trim() === 'D' || win.getValue('cmbTDOC').trim() === 'R' || win.getValue('cmbTDOC').trim() === 'C' || win.getValue('cmbTDOC').trim() === 'A' ){
@@ -2881,7 +2882,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     inhabilitarFiltrosByFCONT: function () {
         win.enabled('cmbSource', false);
-        win.enabled('cmbCountry', false);
+//        win.enabled('cmbCountry', false);
         win.enabled('txtPNR', false);
         win.enabled('txtTicket', false);
         win.enabled('txtCard1', false);
@@ -2904,7 +2905,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     vaciarFiltrosByFCONT: function () {
         win.setValue('cmbSource', '');
-        win.setValue('cmbCountry', '');
+//        win.setValue('cmbCountry', '');
         win.setValue('txtPNR', '');
         win.setValue('txtTicket', '');
         win.setValue('txtCard1', '');
