@@ -48,6 +48,7 @@ public class A2295 {
     public String FCONCEP = "";
     public String SVFOP = "";
     public String USERF = "";
+    public String CERROR = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
     public String SCURRENCY1 = "";

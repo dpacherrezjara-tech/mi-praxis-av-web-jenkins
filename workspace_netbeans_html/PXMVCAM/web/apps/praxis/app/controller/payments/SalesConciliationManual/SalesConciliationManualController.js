@@ -628,7 +628,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
-                        var pag = Ext.getCmp(prototype.id + '-paggin3');
+                        var pag = Ext.getCmp(prototype.id + '-paggin4');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -647,7 +647,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataDetByF').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
         }
     },
     validateFields: function () {
@@ -737,8 +737,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
     exportExcel: function () {
         console.log(me.panelActual);
         switch (me.panelActual) {
-            case  '-panelGridDataDet':
+            case  '-panelGridDataDetByF':
                 global.getFile(prototype.url + '/getXLSXDetailByF?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+                case  '-panelGridDataDetByS':
+                global.getFile(prototype.url + '/getXLSXDetailByS?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+                case  '-panelGridDataDetByD':
+                global.getFile(prototype.url + '/getXLSXDetailByD?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
                 default:
                 global.Msg(

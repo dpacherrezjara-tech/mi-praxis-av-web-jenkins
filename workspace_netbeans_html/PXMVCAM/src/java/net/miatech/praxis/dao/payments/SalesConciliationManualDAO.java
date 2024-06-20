@@ -215,7 +215,7 @@ public class SalesConciliationManualDAO {
                     beanTkt = new A2295Filter();
 
                     beanTkt.PRDA = rst.getString("DATE").trim();
-                    
+
 //                    beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
                     beanTkt.lngQSETT = rst.getLong("QSETT");
                     beanTkt.lngQTKT = rst.getLong("QTKT");
@@ -534,6 +534,7 @@ public class SalesConciliationManualDAO {
                 objRtn.SVFOP = rs01.getString("SVFOP").trim();
                 objRtn.SEQ = rs01.getString("SEQ").trim();
                 objRtn.USERF = rs01.getString("USERF").trim();
+                objRtn.CERROR = rs01.getString("ERROR").trim();
                 if(filter.IN_TITLE.contains("Not Processed")){
                     objRtn.strTitulo = "Proc Date : " + filter.IN_PRDA + " - Not Processed - " + " Currency: " + filter.IN_SCURRENCY;  
                 }else if(filter.IN_TITLE.contains("Settlements")){
@@ -646,6 +647,7 @@ public class SalesConciliationManualDAO {
                 objRtn.SVFOP = rs01.getString("SVFOP").trim();
                 objRtn.SEQ = rs01.getString("SEQ").trim();
                 objRtn.USERF = rs01.getString("USERF").trim();
+                objRtn.CERROR = rs01.getString("ERROR").trim();
                 
                 objRtn.strTitulo = "Proc Date : " + filter.IN_PRDA;  
                 
@@ -756,6 +758,7 @@ public class SalesConciliationManualDAO {
                 objRtn.SVFOP = rs01.getString("SVFOP").trim();
                 objRtn.SEQ = rs01.getString("SEQ").trim();
                 objRtn.USERF = rs01.getString("USERF").trim();
+                objRtn.CERROR = rs01.getString("ERROR").trim();
                 
                 if(filter.IN_FCONCEP.equals("I")){
                     concept = "Settlement";
