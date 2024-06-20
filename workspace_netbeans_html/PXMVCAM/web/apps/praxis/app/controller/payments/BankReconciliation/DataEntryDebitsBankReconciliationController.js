@@ -1024,8 +1024,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
     preexecuteOption: function (prefixDeb) {
 
         var decide = false;
-        var ASVFOP = Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', '');
-        var BSVFOP = Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', '');
+        var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', ''));
+        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
         console.log(ASVFOP);
         console.log(BSVFOP);
         if (ASVFOP === BSVFOP) {

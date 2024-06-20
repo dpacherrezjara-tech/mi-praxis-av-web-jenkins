@@ -27,6 +27,10 @@ public class SalesConciliationManualLogic {
         return SalesConciliationManualDAO.loadPX290MPS077(filter);
     }
     
+    public List<A2295Filter> loadPX290MPS077_MONTH(A2295Filter filter) throws SQLException, Exception {
+        return SalesConciliationManualDAO.loadPX290MPS077_MONTH(filter);
+    }
+    
     public List<A2295Filter> loadPX290MPS077_DAY(A2295Filter filter) throws SQLException, Exception {
         return SalesConciliationManualDAO.loadPX290MPS077_DAY(filter);
     }
@@ -38,7 +42,11 @@ public class SalesConciliationManualLogic {
     public List<A2295Filter> loadPX290MPS077_DET_BYF(A2295Filter filter) throws SQLException, Exception {
         return SalesConciliationManualDAO.loadPX290MPS077_DET_BYF(filter);
     }
+    public List<A2295Filter> loadPX290MPS077_DET_BYD(A2295Filter filter) throws SQLException, Exception {
+        return SalesConciliationManualDAO.loadPX290MPS077_DET_BYD(filter);
+    }
     
-
-    
+    public List<A2295Filter> loadPX290MPS077_DET_BYS(A2295Filter filter) throws SQLException, Exception {
+        return SalesConciliationManualDAO.loadPX290MPS077_DET_BYS(filter);
+    }
 }
