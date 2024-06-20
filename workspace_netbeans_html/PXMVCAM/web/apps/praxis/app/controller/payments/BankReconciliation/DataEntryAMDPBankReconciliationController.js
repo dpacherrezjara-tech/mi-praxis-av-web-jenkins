@@ -820,11 +820,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     preexecuteOption: function () {
 
         var decide = false;
-        var ASVFOP = Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', '');
-        var BSVFOP = Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', '');
+        console.log(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue(), 'txtSVFOPHide')
+        console.log(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue(), 'txtSumAmount')
+        var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', ''));
+        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
         console.log(ASVFOP);
         console.log(BSVFOP);
-        if (ASVFOP === BSVFOP) {
+        if (ASVFOP == BSVFOP) {
 
             var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
             console.log(comment);
