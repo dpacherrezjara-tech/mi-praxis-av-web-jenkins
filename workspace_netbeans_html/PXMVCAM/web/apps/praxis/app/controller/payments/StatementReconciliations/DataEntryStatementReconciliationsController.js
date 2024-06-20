@@ -31,8 +31,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         switch (this.actionCode) {
             case 'U':
                 this.getData();
-
-
 //                this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
 //                Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -88,20 +86,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtSOCIETY', this.beanResult.CCUST);
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
-//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(985);
-            Ext.getCmp(prototype.id + '-dataEntry').setHeight(735);
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1047);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1035);
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1137);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1125);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
         } else {
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
-//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1025);
-            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1130);
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1175);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1075);
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1265);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1165);
             Ext.getCmp(prototype.id + '-panelScanCard').show();
             Ext.getCmp(prototype.id + '-panelScanCard2').show();
             Ext.getCmp(prototype.id + '-btn-update').show();
@@ -124,6 +118,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 //        this.setValue('de-txtSDATE', this.beanResult.SDATE);
         this.setValue('de-txtACCNUMBERL', this.beanResult.ACCNUMBERL);
         this.setValue('de-txtACCNUMBER', this.beanResult.ACCNUMBER);
+        this.setValue('de-txtCLAVE', this.beanResult.FUNDSTRGK);
         this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.DIFF, '0,000.00'));
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -211,8 +206,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-        meDE.bean.data.IN_DATECI = meDE.beanResult.DATECI
-        meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI 
+        meDE.bean.data.IN_DATECI = meDE.beanResult.DATECI;
+        meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI;
+        meDE.bean.data.IN_FUNDSTRGK = meDE.beanResult.FUNDSTRGK;
 
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
@@ -493,6 +489,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
         this.beanDetails.IN_RED = meDE.bean.data.RED;
         this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+        this.beanDetails.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
         if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
             this.beanDetails.IN_STVAL = '1';
         } else {
@@ -554,6 +551,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('txtFromSDATE', null);
 //        this.setValue('cmbSCARCODE', '');
         this.setValue('txtACCNUMBER', '');
+        this.setValue('txtFUNDSTRGK', '');
         this.setValue('txtNETO', '');
         this.setValue('cmbSCARCOD', '');
 
@@ -576,6 +574,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             meDE.bean.data.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         }
 
+        meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
         meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
@@ -630,20 +629,20 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     onGridPending: function () {
 
-        let formPend = Ext.getCmp(prototype.id + '-formQueryPend');
-
-        if (!formPend.isVisible()) {
-            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1900);
-            Ext.getCmp(prototype.id + '-spacerPanel').show();
-            Ext.getCmp(prototype.id + '-formQueryPend').show();
-            Ext.getCmp(prototype.id + '-dataEntry').setX(10);
-            this.getDataQueryPend();
-        } else {
-            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1175);
-            Ext.getCmp(prototype.id + '-formQueryPend').hide();
-            Ext.getCmp(prototype.id + '-spacerPanel').hide();
-            Ext.getCmp(prototype.id + '-dataEntry').setX(410);
-        }
+//        let formPend = Ext.getCmp(prototype.id + '-formQueryPend');
+//
+//        if (!formPend.isVisible()) {
+//            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1900);
+//            Ext.getCmp(prototype.id + '-spacerPanel').show();
+//            Ext.getCmp(prototype.id + '-formQueryPend').show();
+//            Ext.getCmp(prototype.id + '-dataEntry').setX(10);
+//            this.getDataQueryPend();
+//        } else {
+//            Ext.getCmp(prototype.id + '-dataEntry').setWidth(1175);
+//            Ext.getCmp(prototype.id + '-formQueryPend').hide();
+//            Ext.getCmp(prototype.id + '-spacerPanel').hide();
+//            Ext.getCmp(prototype.id + '-dataEntry').setX(410);
+//        }
 
     },
     winVentanaPend: function () {
@@ -884,10 +883,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let datos = {};
         datos = this.procesarRegistros(miGrilla);
         
-        if ( ACCNUMBER !== ACCNUMBERL) {
-             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
-             return false
-        }
+//        if ( ACCNUMBER !== ACCNUMBERL) {
+//             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
+//             return false
+//        }
         
         if( DIFF !== 0 && MONEDA !== 'COP' ){
             global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});

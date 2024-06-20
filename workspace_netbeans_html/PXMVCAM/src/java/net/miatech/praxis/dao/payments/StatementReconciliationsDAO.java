@@ -1502,6 +1502,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
+                    beanTkt.FUNDSTRGK = rst.getString("FUNDSTRGK");
                     beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.UNICODE = rst.getString("UNICODE").trim();
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();
@@ -1574,7 +1575,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1596,6 +1597,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(13, filter.IN_SEQ.trim());
             cstmt.setString(14, filter.IN_DATECI.trim());
             cstmt.setString(15, filter.IN_TRANCI.trim());
+            cstmt.setString(16, filter.IN_FUNDSTRGK.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -1621,6 +1623,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
                 beanTkt.MERCHAND= rst.getString("MERCHAND");
+                beanTkt.FUNDSTRGK= rst.getString("FUNDSTRGK");
                 beanTkt.ADATE = rst.getString("ADATE");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");

@@ -48,6 +48,7 @@ public class A2290 {
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
     public String TERMI = "";
+    public String FUNDSTRGK = "";
     public String RED = "";
     public String DESAGENT = "";
     public String SDATE = "";
