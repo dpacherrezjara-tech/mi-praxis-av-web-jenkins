@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         prototype.url = CONTEXTPATH + '/SalesConciliationManual';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-panelGridDataMainDt';
+        me.panelActual = '-panelGridDataMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
@@ -317,6 +317,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         }
     },
+    onGridDayMain: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataMainDay'
+        me.flag = 'all';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);  
+        
+    },
     onGridDay: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         let cantidad = 0
         
@@ -585,6 +592,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                 break;
             case  '-panelGridDataDetByF':
                 me.pagginActual = '-paggin4';
+                break
+            case  '-panelGridDataMainDay':
+                me.pagginActual = '-paggin5';
                 break;
         }
     },

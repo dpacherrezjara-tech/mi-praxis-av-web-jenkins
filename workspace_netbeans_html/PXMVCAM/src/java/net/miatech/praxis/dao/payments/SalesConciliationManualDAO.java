@@ -158,6 +158,116 @@ public class SalesConciliationManualDAO {
         return lstTkts;
     }
     
+    public List<A2295Filter> loadPX290MPS077_MONTH(A2295Filter filter) throws SQLException, Exception {
+
+        List<A2295Filter> lstTkts = new ArrayList<A2295Filter>(0);
+        A2295Filter beanTkt;
+        long lngTotTkt = 0, lngTotSett = 0, lngTotsettmatch = 0, lngTotSettpend = 0, lngTotTktmatch = 0, lngTotTktpend = 0;
+
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS077_MAIN(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_DATE_FROM.trim());
+            cstmt.setString(3, filter.IN_DATE_TO.trim());
+            
+            cstmt.setInt(4, filter.page.PAGNUM);
+            cstmt.setInt(5, filter.page.PAGROW);
+            cstmt.setInt(6, filter.page.TOTPAG);
+            cstmt.setInt(7, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(4);
+            filter.page.PAGROW = cstmt.getInt(5);
+            filter.page.TOTPAG = cstmt.getInt(6);
+            filter.page.TOTROW = cstmt.getInt(7);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                lngTotSett = rst.getLong("QSETT");
+                lngTotTkt = rst.getLong("QTKT");
+                lngTotsettmatch = rst.getLong("QSETTMATCH");
+                lngTotSettpend = rst.getLong("QSETTPEND");
+                lngTotTktmatch = rst.getLong("QTKTMATCH");
+                lngTotTktpend = rst.getLong("QTKTPEND");
+
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2295Filter();
+
+                    beanTkt.PRDA = rst.getString("DATE").trim();
+                    
+                    beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
+                    beanTkt.lngQSETT = rst.getLong("QSETT");
+                    beanTkt.lngQTKT = rst.getLong("QTKT");
+                    beanTkt.lngQSETTMATCH = rst.getLong("QSETTMATCH");
+                    beanTkt.lngQSETTPEND = rst.getLong("QSETTPEND");
+                    beanTkt.lngQTKTMATCH = rst.getLong("QTKTMATCH");
+                    beanTkt.lngQTKTPEND = rst.getLong("QTKTPEND");
+
+
+                    beanTkt.lngTotQSETT = lngTotSett;
+                    beanTkt.lngTotQTKT = lngTotTkt;
+                    beanTkt.lngTotQSETTMATCH = lngTotsettmatch;
+                    beanTkt.lngTotQSETTPEND = lngTotSettpend;
+                    beanTkt.lngTotQTKTMATCH = lngTotTktmatch;
+                    beanTkt.lngTotQTKTPEND = lngTotTktpend;
+
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
     public List<A2295Filter> loadPX290MPS077_DAY(A2295Filter filter) throws SQLException, Exception {
 
         List<A2295Filter> lstTkts = new ArrayList<A2295Filter>(0);

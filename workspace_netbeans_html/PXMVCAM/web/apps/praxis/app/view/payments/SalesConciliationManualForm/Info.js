@@ -67,11 +67,13 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                 columns: [
                                                     {
                                                         text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true, //flex: 1
-                                                        
+                                                        listeners: {
+                                                            click: 'onGridDayMain'
+                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             value = '<b>' + value + '</b>';
-                                                            return  value ;
+                                                            return '<a href="#payments-sales-conciliation-manual-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
@@ -204,7 +206,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
 //GRILLA: AÑO,MES - 2DA BAJADA                       
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-panelGridDataMainDt',
+                            id: prototype.id + '-panelGridDataMainDay',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
@@ -217,7 +219,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id + '-gridDataMainDt',
+                                    id: prototype.id + '-gridDataMainDay',
                                     width: 682,
                                     columnLines: true,
                                     features: [{
@@ -231,7 +233,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                         },
                                         items: [
                                             {
-                                                id: prototype.id + '-columnName01', text: 'SalesXD',
+                                                text: 'Sales',
                                                 columns: [
                                                     {
                                                         text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true, //flex: 1
@@ -242,7 +244,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                             return  value ;
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:center; margin-right:3px ';
                                                             return '<b>' + 'Total' + '<b>';
                                                         }
@@ -270,7 +272,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;";
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             return Ext.util.Format.number(data.lngTotQSETTMATCH, '0,000');
                                                         }
                                                             
@@ -287,7 +289,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                             return '<a href="#payments-sales-conciliation-manual-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                             return '<b>' + Ext.util.Format.number(data.lngTotQSETTPEND, '0,000') + '<b>';
                                                         }
@@ -300,7 +302,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;";
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             return Ext.util.Format.number(data.lngTotQSETT, '0,000');
                                                         }
                                                             
@@ -327,7 +329,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                             return '<a href="#payments-sales-conciliation-manual-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                             return '<b>' + Ext.util.Format.number(data.lngTotQTKTMATCH, '0,000') + '<b>';
                                                         }
@@ -343,7 +345,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                             return '<a href="#payments-sales-conciliation-manual-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                             return '<b>' + Ext.util.Format.number(data.lngTotQTKTPEND, '0,000') + '<b>';
                                                         }
@@ -356,7 +358,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;";
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMainDay').getStore().getData().items[0].data;
                                                             return Ext.util.Format.number(data.lngTotQTKT, '0,000');
                                                         }
                                                             
