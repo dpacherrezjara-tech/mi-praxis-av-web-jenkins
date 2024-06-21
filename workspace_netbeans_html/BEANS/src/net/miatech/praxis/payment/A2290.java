@@ -48,7 +48,6 @@ public class A2290 {
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
     public String TERMI = "";
-    public String FUNDSTRGK = "";
     public String RED = "";
     public String DESAGENT = "";
     public String SDATE = "";
@@ -59,6 +58,7 @@ public class A2290 {
     public String SCARCOD = "";
     public String STCNTR = "";
     public String BANDOC = "";
+    public int CONT = 0;
     public String BANDOCL = "";
     public String STCON = "";
     public String FCONT = "";
@@ -132,6 +132,7 @@ public class A2290 {
     public String IDFIL = "";
     public String BAID = "";
     public String CERROR = "";
+    public String strCERROR = "";
     public String CREJEC = "";
     public String FLAGC = "";
     public String FNOBANK = "";
@@ -140,6 +141,7 @@ public class A2290 {
     public String DATEC2 = "";
     public String DATEC3 = "";
     public String TRNXCODE = "";
+    public String FUNDSTRGK = "";
     
     //ADJUSTMENT
     public String ASTVAL = "";

@@ -45,6 +45,7 @@ public class A2290Filter extends A2290 {
     public String CODE = "";
     public String DESCR = "";
     public String TabMPF = "";
+    public String IN_FUNDSTRGK = "";
     
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
@@ -64,6 +65,7 @@ public class A2290Filter extends A2290 {
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
     public String IN_COREP = "";
+    public String IN_PGRM = "";
     public String NAME = "";
     public String NAMEP = "";
     public String IN_SDATE = "";
@@ -86,9 +88,10 @@ public class A2290Filter extends A2290 {
     public String IN_BANK = "";
     public String IN_ADYEN = "";
     public String IN_TTRAN = "";
+    
+    public int TRANL = 0;
     public String IN_DATECI = "";
     public String IN_TRANCI = "";
-    public String IN_FUNDSTRGK = "";
     public String IN_PNR = "";
     public String IN_CONTAB = "";
     public String TTRAN = "";
@@ -352,6 +355,9 @@ public class A2290Filter extends A2290 {
     public int SUMA_QTYSVFOP = 0;
     public double totSUMA_SVFOP = 0;
     public int totSUMA_QTYSVFOP = 0;
+    public int QTYREC = 0;
+    public int QTYUPL = 0;
+    public int QTYNOTUPL = 0;
 
     public String strIN_FTE = "";
     public String strIN_AFTE = "";

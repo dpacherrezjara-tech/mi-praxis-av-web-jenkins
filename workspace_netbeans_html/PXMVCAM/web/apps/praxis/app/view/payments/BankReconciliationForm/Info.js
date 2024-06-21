@@ -2638,7 +2638,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     }
                                                 ]
-                                            },
+                                            },                                          
                                             {
                                                 text: 'Poliza',
                                                 columns: [
@@ -2684,6 +2684,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "color:#057ECB;text-align:right;";
                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
                                                             return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -2698,6 +2700,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
                                                 id: prototype.id + '-gridEdit',
+                                                
                                                 width: 40,
                                                 text: 'View',
                                                 align: 'center',

@@ -1298,6 +1298,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     } else {
                         var bean = obj.data.items[0].data;
                         var title = '';
+                        
+                        
                         if(bean.TDOC != 'S'){
                             Ext.getCmp(prototype.id + '-ColumnDateDetalle').setText('Trans.<br>Date');
                         }else {
@@ -1309,7 +1311,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         } else {
                             title = " Sales Date : " + bean.SDATE + " - Country : " + bean.IN_COUNTRY;
                         }
-
+                            
                         console.log(title);
                         Ext.getCmp(prototype.id + '-labelTitle3').setText(title);
                         Ext.getCmp(prototype.id + '-labelTitle3').setVisible(true);
@@ -1328,6 +1330,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="onGridTicket">
     onGridTicket: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        if(rowData.data.CERROR == '45'){
+            global.Msg({
+                            msg: 'Manual Conciliation AV - w/o Accounting'
+                        });
+            return false
+        }
         if(rowData.data.lngQTYTKT == 0){
             return false
         }
@@ -1769,8 +1777,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         var rec = grid.getStore().getAt(rowIndex);
         console.log('RECDATA');
         console.log(rec.data);
+        console.log(rec.data.CERROR, 'rec.data.CERROR');
         
-        
+        if(rec.data.CERROR == '45'){
+            global.Msg({
+                            msg: 'Manual Conciliation AV - w/o Accounting'
+                        });
+            return false
+        }
         
         if (rec.data.IN_ADYEN === 'Y' && (rec.data.IN_STVAL === '2' || rec.data.IN_STVAL === '3')) {
             
@@ -2417,7 +2431,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 case '-panelGridDetCardByS':
                     me.pagginActual = '-paggin5';
                     break;
-                case '-gridDataDetDayByS':
+                case '-panelGridDetCardNbrByS':
                     me.pagginActual = '-paggin6';
                     break;
                 case '-panelGridDataTicket':

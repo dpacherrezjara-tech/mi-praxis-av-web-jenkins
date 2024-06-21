@@ -796,6 +796,8 @@ public class BankReconciliationDAO {
                     beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
                     beanTkt.TERMI = rst.getString("TERMI").trim();
                     beanTkt.STCON = rst.getString("STCON").trim();
+                    beanTkt.CERROR = rst.getString("CERROR").trim();
+                    beanTkt.strCERROR = rst.getString("ERROR").trim();
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
                     } else {
