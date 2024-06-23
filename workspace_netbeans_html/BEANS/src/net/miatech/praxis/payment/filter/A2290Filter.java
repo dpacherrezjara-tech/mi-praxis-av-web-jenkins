@@ -51,6 +51,12 @@ public class A2290Filter extends A2290 {
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
     public String IN_TDOC = "";
+    public String IN_USCR = "";
+    public String IN_PRDA = "";
+    public int IN_TRANL = 0;
+    public int QTY = 0;
+    public int QTYPROCUP = 0;
+    public int QTYNPROCUP = 0;
     public String IN_SEQ = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
@@ -78,6 +84,7 @@ public class A2290Filter extends A2290 {
     public String IN_MERCHN = "";
     public String IN_DATE = "";
     public String IN_CERROR = "";
+    public String IN_STCON = "";
     public String IN_PHASE = "";
     public String IN_AGENT = "";
     public String AGT_VTA = "";
@@ -358,6 +365,7 @@ public class A2290Filter extends A2290 {
     public int QTYREC = 0;
     public int QTYUPL = 0;
     public int QTYNOTUPL = 0;
+    public int IN_CONT = 0;
 
     public String strIN_FTE = "";
     public String strIN_AFTE = "";
