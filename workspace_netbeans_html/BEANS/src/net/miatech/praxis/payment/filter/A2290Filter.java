@@ -135,6 +135,8 @@ public class A2290Filter extends A2290 {
     public String DATEC = "";
     public String FECSELEC = "";
     public String TRANC = "";
+    public String DATCO = "";
+    public String DATECTRANC = "";
     public String STATUSC = "";
     public String TIPOTAR = "";
     public String FLOADE = "";

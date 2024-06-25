@@ -62,12 +62,14 @@ public class A2290 {
     public String BANDOCL = "";
     public String STCON = "";
     public String FCONT = "";
+    public String ERROR = "";
     public String NEGOC = "";
     public String ACCNUMBER = "";
     public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
     public double SVFOP = 0;
+    public double SVFOPADJ = 0;
     public double SVFOPC = 0;
     public double SVFOPD = 0;
     public double FAREO = 0;
@@ -82,6 +84,7 @@ public class A2290 {
     public double TOTAL = 0;
     public String SCURRENCY = "";
     public String SCURRENCYL = "";
+    public String SCURRENCYADJ = "";
     public String COREPL = "";
     public String SCARDNM = "";
     public String SCARDN = "";
@@ -146,6 +149,7 @@ public class A2290 {
     //ADJUSTMENT
     public String ASTVAL = "";
     public String ATDOC = "";
+    public String TDOCADJ = "";
     public String ASCARCOD = "";
     public String ASCARDN = "";
     public String ASAUTHOC = "";
@@ -157,6 +161,8 @@ public class A2290 {
     public String ATRANC = "";
     public String ADJCODE = "";
     public String ACERROR = "";
+    public String CERRORADJ = "";
+    public String descCERRORADJ = "";
     
     //TEF
     public String TDATE = "";

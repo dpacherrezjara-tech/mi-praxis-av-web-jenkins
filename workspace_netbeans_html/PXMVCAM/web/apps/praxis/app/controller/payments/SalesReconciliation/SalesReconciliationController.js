@@ -159,7 +159,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         console.log('wadafafafa')
         if( obj.getValue() == 'D' || obj.getValue() == 'R' || obj.getValue() == 'C' || obj.getValue() == 'A' ){
             Ext.getCmp(prototype.id + '-cmbDebitType').show()
-            Ext.getCmp(prototype.id + '-lblTDOC').show()
+            Ext.getCmp(prototype.id + '-lblTDOC').show();
         }else{
            Ext.getCmp(prototype.id + '-cmbDebitType').hide() 
            Ext.getCmp(prototype.id + '-lblTDOC').hide()
