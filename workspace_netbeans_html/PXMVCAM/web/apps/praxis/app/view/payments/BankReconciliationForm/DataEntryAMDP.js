@@ -2242,6 +2242,155 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                         },
                                                     ]
                                                 },
+                                                {
+                                                    xtype: 'panel',
+//                                                    id: prototype.id + '-FlownAnalysis_tab',
+                                                    title: 'Reversed',
+                                                    listeners: {
+                                                        activate: 'onWindowReversed'
+                                                    },
+                                                    items: [
+                                                        {
+                                                            xtype: 'panel',
+                                                            hidden: true,
+                                                            id: prototype.id + '-panelDataInfoScanReversed',
+                                                            layout: 'vbox',
+                                                            border: false,
+                                                            width: 1024,
+//                                                            height: 180,
+                                                            hidden: false,
+                                                            autoScroll: true,
+                                                            items: [
+                                                                {
+                                                                    xtype: 'grid',
+                                                                    id: prototype.id + '-gridDataInfoScanReversed',
+                                                                    width: 1022,
+                                                                    height: 180,
+                                                                    columnLines: true,
+                                                                    plugins: [
+                                                                        {
+                                                                            ptype: 'cellediting',
+                                                                            clicksToEdit: 1
+                                                                        }
+                                                                    ],
+                                                                    columns: {
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: true,
+                                                                            align: 'center'
+                                                                        },
+                                                                        items: [
+                                                                            {text: 'Status', dataIndex: 'STVAL', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    value = 'Match';
+                                                                                    if (record.data.STVAL === '1') {
+                                                                                        value = 'Match'
+                                                                                    } else if (record.data.STVAL === '5') {
+                                                                                        value = 'Match manual.'
+                                                                                    } else {
+                                                                                        value = 'Open'
+                                                                                    }
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 60,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.tdAttr = 'data-qtip="' + record.data.desCERROR + '"';
+                                                                                    }
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'Agent', dataIndex: 'A720AGENTE', width: 70,
+                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'Sales<br>Date', dataIndex: 'A720FECVTA', width: 75,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'PNR', dataIndex: 'A720PNR', width: 63,
+                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                },
+//                                                                                listeners: {
+//                                                                                    click: 'onGridDataViewTktFinal'
+//                                                                                },
+                                                                                //editor: {xtype: 'textfield', editable: false},
+                                                                            },
+                                                                            {
+                                                                                text: 'Credit Card',
+                                                                                defaults: {
+                                                                                    menuDisabled: true,
+                                                                                    sortable: false,
+                                                                                    align: 'center'
+                                                                                },
+                                                                                columns: [
+                                                                                    {text: 'Type', dataIndex: 'A1531TTARJ', width: 40,
+                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                            metaData.style = "text-align:center;";
+                                                                                            return value;
+                                                                                        }
+                                                                                    },
+                                                                                    {text: 'Number', dataIndex: 'A1531NREF', width: 130,
+                                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                            metaData.style = "text-align:center;";
+                                                                                            return value;
+                                                                                        }
+                                                                                    },
+                                                                                    {text: 'Author.<br>Code', dataIndex: 'A1531CAPL', width: 65,
+                                                                                        editor: {xtype: 'textfield', editable: false},
+                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                            metaData.style = "text-align:center;";
+                                                                                            return value;
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            {text: 'Curr', dataIndex: 'A1531MFOP', width: 45,
+                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'Amount', dataIndex: 'A1531VFOP', width: 85,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                            {text: 'Sales<br>Amount', dataIndex: 'tot_VFOP', width: 85,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return value;
+                                                                                }
+                                                                            },
+                                                                        ]
+                                                                    }
+                                                                },
+                                                            ]
+                                                        },
+                                                    ]
+                                                },
                                             ]
                                         },
 //                                       

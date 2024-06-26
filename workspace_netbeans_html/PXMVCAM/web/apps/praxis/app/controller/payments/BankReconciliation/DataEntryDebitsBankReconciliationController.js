@@ -1016,6 +1016,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         
     },
     onCancelClick: function (btn) {
+        console.log(Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), 'coment')
+        console.log(Ext.getCmp(prototype.id + '-cmbDebitType').getValue(), 'debtype')
         this.view.close();
     },
     // </editor-fold>
@@ -1026,36 +1028,45 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         var decide = false;
         var ASVFOP = Math.abs(parseFloat(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', '')));
         var BSVFOP = Math.abs(parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', '')));
+        var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+        var debType = Ext.getCmp(prototype.id + '-cmbDebitType').getValue()
         console.log(ASVFOP);
         console.log(BSVFOP);
-        if (ASVFOP === BSVFOP) {
-            var debitType = Ext.getCmp(prototype.id + '-cmbDebitType').getValue();
-            if(!debitType || debitType == ''){
-                global.Msg({msg: 'Select the type of debit "Debit Type" '});
-                return false
-            }
-            var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
-            console.log(comment);
-            if (comment !== '' && comment !== null) {
-                let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan_' + prefixDeb);
-                let datos = {};
-                datos = this.procesarRegistros(miGrilla);
-                if (Array.isArray(datos) && datos.length === 0) {
-                    // Nadine
-                } else {
-                    console.log('modificable');
-                    decide = true;
+        if(debType == 'DB-TKT' || debType == 'NO-IDN' ){
+            decide = true;
+        }else{
+            if (ASVFOP === BSVFOP ) {
+            
+                var debitType = Ext.getCmp(prototype.id + '-cmbDebitType').getValue();
+                if(!debitType || debitType == ''){
+                    global.Msg({msg: 'Select the type of debit "Debit Type" '});
+                    return false
                 }
-            } else {
-                global.Msg({msg: 'Select the Manual Reconciliation reason "BPO Comment" '});
-                Ext.getCmp(prototype.id + '-PanelComments').show();
-                Ext.getCmp(prototype.id + '-COMENT_Forced').show();
-            }
 
-        } else {
-            console.error('No cuadra');
-            global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Settlement.'});
+                console.log(comment);
+                if (comment !== '' && comment !== null) {
+                    let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan_' + prefixDeb);
+                    let datos = {};
+                    datos = this.procesarRegistros(miGrilla);
+                    if (Array.isArray(datos) && datos.length === 0) {
+                        // Nadine
+                    } else {
+                        console.log('modificable');
+                        decide = true;
+                    }
+                } else {
+                    global.Msg({msg: 'Select the Manual Reconciliation reason "BPO Comment" '});
+                    Ext.getCmp(prototype.id + '-PanelComments').show();
+                    Ext.getCmp(prototype.id + '-COMENT_Forced').show();
+                }
+
+            } else {
+                console.error('No cuadra');
+                global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Settlement.'});
+            }
         }
+
+        
         return decide;
     },
     executeOption: function (beanTemp, option) {

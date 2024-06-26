@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     sumAmount: 0,
     sumAmountBlocked: 0,
     dataObtain: {},
+    beanReversed: {},
     // </editor-fold>
     init: function (view) {
         meDe = this;
@@ -24,11 +25,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstCard = this.p.lstCard;
         this.lstBank = this.p.lstBank;
         this.lstCountry = this.p.lstCountry;
-        console.log(this.bean);
+        console.log(this.bean, 'this.bean');
         this.lstAdjustment = [];
     },
     afterRender: function () {
-        console.log(this.bean.STVAL);
+        console.log(this.bean.STVAL, 'this.bean.STVAL');
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-delete').hide();
@@ -311,6 +312,44 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     });
                     Ext.getCmp(prototype.id + '-cmbCOMENT').bindStore(storeData);
                     Ext.getCmp(prototype.id + '-cmbCOMENT').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+            }
+        });
+    },
+    onWindowReversed: function (){
+        var paramDetail = {};
+        console.log(this.bean.DATEC, 'this.bean.DATEC')
+        console.log(this.bean.TRANC, 'this.bean.TRANC')
+        console.log(this.bean.BANDOC, 'this.bean.BANDOC')
+        this.beanReversed.DATEC = this.bean.DATEC
+        this.beanReversed.TRANC = this.bean.TRANC
+        this.beanReversed.BANDOC = this.bean.BANDOC
+        Ext.getCmp(prototype.id + '-panelSumAmount').hide()
+        paramDetail.beanString = JSON.stringify(this.beanReversed);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDP_REVERSED',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramDetail,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanReversed').bindStore(storeData);
+
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
@@ -786,7 +825,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     onReverseClick: function (btn) {
-        if(this.bean.FCONT == ''){
+//        if(this.bean.FCONT == ''){
             Ext.Msg.show({
                 title: '.:Confirmation:.',
                 msg: 'Are you sure to Reverse?',
@@ -805,10 +844,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         }
                 }
             }); 
-        } else {
-            global.Msg({msg: 'Reversal not allowed'});
-            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
-        }
+//        } else {
+//            global.Msg({msg: 'Reversal not allowed'});
+//            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
+//        }
         
     },
     onCancelClick: function (btn) {
@@ -1363,6 +1402,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         $('.x-tab-top:contains("Blocked")').hide();
     },
     onWindowNormal: function () {
+        Ext.getCmp(prototype.id + '-panelSumAmount').show()
         if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
             Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
 
@@ -1374,10 +1414,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     onWindowBlocked: function () {
         Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
         Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 215');
-
+        Ext.getCmp(prototype.id + '-panelSumAmount').show()
     },
     allRefreshDataEntryAMDP: function () {
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
+            console.log(this.bean.STVAL, 'this.bean.STVAL')
             this.onSearchCompleteDetail();
         } else {
             this.onSearchPendingDetail();

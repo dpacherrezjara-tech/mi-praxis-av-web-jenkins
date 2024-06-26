@@ -56,15 +56,18 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
             html: this.bean.SCARCOD.trim()+" - "+this.bean.strSDescCard.trim()
         });
         
-        win.setValue('2-txtACARCOD', this.bean.SCARCODL.trim());
-        Ext.create('Ext.tip.ToolTip', {
-            target: prototype.id+'-2-txtACARCOD',
-            html: this.bean.ACARCOD.trim()+" - "+this.bean.strADescCard.trim()
-        });
+//        win.setValue('2-txtACARCOD', this.bean.SCARCODL.trim());
+//        Ext.create('Ext.tip.ToolTip', {
+//            target: prototype.id+'-2-txtACARCOD',
+//            html: this.bean.ACARCOD.trim()+" - "+this.bean.strADescCard.trim()
+//        });
         
         win.setValue('2-txtTicket', this.bean.strTicket.trim());
         win.setValue("2-txtSEQ", this.bean.SEQ.trim());
         win.setValue('2-cmbTDOC', this.bean.TDOC);
+       
+        
+        
         win.setValue('2-cmbFTE', this.bean.FTE);
         win.setValue('2-cmbSTVAL', this.bean.STVAL);
         //<editor-fold defaultstate="collapsed" desc="style Error">
@@ -202,6 +205,35 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtSIDATE", this.bean.SIDATE.trim());
         win.setValue("2-txtSPNR", this.bean.SPNR.trim());
         win.setValue("2-txtTRNCU", this.bean.TRNCU.trim());
+        win.setValue("2-txtSTCON", this.bean.STCON.trim());
+        if(this.bean.STCON == '1'){
+             win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'With Sale');
+        }else if(this.bean.STCON == '2'){
+            win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'Without Sale');
+        }else if(this.bean.STCON == '3'){
+            win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'Regularization');
+        }else if(this.bean.STCON == '4'){
+            win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'Adjustment');
+        }
+        win.setValue("2-txtFCONT", this.bean.FCONT.trim());
+        win.setValue("2-txtSVFOPADJ",win.formatDblNumber(this.bean.SVFOPADJ));
+        win.setValue("2-txtSCURRENCYADJ", this.bean.SCURRENCYADJ.trim());
+        win.setValue("2-txtDTYPEADJ", this.bean.TDOCADJ.trim());
+        if(this.bean.TDOC === 'A'){
+             win.setValue("2-txtDTYPEADJ",'Adjustment');
+        }else if(this.bean.TDOC === 'S'){
+            win.setValue("2-txtDTYPEADJ",'Sales');
+        }
+//        }else if(this.bean.STCON == '3'){
+//            win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'Regularization');
+//        }else if(this.bean.STCON == '4'){
+//            win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'Adjustment');
+//        }
+        win.setValue("2-txtERRORADJ", this.bean.CERROR.trim());
+        win.setValue("2-txtDATECTRANC", this.bean.DATECTRANC.trim());
+        win.setValue("2-txtDATCO", this.bean.DATCO.trim());
+        win.setValue("2-txtBANDOC", this.bean.BANDOC.trim());
+        
         //ACCB ===================================
 //        if(this.bean.AFTE.trim() === 'X'){
 //            win.setText('2-lblACCBTitulo', 'Reconciliation BSP Information');
@@ -229,29 +261,29 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
 //            });
 //	}
 //        win.setText('2-lblAFTE', this.bean.strDescAFTE.trim());
-        win.setValue('2-txtADATEL', this.bean.ADATEL.trim());
-        win.setValue('2-cmbAFLOAD', this.bean.AFLOAD==="M"?this.bean.AFLOAD:"A");
-        win.setValue('2-txtACOUNTRY', this.bean.SCOUNTRYL.trim());
-        win.setValue('2-txtAAGENT', this.bean.SAGENTL.trim());
-        win.setValue('2-txtADATE', this.bean.SDATEL.trim());
-        win.setValue('2-txtAPAYMENT', this.bean.APAYMENT.trim());
-        win.setValue('2-txtATCNTR', this.bean.ATCNTR.trim());
-        win.setValue('2-txtAVFOP', win.formatDblNumber(this.bean.NETOL));
-        win.setValue('2-txtACURRENCY', this.bean.ACURRENCY.trim());
-        win.setValue('2-txtACARDN', this.bean.SCARDNL.trim());
-        win.setValue('2-txtADATEXP', this.bean.ADATEXP.trim());
-        win.setValue('2-txtAAUTHOC', this.bean.SAUTHOCL.trim());
-        win.setValue('2-txtAINVN', this.bean.AINVN.trim());
-        win.setValue('2-txtAIDATE', this.bean.AIDATE.trim());
-        win.setValue('2-txtAPNR', this.bean.SPNRL.trim());
-	if(this.bean.strDescMerchn.trim() !== ''){
-            win.setValue('2-txtMERCHN', this.bean.MERCHNCL.trim()+' - '+this.bean.strDescMerchn.trim());
-	}else{
-            win.setValue('2-txtMERCHN', this.bean.MERCHNCL.trim());
-	}
-        win.setValue('2-txtSEQNUM', this.bean.SEQL.trim());
-        win.setValue('2-txtSEQCOUNT', this.bean.SEQCOUNT.trim());
-        win.setValue('2-txtComment', this.bean.strComment.trim());
+        //win.setValue('2-txtADATEL', this.bean.ADATEL.trim());
+        //win.setValue('2-cmbAFLOAD', this.bean.AFLOAD==="M"?this.bean.AFLOAD:"A");
+        //win.setValue('2-txtACOUNTRY', this.bean.SCOUNTRYL.trim());
+//        win.setValue('2-txtAAGENT', this.bean.SAGENTL.trim());
+//        win.setValue('2-txtADATE', this.bean.SDATEL.trim());
+//        win.setValue('2-txtAPAYMENT', this.bean.APAYMENT.trim());
+//        win.setValue('2-txtATCNTR', this.bean.ATCNTR.trim());
+//        win.setValue('2-txtAVFOP', win.formatDblNumber(this.bean.NETOL));
+//        win.setValue('2-txtACURRENCY', this.bean.ACURRENCY.trim());
+//        win.setValue('2-txtACARDN', this.bean.SCARDNL.trim());
+//        win.setValue('2-txtADATEXP', this.bean.ADATEXP.trim());
+//        win.setValue('2-txtAAUTHOC', this.bean.SAUTHOCL.trim());
+//        win.setValue('2-txtAINVN', this.bean.AINVN.trim());
+//        win.setValue('2-txtAIDATE', this.bean.AIDATE.trim());
+//        win.setValue('2-txtAPNR', this.bean.SPNRL.trim());
+//	if(this.bean.strDescMerchn.trim() !== ''){
+//            win.setValue('2-txtMERCHN', this.bean.MERCHNCL.trim()+' - '+this.bean.strDescMerchn.trim());
+//	}else{
+//            win.setValue('2-txtMERCHN', this.bean.MERCHNCL.trim());
+//	}
+//        win.setValue('2-txtSEQNUM', this.bean.SEQL.trim());
+//        win.setValue('2-txtSEQCOUNT', this.bean.SEQCOUNT.trim());
+        //win.setValue('2-txtComment', this.bean.strComment.trim());
 	//TEF ===================================
         win.setValue('2-txtTDATE', this.bean.TDATE.trim());
         win.setValue('2-txtDATEF', this.bean.DATEF.trim());
@@ -260,13 +292,25 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue('2-cmbBSTVAL', this.bean.BSTVAL);
         win.setValue('2-txtBDATEP', this.bean.BDATEP.trim());
         win.setValue('2-cmbBSTVALP', this.bean.BSTVALP);
-        win.setValue('2-cmbFNOBANK', this.bean.FNOBANK);
+        //win.setValue('2-cmbFNOBANK', this.bean.FNOBANK);
 	
-        win.setValue('2-txtDATEC', this.bean.DATEC.trim());
+        //win.setValue('2-txtDATEC', this.bean.DATEC.trim());
         win.setValue('2-txtCREJEC', this.bean.CREJEC.trim());
         win.setValue('2-txtError', this.bean.CERROR.trim());
-        win.setValue('2-txtDescError', this.bean.strDescripcion.trim());
-	
+        win.setValue('2-txtDescError', this.bean.descCERRORADJ.trim());
+        win.setValue('2-txtDescError2', this.bean.descCERRORADJA.trim());
+        
+         if(this.bean.TDOC.trim() !== 'S'){
+             win.setValue('2-txtError', '');
+             win.setValue('2-txtDescError', '');
+        }else if(this.bean.TDOC.trim() !== 'A'){
+             win.setValue('2-txtSVFOPADJ', '');
+             win.setValue('2-txtSCURRENCYADJ', '');
+             win.setValue('2-txtDTYPEADJ', '');
+             win.setValue('2-txtERRORADJ', '');
+             win.setValue('2-txtDescError2', '');
+        }       
+    
 	if(this.bean.FADYEN == 'Y'){
             win.setValue('2-chkFADYEN', true);
 //            chkFADYEN.setStyle('color', '#128b1b');

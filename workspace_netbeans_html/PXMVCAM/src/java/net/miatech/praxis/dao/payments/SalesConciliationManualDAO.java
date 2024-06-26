@@ -195,7 +195,7 @@ public class SalesConciliationManualDAO {
             filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
-
+// ESTA LISTA ES PARA EL SUMARIOS
             while (rst.next()) {
                 lngTotSett = rst.getLong("QSETT");
                 lngTotTkt = rst.getLong("QTKT");
@@ -211,7 +211,7 @@ public class SalesConciliationManualDAO {
                 rst = cstmt.getResultSet();
 
                 while (rst.next()) {
-
+// LISTA PARA LA GRILLA
                     beanTkt = new A2295Filter();
 
                     beanTkt.PRDA = rst.getString("DATE").trim();
