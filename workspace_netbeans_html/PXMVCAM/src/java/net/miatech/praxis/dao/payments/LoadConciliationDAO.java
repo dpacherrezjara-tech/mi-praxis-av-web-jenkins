@@ -2988,6 +2988,7 @@ public class LoadConciliationDAO {
                     
                     beanTkt.CERROR = rst.getString("CERROR").trim();
                     beanTkt.descCERRORADJ = rst.getString("ERROR").trim();
+                    beanTkt.descCERRORADJA = rst.getString("ERROR").trim();
 
                     beanTkt.strSDescCard = rst.getString("SNAMECAR").trim();
 

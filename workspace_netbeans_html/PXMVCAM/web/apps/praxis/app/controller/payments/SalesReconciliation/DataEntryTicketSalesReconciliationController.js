@@ -234,15 +234,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtDATCO", this.bean.DATCO.trim());
         win.setValue("2-txtBANDOC", this.bean.BANDOC.trim());
         
-        
-        if(this.bean.TDOC.trim() !== 'A'){
-             win.setValue('2-txtSVFOPADJ', '');
-             win.setValue('2-txtSCURRENCYADJ', '');
-             win.setValue('2-txtDTYPEADJ', '');
-             win.setValue('2-txtERRORADJ', '');
-            
-        }
-        
         //ACCB ===================================
 //        if(this.bean.AFTE.trim() === 'X'){
 //            win.setText('2-lblACCBTitulo', 'Reconciliation BSP Information');
@@ -292,7 +283,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
 //	}
 //        win.setValue('2-txtSEQNUM', this.bean.SEQL.trim());
 //        win.setValue('2-txtSEQCOUNT', this.bean.SEQCOUNT.trim());
-        win.setValue('2-txtComment', this.bean.strComment.trim());
+        //win.setValue('2-txtComment', this.bean.strComment.trim());
 	//TEF ===================================
         win.setValue('2-txtTDATE', this.bean.TDATE.trim());
         win.setValue('2-txtDATEF', this.bean.DATEF.trim());
@@ -307,7 +298,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue('2-txtCREJEC', this.bean.CREJEC.trim());
         win.setValue('2-txtError', this.bean.CERROR.trim());
         win.setValue('2-txtDescError', this.bean.descCERRORADJ.trim());
-	
+        win.setValue('2-txtDescError2', this.bean.descCERRORADJA.trim());
+        
+         if(this.bean.TDOC.trim() !== 'S'){
+             win.setValue('2-txtError', '');
+             win.setValue('2-txtDescError', '');
+        }else if(this.bean.TDOC.trim() !== 'A'){
+             win.setValue('2-txtSVFOPADJ', '');
+             win.setValue('2-txtSCURRENCYADJ', '');
+             win.setValue('2-txtDTYPEADJ', '');
+             win.setValue('2-txtERRORADJ', '');
+             win.setValue('2-txtDescError2', '');
+        }       
+    
 	if(this.bean.FADYEN == 'Y'){
             win.setValue('2-chkFADYEN', true);
 //            chkFADYEN.setStyle('color', '#128b1b');

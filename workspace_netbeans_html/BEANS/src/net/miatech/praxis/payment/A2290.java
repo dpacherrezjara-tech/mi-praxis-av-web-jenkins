@@ -163,6 +163,7 @@ public class A2290 {
     public String ACERROR = "";
     public String CERRORADJ = "";
     public String descCERRORADJ = "";
+    public String descCERRORADJA = "";
     
     //TEF
     public String TDATE = "";
