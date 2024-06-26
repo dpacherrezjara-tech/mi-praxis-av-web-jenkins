@@ -1617,7 +1617,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.SAGENT = rst.getString("SAGENT");
                 beanTkt.TERMI = rst.getString("TERMI");
                 beanTkt.RED = rst.getString("RED");
-//                beanTkt.CARDTYPE = rst.getString("CARDTYPE");
+                beanTkt.SCARCOD = rst.getString("SCARCOD");
                 beanTkt.SCARDN = rst.getString("SCARDN");
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");

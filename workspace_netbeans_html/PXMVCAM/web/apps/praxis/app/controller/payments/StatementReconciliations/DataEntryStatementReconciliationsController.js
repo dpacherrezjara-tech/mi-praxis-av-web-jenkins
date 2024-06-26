@@ -618,7 +618,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let listAux = {};
 
         for (let value of arrayNormal) {
-            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.CARDTYPE}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
+            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
         }
 
         var beanString = JSON.stringify(meDE.bean.data);
@@ -635,7 +635,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 if (res.success) {
                     let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
                     for (let item of res.data) {
-                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.FUNDSTRGK}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.CARDTYPE}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
+                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.FUNDSTRGK}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
                             console.log('repetido');
                             continue
                         }
@@ -647,7 +647,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                             SDATE: item.SDATE,
                             SAGENT: item.SAGENT,
                             TERMI: item.TERMI,
-                            CARDTYPE: item.CARDTYPE,
+                            SCARCOD: item.SCARCOD,
                             SCARDN: item.SCARDN,
                             SAUTHOC: item.SAUTHOC,
                             SCURRENCY: item.SCURRENCY,
@@ -1026,7 +1026,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 SDATE: record.get('SDATE').trim(),
                 SAGENT: record.get('SAGENT').trim(),
                 TERMI: record.get('TERMI').trim(),
-                CARDTYPE: record.get('CARDTYPE').trim(),
+                SCARCOD: record.get('SCARCOD').trim(),
                 SCARDN: record.get('SCARDN').trim(),
                 SAUTHOC: record.get('SAUTHOC').trim(),
                 SCURRENCY: 'COP',

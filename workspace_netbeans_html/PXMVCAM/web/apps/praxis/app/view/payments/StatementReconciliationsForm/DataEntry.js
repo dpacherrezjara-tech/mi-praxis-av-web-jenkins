@@ -955,7 +955,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             align: 'center'
                                                                         },
                                                                         columns: [
-                                                                            {text: 'Type', dataIndex: 'CARDTYPE', width: 50,
+                                                                            {text: 'Code', dataIndex: 'SCARCOD', width: 50,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
