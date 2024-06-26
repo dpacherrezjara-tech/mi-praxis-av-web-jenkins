@@ -28,27 +28,23 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.LibraryPOI.classpath}</file>
+                    <file>${libs.LibraryPoi.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Librarypoi11.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
+                    <file>${libs.LibraryPoi11.classpath}</file>
+                    <path-in-war>WEB-INF/classes</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.LibraryWeb.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
+                    <file>${libs.Web.classpath}</file>
+                    <path-in-war>WEB-INF/classes</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.LibraryStandard.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.LibraryJDBC.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${libs.LibraryiText.classpath}</file>
+                    <file>${libs.LibraryText.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -64,19 +60,19 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.mssql-jdbc-9.2.1.jre8.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.servlet-api.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.jna-platform.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.jna.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.LibraryJDBC.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.mssql-jdbc-9.2.1.jre8.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

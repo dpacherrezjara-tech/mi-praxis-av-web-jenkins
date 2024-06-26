@@ -19,6 +19,7 @@ public class ConnectionIBMDB2Server {
     private GeneralLog generalLog = GeneralLog.getInstance();
     private final SQLServerDataSource dataSource = new SQLServerDataSource();
 
+    
     private String dbHost = "";
     private String dbPort = "";
     private String dbDefaultLibrary = "";
