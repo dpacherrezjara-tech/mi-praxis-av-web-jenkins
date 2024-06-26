@@ -1032,13 +1032,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             metaData.style = "text-align:right;";
-                                                                            console.log(data, 'dataaaaaaaaaaaaaaaaaaaa')
-                                                                            if(data.COMISTOTA != 0){
-           
-                                                                                metaData.style = "background-color: #A2F4FE;"
+                                                                            console.log(data.COMISTOTA);
+                                                                            if(data.COMISTOTA !== 0 && data.COMISTOTA !== undefined){
+                                                                                metaData.style = "background-color: #A2F4FE;";
                                                                                 metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA+'"';
                                                                             }
-                                                                            if (record.get('isInValidCombination') && data.STVAL == '3' ) {
+                                                                            if (record.get('isInValidCombination') && data.STVAL === '3' ) {
                                                                                 metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
                                                                             }
                                                                             return Ext.util.Format.number(value, '0,000.00');

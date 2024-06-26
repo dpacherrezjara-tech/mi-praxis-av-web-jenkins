@@ -333,18 +333,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
-            console.log(dataRow1.data.STMANUAL, 'dataRow1.data.STMANUAL')
-            console.log(dataRow1.data, 'dataRow1.data')
-            console.log(dataRow1.data.COMISTOTA, 'dataRow1.data.COMISTOTA')
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-                if(dataRow1.data.COMISTOTA > 0){
-                   
+                if (dataRow1.data.COMISTOTA > 0) {
+                    this.sumAmount = this.sumAmount + dataRow1.data.NETO + dataRow1.data.COMISTOTA;
+                }else{
+                    this.sumAmount = this.sumAmount + dataRow1.data.NETO;
                 }
-                this.sumAmount = this.sumAmount + dataRow1.data.NETO + dataRow1.data.COMISTOTA; //+ dataRow1.data.SADJUST;
+                 //+ dataRow1.data.SADJUST;
             }
         }
-        console.log(this.beanResult.NETO);
-        console.log(this.beanResult.NETOC);
+     
         if (this.beanResult.STVAL === '1') {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.beanResult.NETOC, '0,000.00'));
@@ -391,13 +389,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.util.CSS.createStyleSheet('.detalle-society { background-color: transparent !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #ccdeeb !important; }');
         }
-        
+
         Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').setValue(ACCNUMBER);
         Ext.getCmp(prototype.id + '-de-txtVALDATEL').setValue(ADATE);
         Ext.getCmp(prototype.id + '-de-txtUNICODEL').setValue(MERCHAND);
         Ext.getCmp(prototype.id + '-de-txtSCURRENCYL').setValue(SCURRENCY);
         Ext.getCmp(prototype.id + '-de-txtBANDOCL').setValue(BANDOC);
-        
+
         var acc = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
         var accL = Ext.getCmp(prototype.id + '-de-txtACCNUMBERL').getValue();
 
@@ -558,10 +556,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
         let chkUnicode = Ext.getCmp(prototype.id01 + '-chkUNICODE').getValue();
-        console.log(chkUnicode, 'chkUnicode')
         var fecha_a_validar = "";
-        console.log('format', Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd'))
-        console.log('getValue', Ext.getCmp(prototype.id + '-txtFromADATE').getValue())
         meDE.bean.data.IN_ADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
         meDE.bean.data.IN_SDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
         meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
@@ -570,7 +565,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         if (meDE.bean.data.IN_ADATE !== '') {
             meDE.bean.data.IN_VALDATE = meDE.bean.data.IN_ADATE;
         } else {
-
             meDE.bean.data.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         }
 
@@ -580,23 +574,52 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
-        console.log('valor checkbox', newValue)
-        console.log('checkbox', checkbox)
         if (chkUnicode) {
-            console.log('El checkbox está marcado');
-
             meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
         } else {
-            console.log('El checkbox está desmarcado');
             meDE.bean.data.IN_UNICODE = '';
         }
-        console.log(meDE.bean.data.IN_UNICODE, 'meDE.bean.data.IN_UNICODE')
+
+        // Validación: Verificar si todos los campos son vacíos
+        if (
+                !this.bean.data.IN_ADATE &&
+                !this.bean.data.IN_SDATE &&
+                !this.bean.data.IN_SCARCOD &&
+                !this.bean.data.IN_ACCNUMBER &&
+                !this.bean.data.IN_VALDATE &&
+                !this.bean.data.IN_FUNDSTRGK &&
+                !this.bean.data.IN_strNETO &&
+                !this.bean.data.IN_FUNDSTRGK &&
+                !this.bean.data.SAGENT
+                ) {
+            console.log("Todos los campos son vacíos. No se realizará la solicitud Ajax.");
+            global.Msg({msg: 'Fields to Scan must be filled out'});
+            return;
+        }
+
+        // Obtener el componente del grid
+        let gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        let dataGrid = gridComponentNormalon.getStore().getData().items;
+        let constructorExcluir = {}.constructor;
+        let arrayConstructor = dataGrid.filter(function (elemento) {
+            return elemento.constructor !== constructorExcluir;
+        });
+        let arrayNormal = [];
+        if (arrayConstructor.length > 0) {
+            for (let value of arrayConstructor) {
+                arrayNormal.push(value.data);
+            }
+        }
+        let listAux = {};
+
+        for (let value of arrayNormal) {
+            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.CARDTYPE}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
+        }
 
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({
@@ -608,14 +631,42 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             success: function (response, options) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res, 'res')
-                if (res.success) {
 
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
+                if (res.success) {
+                    let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
+                    for (let item of res.data) {
+                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.FUNDSTRGK}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.CARDTYPE}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
+                            console.log('repetido');
+                            continue
+                        }
+                        lstNormal.push({
+                            descSTVAL: item.descSTVAL,
+                            CCUST: item.CCUST,
+                            descTDOC: item.descTDOC,
+                            FUNDSTRGK: item.FUNDSTRGK,
+                            SDATE: item.SDATE,
+                            SAGENT: item.SAGENT,
+                            TERMI: item.TERMI,
+                            CARDTYPE: item.CARDTYPE,
+                            SCARDN: item.SCARDN,
+                            SAUTHOC: item.SAUTHOC,
+                            SCURRENCY: item.SCURRENCY,
+                            MERCHAND: item.MERCHAND,
+                            BANDOC: item.BANDOC,
+                            ACCNUMBER: item.ACCNUMBER,
+                            ADATE: item.ADATE,
+                            NETO: item.NETO,
+                            RED: item.RED,
+                            SEQ: item.SEQ
+                        })
+                    }
+
+                    var storeDataNormal = Ext.create('Ext.data.Store', {
+                        data: lstNormal,
                         autoLoad: true
                     });
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
+
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
                 } else {
@@ -882,29 +933,29 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         let datos = {};
         datos = this.procesarRegistros(miGrilla);
-        
+
 //        if ( ACCNUMBER !== ACCNUMBERL) {
 //             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
 //             return false
 //        }
-        
-        if( DIFF !== 0 && MONEDA !== 'COP' ){
+
+        if (DIFF !== 0 && MONEDA !== 'COP') {
             global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
             return false
-        } 
-        
-         if (Array.isArray(datos) && datos.length === 0){
-             global.Msg({msg: 'There is no data in the scan.'});
-             return false
-         }
-        
-        if( DIFF == 0 ){
+        }
+
+        if (Array.isArray(datos) && datos.length === 0) {
+            global.Msg({msg: 'There is no data in the scan.'});
+            return false
+        }
+
+        if (DIFF == 0) {
             console.log('entra a DIF = 0', DIFF)
             return true
-        }else if( DIFF !== 0 && DIFF < 100 ) {
+        } else if (DIFF !== 0 && DIFF < 100) {
             console.log('entra a DIF < 100', DIFF)
             return true
-        }else{
+        } else {
             console.log('entra a ELSE', DIFF)
             global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
             return false
