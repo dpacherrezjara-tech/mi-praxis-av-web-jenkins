@@ -327,8 +327,8 @@ public class ReverseController extends BaseController {
                 String tdocValue = listaData.get(vi).TDOC;
                 if (tdocValue.equals("S")) {
                     tdocValue = "Sales";
-                } else if (tdocValue.equals("R")) {
-                    tdocValue = "Refund";
+                } else if (tdocValue.equals("A")) {
+                    tdocValue = "Adjustment";
                 }
                 rcell2.setCellValue(tdocValue);
                 rcell3.setCellValue(listaData.get(vi).CERROR);
