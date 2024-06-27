@@ -30,13 +30,16 @@ public class A2295Filter  extends A2295{
     public String IN_SPAYMENT = "";
     public String IN_TKT = "";
     public String IN_SAGENT = "";
+    public String IN_SPNR = "";
     public String IN_PNR = "";
     public String IN_SCARDN1 = "";
     public String IN_SCARDN2 = "";
+    public String IN_SVFOT = "";
     public String IN_CARDN = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
     public String IN_TDOC = "";
+    public String IN_SCARDNCOR = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
     public String IN_COUNTRY = "";

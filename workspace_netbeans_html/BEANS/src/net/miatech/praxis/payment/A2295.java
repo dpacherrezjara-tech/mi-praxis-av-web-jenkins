@@ -44,9 +44,12 @@ public class A2295 {
     public String ADATE = "";
     public String SDATE = "";
     public String SAGENT = "";
+    public String STCON = "";
+    public String FCONT = "";
     public String STVAL = "";
     public String FCONCEP = "";
     public String SVFOP = "";
+    public String SPNR = "";
     public String USERF = "";
     public String CERROR = "";
     public String PROCESA = "";

@@ -1,5 +1,5 @@
 valor = '0';
-Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
+Ext.define('Ext.Praxis.view.payments.ReverseForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1662,
+                            width: 1592,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1662,
+                                    width: 1592,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -60,8 +60,8 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                             sortable: false,
                                             align: 'center'
                                         },
-                                        items: [
-                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 70,
+                                          items: [
+                                            {text: 'Flag Status', dataIndex: 'STVAL', width: 200,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Ticket', dataIndex: 'TKT', width: 100,
+                                            {text: 'Ticket Number', dataIndex: 'TKT', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -77,23 +77,26 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Roll.', dataIndex: 'SEQ', width: 50,
+                                            {text: 'Type', dataIndex: 'TDOC', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
+                                                    if (value === 's') {
+                                                        value = 'sales';
+                                                    }
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Seq.', dataIndex: 'CORRL', width: 50,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'TD', dataIndex: 'descTDOC', width: 60,
+//                                            {text: 'Deb. Type', dataIndex: 'CORRL', width: 50,
+//                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                    metaData.style = "text-align:center;";
+//                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                    metaData.unselectableAttr = "unselectable='off'";
+//                                                    return value;
+//                                                }
+//                                            },
+                                            {text: 'Error Code', dataIndex: 'CERROR', width: 130,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -102,7 +105,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                 }
                                             },
                                             
-                                            {text: 'Fuente', dataIndex: 'CFUENTE', width: 60,
+                                            {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 80,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -110,15 +113,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Sub Fte', dataIndex: 'SUBFTE', width: 60,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 70,
+                                            {text: 'Country<br>Code', dataIndex: 'SCOUNTRY', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -127,7 +122,15 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },                                            
-                                            {text: 'Agent', dataIndex: 'SAGENT', width: 70,
+                                            {text: 'Code', dataIndex: 'SAGENT', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;color:#244066;background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Card Number', dataIndex: 'SCARDN', width: 130,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -135,9 +138,19 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Agent<br>Cons.', dataIndex: 'SCONSOL', width: 70,
+                                            {text: 'Scarcode', dataIndex: 'SCARCOD', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },                         
+                                            {text: 'Author.', dataIndex: 'SAUTHOC', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    //metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
@@ -145,113 +158,55 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                             },
                                             {text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //metaData.style = "text-align:center;";
-                                                    metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                    metaData.style = "text-align:center;color:#244066;background-color:#d5f4d5;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Cash', dataIndex: 'SVFOPCA', width: 130,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    // Formatear el valor con decimales
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    metaData.style = "text-align:right;";
-                                                    var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
-                                                    // Formatear el valor total con decimales
-                                                    return Ext.util.Format.number(data.TOT_SVFOPCA, '0,000.00');
-                                                }
-                                            },
-                                            {
-                                                text: 'Credit',dataIndex: 'SVFOPCC',width: 130,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                    value = Ext.util.Format.number(value, '0,000.00'); // Ajuste para mostrar números con dos decimales
-                                                    return value;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    metaData.style = "text-align:right;";
-                                                    var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
-                                                    return Ext.util.Format.number(data.TOT_SVFOPCC, '0,000.00'); // Ajuste para mostrar números con dos decimales
-                                                }
-                                            },
-
-                                            {text: 'Credit Card', dataIndex: 'SCARDN1', width: 130,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Card<br>Code', dataIndex: 'SCARCOD1', width: 60,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            
-                                            {
-                                                text: 'Others<br>Sales', dataIndex: 'SVFOPOT', width: 70,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    //metaData.style = "text-align:right;color:#057ECB;background-color:#d5f4d5;";
-                                                    metaData.style = "text-align:right;";
-                                                    value = '' + Ext.util.Format.number(value, '0,000') + '';
-                                                    return  value ;
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    metaData.style = "text-align:right;";
-                                                    var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
-                                                    return Ext.util.Format.number(data.TOT_SVFOPOT, '0,000');
-                                                }
-                                            },
-
-//                                            {text: 'Card<br>Code', dataIndex: 'scarcod1', width: 75,
-//                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                    metaData.style = "text-align:center;";
-//                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-//                                                    metaData.unselectableAttr = "unselectable='off'";
-//                                                    return value;
-//                                                }
-//                                            },
-                                            {text: 'Invoice<br>Cash', dataIndex: 'INVOICE0', width: 140,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Invoice<br>Card', dataIndex: 'INVOICE1', width: 140,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'Net Remit', dataIndex: 'SVFOPNETR', width: 130,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },           
+                                            {text: 'Amount', dataIndex: 'SVFOP', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    //metaData.style = "text-align:right;";
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     value = '' + Ext.util.Format.number(value, '0,000.00') + '';
-                                                    return  value ;
+                                                    return value;
                                                 },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                            },
+                                            {text: 'Pnr', dataIndex: 'SPNR', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
-                                                    return Ext.util.Format.number(data.TOT_SVFOPNETR, '0,000.00');
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
                                                 }
                                             },
-                                        ]
+                                            {text: 'Agent Code', dataIndex: 'SAGENT', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Flag<br>Accounting', dataIndex: 'STCON', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Accounting<br>Date', dataIndex: 'FCONT', width: 200,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                        ]                                                     
                                     }
                                 },
                             ]
