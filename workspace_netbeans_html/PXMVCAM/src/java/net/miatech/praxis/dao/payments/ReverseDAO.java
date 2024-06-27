@@ -61,7 +61,7 @@ public class ReverseDAO {
         hmDescEstados.put("5", "Match Manual");
         HashMap<String, String> hmDescDocType = new HashMap<String, String>();
         hmDescDocType.put("S", "Sales");
-        hmDescDocType.put("R", "Refaound");
+        hmDescDocType.put("A", "Adjustment");
         HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
         hmDescSTCONL.put("", "");
         hmDescSTCONL.put("1", "Accounting With Sales");

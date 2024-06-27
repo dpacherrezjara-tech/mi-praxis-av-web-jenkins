@@ -152,7 +152,7 @@ Ext.define('Ext.Praxis.controller.payments.Reverse.ReverseController', {
             data: [
                 ["", "All"],
                 ["S", "Sales"],
-                ["R", "Refaound"]
+                ["A", "Adjustment"]
             ]
         }));
         cmbTDOC.setValue("");
