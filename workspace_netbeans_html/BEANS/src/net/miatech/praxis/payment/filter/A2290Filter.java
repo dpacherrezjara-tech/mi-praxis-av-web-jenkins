@@ -201,6 +201,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQTYDOC = 0;
     public long lngTotQTYTKT = 0;
     public long lngQMATCH = 0;
+    public long lngQMATCHL = 0;
     public double lngQMATCHPercent = 0;
     public double lngQMATCHPercentRF = 0;
     public double lngQMATCHPercentCH = 0;
@@ -210,8 +211,10 @@ public class A2290Filter extends A2290 {
     public double lngTotQMATCHPercentCH = 0;
     public double lngTotQMATCHPercentAC = 0;
     public long lngQWECC = 0;
+    public long lngQWECCL = 0;
     public long lngQMANUAL = 0;
     public long lngQPEND = 0;
+    public long lngQPENDL = 0;
     public long lngQTICKET = 0;
     public long lngQTMATCH = 0;
     public long lngQTMANUAL = 0;
@@ -254,6 +257,7 @@ public class A2290Filter extends A2290 {
     public long lngQSALES = 0;
     public long lngQACCB = 0;
     public long lngQDIFF = 0;
+    public long lngQDIFFL = 0;
     public long lngQACEP = 0;
     public long lngQRECH = 0;
     public long lngQSOSP = 0;
@@ -272,10 +276,14 @@ public class A2290Filter extends A2290 {
     public long lngQCHRG = 0;
     public long lngQCLAR = 0;
     public long lngTotQMATCH = 0;
+    public long lngTotQMATCHL = 0;
     public long lngTotQWECC = 0;
+    public long lngTotQWECCL = 0;
     public long lngTotTotal = 0;
+    public long lngTotTotalL = 0;
     public long lngTotQMANUAL = 0;
     public long lngTotQPEND = 0;
+    public long lngTotQPENDL = 0;
     public long lngTotQTICKET = 0;
     public long lngTotQTMATCH = 0;
     public long lngTotQTMANUAL = 0;
@@ -290,6 +298,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQACCB = 0;
     public long lngTotSVFOP = 0;
     public long lngTotQDIFF = 0;
+    public long lngTotQDIFFL = 0;
     public long lngTotQACEP = 0;
     public long lngTotQRECH = 0;
     public long lngTotQSOSP = 0;
@@ -401,6 +410,7 @@ public class A2290Filter extends A2290 {
     public long QBANKRFND = 0;
     public double AMTRFND = 0;
     public long Total = 0;
+    public long TotalL = 0;
 
     public long totQBANKRFND = 0;
     public double totAMTRFND = 0;

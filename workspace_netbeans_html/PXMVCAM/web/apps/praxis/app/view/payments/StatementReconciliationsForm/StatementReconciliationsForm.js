@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1400,
+                                        width: 1450,
                                         align: 'center'
                                     },
                                     items: [
@@ -69,13 +69,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                         {
                                             xtype: 'panel',
                                             height: 630,
-                                            width: 1400,
+                                            width: 1450,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1400,
+                                                    width: 1450,
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,

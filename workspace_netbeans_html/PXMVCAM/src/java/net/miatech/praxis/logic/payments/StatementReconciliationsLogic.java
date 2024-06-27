@@ -42,6 +42,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX287SQP00839ByS(filter);
     }
     
+    public List<A2290Filter> loadPX287SQP00839ProceLiqByS(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00839ProceLiqByS(filter);
+    }
+    
     public List<A2290Filter> loadPX287SQP00839ByPend(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00839ByPend(filter);
     }
@@ -53,9 +57,21 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00840ByS(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00840ByS(filter);
     }
+    
+    public List<A2290Filter> loadPX287SQP00840DayProcLIQByS(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00840DayProcLIQByS(filter);
+    }
 
     public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
+    }
+    
+    public List<A2290Filter> loadPX287SQP00841DetailProceByS(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00841DetailProceByS(filter);
+    }
+    
+    public List<A2290Filter> loadPX287SQP00841DetLiqDetail(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00841DetLiqDetail(filter);
     }
 
     public List<A2290Filter> loadPX287SQP00841ByS(A2290Filter filter) throws SQLException, Exception {

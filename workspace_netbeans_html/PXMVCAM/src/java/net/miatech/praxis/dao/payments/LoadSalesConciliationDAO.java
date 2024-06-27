@@ -455,7 +455,7 @@ public class LoadSalesConciliationDAO {
                         cstmt.setString(12, lstdata.get(i).SCURRENCY.trim());
                         cstmt.setString(13, lstdata.get(i).STVAL.trim());
                         cstmt.setString(14, lstdata.get(i).ACCNUMBER.trim());
-                        cstmt.setString(15, "3");
+                        cstmt.setString(15, "");
                         cstmt.setString(16, Functions.getFechaActual());
                         cstmt.setInt(17,  tran);
                         cstmt.setInt(18,  tranl);

@@ -131,6 +131,7 @@ public class BankReconciliationDAO {
                     beanTkt = new A2290Filter();
                     beanTkt.strFecFiltro = filter.strFecFiltro.trim();
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
                     beanTkt.SDATE = rst.getString("DATE").trim();
                     beanTkt.IN_SDATE = rst.getString("DATE").trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
@@ -2013,37 +2014,39 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
+            if(!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN") ){
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            for (int i = 0; i < filters.size(); i++) {
-
+                cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
-                A2290Filter filterC = filters.get(i);
 
-                cstmt2.setString(1, "U");
-                cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(3, filterC.PRDA.trim());
-                cstmt2.setString(4, filterC.SCARDN.trim());
-                cstmt2.setString(5, filterC.SAUTHOC.trim());
-                cstmt2.setDouble(6, filterC.VFOP);
-                cstmt2.setString(7, filterC.SDATE.trim());
-                cstmt2.setString(8, filterC.DATEC.trim());
-                cstmt2.setString(9, filterC.TICKET.trim());
-                cstmt2.setString(10, filterC.TRANC.trim());
-                cstmt2.setString(11, filterC.BANDOC.trim());
-                cstmt2.setString(12, filterC.CERROR.trim());
-                cstmt2.setString(13, user.getUserInfo().USR);
-                cstmt2.setString(14, Functions.getFechaActual());
-                cstmt2.setString(15, Functions.getHoraActual());
-                cstmt2.setString(16, filter.strComment.toUpperCase());
+                for (int i = 0; i < filters.size(); i++) {
 
-                cstmt2.execute();
-                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+                    cstmt2 = cnx2.prepareCall(SQLCLL02);
+                    A2290Filter filterC = filters.get(i);
+
+                    cstmt2.setString(1, "U");
+                    cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt2.setString(3, filterC.PRDA.trim());
+                    cstmt2.setString(4, filterC.SCARDN.trim());
+                    cstmt2.setString(5, filterC.SAUTHOC.trim());
+                    cstmt2.setDouble(6, filterC.VFOP);
+                    cstmt2.setString(7, filterC.SDATE.trim());
+                    cstmt2.setString(8, filterC.DATEC.trim());
+                    cstmt2.setString(9, filterC.TICKET.trim());
+                    cstmt2.setString(10, filterC.TRANC.trim());
+                    cstmt2.setString(11, filterC.BANDOC.trim());
+                    cstmt2.setString(12, filterC.CERROR.trim());
+                    cstmt2.setString(13, user.getUserInfo().USR);
+                    cstmt2.setString(14, Functions.getFechaActual());
+                    cstmt2.setString(15, Functions.getHoraActual());
+                    cstmt2.setString(16, filter.strComment.toUpperCase());
+
+                    cstmt2.execute();
+                    cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+                }
             }
+            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2107,40 +2110,42 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
+            if(!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN") ){
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            for (int i = 0; i < filters.size(); i++) {
-
+                cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
-                A2290Filter filterC = filters.get(i);
 
-                cstmt2.setString(1, "U");
-                cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(3, filterC.PRDA.trim());
-                cstmt2.setString(4, filterC.SCARDN.trim());
-                cstmt2.setString(5, filterC.SAUTHOC.trim());
-                cstmt2.setDouble(6, filterC.VFOP);
-                cstmt2.setString(7, filterC.SDATE.trim());
-                cstmt2.setString(8, filterC.DATEC.trim());
-                cstmt2.setString(9, filterC.TICKET.trim());
-                cstmt2.setString(10, filterC.TRANC.trim());
-                cstmt2.setString(11, filterC.BANDOC.trim());
-                cstmt2.setString(12, filterC.CERROR.trim());
-                cstmt2.setString(13, user.getUserInfo().USR);
-                cstmt2.setString(14, Functions.getFechaActual());
-                cstmt2.setString(15, Functions.getHoraActual());
-                cstmt2.setString(16, filter.strComment.toUpperCase());
-                cstmt2.setInt(17, filterC.MPF076TRAN);
-                cstmt2.setString(18, filterC.SPNR.trim());
-                
+                for (int i = 0; i < filters.size(); i++) {
 
-                cstmt2.execute();
-                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+                    cstmt2 = cnx2.prepareCall(SQLCLL02);
+                    A2290Filter filterC = filters.get(i);
+
+                    cstmt2.setString(1, "U");
+                    cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt2.setString(3, filterC.PRDA.trim());
+                    cstmt2.setString(4, filterC.SCARDN.trim());
+                    cstmt2.setString(5, filterC.SAUTHOC.trim());
+                    cstmt2.setDouble(6, filterC.VFOP);
+                    cstmt2.setString(7, filterC.SDATE.trim());
+                    cstmt2.setString(8, filterC.DATEC.trim());
+                    cstmt2.setString(9, filterC.TICKET.trim());
+                    cstmt2.setString(10, filterC.TRANC.trim());
+                    cstmt2.setString(11, filterC.BANDOC.trim());
+                    cstmt2.setString(12, filterC.CERROR.trim());
+                    cstmt2.setString(13, user.getUserInfo().USR);
+                    cstmt2.setString(14, Functions.getFechaActual());
+                    cstmt2.setString(15, Functions.getHoraActual());
+                    cstmt2.setString(16, filter.strComment.toUpperCase());
+                    cstmt2.setInt(17, filterC.MPF076TRAN);
+                    cstmt2.setString(18, filterC.SPNR.trim());
+
+
+                    cstmt2.execute();
+                    cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+                }  
             }
+            
 
 
         } catch (Exception e) {
@@ -2205,41 +2210,43 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
+            if(!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN") ){
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            for (int i = 0; i < filters.size(); i++) {
-
+                cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
-                A2290Filter filterC = filters.get(i);
 
-                cstmt2.setString(1, "U");
-                cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(3, filterC.PRDA.trim());
-                cstmt2.setString(4, filterC.SCARDN.trim());
-                cstmt2.setString(5, filterC.SAUTHOC.trim());
-                cstmt2.setDouble(6, filterC.VFOP);
-                cstmt2.setString(7, filterC.SDATE.trim());
-                cstmt2.setString(8, filterC.DATEC.trim());
-                cstmt2.setString(9, filterC.TICKET.trim());
-                cstmt2.setString(10, filterC.TRANC.trim());
-                cstmt2.setString(11, filterC.BANDOC.trim());
-                cstmt2.setString(12, filterC.CERROR.trim());
-                cstmt2.setString(13, user.getUserInfo().USR);
-                cstmt2.setString(14, Functions.getFechaActual());
-                cstmt2.setString(15, Functions.getHoraActual());
-                cstmt2.setString(16, filter.strComment.toUpperCase());
-                cstmt2.setInt(17, filterC.MPF077TRAN);
-                cstmt2.setString(18, filterC.SPNR.trim());
-                
+                for (int i = 0; i < filters.size(); i++) {
 
-                cstmt2.execute();
-                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+                    cstmt2 = cnx2.prepareCall(SQLCLL02);
+                    A2290Filter filterC = filters.get(i);
+
+                    cstmt2.setString(1, "U");
+                    cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt2.setString(3, filterC.PRDA.trim());
+                    cstmt2.setString(4, filterC.SCARDN.trim());
+                    cstmt2.setString(5, filterC.SAUTHOC.trim());
+                    cstmt2.setDouble(6, filterC.VFOP);
+                    cstmt2.setString(7, filterC.SDATE.trim());
+                    cstmt2.setString(8, filterC.DATEC.trim());
+                    cstmt2.setString(9, filterC.TICKET.trim());
+                    cstmt2.setString(10, filterC.TRANC.trim());
+                    cstmt2.setString(11, filterC.BANDOC.trim());
+                    cstmt2.setString(12, filterC.CERROR.trim());
+                    cstmt2.setString(13, user.getUserInfo().USR);
+                    cstmt2.setString(14, Functions.getFechaActual());
+                    cstmt2.setString(15, Functions.getHoraActual());
+                    cstmt2.setString(16, filter.strComment.toUpperCase());
+                    cstmt2.setInt(17, filterC.MPF077TRAN);
+                    cstmt2.setString(18, filterC.SPNR.trim());
+
+
+                    cstmt2.execute();
+                    cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+                }
+
             }
-
+            
             
 
         } catch (Exception e) {
