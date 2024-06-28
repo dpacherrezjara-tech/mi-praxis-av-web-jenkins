@@ -544,11 +544,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
     },
     clear_keyDownHandler: function () {
-        console.log('clean escoba')
+
         this.setValue('txtFromADATE', null);
         this.setValue('txtToADATE', null);
         this.setValue('txtFromSDATE', null);
-//        this.setValue('cmbSCARCODE', '');
         this.setValue('txtToSDATE', null);
         this.setValue('txtACCNUMBER', '');
         this.setValue('txtFUNDSTRGK', '');
@@ -584,46 +583,57 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     habilitarFiltrosSdate: function () {
         win.enabled('txtToSDATE', true);
     },
+    clear_tableNormal: function () {
+        let storeDataClear = Ext.create('Ext.data.Store', {
+            data: '',
+            autoLoad: true
+        });
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataClear);
+
+        this.sumAmount = 0;
+    },
+    allRefreshDataEntry: function () {
+        
+            this.onSearchPendingDetail();
+        
+    },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
         let chkUnicode = Ext.getCmp(prototype.id01 + '-chkUNICODE').getValue();
         var fecha_a_validar = "";
-        meDE.bean.data.IN_ADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_SDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
         meDE.bean.data.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
         meDE.bean.data.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
         meDE.bean.data.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
         meDE.bean.data.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
         meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
         meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+        
+        console.log(meDE.bean.data.IN_FROMADATE);
+        console.log(Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue());
+        
+        if (meDE.bean.data.IN_FROMADATE === '') {
+            meDE.bean.data.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+        }
+        console.log(meDE.bean.data.IN_FROMADATE);
 
-        if (meDE.bean.data.IN_ADATE !== '') {
-            if (meDE.bean.data.IN_FROMADATE !== '') {
-                meDE.bean.data.IN_VALDATE = meDE.bean.data.IN_ADATE;
-            } else {
-                meDE.bean.data.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
-            }
+        meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
+        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
+        meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
+        meDE.bean.data.IN_RED = meDE.bean.data.RED;
+        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
+            meDE.bean.data.IN_STVAL = '1';
+        } else {
+            meDE.bean.data.IN_STVAL = 'P';
+        }
+        if (chkUnicode) {
+            meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
+        } else {
+            meDE.bean.data.IN_UNICODE = '';
+        }
 
-            meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
-            meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-            meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-            meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
-            meDE.bean.data.IN_RED = meDE.bean.data.RED;
-            meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-            if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
-                meDE.bean.data.IN_STVAL = '1';
-            } else {
-                meDE.bean.data.IN_STVAL = 'P';
-            }
-            if (chkUnicode) {
-                meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
-            } else {
-                meDE.bean.data.IN_UNICODE = '';
-            }
-
-            // Validación: Verificar si todos los campos son vacíos
-            if (
-                !this.bean.data.IN_ADATE &&
-                !this.bean.data.IN_SDATE &&
+        // Validación: Verificar si todos los campos son vacíos
+        if (
                 !this.bean.data.IN_FROMADATE &&
                 !this.bean.data.IN_TOADATE &&
                 !this.bean.data.IN_FROMSDATE &&
@@ -634,85 +644,85 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 !this.bean.data.IN_FUNDSTRGK &&
                 !this.bean.data.IN_strNETO
                 ) {
-                console.log("Todos los campos son vacíos. No se realizará la solicitud Ajax.");
-                global.Msg({msg: 'Fields to Scan must be filled out'});
-                return;
-            }
-
-            // Obtener el componente del grid
-            let gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-            let dataGrid = gridComponentNormalon.getStore().getData().items;
-            let constructorExcluir = {}.constructor;
-            let arrayConstructor = dataGrid.filter(function (elemento) {
-                return elemento.constructor !== constructorExcluir;
-            });
-            let arrayNormal = [];
-            if (arrayConstructor.length > 0) {
-                for (let value of arrayConstructor) {
-                    arrayNormal.push(value.data);
-                }
-            }
-            let listAux = {};
-
-            for (let value of arrayNormal) {
-                listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
-            }
-
-            var beanString = JSON.stringify(meDE.bean.data);
-            Ext.Ajax.request({
-                url: prototype.url + '/searchBean_DETAIL',
-                method: 'POST',
-                timeout: 60000000,
-                beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-                params: {beanString: beanString},
-                success: function (response, options) {
-                    Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                    var res = Ext.JSON.decode(response.responseText);
-
-                    if (res.success) {
-                        let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
-                        for (let item of res.data) {
-                            if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.FUNDSTRGK}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
-                                console.log('repetido');
-                                continue
-                            }
-                            lstNormal.push({
-                                descSTVAL: item.descSTVAL,
-                                CCUST: item.CCUST,
-                                descTDOC: item.descTDOC,
-                                FUNDSTRGK: item.FUNDSTRGK,
-                                SDATE: item.SDATE,
-                                SAGENT: item.SAGENT,
-                                TERMI: item.TERMI,
-                                SCARCOD: item.SCARCOD,
-                                SCARDN: item.SCARDN,
-                                SAUTHOC: item.SAUTHOC,
-                                SCURRENCY: item.SCURRENCY,
-                                MERCHAND: item.MERCHAND,
-                                BANDOC: item.BANDOC,
-                                ACCNUMBER: item.ACCNUMBER,
-                                ADATE: item.ADATE,
-                                NETO: item.NETO,
-                                RED: item.RED,
-                                SEQ: item.SEQ
-                            })
-                        }
-
-                        var storeDataNormal = Ext.create('Ext.data.Store', {
-                            data: lstNormal,
-                            autoLoad: true
-                        });
-                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
-
-                        meDE.calcularMontos();
-                        meDE.calcularDiferencias();
-                    } else {
-                        console.log('entra aqui')
-                        global.Msg({msg: res.Mensaje});
-                    }
-                }
-            });
+            console.log("Todos los campos son vacíos. No se realizará la solicitud Ajax.");
+            global.Msg({msg: 'Fields to Scan must be filled out'});
+            return;
         }
+
+        // Obtener el componente del grid
+        let gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        let dataGrid = gridComponentNormalon.getStore().getData().items;
+        let constructorExcluir = {}.constructor;
+        let arrayConstructor = dataGrid.filter(function (elemento) {
+            return elemento.constructor !== constructorExcluir;
+        });
+        let arrayNormal = [];
+        if (arrayConstructor.length > 0) {
+            for (let value of arrayConstructor) {
+                arrayNormal.push(value.data);
+            }
+        }
+        let listAux = {};
+
+        for (let value of arrayNormal) {
+            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
+        }
+
+        var beanString = JSON.stringify(meDE.bean.data);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBean_DETAIL',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            params: {beanString: beanString},
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+
+                if (res.success) {
+                    let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
+                    for (let item of res.data) {
+                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.FUNDSTRGK}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
+                            console.log('repetido');
+                            continue
+                        }
+                        lstNormal.push({
+                            descSTVAL: item.descSTVAL,
+                            CCUST: item.CCUST,
+                            descTDOC: item.descTDOC,
+                            FUNDSTRGK: item.FUNDSTRGK,
+                            SDATE: item.SDATE,
+                            SAGENT: item.SAGENT,
+                            TERMI: item.TERMI,
+                            SCARCOD: item.SCARCOD,
+                            SCARDN: item.SCARDN,
+                            SAUTHOC: item.SAUTHOC,
+                            SCURRENCY: item.SCURRENCY,
+                            MERCHAND: item.MERCHAND,
+                            BANDOC: item.BANDOC,
+                            ACCNUMBER: item.ACCNUMBER,
+                            ADATE: item.ADATE,
+                            NETO: item.NETO,
+                            RED: item.RED,
+                            SEQ: item.SEQ
+                        })
+                    }
+
+                    var storeDataNormal = Ext.create('Ext.data.Store', {
+                        data: lstNormal,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
+
+                    meDE.calcularMontos();
+                    meDE.calcularDiferencias();
+                } else {
+                    console.log('entra aqui')
+                    global.Msg({msg: res.Mensaje});
+                }
+            }
+        });
+
     },
     onGridPending: function () {
 
@@ -825,7 +835,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('txtNETO', '');
         this.setValue('txtQTYTRAN1', '');
         this.setValue('txtQTYTRAN3', '');
-        this.setValue('txtVALDATE', '');
+//        this.setValue('txtVALDATE', '');
         this.setValue('txtUSCR', '');
         this.setValue('txtFECR', '');
         this.setValue('txtHOCR', '');

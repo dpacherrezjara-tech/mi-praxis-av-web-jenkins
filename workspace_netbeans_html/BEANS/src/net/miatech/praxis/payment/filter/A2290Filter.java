@@ -46,7 +46,12 @@ public class A2290Filter extends A2290 {
     public String DESCR = "";
     public String TabMPF = "";
     public String IN_FUNDSTRGK = "";
-    
+
+    public String IN_FROMADATE = "";
+    public String IN_TOADATE = "";
+    public String IN_FROMSDATE = "";
+    public String IN_TOSDATE = "";
+
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
@@ -95,7 +100,7 @@ public class A2290Filter extends A2290 {
     public String IN_BANK = "";
     public String IN_ADYEN = "";
     public String IN_TTRAN = "";
-    
+
     public int TRANL = 0;
     public String IN_DATECI = "";
     public String IN_TRANCI = "";
@@ -187,7 +192,7 @@ public class A2290Filter extends A2290 {
     public double RTEICAC = 0;
     public double NETO = 0;
     public double COMISTOTA = 0;
-    
+
     public double NETOL = 0;
     public double DIFF = 0;
     public double totNETO = 0;
@@ -225,7 +230,7 @@ public class A2290Filter extends A2290 {
     public long lngQPOLI3 = 0;
     public long lngQPOLIC = 0;
     public long lngQPOLIPE = 0;
-    
+
     public long lngQSALESRF = 0;
     public long lngQMATCHRF = 0;
     public long lngQMANUALRF = 0;
@@ -253,7 +258,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQMATCHAC = 0;
     public long lngTotQMANUALAC = 0;
     public long lngTotQPENDAC = 0;
-    
+
     public long lngQSALES = 0;
     public long lngQACCB = 0;
     public long lngQDIFF = 0;
@@ -589,8 +594,7 @@ public class A2290Filter extends A2290 {
     public String IDCONL = "";
     public String FCOMPL = "";
     public String descFCOMPL = "";
-    
-    
+
     public String descVOID = "";
     public String FREVERSA = "";
     public String descFREVERSA = "";
@@ -659,7 +663,7 @@ public class A2290Filter extends A2290 {
     public String IN_ACCNUMBER = "";
     public String DATECI = "";
     public String TRANCI = "";
-    
+
     public String CCUST = "";
     public String TREG = "";
     public String CURRENCY1 = "";
@@ -686,7 +690,7 @@ public class A2290Filter extends A2290 {
     public String IN_SCOUNTRY = "";
 
     public String getVariable() {
-       return BANDOC;
+        return BANDOC;
     }
 
     public String bufferToString(String ccust) {

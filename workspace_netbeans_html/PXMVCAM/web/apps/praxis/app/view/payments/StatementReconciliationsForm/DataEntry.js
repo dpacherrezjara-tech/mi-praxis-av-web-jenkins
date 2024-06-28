@@ -724,24 +724,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Unique Code:',
+                                                    text: 'Merchant:',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     margin: '4 0 4 4',
-                                                    width: 90
+                                                    width: 70
                                                 },
                                                 {
                                                     xtype: 'checkboxfield',
                                                     id: prototype.id01 + '-chkUNICODE',
                                                     checked: true,
                                                     padding: '0px 0px 0px 5px',
-                                                    //                                            boxLabel: 'Value'
+                                                    //boxLabel: 'Value'
                                                     listeners: {
                                                         change: 'cambiaParams'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 100},
-                                                {xtype: 'tbspacer', width: 60},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
@@ -756,7 +755,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
-                                                    //                                            margin: '4 4 4 4',
+                                                    //margin: '4 4 4 4',
                                                     iconCls: 'prx-icon-clear',
                                                     tooltip: 'Clean',
                                                     listeners: {
@@ -768,6 +767,32 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
+                                                    id: prototype.id + '-btnClearCustom',
+                                                    //margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-image-trash',
+                                                    tooltip: 'Clean Detail',
+
+                                                    listeners: {
+                                                        click: 'clear_tableNormal'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.id + '-btnRefresh',
+                                                    hidden:true,
+                                                    //margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-refresh',
+                                                    tooltip: 'Refresh Detail',
+
+                                                    listeners: {
+                                                        click: 'allRefreshDataEntryAMDP'
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
                                                     //                                            margin: '4 4 4 4',
                                                     iconCls: 'prx-icon-excel',
                                                     tooltip: 'Download excel',
@@ -775,17 +800,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         click: 'getExcel'
                                                     }
                                                 },
-//                                                {xtype: 'tbspacer', width: 5},
-//                                                {
-//                                                    xtype: 'button',
-//                                                    width: 25,
-//                                                    id: prototype.id + '-btn-pending',
-//                                                    tooltip: 'Pendings',
-//                                                    icon: 'resources/img/botones/grid.png',
-//                                                    listeners: {
-//                                                        click: 'onGridPending'
-//                                                    }
-//                                                },
                                                 {xtype: 'tbspacer', width: 5},
                                                 {
                                                     xtype: 'button',
@@ -959,19 +973,25 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Doc.Type', dataIndex: 'descTDOC', width: 75,
+                                                                    {text: 'Doc <br>Type', dataIndex: 'descTDOC', width: 65,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Value<br>Date', dataIndex: 'ADATE', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 70,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
                                                                     {text: 'Clave', dataIndex: 'FUNDSTRGK', width: 110,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: 'Sales Date', dataIndex: 'SDATE', width: 75,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -985,7 +1005,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Terminal', dataIndex: 'TERMI', width: 95,
+                                                                    {text: 'Terminal', dataIndex: 'TERMI', width: 80,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1001,7 +1021,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             align: 'center'
                                                                         },
                                                                         columns: [
-                                                                            {text: 'Code', dataIndex: 'SCARCOD', width: 50,
+                                                                            {text: 'Code', dataIndex: 'SCARCOD', width: 45,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1017,7 +1037,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            {text: 'Auth.<br>Code', dataIndex: 'SAUTHOC', width: 75,
+                                                                            {text: 'Auth.', dataIndex: 'SAUTHOC', width: 75,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1027,7 +1047,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             }
                                                                         ]
                                                                     },
-                                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 60,
+                                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 45,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
 //                                                                            value = 'COP';
@@ -1062,17 +1082,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-//                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 110,
-//                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                            metaData.style = "text-align:right;";
-//                                                                            value = Ext.util.Format.number(value, '0,000.00');
-//                                                                            return value;
-//                                                                        }
-//                                                                    },
                                                                     {
                                                                         text: 'Neto',
                                                                         dataIndex: 'NETO',
-                                                                        width: 110,
+                                                                        width: 100,
                                                                         xtype: 'gridcolumn',
                                                                         cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1100,14 +1113,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             }
                                                                         }
                                                                     },
-                                                                    {text: 'Red', dataIndex: 'RED', width: 50,
+                                                                    {text: 'Red', dataIndex: 'RED', width: 45,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Seq', dataIndex: 'SEQ', width: 50,
+                                                                    {text: 'Seq', dataIndex: 'SEQ', width: 45,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";

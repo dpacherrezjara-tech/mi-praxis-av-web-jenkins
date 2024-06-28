@@ -1138,7 +1138,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX287SQP00840DayProcLIQByS(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -1412,7 +1412,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX287SQP00841DetailProceByS(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -2178,7 +2178,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2186,21 +2186,24 @@ public class StatementReconciliationsDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_VALDATE.trim());
-            cstmt.setString(3, filter.IN_CODEBANK.trim());
-            cstmt.setString(4, filter.IN_UNICODE.trim());
-            cstmt.setString(5, filter.IN_BANDOC.trim());
-            cstmt.setString(6, filter.IN_STVAL.trim());
-            cstmt.setString(7, filter.IN_RED.trim());
-            cstmt.setString(8, filter.IN_SCARCOD.trim());
-            cstmt.setString(9, filter.IN_ACCNUMBER.trim());
-            cstmt.setString(10, filter.IN_SDATE.trim());
-            cstmt.setString(11, filter.IN_strNETO.trim());
-            cstmt.setString(12, filter.IN_TDOC.trim());
-            cstmt.setString(13, filter.IN_SEQ.trim());
-            cstmt.setString(14, filter.IN_DATECI.trim());
-            cstmt.setString(15, filter.IN_TRANCI.trim());
-            cstmt.setString(16, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(2, filter.IN_FROMADATE.trim());
+            cstmt.setString(3, filter.IN_TOADATE.trim());
+            cstmt.setString(4, filter.IN_FROMSDATE.trim());
+            cstmt.setString(5, filter.IN_TOSDATE.trim());
+            cstmt.setString(6, filter.IN_CODEBANK.trim());
+            cstmt.setString(7, filter.IN_UNICODE.trim());
+            cstmt.setString(8, filter.IN_BANDOC.trim());
+            cstmt.setString(9, filter.IN_STVAL.trim());
+            cstmt.setString(10, filter.IN_RED.trim());
+            cstmt.setString(11, filter.IN_SCARCOD.trim());
+            cstmt.setString(12, filter.IN_ACCNUMBER.trim());
+            cstmt.setString(13, filter.IN_SDATE.trim());
+            cstmt.setString(14, filter.IN_strNETO.trim());
+            cstmt.setString(15, filter.IN_TDOC.trim());
+            cstmt.setString(16, filter.IN_SEQ.trim());
+            cstmt.setString(17, filter.IN_DATECI.trim());
+            cstmt.setString(18, filter.IN_TRANCI.trim());
+            cstmt.setString(19, filter.IN_FUNDSTRGK.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
