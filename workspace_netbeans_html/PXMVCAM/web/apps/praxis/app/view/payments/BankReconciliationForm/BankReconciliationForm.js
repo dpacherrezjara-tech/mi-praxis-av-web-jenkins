@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1850,
+                                        width: 1900,
                                         align: 'center'
                                     },
                                     items: [
@@ -76,13 +76,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
                                         {
                                             xtype: 'panel',
                                             height: 630,
-                                            width: 1850,
+                                            width: 1900,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1850,
+                                                    width: 1900,
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,

@@ -2444,7 +2444,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1633,
+                            width: 1733,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -2463,7 +2463,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    width: 1633,
+                                    width: 1733,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -2488,6 +2488,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Process', dataIndex: 'COREP', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.tdAttr = 'data-qtip="' + data.strDescripcionCOREP + '"';
                                                     return value;
                                                 }
                                             },
@@ -2621,7 +2630,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     {
                                                         text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
+                                                            metaData.style = "text-align:right;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
                                                             return value;

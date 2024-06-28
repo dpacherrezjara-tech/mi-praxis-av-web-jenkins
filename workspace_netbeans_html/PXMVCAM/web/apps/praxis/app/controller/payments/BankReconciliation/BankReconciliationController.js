@@ -319,6 +319,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.paramsObtainData.BANK = 2;
         this.paramsObtainData.COUNTRY = 2;
         this.paramsObtainData.CARD = 2;
+        this.paramsObtainData.COREP = 2;
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -335,7 +336,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 me.lstBank = res.lstBank;
                 me.lstCard = res.lstCard;
                 me.lstCountry = res.lstCountry;
-
+                var lstProcessor = res.lstProcessor;
                 var storeData = Ext.create('Ext.data.Store', {
                     data: me.lstBank,
                     autoLoad: true
@@ -348,12 +349,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     data: me.lstCountry,
                     autoLoad: true
                 });
+                
+                var storeDataProcessor = Ext.create('Ext.data.Store', {
+                    data: lstProcessor,
+                    autoLoad: true
+                });
+                
                 Ext.getCmp(prototype.id + '-cmbBank').bindStore(storeData);
                 Ext.getCmp(prototype.id + '-cmbCardType').bindStore(storeData2);
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
                 Ext.getCmp(prototype.id + '-cmbBank').setValue('');
                 Ext.getCmp(prototype.id + '-cmbCardType').setValue('');
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('');
                 global.clear();
 //                me.btnSearch_click();
             }
@@ -489,12 +498,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         if( Ext.getCmp(prototype.id + '-panelTW').isVisible()){
             this.searchTW();
         }else{
-            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbSource').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' )  {
+            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' 
+                || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '' 
+                || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbSource').getValue() !== '' 
+                || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''
+                || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== '')  {
                 this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
                 this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
                 this.beanDetDay.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
                 this.beanDetDay.IN_STVAL = win.getValue('cmbStatus');
                 this.beanDetDay.IN_FTE = win.getValue('cmbSource');
+                this.beanDetDay.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
                 this.beanDetDay.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
                 
                 me.panelActual = '-panelGridDataDetalle';

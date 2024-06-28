@@ -614,7 +614,19 @@ public class StatementReconciliationsDAO {
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         long lngTotQACCB = 0, lngTotSVFOP = 0;
-
+        HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
+        hmDescSTCONL.put("", "");
+        hmDescSTCONL.put("1", "Accounted");
+        hmDescSTCONL.put("2", "Accounted to Debug");
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("2", "Liq. Without EECC");
+        hmDescEstados.put("3", "Bank whitout Liquidacion");
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
@@ -702,7 +714,7 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.COREP = rst.getString("COREP").trim();
                     //beanTkt.lngTotTotal = total;
                     
-                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Status : " + filter.IN_STVAL.trim() ;
+                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim()) ;
                     
                     beanTkt.lngQACCB = rst.getLong("QTY");
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY");
@@ -1132,7 +1144,19 @@ public class StatementReconciliationsDAO {
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         long lngTotQACCB = 0, lngTotSVFOP = 0;
-
+        HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
+        hmDescSTCONL.put("", "");
+        hmDescSTCONL.put("1", "Accounted");
+        hmDescSTCONL.put("2", "Accounted to Debug");
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("2", "Liq. Without EECC");
+        hmDescEstados.put("3", "Bank whitout Liquidacion");
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
@@ -1202,7 +1226,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotSVFOP = lngTotSVFOP;
 
                    
-                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_COREP + " - Bank : " + beanTkt.IN_CBANK + " - Bank : " + beanTkt.IN_SCOUNTRY + " - Status : " + filter.IN_STVAL.trim() ;
+                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_COREP + " - Bank : " + beanTkt.IN_CBANK + " - Bank : " + beanTkt.IN_SCOUNTRY + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim()) ;
                  
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;

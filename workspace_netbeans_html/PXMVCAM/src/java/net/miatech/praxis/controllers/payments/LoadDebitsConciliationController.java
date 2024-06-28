@@ -324,8 +324,11 @@ public class LoadDebitsConciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 1) {
                         System.out.println(i);
+                        if(i == 231){
+                            System.out.println("error");
+                        }
                         A2290Filter obj = new A2290Filter();
-                        if (row.getCell(0) == null) {
+                        if (row.getCell(0) == null || row.getCell(0).getDateCellValue() == null || row.getCell(0).getDateCellValue().equals("") ) {
                             break;
                         }
                         Date date = row.getCell(0).getDateCellValue();
