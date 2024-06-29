@@ -715,7 +715,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698Detalle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698DETALLE_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2058,7 +2058,15 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    cstmt2.close();
+                    if(cstmt2 != null) {
+                        try {
+                            cstmt2.close();
+                        }catch (SQLException e) {
+                            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                        }
+                      ;  
+                    }
+                    
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
@@ -2158,7 +2166,14 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    cstmt2.close();
+                    if(cstmt2 != null) {
+                        try {
+                            cstmt2.close();
+                        }catch (SQLException e) {
+                            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                        }
+                      ;  
+                    }
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
@@ -2259,7 +2274,14 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    cstmt2.close();
+                    if(cstmt2 != null) {
+                        try {
+                            cstmt2.close();
+                        }catch (SQLException e) {
+                            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                        }
+                      ;  
+                    }
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }

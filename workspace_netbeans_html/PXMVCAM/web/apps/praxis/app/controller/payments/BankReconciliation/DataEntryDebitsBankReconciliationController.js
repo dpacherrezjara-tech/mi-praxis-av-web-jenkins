@@ -1265,6 +1265,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         let listaDeDatos = [];
         let ticketsOcupados = [];
         var cont = 0;
+        console.log(grilla.getStore().data, 'grilla.getStore()')
         // Recorrer la grilla y agregar los datos a la lista
         grilla.getStore().each(function (record) {
             let registro = {
@@ -1325,7 +1326,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         } else {
             console.error('La grilla o su tienda no están definidas correctamente.');
         }
-
+        console.log(listaDeDatos, 'listaDeDatos')
+        if(listaDeDatos.length == 0 ){
+            let registro = {
+                PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), 
+                SCARDNM: Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue(),
+                SAUTHOCM: Ext.getCmp(prototype.id + '-de-txtSAUTHOC').getValue(),
+                VFOP: Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, ''), 
+                TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), 
+                CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue() ? Ext.getCmp(prototype.id + '-cmbCOMENT').getValue() : '', 
+                CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE_' + prefixDeb).getValue() ? Ext.getCmp(prototype.id + '-cmbADJTYPE_' + prefixDeb).getValue() : '', 
+                DEBTYPE: Ext.getCmp(prototype.id + '-cmbDebitType').getValue(),
+                BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), 
+                DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(), 
+                TDOC: 'D'
+            };
+            listaDeDatos.push(registro);
+            console.log('listaDeDatos2222', listaDeDatos)
+        }
         // Convertir la lista a JSON
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
         if (cont > 0) {
