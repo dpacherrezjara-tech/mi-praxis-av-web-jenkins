@@ -199,7 +199,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     onSearchCompleteDetail: function () {
-        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
+        meDE.bean.data.IN_FROMADATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_UNICODE = meDE.bean.data.UNICODE;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
