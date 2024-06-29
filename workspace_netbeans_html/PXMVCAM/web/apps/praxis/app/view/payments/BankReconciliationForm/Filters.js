@@ -555,6 +555,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             width: 70,
         //                    hidden:true
                         },
+                        
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbCOREP',
