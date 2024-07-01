@@ -665,6 +665,7 @@ public class A2290Filter extends A2290 {
     public String STVALS = "";
     public String IN_DEBTYPE = "";
     public String DEBTYPE = "";
+    public String CHARNBR = "";
     public String descDEBTYPE = "";
     public String MESSAGE = "";
 
