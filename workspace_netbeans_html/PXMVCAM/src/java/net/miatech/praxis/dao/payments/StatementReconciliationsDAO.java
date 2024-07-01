@@ -56,7 +56,7 @@ public class StatementReconciliationsDAO {
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         long lngTotQMATCH = 0, lngTotQWECC = 0, lngTotQPEND = 0, lngTotQDIFF = 0, lngTotQTOTSAL = 0, total = 0;
-        long lngTotQMATCHL = 0, lngTotQWECCL = 0, lngTotQPENDL = 0, lngTotQDIFFL = 0,  totalL = 0;
+        long lngTotQMATCHL = 0, lngTotQWECCL = 0, lngTotQPENDL = 0, lngTotQDIFFL = 0, totalL = 0;
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
         filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");//YYYY
         filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
@@ -145,7 +145,6 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngQWECCL = rst.getLong("QWECCL");
                     beanTkt.lngQPEND = rst.getLong("QPEND");
                     beanTkt.lngQPENDL = rst.getLong("QPENDL");
-                    
 
                     beanTkt.Total = beanTkt.lngQMATCH + beanTkt.lngQWECC + beanTkt.lngQPEND + beanTkt.lngQDIFF;
                     beanTkt.TotalL = beanTkt.lngQMATCHL + beanTkt.lngQWECCL + beanTkt.lngQPENDL + beanTkt.lngQDIFFL;
@@ -196,7 +195,6 @@ public class StatementReconciliationsDAO {
         return lstTkts;
     }
 
-    
     public List<A2290Filter> loadPX287SQP00838PEND(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -278,7 +276,7 @@ public class StatementReconciliationsDAO {
                 }
                 beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim();
                 lngTotQTOTSAL = lngTotQTOTSAL + beanTkt.QTYSETT;
-                
+
                 beanTkt.page.PAGNUM = filter.page.PAGNUM;
                 beanTkt.page.PAGROW = filter.page.PAGROW;
                 beanTkt.page.TOTPAG = filter.page.TOTPAG;
@@ -291,7 +289,6 @@ public class StatementReconciliationsDAO {
 
             }
             rst.close();
-            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -316,7 +313,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX287SQP00839(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -393,7 +390,7 @@ public class StatementReconciliationsDAO {
                         beanTkt.strCREJEC = rst.getString("BANKN").trim();
                         beanTkt.strDescripcion = rst.getString("BANKN").trim();
                     }
-                    
+
                     if (rst.getString("SCOUNTRY").trim().isEmpty()) {
                         beanTkt.SCOUNTRY = "**";
 //                        beanTkt.strCREJEC = "(Empty)";
@@ -608,7 +605,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX287SQP00839ProceLiqByS(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -713,9 +710,9 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 //                    beanTkt.COREP = rst.getString("COREP").trim();
                     //beanTkt.lngTotTotal = total;
-                    
-                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim()) ;
-                    
+
+                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim());
+
                     beanTkt.lngQACCB = rst.getLong("QTY");
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                     beanTkt.SVFOP = rst.getLong("DAMOUNTR");
@@ -756,7 +753,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX287SQP00839ByPend(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -840,7 +837,7 @@ public class StatementReconciliationsDAO {
 //                        beanTkt.strCREJEC = rst.getString("BANKN").trim();
                         beanTkt.strDescripcionSCOUNTRY = rst.getString("SCOUNTRYN").trim();
                     }
-                    
+
 //                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 //                    beanTkt.COREP = rst.getString("COREP").trim();
                     //beanTkt.lngTotTotal = total;
@@ -980,7 +977,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotTotal = total;
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate +  " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Country : " + beanTkt.strDescripcionSCOUNTRY + " - Bank : " + beanTkt.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -1099,7 +1096,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotSVFOP = lngTotSVFOP;
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process: " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY +  " - Bank : " + beanTkt.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process: " + beanTkt.strDescripcionCOREP + " - Country : " + beanTkt.strDescripcionSCOUNTRY + " - Bank : " + beanTkt.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -1225,9 +1222,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotQACCB = lngTotQACCB;
                     beanTkt.lngTotSVFOP = lngTotSVFOP;
 
-                   
-                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_COREP + " - Bank : " + beanTkt.IN_CBANK + " - Bank : " + beanTkt.IN_SCOUNTRY + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim()) ;
-                 
+                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Bank : " + beanTkt.IN_COREP + " - Bank : " + beanTkt.IN_CBANK + " - Bank : " + beanTkt.IN_SCOUNTRY + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim());
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -1276,7 +1271,7 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank whitout Liquidacion");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
-        
+
         HashMap<String, String> hmDescDocType = new HashMap<String, String>();
         hmDescDocType.put("S", "Sales");
         hmDescDocType.put("D", "Debits");
@@ -1348,7 +1343,7 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
-                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim(); 
+                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.SDATE = rst.getString("SDATE").trim();
                     beanTkt.ADATE = rst.getString("ADATE").trim();
@@ -1373,7 +1368,7 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate +" - Process: " + filter.strDescripcionCOREP + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Process: " + filter.strDescripcionCOREP + " - Country : " + filter.strDescripcionSCOUNTRY + " - Bank : " + filter.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -1534,8 +1529,8 @@ public class StatementReconciliationsDAO {
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
                     }
-                     beanTkt.strTitulo = "Abono Date: " + filter.IN_SDATE + " - Bank: " + filter.strDescripcion + " - Scountry: " + filter.strDescripcionSCOUNTRY +  " - Process: " + filter.strDescripcionCOREP + " - Scurrency: " +  filter.IN_SCURRENCY + " - Status: " + hmDescEstados.get(filter.IN_STVAL.trim()) ;
-                    
+                    beanTkt.strTitulo = "Abono Date: " + filter.IN_SDATE + " - Bank: " + filter.strDescripcion + " - Scountry: " + filter.strDescripcionSCOUNTRY + " - Process: " + filter.strDescripcionCOREP + " - Scurrency: " + filter.IN_SCURRENCY + " - Status: " + hmDescEstados.get(filter.IN_STVAL.trim());
+
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
                     beanTkt.page.TOTPAG = filter.page.TOTPAG;
@@ -1570,7 +1565,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX287SQP00841DetLiqDetail(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -1691,7 +1686,7 @@ public class StatementReconciliationsDAO {
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
                     }
-                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim()) ;                    
+                    beanTkt.strTitulo = "Abono Date : " + beanTkt.strFormatDate + " - Status : " + hmDescEstados.get(filter.IN_STVAL.trim());
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
                     beanTkt.page.TOTPAG = filter.page.TOTPAG;
@@ -1742,7 +1737,7 @@ public class StatementReconciliationsDAO {
         HashMap<String, String> hmDescDocType = new HashMap<String, String>();
         hmDescDocType.put("S", "Sales");
         hmDescDocType.put("D", "Debits");
-        
+
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
@@ -1807,7 +1802,7 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
-                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim(); 
+                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 
                     beanTkt.SDATE = rst.getString("SDATE").trim();
@@ -1832,7 +1827,7 @@ public class StatementReconciliationsDAO {
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
-                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Country : " + filter.strDescripcionSCOUNTRY +  " - Bank : " + filter.strDescripcion;
+                        beanTkt.strTitulo = "Value Date : " + beanTkt.strFormatDate + " - Country : " + filter.strDescripcionSCOUNTRY + " - Bank : " + filter.strDescripcion;
                     } else {
                         beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
                     }
@@ -1951,8 +1946,8 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
-                    
-                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim(); 
+
+                    beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 
                     beanTkt.SDATE = rst.getString("SDATE").trim();
@@ -1976,14 +1971,12 @@ public class StatementReconciliationsDAO {
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
-                    
+
 //                    if (filter.IN_DATE.trim().equals("VALDATE")) {
 //                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;
 //                    } else {
 //                        beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
 //                    }
-
-
                     beanTkt.strTitulo = "";
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
@@ -2030,8 +2023,8 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank w/o Sett.");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
-        
-        String VALDATEL = "", UNICODEL = "", BANDOCL = "", SCURRENCYL = "", ACCNUMBER = "" , COREPL = "";
+
+        String VALDATEL = "", UNICODEL = "", BANDOCL = "", SCURRENCYL = "", ACCNUMBER = "", COREPL = "";
         Double NETOL = 0.0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -2088,19 +2081,19 @@ public class StatementReconciliationsDAO {
                     }
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
-                    if(beanTkt.TDOC.equals("S")){
+                    if (beanTkt.TDOC.equals("S")) {
                         beanTkt.descTDOC = "Sales";
-                    }else{
+                    } else {
                         beanTkt.descTDOC = "Debits";
                     }
-                    
+
                     beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
                     beanTkt.CODEBANKA = rst.getString("CODEBANKA").trim();
                     beanTkt.COREP = rst.getString("COREP").trim();
                     beanTkt.NAME = rst.getString("CODEBANK").trim() + " - " + rst.getString("NAME").trim();
                     beanTkt.NAMEP = rst.getString("COREP").trim() + " - " + rst.getString("NAMEP").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
-                    beanTkt.DESC_SCOUNTRY = rst.getString("SCOUNTRY").trim() + " - " +  rst.getString("SCOUNTRYN").trim();
+                    beanTkt.DESC_SCOUNTRY = rst.getString("SCOUNTRY").trim() + " - " + rst.getString("SCOUNTRYN").trim();
                     beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
@@ -2211,7 +2204,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.COMISION = rst.getDouble("COMISION");
                 beanTkt.NETO = rst.getDouble("NETO");
-                
+
                 lstTkts.add(beanTkt);
             }
             rst.close();
@@ -2240,7 +2233,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX269SQP05114PreDetail(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -2311,8 +2304,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
-                beanTkt.MERCHAND= rst.getString("MERCHAND");
-                beanTkt.FUNDSTRGK= rst.getString("FUNDSTRGK");
+                beanTkt.MERCHAND = rst.getString("MERCHAND");
+                beanTkt.FUNDSTRGK = rst.getString("FUNDSTRGK");
                 beanTkt.ADATE = rst.getString("ADATE");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
@@ -2350,7 +2343,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX269SQP05114Agrupa(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -2370,25 +2363,40 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Agrupa(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Agrupa(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            
+
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FROMADATEAG.trim());
             cstmt.setString(3, filter.IN_TOADATEAG.trim());
             cstmt.setString(4, filter.IN_LIQUIDACIOAG.trim());
             cstmt.setString(5, filter.IN_MERCHANDAG.trim());
             cstmt.setString(6, filter.IN_NETOAG.trim());
+
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
             cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
 
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
-                
+
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
                 beanTkt.CID = rst.getString("CID");
@@ -2400,6 +2408,11 @@ public class StatementReconciliationsDAO {
                 beanTkt.FSELECT = rst.getString("FSELECT");
                 beanTkt.CODPRO = rst.getString("CODPRO");
                 beanTkt.CCUSTPRO = rst.getString("CCUSTPRO");
+
+                beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                beanTkt.page.PAGROW = filter.page.PAGROW;
+                beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                beanTkt.page.TOTROW = filter.page.TOTROW;
 
                 lstTkts.add(beanTkt);
             }
@@ -2429,7 +2442,7 @@ public class StatementReconciliationsDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -2499,8 +2512,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
-                beanTkt.MERCHAND= rst.getString("MERCHAND");
-                beanTkt.FUNDSTRGK= rst.getString("FUNDSTRGK");
+                beanTkt.MERCHAND = rst.getString("MERCHAND");
+                beanTkt.FUNDSTRGK = rst.getString("FUNDSTRGK");
                 beanTkt.ADATE = rst.getString("ADATE");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");

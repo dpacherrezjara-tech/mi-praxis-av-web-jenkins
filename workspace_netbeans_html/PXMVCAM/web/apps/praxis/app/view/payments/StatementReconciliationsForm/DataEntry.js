@@ -1902,7 +1902,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                             layout: 'hbox',
                             hidden: false,
                             border: false,
-//                            margin: '0 2 10 5px',
+                            margin: '0 0 10 0',
                             bodyStyle: 'background-color: #E3EAF9;',
                             items: [
                                 {xtype: 'tbspacer', width: 10},
@@ -1960,7 +1960,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                     textAlign: 'center',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     margin: '4 4 4 4',
-                                    width: 80
+                                    width: 70
                                 },
                                 {xtype: 'tbspacer', width: 5},
                                 {
@@ -2030,7 +2030,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                             id: prototype.id + '-panelAgrupa',
                             bodyStyle: 'background-color: #E3EAEF;',
                             hidden: false,
-                            width: 742,
+                            width: 800,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2039,8 +2039,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAgrupa',
-                                    bodyStyle: 'background: transparent;',
-                                    width: 742,
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    width: 582,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -2052,10 +2052,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Society', dataIndex: 'CCUST', width: 90,
+                                            {text: 'Society', dataIndex: 'CCUST', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;background-color:#c0e0fc;font-weight:bold";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },
@@ -2063,52 +2065,66 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Liquid Num:', dataIndex: 'LIQUIDAC', width: 80,
+                                            {text: 'Liquid Num', dataIndex: 'LIQUIDAC', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Value<br>Date', dataIndex: 'FECHA', width: 100,
+                                            {text: 'Value<br>Date', dataIndex: 'FECHA', width: 80,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Neto', dataIndex: 'MONTO', width: 120,
+                                            {text: 'Neto', dataIndex: 'MONTO', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
-                                                    return Ext.util.Format.number(value, '0,000');
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return Ext.util.Format.number(value, '0,000.00');
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                     var data = Ext.getCmp(prototype.id + '-gridDataAgrupa').getStore().getData().items[0].data;
                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.totNETO, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.totNETO, '0,000.00') + '<b>';
                                                 }
                                             },
-                                            {text: 'FSELECT', dataIndex: 'FSELECT', width: 100,
+                                            {text: 'Flag', dataIndex: 'FSELECT', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'CODPRO', dataIndex: 'CODPRO', width: 100,
+                                            {text: 'Process', dataIndex: 'CODPRO', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'CCUSTPRO', dataIndex: 'CCUSTPRO', width: 100,
+                                            {text: 'Society', dataIndex: 'CCUSTPRO', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
                                             },

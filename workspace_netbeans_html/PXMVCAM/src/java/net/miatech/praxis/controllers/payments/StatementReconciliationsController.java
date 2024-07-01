@@ -3312,7 +3312,7 @@ public class StatementReconciliationsController extends BaseController {
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
 
             if (!bExcel) {
-                filter.page.PAGROW = 20;
+                filter.page.PAGROW = 30;
                 start = (start != 0 ? start : 0);
                 filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
             } else {

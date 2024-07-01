@@ -1054,22 +1054,22 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     pagFirst: function (obj, e) {
 
-        var pag = Ext.getCmp(prototype.id + '-paggin_PEND');
+        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
         pag.moveFirst();
     },
     pagPrevious: function (obj, e) {
 
-        var pag = Ext.getCmp(prototype.id + '-paggin_PEND');
+        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
         pag.movePrevious();
     },
     pagNext: function (obj, e) {
 
-        var pag = Ext.getCmp(prototype.id + '-paggin_PEND');
+        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
         pag.moveNext();
     },
     pagLast: function (obj, e) {
 
-        var pag = Ext.getCmp(prototype.id + '-paggin_PEND');
+        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
         pag.moveLast();
     },
     validateFields: function () {

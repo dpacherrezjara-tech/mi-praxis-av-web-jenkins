@@ -1,4 +1,3 @@
-valor = '0';
 Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
