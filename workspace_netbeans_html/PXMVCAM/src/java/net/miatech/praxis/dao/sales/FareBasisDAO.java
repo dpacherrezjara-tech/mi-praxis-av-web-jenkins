@@ -59,7 +59,7 @@ public class FareBasisDAO {
        
 
         try {
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX019S01A721(?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL PRAXIS.PX019S01A721(?,?,?,?,?,?,?)}";
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
             cstmt01.registerOutParameter(4, Types.INTEGER);

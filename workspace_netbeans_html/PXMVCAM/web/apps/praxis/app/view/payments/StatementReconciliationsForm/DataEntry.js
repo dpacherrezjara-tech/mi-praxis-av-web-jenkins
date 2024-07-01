@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
     controller: 'DataEntryStatementReconciliationsController',
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
-    height: 795,
-    width: 1210,
+    height: 870,
+    width: 1190,
 //     x: 0, // Establecer la posición horizontal a la izquierda del contenedor principal
 //    y: 0,
     resizable: false,
@@ -37,7 +37,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
             items: [
                 {
                     xtype: 'form',
-                    height: 785,
+                    height: 830,
                     defaults: {
 //                        style: 'margin: 3px;',
                         textDecoration: 'underline',
@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                     border: false,
                                     bodyStyle: 'background:white;',
                                     margin: '0 0 3 10',
-                                    width: 1210,
+                                    width: 1160,
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -247,15 +247,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 275}
                                             ]
                                         },
+                                        //<editor-fold defaultstate="collapsed" desc="Stattement Information">
                                         {
                                             xtype: 'label',
-                                            text: 'Account Stattement',
+                                            text: 'Stattement Information',
                                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                             bodyStyle: 'background:#E5ECEF;',
                                             fontSize: '11',
                                             width: 234,
                                             height: 20,
-                                            margin: '4 2 4 8'
+                                            margin: '10 2 4 8'
                                         },
                                         {
                                             xtype: 'panel',
@@ -447,9 +448,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 5}
                                             ]
                                         },
+                                        //</editor-fold>
+
+                                        //<editor-fold defaultstate="collapsed" desc="Header Setlement">
                                         {
                                             xtype: 'label',
-                                            text: 'Settlement',
+                                            text: 'Header Settlement',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                                            bodyStyle: 'background:#E5ECEF;',
+                                            fontSize: '11',
+                                            width: 280,
+                                            height: 20,
+                                            margin: '4 2 4 8'
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Settlement Information',
+                                            hidden: true,
                                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                             bodyStyle: 'background:#E5ECEF;',
                                             fontSize: '11',
@@ -459,175 +474,415 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         },
                                         {
                                             xtype: 'panel',
+                                            id: prototype.id + '-panelScanHead',
                                             layout: 'hbox',
+                                            hidden: false,
                                             border: false,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#efe5e5;',
+                                            margin: '0 2 10 20',
+                                            bodyStyle: 'background:#;',
                                             items: [
-                                                {xtype: 'tbspacer', width: 7, height: 24},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Society',
+                                                    text: 'Value Date:',
                                                     textAlign: 'center',
-                                                    paddingLeft: 3,
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    margin: '4 4 4 4',
+                                                    width: 70
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 5},
                                                 {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSOCIETYS',
-                                                    fieldCls: 'detalle-society-textfield',
-                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtFromADATEHE',
                                                     fieldStyle: 'text-align:center',
-                                                    readOnly: true,
-                                                    width: 110
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Merchant',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtUNICODEL',
-                                                    fieldStyle: 'text-align:center',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
                                                     enforceMaxLength: true,
-                                                    readOnly: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
                                                     width: 90
                                                 },
-                                                {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Id.Bank',
+                                                    text: 'To:',
+                                                    textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    margin: '4 4 4 4',
+                                                    width: 20
+                                                },
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtToADATEHE',
+                                                    fieldStyle: 'text-align:center',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
+                                                    enforceMaxLength: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                                    width: 90
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtBANDOCL',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
+                                                    xtype: 'label',
+                                                    text: 'Liquid Num:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
                                                     width: 80
                                                 },
-                                                {xtype: 'tbspacer', width: 50},
+                                                {xtype: 'tbspacer', width: 5},
                                                 {
-                                                    xtype: 'label',
-                                                    text: 'Currency',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtLIQUIDACIOHE',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    maskRe: /[0-9]/,
+                                                    maxLength: 16,
+                                                    width: 120,
+                                                    enableKeyEvents: true
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
+                                                    xtype: 'label',
+                                                    text: 'Merchant:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 65
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
                                                     xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSCURRENCYL',
+                                                    id: prototype.id + '-txtMERCHANDHE',
                                                     fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Neto',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
+                                                    maskRe: /[0-9]/,
+                                                    maxLength: 16,
+                                                    width: 120,
+                                                    enableKeyEvents: true
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
+                                                    xtype: 'label',
+                                                    text: 'Amount:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 55
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
                                                     xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtNETOL',
+                                                    id: prototype.id + '-txtNETOHE',
                                                     fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 100
+                                                    maskRe: /[0-9]/,
+                                                    maxLength: 16,
+                                                    width: 120,
+                                                    enableKeyEvents: true
                                                 },
-                                                {xtype: 'tbspacer', width: 5}
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    iconCls: 'prx-icon-search',
+                                                    tooltip: 'Add',
+                                                    listeners: {
+                                                        click: 'cambiaParamsHeader'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    iconCls: 'prx-icon-clear',
+                                                    tooltip: 'Clean',
+                                                    listeners: {
+                                                        click: 'clear_keyDownHandlerHead'
+                                                    }
+
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.id + '-btnClearCustomHe',
+                                                    iconCls: 'prx-icon-image-trash',
+                                                    tooltip: 'Clean Detail',
+
+                                                    listeners: {
+                                                        click: 'clear_tableHeader'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.id + '-btnRefreshHe',
+                                                    tooltip: 'Pendings',
+                                                    icon: 'resources/img/botones/grid.png',
+                                                    listeners: {
+                                                        click: 'onGridPending'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    iconCls: 'prx-icon-excel',
+                                                    tooltip: 'Download excel',
+                                                    listeners: {
+                                                        click: 'getExcel'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    iconCls: 'prx-icon-edit',
+                                                    tooltip: 'Calculate Differences',
+                                                    reference: 'calculateButton',
+                                                    listeners: {
+                                                        click: 'calcularDiferencias'
+                                                    }
+                                                }
                                             ]
                                         },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            bodyStyle: 'background:#efe5e5;',
-                                            margin: '0 2 0 20',
+                                            margin: '0 0 0 10',
+                                            //bodyStyle: 'background:#efe5e5;',
                                             items: [
-                                                {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
-                                                    xtype: 'label',
-                                                    text: 'Bank Account',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtACCNUMBERL',
-                                                    fieldCls: 'detalle-ACCNUMBERL-textfield',
-                                                    style: 'font-weight:bold;color:#d5f4d5',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 110
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Value Date',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtVALDATEL',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 90
-                                                },
-                                                {xtype: 'tbspacer', width: 490},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Diff',
-                                                    textAlign: 'center',
-                                                    paddingLeft: 3,
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtDIFF',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 100
-                                                },
-                                                {xtype: 'tbspacer', width: 5}
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-panelDataInfoScanHead',
+                                                    layout: 'vbox',
+                                                    border: false,
+                                                    width: 1137,
+                                                    height: 155,
+                                                    hidden: false,
+                                                    autoScroll: true,
+                                                    items: [
+                                                        {
+                                                            xtype: 'grid',
+                                                            id: prototype.id + '-gridDataInfoScanHead',
+                                                            width: 1125,
+                                                            height: 153,
+                                                            columnLines: true,
+                                                            plugins: [
+                                                                {
+                                                                    ptype: 'cellediting',
+                                                                    clicksToEdit: 1
+                                                                }
+                                                            ],
+                                                            columns: {
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: true,
+                                                                    align: 'center'
+                                                                },
+                                                                items: [
+                                                                    //CCUST,PRDA,CODPRO,CCUSTPRO,FLIQUIDACI,LIQUIDACIO,MERCHAND,MONEDA,MONEDALIQ,PAISLIQ,TOTAL,COMISION,NETO
+                                                                    {
+                                                                        text: 'Society',
+                                                                        dataIndex: 'CCUST',
+                                                                        width: 70,
+                                                                        id: prototype.id + '-intercomHead',
+                                                                        renderer: function (value, metaData, record) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = 'detalle-society';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'PRDA', dataIndex: 'PRDA', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'CODPRO', dataIndex: 'CODPRO', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Value<br>Date', dataIndex: 'FLIQUIDACI', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Nro. Liquida', dataIndex: 'LIQUIDACIO', width: 110,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Merchant', dataIndex: 'MERCHAND', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Scurrency', dataIndex: 'MONEDA', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Scurr. Liq', dataIndex: 'MONEDALIQ', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Country<br>Code', dataIndex: 'PAISLIQ', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 110,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {text: 'Comission', dataIndex: 'COMISION', width: 110,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Neto',
+                                                                        dataIndex: 'NETO',
+                                                                        width: 110,
+                                                                        xtype: 'gridcolumn',
+                                                                        cls: 'detalle-neto',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.style = "text-align:right;";
+                                                                            if (data.COMISTOTA !== 0 && data.COMISTOTA !== undefined) {
+                                                                                metaData.style = "background-color: #A2F4FE;";
+                                                                                metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA + '"';
+                                                                            }
+                                                                            if (record.get('isInValidCombination') && data.STVAL === '3') {
+                                                                                metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
+                                                                            }
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        editor: {
+                                                                            xtype: 'textfield',
+                                                                            editable: true,
+                                                                            allowBlank: false,
+                                                                            enableKeyEvents: true,
+                                                                            maskRe: /[0-9\.-]/,
+                                                                            selectOnFocus: true,
+                                                                            listeners: {
+                                                                                specialkey: 'eventKeyAdjustment'
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        sortable: false,
+                                                                        xtype: 'actioncolumn',
+                                                                        width: 40,
+                                                                        text: 'Del.',
+                                                                        id: prototype.id + '-gridColumnViewHead',
+                                                                        align: 'center',
+                                                                        items: [
+                                                                            {
+                                                                                iconCls: 'prx-icon-eye',
+                                                                                tooltip: 'Detail',
+                                                                                handler: 'viewDetail'
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        sortable: false,
+                                                                        xtype: 'actioncolumn',
+                                                                        width: 40,
+                                                                        text: 'Del.',
+                                                                        id: prototype.id + '-gridColumnDeleteHead',
+                                                                        align: 'center',
+                                                                        items: [
+                                                                            {
+                                                                                iconCls: 'prx-icon-image-trash',
+                                                                                tooltip: 'Delete',
+                                                                                handler: 'removeTKTHEADER'
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
                                             ]
                                         },
                                         {
-                                            xtype: 'label',
-                                            text: 'Detail Settlement',
-                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
-                                            bodyStyle: 'background:#E5ECEF;',
-                                            fontSize: '11',
-                                            width: 280,
-                                            height: 20,
-                                            margin: '4 2 4 8'
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            margin: '0 0 0 350',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 480},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Sum Amount:',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 90
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSumAmountHead',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 110
+                                                }
+                                            ]
                                         },
-                                        {xtype: 'tbspacer', height: 5},
+                                        //</editor-fold>
+
+                                        //<editor-fold defaultstate="collapsed" desc="Detail Setlement">
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-panelScanCard',
                                             layout: 'hbox',
-                                            hidden: false,
+                                            hidden: true,
                                             border: false,
                                             margin: '0 2 10 20',
                                             bodyStyle: 'background:#;',
@@ -748,7 +1003,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     iconCls: 'prx-icon-search',
                                                     tooltip: 'Add',
                                                     listeners: {
-                                                        click: 'cambiaParams'
+                                                        click: 'cambiaParamsHeader'
                                                     }
                                                 },
                                                 {xtype: 'tbspacer', width: 5},
@@ -781,13 +1036,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     xtype: 'button',
                                                     width: 25,
                                                     id: prototype.id + '-btnRefresh',
-                                                    hidden:true,
+//                                                    hidden:true,
                                                     //margin: '4 4 4 4',
                                                     iconCls: 'prx-icon-refresh',
                                                     tooltip: 'Refresh Detail',
 
                                                     listeners: {
-                                                        click: 'allRefreshDataEntryAMDP'
+                                                        click: 'onGridPending'
                                                     }
                                                 },
                                                 {
@@ -819,7 +1074,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             xtype: 'panel',
                                             id: prototype.id + '-panelScanCard2',
                                             layout: 'hbox',
-                                            hidden: false,
+                                            hidden: true,
                                             border: false,
                                             margin: '0 2 0 20',
                                             bodyStyle: 'background:#;',
@@ -923,8 +1178,179 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
+                                            hidden: true,
                                             border: false,
-                                            margin: '10 0 0 10',
+                                            margin: '0 2 0 20',
+                                            bodyStyle: 'background:#efe5e5;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 7, height: 24},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Society',
+                                                    textAlign: 'center',
+                                                    paddingLeft: 3,
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSOCIETYS',
+                                                    fieldCls: 'detalle-society-textfield',
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    fieldStyle: 'text-align:center',
+                                                    readOnly: true,
+                                                    width: 110
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Merchant',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtUNICODEL',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 90
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Id.Bank',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtBANDOCL',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Currency',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSCURRENCYL',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Neto',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 60
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtNETOL',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 5}
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            hidden: true,
+                                            border: false,
+                                            bodyStyle: 'background:#efe5e5;',
+                                            margin: '0 2 0 20',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 7, height: 24},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Bank Account',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtACCNUMBERL',
+                                                    fieldCls: 'detalle-ACCNUMBERL-textfield',
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 110
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Value Date',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtVALDATEL',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 90
+                                                },
+                                                {xtype: 'tbspacer', width: 490},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Diff',
+                                                    textAlign: 'center',
+                                                    paddingLeft: 3,
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 60
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtDIFF',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 5}
+                                            ]
+                                        },
+                                        //</editor-fold>
+
+                                        //<editor-fold defaultstate="collapsed" desc="Detail new Setlement">
+                                        {
+                                            xtype: 'label',
+                                            text: 'Detail Settlement',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                                            bodyStyle: 'background:#E5ECEF;',
+                                            fontSize: '11',
+                                            width: 280,
+//                                            height: 20,
+                                            margin: '0 2 4 8'
+                                        },
+                                        {xtype: 'tbspacer', height: 5},
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            margin: '0 0 0 10',
                                             //bodyStyle: 'background:#efe5e5;',
                                             items: [
                                                 {
@@ -933,15 +1359,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     layout: 'vbox',
                                                     border: false,
                                                     width: 1137,
-                                                    height: 282,
+                                                    height: 252,
                                                     hidden: false,
                                                     autoScroll: true,
                                                     items: [
                                                         {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScan',
-                                                            width: 1235,
-                                                            height: 280,
+                                                            width: 1125,
+                                                            height: 250,
                                                             columnLines: true,
                                                             plugins: [
                                                                 {
@@ -1130,6 +1556,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                     {
                                                                         sortable: false,
                                                                         xtype: 'actioncolumn',
+                                                                        hidden: true,
                                                                         width: 40,
                                                                         text: 'Del.',
                                                                         id: prototype.id + '-gridColumnDelete',
@@ -1155,7 +1582,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             border: false,
                                             margin: '0 0 0 350',
                                             items: [
-                                                {xtype: 'tbspacer', width: 480},
+                                                {xtype: 'tbspacer', width: 400},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Qty:',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 30
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtQty',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 40
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Sum Amount:',
@@ -1172,7 +1615,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     width: 110
                                                 }
                                             ]
-                                        }
+                                        },
+                                                //</editor-fold>
                                     ]
                                 }
                             ]
@@ -1331,7 +1775,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
         {
             xtype: 'form',
             hidden: true,
-            id: prototype.id + '-formQueryPend',
+            id: prototype.id + '-formQueryAgrupa',
             style: {
                 border: '1px solid #6c757d'
             },
@@ -1354,37 +1798,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                     items: [
                         {
                             xtype: 'panel',
-                            border: false,
-                            width: '100%',
-                            bodyStyle: {
-                                'background-color': '#f0f0f0',
-                                'text-align': 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'label',
-                                    text: 'Pending Settlements',
-                                    style: {
-                                        'font-weight': 'bold',
-                                        'font-size': '16px'
-                                    }
-                                }
-                            ],
-                            height: 20
-                        },
-                        {
-                            xtype: 'panel',
                             border: true,
                             layout: {
                                 type: 'hbox',
                                 pack: 'end'
                             },
-                            width: 742,
+                            width: 672,
                             //                    margin: '0 0 10 445',
                             items: [
                                 {
                                     xtype: 'panel',
-                                    id: prototype.id + '-boxPaginacion_PEND',
+                                    id: prototype.id + '-boxPaginacion_Agrupa',
                                     hidden: false,
                                     width: 100,
                                     border: false,
@@ -1395,7 +1819,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             items: [
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btn-pag-first_PEND',
+                                                    id: prototype.id + '-btn-pag-first_Agrupa',
                                                     iconCls: 'prx-icon-pagination-first',
                                                     tooltip: 'First Page',
                                                     handler: 'pagFirst'
@@ -1403,7 +1827,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btn-pag-previous_PEND',
+                                                    id: prototype.id + '-btn-pag-previous_Agrupa',
                                                     iconCls: 'prx-icon-pagination-previous',
                                                     tooltip: 'Previous Page',
                                                     handler: 'pagPrevious'
@@ -1411,7 +1835,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btn-pag-next_PEND',
+                                                    id: prototype.id + '-btn-pag-next_Agrupa',
                                                     iconCls: 'prx-icon-pagination-next',
                                                     tooltip: 'Next Page',
                                                     handler: 'pagNext'
@@ -1419,7 +1843,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btn-pag-last_PEND',
+                                                    id: prototype.id + '-btn-pag-last_Agrupa',
                                                     iconCls: 'prx-icon-pagination-last',
                                                     tooltip: 'Last Page',
                                                     handler: 'pagLast'
@@ -1427,7 +1851,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'pagingtoolbar',
-                                                    id: prototype.id + '-paggin_PEND',
+                                                    id: prototype.id + '-paggin_Agrupa',
                                                     pageSize: 10,
                                                     border: false,
                                                     displayInfo: false,
@@ -1447,47 +1871,38 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             items: [
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btnSearch_PEND',
+                                                    id: prototype.id + '-btnSearch_Agrupa',
                                                     iconCls: 'prx-icon-search',
                                                     tooltip: 'Search',
-                                                    handler: 'searchQueryPend'
+                                                    handler: 'searchQueryAgrupa'
                                                 },
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btnExcel_PEND',
+                                                    id: prototype.id + '-btnExcel_Agrupa',
                                                     iconCls: 'prx-icon-excel',
                                                     tooltip: 'Export to Excel',
-                                                    handler: 'exportQueryPend'
+                                                    handler: 'exportQueryAgrupa'
                                                 },
                                                 {
                                                     xtype: 'button',
-                                                    id: prototype.id + '-btnClear_PEND',
+                                                    id: prototype.id + '-btnClear_Agrupa',
                                                     iconCls: 'prx-icon-clear',
                                                     tooltip: 'Clear Options',
-                                                    handler: 'cleanFiltersQueryPend'
+                                                    handler: 'cleanFiltersQueryAgrupa'
                                                 }
-                                                //                                        {
-                                                //                                            xtype: 'button',
-                                                //                                            id: prototype.id + '-btnBack_PEND',
-                                                //                                            iconCls: 'prx-icon-back',
-                                                //                                            tooltip: 'Back'
-                                                //                                        }
                                             ]
                                         }
                                     ]
                                 }
                             ]
-
-
                         },
                         {xtype: 'tbspacer', height: 10},
                         {
                             xtype: 'panel',
-                            //                    id: prototype.id + '-panelScanCard',
                             layout: 'hbox',
                             hidden: false,
                             border: false,
-                            //                    margin: '0 2 10 5px',
+//                            margin: '0 2 10 5px',
                             bodyStyle: 'background-color: #E3EAF9;',
                             items: [
                                 {xtype: 'tbspacer', width: 10},
@@ -1495,15 +1910,37 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                     xtype: 'label',
                                     text: 'Value Date:',
                                     textAlign: 'center',
-                                    //                            labelStyle: 'background: #E3EAF9',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
+                                    style: 'font-weight:bold;color:#0B333C;',
                                     margin: '4 4 4 4',
                                     width: 70
                                 },
                                 {xtype: 'tbspacer', width: 5},
                                 {
                                     xtype: 'datefield',
-                                    id: prototype.id + '-txtADATE_PEND',
+                                    id: prototype.id + '-txtFromADATEAG',
+                                    fieldStyle: 'text-align:center',
+                                    format: 'Y/m/d',
+                                    formatText: '',
+                                    invalidText: 'Format valid YYYY/MM/DD',
+                                    minValue: new Date(1990, 00, 01),
+                                    maskRe: /[0-9/]/,
+                                    editable: false,
+                                    enforceMaxLength: true,
+                                    maxLength: 10,
+                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                    width: 90
+                                },
+                                {
+                                    xtype: 'label',
+                                    text: 'To:',
+                                    textAlign: 'center',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    margin: '4 4 4 4',
+                                    width: 20
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    id: prototype.id + '-txtToADATEAG',
                                     fieldStyle: 'text-align:center',
                                     format: 'Y/m/d',
                                     formatText: '',
@@ -1519,48 +1956,24 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                 {xtype: 'tbspacer', width: 10},
                                 {
                                     xtype: 'label',
-                                    text: 'Sale Date:',
+                                    text: 'Liquid Num:',
                                     textAlign: 'center',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
-                                    margin: '4 4 4 4',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'datefield',
-                                    id: prototype.id + '-txtFromSDATE_PEND',
-                                    fieldStyle: 'text-align:center',
-                                    format: 'Y/m/d',
-                                    formatText: '',
-                                    invalidText: 'Format valid YYYY/MM/DD',
-                                    minValue: new Date(1990, 00, 01),
-                                    maskRe: /[0-9/]/,
-                                    editable: false,
-                                    enforceMaxLength: true,
-                                    maxLength: 10,
-                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                    width: 90
-                                },
-                                {xtype: 'tbspacer', width: 30},
-                                {
-                                    xtype: 'label',
-                                    text: 'Acc Number:',
-                                    textAlign: 'center',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
+                                    style: 'font-weight:bold;color:#0B333C;',
                                     margin: '4 4 4 4',
                                     width: 80
                                 },
                                 {xtype: 'tbspacer', width: 5},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtACCNUMBER_PEND',
+                                    id: prototype.id + '-txtLIQUIDACIOAG',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
                                     maxLength: 16,
                                     width: 120,
                                     enableKeyEvents: true
-                                }
+                                },
+                                {xtype: 'tbspacer', width: 10},
                             ]
                         },
                         {
@@ -1569,141 +1982,52 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                             boder: false,
                             bodyStyle: 'background-color: #E3EAF9;',
                             items: [
-
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'label',
+                                    text: 'Merchant:',
+                                    textAlign: 'center',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    margin: '4 4 4 4',
+                                    width: 65
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtMERCHANDAG',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    maskRe: /[0-9]/,
+                                    maxLength: 16,
+                                    width: 120,
+                                    enableKeyEvents: true
+                                },
                                 {xtype: 'tbspacer', width: 10},
                                 {
                                     xtype: 'label',
                                     text: 'Amount:',
                                     textAlign: 'center',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
+                                    style: 'font-weight:bold;color:#0B333C;',
                                     margin: '4 4 4 4',
-                                    width: 70
+                                    width: 55
                                 },
                                 {xtype: 'tbspacer', width: 5},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtNETO_PEND',
+                                    id: prototype.id + '-txtNETOAG',
                                     fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
                                     maxLength: 16,
-                                    width: 90,
+                                    width: 120,
                                     enableKeyEvents: true
                                 },
-                                {xtype: 'tbspacer', width: 14},
-                                {
-                                    xtype: 'label',
-                                    text: 'Doc. Type:',
-                                    //                            padding: '3 0 0 25',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 9},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbDocType_PEND',
-                                    triggerAction: 'all',
-                                    enableKeyEvents: true,
-                                    readOnly: false,
-                                    editable: true,
-                                    valueField: 'value',
-                                    displayField: 'description',
-                                    fieldStyle: 'text-align: left;',
-                                    width: 90,
-                                    hidden: false,
-                                    value: '',
-                                    store: {
-                                        fields: ['value', 'description'],
-                                        data: [
-                                            {value: '', description: 'All'},
-                                            {value: 'S', description: 'Sales'},
-                                            {value: 'D', description: 'Debits'}
-                                        ]
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 19},
-                                {
-                                    xtype: 'label',
-                                    text: 'Unique Code:',
-                                    textAlign: 'center',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
-                                    margin: '4 0 4 4',
-                                    width: 75
-                                },
-                                {xtype: 'tbspacer', width: 15},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtUNICODE_PEND',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9]/,
-                                    maxLength: 15,
-                                    width: 120,
-                                    enableKeyEvents: true,
-                                    listeners: {
-                                        //                                change: 'cambiaParams'
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            //                    id: prototype.id + '-panelScanCard2',
-                            layout: 'hbox',
-                            hidden: false,
-                            border: false,
-                            //                    margin: '0 2 0 20',
-                            bodyStyle: 'background-color: #E3EAF9;',
-                            items: [
-
-                                {xtype: 'tbspacer', width: 10},
-                                {
-                                    xtype: 'label',
-                                    text: 'Card Code:',
-                                    textAlign: 'center',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
-                                    margin: '4 4 4 4',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbSCARCOD_PEND',
-                                    //                            style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:left;',
-                                    queryMode: 'local',
-                                    triggerAction: 'all',
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    value: '',
-                                    width: 273,
-                                    labelWidth: 10,
-                                    hidden: false,
-                                    hiddenLabel: false,
-                                    editable: false
-                                },
-                                {
-                                    xtype: 'combo',
-                                    fieldLabel: 'Code Bank',
-                                    id: prototype.id + '-cmbBank_PEND',
-                                    queryMode: 'local',
-                                    margin: '0 0 0 23',
-                                    valueField: 'CODEBANK',
-                                    displayField: 'IN_CODE_IN_NAME',
-                                    emptyText: 'All',
-                                    value: '',
-                                    fieldStyle: 'text-align: left;',
-                                    width: 250,
-                                    labelWidth: 85,
-                                    labelAlign: 'left'
-                                }
-
-
                             ]
                         },
                         {xtype: 'tbspacer', height: 10},
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-panelPendings',
+                            id: prototype.id + '-panelAgrupa',
                             bodyStyle: 'background-color: #E3EAEF;',
                             hidden: false,
                             width: 742,
@@ -1714,7 +2038,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id + '-gridDataPendings',
+                                    id: prototype.id + '-gridDataAgrupa',
                                     bodyStyle: 'background: transparent;',
                                     width: 742,
                                     titleAlign: 'center',
@@ -1728,103 +2052,66 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 90,
+                                            {text: 'Society', dataIndex: 'CCUST', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;background-color:#c0e0fc;font-weight:bold";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
+                                            {text: 'Merchant', dataIndex: 'AFILIADO', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Code. Bank', dataIndex: 'CODEBANK', width: 80,
+                                            {text: 'Liquid Num:', dataIndex: 'LIQUIDAC', width: 80,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Unique Code', dataIndex: 'UNICODE', width: 100,
+                                            {text: 'Value<br>Date', dataIndex: 'FECHA', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Doc SAP Bank', dataIndex: 'BANDOC', width: 110, hidden: true,
-                                                listeners: {
-                                                    click: 'onGridDetDetails'
+                                            {text: 'Neto', dataIndex: 'MONTO', width: 120,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
+                                                    return Ext.util.Format.number(value, '0,000');
                                                 },
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = record.data.STVAL === 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
-                                                    return record.data.STVAL === 'Match' ? '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>' : value;
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataAgrupa').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.totNETO, '0,000') + '<b>';
                                                 }
                                             },
-                                            {
-                                                text: 'Conciliacion - Fase I',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Abono<br>Date', dataIndex: 'ADATE', width: 90,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            metaData.style = "text-align:center;background-color:#c0e0fc;font-weight:bold";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Neto EECC', dataIndex: 'NETO', width: 120,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
-                                                            return Ext.util.Format.number(value, '0,000');
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDetLiquidaByS').getStore().getData().items[0].data;
-                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETO, '0,000') + '<b>';
-                                                        }
-                                                    },
-                                                    {text: 'Status', dataIndex: 'STVAL', width: 140,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
-                                                            return value;
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDetLiquidaByS').getStore().getData().items[0].data;
-                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000') + '<b>';
-                                                        }
-                                                    }
-                                                ]
+                                            {text: 'FSELECT', dataIndex: 'FSELECT', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
                                             },
-                                            {
-                                                text: 'Qty',
-                                                columns: [
-                                                    {
-                                                        text: 'Sett.', dataIndex: 'QTYSETT', width: 50, align: 'center',
-                                                        listeners: {
-                                                            //                                                            click: 'onGridDataCross'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "color:#244066;text-align:right;";
-                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                            return value;
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataPendings').getStore().getData().items[0].data;
-                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return data.lngTotQTOTSAL;
-                                                        }
-                                                    }
-                                                ]
-                                            }
+                                            {text: 'CODPRO', dataIndex: 'CODPRO', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'CCUSTPRO', dataIndex: 'CCUSTPRO', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
                                         ]
                                     }
                                 }
@@ -1833,7 +2120,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                         },
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-pie_PEND',
+                            id: prototype.id + '-pie_Agrupa',
                             layout: {
                                 type: 'hbox',
                                 pack: 'center'
@@ -1861,7 +2148,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             width: 50
                                         },
                                         {
-                                            id: prototype.id + '-lbl-currentPage_PEND',
+                                            id: prototype.id + '-lbl-currentPage_Agrupa',
                                             text: '1',
                                             width: 50
                                         },
@@ -1870,7 +2157,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             width: 50
                                         },
                                         {
-                                            id: prototype.id + '-lbl-pageCount_PEND',
+                                            id: prototype.id + '-lbl-pageCount_Agrupa',
                                             text: '0',
                                             width: 50
                                         },
@@ -1880,7 +2167,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             width: 80
                                         },
                                         {
-                                            id: prototype.id + '-lbl-total_PEND',
+                                            id: prototype.id + '-lbl-total_Agrupa',
                                             text: '0',
                                             width: 50
                                         }

@@ -2969,15 +2969,15 @@ public class StatementReconciliationsController extends BaseController {
 
     }
     
-    @RequestMapping(value = "getXLSXQueryPending")
+    @RequestMapping(value = "getXLSXAgrupa")
     public @ResponseBody
-    void getXLSXQueryPending(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Report : getXLSXQueryPending");
-        String fileNameDownload = String.format("Report  - Pending Settlements - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+    void getXLSXAgrupa(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXAgrupa");
+        String fileNameDownload = String.format("Report - Previa Settlements - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
-            List<A2290Filter> listaData = this.getListPendings(request, true);
+            List<A2290Filter> listaData = this.getListAgrupa(request, true);
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Report");
@@ -3211,7 +3211,123 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+    
+    @RequestMapping(value = "/searchBean_HEADER")
+    public @ResponseBody
+    String searchBean_HEADER(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean_HEADER-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
+            List<A2290Filter> lst = new ArrayList<>(0);
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP05114Header(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    
+    @RequestMapping(value = "/searchBean_PRE_DETAIL")
+    public @ResponseBody
+    String searchBean_PRE_DETAIL(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean_PRE_DETAIL-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = new ArrayList<>(0);
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP05114PreDetail(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    
+    @RequestMapping(value = "searchBean_AGRUPA")
+    public @ResponseBody
+    String searchBean_AGRUPA(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : SearchPending-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListAgrupa(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListAgrupa(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+            
+            lst = logic.loadPX269SQP05114Agrupa(filter);
+            
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
     @RequestMapping(value = "/searchBean_DETAIL")
     public @ResponseBody
     String searchBean_DETAIL(ModelMap map, HttpServletRequest request) {

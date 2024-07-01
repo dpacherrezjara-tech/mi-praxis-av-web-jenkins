@@ -86,6 +86,18 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
     }
 
+    public List<A2290Filter> loadPX269SQP05114Header(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05114Header(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP05114PreDetail(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05114PreDetail(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP05114Agrupa(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05114Agrupa(filter);
+    }
+    
     public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05114Detail(filter);
     }
