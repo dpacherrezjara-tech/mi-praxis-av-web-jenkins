@@ -81,7 +81,7 @@ public class AccountingDAO {
     
     public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
         CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05343(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05343(?,?,?,?,?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -93,6 +93,7 @@ public class AccountingDAO {
             cstmt.setString(3, filter.VP_FECHA_FIN);
             cstmt.setString(4, filter.VP_FECHA_CIE);
             cstmt.setString(5, filter.VP_USER);
+            cstmt.setString(5, filter.VP_TIPO);
             cstmt.execute();
             filter.dbException.SQLCODE = cstmt.getString(6);
             filter.dbException.MESSAGE = cstmt.getString(7);

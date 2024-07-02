@@ -19,5 +19,6 @@ public class SQP05343Filter extends A4556 {
     public String VP_FECHA_FIN = "";
     public String VP_FECHA_CIE = "";
     public String VP_USER = "";
+    public String VP_TIPO = "";
     public DBException dbException = new DBException();
 }

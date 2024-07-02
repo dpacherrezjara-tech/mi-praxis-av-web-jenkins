@@ -1,14 +1,14 @@
-Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
+Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
     extend: 'Ext.window.Window',
-    alias: 'widget.DataEntryGenerationOfAccountingForm',
+    alias: 'widget.DataEntryRegistrationOfAccountingForm',
     requires: [
-        'Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGenerationOfAccountingController'
+        'Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryRegistrationOfAccountingController'
     ],
-    controller: 'DataEntryGenerationOfAccountingController',
+    controller: 'DataEntryRegistrationOfAccountingController',
     title: 'Processing',
     header: true,
 //    height:920,
-    width: 600,
+    width: 550,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -113,14 +113,6 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             boxLabel: 'Exterior',
                                             margin: '2 2 2 10',
                                             checked: false
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck07',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'PF',
-                                            margin: '2 2 2 10',
-                                            checked: false
                                         }
                                     ]
 
@@ -180,6 +172,27 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             }
                                         }
                                     }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            margin: '10 0 10 0', //top left bottom  righ
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-PSTGD3',
+                                    fieldLabel: 'User', labelAlign: 'right', labelStyle: 'font-weight: bold;', 
+                                    labelWidth: 50,
+                                    width: 190, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
+                                    invalidText: 'Ingrese usuario contable',
+                                    value: "LUMIRANDA",
+                                    editable: true,
+                                    enableKeyEvents: true,
+                                    enforceMaxLength: true,
+                                    maxLength: 12,
                                 }
                             ]
                         }

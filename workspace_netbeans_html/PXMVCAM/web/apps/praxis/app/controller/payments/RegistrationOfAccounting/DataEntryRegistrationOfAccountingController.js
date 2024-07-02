@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGenerationOfAccountingController', {
+Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryRegistrationOfAccountingController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.DataEntryGenerationOfAccountingController',
+    alias: 'controller.DataEntryRegistrationOfAccountingController',
     bean: {},
     init: function (view) {
         this.p = this.view.params;
@@ -34,8 +34,10 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     //</editor-fold>
     llenarData: function (beanTemp) {
-        beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-        beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+        beanTemp.VP_FECHA_FIN = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
+        beanTemp.VP_FECHA_INI = beanTemp.VP_FECHA_FIN !== "" ? beanTemp.VP_FECHA_FIN.substring(0,4) + '0101' : "";
+        beanTemp.VP_FECHA_CIE = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+        beanTemp.VP_USER      = Ext.getCmp(prototype.id + '-PSTGD3').getValue();
         beanTemp.VP_TIPO = "";
         
         var vl_pasaje = "X";
@@ -44,7 +46,6 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         var vl_ajuste = "X";
         var vl_debito = "X";
         var vl_exterior = "X";
-        var vl_pf = "X";
         
         var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
         var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
@@ -52,19 +53,15 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
         var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
         var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
-        var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
                 
         if(vl_ck01) vl_pasaje = 'P';
         if(vl_ck02) vl_carga = 'A';
         if(vl_ck03) vl_correo = 'C'; 
         if(vl_ck04) vl_ajuste = 'J';
         if(vl_ck05) vl_debito = 'D'; 
-        if(vl_ck06) vl_exterior = 'E';
-        if(vl_ck07) vl_pf = 'E'; 
+        if(vl_ck06) vl_exterior = 'E'; 
         
-        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior + vl_pf; 
-       
-        
+        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior; 
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {
@@ -81,7 +78,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
                     if (msjResult === '') {
-                        this.procesarArchivos(beanTemp);
+                        this.cargarArchivos(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -99,16 +96,16 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     // </editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Procesar archivos">
-    procesarArchivos: function (beanTemp) {
+    //<editor-fold defaultstate="collapsed" desc="Cargar archivos">
+    cargarArchivos: function (beanTemp) {
         var beanString = JSON.stringify(beanTemp);
         Ext.Ajax.request({
-            url: prototype.url + '/procesarArchivos',
+            url: prototype.url + '/cargarArchivos',
             method: 'POST',
             timeout: 60000000,
             params: {
                 beanString: beanString
-                        // option: beanTemp.option
+                // option: beanTemp.option
             },
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             success: function (response, opts) {
@@ -123,7 +120,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                     fn: function () {
                         //culmino PROCESO                           
                         //Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});   
-                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        var elem = document.getElementById('RegistrationOfAccountingFormMsg');
                         elem.innerHTML = objRtn.dbException.MESSAGE;
                         //me.onCancelClick();                           
                     }
@@ -161,7 +158,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         var bean = {};
         bean.IN_TIPO = rec.A4556TFILE;
         bean.IN_LEXT = in_NARCH;
-        bean.FNAME = '134' + rec.A4556TFILE_0 + in_NARCH;
+        bean.FNAME = rec.A4556TFILE_0 + in_NARCH;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',
