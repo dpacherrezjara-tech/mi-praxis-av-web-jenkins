@@ -2496,7 +2496,7 @@ public class StatementReconciliationsDAO {
 
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
-                beanTkt.CCUST = rst.getString("CCUST");
+                beanTkt.CORES = rst.getString("COREP");
                 beanTkt.STVAL = rst.getString("STVAL");
                 if (hmDescEstados.containsKey(rst.getString("STVAL").trim())) {
                     beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();

@@ -60,6 +60,7 @@ public class A2290Filter extends A2290 {
     public String IN_PRDA = "";
     public int IN_TRANL = 0;
     public int QTY = 0;
+    public String CORES = "";
     public int QTYPROCUP = 0;
     public int QTYNPROCUP = 0;
     public String IN_SEQ = "";

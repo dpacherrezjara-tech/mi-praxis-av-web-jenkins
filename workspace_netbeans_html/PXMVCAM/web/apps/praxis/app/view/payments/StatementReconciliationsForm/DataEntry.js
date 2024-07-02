@@ -7,7 +7,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
     controller: 'DataEntryStatementReconciliationsController',
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
-    height: 870,
+    height: 730,
     width: 1190,
 //     x: 0, // Establecer la posición horizontal a la izquierda del contenedor principal
 //    y: 0,
@@ -230,14 +230,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Clave',
+                                                    text: 'key',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     width: 120
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtCLAVE',
+                                                    id: prototype.id + '-de-txtKEY',
                                                     style: 'font-weight:bold;color:#d5f4d5',
 //                                                    fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
@@ -454,9 +454,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {
                                             xtype: 'label',
                                             text: 'Header Settlement',
+                                            id: prototype.id + '-header',
                                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                             bodyStyle: 'background:#E5ECEF;',
                                             fontSize: '11',
+                                            hidden: true,
                                             width: 280,
                                             height: 20,
                                             margin: '4 2 4 8'
@@ -465,18 +467,19 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             xtype: 'label',
                                             text: 'Settlement Information',
                                             hidden: true,
+                                            id: prototype.id + '-detail',
                                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                             bodyStyle: 'background:#E5ECEF;',
                                             fontSize: '11',
                                             width: 234,
                                             height: 20,
-                                            margin: '4 2 4 8'
+                                            margin: '10 2 4 8'
                                         },
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-panelScanHead',
                                             layout: 'hbox',
-                                            hidden: false,
+                                            hidden: true,
                                             border: false,
                                             margin: '0 2 10 20',
                                             bodyStyle: 'background:#;',
@@ -659,6 +662,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
+                                            id: prototype.id + '-mainHeader',
+                                            hidden: true,
                                             border: false,
                                             margin: '0 0 0 10',
                                             //bodyStyle: 'background:#efe5e5;',
@@ -670,7 +675,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     border: false,
                                                     width: 1137,
                                                     height: 155,
-                                                    hidden: false,
                                                     autoScroll: true,
                                                     items: [
                                                         {
@@ -854,6 +858,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
+                                            id: prototype.id + '-sumHeader',
                                             border: false,
                                             margin: '0 0 0 350',
                                             items: [
@@ -879,305 +884,20 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
 
                                         //<editor-fold defaultstate="collapsed" desc="Detail Setlement">
                                         {
-                                            xtype: 'panel',
-                                            id: prototype.id + '-panelScanCard',
-                                            layout: 'hbox',
-                                            hidden: true,
-                                            border: false,
-                                            margin: '0 2 10 20',
-                                            bodyStyle: 'background:#;',
-                                            items: [
-                                                {xtype: 'tbspacer', width: 10},
-//                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Value Date:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 70
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'datefield',
-                                                    id: prototype.id + '-txtFromADATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    format: 'Y/m/d',
-                                                    formatText: '',
-                                                    invalidText: 'Format valid YYYY/MM/DD',
-                                                    minValue: new Date(1990, 00, 01),
-                                                    maskRe: /[0-9/]/,
-                                                    editable: false,
-                                                    enforceMaxLength: true,
-                                                    maxLength: 10,
-                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
-                                                },
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'To:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 20
-                                                },
-                                                {
-                                                    xtype: 'datefield',
-                                                    id: prototype.id + '-txtToADATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    format: 'Y/m/d',
-                                                    formatText: '',
-                                                    invalidText: 'Format valid YYYY/MM/DD',
-                                                    minValue: new Date(1990, 00, 01),
-                                                    maskRe: /[0-9/]/,
-                                                    editable: false,
-                                                    enforceMaxLength: true,
-                                                    maxLength: 10,
-                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Acc Number:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-txtACCNUMBER',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    maskRe: /[0-9]/,
-                                                    maxLength: 16,
-                                                    width: 120,
-                                                    enableKeyEvents: true
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Amount:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 75
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-txtNETO',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    maskRe: /[0-9]/,
-                                                    maxLength: 16,
-                                                    width: 120,
-                                                    enableKeyEvents: true
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Merchant:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 0 4 4',
-                                                    width: 70
-                                                },
-                                                {
-                                                    xtype: 'checkboxfield',
-                                                    id: prototype.id01 + '-chkUNICODE',
-                                                    checked: true,
-                                                    padding: '0px 0px 0px 5px',
-                                                    //boxLabel: 'Value'
-                                                    listeners: {
-                                                        change: 'cambiaParams'
-                                                    }
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    //margin: '4 4 4 4',
-                                                    iconCls: 'prx-icon-search',
-                                                    tooltip: 'Add',
-                                                    listeners: {
-                                                        click: 'cambiaParamsHeader'
-                                                    }
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    //margin: '4 4 4 4',
-                                                    iconCls: 'prx-icon-clear',
-                                                    tooltip: 'Clean',
-                                                    listeners: {
-                                                        click: 'clear_keyDownHandler'
-                                                    }
-
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    id: prototype.id + '-btnClearCustom',
-                                                    //margin: '4 4 4 4',
-                                                    iconCls: 'prx-icon-image-trash',
-                                                    tooltip: 'Clean Detail',
-
-                                                    listeners: {
-                                                        click: 'clear_tableNormal'
-                                                    }
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    id: prototype.id + '-btnRefresh',
-//                                                    hidden:true,
-                                                    //margin: '4 4 4 4',
-                                                    iconCls: 'prx-icon-refresh',
-                                                    tooltip: 'Refresh Detail',
-
-                                                    listeners: {
-                                                        click: 'onGridPending'
-                                                    }
-                                                },
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    //                                            margin: '4 4 4 4',
-                                                    iconCls: 'prx-icon-excel',
-                                                    tooltip: 'Download excel',
-                                                    listeners: {
-                                                        click: 'getExcel'
-                                                    }
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'button',
-                                                    width: 25,
-                                                    //                                            margin: '4 4 4 4',
-                                                    iconCls: 'prx-icon-edit',
-                                                    tooltip: 'Calculate Differences',
-                                                    //                                            hidden: true,
-                                                    reference: 'calculateButton',
-                                                    listeners: {
-                                                        click: 'calcularDiferencias'
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'panel',
-                                            id: prototype.id + '-panelScanCard2',
-                                            layout: 'hbox',
-                                            hidden: true,
-                                            border: false,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#;',
-                                            items: [
-                                                {xtype: 'tbspacer', width: 10},
-//                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Sale Date:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 70
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'datefield',
-                                                    id: prototype.id + '-txtFromSDATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    format: 'Y/m/d',
-                                                    formatText: '',
-                                                    invalidText: 'Format valid YYYY/MM/DD',
-                                                    minValue: new Date(1990, 00, 01),
-                                                    maskRe: /[0-9/]/,
-                                                    editable: false,
-                                                    enforceMaxLength: true,
-                                                    maxLength: 10,
-                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
-                                                },
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'To:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 20
-                                                },
-                                                {
-                                                    xtype: 'datefield',
-                                                    id: prototype.id + '-txtToSDATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    format: 'Y/m/d',
-                                                    formatText: '',
-                                                    invalidText: 'Format valid YYYY/MM/DD',
-                                                    minValue: new Date(1990, 00, 01),
-                                                    maskRe: /[0-9/]/,
-                                                    editable: false,
-                                                    enforceMaxLength: true,
-                                                    maxLength: 10,
-                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Clave:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-txtFUNDSTRGK',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    maskRe: /[0-9]/,
-                                                    maxLength: 16,
-                                                    width: 120,
-                                                    enableKeyEvents: true
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Card Code:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'combo',
-                                                    id: prototype.id + '-cmbSCARCOD',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:left;',
-                                                    queryMode: 'local',
-                                                    triggerAction: 'all',
-                                                    valueField: 'CODE',
-                                                    displayField: 'NAME',
-                                                    width: 200,
-                                                    labelWidth: 10,
-                                                    hidden: false,
-                                                    hiddenLabel: false,
-                                                    editable: false
-                                                }
-                                            ]
+                                            xtype: 'label',
+                                            text: 'Detail Settlement',
+                                            id: prototype.id + '-titleDetail',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                                            bodyStyle: 'background:#E5ECEF;',
+                                            fontSize: '11',
+                                            width: 280,
+//                                            height: 20,
+                                            margin: '0 2 4 8'
                                         },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
+                                            id: prototype.id + '-mainDetail',
                                             hidden: true,
                                             border: false,
                                             margin: '0 2 0 20',
@@ -1273,6 +993,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             hidden: true,
+                                            id: prototype.id + '-mainDetail2',
                                             border: false,
                                             bodyStyle: 'background:#efe5e5;',
                                             margin: '0 2 0 20',
@@ -1332,25 +1053,356 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 5}
                                             ]
                                         },
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-panelScanCard',
+                                            layout: 'hbox',
+                                            hidden: true,
+                                            border: false,
+                                            margin: '10 2 10 20',
+                                            bodyStyle: 'background:#;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 10},
+//                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Value Date:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 70
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtFromADATE',
+                                                    fieldStyle: 'text-align:center',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
+                                                    enforceMaxLength: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                                    width: 90
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'To:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 20
+                                                },
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtToADATE',
+                                                    fieldStyle: 'text-align:center',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
+                                                    enforceMaxLength: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                                    width: 90
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    id: prototype.id01 + '-chkADATE',
+                                                    checked: true,
+                                                    padding: '0px 0px 0px 5px',
+                                                    //boxLabel: 'Value'
+                                                    listeners: {
+                                                        change: 'cambiaParams'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 20},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Acc Number:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtACCNUMBER',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 120,
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    id: prototype.id01 + '-chkACCNUMBER',
+                                                    checked: true,
+                                                    padding: '0px 0px 0px 5px',
+                                                    //boxLabel: 'Value'
+                                                    listeners: {
+                                                        change: 'cambiaParams'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 20},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Amount:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 70
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtNETO',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    maskRe: /[0-9]/,
+                                                    maxLength: 16,
+                                                    width: 120,
+                                                    enableKeyEvents: true
+                                                },
+                                                {xtype: 'tbspacer', width: 20},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Merchant:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 0 4 4',
+                                                    width: 70
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    hidden:true,
+                                                    id: prototype.id + '-txtMERCHANT',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 120,
+                                                    enableKeyEvents: true
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    id: prototype.id01 + '-chkMERCHANT',
+                                                    checked: true,
+                                                    padding: '0px 0px 0px 5px',
+                                                    //boxLabel: 'Value'
+                                                    listeners: {
+                                                        change: 'cambiaParams'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    //margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-search',
+                                                    tooltip: 'Add',
+                                                    listeners: {
+                                                        click: 'cambiaParams'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    //margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-clear',
+                                                    tooltip: 'Clean',
+                                                    listeners: {
+                                                        click: 'clear_keyDownHandler'
+                                                    }
+
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.id + '-btnClearCustom',
+                                                    //margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-image-trash',
+                                                    tooltip: 'Clean Detail',
+
+                                                    listeners: {
+                                                        click: 'clear_tableNormal'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.id + '-btnRefresh',
+                                                    hidden:true,
+                                                    //margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-refresh',
+                                                    tooltip: 'Refresh Detail',
+
+                                                    listeners: {
+                                                        click: 'onGridPending'
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    //                                            margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-excel',
+                                                    tooltip: 'Download excel',
+                                                    listeners: {
+                                                        click: 'getExcel'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    //                                            margin: '4 4 4 4',
+                                                    iconCls: 'prx-icon-edit',
+                                                    tooltip: 'Calculate Differences',
+                                                    //                                            hidden: true,
+                                                    reference: 'calculateButton',
+                                                    listeners: {
+                                                        click: 'calcularDiferencias'
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-panelScanCard2',
+                                            layout: 'hbox',
+                                            hidden: true,
+                                            border: false,
+                                            margin: '0 2 0 20',
+                                            bodyStyle: 'background:#;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 10},
+//                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Sale Date:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 70
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtFromSDATE',
+                                                    fieldStyle: 'text-align:center',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
+                                                    enforceMaxLength: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                                    width: 90
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'To:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 20
+                                                },
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtToSDATE',
+                                                    fieldStyle: 'text-align:center',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
+                                                    enforceMaxLength: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                                    width: 90
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    id: prototype.id01 + '-chkSDATE',
+                                                    checked: true,
+                                                    padding: '0px 0px 0px 5px',
+                                                    //boxLabel: 'Value'
+                                                    listeners: {
+                                                        change: 'cambiaParams'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 20},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Key:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtFUNDSTRGK',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 120,
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    id: prototype.id01 + '-chkKEY',
+                                                    checked: true,
+                                                    padding: '0px 0px 0px 5px',
+                                                    //boxLabel: 'Value'
+                                                    listeners: {
+                                                        change: 'cambiaParams'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 20},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Card Code:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 70
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbSCARCOD',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    valueField: 'CODE',
+                                                    displayField: 'NAME',
+                                                    width: 120,
+                                                    labelWidth: 10,
+                                                    hidden: false,
+                                                    hiddenLabel: false,
+                                                    editable: false
+                                                },
+                                                
+                                                
+                                            ]
+                                        },
+                                        
                                         //</editor-fold>
 
                                         //<editor-fold defaultstate="collapsed" desc="Detail new Setlement">
-                                        {
-                                            xtype: 'label',
-                                            text: 'Detail Settlement',
-                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
-                                            bodyStyle: 'background:#E5ECEF;',
-                                            fontSize: '11',
-                                            width: 280,
-//                                            height: 20,
-                                            margin: '0 2 4 8'
-                                        },
+                                        
                                         {xtype: 'tbspacer', height: 5},
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            margin: '0 0 0 10',
+                                            margin: '10 0 0 10',
                                             //bodyStyle: 'background:#efe5e5;',
                                             items: [
                                                 {
@@ -1417,9 +1469,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Clave', dataIndex: 'FUNDSTRGK', width: 110,
+                                                                    {text: 'Key', dataIndex: 'FUNDSTRGK', width: 110,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
                                                                         }
                                                                     },
@@ -1483,28 +1537,40 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                     {text: 'MERCHAND', dataIndex: 'MERCHAND', width: 60, hidden: true,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
-//                                                                            value = 'COP';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
                                                                         }
                                                                     },
                                                                     {text: 'BANDOC', dataIndex: 'BANDOC', width: 60, hidden: true,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
-//                                                                            value = 'COP';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'COREPL', dataIndex: 'CORES', width: 60,hidden: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
                                                                         }
                                                                     },
                                                                     {text: 'ACCNUMBER', dataIndex: 'ACCNUMBER', width: 60, hidden: true,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
-//                                                                            value = 'COP';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
                                                                         }
                                                                     },
                                                                     {text: 'ADATE', dataIndex: 'ADATE', width: 60, hidden: true,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
-//                                                                            value = 'COP';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
                                                                         }
                                                                     },
@@ -1517,9 +1583,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             metaData.style = "text-align:right;";
-                                                                            console.log(data.COMISTOTA);
                                                                             if (data.COMISTOTA !== 0 && data.COMISTOTA !== undefined) {
-                                                                                metaData.style = "background-color: #A2F4FE;";
+                                                                                metaData.style = "background-color: #A2F4FE;text-align:right;";
                                                                                 metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA + '"';
                                                                             }
                                                                             if (record.get('isInValidCombination') && data.STVAL === '3') {
@@ -1582,7 +1647,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             border: false,
                                             margin: '0 0 0 350',
                                             items: [
-                                                {xtype: 'tbspacer', width: 400},
+                                                {xtype: 'tbspacer', width: 390},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Qty:',
@@ -1612,7 +1677,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     fieldStyle: 'text-align:right',
                                                     enforceMaxLength: true,
                                                     readOnly: true,
-                                                    width: 110
+                                                    width: 100
                                                 }
                                             ]
                                         },
