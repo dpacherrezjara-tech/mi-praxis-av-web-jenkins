@@ -101,7 +101,7 @@ public class Dashboard01DAO {
                 objRtn.TOTAL_CUPONS_PERCENTF = rs00.getDouble("TOTAL_COUPON_FLOWN_PER");
                 objRtn.TOTAL_AMOUNT = rs00.getDouble("TOTAL_AMOUNT");
                 objRtn.TOTAL_CUPONS = rs00.getInt("TOTAL_CUPONS");
-                objRtn.totAVG = rs00.getDouble("TOTAL_AMOUNT") / rs00.getInt("TOTAL_CUPONS");
+                objRtn.totAVG = rs00.getInt("TOTAL_CUPONS") == 0 ? 0 : rs00.getDouble("TOTAL_AMOUNT") / rs00.getInt("TOTAL_CUPONS");
                 objRtn.TOTAL_AMOUNT_OFF = rs00.getDouble("TOTAL_AMOUNT_OFF");
                 objRtn.TOTAL_AMOUNT_ON = rs00.getDouble("TOTAL_AMOUNT_ON");
                 objRtn.TOTAL_CUPONS_OFF = rs00.getInt("TOTAL_CUPONS_OFF");
