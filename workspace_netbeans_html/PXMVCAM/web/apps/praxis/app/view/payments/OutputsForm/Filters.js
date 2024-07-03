@@ -32,7 +32,8 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Filters', {
                             xtype: 'label',
                             text: 'Search By:',
                             padding: '3 0',
-                            width: 65
+//                            hidden:true,
+                            width: 60
                         },
                         {
                             xtype: 'combo',
@@ -47,6 +48,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Filters', {
                             width: 120,
 //                            value: "ADATE",
                             typeAhead: true,
+                            hidden:true,
                             valueField: 'code',
                             displayField: 'name',
                             listConfig: {minWidth: 130},
@@ -58,8 +60,9 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Filters', {
                         {xtype: 'tbspacer', width: 15},
                         {
                             xtype: 'combo',
+                            padding: '5 0',
                             id: prototype.id + '-cmbDateFromYear',
-                            fieldLabel: 'Date',
+                            fieldLabel: '',
                             labelAlign: 'right',
                             queryMode: 'local',
                             editable: false,
@@ -71,8 +74,8 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Filters', {
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
-                            labelWidth: 60,
-                            width: 150,
+//                            labelWidth: 60,
+                            width: 70,
                             anchor: '100%'
                         },
                         {

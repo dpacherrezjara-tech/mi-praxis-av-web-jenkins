@@ -98,12 +98,18 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
 
+        var month = this.fecha.getMonth() + 1;
+
+        if (month < 10) {
+            month = '0' + month;
+        }
+
         Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(win.getStoreYear(false));
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(win.getStoreMonth(true));
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
 
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -131,8 +137,8 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 
     },
     btnSearch_click: function (obj, e) {
-        this.setFormatParameter();
-        this.setGridData();
+//        this.setFormatParameter();
+//        this.setGridData();
     },
     // <editor-fold defaultstate="collapsed" desc="setGridData">
     setGridData: function () {
@@ -255,7 +261,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getTXT?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getTXT?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
                 global.Msg(
@@ -286,7 +292,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getTXT100?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getTXT100?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
                 global.Msg(
