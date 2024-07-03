@@ -60,7 +60,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         if(vl_ck04) vl_ajuste = 'J';
         if(vl_ck05) vl_debito = 'D'; 
         if(vl_ck06) vl_exterior = 'E';
-        if(vl_ck07) vl_pf = 'E'; 
+        if(vl_ck07) vl_pf = 'F'; 
         
         beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior + vl_pf; 
        
