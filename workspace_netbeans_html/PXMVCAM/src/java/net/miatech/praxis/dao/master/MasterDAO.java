@@ -250,7 +250,7 @@ public class MasterDAO {
         record.A005KEY2 = "All";
         lista.add(record);
 
-        String sql = "SELECT * FROM PRAXIS.A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
+        String sql = "SELECT * FROM " + session.getMainLibrary() + ".A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
 
         Connection cnx = null;
         try {
@@ -563,7 +563,7 @@ public class MasterDAO {
         List<A051> lstRtn = new ArrayList<>(0);
         A051 objRtn;
         try {
-            String SQLCLL01 = "{CALL PRAXIS.PX128S01A051}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX128S01A051}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
@@ -590,7 +590,7 @@ public class MasterDAO {
         List<A006> lstRtn = new ArrayList<>(0);
         A006 objRtn;
         try {
-            String SQLCLL01 = "{CALL PRAXIS.PX128S01A006}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX128S01A006}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
@@ -616,7 +616,7 @@ public class MasterDAO {
         List<A051> lstRtn = new ArrayList<>(0);
         A051 objRtn;
         try {
-            String SQLCLL01 = "{CALL PRAXIS.PX127S01A1741}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX127S01A1741}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
@@ -643,7 +643,7 @@ public class MasterDAO {
         List<String> lstRtn = new ArrayList<>(0);
 
         try {
-            String SQLCLL01 = "{CALL PRAXIS.PX128S03A1736}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX128S03A1736}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
@@ -667,7 +667,7 @@ public class MasterDAO {
         List<String> lstRtn = new ArrayList<>(0);
 
         try {
-            String SQLCLL01 = "{CALL PRAXIS.PX128S04A1736}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX128S04A1736}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
@@ -691,7 +691,7 @@ public class MasterDAO {
         List<A051> lstRtn = new ArrayList<>(0);
         A051 objRtn;
         try {
-            String SQLCLL01 = "{CALL PRAXIS.PX128S02A051}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX128S02A051}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cs = cnx.prepareCall(SQLCLL01);
@@ -725,7 +725,7 @@ public class MasterDAO {
             lista.add(record);
         }
 
-        String sql = "SELECT * FROM PRAXIS.A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
+        String sql = "SELECT * FROM " + session.getMainLibrary() + ".A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
 
         Connection cnx = null;
         try {
@@ -760,7 +760,7 @@ public class MasterDAO {
         record.A005KEY2 = "All";
         lista.add(record);
 
-        String sql = "SELECT * FROM PRAXIS.A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
+        String sql = "SELECT * FROM " + session.getMainLibrary() + ".A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
 
         Connection cnx = null;
         try {
@@ -797,7 +797,7 @@ public class MasterDAO {
             lista.add(record);
         }
 
-        String sql = "SELECT * FROM PRAXIS.A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
+        String sql = "SELECT * FROM " + session.getMainLibrary() + ".A005 WHERE A005KEY NOT LIKE '%*%' AND A005KEY<>''";
 
         Connection cnx = null;
         try {
@@ -1029,7 +1029,7 @@ public class MasterDAO {
         A1852Filter objRtn;
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL PRAXIS.A1852_USOS(?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".A1852_USOS(?)}";
 
         Connection cnx = null;
         if (flag == 2) {
@@ -1065,7 +1065,7 @@ public class MasterDAO {
         A051 objRtn;
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL PRAXIS.PXS01_USOS(?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PXS01_USOS(?)}";
 
         Connection cnx = null;
         if (flag == 2 || flag == 4) {
@@ -1106,7 +1106,7 @@ public class MasterDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXIS.SQP00116(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00116(?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -1149,7 +1149,7 @@ public class MasterDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PRAXIS.SQP01908(?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01908(?)}";
 
         Connection cnx = null;
 
@@ -1609,7 +1609,7 @@ public class MasterDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PRAXIS.SQP03189(?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP03189(?)}";
 
         Connection cnx = null;
         try {

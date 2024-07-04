@@ -173,23 +173,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             readOnly: true,
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 60},
-                                        {
-                                            xtype: 'label',
-                                            text: 'ID Dispute',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 80
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCHARNBR',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 110
-                                        },
-                                        {xtype: 'tbspacer', width: 5}
+                                        {xtype: 'tbspacer', width: 265}
                                     ]
                                 },
                                 {
@@ -2505,12 +2489,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                                     return value;
                                                                                                                 }
                                                                                                             },
-                                                                                                            {text: 'ID Disp.', dataIndex: 'SCONTROL', width: 70,
-                                                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                                                    metaData.style = "text-align:center;";
-                                                                                                                    return value;
-                                                                                                                }
-                                                                                                            },
 
                                                                                                         ]
                                                                                                     },
@@ -2590,7 +2568,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                     {
                                                                                                         sortable: false,
                                                                                                         xtype: 'actioncolumn',
-                                                                                                        width: 35,
+                                                                                                        width: 40,
                                                                                                         text: 'Adj.',
                                                                                                         id: prototype.id + '-gridColumnAdj_Chgbak',
                                                                                                         align: 'center',
@@ -2924,12 +2902,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                                                                             },
                                                                                                             {text: 'Name', dataIndex: 'NOMCONCEP', width: 110,
                                                                                                                 editor: {xtype: 'textfield', editable: false},
-                                                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                                                    metaData.style = "text-align:center;";
-                                                                                                                    return value;
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {text: 'ID Disp.', dataIndex: 'SCONTROL', width: 70,
                                                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                                                     metaData.style = "text-align:center;";
                                                                                                                     return value;

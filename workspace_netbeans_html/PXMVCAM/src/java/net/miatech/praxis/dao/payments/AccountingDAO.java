@@ -50,7 +50,7 @@ public class AccountingDAO {
 
     public SQP05233Filter setSQP05233Filter(SQP05233Filter filter) throws SQLException, Exception {
         CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05233(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05233(?,?,?,?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -81,7 +81,7 @@ public class AccountingDAO {
     
     public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
         CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05343(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05343(?,?,?,?,?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -120,7 +120,7 @@ public class AccountingDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05253(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05253(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -206,7 +206,7 @@ public class AccountingDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05252(?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?,?)}";
 
         Connection cnx = null;
         try {

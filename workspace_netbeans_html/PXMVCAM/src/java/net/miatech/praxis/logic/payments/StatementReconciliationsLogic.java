@@ -86,27 +86,11 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
     }
 
-    public List<A2290Filter> loadPX269SQP05114Header(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX269SQP05114Header(filter);
-    }
-    
-    public List<A2290Filter> loadPX269SQP05114PreDetail(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX269SQP05114PreDetail(filter);
-    }
-    
-    public List<A2290Filter> loadPX269SQP05114Agrupa(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX269SQP05114Agrupa(filter);
-    }
-    
     public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05114Detail(filter);
     }
 
     public String loadPX269SQP05115(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05115(filter, user);
-    }
-    
-    public String loadPX269SQP05115Head(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX269SQP05115Head(filter, user);
     }
 }
