@@ -20,6 +20,10 @@ public class A2353Filter extends A2353 {
      public String IN_INPNAME = "";
      public String IN_OUTNAME = "";
      public String IN_TABLA = "";
+     public String IN_SOURCEF = "";
+     public String IN_TABNAME = "";
+     public String IN_DESCRIPT = "";
+     public String IN_SYSTFIELD = "";
      public String IN_SCOUNTRY = "";
      public String IN_SCURRENCY = "";
      public String DATECH = "";

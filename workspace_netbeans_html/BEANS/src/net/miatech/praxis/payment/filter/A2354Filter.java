@@ -45,6 +45,7 @@ public String IN_CODEBANK = "";
 public String IN_CODEBANKA = "";
 public String IN_BANKNAM = "";
 public String IN_DREPORT = "";
+public String IN_TABNAME = "";
 public String IN_CODE = "";
 public String IN_CORE = "";
 public String IN_FRANC1 = "";

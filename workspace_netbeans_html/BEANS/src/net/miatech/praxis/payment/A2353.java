@@ -14,6 +14,14 @@ public class A2353 {
     public String CODEM = "";
     public String INPNAME = "";
     public String APLIC = "";
+    public String SOURCEF = "";
+    public String TABNAME = "";
+    public String USERFIELD = "";
+    public String LENGHTF = "";
+    public String DATATYPE = "";
+    public String ORDERSEL = "";
+    public String DESCRIPT = "";
+    public String SYSTFIELD = "";
     public String OUTNAME = "";
     public String TABLA = "";
     public String SEQNUM = "";
