@@ -2171,7 +2171,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Header(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Header(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2184,6 +2184,10 @@ public class StatementReconciliationsDAO {
             cstmt.setString(4, filter.IN_LIQUIDACIOHE.trim());
             cstmt.setString(5, filter.IN_MERCHANDHE.trim());
             cstmt.setString(6, filter.IN_NETOHE);
+            cstmt.setString(7, filter.IN_STVAL.trim());
+            cstmt.setString(8, filter.IN_BANDOC.trim());
+            cstmt.setString(9, filter.IN_DATECI.trim());
+            cstmt.setString(10, filter.IN_TRANCI.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -2288,7 +2292,6 @@ public class StatementReconciliationsDAO {
 
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
-                beanTkt.CCUST = rst.getString("CCUST");
                 beanTkt.STVAL = rst.getString("STVAL");
                 if (hmDescEstados.containsKey(rst.getString("STVAL").trim())) {
                     beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -2306,6 +2309,10 @@ public class StatementReconciliationsDAO {
                 beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
                 beanTkt.MERCHAND = rst.getString("MERCHAND");
                 beanTkt.FUNDSTRGK = rst.getString("FUNDSTRGK");
+                beanTkt.BAID = rst.getString("BAID");
+                if (!beanTkt.BAID.trim().equals("") && beanTkt.FUNDSTRGK.trim().equals("")) {
+                    beanTkt.FUNDSTRGK = beanTkt.BAID;
+                }
                 beanTkt.ADATE = rst.getString("ADATE");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
@@ -2642,6 +2649,216 @@ public class StatementReconciliationsDAO {
             }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
+
+    public String loadPX269SQP05115Head(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
+        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
+        ResultSet rst = null;
+        ResultSet rst1 = null;
+        CallableStatement cstmt0 = null;
+        CallableStatement cstmt = null;
+        CallableStatement cstmt2 = null;
+        CallableStatement cstmt3 = null;
+        CallableStatement cstmt4 = null;
+        Connection cnx0 = null;
+        Connection cnx = null;
+        Connection cnx2 = null;
+        Connection cnx3 = null;
+        Connection cnx4 = null;
+
+        //VALIDO EL MONTO DEL ESTADO DE CUENTA CON LOS MONTOS DEL 60 BUSCADOS POR CABECERA
+        double NETOC = filters.get(0).NETOC;
+        double NETO = 0;
+        String COREP = "";
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114GETNETO(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            for (int i = 0; i < filters.size(); i++) {
+
+                cstmt = cnx.prepareCall(SQLCLL01);
+                A2290Filter filterC = filters.get(i);
+                cstmt.setString(1, filterC.PRDA.trim());
+                cstmt.setString(2, filterC.CODPRO.trim());
+                cstmt.setString(3, filterC.FLIQUIDACI.trim());
+                cstmt.setString(4, filterC.LIQUIDACIO.trim());
+                cstmt.setString(5, filterC.MERCHAND.trim());
+                cstmt.setString(6, filterC.MONEDA.trim());
+                cstmt.setString(7, filterC.MONEDALIQ.trim());
+                cstmt.execute();
+
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+                    NETO += rst.getDouble("NETO");
+                }
+                rst.close();
+                cstmt.close();
+            }
+        } catch (Exception e) {
+            strMsj = "Error: " + e;
+            e.printStackTrace();
+            e.getMessage();
+        }
+        
+        String SQLCLL00 = "{CALL " + session.getMainLibrary() + ".SQP05114GETCOREP(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx0 = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            for (int i = 0; i < filters.size(); i++) {
+
+                cstmt0 = cnx0.prepareCall(SQLCLL00);
+                A2290Filter filterC = filters.get(i);
+                cstmt0.setString(1, filterC.PRDA.trim());
+                cstmt0.setString(2, filterC.CODPRO.trim());
+                cstmt0.setString(3, filterC.FLIQUIDACI.trim());
+                cstmt0.setString(4, filterC.LIQUIDACIO.trim());
+                cstmt0.setString(5, filterC.MERCHAND.trim());
+                cstmt0.setString(6, filterC.MONEDA.trim());
+                cstmt0.setString(7, filterC.MONEDALIQ.trim());
+                cstmt0.execute();
+
+                rst1 = cstmt0.getResultSet();
+
+                while (rst1.next()) {
+                    COREP = rst1.getString("COREP");
+                }
+                rst1.close();
+                cstmt0.close();
+            }
+        } catch (Exception e) {
+            strMsj = "Error: " + e;
+            e.printStackTrace();
+            e.getMessage();
+        }
+
+        if (NETOC == NETO) {
+
+            try {
+
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF102(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+                cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt2 = cnx2.prepareCall(SQLCLL02);
+
+                A2290Filter filter = filters.get(0);
+
+                cstmt2 = cnx2.prepareCall(SQLCLL02);
+
+                cstmt2.setString(1, "U");
+                cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                cstmt2.setString(3, filter.BANDOC.trim());
+                cstmt2.setString(4, filter.VALDATE.trim());
+                cstmt2.setString(5, filter.CODEBANK.trim());
+                cstmt2.setString(6, filter.UNICODE.trim());
+                cstmt2.setString(7, filter.DATECI.trim());
+                cstmt2.setString(8, filter.TRANCI.trim());
+                cstmt2.setString(9, filter.TDOC.trim());
+                cstmt2.setString(10, filter.FECSELEC.trim());
+                cstmt2.setString(11, filter.FSELEC.trim());
+                cstmt2.setInt(12, filters.size());
+                cstmt2.setDouble(13, filter.NETOC);
+                cstmt2.setString(14, COREP);
+                cstmt2.setString(15, user.getUserInfo().USR);
+                cstmt2.setString(16, Functions.getFechaActual());
+                cstmt2.setString(17, Functions.getHoraActual());
+
+                cstmt2.execute();
+                cstmt2.close();
+
+                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF083(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+                cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt3 = cnx3.prepareCall(SQLCLL03);
+
+                for (int i = 0; i < filters.size(); i++) {
+
+                    A2290Filter filterC = filters.get(i);
+
+                    cstmt3.setString(1, filterC.PRDA.trim());
+                    cstmt3.setString(2, filterC.CODPRO.trim());
+                    cstmt3.setString(3, filterC.FLIQUIDACI.trim());
+                    cstmt3.setString(4, filterC.LIQUIDACIO.trim());
+                    cstmt3.setString(5, filterC.MERCHAND.trim());
+                    cstmt3.setString(6, filterC.MONEDA.trim());
+                    cstmt3.setString(7, filterC.MONEDALIQ.trim());
+                    cstmt3.setString(8, filter.DATECI.trim());
+                    cstmt3.setString(9, filter.TRANCI.trim());
+                    cstmt3.setString(10, filter.BANDOC.trim());
+                    cstmt3.setString(11, user.getUserInfo().USR);
+                    cstmt3.setString(12, Functions.getFechaActual());
+                    cstmt3.setString(13, Functions.getHoraActual());
+
+                    cstmt3.execute();
+                    cstmt3.close();
+                }
+
+                String SQLCLL04 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF060HEAD(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+                cnx4 = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt4 = cnx4.prepareCall(SQLCLL04);
+
+                for (int i = 0; i < filters.size(); i++) {
+
+                    A2290Filter filterC = filters.get(i);
+
+                    cstmt4.setString(1, "U");
+                    cstmt4.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt4.setString(3, filter.BANDOC.trim());
+                    cstmt4.setString(4, filter.VALDATE.trim());
+                    cstmt4.setString(5, filter.CODEBANK.trim());
+                    cstmt4.setString(6, filter.UNICODE.trim());
+                    cstmt4.setString(7, filterC.SDATE.trim());
+                    cstmt4.setString(8, filterC.SAGENT.trim());
+                    cstmt4.setString(9, filterC.TERMI.trim());
+                    cstmt4.setString(10, filterC.SCARDN.trim());
+                    cstmt4.setString(11, filterC.SAUTHOC.trim());
+                    cstmt4.setDouble(12, filterC.NETO);
+                    cstmt4.setString(13, filter.DATECI.trim());
+                    cstmt4.setString(14, filter.TRANCI.trim());
+                    cstmt4.setString(15, filter.TDOC.trim());
+                    cstmt4.setString(16, filterC.FLIQUIDACI.trim());
+                    cstmt4.setString(17, filterC.LIQUIDACIO.trim());
+                    cstmt4.setString(18, filterC.MERCHAND.trim());
+                    cstmt4.setString(19, user.getUserInfo().USR);
+                    cstmt4.setString(20, Functions.getFechaActual());
+                    cstmt4.setString(21, Functions.getHoraActual());
+                    cstmt4.setString(22, filterC.SEQ);
+
+                    cstmt4.execute();
+                    cstmt4.close();
+                }
+
+            } catch (Exception e) {
+                strMsj = "Error: " + e;
+                e.printStackTrace();
+                strMsj = e.getMessage();
+            } finally {
+                if (cstmt != null) {
+                    try {
+                        cstmt0.close();
+                        cstmt.close();
+                        cstmt2.close();
+                        cstmt3.close();
+                        cstmt4.close();
+                    } catch (SQLException e) {
+                        logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                    }
+                }
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+                pasarGarbageCollector();
+            }
+
+        } else {
+            strMsj = "The Sum Amount is not equal to the Transaction Amount Stattement.";
         }
 
         return strMsj;

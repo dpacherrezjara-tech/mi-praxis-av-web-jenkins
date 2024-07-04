@@ -702,7 +702,6 @@ public class A2290Filter extends A2290 {
     public String DATECI = "";
     public String TRANCI = "";
 
-    public String CCUST = "";
     public String TREG = "";
     public String CURRENCY1 = "";
     public String CURRENCY2 = "";

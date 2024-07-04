@@ -105,4 +105,8 @@ public class StatementReconciliationsLogic {
     public String loadPX269SQP05115(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05115(filter, user);
     }
+    
+    public String loadPX269SQP05115Head(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05115Head(filter, user);
+    }
 }
