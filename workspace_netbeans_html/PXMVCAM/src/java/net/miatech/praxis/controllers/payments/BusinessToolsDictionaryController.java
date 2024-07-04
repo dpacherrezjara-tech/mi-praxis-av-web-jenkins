@@ -188,7 +188,7 @@ public class BusinessToolsDictionaryController extends BaseController {
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSX");
-        String fileNameDownload = String.format("Insumos MPD Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Business Tools Dictionary Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
@@ -249,30 +249,21 @@ public class BusinessToolsDictionaryController extends BaseController {
             Cell CH1_2 = row1.createCell(2);
             Cell CH1_3 = row1.createCell(3);
             Cell CH1_4 = row1.createCell(4);
-            Cell CH1_5 = row1.createCell(5);
-            Cell CH1_6 = row1.createCell(6);
-            Cell CH1_7 = row1.createCell(7);
-            Cell CH1_8 = row1.createCell(8);
 
-            CH1_0.setCellValue("Nbr");
-            CH1_1.setCellValue("Application");
-            CH1_2.setCellValue("Seq");
-            CH1_3.setCellValue("Input Name");
-            CH1_4.setCellValue("Input Desc.");
-            CH1_5.setCellValue("Input Type");
-            CH1_6.setCellValue("Library");
-            CH1_7.setCellValue("Output Name");
-            CH1_8.setCellValue("Table");
+
+            CH1_0.setCellValue("Librery");
+            CH1_1.setCellValue("Table Name");
+            CH1_2.setCellValue("User");
+            CH1_3.setCellValue("Description");
+            CH1_4.setCellValue("Total");
+
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
             CH1_3.setCellStyle(headerStyle);
             CH1_4.setCellStyle(headerStyle);
-            CH1_5.setCellStyle(headerStyle);
-            CH1_6.setCellStyle(headerStyle);
-            CH1_7.setCellStyle(headerStyle);
-            CH1_8.setCellStyle(headerStyle);
+
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -280,10 +271,7 @@ public class BusinessToolsDictionaryController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
+
             ++vj;
             //============================================
 
@@ -322,20 +310,13 @@ public class BusinessToolsDictionaryController extends BaseController {
                 Cell rcell2 = row1.createCell(2);
                 Cell rcell3 = row1.createCell(3);
                 Cell rcell4 = row1.createCell(4);
-                Cell rcell5 = row1.createCell(5);
-                Cell rcell6 = row1.createCell(6);
-                Cell rcell7 = row1.createCell(7);
-                Cell rcell8 = row1.createCell(8);
 
-                rcell0.setCellValue(listaData.get(vi).RN);
-                rcell1.setCellValue(listaData.get(vi).APLIC);
-                rcell2.setCellValue(listaData.get(vi).SEQNUM);
-                rcell3.setCellValue(listaData.get(vi).INPNAME);
-                rcell4.setCellValue(listaData.get(vi).INPDESC);
-                rcell5.setCellValue(listaData.get(vi).INPTYPE);
-                rcell6.setCellValue(listaData.get(vi).LIBNAME);
-                rcell7.setCellValue(listaData.get(vi).OUTNAME);
-                rcell8.setCellValue(listaData.get(vi).TABLA);
+
+                rcell0.setCellValue(listaData.get(vi).SOURCEF);
+                rcell1.setCellValue(listaData.get(vi).TABNAME);
+                rcell2.setCellValue(listaData.get(vi).USERFIELD);
+                rcell3.setCellValue(listaData.get(vi).DESCRIPT);
+                rcell4.setCellValue(listaData.get(vi).QTYREG);             
                 iter.next();
                 ++vi;
                 ++vj;
@@ -346,10 +327,7 @@ public class BusinessToolsDictionaryController extends BaseController {
             sheet.autoSizeColumn(2, true);
             sheet.autoSizeColumn(3, true);
             sheet.autoSizeColumn(4, true);
-            sheet.autoSizeColumn(5, true);
-            sheet.autoSizeColumn(6, true);
-            sheet.autoSizeColumn(7, true);
-            sheet.autoSizeColumn(8, true);
+
 
             //============================================
             response.setContentType("application/vnd.openxml");
