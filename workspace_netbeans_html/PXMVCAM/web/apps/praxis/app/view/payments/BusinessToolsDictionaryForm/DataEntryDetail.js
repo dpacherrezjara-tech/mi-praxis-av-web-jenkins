@@ -246,14 +246,14 @@ Ext.define('Ext.Praxis.view.payments.BusinessToolsDictionaryForm.DataEntryDetail
                                 },
                                 id: prototype.id + '-iSection_3_D',
                                 items: [
-                                    {xtype: 'tbspacer', width: 30},
+                                    {xtype: 'tbspacer', width: 20},
                                     {
                                         xtype: 'label',
                                         text: 'Data Type',
                                         style: 'font-weight:bold;',
                                         width: 105
                                     },
-                                    {xtype: 'tbspacer', width: 5},
+                                    {xtype: 'tbspacer', width: 15},
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-de-txtDATATYPE_D',
@@ -271,7 +271,7 @@ Ext.define('Ext.Praxis.view.payments.BusinessToolsDictionaryForm.DataEntryDetail
                                         xtype: 'label',
                                         text: 'Order',
                                         style: 'font-weight:bold;',
-                                        width: 120
+                                        width: 110
                                     },
                                     {xtype: 'tbspacer', width: 10},
                                     {
@@ -284,7 +284,7 @@ Ext.define('Ext.Praxis.view.payments.BusinessToolsDictionaryForm.DataEntryDetail
                                         maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 120
+                                        width: 130
                                     }                                  
                                 ]
                             },
