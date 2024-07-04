@@ -60,6 +60,7 @@ public class A2290Filter extends A2290 {
     public String IN_PRDA = "";
     public int IN_TRANL = 0;
     public int QTY = 0;
+    public String CORES = "";
     public int QTYPROCUP = 0;
     public int QTYNPROCUP = 0;
     public String IN_SEQ = "";
@@ -570,6 +571,42 @@ public class A2290Filter extends A2290 {
 
     public Pagination page = new Pagination();
     public String PRDA = "";
+    public String CODPRO = "";
+    public String CCUSTPRO = "";
+    public String FLIQUIDACI = "";
+    public String LIQUIDACIO = "";
+    public String MONEDA = "";
+    public String MONEDALIQ = "";
+    public String PAISLIQ = "";
+    
+    public String IN_CODPRO = "";
+    public String IN_CCUSTPRO = "";
+    public String IN_FLIQUIDACI = "";
+    public String IN_LIQUIDACIO = "";
+    public String IN_MONEDA = "";
+    public String IN_MONEDALIQ = "";
+    public String IN_PAISLIQ = "";
+    
+    public String IN_FROMADATEHE = "";
+    public String IN_TOADATEHE = "";
+    public String IN_LIQUIDACIOHE = "";
+    public String IN_MERCHANDHE = "";
+    public String IN_NETOHE = "";
+    
+    public String IN_FROMADATEAG = "";
+    public String IN_TOADATEAG = "";
+    public String IN_LIQUIDACIOAG = "";
+    public String IN_MERCHANDAG = "";
+    public String IN_NETOAG = "";
+    
+    public String CID = "";
+    public String UUID = "";
+    public String AFILIADO = "";
+    public String LIQUIDAC = "";
+    public String FECHA = "";
+    public double MONTO = 0;
+    public String FSELECT = "";
+    
     public String PMERCHID = "";
     public String PCURRENCY = "";
     public String AXPAYNBR = "";
@@ -629,6 +666,7 @@ public class A2290Filter extends A2290 {
     public String STVALS = "";
     public String IN_DEBTYPE = "";
     public String DEBTYPE = "";
+    public String CHARNBR = "";
     public String descDEBTYPE = "";
     public String MESSAGE = "";
 
@@ -664,7 +702,6 @@ public class A2290Filter extends A2290 {
     public String DATECI = "";
     public String TRANCI = "";
 
-    public String CCUST = "";
     public String TREG = "";
     public String CURRENCY1 = "";
     public String CURRENCY2 = "";

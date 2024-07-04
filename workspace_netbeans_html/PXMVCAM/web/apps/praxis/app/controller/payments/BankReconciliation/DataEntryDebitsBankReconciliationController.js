@@ -272,7 +272,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                                 CFUENTE: item.CFUENTE,
                                 SCLOSE: item.SCLOSE,
                                 IDDEB: item.IDDEB,
-                                NOMCONCEP: item.NOMCONCEP
+                                NOMCONCEP: item.NOMCONCEP,
+                                SCONTROL: item.SCONTROL
+                                
                             })
 
 
@@ -301,7 +303,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                                 CFUENTE: item.CFUENTE,
                                 SCLOSE: item.SCLOSE,
                                 IDDEB: item.IDDEB,
-                                NOMCONCEP: item.NOMCONCEP
+                                NOMCONCEP: item.NOMCONCEP,
+                                SCONTROL: item.SCONTROL
                             })
 
                             console.log(lstNormal, 'lstNormalAfterPush')
@@ -637,6 +640,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
         this.setValue('de-txtSTVALS', this.bean.STVALS);
         this.setValue('de-txtDTYPE', this.bean.descDEBTYPE);
+        this.setValue('de-txtCHARNBR', this.bean.CHARNBR);
         this.lstAmounts = [];
         var fila1 = {};
         fila1.label1 = 'Comm. Sett.';
