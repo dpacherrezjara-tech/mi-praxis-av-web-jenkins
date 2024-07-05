@@ -209,6 +209,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.BusinessTools
             id: prototype.id + '-dataEntry',
             params: {
                 action: action,
+                meBT: me,
                 rec: rec,
 //                lstCountry: me.lstCountry
             }
