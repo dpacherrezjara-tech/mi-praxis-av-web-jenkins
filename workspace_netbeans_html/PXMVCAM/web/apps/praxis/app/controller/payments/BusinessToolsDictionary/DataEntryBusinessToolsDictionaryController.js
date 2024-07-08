@@ -14,7 +14,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     init: function (view) {
         prototype.id = 'BusinessToolsDictionaryForm';
         prototype.url = CONTEXTPATH + '/BusinessToolsDictionary';
-        meDE = this;
+        meDE = this;        
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
@@ -143,8 +143,9 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
             id: prototype.id + '-dataEntryDetail',
             params: {
                 action: action,
+                meBT: meDE,
                 rec: rec
-            }
+            }         
         }).show();
     },
     //</editor-fold>
