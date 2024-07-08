@@ -2,7 +2,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     extend: 'Ext.app.ViewController',
     alias: 'controller.DataEntryBusinessToolsDictionaryDetailController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
-    meDE: '',
+    meDETA: '',
     actionCode: '',
     bean: {},
     beanResult: {},
@@ -15,10 +15,11 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     init: function (view) {
         prototype.id = 'BusinessToolsDictionaryForm';
         prototype.url = CONTEXTPATH + '/BusinessToolsDictionary';
-        meDE = this;
+        meDETA = this;       
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
+        //meDE = this.p.meDE;
     },
 
     afterRender: function () {
@@ -56,10 +57,6 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
         }
     },
     mostrarData: function () {
-//        console.log(meDE.beanResult);
-//        console.log(this.beanResult.CODEREJ);
-//        this.dataObtain.CARD = 2;
-//        this.dataObtain.COREP = 2;
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -172,12 +169,12 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                         if (btn === 'yes') {
                             
                             var beanTemp = {};
-                            var msjResult = meDE.validacionUpdate(beanTemp);
+                            var msjResult = meDETA.validacionUpdate(beanTemp);
                             if (msjResult === '') {
-                                meDE.llenarData(beanTemp);
+                                meDETA.llenarData(beanTemp);
                                 
                                 beanTemp.option = 'U';
-                                meDE.MaintenanceA2354(beanTemp);
+                                meDETA.MaintenanceA2354(beanTemp);
                             } else {
                                 global.Msg({msg: msjResult});
                             }
@@ -206,6 +203,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     onCancelClick_D: function (btn) {
         this.view.close();
     },
+    
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
@@ -227,7 +225,8 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                     global.Msg({msg: res.Mensaje});
                     Ext.getCmp(prototype.id + '-dataEntryDetail').unmask();
                     Ext.getCmp(prototype.id + '-dataEntryDetail').close();
-                    Ext.getCmp(prototype.id + '-dataEntry').close();
+                    //Ext.getCmp(prototype.id + '-dataEntry').close();
+                    meDE.getData();
                     
                 } else
                     global.Msg({msg: ''});
@@ -332,7 +331,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                     var res = Ext.JSON.decode(response.responseText);
                     console.log(res);
                     if (res.total > 0) {
-                        meDE.insertIATA(store_gridIATA, res.data[0]);
+                        meDETA.insertIATA(store_gridIATA, res.data[0]);
                     } else {
                         global.Msg({msg: 'Not Found / No Travel Agency'});
                     }
