@@ -442,7 +442,7 @@ public class ViewADMDAO {
                     beanTkt.IN_SCOUNTRY = filter.IN_SCOUNTRY.trim();
                     
                     beanTkt.SAGENT = rst.getString("SAGENT").trim();
-//                    beanTkt.strDescCard = rst.getString("SCARCODN").trim();
+                    beanTkt.SAGENTN = rst.getString("SAGENTN").trim();
                     beanTkt.TOT_QTY = rst.getLong("CANTIDAD");
                     beanTkt.TOT_SVFOP = rst.getLong("MONTO");
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE.trim());
@@ -546,13 +546,13 @@ public class ViewADMDAO {
                     beanTkt = new A2295Filter();
 
 //                    beanTkt.PRDA = rst.getString("PRDA").trim();
-                    beanTkt.strTitulo = filter.IN_TITLE.trim() + " - " + filter.IN_SCARCOD.trim();
+                    beanTkt.strTitulo = filter.IN_TITLE.trim() + " - " + filter.IN_SAGENT.trim();
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
                     beanTkt.IN_SCURRENCY = filter.IN_SCURRENCY.trim();
                     beanTkt.IN_SCOUNTRY = filter.IN_SCOUNTRY.trim();
-                    beanTkt.IN_SCARCOD = filter.IN_SCARCOD.trim();
+                    beanTkt.IN_SAGENT = filter.IN_SAGENT.trim();
                     
                     
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();

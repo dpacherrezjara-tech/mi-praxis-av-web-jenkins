@@ -44,6 +44,7 @@ public class A2295 {
     public String ADATE = "";
     public String SDATE = "";
     public String SAGENT = "";
+    public String SAGENTN = "";
     public String STCON = "";
     public String FCONT = "";
     public String STVAL = "";
