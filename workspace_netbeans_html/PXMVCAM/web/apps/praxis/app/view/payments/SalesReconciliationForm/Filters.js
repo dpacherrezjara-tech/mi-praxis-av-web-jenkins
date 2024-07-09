@@ -1,3 +1,30 @@
+
+Ext.create('Ext.Component', {
+    renderTo: Ext.getBody(),
+    html: '<style type="text/css">' +
+          '.button-off {' +
+          '  background-color: #f44336;' + // Red color for OFF
+          '  color: white;' +
+          '  border-radius: 50%;' +
+          '  border: none;' +
+          '  font-size: 12px;' +
+          '  cursor: pointer;' +
+          '  text-align: center;' +
+          '  line-height: 50px;' + // Ensure text is vertically centered
+          '}' +
+          '.button-on {' +
+          '  background-color: #4CAF50;' + // Green color for ON
+          '  color: white;' +
+          '  border-radius: 50%;' +
+          '  border: none;' +
+          '  font-size: 12px;' +
+          '  cursor: pointer;' +
+          '  text-align: center;' +
+          '  line-height: 50px;' + // Ensure text is vertically centered
+          '}' +
+          '</style>'
+});
+
 Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-filters',
@@ -11,7 +38,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
             id: prototype.id + '-boxSearchFilter',
             margin: '0 7',
             border: false,
-            width: 1700,
+            width: 1900,
             bodyStyle: 'background: transparent',
             layout: 'vbox',
 //            layout: {
@@ -22,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                 border: false
             },
             items: [
-
+                
                 {
                     xtype: 'panel',
                     width: '100%',
@@ -34,318 +61,539 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     },
                     items: [
                         {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbFecFiltro',
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    ["SDATE", "Sales Date"], ["FCONT", "Accounting Date"]
-                                ]
-                            }),
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
-                            width: 105,
-                            value: "SDATE",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            listConfig: {minWidth: 130},
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners: {
-                                select: 'selectFecFiltro',
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 5},
-                        //<editor-fold defaultstate="collapsed" desc="cmbDate">
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbDateFromYear',
-                            fieldStyle: 'text-align: left;',
-                            disabled: false,
-                            editable: false,
-                            fieldLabel: 'From',
-                            width: 120,
-                            labelWidth: 45,
-                            labelAlign: 'right',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
-                            listConfig: {maxHeight: 111, minWidth: 70},
-                            maxLength: 4,
-                            enforceMaxLength: true,
-                            maskRe: /[0-9]/,
-                            listeners: {
-                                change: 'cbxDateFromYear_changeHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbDateFromMonth',
-                            fieldStyle: 'text-align: left;',
-                            disabled: false,
-                            editable: false,
-                            fieldLabel: '',
-                            width: 65,
-                            labelWidth: 0,
-                            labelAlign: 'right',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
-                            listConfig: {minWidth: 60},
-                            maxLength: 3,
-                            enforceMaxLength: true,
-                            listeners: {
-                                change: 'cbxDateFromMonth_changeHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'combo',
-                            //cmbDateFromDay
-                            id: prototype.id + '-cmbDateDay',
-                            fieldStyle: 'text-align: left;',
-                            labelAlign: 'right',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            editable: false,
-                            autoSelect: false,
-                            enableKeyEvents: true,
-                            caseSensitive: true,
-                            valueField: 'code', displayField: 'name',
-                            emptyText: 'All',
-                            labelWidth: 0,
-                            width: 60,
-                            anchor: '100%',
-                            listConfig: {maxHeight: 111, minWidth: 60},
-                            listeners: {
-                                change: 'cbxDateFromDay_changeHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 5},
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbDateToYear',
-                            fieldStyle: 'text-align: left;',
-                            disabled: false,
-                            editable: false,
-                            fieldLabel: 'To',
-                            width: 106,
-                            labelWidth: 31,
-                            labelAlign: 'left',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
-                            listConfig: {maxHeight: 111, minWidth: 70},
-                            maxLength: 4,
-                            enforceMaxLength: true,
-                            maskRe: /[0-9]/,
-                            listeners: {
-                                change: 'cbxDateToYear_changeHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbDateToMonth',
-                            fieldStyle: 'text-align: left;',
-                            disabled: false,
-                            editable: false,
-                            fieldLabel: '',
-                            width: 65,
-//                            labelWidth: 0,
-                            labelAlign: 'right',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
-                            listConfig: {minWidth: 60},
-                            maxLength: 3,
-                            enforceMaxLength: true,
-                            listeners: {
-                                change: 'cbxDateToMonth_changeHandler'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'combo',
-                            //cmbDateToDay
-                            id: prototype.id + '-cmbDateToDay',
-                            fieldStyle: 'text-align: left;',
-                            labelAlign: 'right',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            editable: false,
-                            autoSelect: false,
-                            enableKeyEvents: true,
-                            caseSensitive: true,
-                            valueField: 'code', displayField: 'name',
-                            emptyText: 'All',
-                            labelWidth: 0,
-                            width: 60,
-                            anchor: '100%',
-                            listConfig: {maxHeight: 111, minWidth: 60}
-                        },
-                        //</editor-fold>
-                        {xtype: 'tbspacer', width: 10},
-//                        {
-//                            xtype: 'label',
-//                            text: 'FOP:',
-//                            padding: '3 0',
-//                            width: 74
-//                        },
-//                        {
-//                            xtype:'combo',
-//                            id: prototype.id+'-cmbFOP',
-//                            store: new Ext.data.SimpleStore({
-//                                fields: ['code', 'name'],
-//                                data: [
-//                                    ["", "All"], ["CC", "Credit Card"], ["CA", "Cash"]
-//                                ]
-//                            }),
-//                            queryMode: 'local',
-//                            allowBlank: false,
-//                            forceSelection: true,
-//                            selectOnFocus: true,
-//                            caseSensitive: false,
-//                            autoSelect: true,
-//                            editable: true,
-//                            width: 100,
-//                            value: "CC",
-//                            typeAhead: true,
-//                            valueField: 'code', displayField: 'name',
-//                            enableKeyEvents: true,
-//                            triggerAction: 'all',
-//                            listeners:{
-//                                change: 'cbxFOPAC_changeHandler'
-//                            }
-//                        },
-//                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'label',
-                            text: 'Source:',
-                            padding: '3 0',
-                            width: 40
-                        },
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbSource',
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    ["", "All"], ["AVCAO", "AVCAO"], ["BSP", "BSP"], ["BSPCO", "BSPCO"]
-                                ]
-                            }),
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
-                            width: 100,
-                            value: "",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners: {
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 29},
-                        {
-                            xtype: 'label',
-                            text: 'Country:',
-                            padding: '3 0',
-                            width: 57
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbCountry',
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            width: 251,
-                            typeAhead: true,
-                            valueField: 'A006PAIS',
-                            displayField: 'A006NOMBRE',
-                            listConfig: {maxHeight: 111},
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners: {
-                                blur: function (combo) {
-                                    if (!combo.getValue()) {
-                                        combo.setValue('');
-                                    }
+                            xtype: 'container',
+                            layout: 'hbox',
+                            id: prototype.id + '-contFirstFilter',
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox',
+                                    id: prototype.id + '-contFilterDate1',
+                                    items: [
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbFecFiltro',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['code', 'name'],
+                                                data: [
+                                                    ["SDATE", "Sales Date"], ["FCONT", "Accounting Date"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            width: 105,
+                                            value: "SDATE",
+                                            typeAhead: true,
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 130},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
+                                                select: 'selectFecFiltro',
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        //<editor-fold defaultstate="collapsed" desc="cmbDate">
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateFromYear',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'From',
+                                            width: 120,
+                                            labelWidth: 45,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {maxHeight: 111, minWidth: 70},
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            listeners: {
+                                                change: 'cbxDateFromYear_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateFromMonth',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: '',
+                                            width: 65,
+                                            labelWidth: 0,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: 'cbxDateFromMonth_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            //cmbDateFromDay
+                                            id: prototype.id + '-cmbDateDay',
+                                            fieldStyle: 'text-align: left;',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code', displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 0,
+                                            width: 60,
+                                            anchor: '100%',
+                                            listConfig: {maxHeight: 111, minWidth: 60},
+                                            listeners: {
+                                                change: 'cbxDateFromDay_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateToYear',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'To',
+                                            width: 106,
+                                            labelWidth: 31,
+                                            labelAlign: 'left',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {maxHeight: 111, minWidth: 70},
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            listeners: {
+                                                change: 'cbxDateToYear_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateToMonth',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: '',
+                                            width: 65,
+                //                            labelWidth: 0,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: 'cbxDateToMonth_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            //cmbDateToDay
+                                            id: prototype.id + '-cmbDateToDay',
+                                            fieldStyle: 'text-align: left;',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code', displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 0,
+                                            width: 60,
+                                            anchor: '100%',
+                                            listConfig: {maxHeight: 111, minWidth: 60}
+                                        },
+                                        //</editor-fold>
+                                        {xtype: 'tbspacer', width: 10},
+                                    ]
                                 },
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 25},
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox',
+                                    id: prototype.id + '-contFilterDate2',
+                                    hidden: true,
+                                    items: [
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbFecFiltro_IBT',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['code', 'name'],
+                                                data: [
+                                                    ["SDATE", "Sales Date"], ["FCONT", "Accounting Date"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            width: 105,
+                                            value: "SDATE",
+                                            typeAhead: true,
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 130},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
+                                                select: 'selectFecFiltro',
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        //<editor-fold defaultstate="collapsed" desc="cmbDate">
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateFromYear_IBT',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'From',
+                                            width: 120,
+                                            labelWidth: 45,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {maxHeight: 111, minWidth: 70},
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            listeners: {
+                                                change: 'cbxDateFromYear_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateFromMonth_IBT',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: '',
+                                            width: 65,
+                                            labelWidth: 0,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: 'cbxDateFromMonth_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            //cmbDateFromDay
+                                            id: prototype.id + '-cmbDateDay_IBT',
+                                            fieldStyle: 'text-align: left;',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code', displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 0,
+                                            width: 60,
+                                            anchor: '100%',
+                                            listConfig: {maxHeight: 111, minWidth: 60},
+                                            listeners: {
+                                                change: 'cbxDateFromDay_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateToYear_IBT',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'To',
+                                            width: 106,
+                                            labelWidth: 31,
+                                            labelAlign: 'left',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {maxHeight: 111, minWidth: 70},
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            listeners: {
+                                                change: 'cbxDateToYear_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateToMonth_IBT',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: '',
+                                            width: 65,
+                //                            labelWidth: 0,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: 'cbxDateToMonth_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            //cmbDateToDay
+                                            id: prototype.id + '-cmbDateToDay_IBT',
+                                            fieldStyle: 'text-align: left;',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code', displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 0,
+                                            width: 60,
+                                            anchor: '100%',
+                                            listConfig: {maxHeight: 111, minWidth: 60}
+                                        },
+                                        //</editor-fold>
+                                        {xtype: 'tbspacer', width: 10},
+                                    ]
+                                },
+                                
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox',
+                                    magin: '0 0 0 0',
+                                    id: prototype.id + '-contSales',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Source:',
+                                            padding: '3 0',
+                                            width: 40
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbSource',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['code', 'name'],
+                                                data: [
+                                                    ["", "All"], ["AVCAO", "AVCAO"], ["BSP", "BSP"], ["BSPCO", "BSPCO"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            width: 100,
+                                            value: "",
+                                            typeAhead: true,
+                                            valueField: 'code', displayField: 'name',
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 29},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Country:',
+                                            padding: '3 0',
+                                            width: 57
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbCountry',
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            width: 251,
+                                            typeAhead: true,
+                                            valueField: 'A006PAIS',
+                                            displayField: 'A006NOMBRE',
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
+                                                blur: function (combo) {
+                                                    if (!combo.getValue()) {
+                                                        combo.setValue('');
+                                                    }
+                                                },
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 25},
+                                        {
+                                            xtype: 'label',
+                                            text: 'PNR: ',
+                                            padding: '3 0',
+                                            width: 40,
+                                            autoEl: {
+                                                tag: 'label',
+                                                'data-qtip': 'PNR'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtPNR',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9a-zA-Z]/,
+                                            maxLength: 6,
+                                            width: 70,
+                                            enableKeyEvents: true,
+                                            listeners: {
+                                                keypress: 'BuscarTKT_keyDownHandler'
+                                            }
+                                        },
+                                    ]
+                                },
+                                
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox',
+                                    magin: '0 0 0 0',
+                                    hidden: true,
+                                    id: prototype.id + '-contInvoice',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Invoice:',
+                                            padding: '3 0',
+                                            width: 50
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtINVOICE_IBT',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                //                            maskRe: /[0-9]/,
+                                            maxLength: 18,
+                                            width: 123,
+                                            enableKeyEvents: true,
+                                            listeners: {
+                //                                change: 'onValidarChange',
+                //                                keypress: 'BuscarTKT_keyDownHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Bandoc:',
+                                            padding: '3 0',
+                                            width: 50
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtBANDOC_IBT',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                //                            maskRe: /[0-9]/,
+                                            maxLength: 10,
+                                            width: 123,
+                                            enableKeyEvents: true,
+                                            listeners: {
+                //                                change: 'onValidarChange',
+                //                                keypress: 'BuscarTKT_keyDownHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Ticket Number:',
+                                            padding: '3 0',
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtTicket_IBT',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                //                            maxLength: 13,
+                                            width: 123,
+                                            enableKeyEvents: true,
+                                            listeners: {
+                //                                change: 'onValidarChange',
+                //                                keypress: 'BuscarTKT_keyDownHandler'
+                                            }
+                                        },
+                                    ]
+                                },
+                            ]
+                        },    
+//                        {xtype: 'tbspacer', width: 60},
                         {
-                            xtype: 'label',
-                            text: 'PNR: ',
-                            padding: '3 0',
-                            width: 40,
-                            autoEl: {
-                                tag: 'label',
-                                'data-qtip': 'PNR'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'textfield',
-                            id: prototype.id + '-txtPNR',
-                            fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,
-                            maskRe: /[0-9a-zA-Z]/,
-                            maxLength: 6,
-                            width: 70,
-                            enableKeyEvents: true,
-                            listeners: {
-                                keypress: 'BuscarTKT_keyDownHandler'
-                            }
-                        },
-//                        {xtype: 'tbspacer', width: 30},
-//                        {
-//                            xtype: 'label',
-//                            text: 'ACCB Type:',
-//                            padding: '3 0',
-//                            width: 94
-//                        },
-//                        {
-//                            xtype:'combo',
-//                            id: prototype.id+'-',
-//                            hidden:true,
-//                            store: new Ext.data.SimpleStore({
-//                                fields: ['code', 'name'],
-//                                data: [
-//                                    ["", "All"], ["B", "Billed"], ["N", "Not Billed"], ["L", "Local"], ["X", "BSP Billed"]
-//                                ]
-//                            }),
-//                            queryMode: 'local',
-//                            allowBlank: false,
-//                            forceSelection: true,
-//                            selectOnFocus: true,
-//                            caseSensitive: false,
-//                            autoSelect: true,
-//                            editable: true,
-//                            width: 100,
-//                            value: "",
-//                            typeAhead: true,
-//                            valueField: 'code', displayField: 'name',
-//                            enableKeyEvents: true,
-//                            triggerAction: 'all',
-//                            listeners:{
-//                            }
-//                        }
+                            xtype: 'container',
+                            layout: 'hbox',
+                            padding: '0 0 0 50',
+                            id: prototype.id + '-contBtnInvoice',
+                            items: [
+                                {
+                                    xtype: 'checkbox',
+                                    html: '<div style="width: 20px; height: 20px; border-radius: 50%; background-color: #fff; border: 1px solid #ccc;"></div>',
+                                    boxLabel: 'Invoice',
+                                    name: 'terms',
+                                    inputValue: '1',
+                                    uncheckedValue: '0',
+                                    listeners: {
+                                        change: 'onViewIBT'
+                                    }
+                                }
+                            ]
+                        }
+
+                   
                     ]
                 },
                 {
@@ -354,6 +602,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     layout: 'hbox',
                     padding: '0 0 0 300',
                     bodyStyle: 'background: transparent;"',
+                    id: prototype.id + '-contSecondFilter',
                     defaults: {
                         margin: '4 0'
                     },
@@ -514,6 +763,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     layout: 'hbox',
                     padding: '0 0 0 300',
                     bodyStyle: 'background: transparent;"',
+                    id: prototype.id + '-contThirdFilter',
                     defaults: {
                         margin: '4 0'
                     },
@@ -701,9 +951,10 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 {boxLabel: '<b style="color:#148D28;">Refund</b>', inputValue: 'Refund', name: 'rbgType'}
                             ],
                             listeners: {change: 'cmbTranType_changeHandler'}
-                        }
+                        },
+                        
                     ]
-                }
+                },
             ]
         }
     ]

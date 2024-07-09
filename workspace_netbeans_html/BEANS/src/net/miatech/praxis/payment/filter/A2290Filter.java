@@ -46,12 +46,15 @@ public class A2290Filter extends A2290 {
     public String DESCR = "";
     public String TabMPF = "";
     public String IN_FUNDSTRGK = "";
+    public String IN_LIQUIDACIO = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
     public String IN_FROMSDATE = "";
     public String IN_TOSDATE = "";
-
+    public String IN_INVOICE = "";
+    public String INVOICE = "";
+    public String SCONSOL = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
@@ -65,6 +68,18 @@ public class A2290Filter extends A2290 {
     public String IN_SEQ = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
+    public String IN_FROMADATEHE = "";
+    public String IN_TOADATEHE = "";
+    public String IN_LIQUIDACIOHE = "";
+    public String IN_MERCHANDHE = "";
+    public String IN_NETOHE = "";
+    
+    public String IN_FROMADATEAG = "";
+    public String IN_TOADATEAG = "";
+    public String IN_LIQUIDACIOAG = "";
+    public String IN_MERCHANDAG = "";
+    public String IN_NETOAG = "";
+    
     public String IN_strSVFOP = "";
     public String IN_RED = "";
     public String IN_NEGOC = "";
@@ -570,6 +585,13 @@ public class A2290Filter extends A2290 {
 
     public Pagination page = new Pagination();
     public String PRDA = "";
+    public String CODPRO = "";
+    public String CCUSTPRO = "";
+    public String FLIQUIDACI = "";
+    public String LIQUIDACIO = "";
+    public String MONEDA = "";
+    public String MONEDALIQ = "";
+    public String PAISLIQ = "";
     public String PMERCHID = "";
     public String PCURRENCY = "";
     public String AXPAYNBR = "";
@@ -628,7 +650,7 @@ public class A2290Filter extends A2290 {
     public String FSELEC = "";
     public String STVALS = "";
     public String IN_DEBTYPE = "";
-    public String DEBTYPE = "";
+    public String CHARNBR = "";
     public String descDEBTYPE = "";
     public String MESSAGE = "";
 
@@ -659,12 +681,19 @@ public class A2290Filter extends A2290 {
     public String IN_TERM = "";
     public String IN_TRAN = "";
     public String IN_strNETO = "";
+    public String IN_MERCHAND = "";
     public String IN_SCARCOD = "";
     public String IN_ACCNUMBER = "";
     public String DATECI = "";
     public String TRANCI = "";
 
-    public String CCUST = "";
+    public String CID = "";
+    public String UUID = "";
+    public String AFILIADO = "";
+    public String LIQUIDAC = "";
+    public String FECHA = "";
+    public double MONTO = 0;
+    public String FSELECT = "";
     public String TREG = "";
     public String CURRENCY1 = "";
     public String CURRENCY2 = "";

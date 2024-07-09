@@ -134,20 +134,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     }
                 },
                 {xtype: 'tbspacer', width: 30},
-                {
-                    xtype: 'radiogroup',
-                    hidden: true,
-//                    fieldLabel: 'Transaction',
-                    margin: '0px 5px 0px 10px',
-                    id: prototype.id + '-rbgType',
-                    items: [
-                        {boxLabel: '<strong style="color:#148D28" >Sales   </strong>', name: 'rb', inputValue: 'rbSALES', width: 70, checked: true},
-//                        {boxLabel: '<strong style="color:#148D28" >Refund </strong>', name: 'rb', inputValue: 'rbREFUND', width: 50}
-                    ],
-                    listeners: {
-                        change: 'imgByTDOC_clickHandler'
-                    }
-                }
+                
             ]
         },
         {
@@ -314,7 +301,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     width: 90,
 //                    hidden:true
                 },
-                
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCOREP',
@@ -334,6 +320,20 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     enableKeyEvents: true,
                     triggerAction: 'all',
                 },
+                {
+                    xtype: 'radiogroup',
+                    hidden: true,
+//                    fieldLabel: 'Transaction',
+                    margin: '0px 5px 0px 10px',
+                    id: prototype.id + '-rbgType',
+                    items: [
+                        {boxLabel: '<strong style="color:#148D28" >Doc Sap   </strong>', name: 'rb', inputValue: 'rbDOCS', width: 80, checked: true},
+                        {boxLabel: '<strong style="color:#148D28" >Taca Flown </strong>', name: 'rb', inputValue: 'rbTACA', width: 90}
+                    ],
+                    listeners: {
+                        change: 'searchTRANSA_clickHandler'
+                    }
+                }
             ]
         },
 

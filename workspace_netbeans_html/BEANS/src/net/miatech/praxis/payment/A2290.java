@@ -45,6 +45,8 @@ public class A2290 {
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String COREP = "";
+    public String CORES = "";
+    public String strSCURRENCY = "";
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
     public String TERMI = "";
@@ -97,6 +99,7 @@ public class A2290 {
     public String SPNR = "";
     public String IDDEB = "";
     public String NOMCONCEP = "";
+    public String SCONTROL = "";
     public int MPF076TRAN = 0;
     public int MPF077TRAN = 0;
     public String SPNRSP = "";

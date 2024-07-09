@@ -2732,7 +2732,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 937,
+                            width: 1187,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -2742,7 +2742,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataTicket',
-                                    width: 937,
+                                    width: 1187,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -2871,6 +2871,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return '<a <a href="#payments-bank-reconciliation-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
                                                 }
+                                            },
+                                            {text: 'Invoice', dataIndex: 'INVOICE', width: 150,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                },
+                                            },
+                                            {text: 'Doc. SAP Bank', dataIndex: 'BANDOC', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                },
                                             },
                                         ]
                                     }
