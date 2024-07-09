@@ -322,7 +322,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 },
                 {
                     xtype: 'radiogroup',
-//                    hidden: true,
+                    hidden: true,
 //                    fieldLabel: 'Transaction',
                     margin: '0px 5px 0px 10px',
                     id: prototype.id + '-rbgType',
