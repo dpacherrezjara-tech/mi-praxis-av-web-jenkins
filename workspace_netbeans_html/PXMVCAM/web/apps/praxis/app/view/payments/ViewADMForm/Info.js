@@ -478,7 +478,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 452,
+                            width: 322,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -488,7 +488,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataCardByF',
-                                    width: 452,
+                                    width: 322,
                                     columnLines: true,
                                     features: [{
                                         ftype: 'summary'
@@ -504,7 +504,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                 text: 'Credit Card',
                                                 columns: [
                                                     {
-                                                        text: 'Code', dataIndex: 'SCARCOD', width: 50, align: 'center', menuDisabled: true,
+                                                        text: 'Code', dataIndex: 'SAGENT', width: 120, align: 'center', menuDisabled: true,
                                                         listeners: {
                                                             click: 'onGridDetDetailByF'
                                                         },
@@ -512,15 +512,6 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                             metaData.style = "color:#057ECB;text-align:center;background-color:#d5f4d5;";
                                                             value = '<b>' + value + '</b>';
                                                             return '<a href="#payments-view-A-D-M-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Description', dataIndex: 'strDescCard', width: 200, align: 'center', menuDisabled: true,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:left;background-color:#d5f4d5;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
-                                                            return value;
                                                         }
                                                     },
                                                 ]
