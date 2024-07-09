@@ -1,8 +1,9 @@
-Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankReconciliationController', {
+Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.DataEntryAMDPBankReconciliationController',
+    alias: 'controller.DataEntryViewADMController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDe: '',
+    meC: '',
     actionCode: '',
     bean: {},
     bean_detail: {},
@@ -15,37 +16,33 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     sumAmount: 0,
     sumAmountBlocked: 0,
     dataObtain: {},
-    beanReversed: {},
     // </editor-fold>
     init: function (view) {
         meDe = this;
         this.p = this.view.params;
         this.actionCode = this.p.action;
-        this.bean = this.p.beanCons;
-        this.lstCard = this.p.lstCard;
-        this.lstBank = this.p.lstBank;
-        this.lstCountry = this.p.lstCountry;
+        this.bean = this.p.rec;
+        this.paramsRefresh = this.p.paramsRefresh;
+        meC = this.p.instancia;
+//        this.lstCard = this.p.lstCard;
+//        this.lstBank = this.p.lstBank;
+//        this.lstCountry = this.p.lstCountry;
         console.log(this.bean, 'this.bean');
         this.lstAdjustment = [];
     },
     afterRender: function () {
-        console.log(this.bean.STVAL, 'this.bean.STVAL');
+        
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-delete').hide();
         Ext.getCmp(prototype.id + '-btn-cancel').show();
-        if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
-            this.onSearchCompleteDetail();
-            Ext.getCmp(prototype.id + '-btn-update').hide();
-//            this.bean.FCONT == '' ? Ext.getCmp(prototype.id + '-btn-reverse').show() : Ext.getCmp(prototype.id + '-btn-reverse').hide()
-            Ext.getCmp(prototype.id + '-btn-reverse').show();
-        } else {
-            this.onSearchPendingDetail();
-            Ext.getCmp(prototype.id + '-btn-update').show();
-            Ext.getCmp(prototype.id + '-btn-reverse').hide();
+        
+        this.onSearchPendingDetail();
+        Ext.getCmp(prototype.id + '-btn-update').show();
+        Ext.getCmp(prototype.id + '-btn-reverse').hide();
 //            Ext.getCmp(prototype.id + '-panelAdjustment').show();
-        }
-        meDe.agregaTicket(meDe.bean);
+
+//        meDe.agregaTicket(meDe.bean);
     },
     addCreditCard_keyDownHandler: function () {
         var fecha_a_validar = "";
@@ -162,7 +159,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 A1531VFOP: item.A1531VFOP,
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
-                                INVOICE: item.INVOICE
                             })
 
 
@@ -189,7 +185,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 A1531VFOP: item.A1531VFOP,
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
-                                INVOICE: item.INVOICE
                             })
 
                             console.log(lstNormal, 'lstNormalAfterPush')
@@ -269,34 +264,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         }
     },
     obtainData: function () {
-        Ext.Ajax.request({
-            url: prototype.urlMaster + '/obtainDataAdjs',
-            method: 'POST',
-            timeout: 60000000,
-            params: {},
-            //beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-            success: function (response, opts) {
-                //Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
-                if (res.success) {
-                    meDe.bean_detail = res.result;
-                    //llenar grilla gridDataInfoScan
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.lstData,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-cmbADJTYPE').bindStore(storeData);
-                    Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue(' ');
-                } else {
-                    global.Msg({msg: res.Mensaje});
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-            }
-        });
+
+        
         Ext.Ajax.request({
             url: prototype.url + '/obtainMessages',
             method: 'POST',
@@ -320,47 +289,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             },
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
-    },
-    onWindowReversed: function (){
-        var paramDetail = {};
-        console.log(this.bean.DATEC, 'this.bean.DATEC')
-        console.log(this.bean.TRANC, 'this.bean.TRANC')
-        console.log(this.bean.BANDOC, 'this.bean.BANDOC')
-        this.beanReversed.DATEC = this.bean.DATEC
-        this.beanReversed.TRANC = this.bean.TRANC
-        this.beanReversed.BANDOC = this.bean.BANDOC
-        Ext.getCmp(prototype.id + '-panelSumAmount').hide()
-        paramDetail.beanString = JSON.stringify(this.beanReversed);
-        Ext.Ajax.request({
-            url: prototype.url + '/searchBeanAMDP_REVERSED',
-            method: 'POST',
-            timeout: 60000000,
-            params: paramDetail,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
-                if (res.success) {
-                    //llenar grilla gridDataInfoScan
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-gridDataInfoScanReversed').bindStore(storeData);
 
-                } else {
-                    global.Msg({msg: res.Mensaje});
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-            }
-        });
     },
     onSearchCompleteDetail: function () {
 
@@ -403,16 +335,16 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
-        console.log(this.bean.SCURRENCY, 'scurrrency en this bean')
+
         console.log(paramDetail);
         Ext.Ajax.request({
-            url: prototype.url + '/searchBeanAMDP_SCAN_PENDING',
+            url: prototype.url + '/searchBeanTkt',
             method: 'POST',
             timeout: 60000000,
             params: paramDetail,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
                 if (res.success) {
@@ -431,168 +363,23 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             },
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
     },
     mostrarData: function () {
 //        this.setValue('de-txtSDATE', meDe.bean.SDATE);
-        if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
-            Ext.getCmp(prototype.id + '-mostrarComment').hide();
-            Ext.getCmp(prototype.id + '-labelScan').hide();
-            Ext.getCmp(prototype.id + '-panelScanCard').hide();
-            Ext.getCmp(prototype.id + '-panelScanCard_2').hide();
-            Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
-            Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
-//            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1072);
-//            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1074);
-            Ext.getCmp(prototype.id + '-vacioComment').show();
-            this.hiddenByMatch()
-        } else {
-            Ext.getCmp(prototype.id + '-mostrarComment').show();
-            Ext.getCmp(prototype.id + '-labelScan').show();
-            Ext.getCmp(prototype.id + '-panelScanCard').show();
-            Ext.getCmp(prototype.id + '-panelScanCard_2').show();
-            Ext.getCmp(prototype.id + '-gridColumnDelete').show();
-            Ext.getCmp(prototype.id + '-gridColumnAdj').show();
-            Ext.getCmp(prototype.id + '-columnINVOICE').setWidth(143);
-//            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1154);
-            Ext.getCmp(prototype.id + '-vacioComment').hide();
-        }
 
-        console.log(this.bean);
-        this.setValue('de-txtPRDA', this.bean.PRDA);
-        this.setValue('de-txtTRANC', this.bean.TRANC);
-        this.setValue('de-txtSAGENT', this.bean.DESAGENT);
-        this.setValue('de-txtMERCHID', this.bean.MERCHNC);
-//        this.setValue('de-txtSMERCHID', this.bean.SMERCHID);
-        this.setValue('de-txtIDITEMS', this.bean.IDITEMS);
-        this.setValue('de-txtIDITEMT', this.bean.IDITEMT);
-        this.setValue('de-txtINSTPLA', this.bean.INSTPLA);
-        this.setValue('de-txtINSTPAY', this.bean.INSTPAY);
-        this.setValue('de-txtINVORNBR', this.bean.INVORNBR);
-        this.setValue('de-txtZONE', this.bean.ZONE);
-        this.setValue('de-txtCOUNTRY', this.bean.DESC_SCOUNTRY);
-        this.setValue('de-txtSTCON', this.bean.STCON);
-        this.setValue('de-txtFCONT', this.bean.FCONT);
-//        this.setValue('de-txtIDCON', this.bean.IDCON);
-        this.setValue('de-txtIDCON', this.bean.BANDOC);
-        this.setValue('de-txtCERRORHST', this.bean.CERRORHST);
-        this.setValue('de-txtCERROIN', this.bean.CERROIN);
-        this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
-        this.setValue('de-txtFLAG', this.bean.FLAG);
-        this.setValue('de-txtCERROR', this.bean.CERROR);
-        this.setValue('de-txtDES_CERROR', this.bean.DES_CERROR);
-        this.setValue('de-txtBSUMDATE', this.bean.SDATE);
-        this.setValue('de-txtTDOC', this.bean.strPEM);
-        this.setValue('de-txtSPNR', this.bean.SPNR);
-//        this.setValue('de-txtISREFNBR', this.bean.ISREFNBR);
-        this.setValue('de-txtBANDOC', this.bean.BANDOC);
-        this.setValue('de-txtPAYDATE', this.bean.PAYDATE);
-        this.setValue('de-txtSCARCODE', this.bean.SCARCOD);
-        this.setValue('de-txtCODEBANK', this.bean.CODEBANK);
-        this.setValue('de-txtSCARDN', this.bean.SCARDN);
-        this.setValue('de-txtSAUTHOC', this.bean.SAUTHOC);
-        this.setValue('de-txtSTVAL', this.bean.descSTVAL);
-        this.setValue('de-txtSTVALHide', this.bean.STVAL);
-        this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
-        this.lstAmounts = [];
-        var fila1 = {};
-        fila1.label1 = 'Comm. Sett.';
-        fila1.amount1 = this.bean.COMMAMO;
-        fila1.label2 = 'Fare Sett.';
-        fila1.amount2 = this.bean.FAREO;
-        fila1.label3 = 'Transact. Amount';
-        fila1.amount3 = this.bean.SVFOP;
-        this.setValue('de-txtSVFOPHide', this.bean.SVFOP);
-        var fila2 = {};
-        fila2.label1 = 'Comm. Audit';
-        fila2.amount1 = this.bean.COMMAMOC;
-        fila2.label2 = 'Fare Sales';
-        fila2.amount2 = this.bean.FAREC;
-        fila2.label3 = 'Sales Amount';
-        fila2.amount3 = this.bean.SVFOPC;
-        var fila3 = {};
-        fila3.label1 = 'Diff. Comm.';
-        fila3.amount1 = this.bean.DIFF_COMMAMO;
-        fila3.label2 = 'Diff. Fare';
-        fila3.amount2 = this.bean.DIFF_FARE;
-        fila3.label3 = 'Diff. Amount';
-        fila3.amount3 = this.bean.SVFOPD;
-        var fila4 = {};
-        fila4.label1 = 'ADM/ACM';
-        fila4.amount1 = this.bean.DIFF_COMMAMO;
-        fila4.label2 = '';
-        fila4.amount2 = this.bean.COMMFAREC;
-        fila4.label3 = 'Total ADM';
-        fila4.amount3 = this.bean.TOTAL_ADM;
-        this.lstAmounts.push(fila1);
-        this.lstAmounts.push(fila2);
-        this.lstAmounts.push(fila3);
-        this.lstAmounts.push(fila4);
-        Ext.getCmp(prototype.id + '-gridAmounts').bindStore(
-                Ext.create('Ext.data.Store', {data: this.lstAmounts, autoLoad: true})
-                );
-        var title = 'Currency: ' + this.bean.SCURRENCY;
-        Ext.getCmp(prototype.id + '-gridAmounts').setTitle('<center style="font-size:12px;">' + title + '</center>');
-        this.lstAmountsExtras = [];
-        var fila1EX = {};
-        fila1EX.label1EX = 'IVA';
-        fila1EX.amount1EX = this.bean.IVA;
-        fila1EX.label2EX = 'BASEFUE';
-        fila1EX.amount2EX = this.bean.BASEFUE;
-        fila1EX.label3EX = 'BASICA';
-        fila1EX.amount3EX = this.bean.BASICA;
-        var fila2EX = {};
-        fila2EX.label1EX = 'PROPINA';
-        fila2EX.amount1EX = this.bean.PROPINA;
-        fila2EX.label2EX = 'RTEFUE';
-        fila2EX.amount2EX = this.bean.RTEFUE;
-        fila2EX.label3EX = 'RTEICA';
-        fila2EX.amount3EX = this.bean.RTEICA;
-        var fila3EX = {};
-        fila3EX.label1EX = 'COMISION';
-        fila3EX.amount1EX = this.bean.COMISION;
-        fila3EX.label2EX = 'RTEIVA';
-        fila3EX.amount2EX = this.bean.RTEIVA;
-        fila3EX.label3EX = 'NETO';
-        fila3EX.amount3EX = this.bean.NETO;
-        this.lstAmountsExtras.push(fila1EX);
-        this.lstAmountsExtras.push(fila2EX);
-        this.lstAmountsExtras.push(fila3EX);
-        Ext.getCmp(prototype.id + '-gridAmountsExtras').bindStore(
-                Ext.create('Ext.data.Store', {data: this.lstAmountsExtras, autoLoad: true})
-                );
-        var titleExtras = 'Currency: ' + this.bean.SCURRENCY;
-        Ext.getCmp(prototype.id + '-gridAmountsExtras').setTitle('<center style="font-size:12px;">' + titleExtras + '</center>');
-//        this.setValue('de-txtPCURRENCY', this.bean.SCURRENCY);       
-//        this.setValue('de-txtTGROSAMOUN', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
-//        this.setValue('de-txtSVFOPS', Ext.util.Format.number(this.bean.SVFOP, '0,000.00'));
-//        this.setValue('de-txtDIFF_AMOUNT', Ext.util.Format.number(0, '0,000.00'));
-//        this.setValue('de-txtFAREO', Ext.util.Format.number(this.bean.FAREO, '0,000.00'));
-//        this.setValue('de-txtFAREC', Ext.util.Format.number(this.bean.FAREC, '0,000.00'));
-//        this.setValue('de-txtDIFF_FARE', Ext.util.Format.number(this.bean.DIFF_FARE, '0,000.00'));
-//        this.setValue('de-txtCOMMAMOC', Ext.util.Format.number(this.bean.COMMAMOC, '0,000.00'));
-//        this.setValue('de-txtCOMMAMO', Ext.util.Format.number(this.bean.COMMAMO, '0,000.00'));
-//        this.setValue('de-txtDIFF_COMMAMO', Ext.util.Format.number(this.bean.DIFF_COMMAMO, '0,000.00'));
+//        Ext.getCmp(prototype.id + '-mostrarComment').show();
+        Ext.getCmp(prototype.id + '-labelScan').show();
+        Ext.getCmp(prototype.id + '-panelScanCard').hide();
+        Ext.getCmp(prototype.id + '-panelScanCard_2').hide();
+//        Ext.getCmp(prototype.id + '-gridColumnDelete').show();
+//        Ext.getCmp(prototype.id + '-gridColumnAdj').show();
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
+        Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
+//        Ext.getCmp(prototype.id + '-vacioComment').hide();
 
-
-
-        this.setValue('de-txtdescFREGLA', this.bean.descFREGLA);
-        this.setValue('de-txtDATEC', this.bean.DATEC);
-        this.setValue('de-txtVOID', this.bean.VOID);
-        this.setValue('de-txtFADM', this.bean.FADM);
-        this.setValue('de-txtFREVERSA', this.bean.FREVERSA);
-        this.setValue('de-txtFREVADM', this.bean.FREVADM);
-//        this.setValue('de-txtDIFF_AMOUNT', Ext.util.Format.number(this.bean.DIFF_AMOUNT, '0,000.00'));
-
-
-        this.setValue('txtUSCR', this.bean.USCR);
-        this.setValue('txtFECR', this.bean.FECR);
-        this.setValue('txtHOCR', this.bean.HOCR);
-        this.setValue('txtUSUP', this.bean.USUP);
-        this.setValue('txtFEUP', this.bean.FEUP);
-        this.setValue('txtHOUP', this.bean.HOUP);
         this.obtainData();
     },
     calcularMontos: function () {
@@ -663,12 +450,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     llenarData: function () {
         var bean = {};
         //bean.BDATEP = Ext.util.Format.date(this.getValue("de-txtBDATEP"), 'Ymd');
-        bean.PRDA = Ext.getCmp(prototype.id + '-de-txtPRDA').getValue();
-        bean.MERCHID = Ext.getCmp(prototype.id + '-de-txtMERCHID').getValue();
-        bean.SAGENT = Ext.getCmp(prototype.id + '-de-txtSAGENT').getValue().replace(/-/g, '');
-        bean.TRANC = Ext.getCmp(prototype.id + '-de-txtTRANC').getValue();
-        bean.SDATE = Ext.getCmp(prototype.id + '-de-txtBSUMDATE').getValue();
-        bean.SCARDN = Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue();
+//        bean.PRDA = Ext.getCmp(prototype.id + '-de-txtPRDA').getValue();
+//        bean.MERCHID = Ext.getCmp(prototype.id + '-de-txtMERCHID').getValue();
+//        bean.SAGENT = Ext.getCmp(prototype.id + '-de-txtSAGENT').getValue().replace(/-/g, '');
+//        bean.TRANC = Ext.getCmp(prototype.id + '-de-txtTRANC').getValue();
+//        bean.SDATE = Ext.getCmp(prototype.id + '-de-txtBSUMDATE').getValue();
+//        bean.SCARDN = Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue();
         console.log(bean.SAGENT);
         return bean;
     },
@@ -786,8 +573,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     onUpdateClick: function (btn) {
-        var deci = this.preexecuteOption();
-        if (deci) {
+        let cerror = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue()
+        console.log(cerror, 'cerror')
+        if( !cerror || cerror == ''){
+            global.Msg({msg: 'Select comment'})
+            return false 
+        }
+//        var deci = this.preexecuteOption();
+//        if (deci) {
             Ext.Msg.show({
                 title: '.:Confirmation:.',
                 msg: 'Are you sure to Update?',
@@ -806,7 +599,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     }
                 }
             });
-        }
+//        }
     },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
@@ -827,7 +620,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         });
     },
     onReverseClick: function (btn) {
-//        if(this.bean.FCONT == ''){
+        if(this.bean.FCONT == ''){
             Ext.Msg.show({
                 title: '.:Confirmation:.',
                 msg: 'Are you sure to Reverse?',
@@ -846,14 +639,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                         }
                 }
             }); 
-//        } else {
-//            global.Msg({msg: 'Reversal not allowed'});
-//            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
-//        }
+        } else {
+            global.Msg({msg: 'Reversal not allowed'});
+            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
+        }
         
     },
     onCancelClick: function (btn) {
         this.view.close();
+        
+//        meC.setGridDataDetDetailByF()
+//        meC.setGridDataDetailByEyes()
+//        meC.setGridDataDetailByEyesCountry()
     },
     // </editor-fold>
 
@@ -861,13 +658,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     preexecuteOption: function () {
 
         var decide = false;
-        console.log(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue(), 'txtSVFOPHide')
-        console.log(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue(), 'txtSumAmount')
-        var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', ''));
-        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
+        var ASVFOP = Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', '');
+        var BSVFOP = Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', '');
         console.log(ASVFOP);
         console.log(BSVFOP);
-        if (ASVFOP == BSVFOP) {
+        if (ASVFOP === BSVFOP) {
 
             var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
             console.log(comment);
@@ -896,32 +691,27 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     executeOption: function (beanTemp, option) {
 
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
-        var comentVisible = miGrillaAdj.isVisible();
 
         let datos = {};
         if (miGrilla) {
             // Llamada a la función procesarRegistros con la grilla como parámetro
             console.error('Entró al procesar Registros');
-            if (comentVisible) {
-                datos = this.procesarRegistros(miGrilla, miGrillaAdj);
-
-            } else {
-                datos = this.procesarRegistros(miGrilla);
-            }
+            
+           datos = this.procesarRegistros(miGrilla);
+            
             console.log(datos);
 //            datos = this.procesarRegistros(miGrilla);
             if (Array.isArray(datos) && datos.length === 0) {
                 // Nadine
             } else {
                 Ext.Ajax.request({
-                    url: prototype.url + '/executeOption',
+                    url: prototype.url + '/executeOptionTkt',
                     method: 'POST',
                     timeout: 60000000,
                     params: {beanString: datos, option: option},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+                    beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
                     success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                        Ext.getCmp(prototype.id + '-dataEntry').unmask();
                         var res = Ext.JSON.decode(response.responseText);
                         console.log(res);
                         if (res.success) {
@@ -931,8 +721,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 icon: 1,
                                 fn: function () {
                                     //exito
-                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                                    meDe.onSearchPendingDetail();
+                                    
+                                    
                                 }
                             });
                         } else
@@ -940,7 +731,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     },
                     failure: function (response, opts) {
                         console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                        Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     }
                 });
             }
@@ -1033,74 +824,31 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     procesarRegistros: function (grilla, miGrillaAdj) {
         // Crear una lista para almacenar los datos
         let listaDeDatos = [];
-        let ticketsOcupados = [];
+        
         var cont = 0;
         // Recorrer la grilla y agregar los datos a la lista
         grilla.getStore().each(function (record) {
             let registro = {
-                PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), // Reemplaza 'id' con el campo correcto de tu modelo
-                SCARDN: record.get('A1531NREF'), // Reemplaza 'id' con el campo correcto de tu modelo
-                SCARDNM: Ext.getCmp(prototype.id + '-de-txtSCARDN').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                SAUTHOCM: Ext.getCmp(prototype.id + '-de-txtSAUTHOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                SAUTHOC: record.get('A1531CAPL'), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                VFOP: Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, ''), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                SDATE: record.get('A720FECVTA'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                SCARDNCOR: record.get('SCARDNCOR'), // Reemplaza 'id' con el campo correcto de tu modelo
+                SAUTHOC: record.get('SAUTHOC'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                TDOC: record.get('TDOC'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
+                CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo // Reemplaza 'nombre' con el campo correcto de tu modelo
 
                         // Agrega más campos según sea necesario
             };
-            console.log(registro);
-            if (record.get('STVAL') === '1' || record.get('STVAL') === '5') {
-                ticketsOcupados.push(record.get('A1531TKT'));
-                cont++;
-                console.log(cont);
-            }
 
             listaDeDatos.push(registro);
         });
-
-        if (miGrillaAdj && miGrillaAdj.getStore) {
-            miGrillaAdj.getStore().each(function (record) {
-                let registro = {
-                    ASTVAL: '1', // Reemplaza 'id' con el campo correcto de tu modelo
-                    ATDOC: 'A', // Reemplaza 'id' con el campo correcto de tu modelo
-                    ASCARCOD: record.get('A1531TTARJ'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ASCARDN: record.get('A1531NREF'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ASAUTHOC: record.get('A1531CAPL'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ACURRENCY: record.get('A1531MFOP'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    AAMOUNT: record.get('A1531VFOP'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ASDATE: record.get('A720FECVTA'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    APNR: record.get('A720PNR'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ATICKET: record.get('A1531TKT'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ASAGENT: record.get('A720AGENTE'), // Reemplaza 'id' con el campo correcto de tu modelo
-                    ATRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(),
-                    ACERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(),
-                    ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
-                    BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
-                    CFUENTE: record.get('CFUENTE'), ///CFUENTE
-                    ADATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue()
-                };
-                listaDeDatos.push(registro);
-            });
-        } else {
-            console.error('La grilla o su tienda no están definidas correctamente.');
+        if(listaDeDatos.length == 0){
+            global.Msg({msg: 'No records to update'});
+            return false
         }
-
         // Convertir la lista a JSON
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
-        if (cont > 0) {
-            let mensaje = 'Errror. Blocked tickets:<br>' + ticketsOcupados.join('<br>');
-//            global.Msg({msg: mensaje});
-            console.log(mensaje);
-            return [];
-        } else {
-            return datosEnJSON;
-        }
+        
+        return datosEnJSON;
+       
     },
     desprocesarRegistros: function (grilla) {
         // Crear una lista para almacenar los datos
@@ -1353,10 +1101,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
                 Ext.getCmp(prototype.id + '-panelADJ').show();
                 var rec = Object.create(grid.getStore().getAt(rowIndex).data);
-                var monto_ajustado = parseFloat(parseFloat(this.bean.SVFOP - this.sumAmount).toFixed(2))
+//                var monto_ajustado = parseFloat(parseFloat(this.bean.SVFOP - this.sumAmount).toFixed(2))
 
-                rec.A1531VFOP = monto_ajustado;
-                rec.tot_VFOP = monto_ajustado;
+//                rec.A1531VFOP = monto_ajustado;
+//                rec.tot_VFOP = monto_ajustado;
                 //rec.SADJUST = 0;
 //                rec.A720AGENTE = $('#menuUser').text();
 //                rec.CERROR = '01';
@@ -1404,27 +1152,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         $('.x-tab-top:contains("Blocked")').hide();
     },
     onWindowNormal: function () {
-        Ext.getCmp(prototype.id + '-panelSumAmount').show()
         if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
-//            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
 
         } else {
-//            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
+            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
             Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 296');
         }
     },
     onWindowBlocked: function () {
-//        Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+        Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
         Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 215');
-        Ext.getCmp(prototype.id + '-panelSumAmount').show()
+
     },
-    allRefreshDataEntryAMDP: function () {
-        if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
-            console.log(this.bean.STVAL, 'this.bean.STVAL')
-            this.onSearchCompleteDetail();
-        } else {
-            this.onSearchPendingDetail();
-        }
+    allRefreshDataEntryTktTw: function () {
+       
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
@@ -1452,5 +1194,4 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 //            meDe.addCreditCard_keyDownHandler();
     }
     }
-});
-
+});     

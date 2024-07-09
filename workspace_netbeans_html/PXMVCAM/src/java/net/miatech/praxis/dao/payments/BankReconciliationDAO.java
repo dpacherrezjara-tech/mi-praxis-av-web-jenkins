@@ -946,6 +946,8 @@ public class BankReconciliationDAO {
                     beanTkt.SERIE = rst.getString("SERIE").trim();
                     beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
                     beanTkt.SPNR = rst.getString("SPNR").trim();
+                    beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
 
                     beanTkt.DATEC = rst.getString("DATEC").trim();
                     beanTkt.TRANC = rst.getString("TRANC").trim();
@@ -1648,6 +1650,7 @@ public class BankReconciliationDAO {
                 objRtn.FSELEC = rs01.getString("FSELEC");
                 objRtn.STVALS = rs01.getString("STVALS");
                 objRtn.DEBTYPE = rs01.getString("DEBTYPE");
+                objRtn.CHARNBR = rs01.getString("CHARNBR");
                 objRtn.descDEBTYPE = rs01.getString("strDEBTYPE").trim();
                 if (hmDescReglas.containsKey(rs01.getString("FREGLA").trim())) {
                     objRtn.descFREGLA = hmDescReglas.get(rs01.getString("FREGLA").trim()).toString();
@@ -4681,6 +4684,8 @@ public class BankReconciliationDAO {
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                beanTkt.BANDOC = rst.getString("BANDOC").trim();
                 lstData.add(beanTkt);
             }
             rst.close();
@@ -4778,6 +4783,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                beanTkt.INVOICE = rst.getString("INVOICE").trim();
                 lstData.add(beanTkt);
             }
             rst.close();
@@ -4978,12 +4984,13 @@ public class BankReconciliationDAO {
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
                 beanTkt.IDDEB = rst.getString("IDDEB").trim();
                 beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
+                beanTkt.SCONTROL = rst.getString("SCONTROL").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("C")) {
-                    beanTkt.descTDOC = "Chargebak";
+                    beanTkt.descTDOC = "Chargeback";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
                 } else if(rst.getString("TDOC").trim().equals("D")){
@@ -5450,6 +5457,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                beanTkt.INVOICE = rst.getString("INVOICE").trim();
 
                 lstData.add(beanTkt);
             }
@@ -5556,6 +5564,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                beanTkt.INVOICE = rst.getString("INVOICE").trim();
 
                 lstData.add(beanTkt);
             }
@@ -5756,18 +5765,19 @@ public class BankReconciliationDAO {
                 beanTkt.SPNR = rst.getString("NOMPAX").trim();
                 beanTkt.IDDEB = rst.getString("IDDEB").trim();
                 beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
+                beanTkt.SCONTROL = rst.getString("SCONTROL").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("C")) {
-                    beanTkt.descTDOC = "Chargebak";
+                    beanTkt.descTDOC = "Chargeback";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
                 } else if(rst.getString("TDOC").trim().equals("D")){
                       beanTkt.descTDOC = "Debits.";
                 } else {
-                    beanTkt.descTDOC = "Chargebak";
+                    beanTkt.descTDOC = "Chargeback";
                 }
                 beanTkt.A1531TTARJ = rst.getString("FRANQUICIA").trim();
                 beanTkt.A1531NREF = rst.getString("SCARDN").trim();
@@ -6185,15 +6195,16 @@ public class BankReconciliationDAO {
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
                 beanTkt.IDDEB = rst.getString("IDDEB").trim();
                 beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
+                beanTkt.SCONTROL = rst.getString("SCONTROL").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
 
 //                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
                 if (rst.getString("TDOC").trim().equals("C")) {
-                    beanTkt.descTDOC = "ChargeBak";
+                    beanTkt.descTDOC = "ChargeBack";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
                 } else {
-                    beanTkt.descTDOC = "ChargeBak";
+                    beanTkt.descTDOC = "ChargeBack";
                 }
                 beanTkt.A1531TTARJ = rst.getString("FRANQUICIA").trim();
                 beanTkt.A1531NREF = rst.getString("SCARDN").trim();

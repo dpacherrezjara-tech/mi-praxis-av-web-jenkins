@@ -103,6 +103,40 @@ public class SalesReconciliationController extends BaseController {
         return (dw_excel) ? null : (new Gson().toJson(map));
     }
 
+     @RequestMapping(value = "/searchIBT")
+    public @ResponseBody
+    String searchIBT(ModelMap map, HttpServletRequest request) {
+        A2290Filter filter = new A2290Filter();
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            List<A2290Filter> listaData = logic.loadPX263SQP00658_IBT(filter);
+
+            map.put("success", true);
+            map.put("data", listaData);
+            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "/searchDebits")
     public @ResponseBody
     String searchDebits(ModelMap map, HttpServletRequest request, HttpServletResponse response) {

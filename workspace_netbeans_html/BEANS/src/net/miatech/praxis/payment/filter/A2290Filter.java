@@ -51,7 +51,9 @@ public class A2290Filter extends A2290 {
     public String IN_TOADATE = "";
     public String IN_FROMSDATE = "";
     public String IN_TOSDATE = "";
-
+    public String IN_INVOICE = "";
+    public String INVOICE = "";
+    public String SCONSOL = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
@@ -629,6 +631,7 @@ public class A2290Filter extends A2290 {
     public String STVALS = "";
     public String IN_DEBTYPE = "";
     public String DEBTYPE = "";
+    public String CHARNBR = "";
     public String descDEBTYPE = "";
     public String MESSAGE = "";
 

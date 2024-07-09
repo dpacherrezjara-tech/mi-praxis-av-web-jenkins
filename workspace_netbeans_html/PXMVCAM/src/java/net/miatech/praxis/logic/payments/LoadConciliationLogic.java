@@ -84,6 +84,10 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263SQP00658(filter);
     }
     
+    public List<A2290Filter> loadPX263SQP00658_IBT(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00658_IBT(filter);
+    }
+    
     public List<A2290Filter> loadPX263SQP00900(A2370Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00900(filter);
     }

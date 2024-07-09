@@ -1,14 +1,17 @@
-Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliationForm', {
+
+prototype.id = 'ViewADMForm';
+prototype.url = CONTEXTPATH + '/ViewADM';
+
+Ext.define('Ext.Praxis.view.payments.ViewADMForm.ViewADMForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.SalesReconciliationForm',
+    alias: 'widget.ViewADMForm',
     requires: [
-        'Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliationController',
-        'Ext.Praxis.view.payments.SalesReconciliationForm.Options',
-        'Ext.Praxis.view.payments.SalesReconciliationForm.Filters',
-        'Ext.Praxis.view.payments.SalesReconciliationForm.Filters_IBT',
-        'Ext.Praxis.view.payments.SalesReconciliationForm.Info'
+        'Ext.Praxis.view.payments.ViewADMForm.Options',
+        'Ext.Praxis.view.payments.ViewADMForm.Filters',
+        'Ext.Praxis.view.payments.ViewADMForm.Info',
+        'Ext.Praxis.controller.payments.ViewADM.ViewADMController'
     ],
-    controller: 'SalesReconciliationController',
+    controller: 'ViewADMController',
     layout: {
         type: 'fit'
     },
@@ -18,29 +21,31 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
     },
     items: [
         {
-            id: prototype.id+'-xpanel',
+            id: prototype.id + '-xpanel',
             border: false,
             autoScroll: false,
             layout: 'fit',
             items: [
                 {
-                    id: prototype.id+'-form',
+                    id: prototype.id + '-form',
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-                    defaults: {
-                        border: false,
-                        autoScroll: true
-                    },
+//                    defaults: {
+//                        border: false,
+//                        autoScroll: true
+//                    },
                     items: [
                         {
                             xtype: 'panel',
                             region: 'center',
+                            width: 980,
                             layout: 'border',
+                            
                             items: [
                                 {
                                     region: 'center',
-                                    id: prototype.id+'-centerC',
+                                    id: prototype.id + '-centerC',
                                     layout: {
                                         type: 'vbox',
                                         align: 'center'
@@ -48,31 +53,27 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1900,
+                                        width: 1750,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id+'-options'
+                                            xtype: prototype.id + '-options'
                                         },
                                         {
-                                            xtype: prototype.id+'-filters',
-                                            id: prototype.id+'-contentFilter'
-                                        },
-                                        {
-                                            xtype: prototype.id+'-filters_IBT',
-                                            id: prototype.id+'-contentFilter_IBT',
-                                            hidden: true
-                                            
+                                            xtype: prototype.id + '-filters',
+                                            id: prototype.id + '-contentFilter'
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 710,
+                                            height: 600,
+                                            width: 1750,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
-                                                    id: prototype.id+'-centerC-panel01',
+                                                    id: prototype.id + '-centerC-panel01',
+                                                    width: 1750,
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,
@@ -83,16 +84,17 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
                                                     items: [
                                                         {
                                                             region: 'center',
-                                                            xtype: prototype.id+'-info',
-                                                            id: prototype.id+'-contentInfo'
+                                                            xtype: prototype.id + '-info',
+                                                            id: prototype.id + '-contentInfo'
                                                         }
                                                     ]
                                                 }
                                             ]
                                         }
-                                    ]
+                                   ]
                                 }
                             ]
+                            
                         }
                     ]
                 }
@@ -100,6 +102,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
         }
     ]
 });
+
 
 
 

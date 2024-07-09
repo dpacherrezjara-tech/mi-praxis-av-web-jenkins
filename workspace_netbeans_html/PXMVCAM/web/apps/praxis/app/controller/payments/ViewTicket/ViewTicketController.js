@@ -210,6 +210,9 @@ Ext.define('Ext.Praxis.controller.payments.ViewTicket.ViewTicketController', {
                         Ext.getCmp(prototype.id + '-txtINSTPAY').setValue(bean.INSTPAY);
                         Ext.getCmp(prototype.id + '-txtINSTPLA').setValue(bean.INSTPLA);
                         Ext.getCmp(prototype.id + '-txtSCURRENCY').setValue(bean.SCURRENCY);
+                        Ext.getCmp(prototype.id + '-txtBANDOC').setValue(bean.BANDOC);
+                        Ext.getCmp(prototype.id + '-txtINVOICE').setValue(bean.INVOICE);
+                        Ext.getCmp(prototype.id + '-txtPAYDATE').setValue(bean.PAYDATE);
 
                         Ext.getCmp(prototype.id + '-txtSVFOP').setValue(Ext.util.Format.number(bean.SVFOP, '0,000.00'));
                         Ext.getCmp(prototype.id + '-txtAFARE').setValue(Ext.util.Format.number(bean.AFARE, '0,000.00'));

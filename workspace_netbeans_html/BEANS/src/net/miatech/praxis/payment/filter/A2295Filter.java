@@ -60,7 +60,10 @@ public class A2295Filter  extends A2295{
     public String strNUMREF = "";
     public String IN_TITLE = "";
     
-
+//NEW VIEW ADM
+    public String IN_FSEND = "";
+    public String IN_FRCV = "";
+    public String IN_SCARCOD = "";
     
     public  double dblAMOUNT = 0;
     public  double dblTotAMOUNT = 0;
