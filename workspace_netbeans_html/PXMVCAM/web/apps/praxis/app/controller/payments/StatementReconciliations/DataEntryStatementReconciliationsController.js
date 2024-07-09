@@ -68,8 +68,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
-            Ext.getCmp(prototype.id + '-panelScanHead').hide();
-            Ext.getCmp(prototype.id + '-gridColumnDeleteHead').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
         } else {
@@ -440,15 +438,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 //            console.log('El checkbox no está marcado');
         }
     },
-    clear_keyDownHandlerHead: function () {
-
-        this.setValue('txtFromADATEHE', null);
-        this.setValue('txtToADATEHE', null);
-        this.setValue('txtLIQUIDACIOHE', '');
-        this.setValue('txtMERCHANDHE', '');
-        this.setValue('txtNETOHE', '');
-
-    },
     clear_keyDownHandler: function () {
 
         this.setValue('txtFromADATE', null);
@@ -771,7 +760,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         if (ACCNUMBER !== ACCNUMBERL) {
             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
-            return false
+            return false;
         }
 
     },
