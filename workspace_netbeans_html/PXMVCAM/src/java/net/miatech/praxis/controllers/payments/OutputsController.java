@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
+import net.miatech.praxis.logic.payments.BankReconciliationLogic;
 import net.miatech.praxis.logic.payments.MerchantNumberLogic;
 import net.miatech.praxis.logic.payments.RejectionstLogic;
 import net.miatech.praxis.logic.payments.OutputsLogic;
@@ -163,6 +164,36 @@ public class OutputsController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "/obtainCores")
+    public @ResponseBody
+    String obtainCores(ModelMap map, HttpServletRequest request) {
+        A2353Filter filter = new A2353Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        List<A2353Filter> lst = new ArrayList<>(0);
+        try {
+            logic = new OutputsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
+
+            lst = logic.loadPX285SQP05106(filter);
+
+            map.put("success", true);
+            System.out.println("Total : " + lst.size());
+            map.put("data", lst);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
@@ -405,35 +436,6 @@ public class OutputsController extends BaseController {
                 ++vj;
             }
 
-//            sheet.autoSizeColumn(0, true);
-//            sheet.autoSizeColumn(1, true);
-//            sheet.autoSizeColumn(2, true);
-//            sheet.autoSizeColumn(3, true);
-//            sheet.autoSizeColumn(4, true);
-//            sheet.autoSizeColumn(5, true);
-//            sheet.autoSizeColumn(6, true);
-//            sheet.autoSizeColumn(7, true);
-//            sheet.autoSizeColumn(8, true);
-//            sheet.autoSizeColumn(9, true);
-//            sheet.autoSizeColumn(10, true);
-//            sheet.autoSizeColumn(11, true);
-//            sheet.autoSizeColumn(12, true);
-//            sheet.autoSizeColumn(13, true);
-//            sheet.autoSizeColumn(14, true);
-//            sheet.autoSizeColumn(15, true);
-//            sheet.autoSizeColumn(16, true);
-//            sheet.autoSizeColumn(17, true);
-//            sheet.autoSizeColumn(18, true);
-//            sheet.autoSizeColumn(19, true);
-//            sheet.autoSizeColumn(20, true);
-//            sheet.autoSizeColumn(21, true);
-//            sheet.autoSizeColumn(22, true);
-//            sheet.autoSizeColumn(23, true);
-//            sheet.autoSizeColumn(24, true);
-//            sheet.autoSizeColumn(25, true);
-//            sheet.autoSizeColumn(26, true);
-//            sheet.autoSizeColumn(27, true);
-//            sheet.autoSizeColumn(28, true);
             //============================================
             response.setContentType("application/vnd.openxml");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");

@@ -31,6 +31,10 @@ public class OutputsLogic {
         OutputsDAO.setSession(ss);
     }
 
+    public List<A2353Filter> loadPX285SQP05106(A2353Filter filter) throws SQLException, Exception {
+        return OutputsDAO.loadPX285SQP05106(filter);
+    }
+    
     public List<A2353Filter> loadPX285SQP05104(A2353Filter filter) throws SQLException, Exception {
         return OutputsDAO.loadPX285SQP05104(filter);
     }

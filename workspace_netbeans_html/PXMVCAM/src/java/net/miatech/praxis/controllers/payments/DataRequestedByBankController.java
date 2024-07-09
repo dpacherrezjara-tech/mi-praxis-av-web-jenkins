@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,20 +19,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static net.miatech.praxis.classes.CreateStylesExcel.createStyles;
 import net.miatech.praxis.classes.ProMail;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.DataRequestedByBankLogic;
-import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2331Filter;
-import net.miatech.praxis.payment.filter.A2345Filter;
 import net.miatech.praxis.classes.ProReportClarification;
 import net.miatech.praxis.payment.ExcelChargeBack;
 import net.miatech.utils.Functions;
@@ -1138,2051 +1133,2051 @@ public class DataRequestedByBankController extends BaseController {
     
     
     
-
-    @RequestMapping(value = "exportHistorical")
-    public @ResponseBody
-    void exportHistorical(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("DataRequestedByBank : exportHistorical");
-        String fileNameDownload = String.format("RequestedBank_Historical  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
-
-        List<A2331Filter> listaData = new ArrayList<>(0);
-        A2331Filter filter = new A2331Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            Workbook workbook;
-            File file = File.createTempFile(fileNameDownload, ".xlsx");
-
-            logic = new DataRequestedByBankLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2331Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            filter.page.PAGROW = -1;
-            filter.page.PAGNUM = 1;
-
-            listaData = logic.loadPX404SQP01948(filter);
-
-            System.out.println("Tamaño de lista devuelta : " + listaData.size());
-            workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Report");
-            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
-            CellStyle bodyStyle = workbook.createCellStyle();
-            Font headerFont = workbook.createFont();
-            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            headerFont.setColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
-            headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
-            headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
-            headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
-            headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
-            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
-            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-            headerStyle.setFont(headerFont);
-            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
-            bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
-            bodyStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
-            bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
-            bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            Integer vi = 0;
-            Integer vj = 0; //Almacena el numero de fila
-            Iterator iter = listaData.iterator();
-            // ====== CREANDO TITULOS ======================================
-
-            // ======  Nivel 1 ==========
-            Row row1 = sheet.createRow(vj);
-            Cell CH1_0 = row1.createCell(0);
-            Cell CH1_1 = row1.createCell(1);
-            Cell CH1_2 = row1.createCell(2);
-            Cell CH1_3 = row1.createCell(3);
-            Cell CH1_4 = row1.createCell(4);
-            Cell CH1_5 = row1.createCell(5);
-            Cell CH1_6 = row1.createCell(6);
-            Cell CH1_7 = row1.createCell(7);
-            Cell CH1_8 = row1.createCell(8);
-            Cell CH1_9 = row1.createCell(9);
-            Cell CH1_10 = row1.createCell(10);
-            Cell CH1_11 = row1.createCell(11);
-            Cell CH1_12 = row1.createCell(12);
-            Cell CH1_13 = row1.createCell(13);
-
-            CH1_0.setCellValue("Reception Date");
-            CH1_1.setCellValue("Merchant");
-            CH1_2.setCellValue("Sales Date");
-            CH1_3.setCellValue("Card Number");
-            CH1_4.setCellValue("Reason Code");
-            CH1_5.setCellValue("Motive");
-            CH1_6.setCellValue("Amount MXN");
-            CH1_7.setCellValue("Authorization");
-            CH1_8.setCellValue("Folio");
-            CH1_9.setCellValue("AM Expiration Date");
-            CH1_10.setCellValue("Merchant Name");
-            CH1_11.setCellValue("Tickets");
-            CH1_12.setCellValue("Sales Agent");
-            CH1_13.setCellValue("Status");
-
-            CH1_0.setCellStyle(headerStyle);
-            CH1_1.setCellStyle(headerStyle);
-            CH1_2.setCellStyle(headerStyle);
-            CH1_3.setCellStyle(headerStyle);
-            CH1_4.setCellStyle(headerStyle);
-            CH1_5.setCellStyle(headerStyle);
-            CH1_6.setCellStyle(headerStyle);
-            CH1_7.setCellStyle(headerStyle);
-            CH1_8.setCellStyle(headerStyle);
-            CH1_9.setCellStyle(headerStyle);
-            CH1_10.setCellStyle(headerStyle);
-            CH1_11.setCellStyle(headerStyle);
-            CH1_12.setCellStyle(headerStyle);
-            CH1_13.setCellStyle(headerStyle);
-
-            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
-
-            ++vj;
-            //============================================
-
-            while (iter.hasNext()) {
-                row1 = sheet.createRow(vj);
-                Cell rcell0 = row1.createCell(0);
-                Cell rcell1 = row1.createCell(1);
-                Cell rcell2 = row1.createCell(2);
-                Cell rcell3 = row1.createCell(3);
-                Cell rcell4 = row1.createCell(4);
-                Cell rcell5 = row1.createCell(5);
-                Cell rcell6 = row1.createCell(6);
-                Cell rcell7 = row1.createCell(7);
-                Cell rcell8 = row1.createCell(8);
-                Cell rcell9 = row1.createCell(9);
-                Cell rcell10 = row1.createCell(10);
-                Cell rcell11 = row1.createCell(11);
-                Cell rcell12 = row1.createCell(12);
-                Cell rcell13 = row1.createCell(13);
-
-                rcell0.setCellValue(listaData.get(vi).SENTDATE);
-                rcell1.setCellValue(listaData.get(vi).MERCHN);
-                rcell2.setCellValue(listaData.get(vi).SALEDATE);
-                rcell3.setCellValue(listaData.get(vi).strDescripcion);
-                rcell4.setCellValue(listaData.get(vi).CODMOTI);
-                rcell5.setCellValue(listaData.get(vi).CLINAME);
-                rcell6.setCellValue(listaData.get(vi).AUTAMOUNT);
-                rcell7.setCellValue(listaData.get(vi).AUTHNBR);
-                rcell8.setCellValue(listaData.get(vi).FOLIO);
-                rcell9.setCellValue(listaData.get(vi).strFormatDate);
-                rcell10.setCellValue(listaData.get(vi).MERCHNAM);
-                rcell11.setCellValue(listaData.get(vi).strTicket);
-                rcell12.setCellValue(listaData.get(vi).AGENTE);
-                rcell13.setCellValue(listaData.get(vi).STUSO);
-                iter.next();
-                ++vi;
-                ++vj;
-            }
-
-            sheet.autoSizeColumn(0, true);
-            sheet.autoSizeColumn(1, true);
-            sheet.autoSizeColumn(2, true);
-            sheet.autoSizeColumn(3, true);
-            sheet.autoSizeColumn(4, true);
-            sheet.autoSizeColumn(5, true);
-            sheet.autoSizeColumn(6, true);
-            sheet.autoSizeColumn(7, true);
-            sheet.autoSizeColumn(8, true);
-            sheet.autoSizeColumn(9, true);
-            sheet.autoSizeColumn(10, true);
-            sheet.autoSizeColumn(11, true);
-            sheet.autoSizeColumn(12, true);
-            sheet.autoSizeColumn(13, true);
-
-            //============================================
-            response.setContentType("application/vnd.openxml");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
-
-            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
-            workbook.write(response.getOutputStream());
-            fos.close();
-
-        } catch (IOException e) {
-            throw new SpringException(e);
-        }
-    }
-    
-    @RequestMapping(value = "exportHistoricalBN")
-    public @ResponseBody
-    void exportHistoricalBN(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
-        System.out.println("-------------- DataRequestedByBank : exportHistoricalBN-------------");
-
-        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-
-        List<A2331Filter> listaData;
-        double dblTotCC = 0, dblTotWEB = 0;
-        A2331Filter filter = new A2331Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-//        HashMap hmCANAL = new HashMap();
-//        hmCANAL.put("FRA", "FRANQUICIAS");
-//        hmCANAL.put("ATO", "AEROPUERTO");
-//        hmCANAL.put("CTO", "CTO");
-//        hmCANAL.put("WEB", "INTERNET");
-//        hmCANAL.put("CCT", "CALL CENTER");
-        //strTitulo   Reempolazo de hmCANAL
-        try {
-
-            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2331Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            filter.page.PAGROW = -1;
-            filter.page.PAGNUM = 1;
-
-            listaData = logic.loadPX404SQP03648(filter);
-
-            String strFileName = "Requested_Historical_BN_" + Functions.getFechaActual() + "_" + Functions.getHoraActual() + ".xls";
-
-            HSSFWorkbook workbook = null;
-            File file = new File(rutaFile + "\\" + strFileName);
-            if (file.exists()) {
-                file.delete();
-            }
-
-            if (listaData.size() > 0) {
-
-                workbook = new HSSFWorkbook();
-
-                String quiebreHoja = "", quiebreCanal = "";
-                A2331Filter bean = listaData.get(0);
-
-                HSSFSheet sheet = workbook.createSheet(bean.SCARCOD.trim());
-
-                Map<String, HSSFCellStyle> styles = createStyles(workbook);
-                String styleName;
-
-                sheet.setColumnWidth(0, 17 * 500);
-                sheet.setColumnWidth(1, 7 * 500);
-                sheet.setColumnWidth(2, 9 * 500);
-                sheet.setColumnWidth(3, 7 * 500);
-                sheet.setColumnWidth(4, 20 * 500);
-                sheet.setColumnWidth(5, 13 * 500);
-                sheet.setColumnWidth(6, 9 * 500);
-                sheet.setColumnWidth(7, 30 * 500);
-                sheet.setColumnWidth(8, 13 * 500);
-                sheet.setColumnWidth(9, 7 * 500);
-                sheet.setColumnWidth(10, 7 * 500);
-                sheet.setColumnWidth(11, 7 * 500);
-
-                //Título Superior ==============================================
-                HSSFRow rowTitS = sheet.createRow(0);
-                rowTitS.setHeight((short) 500);
-                HSSFCell cabTitS = rowTitS.createCell(0);
-//                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
-                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.toString());
-                cabTitS.setCellStyle(styles.get("cell_b_centered"));
-                HSSFCell cabTitS11 = rowTitS.createCell(12);
-                cabTitS11.setCellValue(" ");
-                //rowFrom,rowTo,colFrom,colTo
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 11));
-
-                //Títulos Grilla ===============================================
-                HSSFRow rowcab = sheet.createRow(1);
-                rowcab.setHeight((short) 500);
-                HSSFCell cab1 = rowcab.createCell(0);
-                HSSFCell cab2 = rowcab.createCell(1);
-                HSSFCell cab3 = rowcab.createCell(2);
-                HSSFCell cab4 = rowcab.createCell(3);
-                HSSFCell cab5 = rowcab.createCell(4);
-                HSSFCell cab6 = rowcab.createCell(5);
-                HSSFCell cabAN = rowcab.createCell(6);
-                HSSFCell cab7 = rowcab.createCell(7);
-                HSSFCell cab8 = rowcab.createCell(8);
-                HSSFCell cab9 = rowcab.createCell(9);
-                HSSFCell cab10 = rowcab.createCell(10);
-                HSSFCell cab11 = rowcab.createCell(11);
-
-                styleName = "header";
-
-                cab1.setCellValue("Merchant Name");
-                cab1.setCellStyle(styles.get(styleName));
-                cab2.setCellValue("Merchant");
-                cab2.setCellStyle(styles.get(styleName));
-                cab3.setCellValue("Amount MXN");
-                cab3.setCellStyle(styles.get(styleName));
-                cab4.setCellValue("Application Date");
-                cab4.setCellStyle(styles.get(styleName));
-                cab5.setCellValue("Concept");
-                cab5.setCellStyle(styles.get(styleName));
-                cab6.setCellValue("Card Number");
-                cab6.setCellStyle(styles.get(styleName));
-                cabAN.setCellValue("Authorization Number");
-                cabAN.setCellStyle(styles.get(styleName));
-                cab7.setCellValue("Ticket(s)");
-                cab7.setCellStyle(styles.get(styleName));
-                cab8.setCellValue("Status");
-                cab8.setCellStyle(styles.get(styleName));
-                cab9.setCellValue("Sales Date");
-                cab9.setCellStyle(styles.get(styleName));
-                cab10.setCellValue("Sending Date");
-                cab10.setCellStyle(styles.get(styleName));
-                cab11.setCellValue("Bank");
-                cab11.setCellStyle(styles.get(styleName));
-
-                Integer cont = 2;
-                for (int a = 0; a < listaData.size(); a++) {
-                    bean = listaData.get(a);
-
-                    //QUIEBRE POR CANAL ========================================
-                    if (!quiebreCanal.trim().isEmpty() && !quiebreCanal.trim().equals(bean.strCANAL.trim())) {
-                        HSSFRow rowTot = sheet.createRow(cont);
-                        HSSFCell cellT0 = rowTot.createCell(0);
-                        HSSFCell cellT1 = rowTot.createCell(1);
-                        HSSFCell cellT2 = rowTot.createCell(2);
-                        styleName = "cell_b_centered";
-                        cellT0.setCellValue(" ");
-                        cellT0.setCellStyle(styles.get(styleName));
-                        cellT1.setCellValue("TOTAL");
-                        cellT1.setCellStyle(styles.get(styleName));
-
-                        styleName = "cell_totals_right";
-                        if (quiebreCanal.equals("CCT")) {
-                            cellT2.setCellValue(dblTotCC);
-                            dblTotCC = 0;
-                        } else {
-                            cellT2.setCellValue(dblTotWEB);
-                            dblTotWEB = 0;
-                        }
-                        cellT2.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        //LINEA EN BLANCO ======================================
-                        HSSFRow rowLB1 = sheet.createRow(cont);
-                        HSSFCell cellLB10 = rowLB1.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB10.setCellValue(" ");
-                        cellLB10.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        HSSFRow rowLB2 = sheet.createRow(cont);
-                        HSSFCell cellLB20 = rowLB2.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB20.setCellValue(" ");
-                        cellLB20.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        HSSFRow rowLB3 = sheet.createRow(cont);
-                        HSSFCell cellLB30 = rowLB3.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB30.setCellValue(" ");
-                        cellLB30.setCellStyle(styles.get(styleName));
-                        ++cont;
-
-                        if (quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
-                            //Título Superior ======================================
-                            HSSFRow rowTitS2 = sheet.createRow(cont);
-                            rowTitS2.setHeight((short) 500);
-                            HSSFCell cabTitS2 = rowTitS2.createCell(0);
-                            cabTitS2.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.trim());
-                            cabTitS2.setCellStyle(styles.get("cell_b_centered"));
-                            HSSFCell cabTitS2_11 = rowTitS2.createCell(12);
-                            cabTitS2_11.setCellValue(" ");
-                            //rowFrom,rowTo,colFrom,colTo
-                            sheet.addMergedRegion(new CellRangeAddress(cont, cont, 0, 10));
-                            ++cont;
-
-                            //Títulos Grilla =======================================
-                            HSSFRow rowcab2 = sheet.createRow(cont);
-                            rowcab2.setHeight((short) 500);
-                            HSSFCell cab12 = rowcab2.createCell(0);
-                            HSSFCell cab22 = rowcab2.createCell(1);
-                            HSSFCell cab32 = rowcab2.createCell(2);
-                            HSSFCell cab42 = rowcab2.createCell(3);
-                            HSSFCell cab52 = rowcab2.createCell(4);
-                            HSSFCell cab62 = rowcab2.createCell(5);
-                            HSSFCell cab2AN = rowcab.createCell(6);
-                            HSSFCell cab72 = rowcab2.createCell(7);
-                            HSSFCell cab82 = rowcab2.createCell(8);
-                            HSSFCell cab92 = rowcab2.createCell(9);
-                            HSSFCell cab102 = rowcab2.createCell(10);
-                            HSSFCell cab112 = rowcab2.createCell(11);
-
-                            styleName = "header";
-
-                            cab12.setCellValue("Merchant Name");
-                            cab12.setCellStyle(styles.get(styleName));
-                            cab22.setCellValue("Merchant");
-                            cab22.setCellStyle(styles.get(styleName));
-                            cab32.setCellValue("Amount MXN");
-                            cab32.setCellStyle(styles.get(styleName));
-                            cab42.setCellValue("Application Date");
-                            cab42.setCellStyle(styles.get(styleName));
-                            cab52.setCellValue("Concept");
-                            cab52.setCellStyle(styles.get(styleName));
-                            cab62.setCellValue("Card Number");
-                            cab62.setCellStyle(styles.get(styleName));
-                            cab2AN.setCellValue("Authorization Number");
-                            cab2AN.setCellStyle(styles.get(styleName));
-                            cab72.setCellValue("Ticket(s)");
-                            cab72.setCellStyle(styles.get(styleName));
-                            cab82.setCellValue("Status");
-                            cab82.setCellStyle(styles.get(styleName));
-                            cab92.setCellValue("Sales Date");
-                            cab92.setCellStyle(styles.get(styleName));
-                            cab102.setCellValue("Sending Date");
-                            cab102.setCellStyle(styles.get(styleName));
-                            cab112.setCellValue("Bank");
-                            cab112.setCellStyle(styles.get(styleName));
-                            ++cont;
-                        }
-                    }
-
-                    if (!quiebreHoja.trim().isEmpty() && !quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
-
-                        //======================================================
-                        //======================================================
-                        //Creando nueva hoja y sus respectivos títulos.
-                        sheet = workbook.createSheet(bean.SCARCOD.trim());
-
-                        sheet.setColumnWidth(0, 17 * 500);
-                        sheet.setColumnWidth(1, 7 * 500);
-                        sheet.setColumnWidth(2, 9 * 500);
-                        sheet.setColumnWidth(3, 7 * 500);
-                        sheet.setColumnWidth(4, 20 * 500);
-                        sheet.setColumnWidth(5, 13 * 500);
-                        sheet.setColumnWidth(6, 9 * 500);
-                        sheet.setColumnWidth(7, 30 * 500);
-                        sheet.setColumnWidth(8, 13 * 500);
-                        sheet.setColumnWidth(9, 7 * 500);
-                        sheet.setColumnWidth(10, 7 * 500);
-                        sheet.setColumnWidth(11, 7 * 500);
-
-                        //Título Superior ======================================
-                        rowTitS = sheet.createRow(0);
-                        rowTitS.setHeight((short) 500);
-                        cabTitS = rowTitS.createCell(0);
-                        cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo);
-                        cabTitS.setCellStyle(styles.get("cell_b_centered"));
-                        cabTitS11 = rowTitS.createCell(12);
-                        cabTitS11.setCellValue(" ");
-
-                        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-                        //rowFrom,rowTo,colFrom,colTo
-
-                        //Títulos Grilla =======================================
-                        rowcab = sheet.createRow(1);
-                        rowcab.setHeight((short) 500);
-                        cab1 = rowcab.createCell(0);
-                        cab2 = rowcab.createCell(1);
-                        cab3 = rowcab.createCell(2);
-                        cab4 = rowcab.createCell(3);
-                        cab5 = rowcab.createCell(4);
-                        cab6 = rowcab.createCell(5);
-                        cabAN = rowcab.createCell(6);
-                        cab7 = rowcab.createCell(7);
-                        cab8 = rowcab.createCell(8);
-                        cab9 = rowcab.createCell(9);
-                        cab10 = rowcab.createCell(10);
-                        cab11 = rowcab.createCell(11);
-
-                        styleName = "header";
-
-                        cab1.setCellValue("Merchant Name");
-                        cab1.setCellStyle(styles.get(styleName));
-                        cab2.setCellValue("Merchant");
-                        cab2.setCellStyle(styles.get(styleName));
-                        cab3.setCellValue("Amount MXN");
-                        cab3.setCellStyle(styles.get(styleName));
-                        cab4.setCellValue("Application Date");
-                        cab4.setCellStyle(styles.get(styleName));
-                        cab5.setCellValue("Concept");
-                        cab5.setCellStyle(styles.get(styleName));
-                        cab6.setCellValue("Card Number");
-                        cab6.setCellStyle(styles.get(styleName));
-                        cabAN.setCellValue("Authorization Number");
-                        cabAN.setCellStyle(styles.get(styleName));
-                        cab7.setCellValue("Ticket(s)");
-                        cab7.setCellStyle(styles.get(styleName));
-                        cab8.setCellValue("Status");
-                        cab8.setCellStyle(styles.get(styleName));
-                        cab9.setCellValue("Sales Date");
-                        cab9.setCellStyle(styles.get(styleName));
-                        cab10.setCellValue("Sending Date");
-                        cab10.setCellStyle(styles.get(styleName));
-                        cab11.setCellValue("Bank");
-                        cab11.setCellStyle(styles.get(styleName));
-
-                        cont = 2;
-                        dblTotCC = 0;
-                        dblTotWEB = 0;
-                    }
-
-                    HSSFRow row = sheet.createRow(cont);
-                    HSSFCell cell0 = row.createCell(0);
-                    HSSFCell cell1 = row.createCell(1);
-                    HSSFCell cell2 = row.createCell(2);
-                    HSSFCell cell3 = row.createCell(3);
-                    HSSFCell cell4 = row.createCell(4);
-                    HSSFCell cell5 = row.createCell(5);
-                    HSSFCell call2AN = row.createCell(6);
-                    HSSFCell cell6 = row.createCell(7);
-                    HSSFCell cell7 = row.createCell(8);
-                    HSSFCell cell8 = row.createCell(9);
-                    HSSFCell cell9 = row.createCell(10);
-                    HSSFCell cell10 = row.createCell(11);
-
-                    styleName = "cell_normal_centered";
-                    cell0.setCellValue(bean.MERCHNAM);
-                    cell0.setCellStyle(styles.get(styleName));
-                    cell1.setCellValue(bean.MERCHN);
-                    cell1.setCellStyle(styles.get(styleName));
-
-                    styleName = "cell_normal_formato_right";
-                    cell2.setCellValue(bean.AUTAMOUNT);
-                    cell2.setCellStyle(styles.get(styleName));
-
-                    styleName = "cell_normal_centered";
-                    cell3.setCellValue(bean.APLIDATE);
-                    cell3.setCellStyle(styles.get(styleName));
-                    cell4.setCellValue(bean.CONCEPT);
-                    cell4.setCellStyle(styles.get(styleName));
-                    cell5.setCellValue(bean.strDescripcion);
-                    cell5.setCellStyle(styles.get(styleName));
-                    cell6.setCellValue(bean.strTicket);
-                    cell6.setCellStyle(styles.get(styleName));
-                    call2AN.setCellValue(bean.AUTHNBR);
-                    call2AN.setCellStyle(styles.get(styleName));
-                    cell7.setCellValue(bean.STUSOS);
-                    cell7.setCellStyle(styles.get(styleName));
-                    cell8.setCellValue(bean.SALEDATE);
-                    cell8.setCellStyle(styles.get(styleName));
-                    cell9.setCellValue(bean.FECR);
-                    cell9.setCellStyle(styles.get(styleName));
-                    cell10.setCellValue(bean.strDescBank);
-                    cell10.setCellStyle(styles.get(styleName));
-
-                    if (bean.strCANAL.equals("CCT")) {
-                        //CALL CENTER
-                        dblTotCC += bean.AUTAMOUNT;
-                    } else {
-                        //WEB
-                        dblTotWEB += bean.AUTAMOUNT;
-                    }
-
-                    ++cont;
-                    quiebreHoja = bean.SCARCOD.trim();
-                    quiebreCanal = bean.strCANAL.trim();
-
-                }
-
-                //COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
-                HSSFRow rowTot = sheet.createRow(cont);
-                HSSFCell cellT0 = rowTot.createCell(0);
-                HSSFCell cellT1 = rowTot.createCell(1);
-                HSSFCell cellT2 = rowTot.createCell(2);
-                styleName = "cell_b_centered";
-                cellT0.setCellValue(" ");
-                cellT0.setCellStyle(styles.get(styleName));
-                cellT1.setCellValue("TOTAL");
-                cellT1.setCellStyle(styles.get(styleName));
-
-                styleName = "cell_totals_right";
-                if (quiebreCanal.equals("CCT")) {
-                    cellT2.setCellValue(dblTotCC);
-                    dblTotCC = 0;
-                } else {
-                    cellT2.setCellValue(dblTotWEB);
-                    dblTotWEB = 0;
-                }
-                cellT2.setCellStyle(styles.get(styleName));
-
-//                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-//                workbook.write(fos);
-//                fos.close();
-                response.setContentType("application/vnd.openxml");
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
-
-                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-                workbook.write(response.getOutputStream());
-                fos.close();
-            }
-        } catch (IOException e) {
-            throw new SpringException(e);
-        }
-    }
-    
-    @RequestMapping(value = "exportChargeBack")
-    public @ResponseBody
-    void exportChargeBack(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
-        System.out.println("-------------- DataRequestedByBank : exportChargeBack-------------");
-
-        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-        
-        List<ExcelChargeBack> listaDataTemp = new ArrayList<ExcelChargeBack>();
-        List<ExcelChargeBack> listaDataTotal = new ArrayList<ExcelChargeBack>();
-        List<ExcelChargeBack> listaDataParcial = new ArrayList<ExcelChargeBack>();
-        
-        int lstSize = 0;
-        A2331Filter filter = new A2331Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2331Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            filter.page.PAGROW = -1;
-            filter.page.PAGNUM = 1;
-            
-            listaDataTotal = logic.loadPX404SQP03580(filter, "T");
-            listaDataParcial = logic.loadPX404SQP03580(filter, "P");
-
-            String strFileName = Functions.getFechaActual() + Functions.getHoraActual() + ".xls";
-
-            HSSFWorkbook workbook = null;
-            File file = new File(rutaFile + "\\" + strFileName);
-            if (file.exists()) {
-                file.delete();
-            }
-
-            String nombreHoja = "";
-            workbook = new HSSFWorkbook();
-
-            for (int z = 0; z < 2; z++) {
-
-                listaDataTemp = listaDataTotal;
-                nombreHoja = "Total";
-                if (z == 1) {
-                    listaDataTemp = listaDataParcial;
-                    nombreHoja = "Parcial";
-                }
-
-                HSSFSheet sheet = workbook.createSheet(nombreHoja);
-
-                Map<String, HSSFCellStyle> styles = createStyles(workbook);
-                String styleName;
-
-                //                sheet.setColumnWidth(0, 17 * 500);
-                //                sheet.setColumnWidth(1, 7 * 500);
-                //                sheet.setColumnWidth(2, 9 * 500);
-                //                sheet.setColumnWidth(3, 7 * 500);
-                //                sheet.setColumnWidth(4, 20 * 500);
-                //                sheet.setColumnWidth(5, 13 * 500);
-                //                sheet.setColumnWidth(6, 30 * 500);
-                //                sheet.setColumnWidth(7, 13 * 500);
-                //                sheet.setColumnWidth(8, 7 * 500);
-                //                sheet.setColumnWidth(9, 7 * 500);
-                //                sheet.setColumnWidth(10, 7 * 500);
-                //Título Superior ==============================================
-                HSSFRow rowTit1 = sheet.createRow(0);
-                //                rowTit1.setHeight((short) 500);
-                HSSFCell cellTit1 = rowTit1.createCell(0);
-                cellTit1.setCellValue("TICKET INFORMATION");
-                cellTit1.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 7));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 0, 7), sheet, workbook);
-
-                HSSFCell cellTit2 = rowTit1.createCell(8);
-                cellTit2.setCellValue("FORMA DE PAGO");
-                cellTit2.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 15));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 8, 15), sheet, workbook);
-
-                HSSFCell cellTit3 = rowTit1.createCell(16);
-                cellTit3.setCellValue("TARIFA");
-                cellTit3.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 19));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 16, 19), sheet, workbook);
-
-                HSSFCell cellTit4 = rowTit1.createCell(20);
-                cellTit4.setCellValue("TAXES/PENALIDAD");
-                cellTit4.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 61));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 20, 61), sheet, workbook);
-
-                HSSFCell cellTit5 = rowTit1.createCell(62);
-                cellTit5.setCellValue("TOTAL");
-                cellTit5.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 1, 62, 62));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 1, 62, 62), sheet, workbook);
-                RegionUtil.setBorderLeft(CellStyle.BORDER_THIN, new CellRangeAddress(0, 1, 62, 62), sheet, workbook);
-                RegionUtil.setBorderRight(CellStyle.BORDER_THIN, new CellRangeAddress(0, 1, 62, 62), sheet, workbook);
-
-                HSSFCell cellTit6 = rowTit1.createCell(63);
-                cellTit6.setCellValue("COMISION");
-                cellTit6.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 63, 64));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 63, 65), sheet, workbook);
-
-                HSSFCell cellTit7 = rowTit1.createCell(65);
-                cellTit7.setCellValue("TAX ON");
-                cellTit7.setCellStyle(styles.get("cell_b_titulo"));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 65, 66));
-                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 66, 67), sheet, workbook);
-
-                //                
-                //rowFrom,rowTo,colFrom,colTo
-                //                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-                //Títulos Grilla ===============================================
-                HSSFRow rowcab = sheet.createRow(1);
-                rowcab.setHeight((short) 500);
-                HSSFCell cab1 = rowcab.createCell(0);
-                HSSFCell cab2 = rowcab.createCell(1);
-                HSSFCell cab3 = rowcab.createCell(2);
-                HSSFCell cab4 = rowcab.createCell(3);
-                HSSFCell cab5 = rowcab.createCell(4);
-                HSSFCell cab6 = rowcab.createCell(5);
-                HSSFCell cab7 = rowcab.createCell(6);
-                HSSFCell cab8 = rowcab.createCell(7);
-
-                styleName = "cell_b_titulo";
-
-                cab1.setCellValue("TKT");
-                cab1.setCellStyle(styles.get(styleName));
-                cab2.setCellValue("REFERENCE");
-                cab2.setCellStyle(styles.get(styleName));
-                cab3.setCellValue("IATA");
-                cab3.setCellStyle(styles.get(styleName));
-                cab4.setCellValue("MONEDA");
-                cab4.setCellStyle(styles.get(styleName));
-                cab5.setCellValue("Transc");
-                cab5.setCellStyle(styles.get(styleName));
-                cab6.setCellValue("TDoc");
-                cab6.setCellStyle(styles.get(styleName));
-                cab7.setCellValue("F.Venta");
-                cab7.setCellStyle(styles.get(styleName));
-                cab8.setCellValue("Cpn");
-                cab8.setCellStyle(styles.get(styleName));
-
-                HSSFCell cab9 = rowcab.createCell(8);
-                cab9.setCellValue("FOP1");
-                cab9.setCellStyle(styles.get(styleName));
-                sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 11));
-
-                HSSFCell cab10 = rowcab.createCell(12);
-                cab10.setCellValue("FOP2");
-                cab10.setCellStyle(styles.get(styleName));
-                sheet.addMergedRegion(new CellRangeAddress(1, 1, 12, 15));
-
-                HSSFCell cab11 = rowcab.createCell(16);
-                cab11.setCellValue("FARE");
-                cab11.setCellStyle(styles.get(styleName));
-                sheet.addMergedRegion(new CellRangeAddress(1, 1, 16, 17));
-
-                HSSFCell cab12 = rowcab.createCell(18);
-                cab12.setCellValue("EQV.");
-                cab12.setCellStyle(styles.get(styleName));
-                sheet.addMergedRegion(new CellRangeAddress(1, 1, 18, 19));
-
-                int sig = 20;
-                for (int c = 1; c <= 14; c++) {
-
-                    HSSFCell col = rowcab.createCell(sig);
-                    col.setCellValue("TAX " + c + "(COD,ATO,VAL)");
-                    col.setCellStyle(styles.get(styleName));
-                    sheet.addMergedRegion(new CellRangeAddress(1, 1, sig, sig + 2));
-                    //                    RegionUtil.setBorderTop(CellStyle.BORDER_THIN, new CellRangeAddress(1, 1, sig, sig + 1), sheet, workbook);
-                    sig = sig + 3;
-                }
-
-                //rowFrom,rowTo,colFrom,colTo
-                HSSFCell cab24 = rowcab.createCell(63);
-                cab24.setCellValue("RATE");
-                cab24.setCellStyle(styles.get(styleName));
-                //                sheet.addMergedRegion(new CellRangeAddress(1, 1, 47, 48));
-
-                HSSFCell cab25 = rowcab.createCell(64);
-                cab25.setCellValue("VALOR");
-                cab25.setCellStyle(styles.get(styleName));
-                //                sheet.addMergedRegion(new CellRangeAddress(1, 1, 49, 50));
-
-                HSSFCell cab26 = rowcab.createCell(65);
-                cab26.setCellValue("RATE");
-                cab26.setCellStyle(styles.get(styleName));
-                //                sheet.addMergedRegion(new CellRangeAddress(1, 1, 47, 48));
-
-                HSSFCell cab27 = rowcab.createCell(66);
-                cab27.setCellValue("VALOR");
-                cab27.setCellStyle(styles.get(styleName));
-
-                if (listaDataTemp.size() > 0) {
-                    lstSize = listaDataTemp.size();
-                    ExcelChargeBack bean = listaDataTemp.get(0);
-
-                    Integer cont = 2;
-                    for (int a = 0; a < listaDataTemp.size(); a++) {
-                        bean = listaDataTemp.get(a);
-
-                        HSSFRow row = sheet.createRow(a + 2);
-                        HSSFCell cell0 = row.createCell(0);
-                        HSSFCell cell1 = row.createCell(1);
-                        HSSFCell cell2 = row.createCell(2);
-                        HSSFCell cell3 = row.createCell(3);
-                        HSSFCell cell4 = row.createCell(4);
-                        HSSFCell cell5 = row.createCell(5);
-                        HSSFCell cell6 = row.createCell(6);
-                        HSSFCell cell7 = row.createCell(7);
-                        HSSFCell cell8 = row.createCell(8);
-                        HSSFCell cell9 = row.createCell(9);
-                        HSSFCell cell10 = row.createCell(10);
-                        HSSFCell cell11 = row.createCell(11);
-                        HSSFCell cell12 = row.createCell(12);
-                        HSSFCell cell13 = row.createCell(13);
-                        HSSFCell cell14 = row.createCell(14);
-                        HSSFCell cell15 = row.createCell(15);
-
-                        HSSFCell cell16 = row.createCell(16);
-                        HSSFCell cell17 = row.createCell(17);
-                        HSSFCell cell18 = row.createCell(18);
-                        HSSFCell cell19 = row.createCell(19);
-                        HSSFCell cell20 = row.createCell(20);
-                        HSSFCell cell21 = row.createCell(21);
-                        HSSFCell cell22 = row.createCell(22);
-                        HSSFCell cell23 = row.createCell(23);
-                        HSSFCell cell24 = row.createCell(24);
-                        HSSFCell cell25 = row.createCell(25);
-                        HSSFCell cell26 = row.createCell(26);
-                        HSSFCell cell27 = row.createCell(27);
-                        HSSFCell cell28 = row.createCell(28);
-                        HSSFCell cell29 = row.createCell(29);
-                        HSSFCell cell30 = row.createCell(30);
-                        HSSFCell cell31 = row.createCell(31);
-                        HSSFCell cell32 = row.createCell(32);
-                        HSSFCell cell33 = row.createCell(33);
-                        HSSFCell cell34 = row.createCell(34);
-                        HSSFCell cell35 = row.createCell(35);
-                        HSSFCell cell36 = row.createCell(36);
-                        HSSFCell cell37 = row.createCell(37);
-                        HSSFCell cell38 = row.createCell(38);
-                        HSSFCell cell39 = row.createCell(39);
-                        HSSFCell cell40 = row.createCell(40);
-                        HSSFCell cell41 = row.createCell(41);
-                        HSSFCell cell42 = row.createCell(42);
-                        HSSFCell cell43 = row.createCell(43);
-                        HSSFCell cell44 = row.createCell(44);
-                        HSSFCell cell45 = row.createCell(45);
-                        HSSFCell cell46 = row.createCell(46);
-                        HSSFCell cell47 = row.createCell(47);
-                        HSSFCell cell48 = row.createCell(48);
-                        HSSFCell cell49 = row.createCell(49);
-                        HSSFCell cell50 = row.createCell(50);
-                        HSSFCell cell51 = row.createCell(51);
-                        HSSFCell cell52 = row.createCell(52);
-
-                        HSSFCell cell53 = row.createCell(53);
-                        HSSFCell cell54 = row.createCell(54);
-                        HSSFCell cell55 = row.createCell(55);
-                        HSSFCell cell56 = row.createCell(56);
-                        HSSFCell cell57 = row.createCell(57);
-                        HSSFCell cell58 = row.createCell(58);
-                        HSSFCell cell59 = row.createCell(59);
-                        HSSFCell cell60 = row.createCell(60);
-                        HSSFCell cell61 = row.createCell(61);
-                        HSSFCell cell62 = row.createCell(62);
-                        HSSFCell cell63 = row.createCell(63);
-                        HSSFCell cell64 = row.createCell(64);
-                        HSSFCell cell65 = row.createCell(65);
-                        HSSFCell cell66 = row.createCell(66);
-
-                        styleName = "cell_celda";
-                        cell0.setCellValue(bean.strTicket);
-                        cell0.setCellStyle(styles.get(styleName));
-
-                        styleName = "cell_celda";
-                        cell1.setCellValue(bean.NUMREFER);
-                        cell1.setCellStyle(styles.get(styleName));
-
-                        styleName = "cell_celda";
-                        cell2.setCellValue(bean.AGENTE);
-                        cell2.setCellStyle(styles.get(styleName));
-                        cell3.setCellValue(bean.MFOP);
-                        cell3.setCellStyle(styles.get(styleName));
-                        cell4.setCellValue(bean.TDOC);
-                        cell4.setCellStyle(styles.get(styleName));
-                        cell5.setCellValue(bean.TPDOC);
-                        cell5.setCellStyle(styles.get(styleName));
-                        cell6.setCellValue(bean.strFormatDate);
-                        cell6.setCellStyle(styles.get(styleName));
-                        cell7.setCellValue(bean.CUPON);
-                        cell7.setCellStyle(styles.get(styleName));
-
-                        cell8.setCellValue(bean.A1531CFOP1);
-                        cell8.setCellStyle(styles.get(styleName));
-                        cell9.setCellValue(bean.A1531TFOP1);
-                        cell9.setCellStyle(styles.get(styleName));
-                        cell10.setCellValue(bean.A1531NREF1);
-                        cell10.setCellStyle(styles.get(styleName));
-                        cell11.setCellValue(bean.A1531VFOP1);
-                        cell11.setCellStyle(styles.get(styleName));
-                        cell12.setCellValue(bean.A1531CFOP2);
-                        cell12.setCellStyle(styles.get(styleName));
-                        cell13.setCellValue(bean.A1531TFOP2);
-                        cell13.setCellStyle(styles.get(styleName));
-                        cell14.setCellValue(bean.A1531NREF2);
-                        cell14.setCellStyle(styles.get(styleName));
-                        cell15.setCellValue(bean.A1531VFOP2);
-                        cell15.setCellStyle(styles.get(styleName));
-
-                        cell16.setCellValue(bean.A720MONEDA);
-                        cell16.setCellStyle(styles.get(styleName));
-                        cell17.setCellValue(bean.A720TARIFA);
-                        cell17.setCellStyle(styles.get(styleName));
-                        cell18.setCellValue(bean.A720MDAPAG);
-                        cell18.setCellStyle(styles.get(styleName));
-                        cell19.setCellValue(bean.A720TRFPAG);
-                        cell19.setCellStyle(styles.get(styleName));
-
-                        cell20.setCellValue(bean.CTAX1);
-                        cell20.setCellStyle(styles.get(styleName));
-                        cell21.setCellValue(bean.ATO1);
-                        cell21.setCellStyle(styles.get(styleName));
-                        cell22.setCellValue(bean.VTAX1);
-                        cell22.setCellStyle(styles.get(styleName));
-                        cell23.setCellValue(bean.CTAX2);
-                        cell23.setCellStyle(styles.get(styleName));
-                        cell24.setCellValue(bean.ATO2);
-                        cell24.setCellStyle(styles.get(styleName));
-                        cell25.setCellValue(bean.VTAX2);
-                        cell25.setCellStyle(styles.get(styleName));
-                        cell26.setCellValue(bean.CTAX3);
-                        cell26.setCellStyle(styles.get(styleName));
-                        cell27.setCellValue(bean.ATO3);
-                        cell27.setCellStyle(styles.get(styleName));
-                        cell28.setCellValue(bean.VTAX3);
-                        cell28.setCellStyle(styles.get(styleName));
-
-                        cell29.setCellValue(bean.CTAX4);
-                        cell29.setCellStyle(styles.get(styleName));
-                        cell30.setCellValue(bean.ATO4);
-                        cell30.setCellStyle(styles.get(styleName));
-                        cell31.setCellValue(bean.VTAX4);
-                        cell31.setCellStyle(styles.get(styleName));
-                        cell32.setCellValue(bean.CTAX5);
-                        cell32.setCellStyle(styles.get(styleName));
-                        cell33.setCellValue(bean.ATO5);
-                        cell33.setCellStyle(styles.get(styleName));
-                        cell34.setCellValue(bean.VTAX5);
-                        cell34.setCellStyle(styles.get(styleName));
-                        cell35.setCellValue(bean.CTAX6);
-                        cell35.setCellStyle(styles.get(styleName));
-                        cell36.setCellValue(bean.ATO6);
-                        cell36.setCellStyle(styles.get(styleName));
-                        cell37.setCellValue(bean.VTAX6);
-                        cell37.setCellStyle(styles.get(styleName));
-                        cell38.setCellValue(bean.CTAX7);
-                        cell38.setCellStyle(styles.get(styleName));
-                        cell39.setCellValue(bean.ATO7);
-                        cell39.setCellStyle(styles.get(styleName));
-                        cell40.setCellValue(bean.VTAX7);
-                        cell40.setCellStyle(styles.get(styleName));
-                        cell41.setCellValue(bean.CTAX8);
-                        cell41.setCellStyle(styles.get(styleName));
-                        cell42.setCellValue(bean.ATO8);
-                        cell42.setCellStyle(styles.get(styleName));
-                        cell43.setCellValue(bean.VTAX8);
-                        cell43.setCellStyle(styles.get(styleName));
-                        cell44.setCellValue(bean.CTAX9);
-                        cell44.setCellStyle(styles.get(styleName));
-                        cell45.setCellValue(bean.ATO9);
-                        cell45.setCellStyle(styles.get(styleName));
-                        cell46.setCellValue(bean.VTAX9);
-                        cell46.setCellStyle(styles.get(styleName));
-                        cell47.setCellValue(bean.CTAX10);
-                        cell47.setCellStyle(styles.get(styleName));
-                        cell48.setCellValue(bean.ATO10);
-                        cell48.setCellStyle(styles.get(styleName));
-                        cell49.setCellValue(bean.VTAX10);
-                        cell49.setCellStyle(styles.get(styleName));
-                        cell50.setCellValue(bean.CTAX11);
-                        cell50.setCellStyle(styles.get(styleName));
-                        cell51.setCellValue(bean.ATO11);
-                        cell51.setCellStyle(styles.get(styleName));
-                        cell52.setCellValue(bean.VTAX11);
-                        cell52.setCellStyle(styles.get(styleName));
-                        cell53.setCellValue(bean.CTAX12);
-                        cell53.setCellStyle(styles.get(styleName));
-                        cell54.setCellValue(bean.ATO12);
-                        cell54.setCellStyle(styles.get(styleName));
-                        cell55.setCellValue(bean.VTAX12);
-                        cell55.setCellStyle(styles.get(styleName));
-                        cell56.setCellValue(bean.CTAX13);
-                        cell56.setCellStyle(styles.get(styleName));
-                        cell57.setCellValue(bean.ATO13);
-                        cell57.setCellStyle(styles.get(styleName));
-                        cell58.setCellValue(bean.VTAX13);
-                        cell58.setCellStyle(styles.get(styleName));
-                        cell59.setCellValue(bean.CTAX14);
-                        cell59.setCellStyle(styles.get(styleName));
-                        cell60.setCellValue(bean.ATO14);
-                        cell60.setCellStyle(styles.get(styleName));
-                        cell61.setCellValue(bean.VTAX14);
-                        cell61.setCellStyle(styles.get(styleName));
-                        //                    
-                        //                    
-                        cell62.setCellValue(bean.TOTAL);
-                        cell62.setCellStyle(styles.get(styleName));
-                        cell63.setCellValue(bean.RATE1);
-                        cell63.setCellStyle(styles.get(styleName));
-                        cell64.setCellValue(bean.VALOR1);
-                        cell64.setCellStyle(styles.get(styleName));
-                        cell65.setCellValue(bean.RATE2);
-                        cell65.setCellStyle(styles.get(styleName));
-                        cell66.setCellValue(bean.VALOR2);
-                        cell66.setCellStyle(styles.get(styleName));
-
-                    }
-                    for (int s = 0; s <= 66; s++) {
-                        sheet.autoSizeColumn(s);
-                    }
-                }
-            }
-
-//            FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-//            workbook.write(fos);
+//
+//    @RequestMapping(value = "exportHistorical")
+//    public @ResponseBody
+//    void exportHistorical(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        System.out.println("DataRequestedByBank : exportHistorical");
+//        String fileNameDownload = String.format("RequestedBank_Historical  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+//
+//        List<A2331Filter> listaData = new ArrayList<>(0);
+//        A2331Filter filter = new A2331Filter();
+//        Gson gson = new Gson();
+//        String beanString = "";
+//
+//        try {
+//            Workbook workbook;
+//            File file = File.createTempFile(fileNameDownload, ".xlsx");
+//
+//            logic = new DataRequestedByBankLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//
+//            beanString = request.getParameter("beanString");
+//            filter = gson.fromJson(beanString, A2331Filter.class);
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+//
+//            filter.page.PAGROW = -1;
+//            filter.page.PAGNUM = 1;
+//
+//            listaData = logic.loadPX404SQP01948(filter);
+//
+//            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+//            workbook = new XSSFWorkbook();
+//            Sheet sheet = workbook.createSheet("Report");
+//            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+//            CellStyle bodyStyle = workbook.createCellStyle();
+//            Font headerFont = workbook.createFont();
+//            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//            headerFont.setColor(IndexedColors.BLACK.getIndex());
+//            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+//            headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+//            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+//            headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+//            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+//            headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+//            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+//            headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+//            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+//            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+//            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//            headerStyle.setFont(headerFont);
+//            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
+//            bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+//            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
+//            bodyStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+//            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
+//            bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+//            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
+//            bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+//            Integer vi = 0;
+//            Integer vj = 0; //Almacena el numero de fila
+//            Iterator iter = listaData.iterator();
+//            // ====== CREANDO TITULOS ======================================
+//
+//            // ======  Nivel 1 ==========
+//            Row row1 = sheet.createRow(vj);
+//            Cell CH1_0 = row1.createCell(0);
+//            Cell CH1_1 = row1.createCell(1);
+//            Cell CH1_2 = row1.createCell(2);
+//            Cell CH1_3 = row1.createCell(3);
+//            Cell CH1_4 = row1.createCell(4);
+//            Cell CH1_5 = row1.createCell(5);
+//            Cell CH1_6 = row1.createCell(6);
+//            Cell CH1_7 = row1.createCell(7);
+//            Cell CH1_8 = row1.createCell(8);
+//            Cell CH1_9 = row1.createCell(9);
+//            Cell CH1_10 = row1.createCell(10);
+//            Cell CH1_11 = row1.createCell(11);
+//            Cell CH1_12 = row1.createCell(12);
+//            Cell CH1_13 = row1.createCell(13);
+//
+//            CH1_0.setCellValue("Reception Date");
+//            CH1_1.setCellValue("Merchant");
+//            CH1_2.setCellValue("Sales Date");
+//            CH1_3.setCellValue("Card Number");
+//            CH1_4.setCellValue("Reason Code");
+//            CH1_5.setCellValue("Motive");
+//            CH1_6.setCellValue("Amount MXN");
+//            CH1_7.setCellValue("Authorization");
+//            CH1_8.setCellValue("Folio");
+//            CH1_9.setCellValue("AM Expiration Date");
+//            CH1_10.setCellValue("Merchant Name");
+//            CH1_11.setCellValue("Tickets");
+//            CH1_12.setCellValue("Sales Agent");
+//            CH1_13.setCellValue("Status");
+//
+//            CH1_0.setCellStyle(headerStyle);
+//            CH1_1.setCellStyle(headerStyle);
+//            CH1_2.setCellStyle(headerStyle);
+//            CH1_3.setCellStyle(headerStyle);
+//            CH1_4.setCellStyle(headerStyle);
+//            CH1_5.setCellStyle(headerStyle);
+//            CH1_6.setCellStyle(headerStyle);
+//            CH1_7.setCellStyle(headerStyle);
+//            CH1_8.setCellStyle(headerStyle);
+//            CH1_9.setCellStyle(headerStyle);
+//            CH1_10.setCellStyle(headerStyle);
+//            CH1_11.setCellStyle(headerStyle);
+//            CH1_12.setCellStyle(headerStyle);
+//            CH1_13.setCellStyle(headerStyle);
+//
+//            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
+//
+//            ++vj;
+//            //============================================
+//
+//            while (iter.hasNext()) {
+//                row1 = sheet.createRow(vj);
+//                Cell rcell0 = row1.createCell(0);
+//                Cell rcell1 = row1.createCell(1);
+//                Cell rcell2 = row1.createCell(2);
+//                Cell rcell3 = row1.createCell(3);
+//                Cell rcell4 = row1.createCell(4);
+//                Cell rcell5 = row1.createCell(5);
+//                Cell rcell6 = row1.createCell(6);
+//                Cell rcell7 = row1.createCell(7);
+//                Cell rcell8 = row1.createCell(8);
+//                Cell rcell9 = row1.createCell(9);
+//                Cell rcell10 = row1.createCell(10);
+//                Cell rcell11 = row1.createCell(11);
+//                Cell rcell12 = row1.createCell(12);
+//                Cell rcell13 = row1.createCell(13);
+//
+//                rcell0.setCellValue(listaData.get(vi).SENTDATE);
+//                rcell1.setCellValue(listaData.get(vi).MERCHN);
+//                rcell2.setCellValue(listaData.get(vi).SALEDATE);
+//                rcell3.setCellValue(listaData.get(vi).strDescripcion);
+//                rcell4.setCellValue(listaData.get(vi).CODMOTI);
+//                rcell5.setCellValue(listaData.get(vi).CLINAME);
+//                rcell6.setCellValue(listaData.get(vi).AUTAMOUNT);
+//                rcell7.setCellValue(listaData.get(vi).AUTHNBR);
+//                rcell8.setCellValue(listaData.get(vi).FOLIO);
+//                rcell9.setCellValue(listaData.get(vi).strFormatDate);
+//                rcell10.setCellValue(listaData.get(vi).MERCHNAM);
+//                rcell11.setCellValue(listaData.get(vi).strTicket);
+//                rcell12.setCellValue(listaData.get(vi).AGENTE);
+//                rcell13.setCellValue(listaData.get(vi).STUSO);
+//                iter.next();
+//                ++vi;
+//                ++vj;
+//            }
+//
+//            sheet.autoSizeColumn(0, true);
+//            sheet.autoSizeColumn(1, true);
+//            sheet.autoSizeColumn(2, true);
+//            sheet.autoSizeColumn(3, true);
+//            sheet.autoSizeColumn(4, true);
+//            sheet.autoSizeColumn(5, true);
+//            sheet.autoSizeColumn(6, true);
+//            sheet.autoSizeColumn(7, true);
+//            sheet.autoSizeColumn(8, true);
+//            sheet.autoSizeColumn(9, true);
+//            sheet.autoSizeColumn(10, true);
+//            sheet.autoSizeColumn(11, true);
+//            sheet.autoSizeColumn(12, true);
+//            sheet.autoSizeColumn(13, true);
+//
+//            //============================================
+//            response.setContentType("application/vnd.openxml");
+//            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+//
+//            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+//            workbook.write(response.getOutputStream());
 //            fos.close();
-
-//            resp.vars.put("lstChargeBack", lstSize);
-//            //resp.vars.put("strFileName", strFileName);
-//            resp.vars.put("strFileName", strFileName);
-//            resp.vars.put("rutaFile", rutaFile + "\\" + strFileName);
-            
-            response.setContentType("application/vnd.openxml");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
-
-            FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-            workbook.write(response.getOutputStream());
-            fos.close();
-
-        } catch (IOException e) {
-            throw new SpringException(e);
-        }
-    }
-
-    private static Map<String, HSSFCellStyle> createStyles(HSSFWorkbook wb) {
-
-        Map<String, HSSFCellStyle> styles = new HashMap<String, HSSFCellStyle>();
-        HSSFDataFormat df = wb.createDataFormat();
-
-        HSSFCellStyle style;
-        HSSFFont headerFont = wb.createFont();
-        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        style.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setFont(headerFont);
-        styles.put("header", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setFont(headerFont);
-        style.setDataFormat(df.getFormat("d-mmm"));
-        styles.put("header_date", style);
-
-        HSSFFont font1 = wb.createFont();
-        font1.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_LEFT);
-        style.setFont(font1);
-        styles.put("cell_b", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        style.setFont(font1);
-        styles.put("cell_b_centered", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_RIGHT);
-        style.setFont(font1);
-        style.setDataFormat(df.getFormat("d-mmm"));
-        styles.put("cell_b_date", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_RIGHT);
-        style.setFont(font1);
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setDataFormat(df.getFormat("d-mmm"));
-        styles.put("cell_g", style);
-
-        HSSFFont font2 = wb.createFont();
-        font2.setColor(IndexedColors.BLUE.getIndex());
-        font2.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_LEFT);
-        style.setFont(font2);
-        styles.put("cell_bb", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_RIGHT);
-        style.setFont(font1);
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setDataFormat(df.getFormat("d-mmm"));
-        styles.put("cell_bg", style);
-
-        HSSFFont font3 = wb.createFont();
-        font3.setFontHeightInPoints((short) 14);
-        font3.setColor(IndexedColors.DARK_BLUE.getIndex());
-        font3.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_LEFT);
-        style.setFont(font3);
-        style.setWrapText(true);
-        styles.put("cell_h", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_LEFT);
-        style.setWrapText(true);
-        styles.put("cell_normal", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        style.setWrapText(true);
-        styles.put("cell_normal_centered", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_RIGHT);
-        style.setWrapText(true);
-        //style.setDataFormat(wb.createDataFormat().getFormat("0.00"));
-        style.setDataFormat(wb.createDataFormat().getFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"));
-        styles.put("cell_normal_formato_right", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_RIGHT);
-        style.setWrapText(true);
-        style.setDataFormat(df.getFormat("d-mmm"));
-        styles.put("cell_normal_date", style);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_LEFT);
-        style.setIndention((short) 1);
-        style.setWrapText(true);
-        styles.put("cell_indented", style);
-
-        style = createBorderedStyle(wb);
-        style.setFillForegroundColor(IndexedColors.BLUE.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        styles.put("cell_blue", style);
-
-        HSSFFont monthFont = wb.createFont();
-        monthFont.setFontHeightInPoints((short) 12);
-        monthFont.setColor(IndexedColors.WHITE.getIndex());
-        monthFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        style = wb.createCellStyle();
-        style.setAlignment(CellStyle.ALIGN_LEFT);
-        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.DARK_RED.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setFont(monthFont);
-        styles.put("cell_totals_left", style);
-
-        HSSFFont monthFont1 = wb.createFont();
-        monthFont1.setFontHeightInPoints((short) 12);
-        monthFont1.setColor(IndexedColors.WHITE.getIndex());
-        monthFont1.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        style = wb.createCellStyle();
-        style.setAlignment(CellStyle.ALIGN_RIGHT);
-        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.DARK_RED.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setFont(monthFont1);
-        //style.setDataFormat(wb.createDataFormat().getFormat("0.00"));
-        style.setDataFormat(wb.createDataFormat().getFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"));
-        styles.put("cell_totals_right", style);
-
-        HSSFFont fontT = wb.createFont();
-        fontT.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        fontT.setFontHeightInPoints((short) 9);
-        style = createBorderedStyle(wb);
-
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        style.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
-        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        style.setFont(fontT);
-        styles.put("cell_b_titulo", style);
-
-        HSSFFont fontCELDA = wb.createFont();
-        fontCELDA.setFontHeightInPoints((short) 8);
-        fontCELDA.setColor(IndexedColors.DARK_BLUE.getIndex());
-        font3.setBoldweight(Font.BOLDWEIGHT_BOLD);
-
-        style = createBorderedStyle(wb);
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        style.setWrapText(true);
-        styles.put("cell_celda", style);
-
-        return styles;
-    }
-
-    private static HSSFCellStyle createBorderedStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderRight(CellStyle.BORDER_THIN);
-        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
-        style.setBorderBottom(CellStyle.BORDER_THIN);
-        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-        style.setBorderLeft(CellStyle.BORDER_THIN);
-        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-        style.setBorderTop(CellStyle.BORDER_THIN);
-        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
-        return style;
-    }
-    
-    @RequestMapping(value = "exportHistoricalAvisos")
-    public @ResponseBody
-    void exportHistoricalAvisos(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
-        System.out.println("-------------- DataRequestedByBank : exportHistoricalAvisos-------------");
-
-        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-
-        List<A2331Filter> listaData;
-        double dblTotCC = 0, dblTotWEB = 0;
-        A2331Filter filter = new A2331Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-        
-        HashMap hmCANAL = new HashMap();
-        hmCANAL.put("CCT", "CALL CENTER");
-        hmCANAL.put("WEB", "INTERNET");
-        
-        try {
-
-            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2331Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            filter.page.PAGROW = -1;
-            filter.page.PAGNUM = 1;
-
-            listaData = logic.loadPX404SQP02000(filter);
-
-            String strFileName = "RequestedBankNotice_Historical_" + Functions.getFechaActual() + "_" + Functions.getHoraActual() + ".xls";
-
-            HSSFWorkbook workbook = null;
-            File file = new File(rutaFile + "\\" + strFileName);
-            if (file.exists()) {
-                file.delete();
-            }
-
-            if (listaData.size() > 0) {
-
-                workbook = new HSSFWorkbook();
-
-                String quiebreHoja = "", quiebreCanal = "";
-                A2331Filter bean = listaData.get(0);
-
-                HSSFSheet sheet = workbook.createSheet(bean.SCARCOD.trim());
-
-                Map<String, HSSFCellStyle> styles = createStyles(workbook);
-                String styleName;
-
-                sheet.setColumnWidth(0, 17 * 500);
-                sheet.setColumnWidth(1, 7 * 500);
-                sheet.setColumnWidth(2, 9 * 500);
-                sheet.setColumnWidth(3, 7 * 500);
-                sheet.setColumnWidth(4, 20 * 500);
-                sheet.setColumnWidth(5, 13 * 500);
-                sheet.setColumnWidth(6, 9 * 500);
-                sheet.setColumnWidth(7, 30 * 500);
-                sheet.setColumnWidth(8, 13 * 500);
-                sheet.setColumnWidth(9, 7 * 500);
-                sheet.setColumnWidth(10, 7 * 500);
-                sheet.setColumnWidth(11, 7 * 500);
-
-                //Título Superior ==============================================
-                HSSFRow rowTitS = sheet.createRow(0);
-                rowTitS.setHeight((short) 500);
-                HSSFCell cabTitS = rowTitS.createCell(0);
-                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
-                cabTitS.setCellStyle(styles.get("cell_b_centered"));
-                HSSFCell cabTitS11 = rowTitS.createCell(11);
-                cabTitS11.setCellValue(" ");
-                //rowFrom,rowTo,colFrom,colTo
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-
-                //Títulos Grilla ===============================================
-                HSSFRow rowcab = sheet.createRow(1);
-                rowcab.setHeight((short) 500);
-                HSSFCell cab1 = rowcab.createCell(0);
-                HSSFCell cab2 = rowcab.createCell(1);
-                HSSFCell cab3 = rowcab.createCell(2);
-                HSSFCell cab4 = rowcab.createCell(3);
-                HSSFCell cab5 = rowcab.createCell(4);
-                HSSFCell cab6 = rowcab.createCell(5);
-                HSSFCell cabAC = rowcab.createCell(6);
-                HSSFCell cab7 = rowcab.createCell(7);
-                HSSFCell cab8 = rowcab.createCell(8);
-                HSSFCell cab9 = rowcab.createCell(9);
-                HSSFCell cab10 = rowcab.createCell(10);
-                HSSFCell cab11 = rowcab.createCell(11);
-
-                styleName = "header";
-
-                cab1.setCellValue("Merchant Name");
-                cab1.setCellStyle(styles.get(styleName));
-                cab2.setCellValue("Merchant");
-                cab2.setCellStyle(styles.get(styleName));
-                cab3.setCellValue("Amount MXN");
-                cab3.setCellStyle(styles.get(styleName));
-                cab4.setCellValue("Application Date");
-                cab4.setCellStyle(styles.get(styleName));
-                cab5.setCellValue("Concept");
-                cab5.setCellStyle(styles.get(styleName));
-                cab6.setCellValue("Card Number");
-                cab6.setCellStyle(styles.get(styleName));
-                cabAC.setCellValue("Authorization Code");
-                cabAC.setCellStyle(styles.get(styleName));
-                cab7.setCellValue("Ticket(s)");
-                cab7.setCellStyle(styles.get(styleName));
-                cab8.setCellValue("Status");
-                cab8.setCellStyle(styles.get(styleName));
-                cab9.setCellValue("Sales Date");
-                cab9.setCellStyle(styles.get(styleName));
-                cab10.setCellValue("Sending Date");
-                cab10.setCellStyle(styles.get(styleName));
-                cab11.setCellValue("Bank");
-                cab11.setCellStyle(styles.get(styleName));
-
-                Integer cont = 2;
-                for (int a = 0; a < listaData.size(); a++) {
-                    bean = listaData.get(a);
-
-                    //QUIEBRE POR CANAL ========================================
-                    if (!quiebreCanal.trim().isEmpty() && !quiebreCanal.trim().equals(bean.strCANAL.trim())) {
-                        HSSFRow rowTot = sheet.createRow(cont);
-                        HSSFCell cellT0 = rowTot.createCell(0);
-                        HSSFCell cellT1 = rowTot.createCell(1);
-                        HSSFCell cellT2 = rowTot.createCell(2);
-                        styleName = "cell_b_centered";
-                        cellT0.setCellValue(" ");
-                        cellT0.setCellStyle(styles.get(styleName));
-                        cellT1.setCellValue("TOTAL");
-                        cellT1.setCellStyle(styles.get(styleName));
-
-                        styleName = "cell_totals_right";
-                        if (quiebreCanal.equals("CCT")) {
-                            cellT2.setCellValue(dblTotCC);
-                            dblTotCC = 0;
-                        } else {
-                            cellT2.setCellValue(dblTotWEB);
-                            dblTotWEB = 0;
-                        }
-                        cellT2.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        //LINEA EN BLANCO ======================================
-                        HSSFRow rowLB1 = sheet.createRow(cont);
-                        HSSFCell cellLB10 = rowLB1.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB10.setCellValue(" ");
-                        cellLB10.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        HSSFRow rowLB2 = sheet.createRow(cont);
-                        HSSFCell cellLB20 = rowLB2.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB20.setCellValue(" ");
-                        cellLB20.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        HSSFRow rowLB3 = sheet.createRow(cont);
-                        HSSFCell cellLB30 = rowLB3.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB30.setCellValue(" ");
-                        cellLB30.setCellStyle(styles.get(styleName));
-                        ++cont;
-
-                        if (quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
-                            //Título Superior ======================================
-                            HSSFRow rowTitS2 = sheet.createRow(cont);
-                            rowTitS2.setHeight((short) 500);
-                            HSSFCell cabTitS2 = rowTitS2.createCell(0);
-                            cabTitS2.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL.trim()));
-                            cabTitS2.setCellStyle(styles.get("cell_b_centered"));
-                            HSSFCell cabTitS2_11 = rowTitS2.createCell(11);
-                            cabTitS2_11.setCellValue(" ");
-                            //rowFrom,rowTo,colFrom,colTo
-                            sheet.addMergedRegion(new CellRangeAddress(cont, cont, 0, 10));
-                            ++cont;
-
-                            //Títulos Grilla =======================================
-                            HSSFRow rowcab2 = sheet.createRow(cont);
-                            rowcab2.setHeight((short) 500);
-                            HSSFCell cab12 = rowcab2.createCell(0);
-                            HSSFCell cab22 = rowcab2.createCell(1);
-                            HSSFCell cab32 = rowcab2.createCell(2);
-                            HSSFCell cab42 = rowcab2.createCell(3);
-                            HSSFCell cab52 = rowcab2.createCell(4);
-                            HSSFCell cab62 = rowcab2.createCell(5);
-                            HSSFCell cabAC_2 = rowcab2.createCell(6);
-                            HSSFCell cab72 = rowcab2.createCell(7);
-                            HSSFCell cab82 = rowcab2.createCell(8);
-                            HSSFCell cab92 = rowcab2.createCell(9);
-                            HSSFCell cab102 = rowcab2.createCell(10);
-                            HSSFCell cab112 = rowcab2.createCell(11);
-
-                            styleName = "header";
-
-                            cab12.setCellValue("Merchant Name");
-                            cab12.setCellStyle(styles.get(styleName));
-                            cab22.setCellValue("Merchant");
-                            cab22.setCellStyle(styles.get(styleName));
-                            cab32.setCellValue("Amount MXN");
-                            cab32.setCellStyle(styles.get(styleName));
-                            cab42.setCellValue("Application Date");
-                            cab42.setCellStyle(styles.get(styleName));
-                            cab52.setCellValue("Concept");
-                            cab52.setCellStyle(styles.get(styleName));
-                            cab62.setCellValue("Card Number");
-                            cab62.setCellStyle(styles.get(styleName));
-                            cabAC_2.setCellValue("Authorization Code");
-                            cabAC_2.setCellStyle(styles.get(styleName));
-                            cab72.setCellValue("Ticket(s)");
-                            cab72.setCellStyle(styles.get(styleName));
-                            cab82.setCellValue("Status");
-                            cab82.setCellStyle(styles.get(styleName));
-                            cab92.setCellValue("Sales Date");
-                            cab92.setCellStyle(styles.get(styleName));
-                            cab102.setCellValue("Sending Date");
-                            cab102.setCellStyle(styles.get(styleName));
-                            cab112.setCellValue("Bank");
-                            cab112.setCellStyle(styles.get(styleName));
-                            ++cont;
-                        }
-                    }
-
-                    if (!quiebreHoja.trim().isEmpty() && !quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
-
-                        /*//COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
-                         Row rowTot = sheet.createRow(cont);
-                         Cell cellT0 = rowTot.createCell(0);
-                         Cell cellT1 = rowTot.createCell(1);
-                         Cell cellT2 = rowTot.createCell(2);
-                         styleName = "cell_b_centered";
-                         cellT0.setCellValue(" ");
-                         cellT0.setCellStyle(styles.get(styleName));
-                         cellT1.setCellValue("TOTAL");
-                         cellT1.setCellStyle(styles.get(styleName));
-
-                         styleName = "cell_totals_right";
-                         if (quiebreCanal.equals("CCT")) {
-                         cellT2.setCellValue(dblTotCC);
-                         dblTotCC = 0;
-                         } else {
-                         cellT2.setCellValue(dblTotWEB);
-                         dblTotWEB = 0;
-                         }
-                         cellT2.setCellStyle(styles.get(styleName));*/
-                        //======================================================
-                        //======================================================
-                        //Creando nueva hoja y sus respectivos títulos.
-                        sheet = workbook.createSheet(bean.SCARCOD.trim());
-
-                        sheet.setColumnWidth(0, 17 * 500);
-                        sheet.setColumnWidth(1, 7 * 500);
-                        sheet.setColumnWidth(2, 9 * 500);
-                        sheet.setColumnWidth(3, 7 * 500);
-                        sheet.setColumnWidth(4, 20 * 500);
-                        sheet.setColumnWidth(5, 13 * 500);
-                        sheet.setColumnWidth(6, 9 * 500);
-                        sheet.setColumnWidth(7, 30 * 500);
-                        sheet.setColumnWidth(8, 13 * 500);
-                        sheet.setColumnWidth(9, 7 * 500);
-                        sheet.setColumnWidth(10, 7 * 500);
-                        sheet.setColumnWidth(11, 7 * 500);
-
-                        //Título Superior ======================================
-                        rowTitS = sheet.createRow(0);
-                        rowTitS.setHeight((short) 500);
-                        cabTitS = rowTitS.createCell(0);
-                        cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
-                        cabTitS.setCellStyle(styles.get("cell_b_centered"));
-                        cabTitS11 = rowTitS.createCell(11);
-                        cabTitS11.setCellValue(" ");
-
-                        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-                        //rowFrom,rowTo,colFrom,colTo
-
-                        //Títulos Grilla =======================================
-                        rowcab = sheet.createRow(1);
-                        rowcab.setHeight((short) 500);
-                        cab1 = rowcab.createCell(0);
-                        cab2 = rowcab.createCell(1);
-                        cab3 = rowcab.createCell(2);
-                        cab4 = rowcab.createCell(3);
-                        cab5 = rowcab.createCell(4);
-                        cab6 = rowcab.createCell(5);
-                        cabAC = rowcab.createCell(6);
-                        cab7 = rowcab.createCell(7);
-                        cab8 = rowcab.createCell(8);
-                        cab9 = rowcab.createCell(9);
-                        cab10 = rowcab.createCell(10);
-                        cab11 = rowcab.createCell(11);
-
-                        styleName = "header";
-
-                        cab1.setCellValue("Merchant Name");
-                        cab1.setCellStyle(styles.get(styleName));
-                        cab2.setCellValue("Merchant");
-                        cab2.setCellStyle(styles.get(styleName));
-                        cab3.setCellValue("Amount MXN");
-                        cab3.setCellStyle(styles.get(styleName));
-                        cab4.setCellValue("Application Date");
-                        cab4.setCellStyle(styles.get(styleName));
-                        cab5.setCellValue("Concept");
-                        cab5.setCellStyle(styles.get(styleName));
-                        cab6.setCellValue("Card Number");
-                        cab6.setCellStyle(styles.get(styleName));
-                        cabAC.setCellValue("Authorization Code");
-                        cabAC.setCellStyle(styles.get(styleName));
-                        cab7.setCellValue("Ticket(s)");
-                        cab7.setCellStyle(styles.get(styleName));
-                        cab8.setCellValue("Status");
-                        cab8.setCellStyle(styles.get(styleName));
-                        cab9.setCellValue("Sales Date");
-                        cab9.setCellStyle(styles.get(styleName));
-                        cab10.setCellValue("Sending Date");
-                        cab10.setCellStyle(styles.get(styleName));
-                        cab11.setCellValue("Bank");
-                        cab11.setCellStyle(styles.get(styleName));
-
-                        cont = 2;
-                        dblTotCC = 0;
-                        dblTotWEB = 0;
-                    }
-
-                    HSSFRow row = sheet.createRow(cont);
-                    HSSFCell cell0 = row.createCell(0);
-                    HSSFCell cell1 = row.createCell(1);
-                    HSSFCell cell2 = row.createCell(2);
-                    HSSFCell cell3 = row.createCell(3);
-                    HSSFCell cell4 = row.createCell(4);
-                    HSSFCell cell5 = row.createCell(5);
-                    HSSFCell cell6 = row.createCell(6);
-                    HSSFCell cell7 = row.createCell(7);
-                    HSSFCell cell8 = row.createCell(8);
-                    HSSFCell cell9 = row.createCell(9);
-                    HSSFCell cell10 = row.createCell(10);
-                    HSSFCell cell11 = row.createCell(11);
-
-                    styleName = "cell_normal_centered";
-                    cell0.setCellValue(bean.MERCHNAM);
-                    cell0.setCellStyle(styles.get(styleName));
-                    cell1.setCellValue(bean.MERCHN);
-                    cell1.setCellStyle(styles.get(styleName));
-
-                    styleName = "cell_normal_formato_right";
-                    cell2.setCellValue(bean.AUTAMOUNT);
-                    cell2.setCellStyle(styles.get(styleName));
-
-                    styleName = "cell_normal_centered";
-                    cell3.setCellValue(bean.APLIDATE);
-                    cell3.setCellStyle(styles.get(styleName));
-                    cell4.setCellValue(bean.CONCEPT);
-                    cell4.setCellStyle(styles.get(styleName));
-                    cell5.setCellValue(bean.strDescripcion);
-                    cell5.setCellStyle(styles.get(styleName));
-                    cell6.setCellValue(bean.AUTHNBR);
-                    cell6.setCellStyle(styles.get(styleName));
-                    cell7.setCellValue(bean.strTicket);
-                    cell7.setCellStyle(styles.get(styleName));
-                    cell8.setCellValue(bean.STUSOS);
-                    cell8.setCellStyle(styles.get(styleName));
-                    cell9.setCellValue(bean.SALEDATE);
-                    cell9.setCellStyle(styles.get(styleName));
-                    cell10.setCellValue(bean.FECR);
-                    cell10.setCellStyle(styles.get(styleName));
-                    cell11.setCellValue(bean.strDescBank);
-                    cell11.setCellStyle(styles.get(styleName));
-
-                    if (bean.strCANAL.equals("CCT")) {
-                        //CALL CENTER
-                        dblTotCC += bean.AUTAMOUNT;
-                    } else {
-                        //WEB
-                        dblTotWEB += bean.AUTAMOUNT;
-                    }
-
-                    ++cont;
-                    quiebreHoja = bean.SCARCOD.trim();
-                    quiebreCanal = bean.strCANAL.trim();
-
-                }
-
-                //COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
-                HSSFRow rowTot = sheet.createRow(cont);
-                HSSFCell cellT0 = rowTot.createCell(0);
-                HSSFCell cellT1 = rowTot.createCell(1);
-                HSSFCell cellT2 = rowTot.createCell(2);
-                styleName = "cell_b_centered";
-                cellT0.setCellValue(" ");
-                cellT0.setCellStyle(styles.get(styleName));
-                cellT1.setCellValue("TOTAL");
-                cellT1.setCellStyle(styles.get(styleName));
-
-                styleName = "cell_totals_right";
-                if (quiebreCanal.equals("CCT")) {
-                    cellT2.setCellValue(dblTotCC);
-                    dblTotCC = 0;
-                } else {
-                    cellT2.setCellValue(dblTotWEB);
-                    dblTotWEB = 0;
-                }
-                cellT2.setCellStyle(styles.get(styleName));
-
+//
+//        } catch (IOException e) {
+//            throw new SpringException(e);
+//        }
+//    }
+//    
+//    @RequestMapping(value = "exportHistoricalBN")
+//    public @ResponseBody
+//    void exportHistoricalBN(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        
+//        System.out.println("-------------- DataRequestedByBank : exportHistoricalBN-------------");
+//
+//        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//
+//        List<A2331Filter> listaData;
+//        double dblTotCC = 0, dblTotWEB = 0;
+//        A2331Filter filter = new A2331Filter();
+//        Gson gson = new Gson();
+//        String beanString = "";
+//
+////        HashMap hmCANAL = new HashMap();
+////        hmCANAL.put("FRA", "FRANQUICIAS");
+////        hmCANAL.put("ATO", "AEROPUERTO");
+////        hmCANAL.put("CTO", "CTO");
+////        hmCANAL.put("WEB", "INTERNET");
+////        hmCANAL.put("CCT", "CALL CENTER");
+//        //strTitulo   Reempolazo de hmCANAL
+//        try {
+//
+//            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//
+//            beanString = request.getParameter("beanString");
+//            filter = gson.fromJson(beanString, A2331Filter.class);
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+//
+//            filter.page.PAGROW = -1;
+//            filter.page.PAGNUM = 1;
+//
+//            listaData = logic.loadPX404SQP03648(filter);
+//
+//            String strFileName = "Requested_Historical_BN_" + Functions.getFechaActual() + "_" + Functions.getHoraActual() + ".xls";
+//
+//            HSSFWorkbook workbook = null;
+//            File file = new File(rutaFile + "\\" + strFileName);
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//
+//            if (listaData.size() > 0) {
+//
+//                workbook = new HSSFWorkbook();
+//
+//                String quiebreHoja = "", quiebreCanal = "";
+//                A2331Filter bean = listaData.get(0);
+//
+//                HSSFSheet sheet = workbook.createSheet(bean.SCARCOD.trim());
+//
+//                Map<String, HSSFCellStyle> styles = createStyles(workbook);
+//                String styleName;
+//
+//                sheet.setColumnWidth(0, 17 * 500);
+//                sheet.setColumnWidth(1, 7 * 500);
+//                sheet.setColumnWidth(2, 9 * 500);
+//                sheet.setColumnWidth(3, 7 * 500);
+//                sheet.setColumnWidth(4, 20 * 500);
+//                sheet.setColumnWidth(5, 13 * 500);
+//                sheet.setColumnWidth(6, 9 * 500);
+//                sheet.setColumnWidth(7, 30 * 500);
+//                sheet.setColumnWidth(8, 13 * 500);
+//                sheet.setColumnWidth(9, 7 * 500);
+//                sheet.setColumnWidth(10, 7 * 500);
+//                sheet.setColumnWidth(11, 7 * 500);
+//
+//                //Título Superior ==============================================
+//                HSSFRow rowTitS = sheet.createRow(0);
+//                rowTitS.setHeight((short) 500);
+//                HSSFCell cabTitS = rowTitS.createCell(0);
+////                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
+//                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.toString());
+//                cabTitS.setCellStyle(styles.get("cell_b_centered"));
+//                HSSFCell cabTitS11 = rowTitS.createCell(12);
+//                cabTitS11.setCellValue(" ");
+//                //rowFrom,rowTo,colFrom,colTo
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 11));
+//
+//                //Títulos Grilla ===============================================
+//                HSSFRow rowcab = sheet.createRow(1);
+//                rowcab.setHeight((short) 500);
+//                HSSFCell cab1 = rowcab.createCell(0);
+//                HSSFCell cab2 = rowcab.createCell(1);
+//                HSSFCell cab3 = rowcab.createCell(2);
+//                HSSFCell cab4 = rowcab.createCell(3);
+//                HSSFCell cab5 = rowcab.createCell(4);
+//                HSSFCell cab6 = rowcab.createCell(5);
+//                HSSFCell cabAN = rowcab.createCell(6);
+//                HSSFCell cab7 = rowcab.createCell(7);
+//                HSSFCell cab8 = rowcab.createCell(8);
+//                HSSFCell cab9 = rowcab.createCell(9);
+//                HSSFCell cab10 = rowcab.createCell(10);
+//                HSSFCell cab11 = rowcab.createCell(11);
+//
+//                styleName = "header";
+//
+//                cab1.setCellValue("Merchant Name");
+//                cab1.setCellStyle(styles.get(styleName));
+//                cab2.setCellValue("Merchant");
+//                cab2.setCellStyle(styles.get(styleName));
+//                cab3.setCellValue("Amount MXN");
+//                cab3.setCellStyle(styles.get(styleName));
+//                cab4.setCellValue("Application Date");
+//                cab4.setCellStyle(styles.get(styleName));
+//                cab5.setCellValue("Concept");
+//                cab5.setCellStyle(styles.get(styleName));
+//                cab6.setCellValue("Card Number");
+//                cab6.setCellStyle(styles.get(styleName));
+//                cabAN.setCellValue("Authorization Number");
+//                cabAN.setCellStyle(styles.get(styleName));
+//                cab7.setCellValue("Ticket(s)");
+//                cab7.setCellStyle(styles.get(styleName));
+//                cab8.setCellValue("Status");
+//                cab8.setCellStyle(styles.get(styleName));
+//                cab9.setCellValue("Sales Date");
+//                cab9.setCellStyle(styles.get(styleName));
+//                cab10.setCellValue("Sending Date");
+//                cab10.setCellStyle(styles.get(styleName));
+//                cab11.setCellValue("Bank");
+//                cab11.setCellStyle(styles.get(styleName));
+//
+//                Integer cont = 2;
+//                for (int a = 0; a < listaData.size(); a++) {
+//                    bean = listaData.get(a);
+//
+//                    //QUIEBRE POR CANAL ========================================
+//                    if (!quiebreCanal.trim().isEmpty() && !quiebreCanal.trim().equals(bean.strCANAL.trim())) {
+//                        HSSFRow rowTot = sheet.createRow(cont);
+//                        HSSFCell cellT0 = rowTot.createCell(0);
+//                        HSSFCell cellT1 = rowTot.createCell(1);
+//                        HSSFCell cellT2 = rowTot.createCell(2);
+//                        styleName = "cell_b_centered";
+//                        cellT0.setCellValue(" ");
+//                        cellT0.setCellStyle(styles.get(styleName));
+//                        cellT1.setCellValue("TOTAL");
+//                        cellT1.setCellStyle(styles.get(styleName));
+//
+//                        styleName = "cell_totals_right";
+//                        if (quiebreCanal.equals("CCT")) {
+//                            cellT2.setCellValue(dblTotCC);
+//                            dblTotCC = 0;
+//                        } else {
+//                            cellT2.setCellValue(dblTotWEB);
+//                            dblTotWEB = 0;
+//                        }
+//                        cellT2.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        //LINEA EN BLANCO ======================================
+//                        HSSFRow rowLB1 = sheet.createRow(cont);
+//                        HSSFCell cellLB10 = rowLB1.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB10.setCellValue(" ");
+//                        cellLB10.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        HSSFRow rowLB2 = sheet.createRow(cont);
+//                        HSSFCell cellLB20 = rowLB2.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB20.setCellValue(" ");
+//                        cellLB20.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        HSSFRow rowLB3 = sheet.createRow(cont);
+//                        HSSFCell cellLB30 = rowLB3.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB30.setCellValue(" ");
+//                        cellLB30.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//
+//                        if (quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
+//                            //Título Superior ======================================
+//                            HSSFRow rowTitS2 = sheet.createRow(cont);
+//                            rowTitS2.setHeight((short) 500);
+//                            HSSFCell cabTitS2 = rowTitS2.createCell(0);
+//                            cabTitS2.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.trim());
+//                            cabTitS2.setCellStyle(styles.get("cell_b_centered"));
+//                            HSSFCell cabTitS2_11 = rowTitS2.createCell(12);
+//                            cabTitS2_11.setCellValue(" ");
+//                            //rowFrom,rowTo,colFrom,colTo
+//                            sheet.addMergedRegion(new CellRangeAddress(cont, cont, 0, 10));
+//                            ++cont;
+//
+//                            //Títulos Grilla =======================================
+//                            HSSFRow rowcab2 = sheet.createRow(cont);
+//                            rowcab2.setHeight((short) 500);
+//                            HSSFCell cab12 = rowcab2.createCell(0);
+//                            HSSFCell cab22 = rowcab2.createCell(1);
+//                            HSSFCell cab32 = rowcab2.createCell(2);
+//                            HSSFCell cab42 = rowcab2.createCell(3);
+//                            HSSFCell cab52 = rowcab2.createCell(4);
+//                            HSSFCell cab62 = rowcab2.createCell(5);
+//                            HSSFCell cab2AN = rowcab.createCell(6);
+//                            HSSFCell cab72 = rowcab2.createCell(7);
+//                            HSSFCell cab82 = rowcab2.createCell(8);
+//                            HSSFCell cab92 = rowcab2.createCell(9);
+//                            HSSFCell cab102 = rowcab2.createCell(10);
+//                            HSSFCell cab112 = rowcab2.createCell(11);
+//
+//                            styleName = "header";
+//
+//                            cab12.setCellValue("Merchant Name");
+//                            cab12.setCellStyle(styles.get(styleName));
+//                            cab22.setCellValue("Merchant");
+//                            cab22.setCellStyle(styles.get(styleName));
+//                            cab32.setCellValue("Amount MXN");
+//                            cab32.setCellStyle(styles.get(styleName));
+//                            cab42.setCellValue("Application Date");
+//                            cab42.setCellStyle(styles.get(styleName));
+//                            cab52.setCellValue("Concept");
+//                            cab52.setCellStyle(styles.get(styleName));
+//                            cab62.setCellValue("Card Number");
+//                            cab62.setCellStyle(styles.get(styleName));
+//                            cab2AN.setCellValue("Authorization Number");
+//                            cab2AN.setCellStyle(styles.get(styleName));
+//                            cab72.setCellValue("Ticket(s)");
+//                            cab72.setCellStyle(styles.get(styleName));
+//                            cab82.setCellValue("Status");
+//                            cab82.setCellStyle(styles.get(styleName));
+//                            cab92.setCellValue("Sales Date");
+//                            cab92.setCellStyle(styles.get(styleName));
+//                            cab102.setCellValue("Sending Date");
+//                            cab102.setCellStyle(styles.get(styleName));
+//                            cab112.setCellValue("Bank");
+//                            cab112.setCellStyle(styles.get(styleName));
+//                            ++cont;
+//                        }
+//                    }
+//
+//                    if (!quiebreHoja.trim().isEmpty() && !quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
+//
+//                        //======================================================
+//                        //======================================================
+//                        //Creando nueva hoja y sus respectivos títulos.
+//                        sheet = workbook.createSheet(bean.SCARCOD.trim());
+//
+//                        sheet.setColumnWidth(0, 17 * 500);
+//                        sheet.setColumnWidth(1, 7 * 500);
+//                        sheet.setColumnWidth(2, 9 * 500);
+//                        sheet.setColumnWidth(3, 7 * 500);
+//                        sheet.setColumnWidth(4, 20 * 500);
+//                        sheet.setColumnWidth(5, 13 * 500);
+//                        sheet.setColumnWidth(6, 9 * 500);
+//                        sheet.setColumnWidth(7, 30 * 500);
+//                        sheet.setColumnWidth(8, 13 * 500);
+//                        sheet.setColumnWidth(9, 7 * 500);
+//                        sheet.setColumnWidth(10, 7 * 500);
+//                        sheet.setColumnWidth(11, 7 * 500);
+//
+//                        //Título Superior ======================================
+//                        rowTitS = sheet.createRow(0);
+//                        rowTitS.setHeight((short) 500);
+//                        cabTitS = rowTitS.createCell(0);
+//                        cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo);
+//                        cabTitS.setCellStyle(styles.get("cell_b_centered"));
+//                        cabTitS11 = rowTitS.createCell(12);
+//                        cabTitS11.setCellValue(" ");
+//
+//                        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+//                        //rowFrom,rowTo,colFrom,colTo
+//
+//                        //Títulos Grilla =======================================
+//                        rowcab = sheet.createRow(1);
+//                        rowcab.setHeight((short) 500);
+//                        cab1 = rowcab.createCell(0);
+//                        cab2 = rowcab.createCell(1);
+//                        cab3 = rowcab.createCell(2);
+//                        cab4 = rowcab.createCell(3);
+//                        cab5 = rowcab.createCell(4);
+//                        cab6 = rowcab.createCell(5);
+//                        cabAN = rowcab.createCell(6);
+//                        cab7 = rowcab.createCell(7);
+//                        cab8 = rowcab.createCell(8);
+//                        cab9 = rowcab.createCell(9);
+//                        cab10 = rowcab.createCell(10);
+//                        cab11 = rowcab.createCell(11);
+//
+//                        styleName = "header";
+//
+//                        cab1.setCellValue("Merchant Name");
+//                        cab1.setCellStyle(styles.get(styleName));
+//                        cab2.setCellValue("Merchant");
+//                        cab2.setCellStyle(styles.get(styleName));
+//                        cab3.setCellValue("Amount MXN");
+//                        cab3.setCellStyle(styles.get(styleName));
+//                        cab4.setCellValue("Application Date");
+//                        cab4.setCellStyle(styles.get(styleName));
+//                        cab5.setCellValue("Concept");
+//                        cab5.setCellStyle(styles.get(styleName));
+//                        cab6.setCellValue("Card Number");
+//                        cab6.setCellStyle(styles.get(styleName));
+//                        cabAN.setCellValue("Authorization Number");
+//                        cabAN.setCellStyle(styles.get(styleName));
+//                        cab7.setCellValue("Ticket(s)");
+//                        cab7.setCellStyle(styles.get(styleName));
+//                        cab8.setCellValue("Status");
+//                        cab8.setCellStyle(styles.get(styleName));
+//                        cab9.setCellValue("Sales Date");
+//                        cab9.setCellStyle(styles.get(styleName));
+//                        cab10.setCellValue("Sending Date");
+//                        cab10.setCellStyle(styles.get(styleName));
+//                        cab11.setCellValue("Bank");
+//                        cab11.setCellStyle(styles.get(styleName));
+//
+//                        cont = 2;
+//                        dblTotCC = 0;
+//                        dblTotWEB = 0;
+//                    }
+//
+//                    HSSFRow row = sheet.createRow(cont);
+//                    HSSFCell cell0 = row.createCell(0);
+//                    HSSFCell cell1 = row.createCell(1);
+//                    HSSFCell cell2 = row.createCell(2);
+//                    HSSFCell cell3 = row.createCell(3);
+//                    HSSFCell cell4 = row.createCell(4);
+//                    HSSFCell cell5 = row.createCell(5);
+//                    HSSFCell call2AN = row.createCell(6);
+//                    HSSFCell cell6 = row.createCell(7);
+//                    HSSFCell cell7 = row.createCell(8);
+//                    HSSFCell cell8 = row.createCell(9);
+//                    HSSFCell cell9 = row.createCell(10);
+//                    HSSFCell cell10 = row.createCell(11);
+//
+//                    styleName = "cell_normal_centered";
+//                    cell0.setCellValue(bean.MERCHNAM);
+//                    cell0.setCellStyle(styles.get(styleName));
+//                    cell1.setCellValue(bean.MERCHN);
+//                    cell1.setCellStyle(styles.get(styleName));
+//
+//                    styleName = "cell_normal_formato_right";
+//                    cell2.setCellValue(bean.AUTAMOUNT);
+//                    cell2.setCellStyle(styles.get(styleName));
+//
+//                    styleName = "cell_normal_centered";
+//                    cell3.setCellValue(bean.APLIDATE);
+//                    cell3.setCellStyle(styles.get(styleName));
+//                    cell4.setCellValue(bean.CONCEPT);
+//                    cell4.setCellStyle(styles.get(styleName));
+//                    cell5.setCellValue(bean.strDescripcion);
+//                    cell5.setCellStyle(styles.get(styleName));
+//                    cell6.setCellValue(bean.strTicket);
+//                    cell6.setCellStyle(styles.get(styleName));
+//                    call2AN.setCellValue(bean.AUTHNBR);
+//                    call2AN.setCellStyle(styles.get(styleName));
+//                    cell7.setCellValue(bean.STUSOS);
+//                    cell7.setCellStyle(styles.get(styleName));
+//                    cell8.setCellValue(bean.SALEDATE);
+//                    cell8.setCellStyle(styles.get(styleName));
+//                    cell9.setCellValue(bean.FECR);
+//                    cell9.setCellStyle(styles.get(styleName));
+//                    cell10.setCellValue(bean.strDescBank);
+//                    cell10.setCellStyle(styles.get(styleName));
+//
+//                    if (bean.strCANAL.equals("CCT")) {
+//                        //CALL CENTER
+//                        dblTotCC += bean.AUTAMOUNT;
+//                    } else {
+//                        //WEB
+//                        dblTotWEB += bean.AUTAMOUNT;
+//                    }
+//
+//                    ++cont;
+//                    quiebreHoja = bean.SCARCOD.trim();
+//                    quiebreCanal = bean.strCANAL.trim();
+//
+//                }
+//
+//                //COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
+//                HSSFRow rowTot = sheet.createRow(cont);
+//                HSSFCell cellT0 = rowTot.createCell(0);
+//                HSSFCell cellT1 = rowTot.createCell(1);
+//                HSSFCell cellT2 = rowTot.createCell(2);
+//                styleName = "cell_b_centered";
+//                cellT0.setCellValue(" ");
+//                cellT0.setCellStyle(styles.get(styleName));
+//                cellT1.setCellValue("TOTAL");
+//                cellT1.setCellStyle(styles.get(styleName));
+//
+//                styleName = "cell_totals_right";
+//                if (quiebreCanal.equals("CCT")) {
+//                    cellT2.setCellValue(dblTotCC);
+//                    dblTotCC = 0;
+//                } else {
+//                    cellT2.setCellValue(dblTotWEB);
+//                    dblTotWEB = 0;
+//                }
+//                cellT2.setCellStyle(styles.get(styleName));
+//
+////                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
+////                workbook.write(fos);
+////                fos.close();
+//                response.setContentType("application/vnd.openxml");
+//                response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
+//
 //                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-//                workbook.write(fos);
+//                workbook.write(response.getOutputStream());
 //                fos.close();
-                response.setContentType("application/vnd.openxml");
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
-
-                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-                workbook.write(response.getOutputStream());
-                fos.close();
-                
-                
-            }
-        } catch (IOException e) {
-            throw new SpringException(e);
-        }
-    }
-    
-    @RequestMapping(value = "exportHistoricalAvisosFra")
-    public @ResponseBody
-    void exportHistoricalAvisosFra(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
-        System.out.println("-------------- DataRequestedByBank : exportHistoricalAvisosFra-------------");
-        
-        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-
-        List<A2331Filter> listaData;
-        double dblTotCC = 0, dblTotWEB = 0;
-        A2331Filter filter = new A2331Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-        
-        try {
-
-            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2331Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            filter.page.PAGROW = -1;
-            filter.page.PAGNUM = 1;
-
-            listaData = logic.loadPX404SQP03306(filter);
-
-            String strFileName = "RequestedBankNotice_Historical_" + Functions.getFechaActual() + "_" + Functions.getHoraActual() + "_Fra.xls";
-
-            HSSFWorkbook workbook = null;
-            File file = new File(rutaFile + "\\" + strFileName);
-            if (file.exists()) {
-                file.delete();
-            }
-
-            if (listaData.size() > 0) {
-
-                workbook = new HSSFWorkbook();
-
-                String quiebreHoja = "", quiebreCanal = "";
-                A2331Filter bean = listaData.get(0);
-
-                HSSFSheet sheet = workbook.createSheet(bean.SCARCOD.trim());
-
-                Map<String, HSSFCellStyle> styles = createStyles(workbook);
-                String styleName;
-
-                sheet.setColumnWidth(0, 17 * 500);
-                sheet.setColumnWidth(1, 7 * 500);
-                sheet.setColumnWidth(2, 9 * 500);
-                sheet.setColumnWidth(3, 7 * 500);
-                sheet.setColumnWidth(4, 20 * 500);
-                sheet.setColumnWidth(5, 13 * 500);
-                sheet.setColumnWidth(6, 30 * 500);
-                sheet.setColumnWidth(7, 13 * 500);
-                sheet.setColumnWidth(8, 7 * 500);
-                sheet.setColumnWidth(9, 7 * 500);
-                sheet.setColumnWidth(10, 7 * 500);
-
-                //Título Superior ==============================================
-                HSSFRow rowTitS = sheet.createRow(0);
-                rowTitS.setHeight((short) 500);
-                HSSFCell cabTitS = rowTitS.createCell(0);
+//            }
+//        } catch (IOException e) {
+//            throw new SpringException(e);
+//        }
+//    }
+//    
+//    @RequestMapping(value = "exportChargeBack")
+//    public @ResponseBody
+//    void exportChargeBack(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        
+//        System.out.println("-------------- DataRequestedByBank : exportChargeBack-------------");
+//
+//        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//        
+//        List<ExcelChargeBack> listaDataTemp = new ArrayList<ExcelChargeBack>();
+//        List<ExcelChargeBack> listaDataTotal = new ArrayList<ExcelChargeBack>();
+//        List<ExcelChargeBack> listaDataParcial = new ArrayList<ExcelChargeBack>();
+//        
+//        int lstSize = 0;
+//        A2331Filter filter = new A2331Filter();
+//        Gson gson = new Gson();
+//        String beanString = "";
+//
+//        try {
+//            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//            
+//            beanString = request.getParameter("beanString");
+//            filter = gson.fromJson(beanString, A2331Filter.class);
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+//
+//            filter.page.PAGROW = -1;
+//            filter.page.PAGNUM = 1;
+//            
+//            listaDataTotal = logic.loadPX404SQP03580(filter, "T");
+//            listaDataParcial = logic.loadPX404SQP03580(filter, "P");
+//
+//            String strFileName = Functions.getFechaActual() + Functions.getHoraActual() + ".xls";
+//
+//            HSSFWorkbook workbook = null;
+//            File file = new File(rutaFile + "\\" + strFileName);
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//
+//            String nombreHoja = "";
+//            workbook = new HSSFWorkbook();
+//
+//            for (int z = 0; z < 2; z++) {
+//
+//                listaDataTemp = listaDataTotal;
+//                nombreHoja = "Total";
+//                if (z == 1) {
+//                    listaDataTemp = listaDataParcial;
+//                    nombreHoja = "Parcial";
+//                }
+//
+//                HSSFSheet sheet = workbook.createSheet(nombreHoja);
+//
+//                Map<String, HSSFCellStyle> styles = createStyles(workbook);
+//                String styleName;
+//
+//                //                sheet.setColumnWidth(0, 17 * 500);
+//                //                sheet.setColumnWidth(1, 7 * 500);
+//                //                sheet.setColumnWidth(2, 9 * 500);
+//                //                sheet.setColumnWidth(3, 7 * 500);
+//                //                sheet.setColumnWidth(4, 20 * 500);
+//                //                sheet.setColumnWidth(5, 13 * 500);
+//                //                sheet.setColumnWidth(6, 30 * 500);
+//                //                sheet.setColumnWidth(7, 13 * 500);
+//                //                sheet.setColumnWidth(8, 7 * 500);
+//                //                sheet.setColumnWidth(9, 7 * 500);
+//                //                sheet.setColumnWidth(10, 7 * 500);
+//                //Título Superior ==============================================
+//                HSSFRow rowTit1 = sheet.createRow(0);
+//                //                rowTit1.setHeight((short) 500);
+//                HSSFCell cellTit1 = rowTit1.createCell(0);
+//                cellTit1.setCellValue("TICKET INFORMATION");
+//                cellTit1.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 7));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 0, 7), sheet, workbook);
+//
+//                HSSFCell cellTit2 = rowTit1.createCell(8);
+//                cellTit2.setCellValue("FORMA DE PAGO");
+//                cellTit2.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 15));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 8, 15), sheet, workbook);
+//
+//                HSSFCell cellTit3 = rowTit1.createCell(16);
+//                cellTit3.setCellValue("TARIFA");
+//                cellTit3.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 19));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 16, 19), sheet, workbook);
+//
+//                HSSFCell cellTit4 = rowTit1.createCell(20);
+//                cellTit4.setCellValue("TAXES/PENALIDAD");
+//                cellTit4.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 61));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 20, 61), sheet, workbook);
+//
+//                HSSFCell cellTit5 = rowTit1.createCell(62);
+//                cellTit5.setCellValue("TOTAL");
+//                cellTit5.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 1, 62, 62));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 1, 62, 62), sheet, workbook);
+//                RegionUtil.setBorderLeft(CellStyle.BORDER_THIN, new CellRangeAddress(0, 1, 62, 62), sheet, workbook);
+//                RegionUtil.setBorderRight(CellStyle.BORDER_THIN, new CellRangeAddress(0, 1, 62, 62), sheet, workbook);
+//
+//                HSSFCell cellTit6 = rowTit1.createCell(63);
+//                cellTit6.setCellValue("COMISION");
+//                cellTit6.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 63, 64));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 63, 65), sheet, workbook);
+//
+//                HSSFCell cellTit7 = rowTit1.createCell(65);
+//                cellTit7.setCellValue("TAX ON");
+//                cellTit7.setCellStyle(styles.get("cell_b_titulo"));
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 65, 66));
+//                RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, new CellRangeAddress(0, 0, 66, 67), sheet, workbook);
+//
+//                //                
+//                //rowFrom,rowTo,colFrom,colTo
+//                //                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+//                //Títulos Grilla ===============================================
+//                HSSFRow rowcab = sheet.createRow(1);
+//                rowcab.setHeight((short) 500);
+//                HSSFCell cab1 = rowcab.createCell(0);
+//                HSSFCell cab2 = rowcab.createCell(1);
+//                HSSFCell cab3 = rowcab.createCell(2);
+//                HSSFCell cab4 = rowcab.createCell(3);
+//                HSSFCell cab5 = rowcab.createCell(4);
+//                HSSFCell cab6 = rowcab.createCell(5);
+//                HSSFCell cab7 = rowcab.createCell(6);
+//                HSSFCell cab8 = rowcab.createCell(7);
+//
+//                styleName = "cell_b_titulo";
+//
+//                cab1.setCellValue("TKT");
+//                cab1.setCellStyle(styles.get(styleName));
+//                cab2.setCellValue("REFERENCE");
+//                cab2.setCellStyle(styles.get(styleName));
+//                cab3.setCellValue("IATA");
+//                cab3.setCellStyle(styles.get(styleName));
+//                cab4.setCellValue("MONEDA");
+//                cab4.setCellStyle(styles.get(styleName));
+//                cab5.setCellValue("Transc");
+//                cab5.setCellStyle(styles.get(styleName));
+//                cab6.setCellValue("TDoc");
+//                cab6.setCellStyle(styles.get(styleName));
+//                cab7.setCellValue("F.Venta");
+//                cab7.setCellStyle(styles.get(styleName));
+//                cab8.setCellValue("Cpn");
+//                cab8.setCellStyle(styles.get(styleName));
+//
+//                HSSFCell cab9 = rowcab.createCell(8);
+//                cab9.setCellValue("FOP1");
+//                cab9.setCellStyle(styles.get(styleName));
+//                sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 11));
+//
+//                HSSFCell cab10 = rowcab.createCell(12);
+//                cab10.setCellValue("FOP2");
+//                cab10.setCellStyle(styles.get(styleName));
+//                sheet.addMergedRegion(new CellRangeAddress(1, 1, 12, 15));
+//
+//                HSSFCell cab11 = rowcab.createCell(16);
+//                cab11.setCellValue("FARE");
+//                cab11.setCellStyle(styles.get(styleName));
+//                sheet.addMergedRegion(new CellRangeAddress(1, 1, 16, 17));
+//
+//                HSSFCell cab12 = rowcab.createCell(18);
+//                cab12.setCellValue("EQV.");
+//                cab12.setCellStyle(styles.get(styleName));
+//                sheet.addMergedRegion(new CellRangeAddress(1, 1, 18, 19));
+//
+//                int sig = 20;
+//                for (int c = 1; c <= 14; c++) {
+//
+//                    HSSFCell col = rowcab.createCell(sig);
+//                    col.setCellValue("TAX " + c + "(COD,ATO,VAL)");
+//                    col.setCellStyle(styles.get(styleName));
+//                    sheet.addMergedRegion(new CellRangeAddress(1, 1, sig, sig + 2));
+//                    //                    RegionUtil.setBorderTop(CellStyle.BORDER_THIN, new CellRangeAddress(1, 1, sig, sig + 1), sheet, workbook);
+//                    sig = sig + 3;
+//                }
+//
+//                //rowFrom,rowTo,colFrom,colTo
+//                HSSFCell cab24 = rowcab.createCell(63);
+//                cab24.setCellValue("RATE");
+//                cab24.setCellStyle(styles.get(styleName));
+//                //                sheet.addMergedRegion(new CellRangeAddress(1, 1, 47, 48));
+//
+//                HSSFCell cab25 = rowcab.createCell(64);
+//                cab25.setCellValue("VALOR");
+//                cab25.setCellStyle(styles.get(styleName));
+//                //                sheet.addMergedRegion(new CellRangeAddress(1, 1, 49, 50));
+//
+//                HSSFCell cab26 = rowcab.createCell(65);
+//                cab26.setCellValue("RATE");
+//                cab26.setCellStyle(styles.get(styleName));
+//                //                sheet.addMergedRegion(new CellRangeAddress(1, 1, 47, 48));
+//
+//                HSSFCell cab27 = rowcab.createCell(66);
+//                cab27.setCellValue("VALOR");
+//                cab27.setCellStyle(styles.get(styleName));
+//
+//                if (listaDataTemp.size() > 0) {
+//                    lstSize = listaDataTemp.size();
+//                    ExcelChargeBack bean = listaDataTemp.get(0);
+//
+//                    Integer cont = 2;
+//                    for (int a = 0; a < listaDataTemp.size(); a++) {
+//                        bean = listaDataTemp.get(a);
+//
+//                        HSSFRow row = sheet.createRow(a + 2);
+//                        HSSFCell cell0 = row.createCell(0);
+//                        HSSFCell cell1 = row.createCell(1);
+//                        HSSFCell cell2 = row.createCell(2);
+//                        HSSFCell cell3 = row.createCell(3);
+//                        HSSFCell cell4 = row.createCell(4);
+//                        HSSFCell cell5 = row.createCell(5);
+//                        HSSFCell cell6 = row.createCell(6);
+//                        HSSFCell cell7 = row.createCell(7);
+//                        HSSFCell cell8 = row.createCell(8);
+//                        HSSFCell cell9 = row.createCell(9);
+//                        HSSFCell cell10 = row.createCell(10);
+//                        HSSFCell cell11 = row.createCell(11);
+//                        HSSFCell cell12 = row.createCell(12);
+//                        HSSFCell cell13 = row.createCell(13);
+//                        HSSFCell cell14 = row.createCell(14);
+//                        HSSFCell cell15 = row.createCell(15);
+//
+//                        HSSFCell cell16 = row.createCell(16);
+//                        HSSFCell cell17 = row.createCell(17);
+//                        HSSFCell cell18 = row.createCell(18);
+//                        HSSFCell cell19 = row.createCell(19);
+//                        HSSFCell cell20 = row.createCell(20);
+//                        HSSFCell cell21 = row.createCell(21);
+//                        HSSFCell cell22 = row.createCell(22);
+//                        HSSFCell cell23 = row.createCell(23);
+//                        HSSFCell cell24 = row.createCell(24);
+//                        HSSFCell cell25 = row.createCell(25);
+//                        HSSFCell cell26 = row.createCell(26);
+//                        HSSFCell cell27 = row.createCell(27);
+//                        HSSFCell cell28 = row.createCell(28);
+//                        HSSFCell cell29 = row.createCell(29);
+//                        HSSFCell cell30 = row.createCell(30);
+//                        HSSFCell cell31 = row.createCell(31);
+//                        HSSFCell cell32 = row.createCell(32);
+//                        HSSFCell cell33 = row.createCell(33);
+//                        HSSFCell cell34 = row.createCell(34);
+//                        HSSFCell cell35 = row.createCell(35);
+//                        HSSFCell cell36 = row.createCell(36);
+//                        HSSFCell cell37 = row.createCell(37);
+//                        HSSFCell cell38 = row.createCell(38);
+//                        HSSFCell cell39 = row.createCell(39);
+//                        HSSFCell cell40 = row.createCell(40);
+//                        HSSFCell cell41 = row.createCell(41);
+//                        HSSFCell cell42 = row.createCell(42);
+//                        HSSFCell cell43 = row.createCell(43);
+//                        HSSFCell cell44 = row.createCell(44);
+//                        HSSFCell cell45 = row.createCell(45);
+//                        HSSFCell cell46 = row.createCell(46);
+//                        HSSFCell cell47 = row.createCell(47);
+//                        HSSFCell cell48 = row.createCell(48);
+//                        HSSFCell cell49 = row.createCell(49);
+//                        HSSFCell cell50 = row.createCell(50);
+//                        HSSFCell cell51 = row.createCell(51);
+//                        HSSFCell cell52 = row.createCell(52);
+//
+//                        HSSFCell cell53 = row.createCell(53);
+//                        HSSFCell cell54 = row.createCell(54);
+//                        HSSFCell cell55 = row.createCell(55);
+//                        HSSFCell cell56 = row.createCell(56);
+//                        HSSFCell cell57 = row.createCell(57);
+//                        HSSFCell cell58 = row.createCell(58);
+//                        HSSFCell cell59 = row.createCell(59);
+//                        HSSFCell cell60 = row.createCell(60);
+//                        HSSFCell cell61 = row.createCell(61);
+//                        HSSFCell cell62 = row.createCell(62);
+//                        HSSFCell cell63 = row.createCell(63);
+//                        HSSFCell cell64 = row.createCell(64);
+//                        HSSFCell cell65 = row.createCell(65);
+//                        HSSFCell cell66 = row.createCell(66);
+//
+//                        styleName = "cell_celda";
+//                        cell0.setCellValue(bean.strTicket);
+//                        cell0.setCellStyle(styles.get(styleName));
+//
+//                        styleName = "cell_celda";
+//                        cell1.setCellValue(bean.NUMREFER);
+//                        cell1.setCellStyle(styles.get(styleName));
+//
+//                        styleName = "cell_celda";
+//                        cell2.setCellValue(bean.AGENTE);
+//                        cell2.setCellStyle(styles.get(styleName));
+//                        cell3.setCellValue(bean.MFOP);
+//                        cell3.setCellStyle(styles.get(styleName));
+//                        cell4.setCellValue(bean.TDOC);
+//                        cell4.setCellStyle(styles.get(styleName));
+//                        cell5.setCellValue(bean.TPDOC);
+//                        cell5.setCellStyle(styles.get(styleName));
+//                        cell6.setCellValue(bean.strFormatDate);
+//                        cell6.setCellStyle(styles.get(styleName));
+//                        cell7.setCellValue(bean.CUPON);
+//                        cell7.setCellStyle(styles.get(styleName));
+//
+//                        cell8.setCellValue(bean.A1531CFOP1);
+//                        cell8.setCellStyle(styles.get(styleName));
+//                        cell9.setCellValue(bean.A1531TFOP1);
+//                        cell9.setCellStyle(styles.get(styleName));
+//                        cell10.setCellValue(bean.A1531NREF1);
+//                        cell10.setCellStyle(styles.get(styleName));
+//                        cell11.setCellValue(bean.A1531VFOP1);
+//                        cell11.setCellStyle(styles.get(styleName));
+//                        cell12.setCellValue(bean.A1531CFOP2);
+//                        cell12.setCellStyle(styles.get(styleName));
+//                        cell13.setCellValue(bean.A1531TFOP2);
+//                        cell13.setCellStyle(styles.get(styleName));
+//                        cell14.setCellValue(bean.A1531NREF2);
+//                        cell14.setCellStyle(styles.get(styleName));
+//                        cell15.setCellValue(bean.A1531VFOP2);
+//                        cell15.setCellStyle(styles.get(styleName));
+//
+//                        cell16.setCellValue(bean.A720MONEDA);
+//                        cell16.setCellStyle(styles.get(styleName));
+//                        cell17.setCellValue(bean.A720TARIFA);
+//                        cell17.setCellStyle(styles.get(styleName));
+//                        cell18.setCellValue(bean.A720MDAPAG);
+//                        cell18.setCellStyle(styles.get(styleName));
+//                        cell19.setCellValue(bean.A720TRFPAG);
+//                        cell19.setCellStyle(styles.get(styleName));
+//
+//                        cell20.setCellValue(bean.CTAX1);
+//                        cell20.setCellStyle(styles.get(styleName));
+//                        cell21.setCellValue(bean.ATO1);
+//                        cell21.setCellStyle(styles.get(styleName));
+//                        cell22.setCellValue(bean.VTAX1);
+//                        cell22.setCellStyle(styles.get(styleName));
+//                        cell23.setCellValue(bean.CTAX2);
+//                        cell23.setCellStyle(styles.get(styleName));
+//                        cell24.setCellValue(bean.ATO2);
+//                        cell24.setCellStyle(styles.get(styleName));
+//                        cell25.setCellValue(bean.VTAX2);
+//                        cell25.setCellStyle(styles.get(styleName));
+//                        cell26.setCellValue(bean.CTAX3);
+//                        cell26.setCellStyle(styles.get(styleName));
+//                        cell27.setCellValue(bean.ATO3);
+//                        cell27.setCellStyle(styles.get(styleName));
+//                        cell28.setCellValue(bean.VTAX3);
+//                        cell28.setCellStyle(styles.get(styleName));
+//
+//                        cell29.setCellValue(bean.CTAX4);
+//                        cell29.setCellStyle(styles.get(styleName));
+//                        cell30.setCellValue(bean.ATO4);
+//                        cell30.setCellStyle(styles.get(styleName));
+//                        cell31.setCellValue(bean.VTAX4);
+//                        cell31.setCellStyle(styles.get(styleName));
+//                        cell32.setCellValue(bean.CTAX5);
+//                        cell32.setCellStyle(styles.get(styleName));
+//                        cell33.setCellValue(bean.ATO5);
+//                        cell33.setCellStyle(styles.get(styleName));
+//                        cell34.setCellValue(bean.VTAX5);
+//                        cell34.setCellStyle(styles.get(styleName));
+//                        cell35.setCellValue(bean.CTAX6);
+//                        cell35.setCellStyle(styles.get(styleName));
+//                        cell36.setCellValue(bean.ATO6);
+//                        cell36.setCellStyle(styles.get(styleName));
+//                        cell37.setCellValue(bean.VTAX6);
+//                        cell37.setCellStyle(styles.get(styleName));
+//                        cell38.setCellValue(bean.CTAX7);
+//                        cell38.setCellStyle(styles.get(styleName));
+//                        cell39.setCellValue(bean.ATO7);
+//                        cell39.setCellStyle(styles.get(styleName));
+//                        cell40.setCellValue(bean.VTAX7);
+//                        cell40.setCellStyle(styles.get(styleName));
+//                        cell41.setCellValue(bean.CTAX8);
+//                        cell41.setCellStyle(styles.get(styleName));
+//                        cell42.setCellValue(bean.ATO8);
+//                        cell42.setCellStyle(styles.get(styleName));
+//                        cell43.setCellValue(bean.VTAX8);
+//                        cell43.setCellStyle(styles.get(styleName));
+//                        cell44.setCellValue(bean.CTAX9);
+//                        cell44.setCellStyle(styles.get(styleName));
+//                        cell45.setCellValue(bean.ATO9);
+//                        cell45.setCellStyle(styles.get(styleName));
+//                        cell46.setCellValue(bean.VTAX9);
+//                        cell46.setCellStyle(styles.get(styleName));
+//                        cell47.setCellValue(bean.CTAX10);
+//                        cell47.setCellStyle(styles.get(styleName));
+//                        cell48.setCellValue(bean.ATO10);
+//                        cell48.setCellStyle(styles.get(styleName));
+//                        cell49.setCellValue(bean.VTAX10);
+//                        cell49.setCellStyle(styles.get(styleName));
+//                        cell50.setCellValue(bean.CTAX11);
+//                        cell50.setCellStyle(styles.get(styleName));
+//                        cell51.setCellValue(bean.ATO11);
+//                        cell51.setCellStyle(styles.get(styleName));
+//                        cell52.setCellValue(bean.VTAX11);
+//                        cell52.setCellStyle(styles.get(styleName));
+//                        cell53.setCellValue(bean.CTAX12);
+//                        cell53.setCellStyle(styles.get(styleName));
+//                        cell54.setCellValue(bean.ATO12);
+//                        cell54.setCellStyle(styles.get(styleName));
+//                        cell55.setCellValue(bean.VTAX12);
+//                        cell55.setCellStyle(styles.get(styleName));
+//                        cell56.setCellValue(bean.CTAX13);
+//                        cell56.setCellStyle(styles.get(styleName));
+//                        cell57.setCellValue(bean.ATO13);
+//                        cell57.setCellStyle(styles.get(styleName));
+//                        cell58.setCellValue(bean.VTAX13);
+//                        cell58.setCellStyle(styles.get(styleName));
+//                        cell59.setCellValue(bean.CTAX14);
+//                        cell59.setCellStyle(styles.get(styleName));
+//                        cell60.setCellValue(bean.ATO14);
+//                        cell60.setCellStyle(styles.get(styleName));
+//                        cell61.setCellValue(bean.VTAX14);
+//                        cell61.setCellStyle(styles.get(styleName));
+//                        //                    
+//                        //                    
+//                        cell62.setCellValue(bean.TOTAL);
+//                        cell62.setCellStyle(styles.get(styleName));
+//                        cell63.setCellValue(bean.RATE1);
+//                        cell63.setCellStyle(styles.get(styleName));
+//                        cell64.setCellValue(bean.VALOR1);
+//                        cell64.setCellStyle(styles.get(styleName));
+//                        cell65.setCellValue(bean.RATE2);
+//                        cell65.setCellStyle(styles.get(styleName));
+//                        cell66.setCellValue(bean.VALOR2);
+//                        cell66.setCellStyle(styles.get(styleName));
+//
+//                    }
+//                    for (int s = 0; s <= 66; s++) {
+//                        sheet.autoSizeColumn(s);
+//                    }
+//                }
+//            }
+//
+////            FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
+////            workbook.write(fos);
+////            fos.close();
+//
+////            resp.vars.put("lstChargeBack", lstSize);
+////            //resp.vars.put("strFileName", strFileName);
+////            resp.vars.put("strFileName", strFileName);
+////            resp.vars.put("rutaFile", rutaFile + "\\" + strFileName);
+//            
+//            response.setContentType("application/vnd.openxml");
+//            response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
+//
+//            FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
+//            workbook.write(response.getOutputStream());
+//            fos.close();
+//
+//        } catch (IOException e) {
+//            throw new SpringException(e);
+//        }
+//    }
+//
+//    private static Map<String, HSSFCellStyle> createStyles(HSSFWorkbook wb) {
+//
+//        Map<String, HSSFCellStyle> styles = new HashMap<String, HSSFCellStyle>();
+//        HSSFDataFormat df = wb.createDataFormat();
+//
+//        HSSFCellStyle style;
+//        HSSFFont headerFont = wb.createFont();
+//        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_CENTER);
+//        style.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setFont(headerFont);
+//        styles.put("header", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_CENTER);
+//        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setFont(headerFont);
+//        style.setDataFormat(df.getFormat("d-mmm"));
+//        styles.put("header_date", style);
+//
+//        HSSFFont font1 = wb.createFont();
+//        font1.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_LEFT);
+//        style.setFont(font1);
+//        styles.put("cell_b", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_CENTER);
+//        style.setFont(font1);
+//        styles.put("cell_b_centered", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_RIGHT);
+//        style.setFont(font1);
+//        style.setDataFormat(df.getFormat("d-mmm"));
+//        styles.put("cell_b_date", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_RIGHT);
+//        style.setFont(font1);
+//        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setDataFormat(df.getFormat("d-mmm"));
+//        styles.put("cell_g", style);
+//
+//        HSSFFont font2 = wb.createFont();
+//        font2.setColor(IndexedColors.BLUE.getIndex());
+//        font2.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_LEFT);
+//        style.setFont(font2);
+//        styles.put("cell_bb", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_RIGHT);
+//        style.setFont(font1);
+//        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setDataFormat(df.getFormat("d-mmm"));
+//        styles.put("cell_bg", style);
+//
+//        HSSFFont font3 = wb.createFont();
+//        font3.setFontHeightInPoints((short) 14);
+//        font3.setColor(IndexedColors.DARK_BLUE.getIndex());
+//        font3.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_LEFT);
+//        style.setFont(font3);
+//        style.setWrapText(true);
+//        styles.put("cell_h", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_LEFT);
+//        style.setWrapText(true);
+//        styles.put("cell_normal", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_CENTER);
+//        style.setWrapText(true);
+//        styles.put("cell_normal_centered", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_RIGHT);
+//        style.setWrapText(true);
+//        //style.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+//        style.setDataFormat(wb.createDataFormat().getFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"));
+//        styles.put("cell_normal_formato_right", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_RIGHT);
+//        style.setWrapText(true);
+//        style.setDataFormat(df.getFormat("d-mmm"));
+//        styles.put("cell_normal_date", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_LEFT);
+//        style.setIndention((short) 1);
+//        style.setWrapText(true);
+//        styles.put("cell_indented", style);
+//
+//        style = createBorderedStyle(wb);
+//        style.setFillForegroundColor(IndexedColors.BLUE.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        styles.put("cell_blue", style);
+//
+//        HSSFFont monthFont = wb.createFont();
+//        monthFont.setFontHeightInPoints((short) 12);
+//        monthFont.setColor(IndexedColors.WHITE.getIndex());
+//        monthFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        style = wb.createCellStyle();
+//        style.setAlignment(CellStyle.ALIGN_LEFT);
+//        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//        style.setFillForegroundColor(IndexedColors.DARK_RED.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setFont(monthFont);
+//        styles.put("cell_totals_left", style);
+//
+//        HSSFFont monthFont1 = wb.createFont();
+//        monthFont1.setFontHeightInPoints((short) 12);
+//        monthFont1.setColor(IndexedColors.WHITE.getIndex());
+//        monthFont1.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        style = wb.createCellStyle();
+//        style.setAlignment(CellStyle.ALIGN_RIGHT);
+//        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//        style.setFillForegroundColor(IndexedColors.DARK_RED.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setFont(monthFont1);
+//        //style.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+//        style.setDataFormat(wb.createDataFormat().getFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"));
+//        styles.put("cell_totals_right", style);
+//
+//        HSSFFont fontT = wb.createFont();
+//        fontT.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        fontT.setFontHeightInPoints((short) 9);
+//        style = createBorderedStyle(wb);
+//
+//        style.setAlignment(CellStyle.ALIGN_CENTER);
+//        style.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
+//        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+//        style.setFont(fontT);
+//        styles.put("cell_b_titulo", style);
+//
+//        HSSFFont fontCELDA = wb.createFont();
+//        fontCELDA.setFontHeightInPoints((short) 8);
+//        fontCELDA.setColor(IndexedColors.DARK_BLUE.getIndex());
+//        font3.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//
+//        style = createBorderedStyle(wb);
+//        style.setAlignment(CellStyle.ALIGN_CENTER);
+//        style.setWrapText(true);
+//        styles.put("cell_celda", style);
+//
+//        return styles;
+//    }
+//
+//    private static HSSFCellStyle createBorderedStyle(HSSFWorkbook wb) {
+//        HSSFCellStyle style = wb.createCellStyle();
+//        style.setBorderRight(CellStyle.BORDER_THIN);
+//        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+//        style.setBorderBottom(CellStyle.BORDER_THIN);
+//        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+//        style.setBorderLeft(CellStyle.BORDER_THIN);
+//        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+//        style.setBorderTop(CellStyle.BORDER_THIN);
+//        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+//        return style;
+//    }
+//    
+//    @RequestMapping(value = "exportHistoricalAvisos")
+//    public @ResponseBody
+//    void exportHistoricalAvisos(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        
+//        System.out.println("-------------- DataRequestedByBank : exportHistoricalAvisos-------------");
+//
+//        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//
+//        List<A2331Filter> listaData;
+//        double dblTotCC = 0, dblTotWEB = 0;
+//        A2331Filter filter = new A2331Filter();
+//        Gson gson = new Gson();
+//        String beanString = "";
+//        
+//        HashMap hmCANAL = new HashMap();
+//        hmCANAL.put("CCT", "CALL CENTER");
+//        hmCANAL.put("WEB", "INTERNET");
+//        
+//        try {
+//
+//            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//
+//            beanString = request.getParameter("beanString");
+//            filter = gson.fromJson(beanString, A2331Filter.class);
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+//
+//            filter.page.PAGROW = -1;
+//            filter.page.PAGNUM = 1;
+//
+//            listaData = logic.loadPX404SQP02000(filter);
+//
+//            String strFileName = "RequestedBankNotice_Historical_" + Functions.getFechaActual() + "_" + Functions.getHoraActual() + ".xls";
+//
+//            HSSFWorkbook workbook = null;
+//            File file = new File(rutaFile + "\\" + strFileName);
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//
+//            if (listaData.size() > 0) {
+//
+//                workbook = new HSSFWorkbook();
+//
+//                String quiebreHoja = "", quiebreCanal = "";
+//                A2331Filter bean = listaData.get(0);
+//
+//                HSSFSheet sheet = workbook.createSheet(bean.SCARCOD.trim());
+//
+//                Map<String, HSSFCellStyle> styles = createStyles(workbook);
+//                String styleName;
+//
+//                sheet.setColumnWidth(0, 17 * 500);
+//                sheet.setColumnWidth(1, 7 * 500);
+//                sheet.setColumnWidth(2, 9 * 500);
+//                sheet.setColumnWidth(3, 7 * 500);
+//                sheet.setColumnWidth(4, 20 * 500);
+//                sheet.setColumnWidth(5, 13 * 500);
+//                sheet.setColumnWidth(6, 9 * 500);
+//                sheet.setColumnWidth(7, 30 * 500);
+//                sheet.setColumnWidth(8, 13 * 500);
+//                sheet.setColumnWidth(9, 7 * 500);
+//                sheet.setColumnWidth(10, 7 * 500);
+//                sheet.setColumnWidth(11, 7 * 500);
+//
+//                //Título Superior ==============================================
+//                HSSFRow rowTitS = sheet.createRow(0);
+//                rowTitS.setHeight((short) 500);
+//                HSSFCell cabTitS = rowTitS.createCell(0);
 //                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
-                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.toString());
-                cabTitS.setCellStyle(styles.get("cell_b_centered"));
-                HSSFCell cabTitS11 = rowTitS.createCell(11);
-                cabTitS11.setCellValue(" ");
-                //rowFrom,rowTo,colFrom,colTo
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-
-                //Títulos Grilla ===============================================
-                HSSFRow rowcab = sheet.createRow(1);
-                rowcab.setHeight((short) 500);
-                HSSFCell cab1 = rowcab.createCell(0);
-                HSSFCell cab2 = rowcab.createCell(1);
-                HSSFCell cab3 = rowcab.createCell(2);
-                HSSFCell cab4 = rowcab.createCell(3);
-                HSSFCell cab5 = rowcab.createCell(4);
-                HSSFCell cab6 = rowcab.createCell(5);
-                HSSFCell cab7 = rowcab.createCell(6);
-                HSSFCell cab8 = rowcab.createCell(7);
-                HSSFCell cab9 = rowcab.createCell(8);
-                HSSFCell cab10 = rowcab.createCell(9);
-                HSSFCell cab11 = rowcab.createCell(10);
-
-                styleName = "header";
-
-                cab1.setCellValue("Merchant Name");
-                cab1.setCellStyle(styles.get(styleName));
-                cab2.setCellValue("Merchant");
-                cab2.setCellStyle(styles.get(styleName));
-                cab3.setCellValue("Amount MXN");
-                cab3.setCellStyle(styles.get(styleName));
-                cab4.setCellValue("Application Date");
-                cab4.setCellStyle(styles.get(styleName));
-                cab5.setCellValue("Concept");
-                cab5.setCellStyle(styles.get(styleName));
-                cab6.setCellValue("Card Number");
-                cab6.setCellStyle(styles.get(styleName));
-                cab7.setCellValue("Ticket(s)");
-                cab7.setCellStyle(styles.get(styleName));
-                cab8.setCellValue("Status");
-                cab8.setCellStyle(styles.get(styleName));
-                cab9.setCellValue("Sales Date");
-                cab9.setCellStyle(styles.get(styleName));
-                cab10.setCellValue("Sending Date");
-                cab10.setCellStyle(styles.get(styleName));
-                cab11.setCellValue("Bank");
-                cab11.setCellStyle(styles.get(styleName));
-
-                Integer cont = 2;
-                for (int a = 0; a < listaData.size(); a++) {
-                    bean = listaData.get(a);
-
-                    //QUIEBRE POR CANAL ========================================
-                    if (!quiebreCanal.trim().isEmpty() && !quiebreCanal.trim().equals(bean.strCANAL.trim())) {
-                        HSSFRow rowTot = sheet.createRow(cont);
-                        HSSFCell cellT0 = rowTot.createCell(0);
-                        HSSFCell cellT1 = rowTot.createCell(1);
-                        HSSFCell cellT2 = rowTot.createCell(2);
-                        styleName = "cell_b_centered";
-                        cellT0.setCellValue(" ");
-                        cellT0.setCellStyle(styles.get(styleName));
-                        cellT1.setCellValue("TOTAL");
-                        cellT1.setCellStyle(styles.get(styleName));
-
-                        styleName = "cell_totals_right";
-                        if (quiebreCanal.equals("CCT")) {
-                            cellT2.setCellValue(dblTotCC);
-                            dblTotCC = 0;
-                        } else {
-                            cellT2.setCellValue(dblTotWEB);
-                            dblTotWEB = 0;
-                        }
-                        cellT2.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        //LINEA EN BLANCO ======================================
-                        HSSFRow rowLB1 = sheet.createRow(cont);
-                        HSSFCell cellLB10 = rowLB1.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB10.setCellValue(" ");
-                        cellLB10.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        HSSFRow rowLB2 = sheet.createRow(cont);
-                        HSSFCell cellLB20 = rowLB2.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB20.setCellValue(" ");
-                        cellLB20.setCellStyle(styles.get(styleName));
-                        ++cont;
-                        HSSFRow rowLB3 = sheet.createRow(cont);
-                        HSSFCell cellLB30 = rowLB3.createCell(0);
-                        styleName = "cell_normal_centered";
-                        cellLB30.setCellValue(" ");
-                        cellLB30.setCellStyle(styles.get(styleName));
-                        ++cont;
-
-                        if (quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
-                            //Título Superior ======================================
-                            HSSFRow rowTitS2 = sheet.createRow(cont);
-                            rowTitS2.setHeight((short) 500);
-                            HSSFCell cabTitS2 = rowTitS2.createCell(0);
-                            cabTitS2.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.trim());
-                            cabTitS2.setCellStyle(styles.get("cell_b_centered"));
-                            HSSFCell cabTitS2_11 = rowTitS2.createCell(11);
-                            cabTitS2_11.setCellValue(" ");
-                            //rowFrom,rowTo,colFrom,colTo
-                            sheet.addMergedRegion(new CellRangeAddress(cont, cont, 0, 10));
-                            ++cont;
-
-                            //Títulos Grilla =======================================
-                            HSSFRow rowcab2 = sheet.createRow(cont);
-                            rowcab2.setHeight((short) 500);
-                            HSSFCell cab12 = rowcab2.createCell(0);
-                            HSSFCell cab22 = rowcab2.createCell(1);
-                            HSSFCell cab32 = rowcab2.createCell(2);
-                            HSSFCell cab42 = rowcab2.createCell(3);
-                            HSSFCell cab52 = rowcab2.createCell(4);
-                            HSSFCell cab62 = rowcab2.createCell(5);
-                            HSSFCell cab72 = rowcab2.createCell(6);
-                            HSSFCell cab82 = rowcab2.createCell(7);
-                            HSSFCell cab92 = rowcab2.createCell(8);
-                            HSSFCell cab102 = rowcab2.createCell(9);
-                            HSSFCell cab112 = rowcab2.createCell(10);
-
-                            styleName = "header";
-
-                            cab12.setCellValue("Merchant Name");
-                            cab12.setCellStyle(styles.get(styleName));
-                            cab22.setCellValue("Merchant");
-                            cab22.setCellStyle(styles.get(styleName));
-                            cab32.setCellValue("Amount MXN");
-                            cab32.setCellStyle(styles.get(styleName));
-                            cab42.setCellValue("Application Date");
-                            cab42.setCellStyle(styles.get(styleName));
-                            cab52.setCellValue("Concept");
-                            cab52.setCellStyle(styles.get(styleName));
-                            cab62.setCellValue("Card Number");
-                            cab62.setCellStyle(styles.get(styleName));
-                            cab72.setCellValue("Ticket(s)");
-                            cab72.setCellStyle(styles.get(styleName));
-                            cab82.setCellValue("Status");
-                            cab82.setCellStyle(styles.get(styleName));
-                            cab92.setCellValue("Sales Date");
-                            cab92.setCellStyle(styles.get(styleName));
-                            cab102.setCellValue("Sending Date");
-                            cab102.setCellStyle(styles.get(styleName));
-                            cab112.setCellValue("Bank");
-                            cab112.setCellStyle(styles.get(styleName));
-                            ++cont;
-                        }
-                    }
-
-                    if (!quiebreHoja.trim().isEmpty() && !quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
-
-                        //======================================================
-                        //======================================================
-                        //Creando nueva hoja y sus respectivos títulos.
-                        sheet = workbook.createSheet(bean.SCARCOD.trim());
-
-                        sheet.setColumnWidth(0, 17 * 500);
-                        sheet.setColumnWidth(1, 7 * 500);
-                        sheet.setColumnWidth(2, 9 * 500);
-                        sheet.setColumnWidth(3, 7 * 500);
-                        sheet.setColumnWidth(4, 20 * 500);
-                        sheet.setColumnWidth(5, 13 * 500);
-                        sheet.setColumnWidth(6, 30 * 500);
-                        sheet.setColumnWidth(7, 13 * 500);
-                        sheet.setColumnWidth(8, 7 * 500);
-                        sheet.setColumnWidth(9, 7 * 500);
-                        sheet.setColumnWidth(10, 7 * 500);
-
-                        //Título Superior ======================================
-                        rowTitS = sheet.createRow(0);
-                        rowTitS.setHeight((short) 500);
-                        cabTitS = rowTitS.createCell(0);
-                        cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo);
-                        cabTitS.setCellStyle(styles.get("cell_b_centered"));
-                        cabTitS11 = rowTitS.createCell(11);
-                        cabTitS11.setCellValue(" ");
-
-                        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-                        //rowFrom,rowTo,colFrom,colTo
-
-                        //Títulos Grilla =======================================
-                        rowcab = sheet.createRow(1);
-                        rowcab.setHeight((short) 500);
-                        cab1 = rowcab.createCell(0);
-                        cab2 = rowcab.createCell(1);
-                        cab3 = rowcab.createCell(2);
-                        cab4 = rowcab.createCell(3);
-                        cab5 = rowcab.createCell(4);
-                        cab6 = rowcab.createCell(5);
-                        cab7 = rowcab.createCell(6);
-                        cab8 = rowcab.createCell(7);
-                        cab9 = rowcab.createCell(8);
-                        cab10 = rowcab.createCell(9);
-                        cab11 = rowcab.createCell(10);
-
-                        styleName = "header";
-
-                        cab1.setCellValue("Merchant Name");
-                        cab1.setCellStyle(styles.get(styleName));
-                        cab2.setCellValue("Merchant");
-                        cab2.setCellStyle(styles.get(styleName));
-                        cab3.setCellValue("Amount MXN");
-                        cab3.setCellStyle(styles.get(styleName));
-                        cab4.setCellValue("Application Date");
-                        cab4.setCellStyle(styles.get(styleName));
-                        cab5.setCellValue("Concept");
-                        cab5.setCellStyle(styles.get(styleName));
-                        cab6.setCellValue("Card Number");
-                        cab6.setCellStyle(styles.get(styleName));
-                        cab7.setCellValue("Ticket(s)");
-                        cab7.setCellStyle(styles.get(styleName));
-                        cab8.setCellValue("Status");
-                        cab8.setCellStyle(styles.get(styleName));
-                        cab9.setCellValue("Sales Date");
-                        cab9.setCellStyle(styles.get(styleName));
-                        cab10.setCellValue("Sending Date");
-                        cab10.setCellStyle(styles.get(styleName));
-                        cab11.setCellValue("Bank");
-                        cab11.setCellStyle(styles.get(styleName));
-
-                        cont = 2;
-                        dblTotCC = 0;
-                        dblTotWEB = 0;
-                    }
-
-                    HSSFRow row = sheet.createRow(cont);
-                    HSSFCell cell0 = row.createCell(0);
-                    HSSFCell cell1 = row.createCell(1);
-                    HSSFCell cell2 = row.createCell(2);
-                    HSSFCell cell3 = row.createCell(3);
-                    HSSFCell cell4 = row.createCell(4);
-                    HSSFCell cell5 = row.createCell(5);
-                    HSSFCell cell6 = row.createCell(6);
-                    HSSFCell cell7 = row.createCell(7);
-                    HSSFCell cell8 = row.createCell(8);
-                    HSSFCell cell9 = row.createCell(9);
-                    HSSFCell cell10 = row.createCell(10);
-
-                    styleName = "cell_normal_centered";
-                    cell0.setCellValue(bean.MERCHNAM);
-                    cell0.setCellStyle(styles.get(styleName));
-                    cell1.setCellValue(bean.MERCHN);
-                    cell1.setCellStyle(styles.get(styleName));
-
-                    styleName = "cell_normal_formato_right";
-                    cell2.setCellValue(bean.AUTAMOUNT);
-                    cell2.setCellStyle(styles.get(styleName));
-
-                    styleName = "cell_normal_centered";
-                    cell3.setCellValue(bean.APLIDATE);
-                    cell3.setCellStyle(styles.get(styleName));
-                    cell4.setCellValue(bean.CONCEPT);
-                    cell4.setCellStyle(styles.get(styleName));
-                    cell5.setCellValue(bean.strDescripcion);
-                    cell5.setCellStyle(styles.get(styleName));
-                    cell6.setCellValue(bean.strTicket);
-                    cell6.setCellStyle(styles.get(styleName));
-                    cell7.setCellValue(bean.STUSOS);
-                    cell7.setCellStyle(styles.get(styleName));
-                    cell8.setCellValue(bean.SALEDATE);
-                    cell8.setCellStyle(styles.get(styleName));
-                    cell9.setCellValue(bean.FECR);
-                    cell9.setCellStyle(styles.get(styleName));
-                    cell10.setCellValue(bean.strDescBank);
-                    cell10.setCellStyle(styles.get(styleName));
-
-                    if (bean.strCANAL.equals("CCT")) {
-                        //CALL CENTER
-                        dblTotCC += bean.AUTAMOUNT;
-                    } else {
-                        //WEB
-                        dblTotWEB += bean.AUTAMOUNT;
-                    }
-
-                    ++cont;
-                    quiebreHoja = bean.SCARCOD.trim();
-                    quiebreCanal = bean.strCANAL.trim();
-
-                }
-
-                //COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
-                HSSFRow rowTot = sheet.createRow(cont);
-                HSSFCell cellT0 = rowTot.createCell(0);
-                HSSFCell cellT1 = rowTot.createCell(1);
-                HSSFCell cellT2 = rowTot.createCell(2);
-                styleName = "cell_b_centered";
-                cellT0.setCellValue(" ");
-                cellT0.setCellStyle(styles.get(styleName));
-                cellT1.setCellValue("TOTAL");
-                cellT1.setCellStyle(styles.get(styleName));
-
-                styleName = "cell_totals_right";
-                if (quiebreCanal.equals("CCT")) {
-                    cellT2.setCellValue(dblTotCC);
-                    dblTotCC = 0;
-                } else {
-                    cellT2.setCellValue(dblTotWEB);
-                    dblTotWEB = 0;
-                }
-                cellT2.setCellStyle(styles.get(styleName));
-
+//                cabTitS.setCellStyle(styles.get("cell_b_centered"));
+//                HSSFCell cabTitS11 = rowTitS.createCell(11);
+//                cabTitS11.setCellValue(" ");
+//                //rowFrom,rowTo,colFrom,colTo
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+//
+//                //Títulos Grilla ===============================================
+//                HSSFRow rowcab = sheet.createRow(1);
+//                rowcab.setHeight((short) 500);
+//                HSSFCell cab1 = rowcab.createCell(0);
+//                HSSFCell cab2 = rowcab.createCell(1);
+//                HSSFCell cab3 = rowcab.createCell(2);
+//                HSSFCell cab4 = rowcab.createCell(3);
+//                HSSFCell cab5 = rowcab.createCell(4);
+//                HSSFCell cab6 = rowcab.createCell(5);
+//                HSSFCell cabAC = rowcab.createCell(6);
+//                HSSFCell cab7 = rowcab.createCell(7);
+//                HSSFCell cab8 = rowcab.createCell(8);
+//                HSSFCell cab9 = rowcab.createCell(9);
+//                HSSFCell cab10 = rowcab.createCell(10);
+//                HSSFCell cab11 = rowcab.createCell(11);
+//
+//                styleName = "header";
+//
+//                cab1.setCellValue("Merchant Name");
+//                cab1.setCellStyle(styles.get(styleName));
+//                cab2.setCellValue("Merchant");
+//                cab2.setCellStyle(styles.get(styleName));
+//                cab3.setCellValue("Amount MXN");
+//                cab3.setCellStyle(styles.get(styleName));
+//                cab4.setCellValue("Application Date");
+//                cab4.setCellStyle(styles.get(styleName));
+//                cab5.setCellValue("Concept");
+//                cab5.setCellStyle(styles.get(styleName));
+//                cab6.setCellValue("Card Number");
+//                cab6.setCellStyle(styles.get(styleName));
+//                cabAC.setCellValue("Authorization Code");
+//                cabAC.setCellStyle(styles.get(styleName));
+//                cab7.setCellValue("Ticket(s)");
+//                cab7.setCellStyle(styles.get(styleName));
+//                cab8.setCellValue("Status");
+//                cab8.setCellStyle(styles.get(styleName));
+//                cab9.setCellValue("Sales Date");
+//                cab9.setCellStyle(styles.get(styleName));
+//                cab10.setCellValue("Sending Date");
+//                cab10.setCellStyle(styles.get(styleName));
+//                cab11.setCellValue("Bank");
+//                cab11.setCellStyle(styles.get(styleName));
+//
+//                Integer cont = 2;
+//                for (int a = 0; a < listaData.size(); a++) {
+//                    bean = listaData.get(a);
+//
+//                    //QUIEBRE POR CANAL ========================================
+//                    if (!quiebreCanal.trim().isEmpty() && !quiebreCanal.trim().equals(bean.strCANAL.trim())) {
+//                        HSSFRow rowTot = sheet.createRow(cont);
+//                        HSSFCell cellT0 = rowTot.createCell(0);
+//                        HSSFCell cellT1 = rowTot.createCell(1);
+//                        HSSFCell cellT2 = rowTot.createCell(2);
+//                        styleName = "cell_b_centered";
+//                        cellT0.setCellValue(" ");
+//                        cellT0.setCellStyle(styles.get(styleName));
+//                        cellT1.setCellValue("TOTAL");
+//                        cellT1.setCellStyle(styles.get(styleName));
+//
+//                        styleName = "cell_totals_right";
+//                        if (quiebreCanal.equals("CCT")) {
+//                            cellT2.setCellValue(dblTotCC);
+//                            dblTotCC = 0;
+//                        } else {
+//                            cellT2.setCellValue(dblTotWEB);
+//                            dblTotWEB = 0;
+//                        }
+//                        cellT2.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        //LINEA EN BLANCO ======================================
+//                        HSSFRow rowLB1 = sheet.createRow(cont);
+//                        HSSFCell cellLB10 = rowLB1.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB10.setCellValue(" ");
+//                        cellLB10.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        HSSFRow rowLB2 = sheet.createRow(cont);
+//                        HSSFCell cellLB20 = rowLB2.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB20.setCellValue(" ");
+//                        cellLB20.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        HSSFRow rowLB3 = sheet.createRow(cont);
+//                        HSSFCell cellLB30 = rowLB3.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB30.setCellValue(" ");
+//                        cellLB30.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//
+//                        if (quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
+//                            //Título Superior ======================================
+//                            HSSFRow rowTitS2 = sheet.createRow(cont);
+//                            rowTitS2.setHeight((short) 500);
+//                            HSSFCell cabTitS2 = rowTitS2.createCell(0);
+//                            cabTitS2.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL.trim()));
+//                            cabTitS2.setCellStyle(styles.get("cell_b_centered"));
+//                            HSSFCell cabTitS2_11 = rowTitS2.createCell(11);
+//                            cabTitS2_11.setCellValue(" ");
+//                            //rowFrom,rowTo,colFrom,colTo
+//                            sheet.addMergedRegion(new CellRangeAddress(cont, cont, 0, 10));
+//                            ++cont;
+//
+//                            //Títulos Grilla =======================================
+//                            HSSFRow rowcab2 = sheet.createRow(cont);
+//                            rowcab2.setHeight((short) 500);
+//                            HSSFCell cab12 = rowcab2.createCell(0);
+//                            HSSFCell cab22 = rowcab2.createCell(1);
+//                            HSSFCell cab32 = rowcab2.createCell(2);
+//                            HSSFCell cab42 = rowcab2.createCell(3);
+//                            HSSFCell cab52 = rowcab2.createCell(4);
+//                            HSSFCell cab62 = rowcab2.createCell(5);
+//                            HSSFCell cabAC_2 = rowcab2.createCell(6);
+//                            HSSFCell cab72 = rowcab2.createCell(7);
+//                            HSSFCell cab82 = rowcab2.createCell(8);
+//                            HSSFCell cab92 = rowcab2.createCell(9);
+//                            HSSFCell cab102 = rowcab2.createCell(10);
+//                            HSSFCell cab112 = rowcab2.createCell(11);
+//
+//                            styleName = "header";
+//
+//                            cab12.setCellValue("Merchant Name");
+//                            cab12.setCellStyle(styles.get(styleName));
+//                            cab22.setCellValue("Merchant");
+//                            cab22.setCellStyle(styles.get(styleName));
+//                            cab32.setCellValue("Amount MXN");
+//                            cab32.setCellStyle(styles.get(styleName));
+//                            cab42.setCellValue("Application Date");
+//                            cab42.setCellStyle(styles.get(styleName));
+//                            cab52.setCellValue("Concept");
+//                            cab52.setCellStyle(styles.get(styleName));
+//                            cab62.setCellValue("Card Number");
+//                            cab62.setCellStyle(styles.get(styleName));
+//                            cabAC_2.setCellValue("Authorization Code");
+//                            cabAC_2.setCellStyle(styles.get(styleName));
+//                            cab72.setCellValue("Ticket(s)");
+//                            cab72.setCellStyle(styles.get(styleName));
+//                            cab82.setCellValue("Status");
+//                            cab82.setCellStyle(styles.get(styleName));
+//                            cab92.setCellValue("Sales Date");
+//                            cab92.setCellStyle(styles.get(styleName));
+//                            cab102.setCellValue("Sending Date");
+//                            cab102.setCellStyle(styles.get(styleName));
+//                            cab112.setCellValue("Bank");
+//                            cab112.setCellStyle(styles.get(styleName));
+//                            ++cont;
+//                        }
+//                    }
+//
+//                    if (!quiebreHoja.trim().isEmpty() && !quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
+//
+//                        /*//COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
+//                         Row rowTot = sheet.createRow(cont);
+//                         Cell cellT0 = rowTot.createCell(0);
+//                         Cell cellT1 = rowTot.createCell(1);
+//                         Cell cellT2 = rowTot.createCell(2);
+//                         styleName = "cell_b_centered";
+//                         cellT0.setCellValue(" ");
+//                         cellT0.setCellStyle(styles.get(styleName));
+//                         cellT1.setCellValue("TOTAL");
+//                         cellT1.setCellStyle(styles.get(styleName));
+//
+//                         styleName = "cell_totals_right";
+//                         if (quiebreCanal.equals("CCT")) {
+//                         cellT2.setCellValue(dblTotCC);
+//                         dblTotCC = 0;
+//                         } else {
+//                         cellT2.setCellValue(dblTotWEB);
+//                         dblTotWEB = 0;
+//                         }
+//                         cellT2.setCellStyle(styles.get(styleName));*/
+//                        //======================================================
+//                        //======================================================
+//                        //Creando nueva hoja y sus respectivos títulos.
+//                        sheet = workbook.createSheet(bean.SCARCOD.trim());
+//
+//                        sheet.setColumnWidth(0, 17 * 500);
+//                        sheet.setColumnWidth(1, 7 * 500);
+//                        sheet.setColumnWidth(2, 9 * 500);
+//                        sheet.setColumnWidth(3, 7 * 500);
+//                        sheet.setColumnWidth(4, 20 * 500);
+//                        sheet.setColumnWidth(5, 13 * 500);
+//                        sheet.setColumnWidth(6, 9 * 500);
+//                        sheet.setColumnWidth(7, 30 * 500);
+//                        sheet.setColumnWidth(8, 13 * 500);
+//                        sheet.setColumnWidth(9, 7 * 500);
+//                        sheet.setColumnWidth(10, 7 * 500);
+//                        sheet.setColumnWidth(11, 7 * 500);
+//
+//                        //Título Superior ======================================
+//                        rowTitS = sheet.createRow(0);
+//                        rowTitS.setHeight((short) 500);
+//                        cabTitS = rowTitS.createCell(0);
+//                        cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
+//                        cabTitS.setCellStyle(styles.get("cell_b_centered"));
+//                        cabTitS11 = rowTitS.createCell(11);
+//                        cabTitS11.setCellValue(" ");
+//
+//                        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+//                        //rowFrom,rowTo,colFrom,colTo
+//
+//                        //Títulos Grilla =======================================
+//                        rowcab = sheet.createRow(1);
+//                        rowcab.setHeight((short) 500);
+//                        cab1 = rowcab.createCell(0);
+//                        cab2 = rowcab.createCell(1);
+//                        cab3 = rowcab.createCell(2);
+//                        cab4 = rowcab.createCell(3);
+//                        cab5 = rowcab.createCell(4);
+//                        cab6 = rowcab.createCell(5);
+//                        cabAC = rowcab.createCell(6);
+//                        cab7 = rowcab.createCell(7);
+//                        cab8 = rowcab.createCell(8);
+//                        cab9 = rowcab.createCell(9);
+//                        cab10 = rowcab.createCell(10);
+//                        cab11 = rowcab.createCell(11);
+//
+//                        styleName = "header";
+//
+//                        cab1.setCellValue("Merchant Name");
+//                        cab1.setCellStyle(styles.get(styleName));
+//                        cab2.setCellValue("Merchant");
+//                        cab2.setCellStyle(styles.get(styleName));
+//                        cab3.setCellValue("Amount MXN");
+//                        cab3.setCellStyle(styles.get(styleName));
+//                        cab4.setCellValue("Application Date");
+//                        cab4.setCellStyle(styles.get(styleName));
+//                        cab5.setCellValue("Concept");
+//                        cab5.setCellStyle(styles.get(styleName));
+//                        cab6.setCellValue("Card Number");
+//                        cab6.setCellStyle(styles.get(styleName));
+//                        cabAC.setCellValue("Authorization Code");
+//                        cabAC.setCellStyle(styles.get(styleName));
+//                        cab7.setCellValue("Ticket(s)");
+//                        cab7.setCellStyle(styles.get(styleName));
+//                        cab8.setCellValue("Status");
+//                        cab8.setCellStyle(styles.get(styleName));
+//                        cab9.setCellValue("Sales Date");
+//                        cab9.setCellStyle(styles.get(styleName));
+//                        cab10.setCellValue("Sending Date");
+//                        cab10.setCellStyle(styles.get(styleName));
+//                        cab11.setCellValue("Bank");
+//                        cab11.setCellStyle(styles.get(styleName));
+//
+//                        cont = 2;
+//                        dblTotCC = 0;
+//                        dblTotWEB = 0;
+//                    }
+//
+//                    HSSFRow row = sheet.createRow(cont);
+//                    HSSFCell cell0 = row.createCell(0);
+//                    HSSFCell cell1 = row.createCell(1);
+//                    HSSFCell cell2 = row.createCell(2);
+//                    HSSFCell cell3 = row.createCell(3);
+//                    HSSFCell cell4 = row.createCell(4);
+//                    HSSFCell cell5 = row.createCell(5);
+//                    HSSFCell cell6 = row.createCell(6);
+//                    HSSFCell cell7 = row.createCell(7);
+//                    HSSFCell cell8 = row.createCell(8);
+//                    HSSFCell cell9 = row.createCell(9);
+//                    HSSFCell cell10 = row.createCell(10);
+//                    HSSFCell cell11 = row.createCell(11);
+//
+//                    styleName = "cell_normal_centered";
+//                    cell0.setCellValue(bean.MERCHNAM);
+//                    cell0.setCellStyle(styles.get(styleName));
+//                    cell1.setCellValue(bean.MERCHN);
+//                    cell1.setCellStyle(styles.get(styleName));
+//
+//                    styleName = "cell_normal_formato_right";
+//                    cell2.setCellValue(bean.AUTAMOUNT);
+//                    cell2.setCellStyle(styles.get(styleName));
+//
+//                    styleName = "cell_normal_centered";
+//                    cell3.setCellValue(bean.APLIDATE);
+//                    cell3.setCellStyle(styles.get(styleName));
+//                    cell4.setCellValue(bean.CONCEPT);
+//                    cell4.setCellStyle(styles.get(styleName));
+//                    cell5.setCellValue(bean.strDescripcion);
+//                    cell5.setCellStyle(styles.get(styleName));
+//                    cell6.setCellValue(bean.AUTHNBR);
+//                    cell6.setCellStyle(styles.get(styleName));
+//                    cell7.setCellValue(bean.strTicket);
+//                    cell7.setCellStyle(styles.get(styleName));
+//                    cell8.setCellValue(bean.STUSOS);
+//                    cell8.setCellStyle(styles.get(styleName));
+//                    cell9.setCellValue(bean.SALEDATE);
+//                    cell9.setCellStyle(styles.get(styleName));
+//                    cell10.setCellValue(bean.FECR);
+//                    cell10.setCellStyle(styles.get(styleName));
+//                    cell11.setCellValue(bean.strDescBank);
+//                    cell11.setCellStyle(styles.get(styleName));
+//
+//                    if (bean.strCANAL.equals("CCT")) {
+//                        //CALL CENTER
+//                        dblTotCC += bean.AUTAMOUNT;
+//                    } else {
+//                        //WEB
+//                        dblTotWEB += bean.AUTAMOUNT;
+//                    }
+//
+//                    ++cont;
+//                    quiebreHoja = bean.SCARCOD.trim();
+//                    quiebreCanal = bean.strCANAL.trim();
+//
+//                }
+//
+//                //COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
+//                HSSFRow rowTot = sheet.createRow(cont);
+//                HSSFCell cellT0 = rowTot.createCell(0);
+//                HSSFCell cellT1 = rowTot.createCell(1);
+//                HSSFCell cellT2 = rowTot.createCell(2);
+//                styleName = "cell_b_centered";
+//                cellT0.setCellValue(" ");
+//                cellT0.setCellStyle(styles.get(styleName));
+//                cellT1.setCellValue("TOTAL");
+//                cellT1.setCellStyle(styles.get(styleName));
+//
+//                styleName = "cell_totals_right";
+//                if (quiebreCanal.equals("CCT")) {
+//                    cellT2.setCellValue(dblTotCC);
+//                    dblTotCC = 0;
+//                } else {
+//                    cellT2.setCellValue(dblTotWEB);
+//                    dblTotWEB = 0;
+//                }
+//                cellT2.setCellStyle(styles.get(styleName));
+//
+////                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
+////                workbook.write(fos);
+////                fos.close();
+//                response.setContentType("application/vnd.openxml");
+//                response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
+//
 //                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-//                workbook.write(fos);
+//                workbook.write(response.getOutputStream());
 //                fos.close();
-                response.setContentType("application/vnd.openxml");
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
-
-                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
-                workbook.write(response.getOutputStream());
-                fos.close();
-            }
-        } catch (IOException e) {
-            throw new SpringException(e);
-        }
-    }
-    
-    
+//                
+//                
+//            }
+//        } catch (IOException e) {
+//            throw new SpringException(e);
+//        }
+//    }
+//    
+//    @RequestMapping(value = "exportHistoricalAvisosFra")
+//    public @ResponseBody
+//    void exportHistoricalAvisosFra(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        
+//        System.out.println("-------------- DataRequestedByBank : exportHistoricalAvisosFra-------------");
+//        
+//        String rutaFile = this.serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//
+//        List<A2331Filter> listaData;
+//        double dblTotCC = 0, dblTotWEB = 0;
+//        A2331Filter filter = new A2331Filter();
+//        Gson gson = new Gson();
+//        String beanString = "";
+//        
+//        try {
+//
+//            DataRequestedByBankLogic logic = new DataRequestedByBankLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//
+//            beanString = request.getParameter("beanString");
+//            filter = gson.fromJson(beanString, A2331Filter.class);
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+//
+//            filter.page.PAGROW = -1;
+//            filter.page.PAGNUM = 1;
+//
+//            listaData = logic.loadPX404SQP03306(filter);
+//
+//            String strFileName = "RequestedBankNotice_Historical_" + Functions.getFechaActual() + "_" + Functions.getHoraActual() + "_Fra.xls";
+//
+//            HSSFWorkbook workbook = null;
+//            File file = new File(rutaFile + "\\" + strFileName);
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//
+//            if (listaData.size() > 0) {
+//
+//                workbook = new HSSFWorkbook();
+//
+//                String quiebreHoja = "", quiebreCanal = "";
+//                A2331Filter bean = listaData.get(0);
+//
+//                HSSFSheet sheet = workbook.createSheet(bean.SCARCOD.trim());
+//
+//                Map<String, HSSFCellStyle> styles = createStyles(workbook);
+//                String styleName;
+//
+//                sheet.setColumnWidth(0, 17 * 500);
+//                sheet.setColumnWidth(1, 7 * 500);
+//                sheet.setColumnWidth(2, 9 * 500);
+//                sheet.setColumnWidth(3, 7 * 500);
+//                sheet.setColumnWidth(4, 20 * 500);
+//                sheet.setColumnWidth(5, 13 * 500);
+//                sheet.setColumnWidth(6, 30 * 500);
+//                sheet.setColumnWidth(7, 13 * 500);
+//                sheet.setColumnWidth(8, 7 * 500);
+//                sheet.setColumnWidth(9, 7 * 500);
+//                sheet.setColumnWidth(10, 7 * 500);
+//
+//                //Título Superior ==============================================
+//                HSSFRow rowTitS = sheet.createRow(0);
+//                rowTitS.setHeight((short) 500);
+//                HSSFCell cabTitS = rowTitS.createCell(0);
+////                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + hmCANAL.get(bean.strCANAL).toString());
+//                cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.toString());
+//                cabTitS.setCellStyle(styles.get("cell_b_centered"));
+//                HSSFCell cabTitS11 = rowTitS.createCell(11);
+//                cabTitS11.setCellValue(" ");
+//                //rowFrom,rowTo,colFrom,colTo
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+//
+//                //Títulos Grilla ===============================================
+//                HSSFRow rowcab = sheet.createRow(1);
+//                rowcab.setHeight((short) 500);
+//                HSSFCell cab1 = rowcab.createCell(0);
+//                HSSFCell cab2 = rowcab.createCell(1);
+//                HSSFCell cab3 = rowcab.createCell(2);
+//                HSSFCell cab4 = rowcab.createCell(3);
+//                HSSFCell cab5 = rowcab.createCell(4);
+//                HSSFCell cab6 = rowcab.createCell(5);
+//                HSSFCell cab7 = rowcab.createCell(6);
+//                HSSFCell cab8 = rowcab.createCell(7);
+//                HSSFCell cab9 = rowcab.createCell(8);
+//                HSSFCell cab10 = rowcab.createCell(9);
+//                HSSFCell cab11 = rowcab.createCell(10);
+//
+//                styleName = "header";
+//
+//                cab1.setCellValue("Merchant Name");
+//                cab1.setCellStyle(styles.get(styleName));
+//                cab2.setCellValue("Merchant");
+//                cab2.setCellStyle(styles.get(styleName));
+//                cab3.setCellValue("Amount MXN");
+//                cab3.setCellStyle(styles.get(styleName));
+//                cab4.setCellValue("Application Date");
+//                cab4.setCellStyle(styles.get(styleName));
+//                cab5.setCellValue("Concept");
+//                cab5.setCellStyle(styles.get(styleName));
+//                cab6.setCellValue("Card Number");
+//                cab6.setCellStyle(styles.get(styleName));
+//                cab7.setCellValue("Ticket(s)");
+//                cab7.setCellStyle(styles.get(styleName));
+//                cab8.setCellValue("Status");
+//                cab8.setCellStyle(styles.get(styleName));
+//                cab9.setCellValue("Sales Date");
+//                cab9.setCellStyle(styles.get(styleName));
+//                cab10.setCellValue("Sending Date");
+//                cab10.setCellStyle(styles.get(styleName));
+//                cab11.setCellValue("Bank");
+//                cab11.setCellStyle(styles.get(styleName));
+//
+//                Integer cont = 2;
+//                for (int a = 0; a < listaData.size(); a++) {
+//                    bean = listaData.get(a);
+//
+//                    //QUIEBRE POR CANAL ========================================
+//                    if (!quiebreCanal.trim().isEmpty() && !quiebreCanal.trim().equals(bean.strCANAL.trim())) {
+//                        HSSFRow rowTot = sheet.createRow(cont);
+//                        HSSFCell cellT0 = rowTot.createCell(0);
+//                        HSSFCell cellT1 = rowTot.createCell(1);
+//                        HSSFCell cellT2 = rowTot.createCell(2);
+//                        styleName = "cell_b_centered";
+//                        cellT0.setCellValue(" ");
+//                        cellT0.setCellStyle(styles.get(styleName));
+//                        cellT1.setCellValue("TOTAL");
+//                        cellT1.setCellStyle(styles.get(styleName));
+//
+//                        styleName = "cell_totals_right";
+//                        if (quiebreCanal.equals("CCT")) {
+//                            cellT2.setCellValue(dblTotCC);
+//                            dblTotCC = 0;
+//                        } else {
+//                            cellT2.setCellValue(dblTotWEB);
+//                            dblTotWEB = 0;
+//                        }
+//                        cellT2.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        //LINEA EN BLANCO ======================================
+//                        HSSFRow rowLB1 = sheet.createRow(cont);
+//                        HSSFCell cellLB10 = rowLB1.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB10.setCellValue(" ");
+//                        cellLB10.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        HSSFRow rowLB2 = sheet.createRow(cont);
+//                        HSSFCell cellLB20 = rowLB2.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB20.setCellValue(" ");
+//                        cellLB20.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//                        HSSFRow rowLB3 = sheet.createRow(cont);
+//                        HSSFCell cellLB30 = rowLB3.createCell(0);
+//                        styleName = "cell_normal_centered";
+//                        cellLB30.setCellValue(" ");
+//                        cellLB30.setCellStyle(styles.get(styleName));
+//                        ++cont;
+//
+//                        if (quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
+//                            //Título Superior ======================================
+//                            HSSFRow rowTitS2 = sheet.createRow(cont);
+//                            rowTitS2.setHeight((short) 500);
+//                            HSSFCell cabTitS2 = rowTitS2.createCell(0);
+//                            cabTitS2.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo.trim());
+//                            cabTitS2.setCellStyle(styles.get("cell_b_centered"));
+//                            HSSFCell cabTitS2_11 = rowTitS2.createCell(11);
+//                            cabTitS2_11.setCellValue(" ");
+//                            //rowFrom,rowTo,colFrom,colTo
+//                            sheet.addMergedRegion(new CellRangeAddress(cont, cont, 0, 10));
+//                            ++cont;
+//
+//                            //Títulos Grilla =======================================
+//                            HSSFRow rowcab2 = sheet.createRow(cont);
+//                            rowcab2.setHeight((short) 500);
+//                            HSSFCell cab12 = rowcab2.createCell(0);
+//                            HSSFCell cab22 = rowcab2.createCell(1);
+//                            HSSFCell cab32 = rowcab2.createCell(2);
+//                            HSSFCell cab42 = rowcab2.createCell(3);
+//                            HSSFCell cab52 = rowcab2.createCell(4);
+//                            HSSFCell cab62 = rowcab2.createCell(5);
+//                            HSSFCell cab72 = rowcab2.createCell(6);
+//                            HSSFCell cab82 = rowcab2.createCell(7);
+//                            HSSFCell cab92 = rowcab2.createCell(8);
+//                            HSSFCell cab102 = rowcab2.createCell(9);
+//                            HSSFCell cab112 = rowcab2.createCell(10);
+//
+//                            styleName = "header";
+//
+//                            cab12.setCellValue("Merchant Name");
+//                            cab12.setCellStyle(styles.get(styleName));
+//                            cab22.setCellValue("Merchant");
+//                            cab22.setCellStyle(styles.get(styleName));
+//                            cab32.setCellValue("Amount MXN");
+//                            cab32.setCellStyle(styles.get(styleName));
+//                            cab42.setCellValue("Application Date");
+//                            cab42.setCellStyle(styles.get(styleName));
+//                            cab52.setCellValue("Concept");
+//                            cab52.setCellStyle(styles.get(styleName));
+//                            cab62.setCellValue("Card Number");
+//                            cab62.setCellStyle(styles.get(styleName));
+//                            cab72.setCellValue("Ticket(s)");
+//                            cab72.setCellStyle(styles.get(styleName));
+//                            cab82.setCellValue("Status");
+//                            cab82.setCellStyle(styles.get(styleName));
+//                            cab92.setCellValue("Sales Date");
+//                            cab92.setCellStyle(styles.get(styleName));
+//                            cab102.setCellValue("Sending Date");
+//                            cab102.setCellStyle(styles.get(styleName));
+//                            cab112.setCellValue("Bank");
+//                            cab112.setCellStyle(styles.get(styleName));
+//                            ++cont;
+//                        }
+//                    }
+//
+//                    if (!quiebreHoja.trim().isEmpty() && !quiebreHoja.trim().equals(bean.SCARCOD.trim())) {
+//
+//                        //======================================================
+//                        //======================================================
+//                        //Creando nueva hoja y sus respectivos títulos.
+//                        sheet = workbook.createSheet(bean.SCARCOD.trim());
+//
+//                        sheet.setColumnWidth(0, 17 * 500);
+//                        sheet.setColumnWidth(1, 7 * 500);
+//                        sheet.setColumnWidth(2, 9 * 500);
+//                        sheet.setColumnWidth(3, 7 * 500);
+//                        sheet.setColumnWidth(4, 20 * 500);
+//                        sheet.setColumnWidth(5, 13 * 500);
+//                        sheet.setColumnWidth(6, 30 * 500);
+//                        sheet.setColumnWidth(7, 13 * 500);
+//                        sheet.setColumnWidth(8, 7 * 500);
+//                        sheet.setColumnWidth(9, 7 * 500);
+//                        sheet.setColumnWidth(10, 7 * 500);
+//
+//                        //Título Superior ======================================
+//                        rowTitS = sheet.createRow(0);
+//                        rowTitS.setHeight((short) 500);
+//                        cabTitS = rowTitS.createCell(0);
+//                        cabTitS.setCellValue(bean.strDescCard.trim() + " CHARGE BACK DETAIL - " + bean.strTitulo);
+//                        cabTitS.setCellStyle(styles.get("cell_b_centered"));
+//                        cabTitS11 = rowTitS.createCell(11);
+//                        cabTitS11.setCellValue(" ");
+//
+//                        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+//                        //rowFrom,rowTo,colFrom,colTo
+//
+//                        //Títulos Grilla =======================================
+//                        rowcab = sheet.createRow(1);
+//                        rowcab.setHeight((short) 500);
+//                        cab1 = rowcab.createCell(0);
+//                        cab2 = rowcab.createCell(1);
+//                        cab3 = rowcab.createCell(2);
+//                        cab4 = rowcab.createCell(3);
+//                        cab5 = rowcab.createCell(4);
+//                        cab6 = rowcab.createCell(5);
+//                        cab7 = rowcab.createCell(6);
+//                        cab8 = rowcab.createCell(7);
+//                        cab9 = rowcab.createCell(8);
+//                        cab10 = rowcab.createCell(9);
+//                        cab11 = rowcab.createCell(10);
+//
+//                        styleName = "header";
+//
+//                        cab1.setCellValue("Merchant Name");
+//                        cab1.setCellStyle(styles.get(styleName));
+//                        cab2.setCellValue("Merchant");
+//                        cab2.setCellStyle(styles.get(styleName));
+//                        cab3.setCellValue("Amount MXN");
+//                        cab3.setCellStyle(styles.get(styleName));
+//                        cab4.setCellValue("Application Date");
+//                        cab4.setCellStyle(styles.get(styleName));
+//                        cab5.setCellValue("Concept");
+//                        cab5.setCellStyle(styles.get(styleName));
+//                        cab6.setCellValue("Card Number");
+//                        cab6.setCellStyle(styles.get(styleName));
+//                        cab7.setCellValue("Ticket(s)");
+//                        cab7.setCellStyle(styles.get(styleName));
+//                        cab8.setCellValue("Status");
+//                        cab8.setCellStyle(styles.get(styleName));
+//                        cab9.setCellValue("Sales Date");
+//                        cab9.setCellStyle(styles.get(styleName));
+//                        cab10.setCellValue("Sending Date");
+//                        cab10.setCellStyle(styles.get(styleName));
+//                        cab11.setCellValue("Bank");
+//                        cab11.setCellStyle(styles.get(styleName));
+//
+//                        cont = 2;
+//                        dblTotCC = 0;
+//                        dblTotWEB = 0;
+//                    }
+//
+//                    HSSFRow row = sheet.createRow(cont);
+//                    HSSFCell cell0 = row.createCell(0);
+//                    HSSFCell cell1 = row.createCell(1);
+//                    HSSFCell cell2 = row.createCell(2);
+//                    HSSFCell cell3 = row.createCell(3);
+//                    HSSFCell cell4 = row.createCell(4);
+//                    HSSFCell cell5 = row.createCell(5);
+//                    HSSFCell cell6 = row.createCell(6);
+//                    HSSFCell cell7 = row.createCell(7);
+//                    HSSFCell cell8 = row.createCell(8);
+//                    HSSFCell cell9 = row.createCell(9);
+//                    HSSFCell cell10 = row.createCell(10);
+//
+//                    styleName = "cell_normal_centered";
+//                    cell0.setCellValue(bean.MERCHNAM);
+//                    cell0.setCellStyle(styles.get(styleName));
+//                    cell1.setCellValue(bean.MERCHN);
+//                    cell1.setCellStyle(styles.get(styleName));
+//
+//                    styleName = "cell_normal_formato_right";
+//                    cell2.setCellValue(bean.AUTAMOUNT);
+//                    cell2.setCellStyle(styles.get(styleName));
+//
+//                    styleName = "cell_normal_centered";
+//                    cell3.setCellValue(bean.APLIDATE);
+//                    cell3.setCellStyle(styles.get(styleName));
+//                    cell4.setCellValue(bean.CONCEPT);
+//                    cell4.setCellStyle(styles.get(styleName));
+//                    cell5.setCellValue(bean.strDescripcion);
+//                    cell5.setCellStyle(styles.get(styleName));
+//                    cell6.setCellValue(bean.strTicket);
+//                    cell6.setCellStyle(styles.get(styleName));
+//                    cell7.setCellValue(bean.STUSOS);
+//                    cell7.setCellStyle(styles.get(styleName));
+//                    cell8.setCellValue(bean.SALEDATE);
+//                    cell8.setCellStyle(styles.get(styleName));
+//                    cell9.setCellValue(bean.FECR);
+//                    cell9.setCellStyle(styles.get(styleName));
+//                    cell10.setCellValue(bean.strDescBank);
+//                    cell10.setCellStyle(styles.get(styleName));
+//
+//                    if (bean.strCANAL.equals("CCT")) {
+//                        //CALL CENTER
+//                        dblTotCC += bean.AUTAMOUNT;
+//                    } else {
+//                        //WEB
+//                        dblTotWEB += bean.AUTAMOUNT;
+//                    }
+//
+//                    ++cont;
+//                    quiebreHoja = bean.SCARCOD.trim();
+//                    quiebreCanal = bean.strCANAL.trim();
+//
+//                }
+//
+//                //COLOCANDO TOTAL DE LA HOJA ANTERIOR POR CANAL ========
+//                HSSFRow rowTot = sheet.createRow(cont);
+//                HSSFCell cellT0 = rowTot.createCell(0);
+//                HSSFCell cellT1 = rowTot.createCell(1);
+//                HSSFCell cellT2 = rowTot.createCell(2);
+//                styleName = "cell_b_centered";
+//                cellT0.setCellValue(" ");
+//                cellT0.setCellStyle(styles.get(styleName));
+//                cellT1.setCellValue("TOTAL");
+//                cellT1.setCellStyle(styles.get(styleName));
+//
+//                styleName = "cell_totals_right";
+//                if (quiebreCanal.equals("CCT")) {
+//                    cellT2.setCellValue(dblTotCC);
+//                    dblTotCC = 0;
+//                } else {
+//                    cellT2.setCellValue(dblTotWEB);
+//                    dblTotWEB = 0;
+//                }
+//                cellT2.setCellStyle(styles.get(styleName));
+//
+////                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
+////                workbook.write(fos);
+////                fos.close();
+//                response.setContentType("application/vnd.openxml");
+//                response.setHeader("Content-Disposition", "attachment; filename=\"" + strFileName + "\"");
+//
+//                FileOutputStream fos = new FileOutputStream(rutaFile + "\\" + strFileName);
+//                workbook.write(response.getOutputStream());
+//                fos.close();
+//            }
+//        } catch (IOException e) {
+//            throw new SpringException(e);
+//        }
+//    }
+//    
+//    
     
    @RequestMapping(value = "executeOption")
     public @ResponseBody

@@ -5520,6 +5520,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 //</editor-fold>
                                             ]
                                         },
+                                        
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-boxDetBySAGENT',
@@ -5679,6 +5680,320 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                         },
                                     ]
                                 },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-vskIBT',
+                                    border: false,
+                                    width: '100%',
+                                    hidden: true,
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'center'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-panelIBT',
+//                                            hidden: true,
+                                            width: '100%',
+                                            bodyStyle: 'background: transparent;',
+                                            border: false,
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'center'
+                                            },
+                                            defaults: {
+                                                border: false,
+                                                height: '100%'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridIBT',
+                                                    bodyStyle: 'background: transparent;',
+                                                    width: 1500,
+                                                    titleAlign: 'center',
+                                                    columnLines: true,
+                                                    enableColumnMove: false,
+                                                    features: [{
+                                                            ftype: 'summary'
+                                                        }],
+                                                    plugins: {
+                                                        ptype: 'cellediting',
+                                                        clicksToEdit: 1
+                                                    },
+                                                    selModel: 'cellmodel',
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            resizable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Ticket', flex: 1,
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    resizable: true,
+                                                                    align: 'center',
+                                                                    border: true
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Number', flex: 1, width: 120, dataIndex: 'strTicket', //enableTextSelection :true,
+                                                                        listeners: {
+                                                                            click: 'gridData_act1_clickHandler'
+                                                                        },
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;background-color:#d5f4d5;';
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strTicket + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:none;">' + value + '</a>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Sales Date', dataIndex: 'SDATE', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Country', dataIndex: 'SCOUNTRY', width: 140,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.tdAttr = 'data-qtip="' + data.DESC_SCOUNTRY + '"';
+                                                                    return data.DESC_SCOUNTRY;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Doc SAP Bank', dataIndex: 'BANDOC', width: 130,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Invoice', dataIndex: 'INVOICE', width: 170,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Agent',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SAGENT', width: 75,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Agent Cons.', dataIndex: 'SCONSOL', width: 130,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Doc.Type', dataIndex: 'TDOC', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    let strTDOC = data.TDOC == 'A' ? 'Adjustment' :  'Sales';
+                                                                    metaData.tdAttr = 'data-qtip="' + strTDOC + '"';
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Credit Card',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Code', dataIndex: 'SCARCOD', width: 45,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Card Number', width: 140, dataIndex: 'strSCARDN',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = 'text-align:center;color:' + color + ';background-color:#b2e1ff;';
+                                                                            metaData.tdAttr = 'data-qtip="' + data.strSCARDN + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Author.', dataIndex: 'SAUTHOC', width: 70,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Cur.', dataIndex: 'SCURRENCY', width: 40,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdAttr = 'data-qtip="' + data.strSCURRENCY + '"';
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOP', width: 135,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                    metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return win.formatDblNumber(value);
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridIBT').getStore().getData().items[0].data;
+                                                                    return win.formatDblNumber(data.dblTotSVFOP);
+                                                                }
+                                                            },
+
+                                                            {
+                                                                text: 'Accounting',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'FCONT', width: 80,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Flag', dataIndex: 'STCON', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+
+                                                        ]
+                                                    },
+                                                }
+                                                //</editor-fold>
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-paginacion_IBT',
+                                            layout: {
+                                                type: 'hbox',
+                                                pack: 'center'
+                                            },
+                                            border: false,
+                                            width: 1500,
+                                            height: 25,
+                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                //                                    defaults: {
+                //                                        border: false,
+                //                                        padding: '0px 5px 0px 5px'
+                //                                    },
+                //                                    padding: '1px 5px 1px 5px',
+                                            items: [
+                                                {
+                                                    xtype: 'panel',
+                                                    width: 572,
+                                                    height: 25,
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        pack: 'center'
+                                                    },
+                                                    defaults: {
+                                                        xtype: 'label',
+                //                                                margin: '3px 0px 0px 5px'
+                                                    },
+                                                    items: [
+                                                        {
+                                                            text: 'Page',
+                                                            width: 50
+                                                        },
+                                                        {
+                                                            id: prototype.id + '-lbl-currentPage_IBT',
+                                                            text: '1',
+                                                            width: 50
+                                                        },
+                                                        {
+                                                            text: 'Of',
+                                                            width: 50
+                                                        },
+                                                        {
+                                                            id: prototype.id + '-lbl-pageCount_IBT',
+                                                            text: '0',
+                                                            width: 50
+                                                        },
+                                                        {xtype: 'tbspacer', width: 100},
+                                                        {
+                                                            text: 'Total found',
+                                                            width: 80
+                                                        },
+                                                        {
+                                                            id: prototype.id + '-lbl-total_IBT',
+                                                            text: '0',
+                                                            width: 50
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                
                                 // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
                                 {
                                     xtype: 'panel',

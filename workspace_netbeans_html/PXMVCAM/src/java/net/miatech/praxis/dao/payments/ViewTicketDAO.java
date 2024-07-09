@@ -135,6 +135,9 @@ public class ViewTicketDAO {
                 }
                 
                 objRtn.DATEC = rs01.getString("DATEC").trim();
+                objRtn.BANDOC = rs01.getString("BANDOC").trim();
+                objRtn.INVOICE = rs01.getString("INVOICE").trim();
+                objRtn.PAYDATE = rs01.getString("DPAYMEN").trim();
                 //VOID
                 //REVERSE POLICY
                 //REVERSE ADM

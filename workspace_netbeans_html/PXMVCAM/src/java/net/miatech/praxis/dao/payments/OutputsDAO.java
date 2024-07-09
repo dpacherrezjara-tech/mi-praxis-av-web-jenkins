@@ -56,7 +56,63 @@ public class OutputsDAO {
     public void setSession(IServerSession ss) {
         session = ss;
     }
+    
+    public List<A2353Filter> loadPX285SQP05106(A2353Filter filter) throws SQLException, Exception {
 
+        List<A2353Filter> lstData = new ArrayList<A2353Filter>(0);
+        A2353Filter beanTkt;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05106CORES(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                beanTkt = new A2353Filter();
+
+                beanTkt.CODE = rst.getString("CODE").trim();
+                beanTkt.NAME = rst.getString("NAME").trim();
+
+                lstData.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
     public List<A2353Filter> loadPX285SQP05104(A2353Filter filter) throws SQLException, Exception {
 
         List<A2353Filter> lstData = new ArrayList<A2353Filter>(0);
@@ -65,7 +121,7 @@ public class OutputsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05104(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05104(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -76,17 +132,15 @@ public class OutputsDAO {
             cstmt.setString(2, filter.IN_FILE.trim());
             cstmt.setString(3, filter.IN_PRDA.trim());
             cstmt.setString(4, filter.IN_DATE.trim());
+            cstmt.setString(5, filter.IN_CORE.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 bean = new A2353Filter();
-//                bean.TRAN = rst.getInt("TRAN");
                 bean.DDATA = rst.getString("DDATA").trim();
                 bean.DATEC = rst.getString("DATEC").trim();
                 bean.TRANC = rst.getString("TRANC").trim();
-//                bean.NEGOC = rst.getString("NEGOC").trim();
-
                 lstData.add(bean);
             }
             rst.close();
@@ -123,7 +177,7 @@ public class OutputsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -134,17 +188,13 @@ public class OutputsDAO {
             cstmt.setString(2, filter.IN_FILE.trim());
             cstmt.setString(3, filter.IN_PRDA.trim());
             cstmt.setString(4, filter.IN_DATE.trim());
+            cstmt.setString(5, filter.IN_CORE.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 bean = new A2353Filter();
-//                bean.TRAN = rst.getInt("TRAN");
-//                bean.DDATA = rst.getString("DDATA").trim();
-//                bean.DATEC = rst.getString("DATEC").trim();
-//                bean.TRANC = rst.getString("TRANC").trim();
                 bean.TRAMA = rst.getString("TRAMA").trim();
-
                 lstData.add(bean);
             }
             rst.close();

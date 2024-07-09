@@ -120,6 +120,32 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             ]
         }));
         cmbFecFiltro.setValue("PRDA");
+        
+        Ext.getCmp(prototype.id + '-cmbCores').setValue("");
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainCores',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbCores').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbCores').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                
+            }
+        });
 
     },
     //</editor-fold>
@@ -128,6 +154,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         me.bean = {};
         me.bean.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
+        me.bean.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
         var beanString = JSON.stringify(me.bean);
         console.log(me.bean);
         searchParams = {
@@ -137,8 +164,8 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 
     },
     btnSearch_click: function (obj, e) {
-//        this.setFormatParameter();
-//        this.setGridData();
+        this.setFormatParameter();
+        this.setGridData();
     },
     // <editor-fold defaultstate="collapsed" desc="setGridData">
     setGridData: function () {

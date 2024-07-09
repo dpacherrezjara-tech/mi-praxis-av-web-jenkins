@@ -159,6 +159,22 @@ public class A2295 {
     public long lngQNPROC = 0;
     public long lngTotalTran = 0;
     public long lngTotalProc = 0;
+    //NEW BY MPF100 ADM
+    public double SVFOPS = 0;
+    public long lngQSENT = 0;
+    public long lngQNSENT = 0;
+    public long lngQSENTANS = 0;
+    public long lngQSENTPEND = 0;
+    public long lngQSENTACCEP = 0;
+    public long lngQSENTREJ = 0;
+    public long lngTotQSENT = 0;
+    public long lngTotQNSENT = 0;
+    public long lngTotQSENTANS = 0;
+    public long lngTotQSENTPEND = 0;
+    public long lngTotQSENTACCEP = 0;
+    public long lngTotQSENTREJ = 0;
+    public String strDescStatus = "";
+    public String ERROR = "";
     
     
     public String USCR = "";

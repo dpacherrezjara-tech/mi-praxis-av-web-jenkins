@@ -1,6 +1,6 @@
 Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.'+prototype.id+'-info',
+    alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
     align: 'center',
     bodyStyle: 'background-color: #E3EAEF;',
@@ -23,13 +23,14 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                 height: 700,
                 align: 'center'
             },
-            
+
             items: [
                 {
                     xtype: 'panel',
                     id: prototype.id + '-panelMain',
                     bodyStyle: 'background-color: #E3EAEF;',
                     padding: '1',
+                    border: false,
                     margin: '1',
                     layout: {
                         type: 'vbox',
@@ -43,73 +44,129 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             padding: '1',
-                            border:false,
+                            border: false,
 //                            margin: '1',
-                             height: 550,
-                             width: 1000,  
+                            height: 550,
+                            width: 1000,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
                             },
-                            
+
                             items: [
                                 {
-                                    xtype: 'grid',
-                                    id: prototype.id+'-gridData',
-                                    height: 510,
-                                    width: 1000,
-                                    hidden: true,
-                                    columnLines: true,
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: true,
-                                            align: 'center'
-
+                                    xtype: 'panel',
+                                    width: '100%',
+                                    border: false,
+                                    layout: 'hbox',
+                                    bodyStyle: 'background: transparent;"',
+                                    defaults: {
+                                        margin: '10 0 10 0'
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Search By:',
+                                            padding: '3 0',
+//                                          hidden:true,
+                                            width: 60
                                         },
-                                        items: [
-                                            {text: 'Nbr', dataIndex: 'RN', width: 50},
-                                            {text: 'Code',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Message', dataIndex: 'CODEM', width: 100}
-                                                ]
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbFecFiltro',
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            width: 120,
+//                                          value: "ADATE",
+                                            typeAhead: true,
+                                            hidden: true,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            listConfig: {minWidth: 130},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
                                             }
-                                            ,
-                                            {text: 'Description', 
-                                                width: 780, 
-                                                align: 'center',
-                                                columns: [
-                                                    {text: '', dataIndex: 'DESCR', width: 780, align: 'left'}
-                                                ]
-                                            }
-                                            
-                                            ,
-                                            {
-                                                sortable: false,
-                                                xtype: 'actioncolumn',
-                                                width: 65,
-                                                text: 'Edit',
-                                                align: 'center',
-                                                items: [
-                                                    {
-                                                        iconCls: 'prx-icon-edit',
-                                                        tooltip: 'Edit',
-                                                        handler: 'onEditClick'
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
+                                        },
+                                        {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'combo',
+                                            margin: '10 0 0 10',
+                                            id: prototype.id + '-cmbDateFromYear',
+                                            fieldLabel: '',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            editable: false,
+                                            triggerAction: 'all',
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            hidden: false,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            emptyText: 'All',
+//                            labelWidth: 60,
+                                            width: 70,
+                                            anchor: '100%'
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            margin: '10 0 0 10',
+                                            id: prototype.id + '-cmbDateFromMonth',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            hidden: false,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            emptyText: 'All',
+                                            width: 70,
+                                            anchor: '100%'
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbCores',
+                                            margin: '10 0 0 10',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            width: 200,
+                                        },
+                                        {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btnTxtLIQUI',
+                                            icon: 'resources/img/botones/txt.png',
+                                            tooltip: 'Export to Txt Liquidacion',
+                                            padding: '3 0',
+                                        },
+                                        {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btnTxtSALE',
+                                            icon: 'resources/img/botones/txt.png',
+                                            tooltip: 'Export to Txt Sale',
+                                            padding: '3 0',
+                                        },
+                                    ]
                                 },
-                                { xtype: 'tbspacer', width: 7, height: 10},
+                                {xtype: 'tbspacer', width: 7, height: 10},
                                 {
                                     xtype: 'panel',
-                                    id: prototype.id +'-pie',
+                                    id: prototype.id + '-pie',
                                     layout: {
                                         type: 'hbox',
                                         pack: 'center'
@@ -166,29 +223,29 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                                     text: '0',
                                                     width: 50
                                                 }
-                                             ]
+                                            ]
                                         }
                                     ]
                                 }
-                            ]  
+                            ]
                         }
-                   ]                             
-        },
-        
-        {
-            region: 'south',
-            layout: 'border',
-            height: 0,
-            defaults: {
-                style: 'margin: 1px;',
-                bodyStyle: 'background: transparent;',
-                border: false
-            }
-          }
-        ]
-      }
-    ] 
-  }   
+                    ]
+                },
+
+                {
+                    region: 'south',
+                    layout: 'border',
+                    height: 0,
+                    defaults: {
+                        style: 'margin: 1px;',
+                        bodyStyle: 'background: transparent;',
+                        border: false
+                    }
+                }
+            ]
+        }
+    ]
+}
 );
 
 

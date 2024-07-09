@@ -214,6 +214,14 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                             displayInfo: false,
                             hidden: true
                         },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id+'-paggin19',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
                     ]
                 }
             ]
@@ -244,6 +252,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                                 click: 'btnFilter_click'
                             }
                         },
+                        
                         {
                             xtype:'button',
                             id: prototype.id+'-btnDisplay',

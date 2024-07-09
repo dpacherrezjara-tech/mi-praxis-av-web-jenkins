@@ -12,10 +12,13 @@ import net.miatech.beans.Pagination;
  */
 public class A2353Filter extends A2353 {
     
+     public String CODE = "";
+     public String NAME = "";
      public String IN_CODEM = "";
      public String IN_FILE = "";
      public String IN_PRDA = "";
      public String IN_DATE = "";
+     public String IN_CORE = "";
      public String IN_APLIC = "";
      public String IN_INPNAME = "";
      public String IN_OUTNAME = "";
