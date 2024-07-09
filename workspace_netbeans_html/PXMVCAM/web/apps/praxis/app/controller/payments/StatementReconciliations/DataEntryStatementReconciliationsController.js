@@ -26,6 +26,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     },
     afterRender: function () {
+        console.log('afterRender');
         switch (this.actionCode) {
             case 'U':
                 this.getData();
@@ -36,7 +37,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
     },
     obtainData: function () {
-
+        console.log('obtainData');
         this.dataObtain.CARD = 2;
         this.dataObtain.BANK = 2;
 
@@ -58,6 +59,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     mostrarData: function () {
+        console.log('mostrarData');
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
 
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
@@ -112,6 +114,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function () {
+        console.log('llenarData');
         var bean = {};
         bean.TDOC = this.getValue("de-txtTDOC");
         bean.CODEBANK = this.getValue("de-txtCODEBANK");
@@ -140,6 +143,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         return bean;
     },
     getData: function () {
+        console.log('getData');
         meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
@@ -172,6 +176,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     onSearchCompleteDetail: function () {
+        console.log('onSearchCompleteDetail');
         meDE.bean.data.IN_FROMADATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
@@ -217,6 +222,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     //</editor-fold>
     calcularMontos: function () {
+        console.log('calcularMontos');
         var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         var store = grid.getStore();
         var calculateButton = this.lookupReference('calculateButton');
@@ -259,6 +265,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
     },
     calcularDiferencias: function () {
+        console.log('calcularDiferencias');
         var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
         var store = grid.getStore();
@@ -493,41 +500,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         this.sumAmount = 0;
     },
-    allRefreshDataEntry: function () {
-        this.onSearchPendingDetail();
-    },
-    viewDetail: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
-        meDE.bean.data.IN_FROMADATE = rowData.data.FLIQUIDACI;
-        meDE.bean.data.IN_MERCHAND = rowData.data.MERCHAND;
-        meDE.bean.data.IN_LIQUIDACIO = rowData.data.LIQUIDACIO;
-
-        var beanString = JSON.stringify(meDE.bean.data);
-        Ext.Ajax.request({
-            url: prototype.url + '/searchBean_PRE_DETAIL',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            params: {beanString: beanString},
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
-
-                if (res.success) {
-                    var storeDataNormal = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
-
-                    meDE.calcularMontos();
-                } else {
-                    global.Msg({msg: res.Mensaje});
-                }
-            }
-        });
-
-    },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
         let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
         let chkKEY = Ext.getCmp(prototype.id01 + '-chkKEY').getValue();
@@ -661,26 +633,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             }
         });
     },
-    pagFirst: function (obj, e) {
-
-        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
-        pag.moveFirst();
-    },
-    pagPrevious: function (obj, e) {
-
-        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
-        pag.movePrevious();
-    },
-    pagNext: function (obj, e) {
-
-        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
-        pag.moveNext();
-    },
-    pagLast: function (obj, e) {
-
-        var pag = Ext.getCmp(prototype.id + '-paggin_Agrupa');
-        pag.moveLast();
-    },
     validateFields: function () {
         var msj = '';
         var bean = searchParams.bean;
@@ -696,8 +648,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('txtBANDOC', '');
         this.setValue('txtSCURRENCY', '');
         this.setValue('txtNETO', '');
-        this.setValue('txtQTYTRAN1', '');
-        this.setValue('txtQTYTRAN3', '');
         this.setValue('txtUSCR', '');
         this.setValue('txtFECR', '');
         this.setValue('txtHOCR', '');
@@ -786,7 +736,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
-        var BSVFOPHead = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmountHead').getValue().replace(/,/g, '').replace('.00', ''));
         var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
         var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
         var ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
@@ -901,40 +850,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         var datosEnJSON = Ext.JSON.encode(listaDeDatos);
         return datosEnJSON;
     },
-
-    procesarRegistrosHeader: function (grilla) {
-        var listaDeDatos = [];
-        grilla.getStore().each(function (record) {
-
-            let registro = {
-                CCUST: record.get('CCUST').trim(),
-                PRDA: record.get('PRDA').trim(),
-                CODPRO: record.get('CODPRO').trim(),
-                FLIQUIDACI: record.get('FLIQUIDACI').trim(),
-                LIQUIDACIO: record.get('LIQUIDACIO').trim(),
-                MERCHAND: record.get('MERCHAND').trim(),
-                MONEDA: record.get('MONEDA').trim(),
-                MONEDALIQ: record.get('MONEDALIQ').trim(),
-                PAISLIQ: record.get('PAISLIQ').trim(),
-                TOTAL: record.get('TOTAL'),
-                COMISION: record.get('COMISION'),
-                NETO: record.get('NETO'),
-                VALDATE: Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue(),
-                DATECI: Ext.getCmp(prototype.id + '-de-txtDATECI').getValue(),
-                TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
-                TDOC: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(),
-                MERCHAND: Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue(),
-                BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
-                NETOC: parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''))
-            };
-
-            listaDeDatos.push(registro);
-        });
-
-        console.log(listaDeDatos, 'listaDeDatos');
-        var datosEnJSON = Ext.JSON.encode(listaDeDatos);
-        return datosEnJSON;
-    },
     validacionInsert: function (beanTemp) {
         var msjResult = '';
 
@@ -942,29 +857,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             msjResult = "Document type cannot be empty.";
         }
         return msjResult;
-    },
-    DeshabilitarCampoClave: function () {
-
-    },
-    Habilitarlbl: function () {
-        Ext.getCmp(prototype.id + '-lblDescripcion').show();
-        Ext.getCmp(prototype.id + '-txtDESSOU').hide();
-        Ext.getCmp(prototype.id + '-lbldes2').show();
-    },
-    desHabilitartxt: function () {
-        if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
-            Ext.getCmp(prototype.id + '-lbldes').hide();
-        } else {
-            Ext.getCmp(prototype.id + '-lbldes').show();
-        }
-    },
-    Habilitarlbl1: function () {
-        Ext.getCmp(prototype.id + '-lbldes').hide();
-        if (this.getValue("txtCODSOUR") == '') {
-            Ext.getCmp(prototype.id + '-lbldes2').hide();
-        } else {
-            Ext.getCmp(prototype.id + '-lbldes2').show();
-        }
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {

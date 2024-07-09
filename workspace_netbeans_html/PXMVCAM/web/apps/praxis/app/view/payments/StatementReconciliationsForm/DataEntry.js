@@ -1167,7 +1167,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             border: false,
                                             margin: '0 0 0 350',
                                             items: [
-                                                {xtype: 'tbspacer', width: 390},
+                                                {xtype: 'tbspacer', width: 340},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Qty:',
