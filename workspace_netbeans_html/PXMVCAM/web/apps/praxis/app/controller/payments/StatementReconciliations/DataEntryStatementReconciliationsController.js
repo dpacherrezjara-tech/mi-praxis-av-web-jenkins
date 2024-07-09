@@ -182,7 +182,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_DATECI = meDE.beanResult.DATECI;
         meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI;
         meDE.bean.data.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
-        meDE.bean.data.IN_FUNDSTRGK = meDE.beanResult.FUNDSTRGK;
 
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
@@ -382,7 +381,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
         this.beanDetails.IN_RED = meDE.bean.data.RED;
         this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
-        this.beanDetails.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
         if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
             this.beanDetails.IN_STVAL = '1';
         } else {
@@ -451,7 +449,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('txtFromSDATE', null);
         this.setValue('txtToSDATE', null);
         this.setValue('txtACCNUMBER', '');
-        this.setValue('txtFUNDSTRGK', '');
         this.setValue('txtNETO', '');
         this.setValue('cmbSCARCOD', '');
 
@@ -552,14 +549,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             meDE.bean.data.IN_ACCNUMBER = '';
         }
 
-        meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
-        if (meDE.bean.data.IN_FUNDSTRGK === '') {
-            meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-de-txtKEY').getValue();
-        }
-        if (!chkKEY) {
-            meDE.bean.data.IN_FUNDSTRGK = '';
-        }
-
         meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
         if (meDE.bean.data.IN_MERCHAND === '') {
             meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
@@ -594,7 +583,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 !this.bean.data.IN_SCARCOD &&
                 !this.bean.data.IN_ACCNUMBER &&
                 !this.bean.data.IN_VALDATE &&
-                !this.bean.data.IN_FUNDSTRGK &&
                 !this.bean.data.IN_strNETO
                 ) {
             global.Msg({msg: 'Fields to Scan must be filled out'});
@@ -617,7 +605,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let listAux = {};
 
         for (let value of arrayNormal) {
-            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
+            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
         }
 
         var beanString = JSON.stringify(meDE.bean.data);
@@ -634,14 +622,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 if (res.success) {
                     let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
                     for (let item of res.data) {
-                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.FUNDSTRGK}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
+                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
                             continue
                         }
                         lstNormal.push({
                             descSTVAL: item.descSTVAL,
                             CCUST: item.CCUST,
                             descTDOC: item.descTDOC,
-                            FUNDSTRGK: item.FUNDSTRGK,
                             SDATE: item.SDATE,
                             SAGENT: item.SAGENT,
                             TERMI: item.TERMI,
