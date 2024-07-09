@@ -462,7 +462,7 @@ public class LoadExchangeRateDAO {
                 objRtn.ADATE = rs01.getString("ADATE").trim();
                 objRtn.NETO = rs01.getDouble("NETO");
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
-                objRtn.MERCHNC = rs01.getString("UNICODE").trim();
+                objRtn.MERCHNC = rs01.getString("MERCHAND").trim();
                 objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
                 objRtn.COREP = rs01.getString("COREP").trim();
                 objRtn.SOCIETY = rs01.getString("SOCIETY").trim();
