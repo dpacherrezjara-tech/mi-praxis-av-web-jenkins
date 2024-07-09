@@ -45,6 +45,7 @@ public class A2290 {
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String COREP = "";
+    public String CORES = "";
     public String strSCURRENCY = "";
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
