@@ -388,7 +388,7 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_CARDBYF(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_SAGENTBYF(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -441,8 +441,8 @@ public class ViewADMDAO {
                     beanTkt.IN_SCURRENCY = filter.IN_SCURRENCY.trim();
                     beanTkt.IN_SCOUNTRY = filter.IN_SCOUNTRY.trim();
                     
-                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
-                    beanTkt.strDescCard = rst.getString("SCARCODN").trim();
+                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
+//                    beanTkt.strDescCard = rst.getString("SCARCODN").trim();
                     beanTkt.TOT_QTY = rst.getLong("CANTIDAD");
                     beanTkt.TOT_SVFOP = rst.getLong("MONTO");
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE.trim());
@@ -517,7 +517,7 @@ public class ViewADMDAO {
             cstmt.setString(4, filter.IN_FRCV.trim());
             cstmt.setString(5, filter.IN_SCURRENCY.trim());
             cstmt.setString(6, filter.IN_SCOUNTRY.trim());
-            cstmt.setString(7, filter.IN_SCARCOD.trim());
+            cstmt.setString(7, filter.IN_SAGENT.trim());
             
             cstmt.setInt(8, filter.page.PAGNUM);
             cstmt.setInt(9, filter.page.PAGROW);

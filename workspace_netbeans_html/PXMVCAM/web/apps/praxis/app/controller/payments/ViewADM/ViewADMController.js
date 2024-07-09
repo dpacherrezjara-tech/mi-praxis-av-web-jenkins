@@ -135,10 +135,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["PRDA", "Proc Date"]
+                ["SDATE", "Sales Date"]
             ]
         }));
-        cmbFecFiltro.setValue("PRDA");
+        cmbFecFiltro.setValue("SDATE");
         
         
 //        var cmbSPAYMENT = Ext.getCmp(prototype.id + '-cmbSPAYMENT');
@@ -318,48 +318,28 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         
         console.log(columnNum, 'columnNum')
         switch (columnNum) {
-            case 0:
-                console.log('ENTRA AL MATCH');
-                this.beanDetCountry.IN_TDOC = 'A'
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = ''
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Total ADM'
-                cantidad = rowData.data.lngQTKT;
-                break;
             case 1:
-                console.log('ENTRA AL NPROC');
                 this.beanDetCountry.IN_TDOC = 'A'
                 this.beanDetCountry.IN_FSEND = 'Y'
                 this.beanDetCountry.IN_FRCV = ''
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Sent Agency'
                 cantidad = rowData.data.lngQSENT;
                 break;
-            case 5:
-                console.log('ENTRA AL NPROC');
-                this.beanDetCountry.IN_TDOC = 'A'
-                this.beanDetCountry.IN_FSEND = 'P'
-                this.beanDetCountry.IN_FRCV = ''
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Pendings'
-                cantidad = rowData.data.lngQNSENT;
-                break;
-            case 4:
-                console.log('ENTRA AL MATCH');
-                this.beanDetCountry.IN_TDOC = 'A'
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = 'A'
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Answered'
-                cantidad = rowData.data.lngQSENTANS;
-                break;
             case 2:
-                console.log('ENTRA AL NPROC');
                 this.beanDetCountry.IN_TDOC = 'A'
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = 'P'
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Not Answered'
                 cantidad = rowData.data.lngQSENTPEND;
                 break;
+            case 4:
+                this.beanDetCountry.IN_TDOC = 'A'
+                this.beanDetCountry.IN_FSEND = ''
+                this.beanDetCountry.IN_FRCV = 'A'
+                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Answered'
+                cantidad = rowData.data.lngQSENTANS;
+                break;
             case 5:
-                console.log('ENTRA AL NPROC');
                 this.beanDetCountry.IN_TDOC = 'A'
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = '1'
@@ -367,7 +347,6 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 cantidad = rowData.data.lngQSENTACCEP;
                 break;
             case 6:
-                console.log('ENTRA AL NPROC');
                 this.beanDetCountry.IN_TDOC = 'A'
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = '2'
@@ -512,7 +491,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         this.beanDetDetailByF.IN_FRCV = rowData.data.IN_FRCV;
         this.beanDetDetailByF.IN_SCURRENCY = rowData.data.IN_SCURRENCY;
         this.beanDetDetailByF.IN_SCOUNTRY = rowData.data.IN_SCOUNTRY;
-        this.beanDetDetailByF.IN_SCARCOD = rowData.data.SCARCOD;
+        this.beanDetDetailByF.IN_SAGENT = rowData.data.SAGENT;
         this.beanDetDetailByF.IN_TITLE = rowData.data.strTitulo;
         console.log(this.beanDetDetailByF.IN_TITLE, 'this.beanDetDetailByF.IN_TITLE')
         console.log( this.beanDetDetailByF, ' this.beanDetDetailByF')
@@ -777,6 +756,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
         console.log(rec, 'recccccccccccc')
+        console.log(me.panelActual, 'me.panelActual')
         Ext.create('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
             id: prototype.id + '-dataEntry',
             params: {
@@ -784,7 +764,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 rec: rec,
                 lstCountry: me.lstCountry,
                 paramsRefresh: me.paramsDetail,
-                instancia: me
+                instancia: me,
+                panel: me.panelActual
             }
         }).show();
     },

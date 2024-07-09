@@ -4,6 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDe: '',
     meC: '',
+    panelGrid: '',
     actionCode: '',
     bean: {},
     bean_detail: {},
@@ -24,6 +25,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         this.bean = this.p.rec;
         this.paramsRefresh = this.p.paramsRefresh;
         meC = this.p.instancia;
+        this.panelGrid = this.p.panel;
+        console.log(this.panelGrid, 'this.panelGrid')
 //        this.lstCard = this.p.lstCard;
 //        this.lstBank = this.p.lstBank;
 //        this.lstCountry = this.p.lstCountry;
@@ -647,10 +650,18 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     },
     onCancelClick: function (btn) {
         this.view.close();
-        
-//        meC.setGridDataDetDetailByF()
-//        meC.setGridDataDetailByEyes()
-//        meC.setGridDataDetailByEyesCountry()
+        console.log(meDe.panelGrid, 'panelGridddddddddd')
+        if(meDe.panelGrid == '-panelGridDataDetDetailByF'){
+            console.log('entra al primer if')
+            meC.setGridDataDetDetailByF()
+        }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyes'){
+            console.log('entra al segundo if')
+            meC.setGridDataDetailByEyes()
+        }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyesCountry'){
+            console.log('entra al tercer if')
+            meC.setGridDataDetailByEyesCountry()  
+        }
+     
     },
     // </editor-fold>
 
