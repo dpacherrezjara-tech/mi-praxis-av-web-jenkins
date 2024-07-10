@@ -288,8 +288,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 }, listeners: {
                     beforeload: function (obj) {
                         obj.proxy.extraParams = searchParams;
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                     },
                     load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -386,8 +388,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 }, listeners: {
                     beforeload: function (obj) {
                         obj.proxy.extraParams = me.paramsDetail;
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                     },
                     load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin2');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -450,8 +454,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 }, listeners: {
                     beforeload: function (obj) {
                         obj.proxy.extraParams = me.paramsDetail;
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                     },
                     load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -513,8 +519,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 }, listeners: {
                     beforeload: function (obj) {
                         obj.proxy.extraParams = me.paramsDetail;
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                     },
                     load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin4');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -646,8 +654,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 }, listeners: {
                     beforeload: function (obj) {
                         obj.proxy.extraParams = me.paramsDetail;
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                     },
                     load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin6');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -701,8 +711,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 }, listeners: {
                     beforeload: function (obj) {
                         obj.proxy.extraParams = me.paramsDetail;
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                     },
                     load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin7');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
