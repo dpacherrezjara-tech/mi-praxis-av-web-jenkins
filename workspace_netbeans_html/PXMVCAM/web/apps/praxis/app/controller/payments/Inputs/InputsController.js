@@ -217,12 +217,14 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         });
     },
     ChangechkLOG: function (checkboxfield, newValue, oldValue, eOpts) {
-
+        console.log(newValue, 'newValue')
         if (newValue) {
             Ext.getCmp(prototype.id + '-cmbPrograma').show();
+            Ext.getCmp(prototype.id + '-cmbFUENTE').hide();
             this.obtainDataComboLog();
         } else {
             Ext.getCmp(prototype.id + '-cmbPrograma').hide();
+            Ext.getCmp(prototype.id + '-cmbFUENTE').show();
             this.btnSearch_click();
         }
 
@@ -332,7 +334,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
 
         var user = $('#menuUser').text();
         console.log(user);
-        if (user === 'SAP01D' || user === 'SAP12D' || user === 'SAP07D' || user === 'SAP48D' || user === 'SAP52D' ||
+        if (user.includes('SAP') ||
                 user === 'ADM2' || user === 'OPER2' || user === 'OPER3' || user === 'OPER6' ||
                 user === 'OPER7' || user === 'OPER9') {
             Ext.getCmp(prototype.id + '-chkLOG').show();
