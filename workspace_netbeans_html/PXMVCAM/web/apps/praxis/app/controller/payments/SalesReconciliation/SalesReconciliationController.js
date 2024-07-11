@@ -694,6 +694,23 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
         win.displayCustomViewTicket(this, 'ViewConciliation', this.beanProMasterTicket);
     },
+    gridData_act1_clickHandler_IBT: function (column, e, row, column, x, rowData) {
+        var data = x.record.data;
+        var strTkt = data.strTicket;
+        this.beanProMasterTicket = {};
+        this.beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
+        this.beanProMasterTicket.IN_FORMA = strTkt.substr(4, 4);
+        this.beanProMasterTicket.IN_SERIE = strTkt.substr(8, 6);
+        this.beanProMasterTicket.IN_SEQ = '00';
+        console.log(this.beanProMasterTicket, 'beanProMasterTicket')
+        
+        prototypeProgram.view = 'payments-sales-reconciliation-form';
+        prototypeProgram.nprog = 'PX00000263';
+        prototypeProgram.title = 'Sales Reconciliation by Ticket';
+        prototypeProgram.modulo = '';
+
+        win.displayProMasterTicket(this, 'ViewConciliation', this.beanProMasterTicket);
+    },
     gridDetCardS_clickHandler: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCardS');
@@ -1146,7 +1163,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     exportExcel: function () {
 
         switch (this.peek()) {
-            case  prototype.id + '-boxMainData':          
+            case  prototype.id + '-boxMainData':
+                console.log('boxMainData')
                 global.getFile(prototype.url + '/getXLSX?beanString=' + JSON.stringify(this.bean));
                 break;
             case prototype.id + '-boxDetCountryS':
@@ -1202,6 +1220,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 var beanDetailAgent = {}
                 beanDetailAgent.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue()
                 global.getFileExcelPost('searchBySAGENT', JSON.stringify(beanDetailAgent), Ext.getCmp(prototype.id + '-gridDetBySAGENT').config.columns.items);
+                break;
+            case prototype.id + '-panelIBT':
+                console.log(me.beanIBT, 'me.beanIBT')
+                global.getFile(prototype.url + '/getXLSXIBT?beanString=' + encodeURI(JSON.stringify(me.beanIBT)));
                 break;
 //            case  prototype.id + '-boxDetTktS':          
 //                global.getFile(prototype.url + '/getXLSXDetailMain?beanString=' + JSON.stringify(this.beanDetailTar));
@@ -1865,8 +1887,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     var beanCons = res.beanCons;
-                    console.log(beanCons, 'beanCons')
-                    console.log(beanCons.DATABASE, 'DATABASE')
                     if (beanCons !== undefined ) {
                         var DataEntryTicket = Ext.create('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             id: 'DataEntryTicketSalesReconciliationForm'
@@ -2891,7 +2911,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     Ext.getCmp(prototype.id + '-lbl-pageCount_IBT').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-total_IBT').setText(Ext.util.Format.number(pagData.total, '0,000'));
 
-//                    me.selectedChild('vskIBT', 'panelIBT');
+                    me.selectedChild('vskIBT', 'panelIBT');
                     win.lblUser_toolTip("Estructura: MPF100");
 
                     var res = Ext.JSON.decode(response._response.responseText);

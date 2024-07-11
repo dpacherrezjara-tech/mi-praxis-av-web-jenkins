@@ -5744,7 +5744,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     {
                                                                         text: 'Number', flex: 1, width: 120, dataIndex: 'strTicket', //enableTextSelection :true,
                                                                         listeners: {
-                                                                            click: 'gridData_act1_clickHandler'
+                                                                            click: 'gridData_act1_clickHandler_IBT'
                                                                         },
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
