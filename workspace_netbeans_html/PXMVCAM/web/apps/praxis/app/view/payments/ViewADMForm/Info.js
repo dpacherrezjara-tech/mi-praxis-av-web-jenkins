@@ -557,12 +557,269 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
 //BAJADA A DETALLE
                         {
                             xtype: 'panel',
+                            id: prototype.id + '-panelGridDataDet',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+                            height: 'auto',
+                            hidden:true,
+                            width: 1302,
+                            margin: '10 0 0 0 ',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDet',
+                                    bodyStyle: 'background: transparent;',
+                                    width: 1302,
+                                    titleAlign: 'center',
+                                    columnLines: true,
+                                    enableColumnMove: false,
+                                    plugins: {
+                                        ptype: 'cellediting',
+                                        clicksToEdit: 1
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            resizable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Status', dataIndex: 'strDescStatus', width: 135,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                    metaData.tdAttr = 'data-qtip="' + data.strFlagStat + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Number',  width: 120, dataIndex: 'strTicket', //enableTextSelection :true,
+                                                listeners: {
+                                                    click: 'gridData_act1_clickHandler'
+                                                },
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;background-color:#d5f4d5;';
+                                                    metaData.tdAttr = 'data-qtip="' + data.STVAL + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:none;">' + value + '</a>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Sales',
+//                                                id: prototype.id + '-hcDetTktS',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Date', dataIndex: 'SDATE', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Send Date', dataIndex: 'DSEND', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DSEND + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Day Diff', dataIndex: 'DIFFD', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DIFFD + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Agent',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SAGENT', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Country',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SCOUNTRY', width: 60,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCountry + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Credit Card',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SCARCOD', width: 45,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Card Number', width: 150, dataIndex: 'strDescCard',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = 'text-align:center;color:' + color + ';background-color:#CCFFFF;';
+                                                            metaData.tdAttr = 'data-qtip="' + data.strSCARDN + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Author.', dataIndex: 'SAUTHOC', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Cur.', dataIndex: 'SCURRENCY', width: 40,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount', dataIndex: 'SVFOPS', width: 105,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    console.log(value, 'amount detalle')
+                                                    return win.formatDblNumber(value);
+                                                }
+                                            },
+                                            {
+                                                text: 'PNR', dataIndex: 'SPNR', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Error',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'ERROR', width: 155,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:left;color:" + color + ";";
+                                                            metaData.tdAttr = 'data-qtip="' + data.ERROR + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'View', dataIndex: '', width: 40,
+                                                listeners: {
+                                                    click: 'viewDataEntry_clickHandler'
+                                                },
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.tdAttr = 'data-qtip="View"';
+                                                    var src = 'resources/img/botones/16x16/1326498593_018.png';
+                                                    return '<a href="#payments-view-A-D-M-form"><img src="' + src + '"></a>';
+                                                }
+                                            }
+                                        ]
+                                    },
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
                             id: prototype.id + '-panelGridDataDetDetailByF',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1142,
+                            width: 1302,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -573,7 +830,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetailByF',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1142,
+                                    width: 1302,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -634,6 +891,28 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Send Date', dataIndex: 'DSEND', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DSEND + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Day Diff', dataIndex: 'DIFFD', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DIFFD + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Agent',
@@ -797,7 +1076,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1142,
+                            width: 1302,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -808,7 +1087,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetailByEyes',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1142,
+                                    width: 1302,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -869,6 +1148,28 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Send Date', dataIndex: 'DSEND', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DSEND + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Day Diff', dataIndex: 'DIFFD', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DIFFD + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Agent',
@@ -1033,7 +1334,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1142,
+                            width: 1302,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1044,7 +1345,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetailByEyesCountry',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1142,
+                                    width: 1302,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -1105,6 +1406,28 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Send Date', dataIndex: 'DSEND', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DSEND + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Day Diff', dataIndex: 'DIFFD', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.DIFFD + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Agent',

@@ -176,6 +176,8 @@ public class A2295 {
     public long lngTotQSENTREJ = 0;
     public String strDescStatus = "";
     public String ERROR = "";
+    public String DSEND = "";
+    public String DIFFD = "";
     
     
     public String USCR = "";

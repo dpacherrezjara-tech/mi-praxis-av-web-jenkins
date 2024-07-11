@@ -477,7 +477,7 @@ public class ViewADMController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
 
-            lst = logic.loadPX290MPS077_DET(filter); // LLAMA AL METODO LOGIC CON LOS FILTROS CONFIGURADOS
+            lst = logic.loadPX644SQPMPF100ADM_DET(filter); // LLAMA AL METODO LOGIC CON LOS FILTROS CONFIGURADOS
         } catch (Exception e) {
             throw new SpringException(e);
         }

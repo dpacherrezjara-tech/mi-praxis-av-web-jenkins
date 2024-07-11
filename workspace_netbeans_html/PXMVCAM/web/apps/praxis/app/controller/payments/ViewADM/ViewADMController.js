@@ -292,7 +292,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                     },
                     load: function (obj) {
                         Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin3');
+                        var pag = Ext.getCmp(prototype.id + '-paggin5');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -311,7 +311,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataDet').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
         }
     },
 
@@ -749,11 +749,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
     },
 
     viewDataEntry_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        
-        if (rowData.data.STVAL === '1' || rowData.data.STVAL === '4' || rowData.data.STVAL === '5') {
-            global.Msg({msg: 'Can\'t adjust a blocked ticket.'});
-            return false
-        }
+         
         let beanTicket = {}
         beanTicket.CCIA = rowData.data.CCIA
         beanTicket.FORMA = rowData.data.FORMA
@@ -761,6 +757,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         beanTicket.TDOC = rowData.data.TDOC
         beanTicket.SCARDNCOR = rowData.data.SCARDNCOR
         beanTicket.SAUTHOC = rowData.data.SAUTHOC
+        beanTicket.STVAL = rowData.data.STVAL
         console.log(beanTicket, 'beanTicket')
         this.winDataEntry('U', beanTicket);
     },
@@ -982,7 +979,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
             case  '-panelGridDataDetDetailByF':
                 me.pagginActual = '-paggin4';
                 break
-            case  '-panelGridDataMainDay':
+            case  '-panelGridDataDet':
                 me.pagginActual = '-paggin5';
                 break;
             case  '-panelGridDataDetDetailByEyes':
