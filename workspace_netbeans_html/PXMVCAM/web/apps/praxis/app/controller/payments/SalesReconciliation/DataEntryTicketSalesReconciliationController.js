@@ -49,6 +49,32 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
     //<editor-fold defaultstate="collapsed" desc="mostrarData">
     mostrarData: function() {
         console.log(this.bean, 'this.bean')
+        let objTDOCSALES = {
+            S: "Sales",
+            A: "Adjust."
+        }
+        let objTDOCDEBITS = {
+            R: "Refund",
+            C: "Chargeback",
+            A: "Acredit."
+        }
+        let objSource = {
+            B: "BSP",
+            A: "ARC",
+            S: "ASR"
+        }
+        let objStatus = {
+            1: "Match",
+            2: "Sales without Reconcili.",
+            3: "Trans. without Reconcili.",
+            4: "Match with Differences",
+            5: "Match Manual"
+        }
+        console.log(objTDOCSALES, 'objTDOC')
+        console.log(objTDOCSALES.S, 'objTDOC.S')
+        console.log(objTDOCSALES["S"], 'objTDOC["S"]')
+        console.log(objStatus[this.bean.STVAL], 'objStatus[this.bean.STVAL]')
+        console.log(this.bean.DATABASE,'this.bean.DATABASE')
         var res = '';
         win.setValue('2-txtSCARCOD', this.bean.SCARCOD.trim()+" - "+this.bean.strSDescCard.trim());
         Ext.create('Ext.tip.ToolTip', {
@@ -64,12 +90,15 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         
         win.setValue('2-txtTicket', this.bean.strTicket.trim());
         win.setValue("2-txtSEQ", this.bean.SEQ.trim());
-        win.setValue('2-cmbTDOC', this.bean.TDOC);
+        if(this.bean.DATABASE == 'MPF100'){
+            win.setValue('2-cmbTDOC', objTDOCSALES[this.bean.TDOC]);
+        }else{
+            win.setValue('2-cmbTDOC', objTDOCDEBITS[this.bean.TDOC]);
+        }
+//        win.setValue('2-cmbTDOC', this.bean.TDOC);
        
-        
-        
-        win.setValue('2-cmbFTE', this.bean.FTE);
-        win.setValue('2-cmbSTVAL', this.bean.STVAL);
+        win.setValue('2-cmbFTE', objSource[this.bean.FTE]);
+        win.setValue('2-cmbSTVAL', objStatus[this.bean.STVAL]);
         //<editor-fold defaultstate="collapsed" desc="style Error">
 //        if(bean.CERROR == "13" || bean.CERROR == "14"){
 //		txtSVFOP.styleName = "CSS0001TextError";

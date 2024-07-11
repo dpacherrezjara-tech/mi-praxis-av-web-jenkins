@@ -76,37 +76,28 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             padding: '3 0'
                         },
                         {
-                            xtype: 'combobox',
+                            xtype: 'textfield',
                             id: prototype.id + '-2-cmbTDOC',
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    [null, "&nbsp;"],
-                                    ["S", "Sales"],
-                                    ["R", "Refund"],
-                                    ["A", "Adjust."]
-                                ]
-                            }),
-                            fieldStyle: 'color:#074066;',
-                            queryMode: 'local',
-                            forceSelection: true,
-                            selectOnFocus: false,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: false,
+//                            store: new Ext.data.SimpleStore({
+//                                fields: ['code', 'name'],
+//                                data: [
+//                                    [null, "&nbsp;"],
+//                                    ["S", "Sales"],
+//                                    ["R", "Refund"],
+//                                    ["A", "Adjust."]
+//                                ]
+//                            }),
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
                             width: 90,
-                            disabled: true,
-                            value: null,
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
+//                            maxLength: 14,
+                            readOnly: true,
                             listeners: {
-                                select: function (comp, record, index) {
-                                    if (comp.rawValue === "&nbsp;") {
-                                        comp.setValue(null);
-                                    }
-                                }
+//                                select: function (comp, record, index) {
+//                                    if (comp.rawValue === "&nbsp;") {
+//                                        comp.setValue(null);
+//                                    }
+//                                }
                             }
                         },
                         {xtype: 'tbspacer', width: 2},
@@ -118,37 +109,28 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             padding: '3 0'
                         },
                         {
-                            xtype: 'combobox',
+                            xtype: 'textfield',
                             id: prototype.id + '-2-cmbFTE',
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    [null, "&nbsp;"],
-                                    ["B", "BSP"],
-                                    ["A", "ARC"],
-                                    ["S", "ASR"]
-                                ]
-                            }),
-                            fieldStyle: 'color:#074066;',
-                            queryMode: 'local',
-                            forceSelection: true,
-                            selectOnFocus: false,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: false,
+//                            store: new Ext.data.SimpleStore({
+//                                fields: ['code', 'name'],
+//                                data: [
+//                                    [null, "&nbsp;"],
+//                                    ["B", "BSP"],
+//                                    ["A", "ARC"],
+//                                    ["S", "ASR"]
+//                                ]
+//                            }),
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
                             width: 90,
-                            disabled: true,
-                            value: "",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
+//                            maxLength: 14,
+                            readOnly: true,
                             listeners: {
-                                select: function (comp, record, index) {
-                                    if (comp.rawValue === "&nbsp;") {
-                                        comp.setValue(null);
-                                    }
-                                }
+//                                select: function (comp, record, index) {
+//                                    if (comp.rawValue === "&nbsp;") {
+//                                        comp.setValue(null);
+//                                    }
+//                                }
                             }
                         },
                         {xtype: 'tbspacer', width: 3},
@@ -160,38 +142,30 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             padding: '3 0'
                         },
                         {
-                            xtype: 'combobox',
+                            xtype: 'textfield',
                             id: prototype.id + '-2-cmbSTVAL',
-                            store: new Ext.data.SimpleStore({
-                                fields: ['code', 'name'],
-                                data: [
-                                    [null, "&nbsp;"],
-                                    ["1", "Match"],
-                                    ["", "Sales without Reconcili."],
-                                    ["3", "Reconcili. without Sales"],
-                                    ["4", "Match with Differences"],
-                                    ["5", "Match Manual"]
-                                ]
-                            }),
-                            fieldStyle: 'color:#074066;',
-                            queryMode: 'local',
-                            forceSelection: true,
-                            selectOnFocus: false,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: false,
+//                            store: new Ext.data.SimpleStore({
+//                                fields: ['code', 'name'],
+//                                data: [
+//                                    [null, "&nbsp;"],
+//                                    ["1", "Match"],
+//                                    ["", "Sales without Reconcili."],
+//                                    ["3", "Reconcili. without Sales"],
+//                                    ["4", "Match with Differences"],
+//                                    ["5", "Match Manual"]
+//                                ]
+//                            }),
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
                             width: 150,
-                            disabled: true,
-                            value: "",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            triggerAction: 'all',
+//                            maxLength: 14,
+                            readOnly: true,
                             listeners: {
-                                select: function (comp, record, index) {
-                                    if (comp.rawValue === "&nbsp;") {
-                                        comp.setValue(null);
-                                    }
-                                }
+//                                select: function (comp, record, index) {
+//                                    if (comp.rawValue === "&nbsp;") {
+//                                        comp.setValue(null);
+//                                    }
+//                                }
                             }
                         }
                     ]
