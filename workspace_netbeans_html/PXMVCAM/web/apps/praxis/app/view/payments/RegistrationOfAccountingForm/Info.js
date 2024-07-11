@@ -59,26 +59,12 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Info', {
                                         },
                                         items: [
                                             {text: 'Nbr.', dataIndex: 'RN', width: 50},
-                                            {text: 'Procesing<br>Date', dataIndex: 'A4556PSTGD', width: 80},
-                                            {text: 'Generation <br>Date', dataIndex: 'A4556FFILE', width: 80},
-                                            {text: 'Type File', dataIndex: 'A4556TFILE_0', width: 180},
-                                            {text: 'Qty.<br>Records', dataIndex: 'A4556TREGI', align: 'right', width: 90},
-                                            {text: 'Qty.<br>Files', dataIndex: 'A4556NARCH', width: 70},
-                                            {text: 'Status', dataIndex: 'A4556ESTAD', width: 120},                                            
-                                            {
-                                                sortable: false,
-                                                xtype: 'actioncolumn',
-                                                width: 70,
-                                                text: 'Download',
-                                                align: 'center',
-                                                items: [
-                                                    {
-                                                        iconCls: 'prx-icon-download',
-                                                        tooltip: 'Download',
-                                                        handler: 'onDownloadClick'
-                                                    }
-                                                ]
-                                            }
+                                            {text: 'Id<br>Date', dataIndex: 'A4545IDCON', width: 80},
+                                            {text: 'Procesing<br>Date', dataIndex: 'A4545PSTGD', width: 80},
+                                            {text: 'Generation <br>Date', dataIndex: 'A4556PSTGD', width: 80},
+                                            {text: 'Mode', dataIndex: 'A4545MODO_0', width: 180},
+                                            {text: 'Reference', dataIndex: 'A4545REFD', width: 180},
+                                            {text: 'Qty.<br>Records', dataIndex: 'ITEMS', align: 'right', width: 90}                                    
                                         ]
                                     }
                                 }

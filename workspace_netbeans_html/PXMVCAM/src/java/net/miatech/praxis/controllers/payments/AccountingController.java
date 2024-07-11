@@ -28,6 +28,7 @@ import net.miatech.praxis.logic.payments.AccountingLogic;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.payment.filter.SQP05252Filter;
 import net.miatech.praxis.payment.filter.SQP05253Filter;
+import net.miatech.praxis.payment.filter.SQP05352Filter;
 import net.miatech.praxis.payment.filter.SQP05343Filter;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -120,6 +121,39 @@ public class AccountingController extends BaseController {
             logic = new AccountingLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.getSQP05253Filter(filter);
+
+            map.put("success", true);
+            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
+            map.put("data", listaData);
+        } catch (NumberFormatException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "/searchRegistration")
+    public @ResponseBody
+    String searchRegistration(ModelMap map, HttpServletRequest request) {
+        List<SQP05352Filter> listaData;
+        SQP05352Filter filter;
+        filter = new SQP05352Filter();
+        filter.page.TOTROW = -1;
+        filter.page.START = 0;
+        filter.page.LIMIT = 0;
+        try {
+
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            logic = new AccountingLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+            listaData = logic.getSQP05352Filter(filter);
 
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);

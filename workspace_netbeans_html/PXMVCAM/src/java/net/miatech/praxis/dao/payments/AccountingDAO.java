@@ -17,6 +17,7 @@ import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.payment.filter.SQP05252Filter;
 import net.miatech.praxis.payment.filter.SQP05253Filter;
 import net.miatech.praxis.payment.filter.SQP05343Filter;
+import net.miatech.praxis.payment.filter.SQP05352Filter;
 import org.apache.log4j.Logger;
 
 /**
@@ -86,17 +87,18 @@ public class AccountingDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(6, Types.VARCHAR);
             cstmt.registerOutParameter(7, Types.VARCHAR);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.registerOutParameter(8, Types.VARCHAR);
+            //cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, "134");
             cstmt.setString(2, filter.VP_FECHA_INI);
             cstmt.setString(3, filter.VP_FECHA_FIN);
             cstmt.setString(4, filter.VP_FECHA_CIE);
             cstmt.setString(5, filter.VP_USER);
-            cstmt.setString(5, filter.VP_TIPO);
+            cstmt.setString(6, filter.VP_TIPO);
             cstmt.execute();
-            filter.dbException.SQLCODE = cstmt.getString(6);
-            filter.dbException.MESSAGE = cstmt.getString(7);
+            filter.dbException.SQLCODE = cstmt.getString(7);
+            filter.dbException.MESSAGE = cstmt.getString(8);
 
         } finally {
             if (cstmt != null) {
@@ -166,6 +168,90 @@ public class AccountingDAO {
                 bean.A4556USR = rst.getString("A4556USR").trim();
                 bean.A4556FECR = rst.getString("A4556FECR").trim();
                 bean.A4556HORA = rst.getString("A4556HORA").trim();
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    public List<SQP05352Filter> getSQP05352Filter(SQP05352Filter filter) throws SQLException, Exception {
+
+        List<SQP05352Filter> lstData = new ArrayList<SQP05352Filter>(0);
+        SQP05352Filter bean;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05352(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.VP_OPCION);
+            cstmt.setString(3, filter.VP_FDATE1);
+            cstmt.setString(4, filter.VP_FDATE2);
+
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                bean = new SQP05352Filter();
+                bean.RN = rst.getInt("RN");
+                bean.A4545CCUST = rst.getString("A4545CCUST").trim();
+                bean.A4545IDCON = rst.getString("A4545IDCON").trim();
+                bean.A4545DOCBA = rst.getString("A4545DOCBA").trim();
+                bean.A4545PSTGD = rst.getString("A4545PSTGD").trim();
+                //bean.A4556FFILE = rst.getString("A4556FFILE").trim();
+                //bean.A4556TFILE = rst.getString("A4556TFILE").trim();
+                bean.A4545MODO_0 = rst.getString("A4545MODO_0").trim();
+                bean.A4545REFD = rst.getString("A4545REFD").trim();   
+
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;
