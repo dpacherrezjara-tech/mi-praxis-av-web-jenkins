@@ -35,15 +35,22 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     },
     afterRender: function () {
         
+        if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
+           Ext.getCmp(prototype.id + '-btn-update').hide();
+           Ext.getCmp(prototype.id + '-PanelComments').hide();
+        }else{
+           Ext.getCmp(prototype.id + '-btn-update').show();
+           Ext.getCmp(prototype.id + '-PanelComments').show();
+        }
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-delete').hide();
         Ext.getCmp(prototype.id + '-btn-cancel').show();
         
         this.onSearchPendingDetail();
-        Ext.getCmp(prototype.id + '-btn-update').show();
+        
         Ext.getCmp(prototype.id + '-btn-reverse').hide();
-//            Ext.getCmp(prototype.id + '-panelAdjustment').show();
+            
 
 //        meDe.agregaTicket(meDe.bean);
     },
@@ -651,16 +658,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     onCancelClick: function (btn) {
         this.view.close();
         console.log(meDe.panelGrid, 'panelGridddddddddd')
-        if(meDe.panelGrid == '-panelGridDataDetDetailByF'){
-            console.log('entra al primer if')
-            meC.setGridDataDetDetailByF()
-        }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyes'){
-            console.log('entra al segundo if')
-            meC.setGridDataDetailByEyes()
-        }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyesCountry'){
-            console.log('entra al tercer if')
-            meC.setGridDataDetailByEyesCountry()  
-        }
+        
      
     },
     // </editor-fold>
@@ -732,8 +730,19 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                                 icon: 1,
                                 fn: function () {
                                     //exito
-                                    meDe.onSearchPendingDetail();
-                                    
+                                    if(meDe.panelGrid == '-panelGridDataDetDetailByF'){
+                                        console.log('entra al primer if')
+                                        meC.setGridDataDetDetailByF()
+                                    }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyes'){
+                                        console.log('entra al segundo if')
+                                        meC.setGridDataDetailByEyes()
+                                    }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyesCountry'){
+                                        console.log('entra al tercer if')
+                                        meC.setGridDataDetailByEyesCountry()  
+                                    }else if(meDe.panelGrid == '-panelGridDataDet'){
+                                        meC.setGridDataDetail()
+                                    }
+                                    Ext.getCmp(prototype.id + '-dataEntry').close()
                                     
                                 }
                             });
@@ -1164,11 +1173,11 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     },
     onWindowNormal: function () {
         if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
-            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
+//            Ext.getCmp(prototype.id + '-tabMain').setWidth(944);
 
         } else {
-            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
-            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 296');
+//            Ext.getCmp(prototype.id + '-tabMain').setWidth(1024);
+//            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 296');
         }
     },
     onWindowBlocked: function () {

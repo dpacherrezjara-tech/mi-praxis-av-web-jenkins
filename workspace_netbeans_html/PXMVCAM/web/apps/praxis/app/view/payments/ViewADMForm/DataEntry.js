@@ -706,7 +706,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                                     xtype: 'grid',
                                                                     id: prototype.id + '-gridDataInfoScan',
                                                                     width: 1107,
-                                                                    height: 90,
+                                                                    height: 110,
                                                                     columnLines: true,
                                                                     plugins: [
                                                                         {
