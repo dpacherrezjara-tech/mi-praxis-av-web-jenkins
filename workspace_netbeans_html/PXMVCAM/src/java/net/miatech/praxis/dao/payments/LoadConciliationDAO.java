@@ -3094,6 +3094,8 @@ public class LoadConciliationDAO {
                     beanTkt.strFormatDate = filter.strFormatDate.trim();
                     beanTkt.strSCARF = strSCARF;
                     beanTkt.strDescCountry = filter.strDescCountry.trim();
+                    beanTkt.DATABASE = filter.DATABASE.trim();
+
 
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
@@ -3257,6 +3259,7 @@ public class LoadConciliationDAO {
                 beanTkt.strFormatDate = filter.strFormatDate.trim();
                 beanTkt.strSCARF = strSCARF;
                 beanTkt.strDescCountry = filter.strDescCountry.trim();
+                beanTkt.DATABASE = filter.DATABASE.trim();
 
                 beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
@@ -3386,6 +3389,7 @@ public class LoadConciliationDAO {
                 beanTkt.strFormatDate = filter.strFormatDate.trim();
                 beanTkt.strSCARF = strSCARF;
                 beanTkt.strDescCountry = filter.strDescCountry.trim();
+                beanTkt.DATABASE = filter.DATABASE.trim();
 
 //                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
@@ -3514,6 +3518,7 @@ public class LoadConciliationDAO {
                 beanTkt.strFormatDate = filter.strFormatDate.trim();
                 beanTkt.strSCARF = strSCARF;
                 beanTkt.strDescCountry = filter.strDescCountry.trim();
+                beanTkt.DATABASE = filter.DATABASE.trim();
 
 //                beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
