@@ -59,6 +59,7 @@ public class AccountingDAO {
             cstmt.registerOutParameter(5, Types.VARCHAR);
             cstmt.registerOutParameter(6, Types.VARCHAR);
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            //cstmt.setString(1, "134");
             cstmt.setString(2, filter.VP_PSTGD1);
             cstmt.setString(3, filter.VP_PSTGD2);
             cstmt.setString(4, filter.VP_TIPO);
@@ -89,8 +90,8 @@ public class AccountingDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.registerOutParameter(7, Types.VARCHAR);
             cstmt.registerOutParameter(8, Types.VARCHAR);
-            //cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(1, "134");
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            //cstmt.setString(1, "134");
             cstmt.setString(2, filter.VP_FECHA_INI);
             cstmt.setString(3, filter.VP_FECHA_FIN);
             cstmt.setString(4, filter.VP_FECHA_CIE);
@@ -221,6 +222,7 @@ public class AccountingDAO {
             cstmt.registerOutParameter(8, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            //cstmt.setString(1, "134");
             cstmt.setString(2, filter.VP_OPCION);
             cstmt.setString(3, filter.VP_FDATE1);
             cstmt.setString(4, filter.VP_FDATE2);
@@ -250,7 +252,8 @@ public class AccountingDAO {
                 //bean.A4556FFILE = rst.getString("A4556FFILE").trim();
                 //bean.A4556TFILE = rst.getString("A4556TFILE").trim();
                 bean.A4545MODO_0 = rst.getString("A4545MODO_0").trim();
-                bean.A4545REFD = rst.getString("A4545REFD").trim();   
+                bean.A4545REFD = rst.getString("A4545REFD").trim();
+                bean.A4545ITEMS = rst.getString("A4545ITEMS").trim();   
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

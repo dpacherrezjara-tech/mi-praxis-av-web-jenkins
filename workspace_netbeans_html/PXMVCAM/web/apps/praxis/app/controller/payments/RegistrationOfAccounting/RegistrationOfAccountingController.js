@@ -80,7 +80,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
         return msj;
     },
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A4556");
+        win.lblUser_toolTip("Estructura: A4545");
         var msj = this.validateFields();
         if (msj !== '') {
             global.Msg({msg: msj
@@ -88,7 +88,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
         } else {
             var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
                 proxy: {
-                    url: prototype.url + '/search'
+                    url: prototype.url + '/searchRegistration'
                 }, listeners: {
                     beforeload: function (obj) {
                         Ext.getCmp(prototype.id + '-panel-contenedor-grid').mask('Loading...');
@@ -147,5 +147,25 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
                 rec: rec
             }
         }).show();
+    },
+    btnPagFirst_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.moveFirst();
+    },
+    btnPagPrev_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.movePrevious();
+    },
+    btnPagAfter_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.moveNext();
+    },
+    btnPagLast_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.moveLast();
     }
 });

@@ -19,7 +19,7 @@ public class SQP05352Filter extends A4545 {
     public String VP_FDATE1 = "";
     public String VP_FDATE2 = "";
     public String A4545MODO_0 = "";
-    public String ITEMS = "";
+    public String A4545ITEMS = "";
     public Integer RN = 0;
     public Pagination page = new Pagination();
 }
