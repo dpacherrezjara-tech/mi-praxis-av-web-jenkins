@@ -22,29 +22,37 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btn-pag-first',
                             iconCls: 'prx-icon-pagination-first',
-                            tooltip: 'First Page'
-
+                            tooltip: 'First Page',
+                            listeners: {
+                                click: 'btnPagFirst_click'
+                            }
                         },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btn-pag-previous',
                             iconCls: 'prx-icon-pagination-previous',
-                            tooltip: 'Previous Page'
-
+                            tooltip: 'Previous Page',
+                            listeners: {
+                                click: 'btnPagPrev_click'
+                            }
                         },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btn-pag-next',
                             iconCls: 'prx-icon-pagination-next',
-                            tooltip: 'Next Page'
-
+                            tooltip: 'Next Page',
+                            listeners: {
+                                click: 'btnPagAfter_click'
+                            }
                         },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btn-pag-last',
                             iconCls: 'prx-icon-pagination-last',
-                            tooltip: 'Last Page'
-
+                            tooltip: 'Last Page',
+                            listeners: {
+                                click: 'btnPagLast_click'
+                            }
                         },
                         {
                             xtype: 'pagingtoolbar',

@@ -44,8 +44,10 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         var vl_carga = "X";
         var vl_correo = "X";
         var vl_ajuste = "X";
+        var vl_otros = "X";
         var vl_debito = "X";
         var vl_exterior = "X";
+        var vl_fp = "X";
         
         var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
         var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
@@ -53,15 +55,19 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
         var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
         var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
+        var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
+        var vl_ck08 = Ext.getCmp(prototype.id + '-ck07').getValue();
                 
         if(vl_ck01) vl_pasaje = 'P';
         if(vl_ck02) vl_carga = 'A';
         if(vl_ck03) vl_correo = 'C'; 
         if(vl_ck04) vl_ajuste = 'J';
-        if(vl_ck05) vl_debito = 'D'; 
-        if(vl_ck06) vl_exterior = 'E'; 
+        if(vl_ck05) vl_otros = 'O';
+        if(vl_ck06) vl_debito = 'D'; 
+        if(vl_ck07) vl_exterior = 'E';
+        if(vl_ck08) vl_fp = 'F';
         
-        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior; 
+        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_otros + vl_debito + vl_exterior + vl_fp; 
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {

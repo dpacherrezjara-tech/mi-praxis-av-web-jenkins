@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
     title: 'Processing',
     header: true,
 //    height:920,
-    width: 550,
+    width: 650,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -102,7 +102,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             xtype: 'checkbox',
                                             id: prototype.id + '-ck05',
                                             name: prototype.id + '-ck',
-                                            boxLabel: 'Debit',
+                                            boxLabel: 'Other',
                                             margin: '2 2 2 10',
                                             checked: false
                                         },
@@ -110,7 +110,23 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             xtype: 'checkbox',
                                             id: prototype.id + '-ck06',
                                             name: prototype.id + '-ck',
+                                            boxLabel: 'Debit',
+                                            margin: '2 2 2 10',
+                                            checked: false
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck07',
+                                            name: prototype.id + '-ck',
                                             boxLabel: 'Exterior',
+                                            margin: '2 2 2 10',
+                                            checked: false
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: prototype.id + '-ck08',
+                                            name: prototype.id + '-ck',
+                                            boxLabel: 'FP',
                                             margin: '2 2 2 10',
                                             checked: false
                                         }
