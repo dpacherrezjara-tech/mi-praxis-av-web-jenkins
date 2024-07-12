@@ -956,13 +956,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
     //<editor-fold defaultstate="collapsed" desc="Options">
     btnSearch_click: function (obj, e) {
-        
+        console.log(Ext.getCmp(prototype.id + '-chkADYEN').getValue(), 'wadaafafaaaafaf') 
         if( Ext.getCmp(prototype.id + '-vskIBT').isVisible()){
             this.setStoreDataIBT()
         }else{
             if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== '' || win.getValue('txtSAGENT').trim() !== ''
-                    || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '' || win.getValue('cmbSource').trim() !== '' || win.getValue('cmbDebitType') !== ''
-                    || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''  ) {
+                    || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '' || win.getValue('cmbSource').trim() !== '' || win.getValue('cmbDebitType') !== '' || win.getValue('cmbADJTYPE') !== ''
+                    || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-chkADYEN').getValue() ) {
                 //***********CONSULTA A DETALLE***********
                 if( win.getValue('txtTicket').trim() !== '' && win.getValue('txtTicket').trim().length !== 13 ){
                     win.setValue('txtTicket', '');
@@ -1024,13 +1024,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.beanDetailTar.IN_SAGENT = win.getValue('txtSAGENT');
                 this.beanDetailTar.IN_SPNR = win.getValue('txtPNR');
                 this.beanDetailTar.IN_STVAL = win.getValue('cmbStatus');
+                this.beanDetailTar.IN_ADJTYPE = win.getValue('cmbADJTYPE');
                 this.beanDetailTar.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
                 this.beanDetailTar.IN_DEBTYPE = win.getValue('cmbDebitType');
-
+                console.log(Ext.getCmp(prototype.id + '-chkADYEN').getValue(), 'wadaafafaaaafaf')        
                 if (win.getValue('chkADYEN')) {
-                    this.beanDetailTar.IN_ADYEN = 'Y';
+                    this.beanDetailTar.IN_TDOC = 'A';
                 } else {
-                    this.beanDetailTar.IN_ADYEN = '';
+                    this.beanDetailTar.IN_TDOC = 'S';
                 }
                 let consultPath = ''
                 switch (win.getValue('cmbTDOC')) {
@@ -1112,11 +1113,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.bean.IN_AUTHNBR = win.getValue('txtAUTHNBR').trim();
                 this.bean.IN_SAGENT = win.getValue('txtSAGENT').trim();
                 this.bean.IN_SPNR = win.getValue('txtPNR').trim();
-                if (win.getValue('chkADYEN')) {
-                    this.bean.IN_ADYEN = 'Y';
-                } else {
-                    this.bean.IN_ADYEN = '';
-                }
+                
                 //            if(vskPrincipal.selectedChild == boxCharts){
                 //                    with(boxSearchFilter){visible = false; includeInLayout = false}
                 //                    imgFilter.toolTip = (boxSearchFilter.visible == true) ? 'Hidden filter' : 'Display filter';
@@ -1290,6 +1287,31 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
                 
+            }
+        });
+        
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainDataAdjs',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    //llenar grilla gridDataInfoScan
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.lstData,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
             }
         });
         

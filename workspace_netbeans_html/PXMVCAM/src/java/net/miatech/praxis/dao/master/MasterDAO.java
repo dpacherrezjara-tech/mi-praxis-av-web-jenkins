@@ -1528,11 +1528,68 @@ public class MasterDAO {
         String strSQL = "";
         List<A2280> listaAdjs = new ArrayList<>();
         A2280 adjs;
+        adjs = new A2280();
+        adjs.CODE = "";
+        adjs.NAME = "All";
+        listaAdjs.add(adjs);
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
 
-            strSQL = "SELECT CODETB CODE, DESCRE1 NAME FROM PRAXISMP.A4169 WHERE TTABLA = '89' AND CODETB <> ''";
+            strSQL = "SELECT CODETB CODE, DESCRE1 NAME FROM PRAXISMP.A4169 WHERE CCUST = '134' AND TTABLA = '89' AND CODETB <> ''";
+
+            //con = Proveedor.getConnectionIS(user);
+            stmt = cnx.createStatement();
+            rst = stmt.executeQuery(strSQL);
+
+            while (rst.next()) {
+                adjs = new A2280();
+                adjs.CODE = rst.getString("CODE").trim();
+                adjs.NAME = rst.getString("NAME").trim();
+
+                listaAdjs.add(adjs);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rst != null) {
+                    try {
+                        rst.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        logError.error("Message: " + e.getMessage(), e);
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return listaAdjs;
+    }
+    
+    public List<A2280> loadADMType() {
+
+        //Connection con = null;
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaAdjs = new ArrayList<>();
+        A2280 adjs;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            strSQL = "SELECT CODETB CODE, DESCRE1 NAME FROM PRAXISMP.A4169 WHERE CCUST = ''134'' AND TTABLA = '89' AND CODETB IN (''03'',''04'',''06'')";
 
             //con = Proveedor.getConnectionIS(user);
             stmt = cnx.createStatement();
