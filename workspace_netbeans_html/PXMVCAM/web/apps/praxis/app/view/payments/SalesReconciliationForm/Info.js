@@ -4560,7 +4560,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                             },
                                                             {
-                                                                text: 'Error',
+                                                                text: 'Comment / Adj.Type',
                                                                 defaults: {
                                                                     menuDisabled: true,
                                                                     sortable: false,
@@ -4572,8 +4572,16 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                                            console.log(data.DATABASE, 'dataBASE')
+                                                                            if(data.DATABASE == 'MPF100' && data.TDOC == 'A'){
+                                                                                value = data.CREJEC
+                                                                                metaData.tdAttr = 'data-qtip="' + data.CREJEC + '"';
+                                                                            } else{
+                                                                                value = data.CERROR
+                                                                                metaData.tdAttr = 'data-qtip="' + data.CERROR + '"';
+                                                                            }
                                                                             metaData.style = "text-align:left;color:" + color + ";";
-                                                                            metaData.tdAttr = 'data-qtip="' + data.CERROR + '"';
+                                                                            
                                                                             return value;
                                                                         }
                                                                     }

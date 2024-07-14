@@ -955,7 +955,84 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     {xtype: 'tbspacer', width: 60},
                                     {
                                         xtype: 'label',
-                                        text: 'Prof. Cent. Bank',
+                                        text: 'Acc. Numb Old',
+                                        style: 'font-weight:bold;',
+                                        width: 90
+                                    },
+                                    {xtype: 'tbspacer', width: 30},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-ACCNUMOLD',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 20,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 130
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Date Discount.',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 15},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-DDISCON',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 8,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 120
+                                    },
+                                    {xtype: 'tbspacer', width: 120},
+                                    {
+                                        xtype: 'label',
+                                        text: 'ID Fiscal',
+                                        style: 'font-weight:bold;',
+                                        width: 80
+                                    },
+                                    {xtype: 'tbspacer', width: 10},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-IDFISCAL',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 20,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 155
+                                    }, 
+                                ]
+                            },
+                            {
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    pack: 'center' 
+                                },
+                                border: false,
+                                bodyStyle: 'background:#E5ECEF;',
+                                margin: '20 2 4 20',
+                                defaults: {
+                                    anchor: '100%',
+                                    width: 1129
+                                },
+                                id: prototype.id + '-bSection_4',
+                                items: [
+                                    {xtype: 'tbspacer', width: 60},
+                                    {
+                                        xtype: 'label',
+                                        text: 'Prof. Cent',
                                         style: 'font-weight:bold;',
                                         width: 115
                                     },

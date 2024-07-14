@@ -68,6 +68,7 @@ public class A2290Filter extends A2290 {
     public String IN_SEQ = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
+    public String IN_ADJTYPE = "";
     public String IN_FROMADATEHE = "";
     public String IN_TOADATEHE = "";
     public String IN_LIQUIDACIOHE = "";

@@ -140,6 +140,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-BANKCUR_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-ACCNUMB_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-ACCNUMA_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-ACCNUMOLD_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-DDISCON_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-IDFISCAL_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-BENCEN_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-DEUSAP_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-SAGENT_D').setEditable(true);
@@ -213,7 +216,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('BANKCM_D', this.bean.data.BANKCM)
         this.setValue('BANKCUR_D', this.bean.data.BANKCUR)
         this.setValue('ACCNUMB_D', this.bean.data.ACCNUMB)
+        this.setValue('ACCNUMOLD_D', this.bean.data.ACCNUMOLD)
+        this.setValue('DDISCON_D', this.bean.data.DDISCON)
         this.setValue('ACCNUMA_D', this.bean.data.ACCNUMA)
+        this.setValue('IDFISCAL_D', this.bean.data.IDFISCAL)
         this.setValue('BENCEN_D', this.bean.data.BENCEN)
         this.setValue('DEUSAP_D', this.bean.data.DEUSAP)
         this.setValue('SAGENT_D', this.bean.data.SAGENT)
@@ -259,7 +265,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.IN_FRANC4 = this.getValue("de-txtFRANCH4_D")
         beanTemp.IN_BANKCM = this.getValue("BANKCM_D")
         beanTemp.IN_BANKCUR = this.getValue("BANKCUR_D")
+        beanTemp.IN_ACCNUMOLD = this.getValue("ACCNUMOLD_D")
+        beanTemp.IN_DDISCON = this.getValue("DDISCON_D")
         beanTemp.IN_ACCNUMA = this.getValue("ACCNUMA_D")
+        beanTemp.IN_IDFISCAL = this.getValue("IDFISCAL_D")
         beanTemp.IN_BENCEN = this.getValue("BENCEN_D")
         beanTemp.IN_DEUSAP = this.getValue("DEUSAP_D")
         beanTemp.IN_CANAL = this.getValue("CANAL_D")

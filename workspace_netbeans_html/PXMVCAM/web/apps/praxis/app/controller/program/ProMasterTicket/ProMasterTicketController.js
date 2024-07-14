@@ -1237,7 +1237,37 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
                         win.setValue('lblAgencyIATACity', (me01.beanResultSet01.fileA1007.A1007NOMCD !== '') ? me01.beanResultSet01.fileA1007.A1007NOMCD : ((me01.beanResultSet01.fileA003.A003CIUDAD !== '') ? me01.beanResultSet01.fileA003.A003CIUDAD : me01.beanResultSet01.fileA003.A003PROVIN));
                         win.setValue('lblAgencyGroup', '');
                         win.setValue('lblPassengerName', me01.beanResultSet01.fileA720.A720PAX);
-                        //win.setValue('lblChargeback', me01.beanResultSet01.fileA720.A2289_ESTADO);
+//                        win.setValue('lblChargebackss', 'Chargeback');
+//                        Ext.getCmp(prototype.id + '-lblChargebackss').setText('Chargeback');
+
+                        Ext.Ajax.request({
+                            url: prototype.url+'/validateCHGBK',
+                            method: 'POST',
+                            timeout: 60000000,
+                            params: {beanString: JSON.stringify(bean)},
+                            beforerequest: Ext.getBody().mask('Loading...'),
+                            success: function(response, options){
+                                Ext.getBody().unmask();
+                                var res = Ext.JSON.decode(response.responseText);
+                                if (res.success){
+                                    let objResponse = res.result
+                                    if(objResponse.MESSAGE == 'YES'){
+                                       Ext.getCmp(prototype.id + '-lblChargebackss').setText('Chargeback');
+                                       Ext.getCmp(prototype.id + '-lblChargebackss').show() 
+                                    }else{
+                                        Ext.getCmp(prototype.id + '-lblChargebackss').hide();
+                                    }
+                                        
+                                }else{
+                                        Ext.getCmp(prototype.id + '-lblChargebackss').hide();
+                                }
+                            },
+                            failure: function(response, opts) {
+                                Ext.getBody().unmask();
+                                console.log('server-side failure with status code '+response.status);
+                            }
+                        });
+                        
                         switch(me01.beanResultSet01.fileA720.A720TVENTA){
                             case 'I':
                                 win.setValue('lblSegmentIndicator', 'Int');
@@ -3722,7 +3752,8 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
 	win.setValue('lblTax3Code', '');
 	win.setValue('lblTotalAmount', '');
 	win.setValue('lblTotalAmountCurrency', '');
-        win.setValue('lblChargeback', '');
+//        win.setValue('lblChargebackss', '');
+        Ext.getCmp(prototype.id + '-lblChargebackss').setText('');
 	win.setValue('txaFareConstruction', '');
 	win.setValue('txaReference', '');
 	win.setValue('txaRelated', '');

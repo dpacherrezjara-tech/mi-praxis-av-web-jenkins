@@ -28,8 +28,12 @@ import net.miatech.beans.PX040S02A720Filter;
 import net.miatech.beans.SQP00250Filter;
 import net.miatech.beans.SQP00697Filter;
 import net.miatech.beans.SQP03658Filter;
+import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.A714;
 import net.miatech.praxis.A720;
+import static net.miatech.praxis.dao.payments.BankReconciliationDAO.pasarGarbageCollector;
+import static net.miatech.praxis.dao.payments.LoadSalesConciliationDAO.pasarGarbageCollector;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -751,6 +755,55 @@ public class ProMasterTicketDAO {
             //</editor-fold>
         }
         return filter;
+    }
+    
+    public PX040S01A720Filter loadPX040S01MPF123(PX040S01A720Filter filter) throws SQLException, Exception {
+
+        String strMsj = "FAILED";
+        PX040S01A720Filter objRtn = new PX040S01A720Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPS01MPF123(?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.IN_CIA.trim());
+            cstmt01.setString(3, filter.IN_FORMA.trim());
+            cstmt01.setString(4, filter.IN_SERIE);
+            cstmt01.registerOutParameter(5, Types.VARCHAR);
+
+            cstmt01.execute();
+            strMsj = cstmt01.getString(5);
+            objRtn.MESSAGE = strMsj;
+            
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+//        objRtn.MESSAGE = strMsj;
+        return objRtn;
     }
     
     @Deprecated

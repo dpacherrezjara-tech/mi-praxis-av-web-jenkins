@@ -1175,16 +1175,16 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(18, Types.INTEGER);
             cstmt.registerOutParameter(19, Types.INTEGER);
             cstmt.registerOutParameter(20, Types.INTEGER);
             cstmt.registerOutParameter(21, Types.INTEGER);
+            cstmt.registerOutParameter(22, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -1204,22 +1204,23 @@ public class LoadConciliationDAO {
             cstmt.setString(15, filter.IN_FTE);
             cstmt.setString(16, filter.IN_STVAL);
             cstmt.setString(17, filter.IN_strSVFOP);
+            cstmt.setString(18, filter.IN_ADJTYPE);
             
 
 
-            cstmt.setInt(18, filter.page.PAGNUM);
-            cstmt.setInt(19, filter.page.PAGROW);
-            cstmt.setInt(20, filter.page.TOTPAG);
-            cstmt.setInt(21, filter.page.TOTROW);
+            cstmt.setInt(19, filter.page.PAGNUM);
+            cstmt.setInt(20, filter.page.PAGROW);
+            cstmt.setInt(21, filter.page.TOTPAG);
+            cstmt.setInt(22, filter.page.TOTROW);
 
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
-            filter.page.PAGNUM = cstmt.getInt(18);
-            filter.page.PAGROW = cstmt.getInt(19);
-            filter.page.TOTPAG = cstmt.getInt(20);
-            filter.page.TOTROW = cstmt.getInt(21);
+            filter.page.PAGNUM = cstmt.getInt(19);
+            filter.page.PAGROW = cstmt.getInt(20);
+            filter.page.TOTPAG = cstmt.getInt(21);
+            filter.page.TOTROW = cstmt.getInt(22);
 
             while (rst.next()) {
                 lngTotCant += rst.getLong("CANT");
@@ -1267,6 +1268,11 @@ public class LoadConciliationDAO {
                         beanTkt.CERROR = rst.getString("CERROR").trim() + " : " + rst.getString("ERROR").trim();
                     } else {
                         beanTkt.CERROR = rst.getString("CERROR").trim();
+                    }
+                    if (!rst.getString("REJEC").trim().isEmpty()) {
+                        beanTkt.CREJEC = rst.getString("CREJEC").trim() + " : " + rst.getString("REJEC").trim();
+                    } else {
+                        beanTkt.CREJEC = rst.getString("CREJEC").trim();
                     }
                     beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
@@ -1361,6 +1367,7 @@ public class LoadConciliationDAO {
                     } else {
                         beanTkt.strDescripcion = rst.getString("CERROR").trim();
                     }
+                    
                     lstError.add(beanTkt);
                 }
                 rst.close();

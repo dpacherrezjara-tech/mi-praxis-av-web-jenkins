@@ -1491,7 +1491,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
             defaults: {
                 bodyStyle: 'background-color: #E3EAF9;',
 //                border: true,
-                height: 255
+                height: 235
             },
             items: [
                 {
@@ -2561,25 +2561,25 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                                                                                 }
                                                                             ]
                                                                         },
-                                                                        {
-                                                                            xtype: 'panel',
-                                                                            layout: 'hbox',
-                                                                            border: false,
-                                                                            bodyStyle: 'background: transparent',
-                                                                            defaults: {
-                                                                                anchor: '100%'
-                                                                            },
-                                                                            items: [
-                                                                                {
-                                                                                    xtype: 'textfield',
-                                                                                    id: prototype.id + '-lblChargeback',
-                                                                                    value: '',
-                                                                                    readOnly: true,
-                                                                                    fieldStyle: 'color:#ff0000;font-weight:bold;text-align:center;font-size:20px',
-                                                                                    width: 150
-                                                                                }
-                                                                            ]
-                                                                        }
+//                                                                        {
+//                                                                            xtype: 'panel',
+//                                                                            layout: 'hbox',
+//                                                                            border: false,
+//                                                                            bodyStyle: 'background: transparent',
+//                                                                            defaults: {
+//                                                                                anchor: '100%'
+//                                                                            },
+//                                                                            items: [
+//                                                                                {
+//                                                                                    xtype: 'textfield',
+//                                                                                    id: prototype.id + '-lblChargeback',
+//                                                                                    value: '',
+//                                                                                    readOnly: true,
+//                                                                                    fieldStyle: 'color:#ff0000;font-weight:bold;text-align:center;font-size:20px',
+//                                                                                    width: 600
+//                                                                                }
+//                                                                            ]
+//                                                                        }
                                                                     ]
                                                                 },
                                                                 // </editor-fold>
@@ -2949,6 +2949,7 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                         }
                     ]
                 },
+                
                 // <editor-fold defaultstate="collapsed" desc="gridDataAccounting">
                 {
                     xtype: 'grid',
@@ -3120,6 +3121,26 @@ Ext.define('Ext.Praxis.view.program.ProMasterTicketForm.Info', {
                 }
                 // </editor-fold>
                     
+            ]
+        },
+        
+        {
+            xtype: 'panel',
+            layout: 'hbox',
+            border: true,
+            margin: '0 0 0 700',
+            bodyStyle: 'background: transparent',
+            items: [
+                {
+                    pack : 'center',
+                    xtype: 'label',
+                    id: prototype.id + '-lblChargebackss',
+                    value: '',
+                    width: 900,
+                    style: 'color:#ff0000;font-weight:bold;font-size:30px',
+//                    fieldStyle: 'color:#ff0000;font-weight:bold;font-size:50px',
+                },
+                
             ]
         },
         {
