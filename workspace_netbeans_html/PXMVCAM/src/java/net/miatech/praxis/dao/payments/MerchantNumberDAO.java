@@ -771,7 +771,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -801,19 +801,22 @@ public class MerchantNumberDAO {
                 cstmt.setString(20, filter.IN_FRANC4.trim());
                 cstmt.setString(21, filter.IN_BANKCM.trim());
                 cstmt.setString(22, filter.IN_BANKCUR.trim());
-                cstmt.setString(23, filter.IN_ACCNUMA.trim());
-                cstmt.setString(24, filter.IN_BENCEN.trim());
-                cstmt.setString(25, filter.IN_DEUSAP.trim());
-                cstmt.setString(26, filter.IN_CANAL.trim());
-                cstmt.setString(27, filter.IN_PROCES.trim());
-                cstmt.setString(28, filter.IN_SCOUNTRY.trim());
-                cstmt.setString(29, filter.IN_SOCIETY.trim());
-                cstmt.setString(30, filter.IN_SCURRENCY.trim());
-                cstmt.setString(31, filter.IN_SBENCEN.trim());
-                cstmt.setString(32, filter.IN_COSTCEN.trim());
-                cstmt.setString(33, session.getUserView().getUserInfo().USR);
-                cstmt.setString(34, Functions.getFechaActual());
-                cstmt.setString(35, Functions.getHoraActual());
+                cstmt.setString(23, filter.IN_ACCNUMOLD.trim());
+                cstmt.setString(24, filter.IN_DDISCON.trim());
+                cstmt.setString(25, filter.IN_ACCNUMA.trim());
+                cstmt.setString(26, filter.IN_IDFISCAL.trim());
+                cstmt.setString(27, filter.IN_BENCEN.trim());
+                cstmt.setString(28, filter.IN_DEUSAP.trim());
+                cstmt.setString(29, filter.IN_CANAL.trim());
+                cstmt.setString(30, filter.IN_PROCES.trim());
+                cstmt.setString(31, filter.IN_SCOUNTRY.trim());
+                cstmt.setString(32, filter.IN_SOCIETY.trim());
+                cstmt.setString(33, filter.IN_SCURRENCY.trim());
+                cstmt.setString(34, filter.IN_SBENCEN.trim());
+                cstmt.setString(35, filter.IN_COSTCEN.trim());
+                cstmt.setString(36, session.getUserView().getUserInfo().USR);
+                cstmt.setString(37, Functions.getFechaActual());
+                cstmt.setString(38, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
 //            }
@@ -871,7 +874,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -894,20 +897,23 @@ public class MerchantNumberDAO {
                 cstmt.setString(14, filter.BANKCM.trim());
                 cstmt.setString(15, filter.BANKCUR.trim());
                 cstmt.setString(16, filter.ACCNUMB.trim());
-                cstmt.setString(17, filter.ACCNUMA.trim());
-                cstmt.setString(18, filter.BENCEN.trim());
-                cstmt.setString(19, filter.DEUSAP.trim());
-                cstmt.setString(20, filter.SAGENT.trim());
-                cstmt.setString(21, filter.CANAL.trim());
-                cstmt.setString(22, filter.PROCES.trim());
-                cstmt.setString(23, filter.SCOUNTRY.trim());
-                cstmt.setString(24, filter.SOCIETY.trim());
-                cstmt.setString(25, filter.SCURRENCY.trim());
-                cstmt.setString(26, filter.SBENCEN.trim());
-                cstmt.setString(27, filter.COSTCEN.trim());
-                cstmt.setString(28, session.getUserView().getUserInfo().USR);
-                cstmt.setString(29, Functions.getFechaActual());
-                cstmt.setString(30, Functions.getHoraActual());
+                cstmt.setString(17, filter.ACCNUMOLD.trim());
+                cstmt.setString(18, filter.DDISCON.trim());
+                cstmt.setString(19, filter.ACCNUMA.trim());
+                cstmt.setString(20, filter.IDFISCAL.trim());
+                cstmt.setString(21, filter.BENCEN.trim());
+                cstmt.setString(22, filter.DEUSAP.trim());
+                cstmt.setString(23, filter.SAGENT.trim());
+                cstmt.setString(24, filter.CANAL.trim());
+                cstmt.setString(25, filter.PROCES.trim());
+                cstmt.setString(26, filter.SCOUNTRY.trim());
+                cstmt.setString(27, filter.SOCIETY.trim());
+                cstmt.setString(28, filter.SCURRENCY.trim());
+                cstmt.setString(29, filter.SBENCEN.trim());
+                cstmt.setString(30, filter.COSTCEN.trim());
+                cstmt.setString(31, session.getUserView().getUserInfo().USR);
+                cstmt.setString(32, Functions.getFechaActual());
+                cstmt.setString(33, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
 
@@ -1084,7 +1090,10 @@ public class MerchantNumberDAO {
                 objRtn.BANKCM    = rs01.getString("BANKCM").trim();
                 objRtn.BANKCUR    = rs01.getString("BANKCUR").trim();
                 objRtn.ACCNUMB   = rs01.getString("ACCNUMB").trim();
+                objRtn.ACCNUMOLD   = rs01.getString("ACCNUMOLD").trim();
+                objRtn.DDISCON   = rs01.getString("DDISCON").trim();
                 objRtn.ACCNUMA   = rs01.getString("ACCNUMA").trim();
+                objRtn.IDFISCAL   = rs01.getString("IDFISCAL").trim();
                 objRtn.BENCEN   = rs01.getString("BENCEN").trim();
                 objRtn.DEUSAP   = rs01.getString("DEUSAP").trim();
                 objRtn.SAGENT   = rs01.getString("SAGENT").trim();

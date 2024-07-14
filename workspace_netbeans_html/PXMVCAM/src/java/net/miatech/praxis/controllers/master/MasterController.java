@@ -227,6 +227,29 @@ public class MasterController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "/obtainDataADMS")
+    public @ResponseBody
+    String obtainDataADMS(ModelMap map, HttpServletRequest request) {
+        System.out.println("Master Controller --- obtainDataADMS");
+        try {
+            masterDAO = new MasterDAO();
+            masterDAO.setSession((IServerSession) serverSession.getServerSession());
+
+            List<A2280> lstAirlines = masterDAO.loadADMType();
+
+            map.put("success", true);
+            map.put("lstData", lstAirlines);
+        } catch (NumberFormatException ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", "Se produjo un error. " + ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "/obtainDataCity")
     public @ResponseBody

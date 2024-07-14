@@ -48,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.net.ssl.HostnameVerifier;
@@ -64,16 +65,20 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import net.miatech.beans.PX0094S01A007Filter;
+import net.miatech.praxis.controllers.payments.RejectionsController;
 import static net.miatech.praxis.controllers.tnu.AtlUsageNoSaleController.zipFile;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.exceptions.SpringLog;
 import net.miatech.praxis.logic.LoadDataLogic;
+import net.miatech.praxis.logic.payments.LoadSalesConciliationLogic;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.sabre.miatech.praxis.SabreRecordLocator;
 import net.sabre.miatech.praxis.SabreRecordLocatorSoap;
 import net.sabre.miatech.praxis.TicketREQ;
 import net.sabre.miatech.praxis.TicketRES;
 import net.sabre.miatech.praxis.TicketingDocumentInfoAllTypes;
 import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.xml.sax.InputSource;
 
 // </editor-fold>
@@ -119,6 +124,34 @@ public class ProMasterTicketController extends BaseController {
             map.put("success", false);
             new SpringLog(e.getMessage());
             map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+    
+    //validate chgbak
+    @RequestMapping(value = "validateCHGBK",  method = RequestMethod.POST)
+    public @ResponseBody
+    String validateCHGBK(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- VIEWTKT : validateCHGBK-------------");
+        
+        Gson gson = new Gson();
+        PX040S01A720Filter filter = new PX040S01A720Filter();
+        PX040S01A720Filter result = new PX040S01A720Filter();
+        String beanString;
+        try {
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, PX040S01A720Filter.class);
+        
+        logic = new ProMasterTicketLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        
+            result = logic.loadPX040S01MPF123(filter);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
         }
         return new Gson().toJson(map);
     }

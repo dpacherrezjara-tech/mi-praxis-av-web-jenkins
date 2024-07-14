@@ -281,9 +281,9 @@ Ext.define('Ext.Praxis.view.payments.BanksCatalogForm.DataEntry', {
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
                                     enforceMaxLength: true,
-                                    maxLength: 10,
+                                    maxLength: 20,
                                     maskRe: /[0-9]/,
-                                    width: 80
+                                    width: 150
                                 },
                                 {xtype: 'tbspacer', width: 617},
                             ]

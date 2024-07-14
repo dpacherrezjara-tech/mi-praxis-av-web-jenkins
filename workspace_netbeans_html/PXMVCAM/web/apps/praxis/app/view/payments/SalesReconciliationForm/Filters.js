@@ -912,8 +912,25 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 'data-qtip': 'Merchant Number'
                             }
                         },
-                        {xtype: 'tbspacer', width: 70},
-
+//                        {
+//                            xtype: 'container',
+//                            layout: 'hbox',
+//                            padding: '0 0 0 50',
+//                            id: prototype.id + '-contBtnInvoice',
+//                            items: [
+//                                {
+//                                    xtype: 'checkbox',
+//                                    html: '<div style="width: 20px; height: 20px; border-radius: 50%; background-color: #fff; border: 1px solid #ccc;"></div>',
+//                                    boxLabel: 'Invoice',
+//                                    name: 'terms',
+//                                    inputValue: '1',
+//                                    uncheckedValue: '0',
+//                                    listeners: {
+//                                        change: 'onViewIBT'
+//                                    }
+//                                }
+//                            ]
+//                        },   
                         {
                             xtype: 'textfield',
                             id: prototype.id + '-txtMERCHN',
@@ -928,19 +945,43 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 keypress: 'BuscarTKT_keyDownHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 40},
+//                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'checkboxfield',
                             id: prototype.id + '-chkADYEN',
-                            boxLabel: '<b>ADYEN</b>',
+                            boxLabel: '<b>ADM</b>',
                             checked: false,
-                            hidden: true,
-                            width: 90,
+                            hidden: false,
+                            width: 50,
                             listeners: {
                                 change: 'btnSearch_click'
                             }
                         },
-                        {xtype: 'tbspacer', width: 10, hidden: true},
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'label',
+                            text: 'ADM Type:',
+                            padding: '3 0 0 0',
+                            width: 60,
+
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbADJTYPE',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            fieldStyle: 'text-align:left;',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            value: '',
+                            display: 'All',
+                            width: 182,
+                            labelWidth: 10,
+                            hidden: false,
+                            hiddenLabel: false
+                        },
                         {
                             xtype: 'radiogroup',
                             hidden: true,

@@ -25,6 +25,7 @@ public class PX040S01A720Filter {
     public String VP_A1716SEQF = "";
     public String VP_A1716SEQI = "";
     public String VP_A1716SEQA = "";
+    public String MESSAGE = "";
     
     public String IN_CIA_REF ="";
     public String IN_FORMA_REF ="";
