@@ -13,6 +13,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.A714;
 import net.miatech.praxis.A720;
 import net.miatech.praxis.dao.program.ProMasterTicketDAO;
+import net.miatech.praxis.payment.filter.A2290Filter;
 
 // </editor-fold>
 /**
@@ -30,6 +31,10 @@ public class ProMasterTicketLogic {
     @Deprecated
     public PX040S01A720Filter loadPX040S01A720(PX040S01A720Filter filter) throws SQLException, Exception {
         return objDAO.loadPX040S01A720(filter);
+    }
+    
+    public PX040S01A720Filter loadPX040S01MPF123(PX040S01A720Filter filter) throws SQLException, Exception {
+        return objDAO.loadPX040S01MPF123(filter);
     }
     
     @Deprecated

@@ -131,7 +131,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-BANKCM').setEditable(true);
                 Ext.getCmp(prototype.id + '-BANKCUR').setEditable(true);
                 Ext.getCmp(prototype.id + '-ACCNUMB').setEditable(true);
+                Ext.getCmp(prototype.id + '-ACCNUMOLD').setEditable(true);
+                Ext.getCmp(prototype.id + '-DDISCON').setEditable(true);
                 Ext.getCmp(prototype.id + '-ACCNUMA').setEditable(true);
+                Ext.getCmp(prototype.id + '-IDFISCAL').setEditable(true);
                 Ext.getCmp(prototype.id + '-BENCEN').setEditable(true);
                 Ext.getCmp(prototype.id + '-DEUSAP').setEditable(true);
                 Ext.getCmp(prototype.id + '-SAGENT').setEditable(true);
@@ -166,6 +169,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-bSection_1').hide();
                 Ext.getCmp(prototype.id + '-bSection_2').hide();
                 Ext.getCmp(prototype.id + '-bSection_3').hide();
+                Ext.getCmp(prototype.id + '-bSection_4').hide();
                 Ext.getCmp(prototype.id + '-iSection_1').hide();
                 Ext.getCmp(prototype.id + '-iSection_2').hide();
                 Ext.getCmp(prototype.id + '-iSection_3').hide();
@@ -245,7 +249,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.BANKCM = this.getValue("BANKCM")
         beanTemp.BANKCUR = this.getValue("BANKCUR")
         beanTemp.ACCNUMB = this.getValue("ACCNUMB")
+        beanTemp.ACCNUMOLD = this.getValue("ACCNUMOLD")
+        beanTemp.DDISCON = this.getValue("DDISCON")
         beanTemp.ACCNUMA = this.getValue("ACCNUMA")
+        beanTemp.IDFISCAL = this.getValue("IDFISCAL")
         beanTemp.BENCEN = this.getValue("BENCEN")
         beanTemp.DEUSAP = this.getValue("DEUSAP")
         beanTemp.SAGENT = this.getValue("SAGENT")
