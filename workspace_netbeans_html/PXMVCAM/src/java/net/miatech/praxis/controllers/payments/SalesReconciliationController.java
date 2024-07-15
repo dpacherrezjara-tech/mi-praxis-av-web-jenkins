@@ -1853,7 +1853,7 @@ public class SalesReconciliationController extends BaseController {
             CH1_0.setCellValue("Ticket");
             CH1_1.setCellValue("Type");
             CH1_2.setCellValue("Deb. Type");
-            CH1_3.setCellValue("Error");
+            CH1_3.setCellValue("Comment/Adj.Type");
             CH1_4.setCellValue("Src");
             CH1_5.setCellValue("Sales Date");
             CH1_6.setCellValue("Country");
@@ -2011,7 +2011,8 @@ public class SalesReconciliationController extends BaseController {
                 rcell0.setCellValue(listaData.get(vi).strTicket);
                 rcell1.setCellValue(listaData.get(vi).strPEM);
                 rcell2.setCellValue(listaData.get(vi).TYPE);
-                rcell3.setCellValue(listaData.get(vi).CERROR);
+                System.out.println("DATABASE:  " + listaData.get(vi).DATABASE );
+                rcell3.setCellValue(listaData.get(vi).DATABASE.equals("MPF100") && listaData.get(vi).TDOC.equals("A") ? listaData.get(vi).CREJEC : listaData.get(vi).CERROR);
                 rcell4.setCellValue(listaData.get(vi).FTE);
                 rcell5.setCellValue(listaData.get(vi).SDATE);
                 rcell6.setCellValue(listaData.get(vi).SCOUNTRY);

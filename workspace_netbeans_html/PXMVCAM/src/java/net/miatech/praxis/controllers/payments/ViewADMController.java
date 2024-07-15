@@ -801,22 +801,26 @@ public class ViewADMController extends BaseController {
             Cell CH1_9 = row1.createCell(9);
             Cell CH1_10 = row1.createCell(10);
             Cell CH1_11 = row1.createCell(11);
+            Cell CH1_12 = row1.createCell(12);
+            Cell CH1_13 = row1.createCell(13);
 
 
 
 
             CH1_0.setCellValue("Status");
             CH1_1.setCellValue("Tkt Number");
-            CH1_2.setCellValue("Error Code");
-            CH1_3.setCellValue("Sales Date");
-            CH1_4.setCellValue("Country Code");
-            CH1_5.setCellValue("Card Code");
-            CH1_6.setCellValue("Card Numb.");
-            CH1_7.setCellValue("Author. Code");
-            CH1_8.setCellValue("Curr.");
-            CH1_9.setCellValue("Amount");
-            CH1_10.setCellValue("PNR");
-            CH1_11.setCellValue("Agent Code");
+            CH1_2.setCellValue("Sales Date");
+            CH1_3.setCellValue("Send Date");
+            CH1_4.setCellValue("Day Diff");
+            CH1_5.setCellValue("Agent");
+            CH1_6.setCellValue("Country");
+            CH1_7.setCellValue("CC.Code");
+            CH1_8.setCellValue("CC.Number");
+            CH1_9.setCellValue("Author.Code");
+            CH1_10.setCellValue("Currency");
+            CH1_11.setCellValue("Amount");
+            CH1_12.setCellValue("PNR");
+            CH1_13.setCellValue("Comment");
 
 
 
@@ -833,6 +837,8 @@ public class ViewADMController extends BaseController {
             CH1_9.setCellStyle(headerStyle);
             CH1_10.setCellStyle(headerStyle);
             CH1_11.setCellStyle(headerStyle);
+            CH1_12.setCellStyle(headerStyle);
+            CH1_13.setCellStyle(headerStyle);
 
 
 
@@ -850,6 +856,8 @@ public class ViewADMController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
 
 
 
@@ -918,22 +926,26 @@ public class ViewADMController extends BaseController {
                 Cell rcell9 = row1.createCell(9);
                 Cell rcell10 = row1.createCell(10);
                 Cell rcell11 = row1.createCell(11);
+                Cell rcell12 = row1.createCell(12);
+                Cell rcell13 = row1.createCell(13);
 
 
 
 
                 rcell0.setCellValue(listaData.get(vi).strDescStatus);
                 rcell1.setCellValue(listaData.get(vi).strTicket);
-                rcell2.setCellValue(listaData.get(vi).ERROR);
-                rcell3.setCellValue(listaData.get(vi).SDATE);
-                rcell4.setCellValue(listaData.get(vi).SCOUNTRY);
-                rcell5.setCellValue(listaData.get(vi).SCARCOD);
-                rcell6.setCellValue(listaData.get(vi).strDescCard);
-                rcell7.setCellValue(listaData.get(vi).SAUTHOC);
-                rcell8.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell9.setCellValue(listaData.get(vi).SVFOPS);
-                rcell10.setCellValue(listaData.get(vi).SPNR);
-                rcell11.setCellValue(listaData.get(vi).SAGENT);
+                rcell2.setCellValue(listaData.get(vi).SDATE);
+                rcell3.setCellValue(listaData.get(vi).DSEND);
+                rcell4.setCellValue(listaData.get(vi).DIFFD);
+                rcell5.setCellValue(listaData.get(vi).SAGENT);
+                rcell6.setCellValue(listaData.get(vi).SCOUNTRY);
+                rcell7.setCellValue(listaData.get(vi).SCARCOD);
+                rcell8.setCellValue(listaData.get(vi).strDescCard);
+                rcell9.setCellValue(listaData.get(vi).SAUTHOC);
+                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell11.setCellValue(listaData.get(vi).SVFOPS);
+                rcell12.setCellValue(listaData.get(vi).SPNR);
+                rcell13.setCellValue(listaData.get(vi).ERROR);
 
 
 
@@ -954,6 +966,8 @@ public class ViewADMController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
+            sheet.autoSizeColumn(12, true);
+            sheet.autoSizeColumn(13, true);
 
 
 
@@ -1028,22 +1042,26 @@ public class ViewADMController extends BaseController {
             Cell CH1_9 = row1.createCell(9);
             Cell CH1_10 = row1.createCell(10);
             Cell CH1_11 = row1.createCell(11);
+            Cell CH1_12 = row1.createCell(12);
+            Cell CH1_13 = row1.createCell(13);
 
 
 
 
             CH1_0.setCellValue("Status");
             CH1_1.setCellValue("Tkt Number");
-            CH1_2.setCellValue("Error Code");
-            CH1_3.setCellValue("Sales Date");
-            CH1_4.setCellValue("Country Code");
-            CH1_5.setCellValue("Card Code");
-            CH1_6.setCellValue("Card Numb.");
-            CH1_7.setCellValue("Author. Code");
-            CH1_8.setCellValue("Curr.");
-            CH1_9.setCellValue("Amount");
-            CH1_10.setCellValue("PNR");
-            CH1_11.setCellValue("Agent Code");
+            CH1_2.setCellValue("Sales Date");
+            CH1_3.setCellValue("Send Date");
+            CH1_4.setCellValue("Day Diff");
+            CH1_5.setCellValue("Agent");
+            CH1_6.setCellValue("Country");
+            CH1_7.setCellValue("CC.Code");
+            CH1_8.setCellValue("CC.Number");
+            CH1_9.setCellValue("Author.Code");
+            CH1_10.setCellValue("Currency");
+            CH1_11.setCellValue("Amount");
+            CH1_12.setCellValue("PNR");
+            CH1_13.setCellValue("Comment");
 
 
 
@@ -1060,6 +1078,8 @@ public class ViewADMController extends BaseController {
             CH1_9.setCellStyle(headerStyle);
             CH1_10.setCellStyle(headerStyle);
             CH1_11.setCellStyle(headerStyle);
+            CH1_12.setCellStyle(headerStyle);
+            CH1_13.setCellStyle(headerStyle);
 
 
 
@@ -1077,6 +1097,8 @@ public class ViewADMController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
 
 
 
@@ -1145,22 +1167,26 @@ public class ViewADMController extends BaseController {
                 Cell rcell9 = row1.createCell(9);
                 Cell rcell10 = row1.createCell(10);
                 Cell rcell11 = row1.createCell(11);
+                Cell rcell12 = row1.createCell(12);
+                Cell rcell13 = row1.createCell(13);
 
 
 
 
                 rcell0.setCellValue(listaData.get(vi).strDescStatus);
                 rcell1.setCellValue(listaData.get(vi).strTicket);
-                rcell2.setCellValue(listaData.get(vi).ERROR);
-                rcell3.setCellValue(listaData.get(vi).SDATE);
-                rcell4.setCellValue(listaData.get(vi).SCOUNTRY);
-                rcell5.setCellValue(listaData.get(vi).SCARCOD);
-                rcell6.setCellValue(listaData.get(vi).strDescCard);
-                rcell7.setCellValue(listaData.get(vi).SAUTHOC);
-                rcell8.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell9.setCellValue(listaData.get(vi).SVFOPS);
-                rcell10.setCellValue(listaData.get(vi).SPNR);
-                rcell11.setCellValue(listaData.get(vi).SAGENT);
+                rcell2.setCellValue(listaData.get(vi).SDATE);
+                rcell3.setCellValue(listaData.get(vi).DSEND);
+                rcell4.setCellValue(listaData.get(vi).DIFFD);
+                rcell5.setCellValue(listaData.get(vi).SAGENT);
+                rcell6.setCellValue(listaData.get(vi).SCOUNTRY);
+                rcell7.setCellValue(listaData.get(vi).SCARCOD);
+                rcell8.setCellValue(listaData.get(vi).strDescCard);
+                rcell9.setCellValue(listaData.get(vi).SAUTHOC);
+                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell11.setCellValue(listaData.get(vi).SVFOPS);
+                rcell12.setCellValue(listaData.get(vi).SPNR);
+                rcell13.setCellValue(listaData.get(vi).ERROR);
 
 
 
@@ -1181,6 +1207,8 @@ public class ViewADMController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
+            sheet.autoSizeColumn(12, true);
+            sheet.autoSizeColumn(13, true);
 
 
 
@@ -1255,22 +1283,26 @@ public class ViewADMController extends BaseController {
             Cell CH1_9 = row1.createCell(9);
             Cell CH1_10 = row1.createCell(10);
             Cell CH1_11 = row1.createCell(11);
+            Cell CH1_12 = row1.createCell(12);
+            Cell CH1_13 = row1.createCell(13);
 
 
 
 
             CH1_0.setCellValue("Status");
             CH1_1.setCellValue("Tkt Number");
-            CH1_2.setCellValue("Error Code");
-            CH1_3.setCellValue("Sales Date");
-            CH1_4.setCellValue("Country Code");
-            CH1_5.setCellValue("Card Code");
-            CH1_6.setCellValue("Card Numb.");
-            CH1_7.setCellValue("Author. Code");
-            CH1_8.setCellValue("Curr.");
-            CH1_9.setCellValue("Amount");
-            CH1_10.setCellValue("PNR");
-            CH1_11.setCellValue("Agent Code");
+            CH1_2.setCellValue("Sales Date");
+            CH1_3.setCellValue("Send Date");
+            CH1_4.setCellValue("Day Diff");
+            CH1_5.setCellValue("Agent");
+            CH1_6.setCellValue("Country");
+            CH1_7.setCellValue("CC.Code");
+            CH1_8.setCellValue("CC.Number");
+            CH1_9.setCellValue("Author.Code");
+            CH1_10.setCellValue("Currency");
+            CH1_11.setCellValue("Amount");
+            CH1_12.setCellValue("PNR");
+            CH1_13.setCellValue("Comment");
 
 
 
@@ -1287,6 +1319,8 @@ public class ViewADMController extends BaseController {
             CH1_9.setCellStyle(headerStyle);
             CH1_10.setCellStyle(headerStyle);
             CH1_11.setCellStyle(headerStyle);
+            CH1_12.setCellStyle(headerStyle);
+            CH1_13.setCellStyle(headerStyle);
 
 
 
@@ -1304,6 +1338,8 @@ public class ViewADMController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
 
 
 
@@ -1372,22 +1408,26 @@ public class ViewADMController extends BaseController {
                 Cell rcell9 = row1.createCell(9);
                 Cell rcell10 = row1.createCell(10);
                 Cell rcell11 = row1.createCell(11);
+                Cell rcell12 = row1.createCell(12);
+                Cell rcell13 = row1.createCell(13);
 
 
 
 
                 rcell0.setCellValue(listaData.get(vi).strDescStatus);
                 rcell1.setCellValue(listaData.get(vi).strTicket);
-                rcell2.setCellValue(listaData.get(vi).ERROR);
-                rcell3.setCellValue(listaData.get(vi).SDATE);
-                rcell4.setCellValue(listaData.get(vi).SCOUNTRY);
-                rcell5.setCellValue(listaData.get(vi).SCARCOD);
-                rcell6.setCellValue(listaData.get(vi).strDescCard);
-                rcell7.setCellValue(listaData.get(vi).SAUTHOC);
-                rcell8.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell9.setCellValue(listaData.get(vi).SVFOPS);
-                rcell10.setCellValue(listaData.get(vi).SPNR);
-                rcell11.setCellValue(listaData.get(vi).SAGENT);
+                rcell2.setCellValue(listaData.get(vi).SDATE);
+                rcell3.setCellValue(listaData.get(vi).DSEND);
+                rcell4.setCellValue(listaData.get(vi).DIFFD);
+                rcell5.setCellValue(listaData.get(vi).SAGENT);
+                rcell6.setCellValue(listaData.get(vi).SCOUNTRY);
+                rcell7.setCellValue(listaData.get(vi).SCARCOD);
+                rcell8.setCellValue(listaData.get(vi).strDescCard);
+                rcell9.setCellValue(listaData.get(vi).SAUTHOC);
+                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell11.setCellValue(listaData.get(vi).SVFOPS);
+                rcell12.setCellValue(listaData.get(vi).SPNR);
+                rcell13.setCellValue(listaData.get(vi).ERROR);
 
 
 
@@ -1408,6 +1448,8 @@ public class ViewADMController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
+            sheet.autoSizeColumn(12, true);
+            sheet.autoSizeColumn(13, true);
 
 
 

@@ -450,13 +450,13 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 20,
+                                        maxLength: 25,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130
+                                        width: 150
                                     },
                                     
-                                    {xtype: 'tbspacer', width: 120},
+                                    {xtype: 'tbspacer', width: 100},
                                     {
                                         xtype: 'label',
                                         text: 'Deposit Curr.',
@@ -528,12 +528,12 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
-                                        maxLength: 20,
+                                        maxLength: 25,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130
+                                        width: 150
                                     },
-                                    {xtype: 'tbspacer', width: 120},
+                                    {xtype: 'tbspacer', width: 100},
                                     {
                                         xtype: 'label',
                                         text: 'Date Discount.',
