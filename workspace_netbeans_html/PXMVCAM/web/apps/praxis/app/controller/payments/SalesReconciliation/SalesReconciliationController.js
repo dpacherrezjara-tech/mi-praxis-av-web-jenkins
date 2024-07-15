@@ -1158,8 +1158,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             });
     },
     exportExcel: function () {
-
+        console.log(this.peek(), 'this.peek()')
         switch (this.peek()) {
+            
             case  prototype.id + '-boxMainData':
                 console.log('boxMainData')
                 global.getFile(prototype.url + '/getXLSX?beanString=' + JSON.stringify(this.bean));
@@ -1174,6 +1175,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 global.getFileExcelPost('searchDetDayByStval', JSON.stringify(me.beanDet3), Ext.getCmp(prototype.id + '-gridDetDayS').config.columns.items);
                 break;
             case prototype.id + '-boxDetTktS':
+                console.log(me.f_boxDetTktS, 'me.f_boxDetTktS')
                 if (me.f_boxDetTktS === '1') {
                     
                     global.getFileExcelPost('searchDetTICKET', JSON.stringify(me.beanboxDetTktS1), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
@@ -1181,7 +1183,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     global.getFileExcelPost('searchDetTktByStval', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
                 } else if (me.f_boxDetTktS === '3') {
                     console.log(Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.TDOC, 'valor de grilla')
+                    console.log(Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.DATABASE, 'valor de DATABASE')
                     switch (Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.TDOC) {
+                        
                         case 'S':
                             me.beanboxDetTktS3.TabMPF = 'MPF100'
                             break;
@@ -1192,8 +1196,15 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             me.beanboxDetTktS3.TabMPF = 'MPF076'
                             break;
                         case 'A':
-                            me.beanboxDetTktS3.TabMPF = 'MPF077'
-                            break;
+                            switch (Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.DATABASE){
+                                case 'MPF100':
+                                    me.beanboxDetTktS3.TabMPF = 'MPF100'
+                                    break;
+                                case 'MPF077':
+                                    me.beanboxDetTktS3.TabMPF = 'MPF077'
+                                    break;
+                            }
+                        break
                         case 'D':
                             me.beanboxDetTktS3.TabMPF = 'DEBITS'
                             break;

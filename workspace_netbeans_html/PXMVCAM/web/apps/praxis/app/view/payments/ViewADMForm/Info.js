@@ -471,7 +471,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                 },
                             ]
                         },
-//BAJADA POR TARJETA - SCARCOD
+//BAJADA POR AGENTE - AGENT
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridDataCardByF',
