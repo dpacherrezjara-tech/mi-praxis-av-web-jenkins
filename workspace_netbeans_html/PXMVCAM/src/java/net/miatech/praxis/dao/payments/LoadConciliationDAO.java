@@ -3160,6 +3160,7 @@ public class LoadConciliationDAO {
                     beanTkt.SAGENTL = rst.getString("SAGENTL") != null ? rst.getString("SAGENTL").trim() : "";
                     beanTkt.SEQL = rst.getString("SEQL") != null ? rst.getString("SEQL").trim() : "";
                     beanTkt.NETOL = rst.getDouble("NETOL");
+                    beanTkt.SVFOPL = rst.getDouble("SVFOPL");
                     //TEF
                     beanTkt.TDATE = rst.getString("TDATE").trim();
                     beanTkt.DATEF = rst.getString("DATEF").trim();

@@ -321,39 +321,46 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         console.log(columnNum, 'columnNum')
         switch (columnNum) {
             case 1:
-                this.beanDetCountry.IN_TDOC = 'A'
+                this.beanDetCountry.IN_TDOC = ''
                 this.beanDetCountry.IN_FSEND = 'Y'
                 this.beanDetCountry.IN_FRCV = ''
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Sent Agency'
                 cantidad = rowData.data.lngQSENT;
                 break;
-            case 2:
-                this.beanDetCountry.IN_TDOC = 'A'
+            case 2:S
+                this.beanDetCountry.IN_TDOC = ''
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = 'P'
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Not Answered'
                 cantidad = rowData.data.lngQSENTPEND;
                 break;
             case 4:
-                this.beanDetCountry.IN_TDOC = 'A'
+                this.beanDetCountry.IN_TDOC = ''
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = 'A'
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Answered'
                 cantidad = rowData.data.lngQSENTANS;
                 break;
             case 5:
-                this.beanDetCountry.IN_TDOC = 'A'
+                this.beanDetCountry.IN_TDOC = ''
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = '1'
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Accepted'
                 cantidad = rowData.data.lngQSENTACCEP;
                 break;
             case 6:
-                this.beanDetCountry.IN_TDOC = 'A'
+                this.beanDetCountry.IN_TDOC = ''
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = '2'
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Rejected'
                 cantidad = rowData.data.lngQSENTREJ;
+                break;
+            case 7:
+                this.beanDetCountry.IN_TDOC = 'A'
+                this.beanDetCountry.IN_FSEND = ''
+                this.beanDetCountry.IN_FRCV = ''
+                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Adjustment'
+                cantidad = rowData.data.lngQADJ;
                 break;
         }
         console.log(cantidad, 'cantidad')
@@ -429,6 +436,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         this.beanDetCard.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetCard.IN_FSEND = rowData.data.IN_FSEND;
         this.beanDetCard.IN_FRCV = rowData.data.IN_FRCV;
+        this.beanDetCard.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetCard.IN_SCURRENCY = rowData.data.SCURRENCY;
         this.beanDetCard.IN_SCOUNTRY = rowData.data.SCOUNTRY;
         this.beanDetCard.IN_TITLE = rowData.data.strTitulo;
@@ -495,6 +503,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         this.beanDetDetailByF.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDetailByF.IN_FSEND = rowData.data.IN_FSEND;
         this.beanDetDetailByF.IN_FRCV = rowData.data.IN_FRCV;
+        this.beanDetDetailByF.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDetailByF.IN_SCURRENCY = rowData.data.IN_SCURRENCY;
         this.beanDetDetailByF.IN_SCOUNTRY = rowData.data.IN_SCOUNTRY;
         this.beanDetDetailByF.IN_SAGENT = rowData.data.SAGENT;
@@ -685,6 +694,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         this.beanDetDetailByEyesCountry.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDetailByEyesCountry.IN_FSEND = rowData.data.IN_FSEND;
         this.beanDetDetailByEyesCountry.IN_FRCV = rowData.data.IN_FRCV;
+        this.beanDetDetailByEyesCountry.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDetailByEyesCountry.IN_SCURRENCY = rowData.data.SCURRENCY;
         this.beanDetDetailByEyesCountry.IN_SCOUNTRY = rowData.data.SCOUNTRY;
         this.beanDetDetailByEyesCountry.IN_TITLE = rowData.data.strTitulo;
