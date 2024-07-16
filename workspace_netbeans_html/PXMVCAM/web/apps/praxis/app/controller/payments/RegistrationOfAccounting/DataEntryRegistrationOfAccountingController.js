@@ -56,7 +56,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
         var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
         var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
-        var vl_ck08 = Ext.getCmp(prototype.id + '-ck07').getValue();
+        var vl_ck08 = Ext.getCmp(prototype.id + '-ck08').getValue();
                 
         if(vl_ck01) vl_pasaje = 'P';
         if(vl_ck02) vl_carga = 'A';
