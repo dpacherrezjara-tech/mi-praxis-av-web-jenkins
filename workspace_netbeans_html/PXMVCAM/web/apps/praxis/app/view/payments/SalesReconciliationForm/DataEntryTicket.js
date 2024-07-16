@@ -1036,45 +1036,102 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             border: false,
                             bodyStyle: 'background: #E5ECEF',
                             items: [
+//                                {
+//                                    xtype: 'label',
+//                                    text: 'Load Date',
+//                                    style: 'font-weight:bold;color:#121E31;',
+//                                    width: 102,
+//                                    margin: '0 0 0 7',
+//                                    autoEl: {
+//                                        tag: 'label',
+//                                        'data-qtip': 'Format: YYYYMMDD'
+//                                    }
+//                                },
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-2-txtDATEF',
+//                                    fieldStyle: 'text-align:left',
+//                                    enforceMaxLength: true,
+//                                    maxLength: 20,
+//                                    margin: '0 0 0 3',
+//                                    readOnly: true,
+//                                    width: 120
+//                                },
+//                                {
+//                                    xtype: 'label',
+//                                    text: 'Load Date Praxis',
+//                                    style: 'font-weight:bold;color:#121E31;',
+//                                    margin: '0 0 0 3',
+//                                    width: 126,
+//                                    padding: '3 0'
+//                                },
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-2-txtTDATE',
+//                                    fieldStyle: 'text-align:left',
+//                                    enforceMaxLength: true,
+//                                    maxLength: 20,
+//                                    margin: '0 0 0 3',
+//                                    readOnly: true,
+//                                    width: 100
+//                                }
                                 {
                                     xtype: 'label',
-                                    text: 'Load Date',
+                                    text: 'Card Nbr',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    width: 102,
                                     margin: '0 0 0 7',
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Format: YYYYMMDD'
-                                    }
+                                    width: 123,
+                                    padding: '3 0',
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-2-txtDATEF',
+                                    id: prototype.id + '-2-txtSCARDNL',
                                     fieldStyle: 'text-align:left',
                                     enforceMaxLength: true,
-                                    maxLength: 20,
+                                    maxLength: 17,
+                                    maskRe: /[0-9, */]/,
                                     margin: '0 0 0 3',
                                     readOnly: true,
                                     width: 120
                                 },
                                 {
                                     xtype: 'label',
-                                    text: 'Load Date Praxis',
+                                    text: 'Auth. Code',
                                     style: 'font-weight:bold;color:#121E31;',
-                                    margin: '0 0 0 3',
-                                    width: 126,
-                                    padding: '3 0'
+                                    margin: '0 0 0 7',
+                                    width: 137,
+                                    padding: '3 0',
+                                    autoEl: {
+                                        tag: 'label',
+                                        'data-qtip': 'Authorization Code'
+                                    }
                                 },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-2-txtTDATE',
-                                    fieldStyle: 'text-align:left',
+                                    id: prototype.id + '-2-txtSAUTHOCL',
+                                    fieldStyle: 'text-align:right',
                                     enforceMaxLength: true,
-                                    maxLength: 20,
+                                    maxLength: 6,
+                                    readOnly: true,
+                                    width: 100,
+                                },
+                                {
+                                    xtype: 'label',
+                                    text: 'Amount',
+                                    style: 'font-weight:bold;color:#121E31;',
+                                    margin: '0 0 0 7',
+                                    width: 102,
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-2-txtSVFOPL',
+                                    fieldStyle: 'text-align:right',
+                                    enforceMaxLength: true,
+                                    maxLength: 15,
                                     margin: '0 0 0 3',
                                     readOnly: true,
-                                    width: 100
-                                }
+                                    width: 120
+                                },
                             ]
                         }
                     ]

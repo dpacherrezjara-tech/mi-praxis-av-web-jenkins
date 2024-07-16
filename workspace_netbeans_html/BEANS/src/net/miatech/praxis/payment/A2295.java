@@ -163,12 +163,14 @@ public class A2295 {
     //NEW BY MPF100 ADM
     public double SVFOPS = 0;
     public long lngQSENT = 0;
+    public long lngQADJ = 0;
     public long lngQNSENT = 0;
     public long lngQSENTANS = 0;
     public long lngQSENTPEND = 0;
     public long lngQSENTACCEP = 0;
     public long lngQSENTREJ = 0;
     public long lngTotQSENT = 0;
+    public long lngTotQADJ = 0;
     public long lngTotQNSENT = 0;
     public long lngTotQSENTANS = 0;
     public long lngTotQSENTPEND = 0;

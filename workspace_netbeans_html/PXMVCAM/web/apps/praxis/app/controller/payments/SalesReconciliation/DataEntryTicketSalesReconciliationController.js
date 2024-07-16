@@ -262,7 +262,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtDATECTRANC", this.bean.DATECTRANC.trim());
         win.setValue("2-txtDATCO", this.bean.DATCO.trim());
         win.setValue("2-txtBANDOC", this.bean.BANDOC.trim());
-        
+        //SETTLEMENTS
+        win.setValue('2-txtSCARDNL', this.bean.SCARDNL.trim());
+        win.setValue("2-txtSAUTHOCL", this.bean.SAUTHOCL.trim());
+        win.setValue('2-txtSVFOPL', win.formatDblNumber(this.bean.SVFOPL));
         //ACCB ===================================
 //        if(this.bean.AFTE.trim() === 'X'){
 //            win.setText('2-lblACCBTitulo', 'Reconciliation BSP Information');
@@ -314,8 +317,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
 //        win.setValue('2-txtSEQCOUNT', this.bean.SEQCOUNT.trim());
         //win.setValue('2-txtComment', this.bean.strComment.trim());
 	//TEF ===================================
-        win.setValue('2-txtTDATE', this.bean.TDATE.trim());
-        win.setValue('2-txtDATEF', this.bean.DATEF.trim());
+//        win.setValue('2-txtTDATE', this.bean.TDATE.trim());
+//        win.setValue('2-txtDATEF', this.bean.DATEF.trim());
 	//BANKS ===================================
         win.setValue('2-txtBDATEL', this.bean.BDATEL.trim());
         win.setValue('2-cmbBSTVAL', this.bean.BSTVAL);

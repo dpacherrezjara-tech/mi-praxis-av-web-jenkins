@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 622,
+                            width: 722,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
-                                    width: 622,
+                                    width: 722,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -63,7 +63,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                         },
                                         items: [
                                             {
-//                                                id: prototype.id + '-columnName01', text: 'Sales',
+                                                id: prototype.id + '-columnName02', text: 'Sales',
                                                 columns: [
                                                     {
                                                         text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true, //flex: 1
@@ -145,6 +145,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                             return '<b>' + Ext.util.Format.number(data.lngTotQSENT, '0,000') + '<b>';
                                                         }
                                                     },
+                                                    
 //                                                    {
 //                                                        sortable: false,
 //                                                        xtype: 'actioncolumn',
@@ -333,6 +334,22 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                             
                                                        
+                                                    },
+                                                    {
+                                                        text: 'Adjustment', dataIndex: 'lngQADJ', width: 100, align: 'center', menuDisabled: true, // NO PROCESS lngQNPROC
+                                                        listeners: {
+                                                            click: 'onGridCountryByF'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#B6D8EE;";
+                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                            return '<a href="#payments-view-A-D-M-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotQADJ, '0,000') + '<b>';
+                                                        }
                                                     },
 //                                                    {
 //                                                        sortable: false,
