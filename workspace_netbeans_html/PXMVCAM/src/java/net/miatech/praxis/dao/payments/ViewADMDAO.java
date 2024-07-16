@@ -55,7 +55,7 @@ public class ViewADMDAO {
 
         List<A2295Filter> lstTkts = new ArrayList<A2295Filter>(0);
         A2295Filter beanTkt;
-        long lngTot = 0, lngTotSent = 0, lngTotNotSent = 0, lngTotSentAns = 0, lngTotSentPend = 0, lngTotSentAccep = 0, lngTotSentRej = 0;
+        long lngTot = 0, lngTotSent = 0, lngTotAdj = 0, lngTotNotSent = 0, lngTotSentAns = 0, lngTotSentPend = 0, lngTotSentAccep = 0, lngTotSentRej = 0;
 
 
         CallableStatement cstmt = null;
@@ -93,6 +93,7 @@ public class ViewADMDAO {
             while (rst.next()) {
                 lngTot = rst.getLong("QTOTAL");
                 lngTotSent = rst.getLong("QSEND");
+                lngTotAdj = rst.getLong("QADJ");
                 lngTotNotSent = rst.getLong("QNSEND");
                 lngTotSentAns = rst.getLong("QANS");
                 lngTotSentPend = rst.getLong("QSENDPEND");
@@ -114,6 +115,7 @@ public class ViewADMDAO {
                     beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
                     beanTkt.lngQTKT = rst.getLong("QTOTAL");
                     beanTkt.lngQSENT = rst.getLong("QSEND");
+                    beanTkt.lngQADJ = rst.getLong("QADJ");
                     beanTkt.lngQNSENT = rst.getLong("QNSEND");
                     beanTkt.lngQSENTANS = rst.getLong("QANS");
                     beanTkt.lngQSENTPEND = rst.getLong("QSENDPEND");
@@ -123,6 +125,7 @@ public class ViewADMDAO {
 
                     beanTkt.lngTotQTKT = lngTot;
                     beanTkt.lngTotQSENT = lngTotSent;
+                    beanTkt.lngTotQADJ = lngTotAdj;
                     beanTkt.lngTotQNSENT = lngTotNotSent;
                     beanTkt.lngTotQSENTANS = lngTotSentAns;
                     beanTkt.lngTotQSENTPEND = lngTotSentPend;
@@ -283,33 +286,34 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_COUNTRYBYF(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_COUNTRYBYF(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE.trim());
             cstmt.setString(3, filter.IN_FSEND.trim());
             cstmt.setString(4, filter.IN_FRCV.trim());
+            cstmt.setString(5, filter.IN_TDOC.trim());
             
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
 
@@ -331,6 +335,7 @@ public class ViewADMDAO {
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
@@ -388,35 +393,36 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_SAGENTBYF(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_SAGENTBYF(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE.trim());
             cstmt.setString(3, filter.IN_FSEND.trim());
             cstmt.setString(4, filter.IN_FRCV.trim());
-            cstmt.setString(5, filter.IN_SCURRENCY.trim());
-            cstmt.setString(6, filter.IN_SCOUNTRY.trim());
+            cstmt.setString(5, filter.IN_TDOC.trim());
+            cstmt.setString(6, filter.IN_SCURRENCY.trim());
+            cstmt.setString(7, filter.IN_SCOUNTRY.trim());
             
-            cstmt.setInt(7, filter.page.PAGNUM);
-            cstmt.setInt(8, filter.page.PAGROW);
-            cstmt.setInt(9, filter.page.TOTPAG);
-            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.setInt(8, filter.page.PAGNUM);
+            cstmt.setInt(9, filter.page.PAGROW);
+            cstmt.setInt(10, filter.page.TOTPAG);
+            cstmt.setInt(11, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(7);
-            filter.page.PAGROW = cstmt.getInt(8);
-            filter.page.TOTPAG = cstmt.getInt(9);
-            filter.page.TOTROW = cstmt.getInt(10);
+            filter.page.PAGNUM = cstmt.getInt(8);
+            filter.page.PAGROW = cstmt.getInt(9);
+            filter.page.TOTPAG = cstmt.getInt(10);
+            filter.page.TOTROW = cstmt.getInt(11);
 
             rst = cstmt.getResultSet();
 
@@ -438,6 +444,7 @@ public class ViewADMDAO {
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_SCURRENCY = filter.IN_SCURRENCY.trim();
                     beanTkt.IN_SCOUNTRY = filter.IN_SCOUNTRY.trim();
                     
@@ -499,36 +506,37 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAILBYF(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAILBYF(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE.trim());
             cstmt.setString(3, filter.IN_FSEND.trim());
             cstmt.setString(4, filter.IN_FRCV.trim());
-            cstmt.setString(5, filter.IN_SCURRENCY.trim());
-            cstmt.setString(6, filter.IN_SCOUNTRY.trim());
-            cstmt.setString(7, filter.IN_SAGENT.trim());
+            cstmt.setString(5, filter.IN_TDOC.trim());
+            cstmt.setString(6, filter.IN_SCURRENCY.trim());
+            cstmt.setString(7, filter.IN_SCOUNTRY.trim());
+            cstmt.setString(8, filter.IN_SAGENT.trim());
             
-            cstmt.setInt(8, filter.page.PAGNUM);
-            cstmt.setInt(9, filter.page.PAGROW);
-            cstmt.setInt(10, filter.page.TOTPAG);
-            cstmt.setInt(11, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(8);
-            filter.page.PAGROW = cstmt.getInt(9);
-            filter.page.TOTPAG = cstmt.getInt(10);
-            filter.page.TOTROW = cstmt.getInt(11);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             rst = cstmt.getResultSet();
 
@@ -550,6 +558,7 @@ public class ViewADMDAO {
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_SCURRENCY = filter.IN_SCURRENCY.trim();
                     beanTkt.IN_SCOUNTRY = filter.IN_SCOUNTRY.trim();
                     beanTkt.IN_SAGENT = filter.IN_SAGENT.trim();
@@ -766,35 +775,36 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAILBYEYESCOUNTRY(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAILBYEYESCOUNTRY(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE.trim());
             cstmt.setString(3, filter.IN_FSEND.trim());
             cstmt.setString(4, filter.IN_FRCV.trim());
-            cstmt.setString(5, filter.IN_SCURRENCY.trim());
-            cstmt.setString(6, filter.IN_SCOUNTRY.trim());
+            cstmt.setString(5, filter.IN_TDOC.trim());
+            cstmt.setString(6, filter.IN_SCURRENCY.trim());
+            cstmt.setString(7, filter.IN_SCOUNTRY.trim());
             
-            cstmt.setInt(7, filter.page.PAGNUM);
-            cstmt.setInt(8, filter.page.PAGROW);
-            cstmt.setInt(9, filter.page.TOTPAG);
-            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.setInt(8, filter.page.PAGNUM);
+            cstmt.setInt(9, filter.page.PAGROW);
+            cstmt.setInt(10, filter.page.TOTPAG);
+            cstmt.setInt(11, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(7);
-            filter.page.PAGROW = cstmt.getInt(8);
-            filter.page.TOTPAG = cstmt.getInt(9);
-            filter.page.TOTROW = cstmt.getInt(10);
+            filter.page.PAGNUM = cstmt.getInt(8);
+            filter.page.PAGROW = cstmt.getInt(9);
+            filter.page.TOTPAG = cstmt.getInt(10);
+            filter.page.TOTROW = cstmt.getInt(11);
 
             rst = cstmt.getResultSet();
 
