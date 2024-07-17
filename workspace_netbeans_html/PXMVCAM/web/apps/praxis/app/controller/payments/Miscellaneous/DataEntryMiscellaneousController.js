@@ -263,8 +263,20 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.DataEntryMiscellaneousC
 
     validacionInsert: function (beanTemp) {
         var msjResult = '';
+        let field1 = ''
+        let field2 = ''
+        let field3 = ''
         if (this.getValue("de-txtCodeTable") === '' /* || this.getValue("de-txtCant1") === '' || this.getValue("de-txtCant2") === '' */ || this.getValue("de-txtCDesc1") === '' || this.getValue("cmbDoc") === '') {
-            msjResult = "You must enter the required field.";
+            if(this.getValue("de-txtCodeTable") === ''){
+                field1 = '<br><b>Table'
+            }
+            if(this.getValue("de-txtCDesc1") === ''){
+                field2 = '<br><b>Description'
+            }
+            if(this.getValue("cmbDoc") === ''){
+                field3 = '<br><b>Document'
+            }
+            msjResult = "You must enter the required field: " + field1 + field2 + field3;
         }
         return msjResult;
     },

@@ -327,7 +327,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                 this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Sent Agency'
                 cantidad = rowData.data.lngQSENT;
                 break;
-            case 2:S
+            case 2:
                 this.beanDetCountry.IN_TDOC = ''
                 this.beanDetCountry.IN_FSEND = ''
                 this.beanDetCountry.IN_FRCV = 'P'

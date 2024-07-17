@@ -99,17 +99,34 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.MiscellaneousController
                         Ext.create('Ext.data.Store', {data: res.data, autoLoad: true})
                     );
                     Ext.getCmp(prototype.id + '-cmbCodes').setValue('');
-                    me.btnSearch_click();
+//                    me.btnSearch_click();
                 } else
                     global.Msg({msg: res.sesion});
             }
         });
         
+        Ext.Ajax.request({
+            url: prototype.url + '/getTables',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);             
+                if (res.success) {
+                    Ext.getCmp(prototype.id + '-cmbTable').bindStore(
+                        Ext.create('Ext.data.Store', {data: res.data, autoLoad: true})
+                    );
+                    Ext.getCmp(prototype.id + '-cmbTable').setValue('');
+                    me.btnSearch_click();
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });
     },
     setFormatParameter: function() {
 
         me.bean = {};
-        me.bean.IN_CODE = Ext.getCmp(prototype.id + '-cmbCodes').getValue();
+        me.bean.IN_CODE = Ext.getCmp(prototype.id + '-cmbTable').getValue();
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,
