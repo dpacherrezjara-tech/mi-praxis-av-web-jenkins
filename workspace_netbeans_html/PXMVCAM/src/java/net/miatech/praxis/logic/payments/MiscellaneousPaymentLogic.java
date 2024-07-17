@@ -23,6 +23,10 @@ public class MiscellaneousPaymentLogic {
         return MiscellaneousPaymentDAO.loadPX598SQP04519(filter);
     }
     
+    public List<A4169Filter> loadPX598SQP04519_TTABLA(A4169Filter filter) throws SQLException, Exception {
+        return MiscellaneousPaymentDAO.loadPX598SQP04519_TTABLA(filter);
+    }
+    
     public A4169 loadPX598SQP04520(A4169Filter filter) throws SQLException, Exception {
         return MiscellaneousPaymentDAO.loadPX598SQP04520(filter);
     }

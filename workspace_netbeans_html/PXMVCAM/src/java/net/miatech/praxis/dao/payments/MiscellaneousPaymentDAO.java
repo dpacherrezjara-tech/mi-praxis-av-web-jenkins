@@ -213,6 +213,66 @@ public class MiscellaneousPaymentDAO {
         return lstTkts;
     }
 
+    public List<A4169Filter> loadPX598SQP04519_TTABLA(A4169Filter filter) throws SQLException, Exception {
+
+        List<A4169Filter> lstTkts = new ArrayList<A4169Filter>(0);
+        A4169Filter beanTkt;
+
+        A4169Filter objRtn;
+        objRtn = new A4169Filter();
+        objRtn.CODE = "";
+        objRtn.NAME = "All";
+        lstTkts.add(objRtn);
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04519_TTABLA(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                beanTkt = new A4169Filter();
+
+                beanTkt.CODE = rst.getString("TTABLA").trim();
+                beanTkt.NAME = rst.getString("TTABLA").trim();
+                lstTkts.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
     public A4169 loadPX598SQP04520(A4169Filter filter) throws SQLException, Exception {
 
         A4169 beanTkt = new A4169();
