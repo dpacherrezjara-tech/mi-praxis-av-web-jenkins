@@ -44,6 +44,24 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Filters', {
                          change: 'btnSearch_click'
                      }
                 },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbTable',
+                    fieldLabel: 'Table',
+                    triggerAction: 'all',
+                    enableKeyEvents: true,
+                    readOnly: false,
+                    editable: true,
+                    valueField: 'CODE',
+                    displayField: 'NAME',
+                    fieldStyle: 'text-align: left;',
+                    labelWidth: 150,
+                    width: 400,
+                    hidden: false,
+                    listeners:{
+                         change: 'btnSearch_click'
+                     }
+                },
                 
             ]
         }

@@ -121,7 +121,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         }));
         cmbFecFiltro.setValue("PRDA");
         
-        Ext.getCmp(prototype.id + '-cmbCores').setValue("");
+//        Ext.getCmp(prototype.id + '-cmbCores').setValue("");
         Ext.Ajax.request({
             url: prototype.url + '/obtainCores',
             method: 'POST',

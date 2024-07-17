@@ -61,7 +61,12 @@ public class OutputsDAO {
 
         List<A2353Filter> lstData = new ArrayList<A2353Filter>(0);
         A2353Filter beanTkt;
-
+        
+        A2353Filter objRtn = new A2353Filter();
+        objRtn.CODE = "";
+        objRtn.NAME = "All";
+        lstData.add(objRtn);
+        
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
