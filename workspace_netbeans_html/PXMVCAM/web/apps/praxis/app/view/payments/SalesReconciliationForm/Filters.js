@@ -945,43 +945,51 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 keypress: 'BuscarTKT_keyDownHandler'
                             }
                         },
-//                        {xtype: 'tbspacer', width: 10},
                         {
-                            xtype: 'checkboxfield',
-                            id: prototype.id + '-chkADYEN',
-                            boxLabel: '<b>ADM</b>',
-                            checked: false,
-                            hidden: false,
-                            width: 50,
-                            listeners: {
-                                change: 'btnSearch_click'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'label',
-                            text: 'ADM Type:',
-                            padding: '3 0 0 0',
-                            width: 60,
+                            xtype: 'container',
+                            layout: 'hbox',
+                            id: prototype.id + '-contADJ',
+//                            hidden: true,
+                            items: [
+                                {
+                                    xtype: 'checkboxfield',
+                                    id: prototype.id + '-chkADYEN',
+                                    boxLabel: '<b>ADM</b>',
+                                    checked: false,
+                                    hidden: false,
+                                    width: 50,
+                                    listeners: {
+                                        change: 'btnSearch_click'
+                                    }
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'label',
+                                    text: 'ADM Type:',
+                                    padding: '3 0 0 0',
+                                    width: 60,
 
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbADJTYPE',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:left;',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    value: '',
+                                    display: 'All',
+                                    width: 182,
+                                    labelWidth: 10,
+                                    hidden: false,
+                                    hiddenLabel: false
+                                },
+                            ]
                         },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbADJTYPE',
-                            style: 'font-weight:bold;color:#0B333C;',
-                            fieldStyle: 'text-align:left;',
-                            queryMode: 'local',
-                            triggerAction: 'all',
-                            valueField: 'CODE',
-                            displayField: 'NAME',
-                            value: '',
-                            display: 'All',
-                            width: 182,
-                            labelWidth: 10,
-                            hidden: false,
-                            hiddenLabel: false
-                        },
+                        
                         {
                             xtype: 'radiogroup',
                             hidden: true,
