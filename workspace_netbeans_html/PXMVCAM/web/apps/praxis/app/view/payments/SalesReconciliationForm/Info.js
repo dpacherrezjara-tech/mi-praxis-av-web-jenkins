@@ -4479,6 +4479,9 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                         ptype: 'cellediting',
                                                         clicksToEdit: 1
                                                     },
+                                                    features: [{
+                                                        ftype: 'summary'
+                                                    }],
                                                     columns: {
                                                         defaults: {
                                                             menuDisabled: true,
@@ -4704,6 +4707,12 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     console.log(value, 'amount detalle')
                                                                     return win.formatDblNumber(value);
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().getData().items[0].data;
+                                                                    console.log(data.dblTotSVFOP, 'data.dblTotSVFOP')
+                                                                    return win.formatDblNumber(data.dblTotSVFOP);
                                                                 }
                                                             },
                                                             {
@@ -4904,6 +4913,9 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                         ptype: 'cellediting',
                                                         clicksToEdit: 1
                                                     },
+                                                    features: [{
+                                                        ftype: 'summary'
+                                                    }],
                                                     columns: {
                                                         defaults: {
                                                             menuDisabled: true,
