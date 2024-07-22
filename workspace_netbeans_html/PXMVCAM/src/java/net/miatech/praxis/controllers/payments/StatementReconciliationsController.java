@@ -7,6 +7,7 @@ package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,15 +22,18 @@ import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.controllers.BaseController;
+import static net.miatech.praxis.controllers.flown.FlightConciliationController.getCellValue;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
+import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,13 +42,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -3431,4 +3438,157 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    
+    @RequestMapping(value = "setUploadLiquivsEC", method = RequestMethod.POST)
+    public @ResponseBody
+    String setUploadLiquivsEC(ModelMap map,@RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+
+        byte[] bytes = null;
+        String message = "";
+        String filename = "";
+
+        try {
+
+//            bytes = (request.getParameter("arrBytes")).getBytes("ISO-8859-1");
+            byte[] dataFile = excelfile.getBytes();
+            filename = request.getParameter("filename");
+
+            message = uploadFileConciliaEC(dataFile);
+
+            map.put("success", true);
+            map.put("msjResult", message);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msjResult", message);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private String uploadFileConciliaEC(byte[] bytes) throws Exception {
+
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        logic =  new StatementReconciliationsLogic();
+        List<MPF101> lstData = new ArrayList<>();
+        String regs = "" , regsEC="";
+        String message = "";
+        int i = 0 , cont =0;
+        boolean isOk = false;
+        
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "Revision." + strSesion + ".xlsx";
+
+            String strArchivo = "C:\\Dumps\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter dataFormatter = new DataFormatter();
+//            DataFormatter df = new DataFormatter();
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            // leer archivo excel
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            //obtener la hoja que se va leer
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            //obtener todas las filas de la hoja excel
+            Iterator<Row> rowIterator = sheet.iterator();
+
+//            Row row;
+            // se recorre cada fila hasta el final
+            try {
+                MPF101 obj = new MPF101();
+                while (rowIterator.hasNext()) {
+                    i++;
+                    Row row = rowIterator.next();
+
+                    if (i > 1) {//no toma en cuenta cabecera
+                        
+                        cont++;
+                        if (row.getCell(0) != null) {
+                            
+                            obj.CCUST =  dataFormatter.formatCellValue(row.getCell(0));
+                            if(obj.CCUST.trim().equals("***") || obj.CCUST.trim().equals("")){
+                                
+                                obj.liq = regs.substring(1);
+                                obj.ec = regsEC;
+                                regs ="";
+                                regsEC ="";
+                                lstData.add(obj);
+                                obj = new MPF101();
+                                cont=0;
+                                continue;
+                            }
+                            
+                            obj.SDATE = dataFormatter.formatCellValue(row.getCell(1));
+                            obj.SCOUNTRY = dataFormatter.formatCellValue(row.getCell(2));
+                            obj.TDOC = dataFormatter.formatCellValue(row.getCell(3));
+                            obj.CODEBANK = dataFormatter.formatCellValue(row.getCell(4));
+                            obj.SCARCOD = dataFormatter.formatCellValue(row.getCell(5));
+                            obj.SCARDN = dataFormatter.formatCellValue(row.getCell(6));
+                            obj.SAUTHOC = dataFormatter.formatCellValue(row.getCell(7));
+                            obj.SEQ = dataFormatter.formatCellValue(row.getCell(8));
+                            obj.SVFOP = Double.parseDouble(dataFormatter.formatCellValue(row.getCell(9)) );
+                            obj.TOTAL = Double.parseDouble(dataFormatter.formatCellValue(row.getCell(10)) );
+                            obj.NETO = Double.parseDouble(dataFormatter.formatCellValue(row.getCell(11)) );
+                            obj.CODPRO =  dataFormatter.formatCellValue(row.getCell(12));
+                            /*EC*/
+
+                            /*Estados de cuenta*/
+                            if(cont==1){
+                            
+                                obj.CCUST_EC = dataFormatter.formatCellValue(row.getCell(13));
+                                obj.ADATE = dataFormatter.formatCellValue(row.getCell(14));
+                                obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(15));
+                                obj.CODEBANK_EC = dataFormatter.formatCellValue(row.getCell(16));
+                                obj.BANDOC = dataFormatter.formatCellValue(row.getCell(17));
+                                if(obj.BANDOC.trim().equals("")){
+                                    message ="Ingresar un Bandoc.";
+                                    break;
+                                }
+                                regsEC = obj.CCUST_EC+ ";" + obj.ADATE+ ";" + obj.SOCIETY+ ";" + obj.CODEBANK_EC+ ";" + obj.BANDOC ; 
+                            }
+                            
+                            regs = regs + "|"  + obj.CCUST + ";" + obj.SDATE + ";" + obj.SCOUNTRY + ";" + obj.TDOC + ";" + obj.CODEBANK + ";" + obj.SCARCOD + ";" + obj.SCARDN
+                            + ";" + obj.SAUTHOC+ ";" + obj.SEQ+ ";" + obj.SVFOP+ ";" + obj.TOTAL+ ";" + obj.NETO+ ";" + obj.CODPRO;
+                            
+//                            System.out.println("Campo " + i + " docnum :" + obj.TKT);
+                        }
+                    }
+                }
+
+                obj.liq = regs.substring(1);
+                obj.ec = regsEC;
+                regs ="";
+                regsEC ="";
+                lstData.add(obj);
+                
+                
+                
+                file.close();
+
+                if (message.equals("")) {
+                    System.out.print("sucesssssssssssssssssss");
+                    logic = new StatementReconciliationsLogic();
+                    logic.setSession(this.serverSession.getServerSession());
+                    message = logic.loadPX287MPS100(lstData);
+                    
+                }
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                e.printStackTrace();
+            }
+            //Eliminar temporal           
+            archivo.delete();
+        } catch (Exception e) {
+            message = e.getMessage();
+            e.printStackTrace();
+        }
+        return message;
+    }
+    
 }

@@ -22,6 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     drillDown: [],
     lstCountry: [],
     gridActual: '',
+    fileLIQvsEC:'',
     panelActual: '',
     fileName: '',
     reg99: 0,
@@ -1416,6 +1417,97 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }
         });
     },
+    
+    onLoadClick_conciliaEC: function () {
+
+//        var valorcmbGrp = Ext.getCmp(prototype.id + '-cmbTypeGroup').getValue();
+//
+//        if (valorcmbGrp === '') {
+//            global.Msg({msg: 'Please select Load Type'});
+//        } else {
+            var msjPregunta = '', msjError = '';
+            msjPregunta = 'Sure to load file?';
+
+            if (msjError === '') {
+                Ext.MessageBox.show({
+                    title: 'Icon Support',
+                    msg: msjPregunta,
+                    buttons: Ext.MessageBox.OKCANCEL,
+                    icon: Ext.MessageBox.WARNING,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            me.onFileLoadToTemp();
+                        }
+                    }
+                });
+            }
+//        }
+    },
+    onFileLoadToTemp: function () {
+
+
+
+        var me = this;
+        let beanValidation = {}
+        
+        beanValidation.IN_ACCNUMBER = '***********';
+        var fileField = Ext.getCmp(prototype.id + '-file');
+        var file = fileField.fileInputEl.dom.files[0];
+        let beanString = JSON.stringify(beanValidation);
+        if (!file) {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+
+        // Crear una instancia de FormData para enviar el archivo
+        var formData = new FormData();
+        formData.append('excelfile', file);
+        
+        // Realizar una solicitud AJAX para cargar el archivo
+        Ext.Ajax.request({
+            url: prototype.url + '/setUploadLiquivsEC',
+            method: 'POST',
+            rawData: formData,
+            params: {beanString: beanString},
+            // Configurar el tipo de contenido adecuado y el encabezado
+            headers: {
+                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
+            },
+            success: function (response) {
+                
+                var res = Ext.JSON.decode(response.responseText);
+                var msjResult = res.msjResult;
+                global.Msg({msg: msjResult});
+//                var res = Ext.decode(response.responseText);
+//                console.log(res);
+//                if (res.success) {
+//                    var msjResult = res.msjResult;
+////                    let msjResult = res.msjResult;
+////                    if(objResult.isInvalid){
+////                        global.Msg({msg: "The account number is different"});
+////                        return false;
+////                    }
+//                    console.log('*************************************')
+//                    console.log( msjResult)
+//                    global.Msg({msg: msjResult});
+////                    let numberWithCommas = me.formatNumberWithCommas_string(objResult.netoAcum);
+////                    Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(numberWithCommas);
+////                    me.validationAmount();
+//                    // No es necesario restaurar el archivo ya que no se borra el campo de archivo
+//                } else {
+//                    global.Msg({msg: "Error Excel Load"});
+//                }
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+
+    },
+    
     btnFilter_click: function (obj) {
 
         var option = Ext.getCmp(prototype.id + '-contentFilter');
