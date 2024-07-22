@@ -190,4 +190,43 @@ public class ForecastPaymentDAO {
 
         return list;
     }
+    
+    public A2295Filter getTotalRecords() throws SQLException, Exception {
+        A2295Filter objRtn = new A2295Filter();
+        CallableStatement cstmt = null;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPGETCOUNTMPF074()}";
+        ResultSet rst = null;
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.execute();
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                objRtn.CANT = rst.getLong("CANT");
+            }
+            rst.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return objRtn;
+    }
+    
     }

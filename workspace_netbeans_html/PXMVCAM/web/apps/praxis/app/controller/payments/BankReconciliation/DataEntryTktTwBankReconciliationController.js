@@ -48,10 +48,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryTktTwBank
         this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
         this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
         this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
-        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue()
-        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue()
-        this.bean_scan.SCURRENCY = this.bean.SCURRENCY
-        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard')
+        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue();
+        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
+        this.bean_scan.SCURRENCY = this.bean.SCURRENCY;
+        this.bean_scan.CCUSTCC = this.bean.CCUSTCC;
+        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard');
         
         // Validación: Verificar si todos los campos son vacíos
         if (
@@ -71,8 +72,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryTktTwBank
         // Obtener el componente del grid
         let gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         let gridComponentBlockedon = Ext.getCmp(prototype.id + '-gridDataInfoScanBlocked');
-        let dataGrid = gridComponentNormalon.getStore().getData().items
-        let dataGridBl = gridComponentBlockedon.getStore().getData().items
+        let dataGrid = gridComponentNormalon.getStore().getData().items;
+        let dataGridBl = gridComponentBlockedon.getStore().getData().items;
         let constructorExcluir = {}.constructor;
         let arrayConstructor = dataGrid.filter(function (elemento) {
             return elemento.constructor !== constructorExcluir;
@@ -852,6 +853,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryTktTwBank
                 SDATE: record.get('A720FECVTA'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                CCUSTCC: Ext.getCmp(prototype.id + '-cmbCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
 
                         // Agrega más campos según sea necesario
@@ -881,6 +883,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryTktTwBank
                     ATICKET: record.get('A1531TKT'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ASAGENT: record.get('A720AGENTE'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ACERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(),
+                    CCUSTCC: Ext.getCmp(prototype.id + '-cmbCCUSTCC').getValue(),
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
                     CFUENTE: record.get('CFUENTE'), ///CFUENTE
                 };

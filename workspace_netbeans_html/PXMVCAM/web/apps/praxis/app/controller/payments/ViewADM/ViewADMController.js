@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
     dup: '',
     searchParams: {},
     paramsDetail: {},
+    paramsReportADM: {},
     paramsTKT: {},
     dataObtain: {},
     beanTKT: {},
@@ -29,6 +30,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
     beanDetailByD: {},
     beanDetailByF: {},
     dataGrid: [],
+    
     init: function (view) {
         me = this;
         prototype.id = 'ViewADMForm';
@@ -37,7 +39,6 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
         me.panelActual = '-panelGridDataMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-
 
         this.control({
 //            //   -------------------Eventos Genericos --------------------
@@ -52,6 +53,9 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
             },
             '#ViewADMForm-btnExcel': {
                 click: this.btnExcel_click
+            },
+            '#ViewADMForm-btnReportADM': {
+                click: this.btnReportADM
             },
             '#ViewADMForm-btnFilter': {
                 click: this.btnFilter_click
@@ -91,12 +95,13 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
             },
             '#ViewADMForm-cmbDateFromDay': {
                 select: this.selectComboFromDay
-            }
-
+            },
         });
     },
+    
     xpanel_afterrender: function (obj, e) {
         this.obtainData();
+        
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -221,7 +226,16 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
             this.setGridData(); 
         }
     },
-
+//    changeTS: function () {
+//        console.log('HOLAAAAA')
+//    },
+//    
+//    chgJesus: function () {
+//        console.log('HOLAAAAA xdddddddddddddd')
+//    },
+//    clickToggleSwitch: function () {
+//        console.log('WADAFAAAAA')
+//    },
     setGridData: function () {
         
         me.drillDown.push(me.panelActual);
@@ -956,6 +970,11 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                         {msg: 'Under Construction'
                         });
         }
+    },
+    btnReportADM: function (obj) {
+        let beanReportADM = {}
+        me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
+        global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));
     },
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contFilter');

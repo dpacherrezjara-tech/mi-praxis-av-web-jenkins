@@ -27,6 +27,10 @@ public class ForecastPaymentLogic {
         return ForecastPaymentDAO.loadPX290MPS074(filter);
     }
     
+    public A2295Filter getTotalRecords() throws SQLException, Exception {
+        return ForecastPaymentDAO.getTotalRecords();
+    }
+    
 
     
 }

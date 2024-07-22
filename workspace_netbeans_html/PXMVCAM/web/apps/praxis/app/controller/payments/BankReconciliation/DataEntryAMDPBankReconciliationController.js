@@ -54,10 +54,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
         this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
         this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
-        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue()
-        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue()
-        this.bean_scan.SCURRENCY = this.bean.SCURRENCY
-        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard')
+        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue();
+        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
+        this.bean_scan.SCURRENCY = this.bean.SCURRENCY;
+        this.bean_scan.CCUSTCC = this.bean.CCUSTCC;
+        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard');
+        console.log(this.bean.CCUSTCC, 'The real CCUSTCC');
         
         // Validación: Verificar si todos los campos son vacíos
         if (
@@ -365,7 +367,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     onSearchCompleteDetail: function () {
 
         var paramDetail = {};
+        this.bean.CCUSTCC =  Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue();
         paramDetail.beanString = JSON.stringify(this.bean);
+        console.log(this.bean,'PRUEBINHA');
         console.log('MUESTRA EL PARAMS ');
         console.log(paramDetail);
         Ext.Ajax.request({
@@ -404,6 +408,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
         console.log(this.bean.SCURRENCY, 'scurrrency en this bean')
+        console.log(this.bean.CCUSTCC, 'Prueba')
         console.log(paramDetail);
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanAMDP_SCAN_PENDING',
@@ -488,6 +493,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtSPNR', this.bean.SPNR);
 //        this.setValue('de-txtISREFNBR', this.bean.ISREFNBR);
         this.setValue('de-txtBANDOC', this.bean.BANDOC);
+        this.setValue('de-txtSOCIETY', this.bean.SOCIETY);
+        this.setValue('de-txtSOCIETYL', this.bean.SOCIETYL);
+        
+        var comg = Ext.getCmp(prototype.id + '-de-txtSOCIETYL').getValue();
+        var comp = Ext.getCmp(prototype.id + '-de-txtSOCIETY').getValue();
+
+        if (comg !== comp && comg !== '') {
+            Ext.util.CSS.createStyleSheet('.detalle-society { background-color: #d5f4d5 !important; }');
+            Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #bff5bf !important; }');
+        } else {
+            Ext.util.CSS.createStyleSheet('.detalle-society { background-color: transparent !important; }');
+            Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #ccdeeb !important; }');
+        }
+        
+        this.setValue('de-txtCCUSTCC', this.bean.CCUSTCC);
         this.setValue('de-txtPAYDATE', this.bean.PAYDATE);
         this.setValue('de-txtSCARCODE', this.bean.SCARCOD);
         this.setValue('de-txtCODEBANK', this.bean.CODEBANK);
@@ -701,6 +721,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtTDOC', '');
         this.setValue('de-txtSPNR', '');
         this.setValue('de-txtBANDOC', '');
+        this.setValue('de-txtCCUSTCC', '');
         this.setValue('de-txtSCARCODE', '');
         this.setValue('de-txtCODEBANK', '');
         this.setValue('de-txtSCARDN', '');
@@ -1049,6 +1070,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                CCUSTCC: Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
 
@@ -1081,6 +1103,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     ATRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(),
                     ACERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(),
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
+                    CCUSTCC: Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                     BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
                     CFUENTE: record.get('CFUENTE'), ///CFUENTE
                     ADATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue()
@@ -1118,6 +1141,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                CCUSTCC: Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
 
@@ -1151,6 +1175,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             SDATE: Ext.getCmp(prototype.id + '-de-txtBSUMDATE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
             TRANC: Ext.getCmp(prototype.id + '-de-txtTRANC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
             CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+            CCUSTCC: Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
             BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
             DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
                     // Agrega más campos según sea necesario
