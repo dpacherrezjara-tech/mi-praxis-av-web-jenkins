@@ -11,6 +11,7 @@ import net.miatech.beans.A1691Filter;
 import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.StatementReconciliationsDAO;
+import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 
@@ -108,5 +109,9 @@ public class StatementReconciliationsLogic {
     
     public String loadPX269SQP05115Head(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05115Head(filter, user);
+    }
+    
+    public String loadPX287MPS100(List<MPF101> lst) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287MPS100(lst);
     }
 }
