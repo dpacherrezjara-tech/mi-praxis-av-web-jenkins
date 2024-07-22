@@ -145,6 +145,12 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnReportADM',
+                            iconCls: 'prx-icon-image-file',
+                            tooltip: 'Export to Report'
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'

@@ -43,6 +43,9 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
             '#ForecastPaymentForm-btnExcel': {
                 click: this.btnExcel_click
             },
+            '#ForecastPaymentForm-btnReport': {
+                click: this.btnReport_click
+            },
             '#ForecastPaymentForm-btnFilter': {
                 click: this.btnFilter_click
             },
@@ -200,8 +203,140 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
         };
         console.log(searchParams);
     },
+    btnReport_click: function (obj, e) {
+       
+        
+        let years = [];
+        let currentYear = new Date().getFullYear();
+        for (let i = currentYear - 10; i <= currentYear + 10; i++) {
+            years.push(i);
+        }
 
+        var dialog = Ext.create('Ext.window.Window', {
+            title: 'Generate Report',
+            width: 600,
+            layout: 'fit',
+            bodyPadding: 10,
+            bodyStyle: 'background-color: #BAE8F0;',
+            modal: true,
+            items: [
+                {
+                    xtype: 'form', // Define the form
+                    border: false,
+                    bodyStyle: 'background-color: #BAE8F0;',
+                    items: [
+                        {
+                            xtype: 'textarea',
+                            fieldLabel: 'Emails',
+                            width: 500,
+                            vtype: 'multiemail',
+                            emptyText: 'prueba1@miatech.net,prueba2@miatech.net',
+                            afterBodyEl: [
+                                '<div style="color: black; font-size: 9px; margin-top: 0px;"><b>',
+                                'Enter emails between commas',
+                                '</div>'
+                            ],
+                            name: 'mail_notification'
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Year',
+                            name: 'year',
+                            store: years,
+                            queryMode: 'local',
+                            forceSelection: true
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Month',
+                            name: 'month',
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['month', 'display'],
+                                data: [
+                                    {month: '01', display: 'Jan'},
+                                    {month: '02', display: 'Feb'},
+                                    {month: '03', display: 'Mar'},
+                                    {month: '04', display: 'Apr'},
+                                    {month: '05', display: 'May'},
+                                    {month: '06', display: 'Jun'},
+                                    {month: '07', display: 'Jul'},
+                                    {month: '08', display: 'Aug'},
+                                    {month: '09', display: 'Sep'},
+                                    {month: '10', display: 'Oct'},
+                                    {month: '11', display: 'Nov'},
+                                    {month: '12', display: 'Dec'}
+                                ]
+                            }),
+                            queryMode: 'local',
+                            displayField: 'display',
+                            valueField: 'month'
+                        },
+                        
+                    ]
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Generar',
+                    handler: function() {
+                        let beanDialog = {}
+                        let form = dialog.down('form').getForm();
+                        let values = form.getValues();
+                        let periodo = values.year + values.month; 
+                        let emailValidate = true
+                        console.log(values, ' wadafa');
+                        beanDialog.periodo = periodo
+                        beanDialog.mail_notificacion = values.mail_notification
+                        let emails = values.mail_notification.split(",")
+                        let countE = emails.length                            
+                        for (let i = 0; i < emails.length; i++) {
+                            if (!emails[i].includes("@")) {
+                                emailValidate = false;
+                            }
+                        }
+                        if( !beanDialog.periodo || beanDialog.periodo == '' || !beanDialog.mail_notificacion || beanDialog.mail_notificacion == ''){
+                            global.Msg({
+                                msg: 'Complete the fields'
+                            });
+                            return false
+                        }
+                        if( beanDialog.mail_notificacion != '' && !emailValidate ){
+                            global.Msg({
+                                msg: 'Enter the emails correctly and between commas'
+                            });
+                            return false
+                        }
+                        console.log('beandialog', beanDialog)
+                        Ext.Ajax.request({
+                            url: prototype.url + '/serviceReport' ,
+                            method: 'POST',
+                            timeout: 60000000,
+                            params: {beanString: JSON.stringify(beanDialog)},
+                            success: function(response, options){
+                                var res = Ext.JSON.decode(response.responseText);
+                                console.log(res, 'res')
+                                if (res.success){
+                                    console.log(res.msg, 'msg')
+                                }else{
+                                    console.log(res.msg, 'msg')
+                                }
+                            },
+                            failure: function(response, opts) {
+                                console.log('server-side failure with status code '+response.status);
+                            }
+                        });
+                        dialog.hide();
+                    }
+                }
+            ]
+        });
+
+        dialog.show();
+        
+    },
     btnSearch_click: function (obj, e) {  
+        
+        
         this.setFormatParameter();  //obtengo los Parametros
         this.setGridData();
     },

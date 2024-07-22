@@ -6,6 +6,9 @@
 package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +26,11 @@ import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.ForecastPaymentLogic;
 import net.miatech.praxis.payment.filter.A2295Filter;
 import net.miatech.utils.Functions;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.entity.mime.MultipartEntityBuilder;
+//import org.apache.http.impl.client.CloseableHttpClient;
+//import org.apache.http.impl.client.HttpClients;
+//import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -36,11 +44,19 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
+//import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+//import org.apache.http.HttpEntity;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.entity.mime.MultipartEntityBuilder;
+//import org.apache.http.impl.client.CloseableHttpClient;
+//import org.apache.http.impl.client.HttpClients;
+//import org.apache.http.util.EntityUtils;
 
 /**
  *
@@ -111,6 +127,47 @@ public class ForecastPaymentController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "serviceReport")
+    public @ResponseBody
+    String serviceReport(ModelMap map, HttpServletRequest request) {
+        
+        A2295Filter filter = new A2295Filter();
+        Gson gson1 = new Gson();
+        String beanString = "";
+        
+        beanString = request.getParameter("beanString");
+        A2295Filter obj = new A2295Filter();
+        try {
+            logic = new ForecastPaymentLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            //TRAER TOTAL DE REGISTROS EN LA MPF074
+            obj = logic.getTotalRecords(); 
+            long cant_files = (obj.CANT / 900000) + 1;
+            String num_files = String.valueOf(cant_files);
+            filter = gson1.fromJson(beanString, A2295Filter.class);
+            Unirest.setTimeouts(0, 0);
+            HttpResponse<String> response = 
+            Unirest.post("http://10.0.0.207:8000/api/forecast_download/")
+                .field("ccust", "134")
+                .field("periodo", filter.periodo)
+                .field("num_files", num_files)
+                .field("batch_size", "10000")
+                .field("enviroment", "AVIANCA")
+                .field("mail_notificacion", filter.mail_notificacion)
+                .asString();
+            String responseBody = response.getBody();
+            map.put("success", true);
+            map.put("response", responseBody);
+
+        } catch (Exception e) {
+            map.put("success", false);
+            e.printStackTrace();
+        }
+        
+        
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
