@@ -59,6 +59,8 @@ public class A2295Filter  extends A2295{
     public String strDescCard = "";
     public String strNUMREF = "";
     public String IN_TITLE = "";
+    public String periodo = "";
+    public String mail_notificacion = "";
     
 //NEW VIEW ADM
     public String IN_FSEND = "";
@@ -77,6 +79,7 @@ public class A2295Filter  extends A2295{
     
                 
     public long lngDays = 0;
+    public long CANT = 0;
     
     public long RN = 0;
     public Pagination page = new Pagination();

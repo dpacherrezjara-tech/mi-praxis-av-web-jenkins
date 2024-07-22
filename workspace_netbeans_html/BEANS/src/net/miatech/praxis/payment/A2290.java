@@ -11,6 +11,7 @@ package net.miatech.praxis.payment;
 public class A2290 {
 
     public String CCUST = "";
+    public String CCUSTCC = "";
     public String CCIA = "";
     public String FORMA = "";
     public String SERIE = "";
@@ -196,6 +197,7 @@ public class A2290 {
     public double SUBTOTAL = 0;
     public String CURRADM = "";
     public String SOCIETY = "";
+    public String SOCIETYL = "";
     public String AMOUNT = "";
     public String USERAV = "";
     public String TYPETRAN = "";

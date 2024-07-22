@@ -359,10 +359,10 @@ public class BankReconciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0; 
-        long lngTotQSALESRF = 0, lngTotQMATCHRF = 0, lngTotQMANUALRF = 0, lngTotQDIFFRF = 0, lngTotQPENDRF = 0; 
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0;
+        long lngTotQSALESRF = 0, lngTotQMATCHRF = 0, lngTotQMANUALRF = 0, lngTotQDIFFRF = 0, lngTotQPENDRF = 0;
         long lngTotQSALESCH = 0, lngTotQMATCHCH = 0, lngTotQMANUALCH = 0, lngTotQDIFFCH = 0, lngTotQPENDCH = 0;
-        long lngTotQSALESAC = 0, lngTotQMATCHAC = 0, lngTotQMANUALAC = 0, lngTotQDIFFAC = 0, lngTotQPENDAC = 0; 
+        long lngTotQSALESAC = 0, lngTotQMATCHAC = 0, lngTotQMANUALAC = 0, lngTotQDIFFAC = 0, lngTotQPENDAC = 0;
         long lngTotQPOLIC = 0, lngTotQPOLIPE = 0;
 
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
@@ -411,25 +411,25 @@ public class BankReconciliationDAO {
                 lngTotQMANUAL = rst.getLong("QMANUAL");
                 lngTotQDIFF = rst.getLong("QDIFF");
                 lngTotQPEND = rst.getLong("QPEND");
-                
-               lngTotQSALESRF = rst.getLong("QSALESRF");
+
+                lngTotQSALESRF = rst.getLong("QSALESRF");
                 lngTotQMATCHRF = rst.getLong("QMATCHRF");
                 lngTotQMANUALRF = rst.getLong("QMANUALRF");
                 lngTotQDIFFRF = rst.getLong("QDIFFRF");
                 lngTotQPENDRF = rst.getLong("QPENDRF");
-                
+
                 lngTotQSALESCH = rst.getLong("QSALESCH");
                 lngTotQMATCHCH = rst.getLong("QMATCHCH");
                 lngTotQMANUALCH = rst.getLong("QMANUALCH");
                 lngTotQDIFFCH = rst.getLong("QDIFFCH");
                 lngTotQPENDCH = rst.getLong("QPENDCH");
-                
+
                 lngTotQSALESAC = rst.getLong("QSALESAC");
                 lngTotQMATCHAC = rst.getLong("QMATCHAC");
                 lngTotQMANUALAC = rst.getLong("QMANUALAC");
                 lngTotQDIFFAC = rst.getLong("QDIFFAC");
                 lngTotQPENDAC = rst.getLong("QPENDAC");
-                
+
                 lngTotQPOLIC = rst.getLong("QPOLIC");
                 lngTotQPOLIPE = rst.getLong("QPOLIPE");
             }
@@ -447,7 +447,7 @@ public class BankReconciliationDAO {
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.IN_SDATE);
-                    
+
 //                    if (rst.getString("COUNTRY").trim().isEmpty()) {
 //                        beanTkt.SCOUNTRY = "**";
 //                    }else {
@@ -487,7 +487,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
                     beanTkt.lngTotQPEND = lngTotQPEND;
-                    
+
                     beanTkt.lngTotQSALESRF = lngTotQSALESRF;
                     beanTkt.lngTotQMATCHRF = lngTotQMATCHRF;
                     beanTkt.lngTotQMANUALRF = lngTotQMANUALRF;
@@ -507,11 +507,11 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
 
                     beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
-                    
+
                     beanTkt.lngQMATCHPercentRF = (beanTkt.lngQSALESRF > 0) ? (beanTkt.lngQMATCHRF * 100.0) / beanTkt.lngQSALESRF : 0.00;
                     beanTkt.lngQMATCHPercentCH = (beanTkt.lngQSALESCH > 0) ? (beanTkt.lngQMATCHCH * 100.0) / beanTkt.lngQSALESCH : 0.00;
                     beanTkt.lngQMATCHPercentAC = (beanTkt.lngQSALESAC > 0) ? (beanTkt.lngQMATCHAC * 100.0) / beanTkt.lngQSALESAC : 0.00;
-                    
+
                     beanTkt.lngTotQMATCHPercent = (lngTotQSALES > 0) ? (lngTotQMATCH * 100.0) / lngTotQSALES : 0.00;
                     beanTkt.lngTotQMATCHPercentRF = (lngTotQSALESRF > 0) ? (lngTotQMATCHRF * 100.0) / lngTotQSALESRF : 0.00;
                     beanTkt.lngTotQMATCHPercentCH = (lngTotQSALESCH > 0) ? (lngTotQMATCHCH * 100.0) / lngTotQSALESCH : 0.00;
@@ -551,7 +551,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00698Day(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -987,6 +987,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
+
     public List<A2290Filter> loadPX269SQP00698Table_REFND(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -1127,6 +1128,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
+
     public List<A2290Filter> loadPX269SQP00698Table_CHGBAK(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -1266,7 +1268,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00698Table_ACREDIT(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -1559,6 +1561,7 @@ public class BankReconciliationDAO {
         hmDescReglas.put("2", "By Authoc");
         hmDescReglas.put("3", "By PNR");
         hmDescReglas.put("4", "By Terminal Zeros");
+        hmDescReglas.put("*", "Intercompany");
 
         HashMap<String, String> hmDescFCOMPL = new HashMap<String, String>();
         hmDescFCOMPL.put("", "");
@@ -1574,7 +1577,7 @@ public class BankReconciliationDAO {
         hmDescTDOC.put("R", "Refund");
         hmDescTDOC.put("A", "Adjust.");
         hmDescTDOC.put("N", "ADM");
-        
+
         HashMap<String, String> hmDescDebitType = new HashMap<String, String>();
         hmDescDebitType.put("RFND", "Reembolsos");
         hmDescDebitType.put("RFND-DNG", "Reembolso Denegado");
@@ -1586,7 +1589,18 @@ public class BankReconciliationDAO {
         hmDescDebitType.put("ANL-NS", "Anulacion no Satisfactoria");
         hmDescDebitType.put("R-CBCK", "Reversal Chargeback");
         hmDescDebitType.put("NO-IDN", "Debito No Identificado");
-        
+
+        //SE DEJA TAMPA COMO '134'
+        HashMap<String, String> hmCCUST = new HashMap<String, String>();
+        hmCCUST.put("TA01", "202");
+//        hmCCUST.put("QT01", "729");
+        hmCCUST.put("QT01", "134");
+        hmCCUST.put("AV01", "134");
+        hmCCUST.put("A500", "134");
+        hmCCUST.put("AB01", "134");
+        hmCCUST.put("LR01", "133");
+        hmCCUST.put("2K01", "547");
+
         //loadPX269SQP00833
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP(?,?,?,?,?,?,?,?,?,?,?)}";
 
@@ -1612,19 +1626,28 @@ public class BankReconciliationDAO {
             while (rs01.next()) {
                 objRtn.IN_TKT_ASIG = filter.IN_TKT_ASIG;
                 objRtn.CCUST = rs01.getString("CCUST");
+                objRtn.SOCIETY = rs01.getString("SOCIETY");
+                objRtn.SOCIETYL = rs01.getString("SOCIETYL");
+
+                if (hmCCUST.containsKey(objRtn.SOCIETY)) {
+                    objRtn.CCUSTCC = hmCCUST.get(objRtn.SOCIETY);
+                } else {
+                    objRtn.CCUSTCC = "134";
+                }
+
                 objRtn.SAGENT = rs01.getString("SAGENT");
                 objRtn.DESAGENT = objRtn.SAGENT + " - " + rs01.getString("DESAGENT");
                 objRtn.SDATE = rs01.getString("SDATE");
                 objRtn.TDOC = rs01.getString("TDOC");
                 if (rs01.getString("TDOC").trim().equals("R")) {
                     objRtn.strPEM = "Refund";
-                } else if( rs01.getString("TDOC").trim().equals("D")){
+                } else if (rs01.getString("TDOC").trim().equals("D")) {
                     objRtn.strPEM = "Debits";
-                }else if( rs01.getString("TDOC").trim().equals("A")){
+                } else if (rs01.getString("TDOC").trim().equals("A")) {
                     objRtn.strPEM = "Acredit";
-                }else if( rs01.getString("TDOC").trim().equals("C")){
+                } else if (rs01.getString("TDOC").trim().equals("C")) {
                     objRtn.strPEM = "Chargebak";
-                }else {
+                } else {
                     objRtn.strPEM = "Sales";
                 }
 //                objRtn.descTDOC = hmDescTDOC.get(rs01.getString("TDOC").trim());
@@ -1794,7 +1817,7 @@ public class BankReconciliationDAO {
                 A2290Filter filterC = filters.get(i);
 
                 cstmt2.setString(1, "U");
-                cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                cstmt2.setString(2, filterC.CCUSTCC.trim());
                 cstmt2.setString(3, filterC.PRDA.trim());
                 cstmt2.setString(4, filterC.SCARDN.trim());
                 cstmt2.setString(5, filterC.SAUTHOC.trim());
@@ -1825,7 +1848,8 @@ public class BankReconciliationDAO {
                 cstmt3 = cnx3.prepareCall(SQLCLL03);
 
                 cstmt3.setString(1, "U");
-                cstmt3.setString(2, session.getUserView().getCustomerInfo().CCUST);
+//                cstmt3.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                cstmt3.setString(2, filterA.CCUSTCC.trim());
                 cstmt3.setString(3, filterA.ASTVAL.trim());
                 cstmt3.setString(4, filterA.ATDOC.trim());
                 cstmt3.setString(5, filterA.ASCARCOD.trim());
@@ -1873,7 +1897,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP00834_TKTTW(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2020,7 +2044,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-            if(!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN") ){
+            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
                 String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2052,7 +2076,6 @@ public class BankReconciliationDAO {
                     cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
                 }
             }
-            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2061,15 +2084,15 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    if(cstmt2 != null) {
+                    if (cstmt2 != null) {
                         try {
                             cstmt2.close();
-                        }catch (SQLException e) {
+                        } catch (SQLException e) {
                             logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                         }
-                      ;  
+                        ;
                     }
-                    
+
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
@@ -2080,7 +2103,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP00834_CHGBAK(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2124,7 +2147,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-            if(!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN") ){
+            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
                 String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2154,13 +2177,10 @@ public class BankReconciliationDAO {
                     cstmt2.setInt(17, filterC.MPF076TRAN);
                     cstmt2.setString(18, filterC.SPNR.trim());
 
-
                     cstmt2.execute();
                     cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
-                }  
+                }
             }
-            
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2169,13 +2189,13 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    if(cstmt2 != null) {
+                    if (cstmt2 != null) {
                         try {
                             cstmt2.close();
-                        }catch (SQLException e) {
+                        } catch (SQLException e) {
                             logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                         }
-                      ;  
+                        ;
                     }
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
@@ -2187,7 +2207,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP00834_ACREDIT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2231,7 +2251,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-            if(!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN") ){
+            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
                 String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2261,14 +2281,11 @@ public class BankReconciliationDAO {
                     cstmt2.setInt(17, filterC.MPF077TRAN);
                     cstmt2.setString(18, filterC.SPNR.trim());
 
-
                     cstmt2.execute();
                     cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
                 }
 
             }
-            
-            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2277,13 +2294,13 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    if(cstmt2 != null) {
+                    if (cstmt2 != null) {
                         try {
                             cstmt2.close();
-                        }catch (SQLException e) {
+                        } catch (SQLException e) {
                             logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                         }
-                      ;  
+                        ;
                     }
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
@@ -2295,7 +2312,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05117(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2331,13 +2348,10 @@ public class BankReconciliationDAO {
             cstmt.setString(15, filter.strComment.toUpperCase());
 
             cstmt.execute();
-            
 
             String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF120(?,?,?,?,?)}";
 
-        
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            
 
             A2290Filter filterI = filters.get(0);
 
@@ -2350,7 +2364,7 @@ public class BankReconciliationDAO {
             cstmt.setString(5, filterI.BANDOC.trim());
 
             cstmt.execute();
-            
+
             String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2382,8 +2396,6 @@ public class BankReconciliationDAO {
 //                cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
             }
 
-            
-            
         } catch (Exception e) {
             e.printStackTrace();
             strMsj = e.getMessage();
@@ -2402,7 +2414,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05117_REFND(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2489,7 +2501,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05117_CHGBAK(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2578,7 +2590,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05117_ACREDIT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2775,7 +2787,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05117OnlyLiq_CHGBAK(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2829,7 +2841,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05117OnlyLiq_ACREDIT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2883,7 +2895,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00869(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -3501,15 +3513,15 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX263SQP00652DEBITS(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0; 
-        long lngTotQSALESRF = 0, lngTotQMATCHRF = 0, lngTotQMANUALRF = 0, lngTotQDIFFRF = 0, lngTotQPENDRF = 0; 
+        long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0;
+        long lngTotQSALESRF = 0, lngTotQMATCHRF = 0, lngTotQMANUALRF = 0, lngTotQDIFFRF = 0, lngTotQPENDRF = 0;
         long lngTotQSALESCH = 0, lngTotQMATCHCH = 0, lngTotQMANUALCH = 0, lngTotQDIFFCH = 0, lngTotQPENDCH = 0;
-        long lngTotQSALESAC = 0, lngTotQMATCHAC = 0, lngTotQMANUALAC = 0, lngTotQDIFFAC = 0, lngTotQPENDAC = 0; 
+        long lngTotQSALESAC = 0, lngTotQMATCHAC = 0, lngTotQMANUALAC = 0, lngTotQDIFFAC = 0, lngTotQPENDAC = 0;
         long lngTotQPOLIC = 0, lngTotQPOLIPE = 0;
         String Fec = "";
 
@@ -3573,25 +3585,25 @@ public class BankReconciliationDAO {
                 lngTotQMANUAL = rst.getLong("QMANUAL");
                 lngTotQDIFF = rst.getLong("QDIFF");
                 lngTotQPEND = rst.getLong("QPEND");
-                
-               lngTotQSALESRF = rst.getLong("QSALESRF");
+
+                lngTotQSALESRF = rst.getLong("QSALESRF");
                 lngTotQMATCHRF = rst.getLong("QMATCHRF");
                 lngTotQMANUALRF = rst.getLong("QMANUALRF");
                 lngTotQDIFFRF = rst.getLong("QDIFFRF");
                 lngTotQPENDRF = rst.getLong("QPENDRF");
-                
+
                 lngTotQSALESCH = rst.getLong("QSALESCH");
                 lngTotQMATCHCH = rst.getLong("QMATCHCH");
                 lngTotQMANUALCH = rst.getLong("QMANUALCH");
                 lngTotQDIFFCH = rst.getLong("QDIFFCH");
                 lngTotQPENDCH = rst.getLong("QPENDCH");
-                
+
                 lngTotQSALESAC = rst.getLong("QSALESAC");
                 lngTotQMATCHAC = rst.getLong("QMATCHAC");
                 lngTotQMANUALAC = rst.getLong("QMANUALAC");
                 lngTotQDIFFAC = rst.getLong("QDIFFAC");
                 lngTotQPENDAC = rst.getLong("QPENDAC");
-                
+
                 lngTotQPOLIC = rst.getLong("QPOLIC");
                 lngTotQPOLIPE = rst.getLong("QPOLIPE");
             }
@@ -3619,7 +3631,7 @@ public class BankReconciliationDAO {
                     beanTkt.IN_MERCHN = filter.IN_MERCHN.trim();
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     beanTkt.strFecFiltro = filter.strFecFiltro.trim();
-                    
+
                     beanTkt.lngQSALES = rst.getLong("QSALES");
                     beanTkt.lngQMATCH = rst.getLong("QMATCH");
                     beanTkt.lngQDIFF = rst.getLong("QDIFF");
@@ -3651,7 +3663,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
                     beanTkt.lngTotQPEND = lngTotQPEND;
-                    
+
                     beanTkt.lngTotQSALESRF = lngTotQSALESRF;
                     beanTkt.lngTotQMATCHRF = lngTotQMATCHRF;
                     beanTkt.lngTotQMANUALRF = lngTotQMANUALRF;
@@ -3671,11 +3683,11 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
 
                     beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
-                    
+
                     beanTkt.lngQMATCHPercentRF = (beanTkt.lngQSALESRF > 0) ? (beanTkt.lngQMATCHRF * 100.0) / beanTkt.lngQSALESRF : 0.00;
                     beanTkt.lngQMATCHPercentCH = (beanTkt.lngQSALESCH > 0) ? (beanTkt.lngQMATCHCH * 100.0) / beanTkt.lngQSALESCH : 0.00;
                     beanTkt.lngQMATCHPercentAC = (beanTkt.lngQSALESAC > 0) ? (beanTkt.lngQMATCHAC * 100.0) / beanTkt.lngQSALESAC : 0.00;
-                    
+
                     beanTkt.lngTotQMATCHPercent = (lngTotQSALES > 0) ? (lngTotQMATCH * 100.0) / lngTotQSALES : 0.00;
                     beanTkt.lngTotQMATCHPercentRF = (lngTotQSALESRF > 0) ? (lngTotQMATCHRF * 100.0) / lngTotQSALESRF : 0.00;
                     beanTkt.lngTotQMATCHPercentCH = (lngTotQSALESCH > 0) ? (lngTotQMATCHCH * 100.0) / lngTotQSALESCH : 0.00;
@@ -3690,7 +3702,7 @@ public class BankReconciliationDAO {
                 }
                 rst.close();
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -3714,7 +3726,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX263SQP00676_DEBITS(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -3777,7 +3789,7 @@ public class BankReconciliationDAO {
             filter.page.TOTROW = cstmt.getInt(20);
 
             while (rst.next()) {
-                lngTotCantFake =  rst.getLong("CANT");
+                lngTotCantFake = rst.getLong("CANT");
             }
             rst.close();
 
@@ -3829,7 +3841,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngQACCB = rst.getLong("CANT");
                     beanTkt.SVFOP = rst.getDouble("SVFOP");
                     beanTkt.AVFOP = rst.getDouble("AVFOP");
-                    
+
                     lngTotCant = lngTotCant + rst.getLong("CANT");
                     dblTotSVFOP = dblTotSVFOP + rst.getLong("SVFOP");
 //                    beanTkt.lngTotQACCB = lngTotCant;
@@ -3841,7 +3853,7 @@ public class BankReconciliationDAO {
                     } else {
                         beanTkt.strTitulo = "Sales Date : ";
                     }
-                    
+
                     beanTkt.strTitulo += beanTkt.strFormatDate + " **" + hmDescEstados.get(beanTkt.IN_STVAL) + "** ";
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
@@ -3851,12 +3863,12 @@ public class BankReconciliationDAO {
 
                     lstTkts.add(beanTkt);
                 }
-                for(int i = 0; i < lstTkts.size(); i++){
+                for (int i = 0; i < lstTkts.size(); i++) {
                     lstTkts.get(i).lngTotQACCB = lngTotCant;
                     lstTkts.get(i).dblTotSVFOP = dblTotSVFOP;
 //                    lngTotCant = lngTotCant + beanTkt.lngQACCB;
                 }
-                
+
                 rst.close();
             }
 
@@ -3883,7 +3895,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public HashMap<String, List<A2290Filter>> loadPX263SQP00715_DEBITS(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -3913,7 +3925,7 @@ public class BankReconciliationDAO {
         hmDescEstadosSTVAL.put("3", "Settlement w/o Sales");
         hmDescEstadosSTVAL.put("4", "Match with Difference");
         hmDescEstadosSTVAL.put("5", "Match Manual");
-        
+
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("2", tipFecha + " without Reconcili.");
@@ -4018,8 +4030,8 @@ public class BankReconciliationDAO {
                     } else {
                         beanTkt.strTitulo = "Sales Date : ";
                     }
-                    
-                    beanTkt.strTitulo += filter.strFormatDate + " **" + hmDescEstados.get(filter.IN_STVAL) + "** " +" - "  + filter.NAME;
+
+                    beanTkt.strTitulo += filter.strFormatDate + " **" + hmDescEstados.get(filter.IN_STVAL) + "** " + " - " + filter.NAME;
                     beanTkt.FCONT = rst.getString("FCONT").trim();
                     beanTkt.NEGOC = rst.getString("NEGOC").trim();
                     if (beanTkt.NEGOC.equals("1")) {
@@ -4632,7 +4644,8 @@ public class BankReconciliationDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.CCUSTCC.trim());
             cstmt.setString(2, filter.TDOC.trim());
             cstmt.setString(3, filter.SDATEC.trim());
             cstmt.setString(4, filter.SCOUNTRY.trim());
@@ -4713,8 +4726,8 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-   
-   public List<A2290Filter> loadPX269SQP00833_MDP_REVERSED(A2290Filter filter) throws SQLException, Exception {
+
+    public List<A2290Filter> loadPX269SQP00833_MDP_REVERSED(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
@@ -4810,7 +4823,7 @@ public class BankReconciliationDAO {
         }
 
         return lstData;
-    } 
+    }
 
     public List<A2290Filter> loadPX269SQP00833_REFND_DETAIL(A2290Filter filter) throws SQLException, Exception {
 
@@ -4878,8 +4891,8 @@ public class BankReconciliationDAO {
                     beanTkt.descTDOC = "Refund";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Debits.";
                 }
@@ -4921,7 +4934,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_CHGBAK_DETAIL(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -4986,15 +4999,14 @@ public class BankReconciliationDAO {
                 beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
                 beanTkt.SCONTROL = rst.getString("SCONTROL").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
-                
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("C")) {
                     beanTkt.descTDOC = "Chargeback";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Debits.";
                 }
@@ -5036,7 +5048,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_ACREDIT_DETAIL(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5098,13 +5110,12 @@ public class BankReconciliationDAO {
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
                 beanTkt.MPF077TRAN = rst.getInt("TRAN");
-                
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Acreditations";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Acreditations";
                 }
@@ -5146,7 +5157,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP05103(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5202,7 +5213,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5403,7 +5414,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5419,6 +5430,7 @@ public class BankReconciliationDAO {
             cstmt.setString(7, filter.SPNR.trim());
             cstmt.setString(8, filter.SAGENT.trim());
             cstmt.setString(9, filter.SCURRENCY.trim());
+            cstmt.setString(10, filter.CCUSTCC.trim());
 
             cstmt.execute();
 
@@ -5507,7 +5519,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5526,6 +5538,7 @@ public class BankReconciliationDAO {
             cstmt.setString(10, filter.SAGENT.trim());
             cstmt.setString(11, filter.TRANC.trim());
             cstmt.setString(12, filter.PRDA.trim());
+            cstmt.setString(13, filter.CCUSTCC.trim());
 
             cstmt.execute();
 
@@ -5658,8 +5671,8 @@ public class BankReconciliationDAO {
                     beanTkt.descTDOC = "Refund";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Refund";
                 }
@@ -5703,7 +5716,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_PENDING_CHGBAK(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5767,15 +5780,14 @@ public class BankReconciliationDAO {
                 beanTkt.NOMCONCEP = rst.getString("NOMCONCEP").trim();
                 beanTkt.SCONTROL = rst.getString("SCONTROL").trim();
                 beanTkt.MPF076TRAN = rst.getInt("TRAN");
-                
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("C")) {
                     beanTkt.descTDOC = "Chargeback";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Chargeback";
                 }
@@ -5818,7 +5830,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_PENDING_ACREDIT(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5879,13 +5891,12 @@ public class BankReconciliationDAO {
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
                 beanTkt.MPF077TRAN = rst.getInt("TRAN");
-                
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Acreditations";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Acreditations";
                 }
@@ -5928,7 +5939,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_TktTw_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5963,8 +5974,6 @@ public class BankReconciliationDAO {
             cstmt.setString(5, filter.TDOC.trim());
             cstmt.setString(6, filter.SCARDNCOR.trim());
             cstmt.setString(7, filter.SAUTHOC.trim());
- 
-
 
             cstmt.execute();
 
@@ -6031,7 +6040,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -6244,7 +6253,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_ACREDIT(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -6300,13 +6309,12 @@ public class BankReconciliationDAO {
 //                beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
                 beanTkt.MPF077TRAN = rst.getInt("TRAN");
-                
 
                 beanTkt.FDESGLOSE = "2";
                 if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Acreditations";
-                } else if(rst.getString("TDOC").trim().equals("D")){
-                      beanTkt.descTDOC = "Debits.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "Debits.";
                 } else {
                     beanTkt.descTDOC = "Acreditations";
                 }
@@ -6349,7 +6357,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00871JT(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -6408,7 +6416,7 @@ public class BankReconciliationDAO {
             cstmt.setString(7, session.getUserView().getCustomerInfo().USR);
             cstmt.setString(8, filter.SCARDN);
             cstmt.setString(9, filter.SCURRENCY);
-            
+
             cstmt.setInt(10, filter.page.PAGNUM);
             cstmt.setInt(11, filter.page.PAGROW);
             cstmt.setInt(12, filter.page.TOTPAG);

@@ -79,4 +79,8 @@ public class ViewADMLogic {
     public List<A2295Filter> loadPX290MPS077_DET_BYS(A2295Filter filter) throws SQLException, Exception {
         return ViewADMDAO.loadPX290MPS077_DET_BYS(filter);
     }
+    
+    public List<A2295Filter> loadPX644SQPMPF100ADM_REPORT(A2295Filter filter) throws SQLException, Exception {
+        return ViewADMDAO.loadPX644SQPMPF100ADM_REPORT(filter);
+    }
 }
