@@ -336,6 +336,73 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 }
             ]
         },
+        ,
+        {
+            xtype: 'form',
+            border: false,
+            id: prototype.id + '-filterMain_4',
+            bodyStyle: 'background: transparent',
+            margin: '10px 2px 10px 20px',
+            layout: 'column',
+            defaults: {
+//                labelStyle: 'font-weight:bold;',
+                fieldStyle: 'text-align: center;',
+                anchor: '100%',
+                hiddenLabel: false,
+                labelAlign: 'right',
+                xtype: 'textfield',
+                hidden: false,
+                selectOnFocus: true
+            },
+            items: [
+                
+                    {
+                        xtype: 'form',
+                        id: prototype.id + '-formLIQvsEC',
+                        border: false,
+                        bodyStyle: 'background-color: #E3EAF9;',
+//                                  layout: 'vbox',
+                        items: [{
+                               
+                                xtype: 'filefield',
+                                id: prototype.id + '-file',
+                                name: 'excelfile',
+//                                fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
+                                allowBlank: true,
+                                accept: '.xlsx, .xls',
+                                labelWidth: 85,
+                                width: 400,
+                                buttonAlign: 'left', 
+                                buttonText: 'Select excel...',
+                                regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                                regexText: 'Only XLS and XLSX formats are accepted',
+                                buttonConfig: {
+                                    text: '<strong>Select</strong>',
+                                    width: 80,
+                                    style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
+                                },
+                                listeners: {
+                                    //change: 'onUploadChange'
+                                }
+                            }]
+                    },
+                    {xtype: 'tbspacer', width: 20},
+                    {
+                        xtype: 'button',
+                        id: prototype.id + '-btn_Concilia_LIQvsEC',
+                        margin: '2 0 0 0',
+                        html: '<strong style="color:white;">Conciliar</strong>',
+                        style: 'background:#24678D;color:white;font-weight:bold;',
+//                                  icon: 'resources/img/botones/process_load.png',
+                        //disabled: true,
+                        border: false,
+                        listeners: {
+                            click: 'onLoadClick_conciliaEC'
+                        }
+                    }
+                
+            ]
+        }
 
     ]
 });
