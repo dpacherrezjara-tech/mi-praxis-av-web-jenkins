@@ -136,6 +136,7 @@ public class AccountingDAO {
             cstmt.registerOutParameter(8, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            //cstmt.setString(1, "134");
             cstmt.setString(2, filter.VP_OPCION);
             cstmt.setString(3, filter.VP_FDATE1);
             cstmt.setString(4, filter.VP_FDATE2);
