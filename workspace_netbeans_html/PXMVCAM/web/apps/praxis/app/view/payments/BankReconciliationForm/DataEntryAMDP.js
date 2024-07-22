@@ -724,18 +724,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Qty Tkts',
+                                            text: 'Society Sett.',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtQTYTKT',
+                                            id: prototype.id + '-de-txtSOCIETYL',
+                                            fieldCls: 'detalle-society-textfield',
+                                            style: 'font-weight:bold;color:#d5f4d5',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100,
+                                            width: 100
                                         },
                                         {xtype: 'tbspacer', width: 145}
                                     ]
@@ -779,7 +781,42 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 100,
                                         },
-                                        {xtype: 'tbspacer', width: 925},
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Qty Tkts',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtQTYTKT',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100,
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {xtype: 'tbspacer', width: 260},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Society Sale',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSOCIETY',
+                                            fieldCls: 'detalle-society-textfield',
+                                            style: 'font-weight:bold;color:#d5f4d5',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 145},
                                     ]
                                 },
                                 {
@@ -1790,7 +1827,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 //                                                                                },
                                                                                 //editor: {xtype: 'textfield', editable: false},
                                                                             },
-                                                                            
+
                                                                             {
                                                                                 text: 'Credit Card',
                                                                                 defaults: {
@@ -1821,7 +1858,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     }
                                                                                 ]
                                                                             },
-                                                                            
+
                                                                             {text: 'Amount', dataIndex: 'A1531VFOP', width: 85,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
@@ -1850,14 +1887,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 },
                                                                             },
-                                                                           
+
                                                                             {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75, hidden: true,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            
+
                                                                             {
                                                                                 sortable: false,
                                                                                 xtype: 'actioncolumn',
@@ -1912,6 +1949,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                         {
                                                                             xtype: 'combo',
                                                                             id: prototype.id + '-cmbADJTYPE',
+                                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                                            fieldStyle: 'text-align:left;',
+                                                                            queryMode: 'local',
+                                                                            triggerAction: 'all',
+                                                                            valueField: 'CODE',
+                                                                            displayField: 'NAME',
+                                                                            width: 180,
+                                                                            labelWidth: 10,
+                                                                            hidden: false,
+                                                                            hiddenLabel: false
+                                                                        },
+                                                                        {
+                                                                            xtype: 'combo',
+                                                                            id: prototype.id + '-de-txtCCUSTCC',
                                                                             style: 'font-weight:bold;color:#0B333C;',
                                                                             fieldStyle: 'text-align:left;',
                                                                             queryMode: 'local',

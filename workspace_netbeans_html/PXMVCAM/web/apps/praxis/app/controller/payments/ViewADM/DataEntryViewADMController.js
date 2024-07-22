@@ -61,10 +61,11 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
         this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
         this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
-        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue()
-        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue()
-        this.bean_scan.SCURRENCY = this.bean.SCURRENCY
-        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard')
+        this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue();
+        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
+        this.bean_scan.SCURRENCY = this.bean.SCURRENCY;
+        this.bean_scan.CCUSTCC = this.bean.CCUSTCC;
+        console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard');
         
         // Validación: Verificar si todos los campos son vacíos
         if (
