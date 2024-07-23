@@ -124,6 +124,79 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     },
     mostrarData: function () {
+        
+        if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
+
+            Ext.getCmp(prototype.id + '-btnToggleSwitch').hide();
+            Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1137);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1125);
+            Ext.getCmp(prototype.id + '-panelScanCard').hide();
+            Ext.getCmp(prototype.id + '-panelScanCard2').hide();
+            Ext.getCmp(prototype.id + '-btn-update').hide();
+            Ext.getCmp(prototype.id + '-panelScanHead').hide();
+            Ext.getCmp(prototype.id + '-gridColumnDeleteHead').hide();
+            this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
+
+            this.setValue('de-txtCOREP', this.beanResult.COREP);
+            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IG")) {
+                Ext.getCmp(prototype.id + '-header').show();
+                Ext.getCmp(prototype.id + '-detail').hide();
+                Ext.getCmp(prototype.id + '-mainHeader').show();
+                Ext.getCmp(prototype.id + '-sumHeader').show();
+                Ext.getCmp(prototype.id + '-panelScanCard').hide();
+                Ext.getCmp(prototype.id + '-panelScanCard2').hide();
+                Ext.getCmp(prototype.id + '-mainDetail').hide();
+                Ext.getCmp(prototype.id + '-mainDetail2').hide();
+                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1085);
+                Ext.getCmp(prototype.id + '-titleDetail').show();
+            } else {
+                Ext.getCmp(prototype.id + '-header').hide();
+                Ext.getCmp(prototype.id + '-detail').show();
+                Ext.getCmp(prototype.id + '-mainHeader').hide();
+                Ext.getCmp(prototype.id + '-sumHeader').hide();
+                Ext.getCmp(prototype.id + '-mainDetail').show();
+                Ext.getCmp(prototype.id + '-mainDetail2').show();
+                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(730);
+                Ext.getCmp(prototype.id + '-titleDetail').hide();
+            }
+
+        } else {
+
+            Ext.getCmp(prototype.id + '-btnToggleSwitch').show();
+            Ext.getCmp(prototype.id + '-btn-update').show();
+            Ext.getCmp(prototype.id + '-panelScanHead').show();
+            this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
+            this.setValue('de-txtCOREP', this.beanResult.COREP);
+
+            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IG")) {
+                Ext.getCmp(prototype.id + '-header').show();
+                Ext.getCmp(prototype.id + '-detail').hide();
+                Ext.getCmp(prototype.id + '-panelScanHead').show();
+                Ext.getCmp(prototype.id + '-mainHeader').show();
+                Ext.getCmp(prototype.id + '-sumHeader').show();
+                Ext.getCmp(prototype.id + '-panelScanCard').hide();
+                Ext.getCmp(prototype.id + '-panelScanCard2').hide();
+                Ext.getCmp(prototype.id + '-mainDetail').hide();
+                Ext.getCmp(prototype.id + '-mainDetail2').hide();
+                Ext.getCmp(prototype.id + '-gridColumnDeleteHead').show();
+                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
+                Ext.getCmp(prototype.id + '-titleDetail').show();
+            } else {
+                Ext.getCmp(prototype.id + '-header').hide();
+                Ext.getCmp(prototype.id + '-detail').show();
+                Ext.getCmp(prototype.id + '-panelScanHead').hide();
+                Ext.getCmp(prototype.id + '-mainHeader').hide();
+                Ext.getCmp(prototype.id + '-sumHeader').hide();
+                Ext.getCmp(prototype.id + '-panelScanCard').show();
+                Ext.getCmp(prototype.id + '-panelScanCard2').show();
+                Ext.getCmp(prototype.id + '-mainDetail').show();
+                Ext.getCmp(prototype.id + '-mainDetail2').show();
+                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(780);
+                Ext.getCmp(prototype.id + '-titleDetail').hide();
+            }
+        }
 
         this.setValue('de-txtdescTDOC', this.beanResult.descTDOC);
         this.setValue('de-txtTDOC', this.beanResult.TDOC);
@@ -1504,6 +1577,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
 
     procesarRegistrosHeader: function (grilla) {
+        
+        let formHeader = Ext.getCmp(prototype.id + '-panelScanHead');
+        //para las cabeceras se está tomando el campo CERROR 20240723
+        var CERROR = 'DD';
+        if (formHeader.isVisible()) {
+            CERROR = 'CC'; 
+        }
+        
         var listaDeDatos = [];
         grilla.getStore().each(function (record) {
 
@@ -1525,7 +1606,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
                 TDOC: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
-                NETOC: parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''))
+                NETOC: parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', '')),
+                CERROR: CERROR
             };
 
             listaDeDatos.push(registro);
