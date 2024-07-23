@@ -2358,7 +2358,7 @@ public class BankReconciliationDAO {
             cstmt = cnx.prepareCall(SQLCLL03);
 
             cstmt.setString(1, "R");
-            cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filterI.CCUSTCC.trim());
             cstmt.setString(3, filterI.DATEC.trim());
             cstmt.setString(4, filterI.TRANC.trim());
             cstmt.setString(5, filterI.BANDOC.trim());
@@ -2376,7 +2376,7 @@ public class BankReconciliationDAO {
                 A2290Filter filterC = filters.get(i);
 
                 cstmt.setString(1, "R");
-                cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                cstmt.setString(2, filterC.CCUSTCC.trim());
                 cstmt.setString(3, filterC.PRDA.trim());
                 cstmt.setString(4, filterC.SCARDN.trim());
                 cstmt.setString(5, filterC.SAUTHOC.trim());
@@ -4754,7 +4754,7 @@ public class BankReconciliationDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.CCUSTCC.trim());
             cstmt.setString(2, filter.DATEC.trim());
             cstmt.setString(3, filter.TRANC.trim());
             cstmt.setString(4, filter.BANDOC.trim());
@@ -5414,14 +5414,14 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.CCUSTCC.trim());
             cstmt.setString(2, filter.TICKET.trim());
             cstmt.setString(3, filter.CARD1.trim());
             cstmt.setString(4, filter.CARD2.trim());
@@ -5430,7 +5430,6 @@ public class BankReconciliationDAO {
             cstmt.setString(7, filter.SPNR.trim());
             cstmt.setString(8, filter.SAGENT.trim());
             cstmt.setString(9, filter.SCURRENCY.trim());
-            cstmt.setString(10, filter.CCUSTCC.trim());
 
             cstmt.execute();
 
@@ -5519,14 +5518,14 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.CCUSTCC.trim());
             cstmt.setString(2, filter.TDOC.trim());
             cstmt.setString(3, filter.SDATE.trim());
             cstmt.setString(4, filter.SCOUNTRY.trim());
@@ -5538,7 +5537,6 @@ public class BankReconciliationDAO {
             cstmt.setString(10, filter.SAGENT.trim());
             cstmt.setString(11, filter.TRANC.trim());
             cstmt.setString(12, filter.PRDA.trim());
-            cstmt.setString(13, filter.CCUSTCC.trim());
 
             cstmt.execute();
 
