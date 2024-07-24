@@ -1971,7 +1971,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                             displayField: 'NAME',
                                                                             width: 180,
                                                                             labelWidth: 10,
-                                                                            hidden: false,
+                                                                            hidden: true,
                                                                             hiddenLabel: false
                                                                         },
                                                                         {xtype: 'tbspacer', width: 30},
@@ -1992,6 +1992,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                             maxLength: 50,
                                                                             hidden: true,
                                                                             width: 320,
+                                                                        },
+                                                                        {
+                                                                            xtype: 'textfield',
+                                                                            id: prototype.id + '-de-txtIN_FREGLA',
+                                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                                            fieldStyle: 'text-align:left;',
+                                                                            enforceMaxLength: true,
+                                                                            maxLength: 1,
+                                                                            hidden: true,
+                                                                            width: 50,
                                                                         },
                                                                         {xtype: 'tbspacer', width: 50},
                                                                     ]

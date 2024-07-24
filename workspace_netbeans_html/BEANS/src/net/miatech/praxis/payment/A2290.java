@@ -198,6 +198,7 @@ public class A2290 {
     public String CURRADM = "";
     public String SOCIETY = "";
     public String SOCIETYL = "";
+    public String INTCOMP = "";
     public String AMOUNT = "";
     public String USERAV = "";
     public String TYPETRAN = "";

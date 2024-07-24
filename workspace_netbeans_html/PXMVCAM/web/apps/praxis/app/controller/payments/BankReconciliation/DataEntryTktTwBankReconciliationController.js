@@ -853,7 +853,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryTktTwBank
                 SDATE: record.get('A720FECVTA'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                CCUSTCC: Ext.getCmp(prototype.id + '-cmbCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROIN: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
 
                         // Agrega más campos según sea necesario
@@ -883,7 +882,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryTktTwBank
                     ATICKET: record.get('A1531TKT'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ASAGENT: record.get('A720AGENTE'), // Reemplaza 'id' con el campo correcto de tu modelo
                     ACERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(),
-                    CCUSTCC: Ext.getCmp(prototype.id + '-cmbCCUSTCC').getValue(),
                     ADJCODE: Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue(),
                     CFUENTE: record.get('CFUENTE'), ///CFUENTE
                 };
