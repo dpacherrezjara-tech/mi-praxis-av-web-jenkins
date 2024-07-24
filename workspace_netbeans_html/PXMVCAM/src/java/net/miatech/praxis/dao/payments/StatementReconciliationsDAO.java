@@ -2708,7 +2708,7 @@ public class StatementReconciliationsDAO {
             e.printStackTrace();
             e.getMessage();
         }
-        
+
         String SQLCLL00 = "{CALL " + session.getMainLibrary() + ".SQP05114GETCOREP(?,?,?,?,?,?,?)}";
 
         try {
@@ -2740,6 +2740,8 @@ public class StatementReconciliationsDAO {
             e.printStackTrace();
             e.getMessage();
         }
+
+        NETO = Double.parseDouble(String.format("%014.2f", NETO).replace(",", "."));
 
         if (NETOC == NETO) {
 
@@ -2799,8 +2801,9 @@ public class StatementReconciliationsDAO {
                     cstmt3.setString(13, Functions.getHoraActual());
 
                     cstmt3.execute();
-                    cstmt3.close();
+
                 }
+                cstmt3.close();
 
                 String SQLCLL04 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF060HEAD(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
@@ -2835,8 +2838,9 @@ public class StatementReconciliationsDAO {
                     cstmt4.setString(22, filterC.SEQ);
 
                     cstmt4.execute();
-                    cstmt4.close();
+
                 }
+                cstmt4.close();
 
             } catch (Exception e) {
                 strMsj = "Error: " + e;
@@ -2865,7 +2869,6 @@ public class StatementReconciliationsDAO {
         return strMsj;
     }
 
-    
     public String loadPX287MPS100(List<MPF101> lstLIQ) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2873,9 +2876,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-
         try {
-            
 
             String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".MPS100(?,?,?,?,?)}";
 
@@ -2883,24 +2884,22 @@ public class StatementReconciliationsDAO {
             cstmt = cnx.prepareCall(SQLCLL02);
 
             for (int i = 0; i < lstLIQ.size(); i++) {
-                
+
                 MPF101 obj = lstLIQ.get(i);
 //                cstmt = cnx.prepareCall(SQLCLL02);
-                
+
                 cstmt.registerOutParameter(5, Types.VARCHAR);
-            
+
                 cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
                 cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
                 cstmt.setString(3, obj.liq.trim());
                 cstmt.setString(4, obj.ec.trim());
                 cstmt.setString(5, "");
-                
 
                 cstmt.execute();
-                
-                
+
                 strMsj = cstmt.getString(5);
-                
+
             }
 
         } catch (Exception e) {

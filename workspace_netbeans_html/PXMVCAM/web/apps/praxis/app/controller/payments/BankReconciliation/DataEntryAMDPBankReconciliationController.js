@@ -334,6 +334,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.beanReversed.DATEC = this.bean.DATEC
         this.beanReversed.TRANC = this.bean.TRANC
         this.beanReversed.BANDOC = this.bean.BANDOC
+        this.beanReversed.CCUSTCC = this.bean.CCUSTCC
         Ext.getCmp(prototype.id + '-panelSumAmount').hide()
         paramDetail.beanString = JSON.stringify(this.beanReversed);
         Ext.Ajax.request({
@@ -368,6 +369,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         var paramDetail = {};
         this.bean.CCUSTCC =  Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue();
+        console.log(Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue(),'CCUSTCC');
         paramDetail.beanString = JSON.stringify(this.bean);
         console.log(this.bean,'PRUEBINHA');
         console.log('MUESTRA EL PARAMS ');
