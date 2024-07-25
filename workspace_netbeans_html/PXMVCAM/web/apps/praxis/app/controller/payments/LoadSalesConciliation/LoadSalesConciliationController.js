@@ -144,6 +144,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                 }
             },
             failure: function (response) {
+                global.Msg({msg: "SOLTÓ LA CARGA:" + response});
                 Ext.getCmp(prototype.id + '-panelGridData').unmask()
                 console.log('server-side failure with status code ' + response.status);
             }

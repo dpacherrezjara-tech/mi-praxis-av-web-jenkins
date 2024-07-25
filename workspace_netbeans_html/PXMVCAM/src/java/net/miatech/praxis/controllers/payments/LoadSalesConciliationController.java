@@ -201,25 +201,25 @@ public class LoadSalesConciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 0) {
                         A2290Filter obj = new A2290Filter();
-                        obj.SEQ = formatter.formatCellValue(row.getCell(0)).trim();
-                        obj.USERF = formatter.formatCellValue(row.getCell(1)).trim();
-                        obj.TYPETRAN = formatter.formatCellValue(row.getCell(2)).trim();
-                        obj.CCUST = formatter.formatCellValue(row.getCell(3)).trim();
-                        obj.TKT = formatter.formatCellValue(row.getCell(4)).trim();
-                        obj.CCIA = formatter.formatCellValue(row.getCell(3)).trim();
+                        obj.SEQ = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim();
+                        obj.USERF = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
+                        obj.TYPETRAN = formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
+                        obj.CCUST = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim();
+                        obj.TKT = formatter.formatCellValue(row.getCell(4)) == null ? "" : formatter.formatCellValue(row.getCell(4)).trim();
+                        obj.CCIA = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim();
                         
                         obj.FORMA = !obj.TKT.equals("") ? obj.TKT.substring(0, 4) : "";
                         obj.SERIE = !obj.TKT.equals("") ? obj.TKT.substring(obj.TKT.length() - 6) : "";
                         
-                        obj.SDATE = formatter.formatCellValue(row.getCell(5)).trim();
-                        obj.SCARDN = formatter.formatCellValue(row.getCell(6)).trim();
-                        obj.SAUTHOC = formatter.formatCellValue(row.getCell(7)).trim();
-                        obj.AMOUNT = formatter.formatCellValue(row.getCell(8)).trim();
-                        obj.SCURRENCY = formatter.formatCellValue(row.getCell(9)).trim();
-                        obj.STVAL = formatter.formatCellValue(row.getCell(10)).trim();
+                        obj.SDATE = formatter.formatCellValue(row.getCell(5)) == null ? "" : formatter.formatCellValue(row.getCell(5)).trim();
+                        obj.SCARDN = formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
+                        obj.SAUTHOC = formatter.formatCellValue(row.getCell(7)) == null ? "" : formatter.formatCellValue(row.getCell(7)).trim();
+                        obj.AMOUNT = formatter.formatCellValue(row.getCell(8)) == null ? "" : formatter.formatCellValue(row.getCell(8)).trim();
+                        obj.SCURRENCY = formatter.formatCellValue(row.getCell(9)) == null ? "" : formatter.formatCellValue(row.getCell(9)).trim();
+                        obj.STVAL = formatter.formatCellValue(row.getCell(10)) == null ? "" : formatter.formatCellValue(row.getCell(10)).trim();
                         obj.STVAL = "3";
-                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)).trim();
-                        obj.CECO = formatter.formatCellValue(row.getCell(12)).trim();
+                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)) == null ? "" : formatter.formatCellValue(row.getCell(11)).trim();
+                        obj.CECO = formatter.formatCellValue(row.getCell(12)) == null ? "" : formatter.formatCellValue(row.getCell(12)).trim();
                         obj.FCONT = filter.IN_CONTAB.equals("true") ? Functions.getFechaActual() : "";
                         obj.STCON = filter.IN_CONTAB.equals("true") ? "1" : "";
                         System.out.println(i);
