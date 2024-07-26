@@ -2204,8 +2204,8 @@ public class StatementReconciliationsDAO {
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
 
-                if (hmDescEstados.containsKey(rst.getString("FSELEC").trim())) {
-                    beanTkt.descSTVAL = hmDescEstados.get(rst.getString("FSELEC").trim()).toString();
+                if (hmDescFselect.containsKey(rst.getString("FSELEC").trim())) {
+                    beanTkt.descSTVAL = hmDescFselect.get(rst.getString("FSELEC").trim()).toString();
                 } else {
                     beanTkt.descSTVAL = rst.getString("FSELEC").trim();
                 }
