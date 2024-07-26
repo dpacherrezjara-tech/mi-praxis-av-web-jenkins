@@ -139,7 +139,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
 
             this.setValue('de-txtCOREP', this.beanResult.COREP);
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IG")) {
+            if (!this.beanResult.COREP.includes("WP")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -149,7 +149,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
-                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1085);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1081);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
             } else {
                 Ext.getCmp(prototype.id + '-header').hide();
@@ -170,7 +170,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
 
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IG")) {
+            if (!this.beanResult.COREP.includes("WP")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
@@ -181,6 +181,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-gridColumnDeleteHead').show();
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1127);
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
             } else {

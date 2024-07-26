@@ -2166,6 +2166,12 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("3", "Bank w/o Sett.");
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
+        HashMap<String, String> hmDescFselect = new HashMap<String, String>();
+        hmDescFselect.put("L", "Match");
+        hmDescFselect.put("", "Bank w/o Sett.");
+        hmDescFselect.put("3", "Bank w/o Sett.");
+        hmDescFselect.put("4", "Match with Differences");
+        hmDescFselect.put("5", "Match Manual");
         HashMap<String, String> hmDescDocType = new HashMap<String, String>();
         hmDescDocType.put("S", "Sales");
         hmDescDocType.put("D", "Debits");
@@ -2197,6 +2203,13 @@ public class StatementReconciliationsDAO {
 
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
+
+                if (hmDescEstados.containsKey(rst.getString("FSELEC").trim())) {
+                    beanTkt.descSTVAL = hmDescEstados.get(rst.getString("FSELEC").trim()).toString();
+                } else {
+                    beanTkt.descSTVAL = rst.getString("FSELEC").trim();
+                }
+
                 beanTkt.PRDA = rst.getString("PRDA");
                 beanTkt.CODPRO = rst.getString("CODPRO");
                 beanTkt.CCUSTPRO = rst.getString("CCUSTPRO");
@@ -2777,7 +2790,7 @@ public class StatementReconciliationsDAO {
                 cstmt2.execute();
                 cstmt2.close();
 
-                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF083(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF083(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt3 = cnx3.prepareCall(SQLCLL03);
@@ -2793,12 +2806,13 @@ public class StatementReconciliationsDAO {
                     cstmt3.setString(5, filterC.MERCHAND.trim());
                     cstmt3.setString(6, filterC.MONEDA.trim());
                     cstmt3.setString(7, filterC.MONEDALIQ.trim());
-                    cstmt3.setString(8, filter.DATECI.trim());
-                    cstmt3.setString(9, filter.TRANCI.trim());
-                    cstmt3.setString(10, filter.BANDOC.trim());
-                    cstmt3.setString(11, user.getUserInfo().USR);
-                    cstmt3.setString(12, Functions.getFechaActual());
-                    cstmt3.setString(13, Functions.getHoraActual());
+                    cstmt3.setString(8, filter.VALDATE.trim());
+                    cstmt3.setString(9, filter.DATECI.trim());
+                    cstmt3.setString(10, filter.TRANCI.trim());
+                    cstmt3.setString(11, filter.BANDOC.trim());
+                    cstmt3.setString(12, user.getUserInfo().USR);
+                    cstmt3.setString(13, Functions.getFechaActual());
+                    cstmt3.setString(14, Functions.getHoraActual());
 
                     cstmt3.execute();
 

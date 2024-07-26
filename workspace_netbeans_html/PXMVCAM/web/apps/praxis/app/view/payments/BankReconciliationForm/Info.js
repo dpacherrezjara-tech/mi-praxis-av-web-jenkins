@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1750,
+                width: 1770,
                 height: 'auto',
                 align: 'center'
             },
@@ -2444,7 +2444,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1733,
+                            width: 1765,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -2463,7 +2463,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    width: 1733,
+                                    width: 1763,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -2601,17 +2601,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
+                                                text: 'Amount', dataIndex: 'SVFOP', width: 130, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    value = Ext.util.Format.number(value, '0,000');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                     var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.totSVFOP, '0,000.00') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.totSVFOP, '0,000') + '<b>';
                                                 }
                                             },
                                             {
