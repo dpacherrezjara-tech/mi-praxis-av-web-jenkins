@@ -200,45 +200,78 @@ public class BusinessToolsDictionaryDAO {
         String strMsj = "Operation was successful.";
 
         CallableStatement cstmt = null;
-        PreparedStatement pstmt = null;
+        int QTYCP = 0,QTYEX = 0;
+        String TABLA = filter.TABNAME.trim();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS079A(?,?,?,?,?,?,?,?)}";
+        String SQLCLL00 = "{CALL " + session.getMainLibrary() + ".MPS079QTY(?)}";
 
-        Connection cnx = null;
+        Connection cnx0 = null;
         try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
+            cnx0 = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx0.prepareCall(SQLCLL00);
 
-            cstmt.setString(1, filter.TABNAME.trim());
-            cstmt.setString(2, filter.SOURCEF.trim());
-            cstmt.setString(3, filter.USERFIELD.trim());
-            cstmt.setString(4, filter.DESCRIPT.trim());
-            cstmt.setString(5, filter.SYSTFIELD.trim());
-            cstmt.setString(6, filter.LENGHTF.trim());
-            cstmt.setString(7, filter.DATATYPE.trim());
-            cstmt.setString(8, filter.ORDERSEL.trim());
-
-            cstmt.execute();
-            cstmt.close();
-
+            cstmt01.setString(1, filter.TABNAME.trim());
+            cstmt01.execute();
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                QTYEX = rs01.getInt("QTY_EX");
+                QTYCP = rs01.getInt("QTY_CP");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            strMsj = e.getMessage();
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
         }
-        if (strMsj.toLowerCase().contains("duplicada")) {
-            strMsj = "Error: Duplicated record.";
-        }
+        
+        
+        
+        
+        
+        
+        
+        if(QTYEX != 0){
+            if(QTYEX == 0){
+                System.out.println("Se crea tabla");
+                
+                String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS079BT(?,?,?,?,?)}";
 
+            Connection cnx = null;
+            try {
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt = cnx.prepareCall(SQLCLL01);
+
+                cstmt.setString(1, filter.TABLA.trim());
+                cstmt.setString(2, filter.DESCR.trim());
+                cstmt.setString(3, session.getUserView().getUserInfo().USR);
+                cstmt.setString(4, Functions.getFechaActual());
+                cstmt.setString(5, Functions.getHoraActual());
+
+                cstmt.execute();
+                cstmt.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                strMsj = e.getMessage();
+            } finally {
+                if (cstmt != null) {
+                    try {
+                        cstmt.close();
+                    } catch (SQLException e) {
+                        logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                    }
+                }
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+                pasarGarbageCollector();
+            }
+            }else{
+                System.out.println("La tabla " + TABLA + " está cargada");
+                strMsj = "La tabla " + TABLA + " ya está cargada";
+            }
+        }else{
+            System.out.println("La tabla " + TABLA + " no existe");
+            strMsj = "La tabla " + TABLA + " no existe";
+        }
+        
         return strMsj;
     }
 

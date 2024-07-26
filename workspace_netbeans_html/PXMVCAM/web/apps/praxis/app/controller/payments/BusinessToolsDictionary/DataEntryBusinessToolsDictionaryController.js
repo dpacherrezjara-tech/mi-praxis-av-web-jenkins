@@ -14,16 +14,15 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     init: function (view) {
         prototype.id = 'BusinessToolsDictionaryForm';
         prototype.url = CONTEXTPATH + '/BusinessToolsDictionary';
-        meDE = this;        
+        meDE = this;
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
-//        this.lstCountry = this.p.lstCountry;
-//        this.obtainData();
     },
     afterRender: function () {
         switch (this.actionCode) {
             case 'I':
+                this.HabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
@@ -42,48 +41,9 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     },
     mostrarData: function () {
         this.setValue('de-txtTABNAME', meDE.bean.data.TABNAME);
-//        this.setValue('de-txtDESCRIPT', this.beanResult.DESCRIPT);
-//        this.setValue('de-txtSYSTFIELD', this.beanResult.SYSTFIELD);
-//        this.setValue('de-txtLENGHTF', this.beanResult.LENGHTF);
-//        this.setValue('de-txtDATATYPE', this.beanResult.DATATYPE);
-//        this.setValue('de-txtORDERSEL', this.beanResult.ORDERSEL);
-
     },
 
     //<editor-fold defaultstate="collapsed" desc="llenarData">
-//    llenarData: function (beanTemp) {
-////        beanTemp.CODEM = this.getValue("de-txtCODEM");
-////        beanTemp.DESCR = this.getValue("de-txtDESCR");
-//
-//        beanTemp.TABNAME = this.getValue("de-txtTABNAME").trim();
-//        beanTemp.INPNAME = this.getValue("de-txtINPNAME").trim();
-//        beanTemp.TABLA = this.getValue("de-txtTABLA").trim();
-//        beanTemp.NETDIR = this.getValue("de-txtNETDIR").trim();
-//        beanTemp.INPDESC = this.getValue("de-txtINPDESC").trim();
-//        beanTemp.STAT = this.getValue("de-txtSTAT").trim();
-//        beanTemp.INPEXTE = this.getValue("de-txtINPEXTE").trim();
-//        beanTemp.OUTNAME = this.getValue("de-txtOUTNAME").trim();
-//        beanTemp.FASE = this.getValue("de-txtFASE").trim();
-//        beanTemp.INPTYPE = this.getValue("de-txtINPTYPE").trim();
-//        beanTemp.FECPROC = this.getValue("de-txtFECPROC").trim();
-//        beanTemp.DENV = this.getValue("de-txtDENV").trim();
-//        var qty = this.getValue("de-txtQTYREG").trim();
-//        if (qty.trim() === '') {
-//            beanTemp.QTYREG = 0;
-//        } else {
-//            beanTemp.QTYREG = this.getValue("de-txtQTYREG").trim();
-//        }
-//
-//        beanTemp.LIBNAME = this.getValue("de-txtLIBNAME").trim();
-//        beanTemp.SEQNUM = this.getValue("de-txtSEQNUM").trim();
-//
-//        beanTemp.USCR = this.getValue("txtUSCR").trim();
-//        beanTemp.FECR = this.getValue("txtFECR").trim();
-//        beanTemp.HOCR = this.getValue("txtHOCR").trim();
-//        beanTemp.USUP = this.getValue("txtUSUP").trim();
-//        beanTemp.FEUP = this.getValue("txtFEUP").trim();
-//        beanTemp.HOUP = this.getValue("txtHOUP").trim();
-//    },
     getData: function () {
 
         console.log(this.bean.data, 'this.bean')
@@ -92,11 +52,11 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
         var beanString = JSON.stringify(meDE.bean.data);
         console.log(beanString, 'beanString')
         console.log(meDE.bean.data, 'meDE.bean.data')
-        
+
         console.log(meDE.bean.data.TABNAME)
-       
+
         console.log('después del llamado')
-        
+
         var paramDetailBusinessToolsDictionary = {};
         paramDetailBusinessToolsDictionary.beanString = JSON.stringify(meDE.bean.data);
         console.log('meDE.bean.data', meDE.bean.data)
@@ -129,8 +89,8 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
             }
         });
     },
-    
-    onViewDetailClick: function( grid, rowIndex, colIndex, item, e, record ){
+
+    onViewDetailClick: function (grid, rowIndex, colIndex, item, e, record) {
         var rec = grid.getStore().getAt(rowIndex);
         console.log('llega al view')
         this.winDataEntry('U', rec);
@@ -145,7 +105,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                 action: action,
                 meBT: meDE,
                 rec: rec
-            }         
+            }
         }).show();
     },
     //</editor-fold>
@@ -164,6 +124,13 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
         this.setValue('txtUSUP', '');
         this.setValue('txtFEUP', '');
         this.setValue('txtHOUP', '');
+    },
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="llenar data">
+    llenarData: function (beanTemp) {
+        beanTemp.TABLA = this.getValue("de-txtTABNAME");
+        beanTemp.DESCR = this.getValue("de-txtDes");
     },
     //</editor-fold>
     toUpperCase: function (obj, value, opts) {
@@ -189,7 +156,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                     if (msjResult === '') {
                         beanTemp.option = 'I';
                         beanTemp.beanString = JSON.stringify(beanTemp);  // JSON:CONVERTIR
-                        this.MaintenanceA2358(beanTemp);
+                        this.MaintenanceA2354(beanTemp);
                     } else {
                         global.Msg({msg: msjResult}); // golbla.Msg: es una funcion que se muestre un cuadro 
                     }
@@ -213,7 +180,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                             this.llenarData(beanTemp);
                             beanTemp.option = 'U';
                             beanTemp.beanString = JSON.stringify(beanTemp);
-                            this.MaintenanceA2358(beanTemp);
+                            this.MaintenanceA2354(beanTemp);
                         }
                     }
                 });
@@ -232,7 +199,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                     this.llenarData(beanTemp);
                     beanTemp.option = 'D';
                     beanTemp.beanString = JSON.stringify(beanTemp);
-                    this.MaintenanceA2358(beanTemp);
+                    this.MaintenanceA2354(beanTemp);
                 }
             }
         });
@@ -243,10 +210,10 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">  
-    MaintenanceA2358: function (beanTemp) {
+    MaintenanceA2354: function (beanTemp) {
 //        var beanString = JSON.stringify(beanTemp);
         Ext.Ajax.request({//Es un llamado
-            url: prototype.url + '/MaintenanceA2358', //ruta donde conecto con el controller.java
+            url: prototype.url + '/MaintenanceA2354', //ruta donde conecto con el controller.java
             method: 'POST',
             timeout: 60000000,
             params: beanTemp, //objeto temporal
@@ -269,38 +236,20 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     },
     //</editor-fold>
 
-//    validacionInsert: function (beanTemp) {
-//        var msjResult = ''; //DECLARACION DE VARIABLE VACIA
-//        if (this.getValue("de-txtAPLIC") === '' || this.getValue("de-txtINPNAME") === '') { //CONDICION 
-//            msjResult = "You must enter the required field.";
-//        }
-//        return msjResult;
-//    },
     DeshabilitarCampoClave: function () {
 
-        //Ext.getCmp(prototype.id + '-de-txtAPLIC').setReadOnly(true);
-        //Ext.getCmp(prototype.id + '-de-txtINPNAME').setReadOnly(true);
+
     },
-//    Habilitarlbl: function () {
-//        Ext.getCmp(prototype.id + '-lblDescripcion').show();
-//        Ext.getCmp(prototype.id + '-txtDESSOU').hide();
-//        Ext.getCmp(prototype.id + '-lbldes2').show();
-//    },
-//    desHabilitartxt: function () {
-//        if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
-//            Ext.getCmp(prototype.id + '-lbldes').hide();
-//        } else {
-//            Ext.getCmp(prototype.id + '-lbldes').show();
-//        }
-//    },
-//    Habilitarlbl1: function () {
-//        Ext.getCmp(prototype.id + '-lbldes').hide();
-//        if (this.getValue("txtCODSOUR") === '') {
-//            Ext.getCmp(prototype.id + '-lbldes2').hide();
-//        } else {
-//            Ext.getCmp(prototype.id + '-lbldes2').show();
-//        }
-//    },
+    HabilitarCampoClave: function () {
+
+        Ext.getCmp(prototype.id + '-dataEntry').setHeight(200);
+        Ext.getCmp(prototype.id + '-dataEntry').setWidth(650);
+        Ext.getCmp(prototype.id + '-de-txtTABNAME').setEditable(true);
+        Ext.getCmp(prototype.id + '-de-txtDESCRIPT').setEditable(true);
+        Ext.getCmp(prototype.id + '-de-txtDes').show();
+        Ext.getCmp(prototype.id + '-de-txtDESCRIPT').show();
+        Ext.getCmp(prototype.id + '-gridDataAirport2').hide();
+    },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
         return Ext.getCmp(prototype.id + '-' + id).getValue();

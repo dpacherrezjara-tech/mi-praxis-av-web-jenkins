@@ -73,7 +73,6 @@ Ext.define('Ext.Praxis.view.payments.BusinessToolsDictionaryForm.DataEntry',{
                                 style: 'font-weight:bold;color:#0B333C;',
                                 width: 80
                             },
-                            
                             { xtype: 'tbspacer', width: 10 },
                             {
                                 xtype: 'textfield',
@@ -86,6 +85,29 @@ Ext.define('Ext.Praxis.view.payments.BusinessToolsDictionaryForm.DataEntry',{
                                 maxLength: 10,
                                 readOnly: false,
                                 width: 100
+                            },
+                            { xtype: 'tbspacer', width: 17 },
+                            {
+                                xtype: 'label',
+                                text: 'Description:',
+                                id: prototype.id + '-de-txtDes',
+                                hidden:true,
+                                style: 'font-weight:bold;color:#0B333C;',
+                                width: 80
+                            },
+                            { xtype: 'tbspacer', width: 10 },
+                            {
+                                xtype: 'textfield',
+                                id: prototype.id + '-de-txtDESCRIPT',
+                                fieldStyle: 'text-align:center',
+                                enforceMaxLength: true,
+                                hidden:true,
+                                editable: false,
+                                enabled: false,
+//                                maskRe: /[0-9a-zA-Z]/,
+                                maxLength: 40,
+                                readOnly: false,
+                                width: 200
                             }
                         ]
                     },

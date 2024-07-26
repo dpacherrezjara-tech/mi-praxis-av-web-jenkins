@@ -451,7 +451,7 @@ public class LoadSalesConciliationDAO {
                         cstmt.setString(8, lstdata.get(i).SDATE.trim());
                         cstmt.setString(9, lstdata.get(i).SCARDN.trim());
                         cstmt.setString(10, lstdata.get(i).SAUTHOC.trim());
-                        cstmt.setString(11, lstdata.get(i).AMOUNT.trim());
+                        cstmt.setDouble(11, Double.parseDouble(lstdata.get(i).AMOUNT.trim().replace(".","")));
                         cstmt.setString(12, lstdata.get(i).SCURRENCY.trim());
                         cstmt.setString(13, lstdata.get(i).STVAL.trim());
                         cstmt.setString(14, lstdata.get(i).ACCNUMBER.trim());
@@ -471,7 +471,7 @@ public class LoadSalesConciliationDAO {
                         
                         
                         System.out.println(i);
-                        if(i == 98){
+                        if(i == 6113){
                             System.out.println(i);
                         }
                         cstmt.execute();

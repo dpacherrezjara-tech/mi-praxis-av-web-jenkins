@@ -972,9 +972,90 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         }
     },
     btnReportADM: function (obj) {
-        let beanReportADM = {}
-        me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
-        global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));
+        let years = [];
+        let currentYear = new Date().getFullYear();
+        for (let i = currentYear - 10; i <= currentYear + 10; i++) {
+            years.push(i);
+        }
+
+        var dialog = Ext.create('Ext.window.Window', {
+            title: 'Generate Report',
+            width: 600,
+            layout: 'fit',
+            bodyPadding: 10,
+            bodyStyle: 'background-color: #BAE8F0;',
+            modal: true,
+            items: [
+                {
+                    xtype: 'form', // Define the form
+                    border: false,
+                    bodyStyle: 'background-color: #BAE8F0;',
+                    items: [
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Year',
+                            name: 'year',
+                            store: years,
+                            queryMode: 'local',
+                            forceSelection: true
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Month',
+                            name: 'month',
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['month', 'display'],
+                                data: [
+                                    {month: '01', display: 'Jan'},
+                                    {month: '02', display: 'Feb'},
+                                    {month: '03', display: 'Mar'},
+                                    {month: '04', display: 'Apr'},
+                                    {month: '05', display: 'May'},
+                                    {month: '06', display: 'Jun'},
+                                    {month: '07', display: 'Jul'},
+                                    {month: '08', display: 'Aug'},
+                                    {month: '09', display: 'Sep'},
+                                    {month: '10', display: 'Oct'},
+                                    {month: '11', display: 'Nov'},
+                                    {month: '12', display: 'Dec'}
+                                ]
+                            }),
+                            queryMode: 'local',
+                            displayField: 'display',
+                            valueField: 'month'
+                        },
+                        
+                    ]
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Generar',
+                    handler: function() {
+                        let beanReportADM = {}
+                        let form = dialog.down('form').getForm();
+                        let values = form.getValues();
+                        if( values.year == '' || values.month == '' ){
+                            global.Msg({
+                                msg: 'Enter the period'
+                            });
+                            return false
+                        }
+                        let periodo = values.year + values.month; 
+                        beanReportADM.SDATE = periodo
+                        console.log('beanReportADM', beanReportADM)
+                        
+                        me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
+                        global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));
+                        dialog.hide();
+                    }
+                }
+            ]
+        });
+
+        dialog.show();
+//        me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
+//        global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));
     },
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contFilter');
