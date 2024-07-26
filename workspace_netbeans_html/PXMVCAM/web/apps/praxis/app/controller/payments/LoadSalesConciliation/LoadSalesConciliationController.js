@@ -87,37 +87,89 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         
         beanValidation.IN_CONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue()
         console.log(beanValidation,'beanValidation')
-        var fileField = Ext.getCmp(prototype.id + '-file');
-        var file = fileField.fileInputEl.dom.files[0];
+//        var fileField = Ext.getCmp(prototype.id + '-file');
+//        var file = fileField.fileInputEl.dom.files[0];
         let beanString = JSON.stringify(beanValidation);
-        if (!file) {
+//        if (!file) {
+//            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+//                if (btn === 'ok' || btn === 'cancel')
+//                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+//            });
+//            return;
+//        }
+//
+//        // Crear una instancia de FormData para enviar el archivo
+//        var formData = new FormData();
+//        formData.append('excelfile', file);
+//        
+//        // Realizar una solicitud AJAX para cargar el archivo
+//        Ext.Ajax.request({
+//            url: prototype.url + '/loadExcelFile',
+//            method: 'POST',
+//            rawData: formData,
+//            beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
+//            params: {beanString: beanString},
+//            // Configurar el tipo de contenido adecuado y el encabezado
+//            headers: {
+//                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
+//            },
+//            success: function (response) {
+//                var res = Ext.decode(response.responseText);
+//                console.log(res);
+//                if (res.success) {
+//                    
+//                    let objResult = res.objResult;
+//                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
+//                    Ext.getCmp(prototype.id + '-de-txtQTYREC').setValue(objResult.QTYREC)
+//                    Ext.getCmp(prototype.id + '-de-txtQTYUPL').setValue(objResult.QTYUPL)
+//                    Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL').setValue(objResult.QTYNOTUPL)
+//                    Ext.getCmp(prototype.id + '-de-txtUSCR').setValue(objResult.USCR)
+//                    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(objResult.FECR)
+//                    Ext.getCmp(prototype.id + '-de-txtTRANL').setValue(objResult.TRANL)
+//                    Ext.getCmp(prototype.id + '-btn-process').show()
+//                    Ext.getCmp(prototype.id + '-chkCONTAB').show()
+//                    Ext.getCmp(prototype.id + '-lblCONTAB').show()
+//                    Ext.getCmp(prototype.id + '-btn-upload').setDisabled(true)
+//                    Ext.getCmp(prototype.id + '-file').setDisabled(true)
+//                    
+//                    global.Msg({msg: objResult.MESSAGE});
+//                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
+//                    
+////                    let numberWithCommas = me.formatNumberWithCommas_string(objResult.netoAcum);
+////                    Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(numberWithCommas);
+////                    me.validationAmount();
+//                    // No es necesario restaurar el archivo ya que no se borra el campo de archivo
+//                } else {
+//                    global.Msg({msg: "Error Excel Load"});
+//                }
+//            },
+//            failure: function (response) {
+//                global.Msg({msg: "SOLTÓ LA CARGA:" + response});
+//                Ext.getCmp(prototype.id + '-panelGridData').unmask()
+//                
+//                console.log('server-side failure with status code ' + response.status);
+//                console.log(response);
+//            }
+//        });
+        
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        if (file === '') {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
                 if (btn === 'ok' || btn === 'cancel')
                     setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
             });
             return;
         }
-
-        // Crear una instancia de FormData para enviar el archivo
-        var formData = new FormData();
-        formData.append('excelfile', file);
-        
-        // Realizar una solicitud AJAX para cargar el archivo
-        Ext.Ajax.request({
+        var form = Ext.getCmp(prototype.id + '-form-01').getForm();
+        form.submit({
             url: prototype.url + '/loadExcelFile',
-            method: 'POST',
-            rawData: formData,
-            beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
-            params: {beanString: beanString},
-            // Configurar el tipo de contenido adecuado y el encabezado
-            headers: {
-                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (fp, o) {
+                var res = Ext.decode(o.response.responseText);
                 console.log(res);
+
                 if (res.success) {
-                    
                     let objResult = res.objResult;
                     Ext.getCmp(prototype.id + '-panelGridData').unmask()
                     Ext.getCmp(prototype.id + '-de-txtQTYREC').setValue(objResult.QTYREC)
@@ -134,18 +186,13 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                     
                     global.Msg({msg: objResult.MESSAGE});
                     console.log(objResult.MESSAGE, 'objResult.MESSAGE')
-                    
-//                    let numberWithCommas = me.formatNumberWithCommas_string(objResult.netoAcum);
-//                    Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(numberWithCommas);
-//                    me.validationAmount();
-                    // No es necesario restaurar el archivo ya que no se borra el campo de archivo
+
                 } else {
                     global.Msg({msg: "Error Excel Load"});
                 }
+
             },
-            failure: function (response) {
-                global.Msg({msg: "SOLTÓ LA CARGA:" + response});
-                Ext.getCmp(prototype.id + '-panelGridData').unmask()
+            failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
             }
         });

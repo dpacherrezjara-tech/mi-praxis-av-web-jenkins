@@ -1604,30 +1604,31 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(2, Types.INTEGER);
             cstmt.registerOutParameter(3, Types.INTEGER);
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.SDATE.trim());
             
-            cstmt.setInt(2, filter.page.PAGNUM);
-            cstmt.setInt(3, filter.page.PAGROW);
-            cstmt.setInt(4, filter.page.TOTPAG);
-            cstmt.setInt(5, filter.page.TOTROW);
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(2);
-            filter.page.PAGROW = cstmt.getInt(3);
-            filter.page.TOTPAG = cstmt.getInt(4);
-            filter.page.TOTROW = cstmt.getInt(5);
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
 
@@ -1649,6 +1650,8 @@ public class ViewADMDAO {
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
+                    
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
 
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
@@ -1691,6 +1694,109 @@ public class ViewADMDAO {
                 }
                 rst.close();
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    public List<A2295Filter> loadPX644SQPMPF100ADM_REPORT_2(A2295Filter filter) throws SQLException, Exception {
+
+        List<A2295Filter> lstTkts = new ArrayList<A2295Filter>(0);
+        A2295Filter beanTkt;
+        long lngTotAmount = 0, lngTotQty = 0, lngTotProc = 0, lngTotNotProc = 0, totalTran = 0, totalProc = 0;
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("2", "Sales without Reconcili.");
+        hmDescEstados.put("3", "Reconcili. without Sales");
+        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("5", "Match Manual");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP_HEADER(?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.SDATE.trim());
+            
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new A2295Filter();
+
+//                    beanTkt.PRDA = rst.getString("PRDA").trim();
+                    
+
+
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
+                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.TOT_SVFOP = rst.getDouble("SVFOP");
+                    beanTkt.TOT_QTY = rst.getDouble("QTY");
+                    beanTkt.RN = rst.getInt("RN");
+                    beanTkt.SDATE = filter.SDATE.trim();
+                    
+                    
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                
+            }
+            rst.close();
+
+//            if (cstmt.getMoreResults()) {
+//                rst = cstmt.getResultSet();
+//
+//                while (rst.next()) {
+//
+//                    
+//                }
+//                rst.close();
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
