@@ -940,14 +940,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     id: prototype.id + '-panelDataInfoScan',
                                                     layout: 'vbox',
                                                     border: false,
-                                                    width: 1097,
+                                                    width: 1044,
                                                     height: 252,
                                                     autoScroll: true,
                                                     items: [
                                                         {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScan',
-                                                            width: 1095,
+                                                            width: 1042,
                                                             height: 250,
                                                             columnLines: true,
                                                             plugins: [
