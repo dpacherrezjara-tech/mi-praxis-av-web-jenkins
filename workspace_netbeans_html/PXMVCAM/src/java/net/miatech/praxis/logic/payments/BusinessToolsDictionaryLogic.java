@@ -32,6 +32,10 @@ public class BusinessToolsDictionaryLogic {
         return BusinessToolsDictionaryDAO.loadPX643MPS079D(filter);
     }
 
+    public String loadPX643MPS079BT(A2353Filter filter, String option) throws Exception {
+        return BusinessToolsDictionaryDAO.loadPX643MPS079BT(filter, option);
+    }
+    
     public String loadPX643MPS079AP(A2353Filter filter, String option) throws Exception {
         return BusinessToolsDictionaryDAO.loadPX643MPS079AP(filter, option);
     }

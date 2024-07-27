@@ -76,12 +76,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                                     bodyStyle: 'background:#E5ECEF;',
                                                     fontSize: '11',
-                                                    width: 804,
+                                                    width: 130,
                                                     height: 20,
-                                                    margin: '4 200 4 8'
+                                                    margin: '4 800 4 8'
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Mode',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    bodyStyle: 'background:#E5ECEF;',
+                                                    fontSize: '11',
+                                                    width: 30,
+                                                    height: 20,
+                                                    margin: '4 0 4 8'
                                                 },
                                                 {
                                                     xtype: 'component',
+                                                    margin: '4 0 4 8',
                                                     id: prototype.id + '-btnToggleSwitch',
                                                     html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label></body></html>',
                                                     tooltip: 'Export to Report',
@@ -696,7 +707,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScanHead',
                                                             width: 1127,
-                                                            height: 153,
+                                                            height: 150,
                                                             columnLines: true,
                                                             plugins: [
                                                                 {
