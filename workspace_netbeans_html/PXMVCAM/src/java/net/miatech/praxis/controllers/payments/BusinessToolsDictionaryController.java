@@ -148,7 +148,42 @@ public class BusinessToolsDictionaryController extends BaseController {
         }
         return lst;
     }
+    
+    @RequestMapping(value = "MaintenanceA2354BT")
+    public @ResponseBody
+    String MaintenanceA2354BT(ModelMap map, HttpServletRequest request) {
 
+        System.out.println("-------------- BusinessToolsDictionary : MaintenanceA2354BT-------------");
+
+        String option;
+        String beanString;
+        Gson gson = new Gson();
+
+        A2353Filter filter = new A2353Filter();
+        String msj = "";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
+
+            logic = new BusinessToolsDictionaryLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX643MPS079BT(filter, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "MaintenanceA2354")
     public @ResponseBody
     String MaintenanceA2354(ModelMap map, HttpServletRequest request) {

@@ -29,9 +29,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         $('#StatementReconciliationsForm-btnToggleSwitch').change(function () {
             meDE.validaEntry();
         });
-        
-        meDE.validaEntry();
-        
+
         switch (this.actionCode) {
             case 'U':
                 this.getData();
@@ -75,8 +73,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
          * desactivado: Muestra la estrucuctura MPF102 - MPF083 - MPF060 
          */
 
-
-
         let formPend = Ext.getCmp(prototype.id + '-header');
         if (!formPend.isVisible()) {
 
@@ -97,8 +93,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridColumnDeleteHead').show();
             Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
             Ext.getCmp(prototype.id + '-titleDetail').show();
-            
-            this.getDataHeader();
+
+            this.onSearchCompleteHeader();
 
         } else {
 
@@ -118,13 +114,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-mainDetail2').show();
             Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(780);
             Ext.getCmp(prototype.id + '-titleDetail').hide();
-            
-            this.getData();
+
+            this.onSearchCompleteDetail();
         }
 
     },
     mostrarData: function () {
-        
+
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
 
             Ext.getCmp(prototype.id + '-btnToggleSwitch').hide();
@@ -139,7 +135,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
 
             this.setValue('de-txtCOREP', this.beanResult.COREP);
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IG")) {
+            if (!this.beanResult.COREP.includes("WP")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -149,7 +145,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
-                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1085);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1081);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
             } else {
                 Ext.getCmp(prototype.id + '-header').hide();
@@ -170,7 +166,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
 
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IG")) {
+            if (!this.beanResult.COREP.includes("WP")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
@@ -181,6 +177,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-gridColumnDeleteHead').show();
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1127);
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
             } else {
@@ -266,43 +263,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         console.log(bean.SAGENT);
         return bean;
     },
-    getDataHeader: function () {
-        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
-        meDE.bean.data.IN_TRANCI = meDE.bean.data.TRANCI;
-        meDE.bean.data.IN_DATECI = meDE.bean.data.DATECI;
-        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
-        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-        meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
-            meDE.bean.data.IN_STVAL = '1';
-        } else {
-            meDE.bean.data.IN_STVAL = 'P';
-        }
-        var beanString = JSON.stringify(meDE.bean.data);
-        Ext.Ajax.request({
-            url: prototype.url + '/searchBean',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryEx').mask('Loading...'),
-            params: {beanString: beanString},
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntryEx').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
-//                console.log(res);
-                meDE.beanResult = res.data;
-                console.log(meDE.beanResult);
-
-                meDE.onSearchCompleteHeader();
-
-                
-                meDE.mostrarData();
-            }
-        });
-    },
     getData: function () {
         meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
@@ -333,7 +293,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 meDE.beanResult = res.data;
                 console.log(meDE.beanResult);
 
-                meDE.onSearchCompleteDetail();
+//                meDE.onSearchCompleteDetail();
+                meDE.validaEntry();
 
                 meDE.mostrarData();
             }
@@ -461,7 +422,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     setFormatParameterQueryAgrupa: function () {
         meDE.beanAgrupa = {};
-        var fecha_a_validar = "";
+        var fecha_a_validar = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         meDE.beanAgrupa.IN_FROMADATEAG = (Ext.getCmp(prototype.id + '-txtFromADATEAG').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATEAG').getValue("txtFromADATEAG"), 'Ymd');
         meDE.beanAgrupa.IN_TOADATEAG = (Ext.getCmp(prototype.id + '-txtToADATEAG').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATEAG').getValue("txtToADATEAG"), 'Ymd');
         meDE.beanAgrupa.IN_LIQUIDACIOAG = Ext.getCmp(prototype.id + '-txtLIQUIDACIOAG').getValue();
@@ -954,7 +915,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
         let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
         let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
-        var fecha_a_validar = "";
+        var fecha_a_validar = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         meDE.bean.data.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
         meDE.bean.data.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
         meDE.bean.data.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
@@ -1096,7 +1057,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     cambiaParamsHeader: function (checkbox, newValue, oldValue, eOpts) {
         meDE.bean.data = {};
-        var fecha_a_validar = "";
+        var fecha_a_validar = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+        console.log(fecha_a_validar);
+        console.log(fecha_a_validar);
+        console.log(fecha_a_validar);
+        console.log(fecha_a_validar);
+        console.log(fecha_a_validar);
+        console.log(fecha_a_validar);
+
         meDE.bean.data.IN_FROMADATEHE = (Ext.getCmp(prototype.id + '-txtFromADATEHE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATEHE').getValue(), 'Ymd') + "";
         meDE.bean.data.IN_TOADATEHE = (Ext.getCmp(prototype.id + '-txtToADATEHE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATEHE').getValue(), 'Ymd') + "";
         meDE.bean.data.IN_LIQUIDACIOHE = Ext.getCmp(prototype.id + '-txtLIQUIDACIOHE').getValue() + "";
@@ -1577,14 +1545,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
 
     procesarRegistrosHeader: function (grilla) {
-        
+
         let formHeader = Ext.getCmp(prototype.id + '-panelScanHead');
         //para las cabeceras se está tomando el campo CERROR 20240723
         var CERROR = 'DD';
         if (formHeader.isVisible()) {
-            CERROR = 'CC'; 
+            CERROR = 'CC';
         }
-        
+
         var listaDeDatos = [];
         grilla.getStore().each(function (record) {
 

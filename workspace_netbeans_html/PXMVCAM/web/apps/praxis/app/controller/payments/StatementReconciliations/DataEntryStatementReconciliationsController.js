@@ -63,8 +63,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
 
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1137);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1125);
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1044);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1042);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
