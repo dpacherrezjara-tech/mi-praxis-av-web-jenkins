@@ -15,6 +15,15 @@ public class A2353Filter extends A2353 {
      public String CODE = "";
      public String NAME = "";
      public String IN_CODEM = "";
+     public String IN_COREP = "";
+     public String IN_ACCOUNT = "";
+     public String IN_SOCIETY = "";
+     public String IN_TEXTOLAR = "";
+     public String IN_ACCOUNTNEW = "";
+     public String IN_SOCIETYNEW = "";
+     public String IN_SCOUNTRYNEW = "";
+     public String IN_SCURRENCYNEW = "";
+     public String IN_TEXTOLARNEW = "";
      public String IN_FILE = "";
      public String IN_PRDA = "";
      public String IN_DATE = "";

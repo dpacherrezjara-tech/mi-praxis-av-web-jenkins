@@ -85,6 +85,10 @@ public class A2353 {
 
 //    public String CCUST = "";
     public String RCCUST = "";
+    public String COREP = "";
+    public String ACCOUNT = "";
+    public String SOCIETY = "";
+    public String TEXTOLAR = "";
     public String SCOUNTRY = "";
     public String RSCOUNTRY = "";
     public String CODEBANK = "";
