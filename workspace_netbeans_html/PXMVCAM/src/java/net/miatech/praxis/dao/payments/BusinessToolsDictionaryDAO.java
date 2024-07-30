@@ -194,7 +194,7 @@ public class BusinessToolsDictionaryDAO {
         return lstRtn;
     }
 
-    public String loadPX643MPS079AP(A2353Filter filter, String option) throws SQLException, Exception {
+    public String loadPX643MPS079BT(A2353Filter filter, String option) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
         String strMsj = "Operation was successful.";
@@ -223,14 +223,8 @@ public class BusinessToolsDictionaryDAO {
             e.printStackTrace();
         }
         
-        
-        
-        
-        
-        
-        
         if(QTYEX != 0){
-            if(QTYEX == 0){
+            if(QTYCP == 0){
                 System.out.println("Se crea tabla");
                 
                 String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS079BT(?,?,?,?,?)}";
@@ -240,7 +234,7 @@ public class BusinessToolsDictionaryDAO {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt = cnx.prepareCall(SQLCLL01);
 
-                cstmt.setString(1, filter.TABLA.trim());
+                cstmt.setString(1, filter.TABNAME.trim());
                 cstmt.setString(2, filter.DESCR.trim());
                 cstmt.setString(3, session.getUserView().getUserInfo().USR);
                 cstmt.setString(4, Functions.getFechaActual());
@@ -274,6 +268,55 @@ public class BusinessToolsDictionaryDAO {
         
         return strMsj;
     }
+    
+    public String loadPX643MPS079AP(A2353Filter filter, String option) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
+        String strMsj = "Operation was successful.";
+
+        CallableStatement cstmt = null;
+        PreparedStatement pstmt = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS079A(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.TABNAME.trim());
+            cstmt.setString(2, filter.SOURCEF.trim());
+            cstmt.setString(3, filter.USERFIELD.trim());
+            cstmt.setString(4, filter.DESCRIPT.trim());
+            cstmt.setString(5, filter.SYSTFIELD.trim());
+            cstmt.setString(6, filter.LENGHTF.trim());
+            cstmt.setString(7, filter.DATATYPE.trim());
+            cstmt.setString(8, filter.ORDERSEL.trim());
+
+            cstmt.execute();
+            cstmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        if (strMsj.toLowerCase().contains("duplicada")) {
+            strMsj = "Error: Duplicated record.";
+        }
+
+        return strMsj;
+    }
+
 
     public String loadPX633MPS012(A2353Filter filter, String option) throws SQLException, Exception {
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2284.

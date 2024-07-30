@@ -129,8 +129,8 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
 
     //<editor-fold defaultstate="collapsed" desc="llenar data">
     llenarData: function (beanTemp) {
-        beanTemp.TABLA = this.getValue("de-txtTABNAME");
-        beanTemp.DESCR = this.getValue("de-txtDes");
+        beanTemp.TABNAME = this.getValue("de-txtTABNAME");
+        beanTemp.DESCR = this.getValue("de-txtDESCRIPT");
     },
     //</editor-fold>
     toUpperCase: function (obj, value, opts) {
@@ -151,15 +151,15 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
                 if (btn === 'yes') {
                     var beanTemp = {};
                     this.llenarData(beanTemp);
-                    var msjResult = this.validacionInsert(beanTemp);
+//                    var msjResult = this.validacionInsert(beanTemp);
 
-                    if (msjResult === '') {
+//                    if (msjResult === '') {
                         beanTemp.option = 'I';
                         beanTemp.beanString = JSON.stringify(beanTemp);  // JSON:CONVERTIR
                         this.MaintenanceA2354(beanTemp);
-                    } else {
-                        global.Msg({msg: msjResult}); // golbla.Msg: es una funcion que se muestre un cuadro 
-                    }
+//                    } else {
+//                        global.Msg({msg: msjResult}); // golbla.Msg: es una funcion que se muestre un cuadro 
+//                    }
                 }
             }
         });
@@ -213,7 +213,7 @@ Ext.define('Ext.Praxis.controller.payments.BusinessToolsDictionary.DataEntryBusi
     MaintenanceA2354: function (beanTemp) {
 //        var beanString = JSON.stringify(beanTemp);
         Ext.Ajax.request({//Es un llamado
-            url: prototype.url + '/MaintenanceA2354', //ruta donde conecto con el controller.java
+            url: prototype.url + '/MaintenanceA2354BT', //ruta donde conecto con el controller.java
             method: 'POST',
             timeout: 60000000,
             params: beanTemp, //objeto temporal
