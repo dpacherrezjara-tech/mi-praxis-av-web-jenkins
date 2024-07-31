@@ -515,7 +515,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
         }
         if (!chkMERCHANT) {
-            meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
+            meDE.bean.data.IN_MERCHAND = '';
         }
 
         if (meDE.bean.data.IN_FROMADATE === '') {
