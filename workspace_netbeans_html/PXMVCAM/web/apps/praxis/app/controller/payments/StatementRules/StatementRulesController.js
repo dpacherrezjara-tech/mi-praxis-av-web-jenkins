@@ -70,7 +70,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementRules.StatementRulesControll
         });
     },
     xpanel_afterrender: function () {
-        this.btnSearch_click();
+//        this.btnSearch_click();
     },
 
     eventKey: function (e, eOpts) {
@@ -117,15 +117,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementRules.StatementRulesControll
                     autoLoad: true
                 });
                 
-                console.log('test');
-                console.log('test');
-                console.log('test');
-                console.log('test');
-                
                 Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
                 Ext.getCmp(prototype.id + '-cmbCOREP').setValue('');
                 global.clear();
-//                me.btnSearch_click();
+                me.btnSearch_click();
             }
         });
     },
@@ -265,7 +260,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementRules.StatementRulesControll
         this.setFormatParameter();
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
                 global.Msg(

@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1770,
+                width: 1815,
                 height: 'auto',
                 align: 'center'
             },
@@ -2444,7 +2444,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1765,
+                            width: 1815,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -2463,7 +2463,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    width: 1763,
+                                    width: 1813,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -2679,6 +2679,29 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Qty',
+                                                columns: [
+                                                    {
+                                                        text: 'Settl.', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true,
+                                                        listeners: {
+                                                            click: 'onGridSett'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "color:#057ECB;text-align:right;";
+                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
+                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+//                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
+//                                                            metaData.style = 'text-align:right; margin-right:3px ';
+//                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYDOC, '0,000') + '<b>';
+//                                                        }
                                                     }
                                                 ]
                                             },
@@ -3126,7 +3149,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1417,
+                            width: 1467,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -3136,7 +3159,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetCardNbrByS',
-                                    width: 1417,
+                                    width: 1467,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -3333,7 +3356,30 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     }
                                                 ]
-                                            },                                           
+                                            },
+                                            {
+                                                text: 'Qty',
+                                                columns: [
+                                                    {
+                                                        text: 'Settl.', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true,
+                                                        listeners: {
+                                                            click: 'onGridSett'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "color:#057ECB;text-align:right;";
+                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
+                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                    //                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                    //                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
+                    //                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                    //                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYDOC, '0,000') + '<b>';
+                    //                                                        }
+                                                    }
+                                                ]
+                                            },
                                             {
                                                 text: 'Tkts', dataIndex: 'lngQTYTKT', width: 50, align: 'center', menuDisabled: true,
                                                 listeners: {

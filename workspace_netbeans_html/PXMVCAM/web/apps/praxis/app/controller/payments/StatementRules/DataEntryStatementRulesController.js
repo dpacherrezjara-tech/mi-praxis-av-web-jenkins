@@ -113,6 +113,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementRules.DataEntryStatementRule
             beanTemp.IN_SOCIETY = this.getValue("de-txtSOCIETY");
             beanTemp.IN_SCURRENCY = this.getValue("de-txtSCURRENCY");
             beanTemp.IN_TEXTOLAR = this.getValue("de-txtTEXTOLAR");
+            
+            beanTemp.IN_ACCOUNTNEW = "";
+            beanTemp.IN_SCOUNTRYNEW = "";
+            beanTemp.IN_SOCIETYNEW = "";
+            beanTemp.IN_SCURRENCYNEW = "";
+            beanTemp.IN_TEXTOLARNEW = "";
+            
         } else if (beanTemp.option === 'U') {
             beanTemp.IN_COREP = this.getValue("de-txtCOREP");
             beanTemp.IN_ACCOUNT = this.beanResult.ACCOUNT;
@@ -121,7 +128,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementRules.DataEntryStatementRule
             beanTemp.IN_SCURRENCY = this.beanResult.SCURRENCY;
             beanTemp.IN_TEXTOLAR = this.beanResult.TEXTOLAR;
 
-            beanTemp.IN_COREPNEW = this.getValue("de-txtCOREP");
             beanTemp.IN_ACCOUNTNEW = this.getValue("de-txtACCOUNT");
             beanTemp.IN_SCOUNTRYNEW = this.getValue("de-txtSCOUNTRY");
             beanTemp.IN_SOCIETYNEW = this.getValue("de-txtSOCIETY");
@@ -135,6 +141,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementRules.DataEntryStatementRule
         beanTemp.USUP = this.getValue("txtUSUP").trim();
         beanTemp.FEUP = this.getValue("txtFEUP").trim();
         beanTemp.HOUP = this.getValue("txtHOUP").trim();
+        
+        return beanTemp;
     },
     getData: function () {
 

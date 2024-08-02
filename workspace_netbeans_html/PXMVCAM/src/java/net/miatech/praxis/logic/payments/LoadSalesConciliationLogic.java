@@ -34,8 +34,8 @@ public class LoadSalesConciliationLogic {
         return loadSalesConciliationDAO.loadPX620SQP05108(filter, option);
     }
 
-    public A2290Filter SQPMPS076_UP(A2290Filter filter) throws SQLException, Exception {
-        return loadSalesConciliationDAO.SQPMPS076_UP(filter);
+    public A2290Filter SQPMPS076_UP(A2290Filter filter, UserView user) throws SQLException, Exception {
+        return loadSalesConciliationDAO.SQPMPS076_UP(filter, user);
     }
     
     public String SQP05099(List<A2290Filter> lstData, UserView user) throws Exception {
