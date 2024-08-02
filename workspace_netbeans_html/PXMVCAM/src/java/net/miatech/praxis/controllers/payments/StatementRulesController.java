@@ -122,7 +122,7 @@ public class StatementRulesController extends BaseController {
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("StatementRules : getXLSX");
 
-        String fileNameDownload = String.format("StatementRules - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Statement Rules - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
 
         try {
 
@@ -202,7 +202,8 @@ public class StatementRulesController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
             //*******************
             ++vj;
             
