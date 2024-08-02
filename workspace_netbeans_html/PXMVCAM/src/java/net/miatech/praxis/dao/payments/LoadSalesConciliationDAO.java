@@ -335,13 +335,13 @@ public class LoadSalesConciliationDAO {
 
     }
 
-    public A2290Filter SQPMPS076_UP(A2290Filter filter) throws SQLException, Exception {
+    public A2290Filter SQPMPS076_UP(A2290Filter filter, UserView user) throws SQLException, Exception {
 
         String strMsj = "Operation was successful.";
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".UpdateRecords(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".UpdateRecords(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -354,13 +354,16 @@ public class LoadSalesConciliationDAO {
             cstmt01.setInt(4, filter.IN_TRANL);
             cstmt01.setString(5, filter.IN_CERROR.trim());
             cstmt01.setString(6, filter.IN_STCON.trim());
-            cstmt01.registerOutParameter(7, Types.INTEGER);
-            cstmt01.registerOutParameter(8, Types.INTEGER);
-            cstmt01.registerOutParameter(9, Types.INTEGER);
+            cstmt01.setString(7, Functions.getFechaActual());
+            cstmt01.setString(8, Functions.getHoraActual());
+            cstmt01.setString(9, user.getUserInfo().USR);
+            cstmt01.registerOutParameter(10, Types.INTEGER);
+            cstmt01.registerOutParameter(11, Types.INTEGER);
+            cstmt01.registerOutParameter(12, Types.INTEGER);
             cstmt01.execute();
-            objRtn.QTY =  cstmt01.getInt(7);
-            objRtn.QTYPROCUP =  cstmt01.getInt(8);
-            objRtn.QTYNPROCUP =  cstmt01.getInt(9);
+            objRtn.QTY =  cstmt01.getInt(10);
+            objRtn.QTYPROCUP =  cstmt01.getInt(11);
+            objRtn.QTYNPROCUP =  cstmt01.getInt(12);
 
             
         } catch (Exception e) {
