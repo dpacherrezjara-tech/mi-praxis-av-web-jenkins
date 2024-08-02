@@ -503,11 +503,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         var comg = Ext.getCmp(prototype.id + '-de-txtSOCIETYL').getValue();
         var comp = Ext.getCmp(prototype.id + '-de-txtSOCIETY').getValue();
         
-        if(this.bean.STVAL === '1' || this.bean.STVAL === '5'){
-            
-        }else{
-            
-        }
         if ( comg !== '' && comp !== '' && comg !== comp ) {
             
             
@@ -542,6 +537,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtSTVALHide', this.bean.STVAL);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
+        
+        this.setValue('de-txtQTYDOC', this.bean.QTYDOC);
+        if(this.bean.QTYDOC > 1){
+            Ext.util.CSS.createStyleSheet('.detalle-qtydoc { background-color: #d5f4d5 !important; }');
+            Ext.util.CSS.createStyleSheet('.detalle-qtydoc-textfield { background-color: #bff5bf !important; }');
+        }else {
+            Ext.util.CSS.createStyleSheet('.detalle-qtydoc { background-color: transparent !important; }');
+            Ext.util.CSS.createStyleSheet('.detalle-qtydoc-textfield { background-color: #ccdeeb !important; }');
+        }
         this.lstAmounts = [];
         var fila1 = {};
         fila1.label1 = 'Comm. Sett.';

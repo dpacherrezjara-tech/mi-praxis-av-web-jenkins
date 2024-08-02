@@ -20,7 +20,6 @@ Ext.define('Ext.Praxis.view.payments.StatementRulesForm.Filters', {
                 hiddenLabel: false,
                 labelAlign: 'right',
                 xtype: 'textfield',
-                hidden: true,
                 selectOnFocus: true,
                 enableKeyEvents: true,
                 enforceMaxLength: true
@@ -30,11 +29,19 @@ Ext.define('Ext.Praxis.view.payments.StatementRulesForm.Filters', {
                     xtype: 'panel',
                     width: '100%',
                     layout: 'hbox',
+                    border: false,
                     bodyStyle: 'background: transparent;"',
                     defaults: {
                         margin: '4 0'
                     },
                     items: [
+                        {xtype: 'tbspacer', width: 20},
+                        {
+                            xtype: 'label',
+                            text: 'Core Process:',
+                            padding: '3 0',
+                            width: 80
+                        },
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbCOREP',
@@ -45,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.StatementRulesForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 219,
+                            width: 150,
                             typeAhead: true,
                             valueField: 'VALUE',
                             displayField: 'NAME',

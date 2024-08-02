@@ -454,8 +454,9 @@ public class LoadSalesConciliationController extends BaseController {
 
         logic = new LoadSalesConciliationLogic();
         logic.setSession(this.serverSession.getServerSession());
+        UserView user = this.serverSession.getServerSession().getUserView();
         
-            result = logic.SQPMPS076_UP(filter);
+            result = logic.SQPMPS076_UP(filter, user);
             map.put("result", result);
             map.put("success", true);
         } catch (Exception ex) {

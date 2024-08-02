@@ -122,7 +122,7 @@ public class StatementRulesController extends BaseController {
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("StatementRules : getXLSX");
 
-        String fileNameDownload = String.format("StatementRules - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Statement Rules - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
 
         try {
 
@@ -175,83 +175,56 @@ public class StatementRulesController extends BaseController {
             Cell CH1_00 = row.createCell(0);
             Cell CH1_01 = row.createCell(1);
             Cell CH1_02 = row.createCell(2);
-//            Cell CH1_03 = row.createCell(3);
-//            Cell CH1_04 = row.createCell(4);
-//            Cell CH1_05 = row.createCell(5);
-//            Cell CH1_06 = row.createCell(6);
+            Cell CH1_03 = row.createCell(3);
+            Cell CH1_04 = row.createCell(4);
+            Cell CH1_05 = row.createCell(5);
+            Cell CH1_06 = row.createCell(6);
 
             CH1_00.setCellValue("Nbr");
-            CH1_01.setCellValue("Code");
-            CH1_02.setCellValue("Description");
-//            CH1_03.setCellValue("Canal");
-//            CH1_04.setCellValue("Social");
-//            CH1_05.setCellValue("IATA");
+            CH1_01.setCellValue("Core");
+            CH1_02.setCellValue("Account");
+            CH1_03.setCellValue("Country");
+            CH1_04.setCellValue("Society");
+            CH1_05.setCellValue("Currency");
+            CH1_06.setCellValue("Text Key");
 
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
             CH1_02.setCellStyle(headerStyle);
-//            CH1_03.setCellStyle(headerStyle);
-//            CH1_04.setCellStyle(headerStyle);
-//            CH1_05.setCellStyle(headerStyle);
-//            CH1_06.setCellStyle(headerStyle);
-
+            CH1_03.setCellStyle(headerStyle);
+            CH1_04.setCellStyle(headerStyle);
+            CH1_05.setCellStyle(headerStyle);
+            CH1_06.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
-//            sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
-//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
-            
-
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
             //*******************
             ++vj;
-            Row row2 = sheet.createRow(vj);
-            Cell CH2_00 = row2.createCell(0);
-            Cell CH2_01 = row2.createCell(1);
-            Cell CH2_02 = row2.createCell(2);
-//            Cell CH2_03 = row2.createCell(3);
-//            Cell CH2_04 = row2.createCell(4);
-//            Cell CH2_05 = row2.createCell(5);
-//            Cell CH2_06 = row2.createCell(6);
-
-         
             
-            CH2_01.setCellValue("Message");
-//            CH2_05.setCellValue("Code");
-//            CH2_06.setCellValue("Name");
-
-            CH2_00.setCellStyle(headerStyle);
-            CH2_01.setCellStyle(headerStyle);
-            CH2_02.setCellStyle(headerStyle);
-//            CH2_03.setCellStyle(headerStyle);
-//            CH2_04.setCellStyle(headerStyle);
-//            CH2_05.setCellStyle(headerStyle);
-//            CH2_06.setCellStyle(headerStyle);
-
-
-            //          ========================================================
-            ++vj;
             while (iter.hasNext()) {
 
                 row = sheet.createRow(vj);
                 Cell rcell0 = row.createCell(0);
                 Cell rcell1 = row.createCell(1);
                 Cell rcell2 = row.createCell(2);
-//                Cell rcell3 = row.createCell(3);
-//                Cell rcell4 = row.createCell(4);
-//                Cell rcell5 = row.createCell(5);
-//                Cell rcell6 = row.createCell(6);
-
+                Cell rcell3 = row.createCell(3);
+                Cell rcell4 = row.createCell(4);
+                Cell rcell5 = row.createCell(5);
+                Cell rcell6 = row.createCell(6);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
-                rcell1.setCellValue(listaData.get(vi).CODEM);
-                rcell2.setCellValue(listaData.get(vi).DESCR);
-//                rcell3.setCellValue(listaData.get(vi).CANAL);
-//                rcell4.setCellValue(listaData.get(vi).RSOCIAL);
-//                rcell5.setCellValue(listaData.get(vi).CIATA);
-//                rcell6.setCellValue(listaData.get(vi).strDescrip);
+                rcell1.setCellValue(listaData.get(vi).COREP);
+                rcell2.setCellValue(listaData.get(vi).ACCOUNT);
+                rcell3.setCellValue(listaData.get(vi).SCOUNTRY);
+                rcell4.setCellValue(listaData.get(vi).SOCIETY);
+                rcell5.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell6.setCellValue(listaData.get(vi).TEXTOLAR);
 
                 iter.next();
                 ++vi;
@@ -260,15 +233,11 @@ public class StatementRulesController extends BaseController {
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
-//            sheet.autoSizeColumn(3, true);
-//            sheet.autoSizeColumn(4, true);
-//            sheet.autoSizeColumn(5, true);
-//            sheet.autoSizeColumn(6, true);
+            sheet.autoSizeColumn(3, true);
+            sheet.autoSizeColumn(4, true);
+            sheet.autoSizeColumn(5, true);
+            sheet.autoSizeColumn(6, true);
 
-
-            /**
-             * fileNameDownload = Nombre de descarga
-             */
             response.setContentType("application/vnd.openxml");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
 
@@ -322,8 +291,25 @@ public class StatementRulesController extends BaseController {
         try {
             
             option = request.getParameter("option");
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2353Filter.class);
+            filter.IN_COREP = request.getParameter("IN_COREP").trim();
+            filter.IN_ACCOUNT = request.getParameter("IN_ACCOUNT").trim();
+            filter.IN_SCOUNTRY = request.getParameter("IN_SCOUNTRY").trim();
+            filter.IN_SOCIETY = request.getParameter("IN_SOCIETY").trim();
+            filter.IN_SCURRENCY = request.getParameter("IN_SCURRENCY").trim();
+            filter.IN_TEXTOLAR = request.getParameter("IN_TEXTOLAR").trim();
+            
+            filter.IN_ACCOUNTNEW = request.getParameter("IN_ACCOUNTNEW").trim();
+            filter.IN_SCOUNTRYNEW = request.getParameter("IN_SCOUNTRYNEW").trim();
+            filter.IN_SOCIETYNEW = request.getParameter("IN_SOCIETYNEW").trim();
+            filter.IN_SCURRENCYNEW = request.getParameter("IN_SCURRENCYNEW").trim();
+            filter.IN_TEXTOLARNEW = request.getParameter("IN_TEXTOLARNEW").trim();
+            
+            filter.USCR = request.getParameter("USCR").trim();
+            filter.FECR = request.getParameter("FECR").trim();
+            filter.HOCR = request.getParameter("HOCR").trim();
+            filter.USUP = request.getParameter("USUP").trim();
+            filter.FEUP = request.getParameter("FEUP").trim();
+            filter.HOUP = request.getParameter("HOUP").trim();
 
             logic = new StatementRulesLogic();
             logic.setSession(this.serverSession.getServerSession());

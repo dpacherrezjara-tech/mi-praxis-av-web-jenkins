@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    height: 510,
+//                                    height: 510,
                                     width: 1195,
                                     hidden: false,
                                     columnLines: true,

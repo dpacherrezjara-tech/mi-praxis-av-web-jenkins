@@ -23,6 +23,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     beanboxDetTktS2: {},
     beanDebits: {},
     beanDetCountryDebits: {},
+    beanDetSett: {},
     paginActual: '',
     drillDown: [],
     gridActual: '',
@@ -1289,6 +1290,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
         this.setGridDataDetalle();
     },
+    onGridSett: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataDetalle';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.beanDetSett = {}
+        this.beanDetSett.IN_DATEC = rowData.data.DATEC;
+        this.beanDetSett.IN_TRANC = rowData.data.TRANC;
+        this.beanDetSett.IN_BANDOC = rowData.data.BANDOC;
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetSett);
+        this.setGridDataDetalle();
+    },
     setGridDataDetalle: function (data) {
         win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
@@ -1362,6 +1374,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.TRANC = rowData.data.TRANC;
         this.beanDetDay.DATEC = rowData.data.DATEC;
         this.beanDetDay.BANDOC = rowData.data.BANDOC;
+        this.beanDetDay.QTYDOC = rowData.data.lngQTYDOC;
         console.log(rowData.data);
         if(rowData.data.TDOC == 'S'){
             consultPath = 'searchTicket'
@@ -1805,7 +1818,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             this.searchBeanAdyen(rec);
         } else {
             console.log('entra aquiiiiii')
-            if(rec.data.TDOC == 'S'){
+            if(rec.data.TDOC == 'S' || rec.data.CERROR == '46' ){
               this.searchBean(rec);  
             }else {
                this.searchBeanDebits(rec) 

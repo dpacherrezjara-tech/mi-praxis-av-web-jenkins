@@ -798,7 +798,24 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             width: 100,
                                         },
                                         {xtype: 'tbspacer', width: 30},
-                                        {xtype: 'tbspacer', width: 260},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Qty Settl.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtQTYDOC',
+                                            fieldStyle: 'text-align:center',
+                                            fieldCls: 'detalle-qtydoc-textfield',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100,
+                                        },
+
+                                        {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
                                             text: 'Society Sale',
@@ -1779,6 +1796,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     value = 'Match';
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     if (record.data.STVAL === '1') {
                                                                                         value = 'Match'
                                                                                     } else if (record.data.STVAL === '5') {
@@ -1794,7 +1814,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     if (record.data.TDOC === 'A') {
-                                                                                        metaData.tdAttr = 'data-qtip="' + record.data.desCERROR + '"';
+                                                                                        metaData.style += "background-color:#bff5bf;";
                                                                                     }
                                                                                     return value;
                                                                                 }
@@ -1803,6 +1823,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 }
                                                                             },
@@ -1810,6 +1833,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 }
                                                                             },
@@ -1817,6 +1843,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 }
                                                                             },
@@ -1824,6 +1853,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 },
 //                                                                                listeners: {
@@ -1844,6 +1876,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
+                                                                                            if (record.data.TDOC === 'A') {
+                                                                                                metaData.style += "background-color:#bff5bf;";
+                                                                                            }
                                                                                             return value;
                                                                                         }
                                                                                     },
@@ -1851,6 +1886,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
+                                                                                            if (record.data.TDOC === 'A') {
+                                                                                                metaData.style += "background-color:#bff5bf;";
+                                                                                            }
                                                                                             return value;
                                                                                         }
                                                                                     },
@@ -1858,6 +1896,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
+                                                                                            if (record.data.TDOC === 'A') {
+                                                                                                metaData.style += "background-color:#bff5bf;";
+                                                                                            }
                                                                                             return value;
                                                                                         }
                                                                                     }
@@ -1868,6 +1909,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                                     return value;
                                                                                 }
@@ -1877,6 +1921,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                                     return value;
                                                                                 }
@@ -1885,6 +1932,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 }
                                                                             },
@@ -1892,6 +1942,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 },
                                                                             },
@@ -1899,6 +1952,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                             {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75, hidden: true,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
                                                                                     return value;
                                                                                 }
                                                                             },

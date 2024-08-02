@@ -119,7 +119,9 @@ public class A2290Filter extends A2290 {
 
     public int TRANL = 0;
     public String IN_DATECI = "";
+    public String IN_DATEC = "";
     public String IN_TRANCI = "";
+    public String IN_TRANC = "";
     public String IN_PNR = "";
     public String IN_CONTAB = "";
     public String TTRAN = "";
