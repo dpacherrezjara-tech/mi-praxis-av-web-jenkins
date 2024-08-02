@@ -151,8 +151,8 @@ Ext.define('Ext.Praxis.view.payments.StatementRulesForm.DataEntry', {
                                             enforceMaxLength: true,
                                             editable: true,
                                             enabled: false,
-                                            maxLength: 6,
-                                            maskRe: /[a-zA-Z]/,
+                                            maxLength: 4,
+                                            maskRe: /[0-9A-Za-z]/,
                                             readOnly: false,
                                             width: 60
                                         },
@@ -205,7 +205,7 @@ Ext.define('Ext.Praxis.view.payments.StatementRulesForm.DataEntry', {
                                             editable: true,
                                             enabled: false,
                                             maxLength: 50,
-                                            maskRe: /[0-9A-Za-z]/,
+//                                            maskRe: /[0-9A-Za-z]/,
                                             readOnly: false,
                                             width: 200
                                         },
