@@ -3474,7 +3474,7 @@ public class StatementReconciliationsController extends BaseController {
         String message = "";
         int i = 0 , cont =0;
         boolean isOk = false;
-        
+        String BANDOC="";
         try {
             String strSesion = UUID.randomUUID().toString();
             String strNomExcel = "Revision." + strSesion + ".xlsx";
@@ -3509,10 +3509,10 @@ public class StatementReconciliationsController extends BaseController {
                         
                         cont++;
                         if (row.getCell(0) != null) {
-                            
-                            obj.CCUST =  dataFormatter.formatCellValue(row.getCell(0));
-                            if(obj.CCUST.trim().equals("***") || obj.CCUST.trim().equals("")){
-                                
+                            BANDOC = dataFormatter.formatCellValue(row.getCell(17));
+                            if(i>2 && !BANDOC.trim().equals("")){
+                                /*Guardo ultimo grupo de liquidaciones y EC*/
+                                obj = new MPF101();
                                 obj.liq = regs.substring(1);
                                 obj.ec = regsEC;
                                 regs ="";
@@ -3520,9 +3520,10 @@ public class StatementReconciliationsController extends BaseController {
                                 lstData.add(obj);
                                 obj = new MPF101();
                                 cont=0;
-                                continue;
+//                                continue;
                             }
                             
+                            obj.CCUST =  dataFormatter.formatCellValue(row.getCell(0));
                             obj.SDATE = dataFormatter.formatCellValue(row.getCell(1));
                             obj.SCOUNTRY = dataFormatter.formatCellValue(row.getCell(2));
                             obj.TDOC = dataFormatter.formatCellValue(row.getCell(3));
@@ -3538,8 +3539,9 @@ public class StatementReconciliationsController extends BaseController {
                             /*EC*/
 
                             /*Estados de cuenta*/
-                            if(cont==1){
-                            
+//                            if(cont==1){
+                            if(!BANDOC.equals("")){
+                                cont = 1 ;
                                 obj.CCUST_EC = dataFormatter.formatCellValue(row.getCell(13));
                                 obj.ADATE = dataFormatter.formatCellValue(row.getCell(14));
                                 obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(15));
