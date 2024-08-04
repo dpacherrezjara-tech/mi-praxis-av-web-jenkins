@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -3487,7 +3488,8 @@ public class StatementReconciliationsController extends BaseController {
             fs.flush();
             fs.close();
 
-            DataFormatter dataFormatter = new DataFormatter();
+//            DataFormatter dataFormatter = new DataFormatter();
+            DataFormatter dataFormatter = new DataFormatter(Locale.US);/*para usar . como separador decimal*/
 //            DataFormatter df = new DataFormatter();
             FileInputStream file = new FileInputStream(new File(strArchivo));
             // leer archivo excel
