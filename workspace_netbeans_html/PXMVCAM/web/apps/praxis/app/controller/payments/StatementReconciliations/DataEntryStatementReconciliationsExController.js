@@ -123,6 +123,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
 
+            Ext.getCmp(prototype.id + '-MOD').hide();
             Ext.getCmp(prototype.id + '-btnToggleSwitch').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1137);
@@ -135,7 +136,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
 
             this.setValue('de-txtCOREP', this.beanResult.COREP);
-            if (!this.beanResult.COREP.includes("WP")) {
+            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") && this.beanResult.SCOUNTRY.includes("UY"))) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -147,6 +148,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
                 Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1081);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
+                this.onSearchCompleteHeader();
             } else {
                 Ext.getCmp(prototype.id + '-header').hide();
                 Ext.getCmp(prototype.id + '-detail').show();
@@ -156,17 +158,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail2').show();
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(730);
                 Ext.getCmp(prototype.id + '-titleDetail').hide();
+                this.onSearchCompleteDetail();
             }
 
         } else {
 
+            Ext.getCmp(prototype.id + '-MOD').show();
             Ext.getCmp(prototype.id + '-btnToggleSwitch').show();
             Ext.getCmp(prototype.id + '-btn-update').show();
             Ext.getCmp(prototype.id + '-panelScanHead').show();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
 
-            if (!this.beanResult.COREP.includes("WP")) {
+            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") && this.beanResult.SCOUNTRY.includes("UY"))) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
@@ -180,6 +184,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1127);
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
+                this.onSearchCompleteHeader();
             } else {
                 Ext.getCmp(prototype.id + '-header').hide();
                 Ext.getCmp(prototype.id + '-detail').show();
@@ -192,6 +197,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail2').show();
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(780);
                 Ext.getCmp(prototype.id + '-titleDetail').hide();
+                this.onSearchCompleteDetail();
             }
         }
 
@@ -294,7 +300,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 console.log(meDE.beanResult);
 
 //                meDE.onSearchCompleteDetail();
-                meDE.validaEntry();
+//                meDE.validaEntry();
 
                 meDE.mostrarData();
             }
