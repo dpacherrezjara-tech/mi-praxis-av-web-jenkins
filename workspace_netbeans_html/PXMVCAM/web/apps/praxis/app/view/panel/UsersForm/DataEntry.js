@@ -124,7 +124,8 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.DataEntry',{
                                 data: [
                                     ["", "- SELECT -"],
                                     ["MEX", "MEXICO DF"],
-                                    ["LIM", "LIMA"]
+                                    ["LIM", "LIMA"],
+                                    ["AV", "AVIANCA"]
                                 ]
                             }),
                             queryMode: 'local',
