@@ -671,7 +671,9 @@ public class InputsDAO {
                 objRtn.FECR = rs01.getString("FECR");
                 objRtn.strFormatDate = Functions.getMonthConvert(objRtn.FECR);
                 objRtn.HOCR = rs01.getString("HOCR");
+                objRtn.HOFIN = rs01.getString("HOFIN");
                 objRtn.strDescripcion1 = Functions.ConvertedTime(rs01.getString("HOCR"));
+                objRtn.strDescripcion2 = Functions.ConvertedTime(rs01.getString("HOFIN"));
                 objRtn.USCR = rs01.getString("USCR").trim();
                 objRtn.USERAC = session.getUserView().getCustomerInfo().USR;
                 objRtn.DPRDA = filter.DPRDA;
