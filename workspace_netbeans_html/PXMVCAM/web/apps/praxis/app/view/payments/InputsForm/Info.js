@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                             hidden: false,
                             height: 516,
                             width: 1265,
-                            margin: '10 0 0 150',
+                            margin: '10 0 0 80',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -53,6 +53,12 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                     width: 1265,
                                     hidden: false,
                                     columnLines: true,
+                                    height: 516,
+//                                    scrollable: {
+//                                        direction: 'vertical',
+//                                    },
+//                                    autoScroll: true,
+//                                    overflowY: 'scroll',
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
