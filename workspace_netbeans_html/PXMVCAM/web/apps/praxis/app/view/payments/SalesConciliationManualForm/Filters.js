@@ -219,7 +219,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             labelStyle: 'font-weight: bold;',
                             listeners:{
                             }
-                            }
+                        }
 //                        {xtype: 'tbspacer', width: 30},
 //                        {
 //                            xtype:'combo',
@@ -290,96 +290,84 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
 //                        {xtype: 'tbspacer', width: 45},
                     ]
                 },
-//                {
-//                    xtype: 'panel',
-//                    width: '100%',
-//                    layout: 'hbox',
-////                    padding: '0 0 0 300',
-//                    bodyStyle: 'background: transparent;"',
-//                    defaults: {
-//                        margin: '4 0'
-//                    },
-//                    items: [
-////                        {xtype: 'tbspacer', width: 175},                       
-//                        
-//                        {xtype: 'tbspacer', width: 25},                        
-//                        {
-//                            xtype: 'textfield',
-//                            id: prototype.id+'-txtCard1',
-//                            labelStyle: 'font-weight: bold;',
-//                            fieldLabel:'CC Number:',
-//                            fieldStyle: 'text-align:center',
-//                            enforceMaxLength: true,     
-//                            maskRe: /[0-9]/,      
-//                            maxLength: 14,
-//                            labelWidth: 80,
-//                            width: 210,
-//                            enableKeyEvents: true,
-//                            listeners:{
-//                                keypress: 'eventKey',
-//                            }
-//                        },
-//                        {xtype: 'tbspacer', width: 20},
-//                        {
-//                            autoEl: {
-//                                tag: 'label',
-//                                'data-qtip': '5 encrypted characters for AMEX and 6 characters for the rest.'
-//                            }
-//                        },
-//                        {
-//                            xtype: 'textfield',
-//                            id: prototype.id+'-txtCard2',
-//                            labelStyle: 'font-weight: bold;',
-//                            fieldLabel:'*****(*):',
-//                            fieldStyle: 'text-align:center',
-//                            enforceMaxLength: true,     
-//                            maskRe: /[0-9]/,      
-//                            maxLength: 14,
-//                            labelWidth: 70,
-//                            width: 200,
-//                            enableKeyEvents: true,
-//                            listeners:{
-//                                keypress: 'eventKey'
-//                            }
-//                        },
-//                        {xtype: 'tbspacer', width: 20},
-//                        
-//                        {
-//                            xtype: 'textfield',
-//                            id: prototype.id+'-txtSAUTHOC', 
-//                            labelStyle: 'font-weight: bold;',
-//                            fieldLabel:'Authorization:',
-//                            fieldStyle: 'text-align:center',
-//                            enforceMaxLength: true,     
-//                            maskRe: /[a-zA-Z0-9]/,      
-//                            maxLength: 14,
-//                            labelWidth: 90,
-//                            width: 200,
-//                            enableKeyEvents: true,
-//                            listeners:{
-//                                keypress: 'eventKey'
-//                            }
-//                        },
-//                        {xtype: 'tbspacer', width: 20},
-//                        
-//                        {
-//                            xtype: 'textfield',
-//                            id: prototype.id+'-txtSPNR',     
-//                            fieldStyle: 'text-align:center',
-//                            labelStyle: 'font-weight: bold;',
-//                            fieldLabel:'PNR:',
-//                            enforceMaxLength: true,     
-//                            maskRe: /[0-9a-zA-Z]/,
-//                            maxLength: 14,
-//                            labelWidth: 30,
-//                            width: 148,
-//                            enableKeyEvents: true,
-//                            listeners:{
-//                                keypress: 'eventKey'
-//                            }
-//                        },
-//                    ]
-//                }
+                {
+                    xtype: 'panel',
+                    width: '100%',
+                    layout: 'hbox',
+//                    padding: '0 0 0 300',
+                    bodyStyle: 'background: transparent;"',
+                    defaults: {
+                        margin: '4 0'
+                    },
+                    items: [                
+                        
+                        {xtype: 'tbspacer', width: 150},                       
+                        {
+                            xtype:'combo',
+                            id: prototype.id+'-cmbSTVAL',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            fieldLabel: 'Status:',
+                            labelAlign: 'right',
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 210,
+                            labelWidth: 80,
+                            typeAhead: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            labelStyle: 'font-weight: bold;',
+                            listeners:{
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 30},
+                        {
+                            xtype: 'textfield',
+                            labelStyle: 'font-weight: bold;',
+                            fieldLabel: 'Tran Numb:',
+                            id: prototype.id+'-txtTRANL',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9]/,      
+//                            maxLength: 13,
+                            maxLength: 8,
+                            labelWidth: 80,
+                            width: 230,
+                            enableKeyEvents: true,                          
+                            listeners:{
+                                change: 'onValidarChange',
+                                keypress: 'eventKey'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 30},
+                        
+                        {
+                            xtype: 'textfield',
+                            labelStyle: 'font-weight: bold;',
+                            fieldLabel: 'Sequence:',
+                            id: prototype.id+'-txtSEQ',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9]/,      
+//                            maxLength: 13,
+                            maxLength: 4,
+                            labelWidth: 80,
+                            width: 225,
+                            enableKeyEvents: true,                          
+                            listeners:{
+                                change: 'onValidarChange',
+                                keypress: 'eventKey'
+                            }
+                        } ,   
+                       
+                    ]   
+
+                }
             ]
         }
     ]

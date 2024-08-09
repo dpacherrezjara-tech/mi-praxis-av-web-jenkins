@@ -205,41 +205,56 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         console.log(Ext.getCmp(prototype.id + '-chkCONTAB').getValue(), 'chkcontab')
         beanProcess.IN_CERROR = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '46' : '45'
         beanProcess.IN_STCON = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '1' : '2'
-        
-        let beanString = JSON.stringify(beanProcess);
-        console.log(beanProcess, 'beanProcess')
-        console.log(beanString, 'beanString')
-        Ext.Ajax.request({
-            url: prototype.url + '/updateRecords',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
-            params: {beanString: beanString},
+        let msgCONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? 'Generate policy?' : 'Not generate policy?'
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: msgCONTAB,
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    let beanString = JSON.stringify(beanProcess);
+                    console.log(beanProcess, 'beanProcess')
+                    console.log(beanString, 'beanString')
+                    Ext.Ajax.request({
+                    url: prototype.url + '/updateRecords',
+                    method: 'POST',
+                    timeout: 60000000,
+                    beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
+                    params: {beanString: beanString},
 
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
-                console.log(res);
-                if (res.success) {
-                    
-                    let objResult = res.result;
-                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
-                    console.log(objResult, 'objResult')
-                    Ext.getCmp(prototype.id + '-de-txtQTY').setValue(objResult.QTY)
-                    Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue(objResult.QTYPROCUP)
-                    Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue(objResult.QTYNPROCUP)
-                    Ext.getCmp(prototype.id + '-btn-process').setDisabled(true)
-                    global.Msg({msg: objResult.MESSAGE});
-//                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
-                    
-                } else {
-                    global.Msg({msg: "Error Processed "});
+                    success: function (response) {
+                        var res = Ext.decode(response.responseText);
+                        console.log(res);
+                        if (res.success) {
+
+                            let objResult = res.result;
+                            Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                            console.log(objResult, 'objResult')
+                            Ext.getCmp(prototype.id + '-de-txtQTY').setValue(objResult.QTY)
+                            Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue(objResult.QTYPROCUP)
+                            Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue(objResult.QTYNPROCUP)
+                            Ext.getCmp(prototype.id + '-btn-process').setDisabled(true)
+                            global.Msg({msg: objResult.MESSAGE});
+        //                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
+
+                        } else {
+                            global.Msg({msg: "Error Processed "});
+                        }
+                    },
+                    failure: function (response) {
+                        Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                        console.log('server-side failure with status code ' + response.status);
+                    }
+                });
                 }
-            },
-            failure: function (response) {
-                Ext.getCmp(prototype.id + '-panelGridData').unmask()
-                console.log('server-side failure with status code ' + response.status);
             }
         });
+        
+        
+        
         
         
     }, 

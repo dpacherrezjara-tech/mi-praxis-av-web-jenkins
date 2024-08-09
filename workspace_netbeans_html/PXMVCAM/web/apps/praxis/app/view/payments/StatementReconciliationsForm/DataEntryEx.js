@@ -83,6 +83,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                 {
                                                     xtype: 'label',
                                                     text: 'Mode',
+                                                    id: prototype.id + '-MOD',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     bodyStyle: 'background:#E5ECEF;',
                                                     fontSize: '11',

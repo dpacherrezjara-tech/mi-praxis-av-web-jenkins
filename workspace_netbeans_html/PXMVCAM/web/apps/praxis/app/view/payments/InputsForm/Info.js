@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                             border: true,
                             hidden: false,
                             height: 516,
-                            width: 1195,
+                            width: 1265,
                             margin: '10 0 0 150',
                             layout: {
                                 type: 'vbox',
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
 //                                    height: 510,
-                                    width: 1195,
+                                    width: 1265,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -79,7 +79,8 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                             return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                         }
                                                     },
-                                                    {text: 'Time', dataIndex: 'strDescripcion1', width: 70}
+                                                    {text: 'Start', dataIndex: 'strDescripcion1', width: 70},
+                                                    {text: 'End', dataIndex: 'strDescripcion2', width: 70}
                                                 ]
                                             },
                                             {text: 'User',

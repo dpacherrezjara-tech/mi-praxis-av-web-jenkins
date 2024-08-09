@@ -42,6 +42,8 @@ public class A2295Filter  extends A2295{
     public String IN_SCARDNCOR = "";
     public String IN_CARDC = "";
     public String IN_STVAL = "";
+    public String IN_TRANL = "";
+    public String IN_SEQ = "";
     public String IN_COUNTRY = "";
     public String IN_SDATE = "";
     public String IN_TICKET = "";
