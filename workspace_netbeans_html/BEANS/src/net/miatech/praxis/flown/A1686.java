@@ -27,6 +27,7 @@ public class A1686 {
     public String USCR = "";
     public String FECR = "";
     public String HOCR = "";
+    public String HOFIN = "";
     public String USUP = "";
     public String FEUP = "";
     public String HOUP = "";

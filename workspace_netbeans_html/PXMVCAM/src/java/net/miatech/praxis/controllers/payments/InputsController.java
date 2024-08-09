@@ -129,7 +129,16 @@ public class InputsController extends BaseController {
 
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A1686Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
 
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            
             if (filter.IN_FUENTE.trim().equals("")) {
                 lst = logic.loadPX264SQP02957(filter);
             } else {
