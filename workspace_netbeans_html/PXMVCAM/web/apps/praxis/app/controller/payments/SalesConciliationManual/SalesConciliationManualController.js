@@ -148,17 +148,17 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         }));
         cmbFCONCEP.setValue("");
         
-//        var cmbSPAYMENT = Ext.getCmp(prototype.id + '-cmbSPAYMENT');
-//        cmbSPAYMENT.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "All"],
-//                ["CC", "Credit Card"],
-//                ["CH", "Cash"]
-//            ]
-//        }));
-//        cmbSPAYMENT.setValue("");
+        var cmbSTVAL = Ext.getCmp(prototype.id + '-cmbSTVAL');
+        cmbSTVAL.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["3", "Pending"],
+                ["5", "Match"]
+            ]
+        }));
+        cmbSTVAL.setValue("");
         
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -205,6 +205,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         //me.bean.IN_SPAYMENT = Ext.getCmp(prototype.id + '-cmbSPAYMENT').getValue();
         me.bean.IN_TKT = Ext.getCmp(prototype.id + '-txtTKT').getValue();
         me.bean.IN_FCONCEP = Ext.getCmp(prototype.id + '-cmbFCONCEP').getValue();
+        me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbSTVAL').getValue();
+        me.bean.IN_TRANL = Ext.getCmp(prototype.id + '-txtTRANL').getValue();
+        me.bean.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
 //        me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
 //        me.bean.IN_SPNR = Ext.getCmp(prototype.id + '-txtSPNR').getValue().trim();
@@ -223,7 +226,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
 
     btnSearch_click: function (obj, e) {  
         this.setFormatParameter();  //obtengo los Parametros
-        if( Ext.getCmp(prototype.id + '-txtTKT').getValue() != '' || Ext.getCmp(prototype.id + '-cmbFCONCEP').getValue() != ''){
+        if( Ext.getCmp(prototype.id + '-txtTKT').getValue() != '' || Ext.getCmp(prototype.id + '-cmbFCONCEP').getValue() != '' 
+            || Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue() != '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() != ''
+            || Ext.getCmp(prototype.id + '-cmbSTVAL').getValue() != '' || Ext.getCmp(prototype.id + '-txtTRANL').getValue() != ''
+            || Ext.getCmp(prototype.id + '-txtSEQ').getValue() != ''){
             this.setGridDataDetail()
         }else{
             this.setGridData(); 

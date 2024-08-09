@@ -2912,7 +2912,7 @@ public class StatementReconciliationsDAO {
 
                 cstmt.execute();
 
-                strMsj = cstmt.getString(5);
+                strMsj = strMsj + "**" + cstmt.getString(5);
 
             }
 
