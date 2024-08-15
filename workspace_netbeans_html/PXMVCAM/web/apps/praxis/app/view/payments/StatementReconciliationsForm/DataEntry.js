@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
     height: 780,
-    width: 1190,
+    width: 1200,
     resizable: false,
     layout: {
         type: 'hbox',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                     items: [
                         {
                             xtype: 'panel',
-                            bodyStyle: 'background: transparent;', 
+                            bodyStyle: 'background: transparent;',
                             layout: 'vbox',
                             defaults: {
                                 anchor: '100%'
@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                     border: false,
                                     bodyStyle: 'background:white;',
                                     margin: '0 0 3 10',
-                                    width: 1160,
+                                    width: 1170,
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -599,7 +599,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             id: prototype.id + '-panelScanCard',
                                             layout: 'hbox',
                                             border: false,
-                                            margin: '10 2 10 20',
+                                            margin: '10 2 10 10',
                                             bodyStyle: 'background:#;',
                                             items: [
                                                 {xtype: 'tbspacer', width: 10},
@@ -660,7 +660,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         change: 'cambiaParams'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Acc Number:',
@@ -674,6 +674,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtACCNUMBER',
                                                     fieldStyle: 'text-align:center',
+                                                    maxLength: 25,
+                                                    enforceMaxLength: true,
                                                     width: 120
                                                 },
                                                 {
@@ -686,14 +688,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         change: 'cambiaParams'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Amount:',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     margin: '4 4 4 4',
-                                                    width: 70
+                                                    width: 60
                                                 },
                                                 {xtype: 'tbspacer', width: 5},
                                                 {
@@ -703,10 +705,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     enforceMaxLength: true,
                                                     maskRe: /[0-9]/,
                                                     maxLength: 16,
-                                                    width: 120,
+                                                    width: 110,
                                                     enableKeyEvents: true
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Merchant:',
@@ -717,10 +719,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'textfield',
-                                                    hidden: true,
                                                     id: prototype.id + '-txtMERCHANT',
                                                     fieldStyle: 'text-align:center',
-                                                    width: 120,
+                                                    width: 110,
+                                                    maxLength: 15,
+                                                    enforceMaxLength: true,
                                                     enableKeyEvents: true
                                                 },
                                                 {
@@ -732,7 +735,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         change: 'cambiaParams'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 50},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
@@ -805,7 +808,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                             id: prototype.id + '-panelScanCard2',
                                             layout: 'hbox',
                                             border: false,
-                                            margin: '0 2 0 20',
+                                            margin: '0 2 0 10',
                                             bodyStyle: 'background:#;',
                                             items: [
                                                 {xtype: 'tbspacer', width: 10},
@@ -866,36 +869,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                         change: 'cambiaParams'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Key:',
-                                                    hidden:true,
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 80
-                                                },
-//                                                {xtype: 'tbspacer', width: 5},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-txtFUNDSTRGK',
-                                                    fieldStyle: 'text-align:center',
-                                                    hidden:true,
-                                                    width: 120
-                                                },
-                                                {
-                                                    xtype: 'checkboxfield',
-                                                    id: prototype.id01 + '-chkKEY',
-                                                    checked: true,
-                                                    hidden:true,
-                                                    padding: '0px 0px 0px 5px',
-                                                    //boxLabel: 'Value'
-                                                    listeners: {
-                                                        change: 'cambiaParams'
-                                                    }
-                                                },
-//                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Card Code:',
@@ -916,17 +890,67 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     displayField: 'NAME',
                                                     width: 120,
                                                     labelWidth: 10,
-                                                    hidden: false,
                                                     hiddenLabel: false,
                                                     editable: false
-                                                }
+                                                },
+                                                {xtype: 'tbspacer', width: 27},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Agency:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 0 4 4',
+                                                    width: 70
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtSAGENT',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 110,
+                                                    maxLength: 8,
+                                                    enforceMaxLength: true,
+                                                    enableKeyEvents: true
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Terminal:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 0 4 4',
+                                                    width: 70
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtTERMI',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 110,
+                                                    maxLength: 8,
+                                                    enforceMaxLength: true,
+                                                    enableKeyEvents: true
+                                                },
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Sequence:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 0 4 4',
+                                                    width: 70
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtSEQ',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 50,
+                                                    maxLength: 2,
+                                                    enforceMaxLength: true,
+                                                    enableKeyEvents: true
+                                                },
                                             ]
                                         },
-
                                         //</editor-fold>
-
                                         //<editor-fold defaultstate="collapsed" desc="Detail new Setlement">
-
                                         {xtype: 'tbspacer', height: 5},
                                         {
                                             xtype: 'panel',
@@ -940,14 +964,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     id: prototype.id + '-panelDataInfoScan',
                                                     layout: 'vbox',
                                                     border: false,
-                                                    width: 1044,
+                                                    width: 1096,
                                                     height: 252,
                                                     autoScroll: true,
                                                     items: [
                                                         {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScan',
-                                                            width: 1042,
+                                                            width: 1094,
                                                             height: 250,
                                                             columnLines: true,
                                                             plugins: [

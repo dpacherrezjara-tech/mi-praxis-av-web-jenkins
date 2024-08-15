@@ -491,7 +491,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
         let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
-        let chkKEY = Ext.getCmp(prototype.id01 + '-chkKEY').getValue();
         let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
         let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
         let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
@@ -530,6 +529,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        
+        meDE.bean.data.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
+        meDE.bean.data.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
+        meDE.bean.data.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
+        
         if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '1';
         } else {

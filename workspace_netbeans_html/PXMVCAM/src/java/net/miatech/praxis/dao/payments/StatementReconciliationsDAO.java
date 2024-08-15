@@ -817,6 +817,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
                     beanTkt.IN_COREP = filter.IN_COREP.trim();
+                    beanTkt.COREP = filter.IN_COREP.trim();
 
                     beanTkt.IN_CBANK = rst.getString("CBANK").trim();
 
@@ -2483,7 +2484,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2506,9 +2507,11 @@ public class StatementReconciliationsDAO {
             cstmt.setString(14, filter.IN_strNETO.trim());
             cstmt.setString(15, filter.IN_TDOC.trim());
             cstmt.setString(16, filter.IN_SEQ.trim());
-            cstmt.setString(17, filter.IN_DATECI.trim());
-            cstmt.setString(18, filter.IN_TRANCI.trim());
-            cstmt.setString(19, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(17, filter.IN_TERMI.trim());
+            cstmt.setString(18, filter.IN_SAGENT.trim());
+            cstmt.setString(19, filter.IN_DATECI.trim());
+            cstmt.setString(20, filter.IN_TRANCI.trim());
+            cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
