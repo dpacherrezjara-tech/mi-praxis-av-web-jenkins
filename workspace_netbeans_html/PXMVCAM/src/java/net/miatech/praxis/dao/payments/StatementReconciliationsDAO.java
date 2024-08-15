@@ -817,6 +817,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.IN_STVAL = filter.IN_STVAL.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
                     beanTkt.IN_COREP = filter.IN_COREP.trim();
+                    beanTkt.COREP = filter.IN_COREP.trim();
 
                     beanTkt.IN_CBANK = rst.getString("CBANK").trim();
 
