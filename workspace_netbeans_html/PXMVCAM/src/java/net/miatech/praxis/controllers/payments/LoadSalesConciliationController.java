@@ -230,6 +230,8 @@ public class LoadSalesConciliationController extends BaseController {
                         }else if(obj.TYPETRAN.contains("Venta")){
                             obj.FCONCEP = "V";
 //                            lstDataVenta.add(obj);
+                        }else if (obj.TYPETRAN.contains("Debito")){
+                            obj.FCONCEP = "D";
                         }else{
                             obj.FCONCEP = "";
                             lstDataNotFound.add(obj);

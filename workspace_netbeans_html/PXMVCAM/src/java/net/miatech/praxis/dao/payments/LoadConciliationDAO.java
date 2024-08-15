@@ -4035,7 +4035,7 @@ public class LoadConciliationDAO {
                     } else if (beanTkt.IN_TDOC.equals("R")) {
                         beanTkt.strTitulo = "Refund Date : ";
                     } else {
-                        beanTkt.strTitulo = "Sales Date : ";
+                        beanTkt.strTitulo = "Process Date : ";
                     }
                     
                     beanTkt.strTitulo += beanTkt.strFormatDate + " **" + hmDescEstados.get(beanTkt.IN_STVAL) + "** ";
@@ -4193,7 +4193,7 @@ public class LoadConciliationDAO {
                     } else if (beanTkt.IN_TDOC.equals("R")) {
                         beanTkt.strTitulo = "Refund Date : ";
                     } else {
-                        beanTkt.strTitulo = "Sales Date : ";
+                        beanTkt.strTitulo = "Process Date : ";
                     }
                     
                     beanTkt.strTitulo += beanTkt.strFormatDate + " **" + hmDescEstados.get(beanTkt.IN_STVAL) + "** ";
@@ -4351,7 +4351,7 @@ public class LoadConciliationDAO {
                     } else if (beanTkt.IN_TDOC.equals("R")) {
                         beanTkt.strTitulo = "Refund Date : ";
                     } else {
-                        beanTkt.strTitulo = "Sales Date : ";
+                        beanTkt.strTitulo = "Process Date : ";
                     }
                     
                     beanTkt.strTitulo += beanTkt.strFormatDate + " **" + hmDescEstados.get(beanTkt.IN_STVAL) + "** ";
@@ -5483,7 +5483,7 @@ public class LoadConciliationDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro.trim());
-            cstmt.setString(3, filter.SDATE.trim());
+            cstmt.setString(3, filter.IN_SDATE.trim());
             cstmt.setString(4, filter.IN_TDOC.trim());
             cstmt.setString(5, filter.IN_PAYMENT.trim());
             cstmt.setString(6, filter.IN_FTE.trim());
@@ -5744,7 +5744,7 @@ public class LoadConciliationDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro.trim());
-            cstmt.setString(3, filter.SDATE.trim());
+            cstmt.setString(3, filter.IN_SDATE.trim());
             cstmt.setString(4, filter.IN_TDOC.trim());
             cstmt.setString(5, filter.IN_PAYMENT.trim());
             cstmt.setString(6, filter.IN_FTE.trim());
@@ -6007,7 +6007,7 @@ public class LoadConciliationDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro.trim());
-            cstmt.setString(3, filter.SDATE.trim());
+            cstmt.setString(3, filter.IN_SDATE.trim());
             cstmt.setString(4, filter.IN_TDOC.trim());
             cstmt.setString(5, filter.IN_PAYMENT.trim());
             cstmt.setString(6, filter.IN_FTE.trim());
