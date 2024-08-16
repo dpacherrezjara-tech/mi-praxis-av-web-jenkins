@@ -1286,7 +1286,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                 MPF077TRAN: record.get('MPF077TRAN') && record.get('MPF077TRAN') != '' ? record.get('MPF077TRAN') : 0,
                 MPF076TRAN: record.get('MPF076TRAN') && record.get('MPF076TRAN') != '' ? record.get('MPF076TRAN') : 0,
                 SPNR: record.get('A720PNR') ? record.get('A720PNR') : '',
-                TDOC: 'D'
+                TDOC: 'D',
+                COREP: meDe.bean.COREP,
+                CODPRO: meDe.bean.CODPRO,
+                CCUSTPRO: meDe.bean.CCUSTPRO
 
                         // Agrega más campos según sea necesario
             };
