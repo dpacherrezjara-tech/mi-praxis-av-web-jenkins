@@ -1103,8 +1103,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 CCUSTCC: Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 FREGLA: Ext.getCmp(prototype.id + '-de-txtIN_FREGLA').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
-                DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue() // Reemplaza 'nombre' con el campo correcto de tu modelo
-
+                DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo
+                COREP: meDe.bean.COREP,
+                CODPRO: meDe.bean.CODPRO,
+                CCUSTPRO: meDe.bean.CCUSTPRO
                         // Agrega más campos según sea necesario
             };
             console.log(registro);
