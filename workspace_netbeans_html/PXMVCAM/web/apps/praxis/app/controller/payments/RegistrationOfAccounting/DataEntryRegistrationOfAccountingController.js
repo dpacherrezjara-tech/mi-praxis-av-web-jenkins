@@ -30,8 +30,8 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         var currentYear = currentDate.getFullYear();
         var currentMonth = currentDate.getMonth();
         var startMonth = 0;
-        if (currentMonth >= 5 ) {
-            startMonth = currentMonth - 5;
+        if (currentMonth >= 6 ) {
+            startMonth = currentMonth - 6;
         } else {
             startMonth = 0;
         }
@@ -82,14 +82,15 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         var vl_cmb01 = Ext.getCmp(prototype.id + '-cmb01').getValue();
         var vl_cmb02 = Ext.getCmp(prototype.id + '-cmb02').getValue();
           
-          // Se asignan valores
-          if(vl_op01) vl_mode = 'C';
-          if(vl_op02) vl_mode = 'E';
-          
-          if(vl_cmb01) vl_additional = vl_cmb01;
-          if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
-          
-          beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
+        // Se asignan valores
+        if(vl_op01) vl_mode = 'C';
+        if(vl_op02) vl_mode = 'E';
+
+        if(vl_cmb01) vl_additional = vl_cmb01;
+        if(vl_cmb01 === 'D' && vl_mode === 'E') vl_additional = 'B';
+        if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
+
+        beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
        
     },
     

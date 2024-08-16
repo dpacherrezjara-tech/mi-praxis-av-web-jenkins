@@ -33,36 +33,78 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
 //        this.setValue('de-txtCODTRAN', '');        
     },
     //</editor-fold>
+    cmbModo_clickHandler: function () {
+        var vl_op01 = Ext.getCmp(prototype.id + '-op01').getValue();
+        var vl_op02 = Ext.getCmp(prototype.id + '-op02').getValue();
+        
+        if (vl_op01) {
+            //Ext.getCmp(prototype.id + '-op02').setValue(false);
+            Ext.getCmp(prototype.id + '-cmb02').setVisible(false);
+        }
+        else if (vl_op02) {
+            //Ext.getCmp(prototype.id + '-op01').setValue(false);
+            Ext.getCmp(prototype.id + '-cmb02').setVisible(true);
+        }
+        
+        
+    },
     llenarData: function (beanTemp) {
-        beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-        beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+        
+        beanTemp.VP_FECHA_INI = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
+        beanTemp.VP_FECHA_FIN = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
         beanTemp.VP_TIPO = "";
         
-        var vl_pasaje = "X";
-        var vl_carga = "X";
-        var vl_correo = "X";
-        var vl_ajuste = "X";
-        var vl_debito = "X";
-        var vl_exterior = "X";
-        var vl_pf = "X";
+        // Modo
+        var vl_mode = "X";
+        // Adicional
+        var vl_additional = "X";
+        // Procesador
+        var vl_processor = "XX";
         
-        var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
-        var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
-        var vl_ck03 = Ext.getCmp(prototype.id + '-ck03').getValue();
-        var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
-        var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
-        var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
-        var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
-                
-        if(vl_ck01) vl_pasaje = 'P';
-        if(vl_ck02) vl_carga = 'A';
-        if(vl_ck03) vl_correo = 'C'; 
-        if(vl_ck04) vl_ajuste = 'J';
-        if(vl_ck05) vl_debito = 'D'; 
-        if(vl_ck06) vl_exterior = 'E';
-        if(vl_ck07) vl_pf = 'F'; 
+        var vl_op01 = Ext.getCmp(prototype.id + '-op01').getValue();
+        var vl_op02 = Ext.getCmp(prototype.id + '-op02').getValue();
         
-        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior + vl_pf; 
+        var vl_cmb01 = Ext.getCmp(prototype.id + '-cmb01').getValue();
+        var vl_cmb02 = Ext.getCmp(prototype.id + '-cmb02').getValue();
+          
+          // Se asignan valores
+          if(vl_op01) vl_mode = 'C';
+          if(vl_op02) vl_mode = 'E';
+          
+          if(vl_cmb01) vl_additional = vl_cmb01;
+          if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
+          
+          beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
+        
+//        beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
+//        beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+//        beanTemp.VP_TIPO = "";
+//        
+//        var vl_pasaje = "X";
+//        var vl_carga = "X";
+//        var vl_correo = "X";
+//        var vl_ajuste = "X";
+//        var vl_debito = "X";
+//        var vl_exterior = "X";
+//        var vl_pf = "X";
+//        
+//        var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
+//        var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
+//        var vl_ck03 = Ext.getCmp(prototype.id + '-ck03').getValue();
+//        var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
+//        var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
+//        var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
+//        var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
+//                
+//        if(vl_ck01) vl_pasaje = 'P';
+//        if(vl_ck02) vl_carga = 'A';
+//        if(vl_ck03) vl_correo = 'C'; 
+//        if(vl_ck04) vl_ajuste = 'J';
+//        if(vl_ck05) vl_debito = 'D'; 
+//        if(vl_ck06) vl_exterior = 'E';
+//        if(vl_ck07) vl_pf = 'F'; 
+//        
+//        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior + vl_pf; 
        
         
     },
