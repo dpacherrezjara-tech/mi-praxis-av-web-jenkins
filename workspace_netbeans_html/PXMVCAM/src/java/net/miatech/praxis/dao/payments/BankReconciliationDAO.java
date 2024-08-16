@@ -1739,6 +1739,10 @@ public class BankReconciliationDAO {
                     objRtn.STCON = rs01.getString("FREGLA").trim();
                 }
                 objRtn.FCONT = rs01.getString("FCONT").trim();
+                
+                objRtn.COREP = rs01.getString("COREP").trim();
+                objRtn.CODPRO = rs01.getString("CODPRO").trim();
+                objRtn.CCUSTPRO = rs01.getString("CCUSTPRO").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -1810,11 +1814,11 @@ public class BankReconciliationDAO {
             cstmt.setString(15, Functions.getHoraActual());
             cstmt.setString(16, filter.strComment.toUpperCase());
             cstmt.setString(17, filter.FREGLA.trim());
-
+            
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -1836,10 +1840,13 @@ public class BankReconciliationDAO {
                 cstmt2.setString(10, filterC.TRANC.trim());
                 cstmt2.setString(11, filterC.BANDOC.trim());
                 cstmt2.setString(12, filterC.CERROR.trim());
-                cstmt2.setString(13, user.getUserInfo().USR);
-                cstmt2.setString(14, Functions.getFechaActual());
-                cstmt2.setString(15, Functions.getHoraActual());
-                cstmt2.setString(16, filter.strComment.toUpperCase());
+                cstmt2.setString(13, filterC.COREP.trim());
+                cstmt2.setString(14, filterC.CODPRO.trim());
+                cstmt2.setString(15, filterC.CCUSTPRO.trim());
+                cstmt2.setString(16, user.getUserInfo().USR);
+                cstmt2.setString(17, Functions.getFechaActual());
+                cstmt2.setString(18, Functions.getHoraActual());
+                cstmt2.setString(19, filter.strComment.toUpperCase());
 
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2053,7 +2060,7 @@ public class BankReconciliationDAO {
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
             if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -2075,10 +2082,13 @@ public class BankReconciliationDAO {
                     cstmt2.setString(10, filterC.TRANC.trim());
                     cstmt2.setString(11, filterC.BANDOC.trim());
                     cstmt2.setString(12, filterC.CERROR.trim());
-                    cstmt2.setString(13, user.getUserInfo().USR);
-                    cstmt2.setString(14, Functions.getFechaActual());
-                    cstmt2.setString(15, Functions.getHoraActual());
-                    cstmt2.setString(16, filter.strComment.toUpperCase());
+                    cstmt2.setString(13, filterC.COREP.trim());
+                    cstmt2.setString(14, filterC.CODPRO.trim());
+                    cstmt2.setString(15, filterC.CCUSTPRO.trim());
+                    cstmt2.setString(16, user.getUserInfo().USR);
+                    cstmt2.setString(17, Functions.getFechaActual());
+                    cstmt2.setString(18, Functions.getHoraActual());
+                    cstmt2.setString(19, filter.strComment.toUpperCase());
 
                     cstmt2.execute();
                     cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2156,7 +2166,7 @@ public class BankReconciliationDAO {
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
             if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -2178,12 +2188,15 @@ public class BankReconciliationDAO {
                     cstmt2.setString(10, filterC.TRANC.trim());
                     cstmt2.setString(11, filterC.BANDOC.trim());
                     cstmt2.setString(12, filterC.CERROR.trim());
-                    cstmt2.setString(13, user.getUserInfo().USR);
-                    cstmt2.setString(14, Functions.getFechaActual());
-                    cstmt2.setString(15, Functions.getHoraActual());
-                    cstmt2.setString(16, filter.strComment.toUpperCase());
-                    cstmt2.setInt(17, filterC.MPF076TRAN);
-                    cstmt2.setString(18, filterC.SPNR.trim());
+                    cstmt2.setString(13, filterC.COREP.trim());
+                    cstmt2.setString(14, filterC.CODPRO.trim());
+                    cstmt2.setString(15, filterC.CCUSTPRO.trim());
+                    cstmt2.setString(16, user.getUserInfo().USR);
+                    cstmt2.setString(17, Functions.getFechaActual());
+                    cstmt2.setString(18, Functions.getHoraActual());
+                    cstmt2.setString(19, filter.strComment.toUpperCase());
+                    cstmt2.setInt(20, filterC.MPF076TRAN);
+                    cstmt2.setString(21, filterC.SPNR.trim());
 
                     cstmt2.execute();
                     cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2260,7 +2273,7 @@ public class BankReconciliationDAO {
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
             if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -2282,12 +2295,15 @@ public class BankReconciliationDAO {
                     cstmt2.setString(10, filterC.TRANC.trim());
                     cstmt2.setString(11, filterC.BANDOC.trim());
                     cstmt2.setString(12, filterC.CERROR.trim());
-                    cstmt2.setString(13, user.getUserInfo().USR);
-                    cstmt2.setString(14, Functions.getFechaActual());
-                    cstmt2.setString(15, Functions.getHoraActual());
-                    cstmt2.setString(16, filter.strComment.toUpperCase());
-                    cstmt2.setInt(17, filterC.MPF077TRAN);
-                    cstmt2.setString(18, filterC.SPNR.trim());
+                    cstmt2.setString(13, filterC.COREP.trim());
+                    cstmt2.setString(14, filterC.CODPRO.trim());
+                    cstmt2.setString(15, filterC.CCUSTPRO.trim());
+                    cstmt2.setString(16, user.getUserInfo().USR);
+                    cstmt2.setString(17, Functions.getFechaActual());
+                    cstmt2.setString(18, Functions.getHoraActual());
+                    cstmt2.setString(19, filter.strComment.toUpperCase());
+                    cstmt2.setInt(20, filterC.MPF077TRAN);
+                    cstmt2.setString(21, filterC.SPNR.trim());
 
                     cstmt2.execute();
                     cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
