@@ -65,7 +65,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             text: 'Mode:', style: 'font-weight: bold; display: inline-block; text-align: right',
                                             width: 80,
                                             padding: '6 0',
-                                            labelAlign: 'right',
+                                            labelAlign: 'right'
                                             //margin: '2 2 2 10',                                         
                                         },
                                         {
@@ -107,11 +107,11 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                                 fields: ['code', 'name'],
                                                 data: [
                                                     ["X", "Normal"],
-                                                    ["A", "All"],
+                                                    ["T", "All"],
                                                     ["J", "Adjustment"],
-                                                    ["J", "Other Adjustments"],
+                                                    ["O", "Other Adjustments"],
                                                     ["D", "Debit"],
-                                                    ["F", "FP"],
+                                                    ["F", "FP"]
                                                 ]
                                             }),
                                             queryMode: 'local',
@@ -143,13 +143,11 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                                     ["  ", "All"],
                                                     ["AX ", "American Express"],
                                                     ["CT ", "Cardnet"],
-                                                    ["CO ", "Banco de Bogota"],
                                                     ["BP ", "Banco Pichincha"],
                                                     ["BG ", "Banco Guayaquil"],
                                                     ["PF ", "Banco Pacificar"],
                                                     ["ET ", "Expressnet"],
                                                     ["DC ", "Banco Diners"],
-                                                    ["CM ", "Credomatic SV"],
                                                     ["SK ", "Scotiabank"],
                                                     ["WP ", "Worldpay"],
                                                     ["WPP", "Worldpay Pazien"],
@@ -158,26 +156,17 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                                     ["IP ", "Izipay"],
                                                     ["CE ", "Cielo"],
                                                     ["DS ", "Discover"],
-                                                    ["CO ", "Bancolombia"],
                                                     ["NB ", "Niubiz"],
-                                                    ["CO ", "Bancos de Bogota"],
                                                     ["FD ", "First Data"],
-                                                    ["CO ", "Banco Davivienda"],
                                                     ["VN ", "Visanet"],
                                                     ["TB ", "Transback"],
-                                                    ["CO ", "Banco Colpatria"],
                                                     ["EV ", "Elavon"],
                                                     ["SD ", "Santander"],
                                                     ["BD ", "Bancard"],
                                                     ["PB ", "Banco Produbanco"],
                                                     ["CM ", "Credomatic"],
-                                                    ["CM ", "Credomatic GT"],
                                                     ["PM ", "Prisma"],
-                                                    ["CO ", "Banco de Occidente"],
-                                                    ["CM ", "Credomatic CR"],
-                                                    ["IG ", "Ingenico"],
-
-                                                    
+                                                    ["IG ", "Ingenico"]
                                                 ]
                                             }),
                                             queryMode: 'local',
@@ -199,7 +188,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             listeners: {
                                                 //change: 'cmbfiltro_clickHandler'
                                             }
-                                        },
+                                        }
                                     ]
 
                                 }

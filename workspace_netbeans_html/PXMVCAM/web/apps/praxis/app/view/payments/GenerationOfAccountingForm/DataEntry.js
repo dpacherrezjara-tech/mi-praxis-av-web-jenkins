@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
     title: 'Processing',
     header: true,
 //    height:920,
-    width: 600,
+    width: 650,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -59,74 +59,140 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     //width: 150,
                                     items: [
                                         {
+                                            xtype: 'label',
+                                            id: prototype.id + '-lbl01',
+                                            name: prototype.id + '-lbl01',
+                                            text: 'Mode:', style: 'font-weight: bold; display: inline-block; text-align: right',
+                                            width: 80,
+                                            padding: '6 0',
+                                            labelAlign: 'right',
+                                            //margin: '2 2 2 10',                                         
+                                        },
+                                        {
                                             xtype: 'radiofield',
                                             id: prototype.id + '-op01',
-                                            name: prototype.id + '-op',
-                                            boxLabel: 'File Interface',
+                                            name: prototype.id + '-mod',
+                                            boxLabel: 'Colombia',
                                             margin: '2 2 2 10',
-                                            checked: true                                            
+                                            checked: true,
+                                            listeners: {
+                                                change: 'cmbModo_clickHandler'
+                                            }
                                         },
                                         {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck01',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'Passage',
-                                            margin: '2 2 2 10',
-                                            checked: true
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck02',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'Cargo',
-                                            margin: '2 2 2 10',
-                                            checked: false
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck03',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'Mail',
-                                            margin: '2 2 2 10',
-                                            checked: false
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck04',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'Adjustment',
-                                            margin: '2 2 2 10',
-                                            checked: false
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck05',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'Debit',
-                                            margin: '2 2 2 10',
-                                            checked: false
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck06',
-                                            name: prototype.id + '-ck',
+                                            xtype: 'radiofield',
+                                            id: prototype.id + '-op02',
+                                            name: prototype.id + '-mod',
                                             boxLabel: 'Exterior',
                                             margin: '2 2 2 10',
-                                            checked: false
+                                            checked: false,
+                                            listeners: {
+                                                change: 'cmbModo_clickHandler'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '5 5 1 1',
+                                    //width: 150,
+                                    items: [
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmb01',
+                                            fieldLabel: 'Additonal', labelAlign: 'right', labelStyle: 'font-weight: bold;',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['code', 'name'],
+                                                data: [
+                                                    ["X", "Normal"],
+                                                    ["T", "All"],
+                                                    ["J", "Adjustment"],
+                                                    ["D", "Debit"],
+                                                    ["F", "FP"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            autoSelect: false,
+                                            forceSelection: true,
+                                            caseSensitive: false,
+                                            editable: true,
+                                            typeAhead: true,
+                                            valueField: 'code', displayField: 'name',
+                                            labelWidth: 80,
+                                            width: 200,
+                                            //height: 26,
+                                            value: "X",
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true,
+                                            padding: '6 0',
+                                            listeners: {
+                                                //change: 'cmbfiltro_clickHandler'
+                                            }
                                         },
                                         {
-                                            xtype: 'checkbox',
-                                            id: prototype.id + '-ck07',
-                                            name: prototype.id + '-ck',
-                                            boxLabel: 'PF',
-                                            margin: '2 2 2 10',
-                                            checked: false
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmb02',
+                                            fieldLabel: 'Processor', labelAlign: 'right', labelStyle: 'font-weight: bold;',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['code', 'name'],
+                                                data: [
+                                                    ["  ", "All"],
+                                                    ["AX ", "American Express"],
+                                                    ["CT ", "Cardnet"],
+                                                    ["BP ", "Banco Pichincha"],
+                                                    ["BG ", "Banco Guayaquil"],
+                                                    ["PF ", "Banco Pacificar"],
+                                                    ["ET ", "Expressnet"],
+                                                    ["DC ", "Banco Diners"],
+                                                    ["SK ", "Scotiabank"],
+                                                    ["WP ", "Worldpay"],
+                                                    ["WPP", "Worldpay Pazien"],
+                                                    ["BM ", "Banco Maduro"],
+                                                    ["LK ", "Linkser"],
+                                                    ["IP ", "Izipay"],
+                                                    ["CE ", "Cielo"],
+                                                    ["DS ", "Discover"],
+                                                    ["NB ", "Niubiz"],
+                                                    ["FD ", "First Data"],
+                                                    ["VN ", "Visanet"],
+                                                    ["TB ", "Transback"],
+                                                    ["EV ", "Elavon"],
+                                                    ["SD ", "Santander"],
+                                                    ["BD ", "Bancard"],
+                                                    ["PB ", "Banco Produbanco"],
+                                                    ["CM ", "Credomatic"],
+                                                    ["PM ", "Prisma"],
+                                                    ["IG ", "Ingenico"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            autoSelect: false,
+                                            forceSelection: true,
+                                            caseSensitive: false,
+                                            editable: true,
+                                            typeAhead: true,
+                                            valueField: 'code', displayField: 'name',
+                                            labelWidth: 80,
+                                            width: 220,
+                                            //height: 26,
+                                            value: "  ",
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true,
+                                            padding: '6 0',
+                                            hidden: true,
+                                            listeners: {
+                                                //change: 'cmbfiltro_clickHandler'
+                                            }
                                         }
                                     ]
 
                                 }
                             ]
-                        },
+                        }, 
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -137,8 +203,8 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     xtype: 'datefield',
                                     id: prototype.id + '-PSTGD1',
                                     fieldLabel: 'Date', labelAlign: 'right', labelStyle: 'font-weight: bold;', 
-                                    labelWidth: 50,
-                                    width: 190, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
+                                    labelWidth: 80,
+                                    width: 200, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
                                     format: 'Ymd',
                                     invalidText: 'Ingrese fecha valida en formato Ymd',
                                     minValue: new Date(1990, 00, 01),
