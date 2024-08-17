@@ -85,4 +85,8 @@ public class MerchantNumberLogic {
     public List<A2354Filter> loadPX305SQP00940(A2354Filter filter) throws Exception {
         return MerchantNumberDAO.loadPX305SQP00940(filter);
     }
+    
+    public String loadPX305SQP00941(List<A2354Filter> lst,int contador,String option) throws SQLException, Exception {
+        return MerchantNumberDAO.loadPX305SQP00941(lst,contador,option);
+    }
 }

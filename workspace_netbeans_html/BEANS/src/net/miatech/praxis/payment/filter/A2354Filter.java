@@ -66,6 +66,7 @@ public String IN_SOCIETY = "";
 public String IN_SCURRENCY = "";
 public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
+public String OPTION = "";
 public String CMERCHAN = "";
 public String BMERCHAN = "";
 public String SCARCOD = "";
@@ -77,6 +78,7 @@ public String SUCMERCH = "";
 
 public String CORE = "";
 public String DREPORT = "";
+public String VACIO = "";
 public String FRANC1 = "";
 public String FRANC2 = "";
 public String FRANC3 = "";
