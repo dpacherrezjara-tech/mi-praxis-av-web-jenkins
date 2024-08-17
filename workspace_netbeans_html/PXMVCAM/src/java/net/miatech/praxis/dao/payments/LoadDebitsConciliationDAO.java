@@ -186,6 +186,7 @@ public class LoadDebitsConciliationDAO {
                 }else{
                     item.SEQ = "";
                 }
+                item.SEQ = "";
                 try {
                     cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
                     cstmt2.setString(2, item.IN_BANDOC.trim());
