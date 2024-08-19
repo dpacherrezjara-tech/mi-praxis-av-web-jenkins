@@ -194,7 +194,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.DataEntry', {
                                             fieldStyle: 'text-align: center;',
                                             enforceMaxLength: true,
                                             maxLength: 5,
-                                            maskRe: /[0-9]/,
+                                            maskRe: /[0-9A-Za-z]/,
                                             padding: '3 0',
                                             width: 60
                                         },
