@@ -28,18 +28,22 @@ public class ProcessLogController {
     
     @RequestMapping(value = "loadFilters")
     public ResponseEntity<?> loadFilters() throws Exception{
+        System.out.println("***** ProcessLog - loadFilters *****");
         SPMC001Filter filter = logic.loadSPMC001Filter();
         return ResponseUtils.ok(filter);
     }
     
     @RequestMapping(value = "search")
     public ResponseEntity<?> search(@ModelAttribute SPPL001Filter params) throws Exception{
+        System.out.println("***** ProcessLog - search *****");
         SPPL001Filter filter = logic.loadSPPL001Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
     
     @RequestMapping(value = "process",method = RequestMethod.POST)
     public ResponseEntity<?> process(@RequestBody MPS023Filter params) throws Exception{
+        System.out.println("***** ProcessLog - process *****");
         logic.loadMPS023Filter(params);
         return ResponseUtils.create();
     }

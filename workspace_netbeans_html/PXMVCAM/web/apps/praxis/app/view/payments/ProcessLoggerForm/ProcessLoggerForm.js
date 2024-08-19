@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.ProcessLoggerForm', {
         'Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController',
         'Ext.Praxis.view.payments.ProcessLoggerForm.Options',
         'Ext.Praxis.view.payments.ProcessLoggerForm.Filters',
-        //'Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid'
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid'
     ],
     controller: 'ProcessLoggerController',
     layout: {

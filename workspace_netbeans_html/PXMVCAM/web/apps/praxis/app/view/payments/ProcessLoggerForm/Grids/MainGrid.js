@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: prototype.width,
+    width: 1000,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
@@ -31,25 +31,15 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
         },
         items: [
             //<editor-fold defaultstate="collapsed" desc="Detail Cols">
-            {text: 'Key 1', dataIndex: 'a4451key1', width: 50},
-            {text: 'Key 2', dataIndex: 'a4451key2', width: 110},
-            {text: 'Key 3', dataIndex: 'a4451key3', width: 140},
-            {text: 'Description 1', dataIndex: 'a4451desc1', width: 300},
-            {text: 'Description 2', dataIndex: 'a4451desc2', width: 200},
-            {text: 'Cant 1', dataIndex: 'a4451cant1', width: 80},
-            {text: 'Cant 2', dataIndex: 'a4451cant2', width: 80},
-            {text: 'Fecha 1', dataIndex: 'a4451fech1', width: 80},
-            {text: 'Fecha 2', dataIndex: 'a4451fech2', width: 80},
-            {text: 'Comment', dataIndex: 'a4451comen', flex: 1},
-            {text: 'Status', dataIndex: 'a4451sts', width: 80,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    const opts = {
-                        '1':'Enabled',
-                        '0':'Disabled'
-                    };
-                    return  opts[value];
-                }
-            }
+            {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
+            {text: 'Client<br>Name', dataIndex: 'AIRLINE_NAME', width: 120},
+            {text: 'Processing<br>Date', dataIndex: 'FPRDA', width: 80},
+            {text: 'Proccessor', dataIndex: 'PROC_NAME', width: 120},
+            {text: 'Process<br>Init', dataIndex: 'FINI', width: 80},
+            {text: 'Process<br>End', dataIndex: 'FFIN', width: 80},
+            {text: 'Seq', dataIndex: 'SEQ', width: 50},
+            {text: 'Log', dataIndex: 'VRESULT', flex: 1},
+            {text: 'User', dataIndex: 'USCR', width: 90}
             //</editor-fold>
         ]
     },

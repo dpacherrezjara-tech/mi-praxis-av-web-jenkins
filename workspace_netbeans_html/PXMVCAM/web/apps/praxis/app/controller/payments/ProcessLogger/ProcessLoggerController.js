@@ -2,19 +2,34 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
     extend: 'Ext.app.ViewController',
     alias: 'controller.ProcessLoggerController',
     url: CONTEXTPATH + '/ProcessLog',
+    procesadores: [],
     init: function (view) {
     },
     afterRender: async function () {
-        
+        this.loadFilters();
     },
-    loadCatalog: async function () {
+    loadFilters: async function () {
+        const me = this;
+        const filters = Ext.getCmp(prototype.id + '-contentFilter');
+        filters.mask('Loading...');
+        const res = await fetch(`${me.url}/loadFilters`);
+        if (res.ok) {
+            const data = await res.json();
+            const cmbProcesadores = Ext.getCmp(prototype.id + '-cmbCODPRO');
+            me.procesadores = data.procesadores;
+            me.setComboStore({cmp: cmbProcesadores, data: me.procesadores,
+                valueField: 'CODETB', displayField: 'DESCRE1', value: ''});
+            console.log(data);
+        }
+        filters.unmask();
+    },
+    loadGrid: async function () {
         const me = this;
         let params = me.formatParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.MiscellaneousCatalogForm.Grids.MainGrid', {
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
             id: prototype.id + '-MainGrid-1',
-            url: me.url,
             searchParams: params
         });
         mainPanel.add(panelDetail);
@@ -26,7 +41,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
     },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
-        this.loadCatalog();
+        this.loadGrid();
     },
     onAddRecord: function () {
         const dataEntry = Ext.create('Ext.Praxis.view.payments.MiscellaneousCatalogForm.DataEntrys.MaintenanceDataEntry', {
@@ -43,17 +58,24 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
             filters.show();
         }
     },
-    onClearOptionsBtn:function(){
+    onClearOptionsBtn: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         formFilters.reset();
     },
-    onEnterKeyPress:function(field, e){
+    onEnterKeyPress: function (field, e) {
         if (e.getKey() === e.ENTER) {
             this.onClickSearchBtn();
         }
     },
+    onClickProcessBtn: function () {
+        const me = this;
+        const procWin = Ext.create('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEntry', {
+            id: prototype.id + '-ProcessDataEntry-1',
+            procesadores: me.procesadores
+        });
+        procWin.show();
+    },
     //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);

@@ -49,75 +49,66 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                             },
                             items: [
                                 {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'KEY 1',
-                                    labelWidth: 50,
-                                    width: 120,
-                                    name: 'IN_A4451KEY1',
-                                    maxLength: 2, // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress'
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'KEY 2',
-                                    labelWidth: 50,
-                                    width: 180,
-                                    name: 'IN_A4451KEY2',
-                                    maxLength: 10, // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress'
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'KEY 3',
-                                    labelWidth: 50,
-                                    width: 200,
-                                    name: 'IN_A4451KEY3',
-                                    maxLength: 15, // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress'
-                                    }
-                                },
-                                
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Comment',
-                                    labelWidth: 80,
-                                    width: 300,
-                                    name: 'IN_A4451COMEN',
-                                    maxLength: 10, // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress'
-                                    }
-                                },
-                                {
                                     xtype: 'combobox',
-                                    fieldLabel: 'Status',
-                                    name: 'IN_A4451STS',
+                                    fieldLabel: 'Client',
+                                    name: 'IN_CCUST',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ["", "All"],
-                                            ["1", "Enabled"],
-                                            ["0", "Disabled"]
+                                            ['134', 'AV - AVIANCA'],
+                                            ['202', 'TA - TACA'],
+                                            ['547', '2K - AEROGAL'],
+                                            ['133', 'LR - LATSA']
                                         ]
                                     }),
-                                    labelWidth: 60,
-                                    width: 160,
+                                    labelWidth: 80,
+                                    width: 210,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '1'
+                                    value: '134'
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    name: 'IN_PRDAF',
+                                    fieldLabel: 'From',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 50,
+                                    width: 150,
+                                    value: new Date(anioActual, mesActual, 1)
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    name: 'IN_PRDAT',
+                                    fieldLabel: 'From',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 50,
+                                    width: 150,
+                                    value: new Date(anioActual, mesActual, 31)
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbCODPRO',
+                                    name: 'IN_CODPRO',
+                                    labelWidth: 70,
+                                    width: 250,
+                                    valueField: 'CODETB',
+                                    displayField: 'DESCRE1',
+                                    fieldLabel: 'Processor',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    allowBlank: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    labelAlign: 'right',
+                                    typeAhead: true,
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: ''
                                 }
-                                
                             ]
                         }
 

@@ -34,11 +34,11 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Options', {
                         },
                         {
                             xtype: 'button',
-                            id: prototype.id + '-btnAdd',
-                            iconCls: 'prx-icon-add',
-                            tooltip: 'New',
+                            id: prototype.id + '-btnProcess',
+                            iconCls: 'prx-icon-image-process',
+                            tooltip: 'Process',
                             listeners: {
-                                click: 'onAddRecord'
+                                click: 'onClickProcessBtn'
                             }
                         },
                         {

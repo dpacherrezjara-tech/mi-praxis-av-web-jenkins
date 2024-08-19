@@ -1,48 +1,41 @@
-Ext.define('Ext.Praxis.controller.payments.ProcessLogger.MainGridController', {
+Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.MainGridController',
+    alias: 'controller.ProcessDataEntryController',
     url: CONTEXTPATH + '/ProcessLog',
     init: function (view) {
-    },
-    afterRender: async function (obj, e) {
         const me = this;
-        const view = me.view;
-        this.getData(view);
+        const cmbProcesadores = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
+        me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
+            valueField: 'CODETB', displayField: 'DESCRE1', value: ''});
     },
-    getData: function (view) {
+    afterRender: async function () {
+    },
+    onProcessClick: async function () {
         const me = this;
-        let store = Ext.create('Ext.data.Store', {
-            loadMask: true,
-            pageSize: 20,
-            proxy: {
-                type: 'ajax',
-                enablePaging: true,
-                url: `${me.url}/search`,
-                extraParams: view.searchParams,
-                timeout: 600000,
-                reader: {
-                    type: 'json',
-                    rootProperty: 'response',
-                    totalProperty: 'total'
-                }
+        let params = Ext.getCmp(prototype.idDE + '-formFilters')
+                .getForm()
+                .getValues();
+        if(params.VP_CODPRO === ''){
+            global.Msg({msg:'Select Processor before Run'});
+            return;
+        }
+        console.log('Parameters: ',params);
+        const res = await fetch(`${me.url}/process`, {
+            headers: {
+                'Content-Type': 'application/json'
             },
-            autoLoad: true,
-            listeners: {
-                load: function (store, records, successful, operation) {
-                    if (!successful) {
-                        global.Msg({msg: 'Data not Found'});
-                    } else {
-                        console.log(records);
-                        if (records.length === 0) {
-                            global.Msg({msg: 'Data not Found'});
-                        }
-                    }
-                }
-            }
+            body: JSON.stringify(params)
         });
-        view.setStore(store);
+        if(res.ok){
+            global.Msg({msg:'Process Running...'});
+        }else{
+            global.Msg({msg:'Process Failed...'});
+        }
+        me.view.close();
     },
-
+    onClose: function () {
+        this.view.close();
+    },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);
