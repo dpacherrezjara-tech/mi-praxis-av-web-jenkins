@@ -27,6 +27,9 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
     onProcessClick: function () {
         this.winDataEntry('I', undefined);
     },
+    onRevertClick: function () {
+        this.winDataEntry('R', undefined);
+    },
     onDownloadClick: function (grid, rowIndex) {
 
         var rec = grid.getStore().getAt(rowIndex);

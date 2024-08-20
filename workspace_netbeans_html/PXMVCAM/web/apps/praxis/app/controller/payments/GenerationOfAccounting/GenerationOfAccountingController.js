@@ -27,6 +27,9 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
     onProcessClick: function () {
         this.winDataEntry('I', undefined);
     },
+    onRevertClick: function () {
+        this.winDataEntry('R', undefined);
+    },
     onDownloadClick: function (grid, rowIndex) {
 
         var rec = grid.getStore().getAt(rowIndex);
@@ -43,7 +46,10 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
         var bean = {};
         bean.IN_TIPO = rec.A4556TFILE;
         bean.IN_LEXT = in_LEXT;
-        bean.FNAME = rec.A4556TFILE_0;
+        if (rec.A4556CPROC.trim() !== '')
+            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim();
+        else
+            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',

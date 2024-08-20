@@ -101,6 +101,32 @@ public class AccountingController extends BaseController {
         return new Gson().toJson(map);
 
     }
+    
+    @RequestMapping(value = "reversarContabilidad")
+    public @ResponseBody
+    String reversarContabilidad(ModelMap map, HttpServletRequest request) {
+
+        SQP05343Filter filter = new SQP05343Filter();
+        SQP05343Filter objRtn = new SQP05343Filter();
+
+        try {
+            logic = new AccountingLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            objRtn = logic.setSQP05393Filter(filter);
+            map.put("objRtn", objRtn);
+            map.put("success", true);
+
+        } catch (Exception ex) {
+            objRtn.dbException.SQLCODE = "0";
+            objRtn.dbException.MESSAGE = ex.getMessage();
+            map.put("objRtn", objRtn);
+            map.put("success", true);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+
+    }
 
     @RequestMapping(value = "/search")
     public @ResponseBody
