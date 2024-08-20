@@ -54,8 +54,8 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     llenarData: function (beanTemp) {
         
-        beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-        beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+        beanTemp.VP_FECHA_INI = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
+        beanTemp.VP_FECHA_FIN = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
         beanTemp.VP_TIPO = "";
         
         // Modo
