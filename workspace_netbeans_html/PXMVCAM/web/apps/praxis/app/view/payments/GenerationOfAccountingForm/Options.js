@@ -110,7 +110,10 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
-                            tooltip: 'Clear Options'
+                            tooltip: 'Clear Options',
+                            listeners: {
+                                click: 'onRevertClick'
+                            }
                         },
                         {
                             xtype: 'button',

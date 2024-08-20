@@ -13,6 +13,7 @@ public class A4556 {
 
     public String A4556CCUST = "";
     public String A4556PSTGD = "";
+    public String A4556CPROC = "";
     public String A4556FFILE = "";
     public String A4556TFILE = "";
     public String A4556TREGI = "";
