@@ -189,48 +189,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         }
     },
-//    onLoadClick: function () {
-//        var msjPregunta = 'Sure to load file?';
-//
-//        Ext.MessageBox.show({
-//            title: 'Load Merchants',
-//            msg: msjPregunta,
-//            buttons: Ext.MessageBox.OKCANCEL,
-//            icon: Ext.MessageBox.WARNING,
-//            fn: function (btn) {
-//                if (btn === 'ok') {
-//                    me.onFileLoadAsk();
-//                }
-//            }
-//        });
-//    },
-//
-//    onFileLoadAsk: function () {
-//        var value = '';
-//        var msjPregunta = 'You want to INSERT or UPDATE?';
-//
-//        // Asegúrate de que no haya un MessageBox abierto previamente
-//        Ext.MessageBox.hide();
-//
-//        Ext.MessageBox.show({
-//            title: 'Load Merchants',
-//            msg: msjPregunta,
-//            buttons: [
-//                {text: 'INSERT', itemId: 'insert'},
-//                {text: 'UPDATE', itemId: 'update'}
-//            ],
-//            icon: Ext.MessageBox.QUESTION, // Asegúrate de usar el icono correcto
-//            fn: function (btnId) {
-//                if (btnId === 'insert') {
-//                    value = 'I';
-//                } else if (btnId === 'update') {
-//                    value = 'U';
-//                }
-//                me.onFileLoad(value);
-//            }
-//        });
-//    },
-
     onLoadClick: function () {
         var msjPregunta = 'Sure to load file?';
 
