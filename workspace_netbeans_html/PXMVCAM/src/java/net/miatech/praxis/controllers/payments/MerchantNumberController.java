@@ -681,7 +681,6 @@ public class MerchantNumberController extends BaseController {
             Iterator<Row> rowIterator = sheet.iterator();
 
             try {
-                A2354Filter obj = new A2354Filter();
                 while (rowIterator.hasNext()) {
                     i++;
                     Row row = rowIterator.next();
@@ -689,7 +688,7 @@ public class MerchantNumberController extends BaseController {
                     if (i > 1) {
                         cont++;
                         if (row.getCell(0) != null) {
-                            
+                            A2354Filter obj = new A2354Filter();
                             obj.CMERCHAN = dataFormatter.formatCellValue(row.getCell(0));
                             obj.SUCMERCH = dataFormatter.formatCellValue(row.getCell(1));
                             obj.DEUSAP = dataFormatter.formatCellValue(row.getCell(2));
