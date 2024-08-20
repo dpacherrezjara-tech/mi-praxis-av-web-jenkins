@@ -60,8 +60,8 @@ public class AccountingDAO {
             cstmt.registerOutParameter(6, Types.VARCHAR);
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             //cstmt.setString(1, "134");
-            cstmt.setString(2, filter.VP_PSTGD1);
-            cstmt.setString(3, filter.VP_PSTGD2);
+            cstmt.setString(2, filter.VP_FECHA_INI);
+            cstmt.setString(3, filter.VP_FECHA_FIN);
             cstmt.setString(4, filter.VP_TIPO);
             cstmt.execute();
             filter.dbException.SQLCODE = cstmt.getString(5);
@@ -100,6 +100,38 @@ public class AccountingDAO {
             cstmt.execute();
             filter.dbException.SQLCODE = cstmt.getString(7);
             filter.dbException.MESSAGE = cstmt.getString(8);
+
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return filter;
+    }
+    
+    public SQP05343Filter setSQP05393Filter(SQP05343Filter filter) throws SQLException, Exception {
+        CallableStatement cstmt = null;
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05393(?,?,?,?,?,?)}";
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+            cstmt.registerOutParameter(6, Types.VARCHAR);
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            //cstmt.setString(1, "134");
+            cstmt.setString(2, filter.VP_FECHA_INI);
+            cstmt.setString(3, filter.VP_FECHA_FIN);
+            cstmt.setString(4, filter.VP_TIPO);
+            cstmt.execute();
+            filter.dbException.SQLCODE = cstmt.getString(5);
+            filter.dbException.MESSAGE = cstmt.getString(6);
 
         } finally {
             if (cstmt != null) {
@@ -161,15 +193,16 @@ public class AccountingDAO {
                 bean.RN = rst.getInt("RN");
                 bean.A4556CCUST = rst.getString("A4556CCUST").trim();
                 bean.A4556PSTGD = rst.getString("A4556PSTGD").trim();
+                bean.A4556CPROC = rst.getString("A4556CPROC").trim();
                 bean.A4556FFILE = rst.getString("A4556FFILE").trim();
                 bean.A4556TFILE = rst.getString("A4556TFILE").trim();
                 bean.A4556TFILE_0 = rst.getString("A4556TFILE_0").trim();                
                 bean.A4556TREGI = rst.getString("A4556TREGI").trim();
                 bean.A4556NARCH = rst.getString("A4556NARCH").trim();
                 bean.A4556ESTAD = rst.getString("A4556ESTAD").trim();
-                bean.A4556USR = rst.getString("A4556USR").trim();
-                bean.A4556FECR = rst.getString("A4556FECR").trim();
-                bean.A4556HORA = rst.getString("A4556HORA").trim();
+                bean.A4556USR   = rst.getString("A4556USR").trim();
+                bean.A4556FECR  = rst.getString("A4556FECR").trim();
+                bean.A4556HORA  = rst.getString("A4556HORA").trim();
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;
@@ -303,6 +336,7 @@ public class AccountingDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            //cstmt.setString(1, "134");
             cstmt.setString(2, filter.IN_TIPO);
             cstmt.setInt(3, filter.IN_LEXT);
             cstmt.execute();

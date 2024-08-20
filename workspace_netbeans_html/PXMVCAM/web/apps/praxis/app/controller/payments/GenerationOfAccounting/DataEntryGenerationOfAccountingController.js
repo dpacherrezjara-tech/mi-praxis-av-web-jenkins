@@ -25,6 +25,10 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                 panel.add(radioField);
             }
         }
+        
+        if (this.view.params.action === 'R') {
+            Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
+        }
     },
     //</editor-fold>
 
@@ -55,11 +59,11 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         beanTemp.VP_TIPO = "";
         
         // Modo
-        var vl_mode = "X";
+        var vl_mode = " ";
         // Adicional
-        var vl_additional = "X";
+        var vl_additional = " ";
         // Procesador
-        var vl_processor = "XX";
+        var vl_processor = "   ";
         
         var vl_op01 = Ext.getCmp(prototype.id + '-op01').getValue();
         var vl_op02 = Ext.getCmp(prototype.id + '-op02').getValue();
@@ -75,38 +79,6 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
           if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
           
           beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
-        
-//        beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-//        beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
-//        beanTemp.VP_TIPO = "";
-//        
-//        var vl_pasaje = "X";
-//        var vl_carga = "X";
-//        var vl_correo = "X";
-//        var vl_ajuste = "X";
-//        var vl_debito = "X";
-//        var vl_exterior = "X";
-//        var vl_pf = "X";
-//        
-//        var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
-//        var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
-//        var vl_ck03 = Ext.getCmp(prototype.id + '-ck03').getValue();
-//        var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
-//        var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
-//        var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
-//        var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
-//                
-//        if(vl_ck01) vl_pasaje = 'P';
-//        if(vl_ck02) vl_carga = 'A';
-//        if(vl_ck03) vl_correo = 'C'; 
-//        if(vl_ck04) vl_ajuste = 'J';
-//        if(vl_ck05) vl_debito = 'D'; 
-//        if(vl_ck06) vl_exterior = 'E';
-//        if(vl_ck07) vl_pf = 'F'; 
-//        
-//        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior + vl_pf; 
-       
-        
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {
@@ -123,7 +95,10 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
                     if (msjResult === '') {
-                        this.procesarArchivos(beanTemp);
+                        if (this.view.params.action === 'I')
+                            this.procesarArchivos(beanTemp);
+                        if (this.view.params.action === 'R')
+                            this.reversarContabilidad(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -174,7 +149,39 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         });
     },
     //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Revertir archivos">
+    reversarContabilidad: function (beanTemp) {
+        var beanString = JSON.stringify(beanTemp);
+        Ext.Ajax.request({
+            url: prototype.url + '/reversarContabilidad',
+            method: 'POST',
+            timeout: 60000000,
+            params: {
+                beanString: beanString
+                        // option: beanTemp.option
+            },
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
 
+                var objRtn = res.objRtn;
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...', '');
+                global.Msg({
+                    msg: objRtn.dbException.MESSAGE,
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () {
+                        //culmino PROCESO                           
+                        //Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});   
+                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        elem.innerHTML = objRtn.dbException.MESSAGE;
+                        //me.onCancelClick();                           
+                    }
+                });
+            }
+        });
+    },
+    //</editor-fold>
     validacionInsert: function (beanTemp) {
         var msjResult = '';
         if (this.getValue("PSTGD1") === '' ||
@@ -199,11 +206,14 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     getDownloadFileTxt01: function (rec, in_NARCH) {
 
-        var str_msg = 'Download File ' + rec.A4556TFILE_0 + ' ' + in_NARCH + '?';
+        var str_msg = 'Download File ' + rec.A4556TFILE_0 + ' ' + rec.A4556CPROC.trim() + ' ' + in_NARCH + '?';
         var bean = {};
         bean.IN_TIPO = rec.A4556TFILE;
         bean.IN_LEXT = in_NARCH;
-        bean.FNAME = '134' + rec.A4556TFILE_0 + in_NARCH;
+        if (rec.A4556CPROC.trim() !== '')
+            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim() + '_Parte' + in_NARCH;
+        else
+            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + in_NARCH;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',

@@ -139,7 +139,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             store: new Ext.data.SimpleStore({
                                                 fields: ['code', 'name'],
                                                 data: [
-                                                    ["  ", "All"],
+                                                    ["   ", "All"],
                                                     ["AX ", "American Express"],
                                                     ["CT ", "Cardnet"],
                                                     ["BP ", "Banco Pichincha"],

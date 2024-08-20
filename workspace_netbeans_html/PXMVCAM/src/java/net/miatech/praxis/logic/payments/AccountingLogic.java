@@ -42,6 +42,10 @@ public class AccountingLogic {
     public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
         return accountingDAO.setSQP05343Filter(filter);
     }
+    
+    public SQP05343Filter setSQP05393Filter(SQP05343Filter filter) throws SQLException, Exception {
+        return accountingDAO.setSQP05393Filter(filter);
+    }
 
     public List<SQP05252Filter> getSQP05252Filter(SQP05252Filter filter) throws SQLException, Exception {
         return accountingDAO.getSQP05252Filter(filter);

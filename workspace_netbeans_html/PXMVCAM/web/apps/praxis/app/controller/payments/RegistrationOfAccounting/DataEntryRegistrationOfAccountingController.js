@@ -8,6 +8,10 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
     },
     afterRender: function () {
 //        console.log(this.view.params.action);
+//        
+        if (this.view.params.action === 'R') {
+            Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
+        }
         // Solo cuando sea Form: Download
         if (this.view.params.action === 'D') {
             var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
@@ -110,7 +114,10 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
                     if (msjResult === '') {
-                        this.cargarArchivos(beanTemp);
+                        if (this.view.params.action === 'I')
+                            this.cargarArchivos(beanTemp);
+                        if (this.view.params.action === 'R')
+                            this.reversarContabilidad(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -161,7 +168,39 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         });
     },
     //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Revertir archivos">
+    reversarContabilidad: function (beanTemp) {
+        var beanString = JSON.stringify(beanTemp);
+        Ext.Ajax.request({
+            url: prototype.url + '/reversarContabilidad',
+            method: 'POST',
+            timeout: 60000000,
+            params: {
+                beanString: beanString
+                        // option: beanTemp.option
+            },
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
 
+                var objRtn = res.objRtn;
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...', '');
+                global.Msg({
+                    msg: objRtn.dbException.MESSAGE,
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () {
+                        //culmino PROCESO                           
+                        //Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});   
+                        var elem = document.getElementById('RegistrationOfAccountingFormMsg');
+                        elem.innerHTML = objRtn.dbException.MESSAGE;
+                        //me.onCancelClick();                           
+                    }
+                });
+            }
+        });
+    },
+    //</editor-fold>
     validacionInsert: function (beanTemp) {
         var msjResult = '';
         if (this.getValue("PSTGD1") === '' ||
