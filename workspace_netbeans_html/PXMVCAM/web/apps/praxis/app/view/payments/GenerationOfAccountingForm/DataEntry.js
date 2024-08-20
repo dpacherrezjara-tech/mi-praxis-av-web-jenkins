@@ -179,7 +179,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             labelWidth: 80,
                                             width: 220,
                                             //height: 26,
-                                            value: "  ",
+                                            value: "   ",
                                             listConfig: {maxHeight: 111},
                                             enableKeyEvents: true,
                                             padding: '6 0',
