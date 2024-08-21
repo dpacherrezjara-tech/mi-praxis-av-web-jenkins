@@ -61,10 +61,11 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Info', {
                                             {text: 'Nbr.', dataIndex: 'RN', width: 50},
                                             {text: 'Id', dataIndex: 'A4545IDCON', width: 80},
                                             {text: 'Procesing <br>Date', dataIndex: 'A4545PSTGD', width: 80},
-                                            {text: 'Generation <br>Date', dataIndex: 'A4545PSTGD', width: 80},
-                                            {text: 'Mode', dataIndex: 'A4545MODO_0', width: 180},
+                                            {text: 'Generation <br>Date', dataIndex: 'A4545DCONT', width: 80},
+                                            {text: 'Mode', dataIndex: 'A4545MODO_0', width: 120},
+                                            {text: 'Processor', dataIndex: 'A4545COREP', width: 90},
                                             {text: 'Reference', dataIndex: 'A4545REFD', width: 180},
-                                            {text: 'Qty.<br>Record', dataIndex: 'A4545ITEMS', width: 120}                                    
+                                            {text: 'Qty.<br>Record', dataIndex: 'A4545ITEMS', width: 90}                                    
                                         ]
                                     }
                                 }
