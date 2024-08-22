@@ -108,8 +108,9 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                                 data: [
                                                     ["X", "Normal"],
                                                     ["T", "All"],
-                                                    ["J", "Adjustment"],
-                                                    ["O", "Other Adjustments"],
+                                                    ["1", "Adjustment"],
+                                                    ["2", "Adjustments GenCon"],
+                                                    ["3", "Adjustments BPO"],
                                                     ["D", "Debit"],
                                                     ["F", "FP"]
                                                 ]
@@ -123,7 +124,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             typeAhead: true,
                                             valueField: 'code', displayField: 'name',
                                             labelWidth: 80,
-                                            width: 200,
+                                            width: 220,
                                             //height: 26,
                                             value: "X",
                                             listConfig: {maxHeight: 111},
@@ -150,6 +151,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                                     ["DC ", "Banco Diners"],
                                                     ["SK ", "Scotiabank"],
                                                     ["WP ", "Worldpay"],
+                                                    ["WPI", "Worldpay I"],
                                                     ["WPP", "Worldpay Pazien"],
                                                     ["BM ", "Banco Maduro"],
                                                     ["LK ", "Linkser"],
@@ -205,7 +207,8 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                     id: prototype.id + '-PSTGD1',
                                     fieldLabel: 'Start Date', labelAlign: 'right', labelStyle: 'font-weight: bold;', 
                                     labelWidth: 80,
-                                    width: 200, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
+                                    width: 210, 
+                                    fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
                                     format: 'Ymd',
                                     invalidText: 'Ingrese fecha valida en formato Ymd',
                                     minValue: new Date(1990, 00, 01),
