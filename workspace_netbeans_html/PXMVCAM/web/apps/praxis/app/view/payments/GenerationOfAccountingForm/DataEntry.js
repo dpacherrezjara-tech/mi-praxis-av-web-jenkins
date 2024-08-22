@@ -149,6 +149,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                                     ["DC ", "Banco Diners"],
                                                     ["SK ", "Scotiabank"],
                                                     ["WP ", "Worldpay"],
+                                                    ["WPI", "Worldpay I"],
                                                     ["WPP", "Worldpay Pazien"],
                                                     ["BM ", "Banco Maduro"],
                                                     ["LK ", "Linkser"],

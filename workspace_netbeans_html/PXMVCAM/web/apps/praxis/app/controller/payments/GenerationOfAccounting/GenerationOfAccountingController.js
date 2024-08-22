@@ -45,6 +45,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
         var str_msg = 'Download File?';
         var bean = {};
         bean.IN_TIPO = rec.A4556TFILE;
+        bean.IN_PROCESA = rec.A4556CPROC;
         bean.IN_LEXT = in_LEXT;
         if (rec.A4556CPROC.trim() !== '')
             bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim();

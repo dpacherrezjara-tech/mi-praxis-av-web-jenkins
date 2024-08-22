@@ -12,23 +12,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         if (this.view.params.action === 'R') {
             Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
         }
-        // Solo cuando sea Form: Download
-        if (this.view.params.action === 'D') {
-            var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
-            panel.removeAll();
-            for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
-//                console.log('i>>' + i);
-                var radioField = Ext.create({
-                    xtype: 'radiofield',
-                    id: prototype.id01 + '-op' + i,
-                    name: prototype.id01 + '-op',
-                    boxLabel: this.bean.A4556TFILE_0 + ' ' + i,
-                    margin: '2 2 2 10',
-                    checked: i === 1 ? true : false
-                });                
-                panel.add(radioField);
-            }
-        }
+
         // Asignar fecha de inicio = Primer dia del semestre
         var currentDate = new Date();
         var currentYear = currentDate.getFullYear();
@@ -210,42 +194,6 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
             msjResult = "You must enter the required field.";
         }
         return msjResult;
-    },
-    onDownloadFilesClick: function () {
-//        console.log('onDownloadFilesClick');
-        var NARCH = 0;
-        for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
-            if (Ext.getCmp(prototype.id01 + '-op' + i).getValue()) {
-                console.log(Ext.getCmp(prototype.id01 + '-op' + i).getValue());
-                NARCH = i;
-                break;
-            }
-        }
-        //console.log(NARCH);
-        this.getDownloadFileTxt01(this.bean, NARCH);
-
-    },
-    getDownloadFileTxt01: function (rec, in_NARCH) {
-
-        var str_msg = 'Download File ' + rec.A4556TFILE_0 + ' ' + in_NARCH + '?';
-        var bean = {};
-        bean.IN_TIPO = rec.A4556TFILE;
-        bean.IN_LEXT = in_NARCH;
-        bean.FNAME = rec.A4556TFILE_0 + in_NARCH;
-
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: str_msg,
-            buttons: Ext.MessageBox.OKCANCEL,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function (btn) {
-                if (btn === 'ok') {
-                    global.getFile(prototype.url + '/getDownloadFileTxt?beanString=' + encodeURI(JSON.stringify(bean)));
-                }
-            }
-        });
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {

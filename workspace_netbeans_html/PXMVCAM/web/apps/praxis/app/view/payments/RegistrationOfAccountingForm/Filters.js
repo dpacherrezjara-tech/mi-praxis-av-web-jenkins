@@ -31,6 +31,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Filters', {
                     store: new Ext.data.SimpleStore({
                         fields: ['code', 'name'],
                         data: [
+                            [" ", "Todos"],
                             ["P", "Pasaje"],
                             ["A", "Carga"],
                             ["C", "Correo"],
@@ -50,7 +51,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Filters', {
                     valueField: 'code', displayField: 'name',
                     width: 240,
                     //height: 26,
-                    value: "P",
+                    value: " ",
                     listConfig: {maxHeight: 111},
                     enableKeyEvents: true,
                     padding: '6 0',

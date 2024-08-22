@@ -13,9 +13,11 @@ public class A4545 {
 
     public String A4545CCUST = "";
     public String A4545PSTGD = "";
+    public String A4545DCONT = "";
     public String A4545IDCON = "";
     public String A4545DOCBA = "";
     public String A4545MODO = "";
+    public String A4545COREP = "";
     public String A4545REFD = "";
     
 }
