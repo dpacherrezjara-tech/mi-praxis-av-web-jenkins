@@ -40,28 +40,6 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
             this.winDownloadFiles('D', rec.data);
         }     
     },
-    getDownloadFileTxt: function (rec, in_LEXT) {
-
-        var str_msg = 'Download File?';
-        var bean = {};
-        bean.IN_TIPO = rec.A4556TFILE;
-        bean.IN_LEXT = in_LEXT;
-        bean.FNAME = rec.A4556TFILE_0;
-
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: str_msg,
-            buttons: Ext.MessageBox.OKCANCEL,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function (btn) {
-                if (btn === 'ok') {
-                    global.getFile(prototype.url + '/getDownloadFileTxt?beanString=' + encodeURI(JSON.stringify(bean)));
-                }
-            }
-        });
-    },
     setFormatParameter: function () {
         var me = this;
         me.bean = {};

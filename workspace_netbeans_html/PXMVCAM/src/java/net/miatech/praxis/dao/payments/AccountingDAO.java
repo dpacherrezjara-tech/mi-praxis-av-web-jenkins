@@ -283,10 +283,10 @@ public class AccountingDAO {
                 bean.A4545IDCON = rst.getString("A4545IDCON").trim();
                 bean.A4545DOCBA = rst.getString("A4545DOCBA").trim();
                 bean.A4545PSTGD = rst.getString("A4545PSTGD").trim();
-                //bean.A4556FFILE = rst.getString("A4556FFILE").trim();
-                //bean.A4556TFILE = rst.getString("A4556TFILE").trim();
+                bean.A4545DCONT = rst.getString("A4545DCONT").trim();
                 bean.A4545MODO_0 = rst.getString("A4545MODO_0").trim();
-                bean.A4545REFD = rst.getString("A4545REFD").trim();
+                bean.A4545COREP = rst.getString("A4545COREP").trim();
+                bean.A4545REFD  = rst.getString("A4545REFD").trim();
                 bean.A4545ITEMS = rst.getString("A4545ITEMS").trim();   
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
@@ -329,7 +329,7 @@ public class AccountingDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -338,7 +338,8 @@ public class AccountingDAO {
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             //cstmt.setString(1, "134");
             cstmt.setString(2, filter.IN_TIPO);
-            cstmt.setInt(3, filter.IN_LEXT);
+            cstmt.setString(3, filter.IN_PROCESA);
+            cstmt.setInt(4, filter.IN_LEXT);
             cstmt.execute();
             rst = cstmt.getResultSet();
             while (rst.next()) {
