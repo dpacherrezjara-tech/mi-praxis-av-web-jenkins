@@ -126,8 +126,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-MOD').hide();
             Ext.getCmp(prototype.id + '-btnToggleSwitch').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1137);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1125);
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1237);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1225);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -136,7 +136,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
 
             this.setValue('de-txtCOREP', this.beanResult.COREP);
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") && this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") && !this.beanResult.COREP.includes("ET")) {
+            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") &&
+                    !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
+                    this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
+                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -146,7 +149,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
-                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1081);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1220);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
                 this.onSearchCompleteHeader();
             } else {
@@ -170,7 +173,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
 
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") && this.beanResult.SCOUNTRY.includes("UY")) && !this.beanResult.COREP.includes("NB") && !this.beanResult.COREP.includes("ET")) {
+            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") &&
+                    !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
+                    this.beanResult.SCOUNTRY.includes("UY")) && !this.beanResult.COREP.includes("NB") &&
+                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
@@ -181,7 +187,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-gridColumnDeleteHead').show();
-                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1127);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1227);
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
                 this.onSearchCompleteHeader();
@@ -220,6 +226,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtBANDOC', this.beanResult.BANDOC);
         this.setValue('de-txtSCURRENCY', this.beanResult.SCURRENCY);
         this.setValue('de-txtNETO', Ext.util.Format.number(this.beanResult.NETO, '0,000.00'));
+        this.setValue('de-txtMONEDAPAGO', this.beanResult.MONEDAPAGO);
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATEL);
         this.setValue('de-txtMERCHANDL', this.beanResult.MERCHANDL);
         this.setValue('de-txtBANDOCL', this.beanResult.BANDOCL);
@@ -252,6 +259,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         bean.MERCHAND = this.getValue("de-txtMERCHAND");
         bean.BANDOC = this.getValue("de-txtBANDOC");
         bean.NETO = this.getValue("de-txtNETO");
+        bean.MONEDAPAGO = this.getValue("de-txtMONEDAPAGO");
         bean.VALDATEL = this.getValue("de-txtVALDATEL");
         bean.MERCHANDL = this.getValue("de-txtMERCHANDL");
         bean.BANDOCL = this.getValue("de-txtBANDOCL");
@@ -489,16 +497,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             calculateButton.hide();
         }
 
-        this.sumAmount = 0;
+        this.sumAmount_tot = 0;
+        this.sumAmount_com = 0;
+        this.sumAmount_net = 0;
+        this.sumAmount_imp = 0;
         this.lstSendManual = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScanHead').getStore();
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
-            this.sumAmount = this.sumAmount + dataRow1.data.NETO;
+            this.sumAmount_tot = this.sumAmount_tot + dataRow1.data.TOTAL;
+            this.sumAmount_com = this.sumAmount_com + dataRow1.data.COMISION;
+            this.sumAmount_net = this.sumAmount_net + dataRow1.data.NETO;
+            this.sumAmount_imp = this.sumAmount_imp + dataRow1.data.IMPORTEPAG;
         }
 
-        this.setValue('de-txtSumAmountHead', Ext.util.Format.number(this.sumAmount, '0,000.00'));
+        this.setValue('de-txtSumAmountHead_Tot', Ext.util.Format.number(this.sumAmount_tot, '0,000.00'));
+        this.setValue('de-txtSumAmountHead_Com', Ext.util.Format.number(this.sumAmount_com, '0,000.00'));
+        this.setValue('de-txtSumAmountHead_Net', Ext.util.Format.number(this.sumAmount_net, '0,000.00'));
+        this.setValue('de-txtSumAmountHead_Imp', Ext.util.Format.number(this.sumAmount_imp, '0,000.00'));
         this.setValue('de-txtQtyHead', store_gridInfoScan.data.length);
         Ext.getCmp(prototype.id + '-gridDataInfoScanHead').getView().refresh();
     },
@@ -561,7 +578,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             grid.getStore().each(function (record) {
                 suma += record.get('NETO');
             });
-            var diff = Math.abs(Ext.getCmp(prototype.id + '-de-txtSumAmountHead').getValue().replace(/,/g, '').replace('.00', ''));
+            var diff = Math.abs(Ext.getCmp(prototype.id + '-de-txtSumAmountHead_Net').getValue().replace(/,/g, '').replace('.00', ''));
             console.log(diff);
 
             let formHeader = Ext.getCmp(prototype.id + '-panelScanHead');
@@ -856,7 +873,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     clear_tableHeader: function () {
 
         win.setValue('de-txtQtyHead', '');
-        win.setValue('de-txtSumAmountHead', '');
+        win.setValue('de-txtSumAmountHead_Tot', '');
+        win.setValue('de-txtSumAmountHead_Com', '');
+        win.setValue('de-txtSumAmountHead_Net', '');
+        win.setValue('de-txtSumAmountHead_Imp', '');
 
         let storeDataClear = Ext.create('Ext.data.Store', {
             data: '',
@@ -1368,7 +1388,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
-        var BSVFOPHead = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmountHead').getValue().replace(/,/g, '').replace('.00', ''));
+        var BSVFOPHead = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmountHead_Net').getValue().replace(/,/g, '').replace('.00', ''));
         var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
         var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
         var ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
@@ -1384,25 +1404,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
             if (DIFF !== 0 && MONEDA !== 'COP') {
                 global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
-                return false
+                return false;
             }
 
             if (DIFF == 0) {
-                console.log('entra a DIF = 0', DIFF)
-                return true
+                console.log('entra a DIF = 0', DIFF);
+                return true;
             } else if (DIFF !== 0 && DIFF < 100) {
-                console.log('entra a DIF < 100', DIFF)
-                return true
+                console.log('entra a DIF < 100', DIFF);
+                return true;
             } else {
-                console.log('entra a ELSE', DIFF)
+                console.log('entra a ELSE', DIFF);
                 global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
-                return false
+                return false;
             }
 
             if (Array.isArray(datos) && datos.length === 0) {
                 console.log('detalle GG');
                 global.Msg({msg: 'There is no data in the scan.'});
-                return false
+                return false;
             }
 
         } else {
