@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
     height: 870,
-    width: 1190,
+    width: 1290,
     resizable: false,
     layout: {
         type: 'hbox',
@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                     border: false,
                                     bodyStyle: 'background:white;',
                                     margin: '0 0 3 10',
-                                    width: 1160,
+                                    width: 1260,
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -561,7 +561,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Liquid Num:',
+                                                    text: 'Nro. Liquida:',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     margin: '4 4 4 4',
@@ -700,14 +700,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     id: prototype.id + '-panelDataInfoScanHead',
                                                     layout: 'vbox',
                                                     border: false,
-                                                    width: 1137,
+                                                    width: 1242,
                                                     height: 155,
                                                     autoScroll: true,
                                                     items: [
                                                         {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScanHead',
-                                                            width: 1127,
+                                                            width: 1230,
                                                             height: 150,
                                                             columnLines: true,
                                                             plugins: [
@@ -740,7 +740,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Core', dataIndex: 'CODPRO', width: 65,
+                                                                    {text: 'Core', dataIndex: 'CODPRO', width: 55,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -756,7 +756,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Proc<br>Date', dataIndex: 'PRDA', width: 70,
+                                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 70,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -780,7 +780,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Scurr. Liq', dataIndex: 'MONEDALIQ', width: 75,
+//                                                                    {text: 'Scurr. Liq', dataIndex: 'MONEDALIQ', width: 75,
+//                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                            metaData.style = "text-align:center;";
+//                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                            metaData.unselectableAttr = "unselectable='off'";
+//                                                                            return value;
+//                                                                        }
+//                                                                    },
+                                                                    {text: 'Country', dataIndex: 'PAISLIQ', width: 65,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -788,7 +796,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Country', dataIndex: 'PAISLIQ', width: 65,
+                                                                    {text: 'Proces<br>Date', dataIndex: 'PRDA', width: 70,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -812,7 +820,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return Ext.util.Format.number(value, '0,000.00');
                                                                         }
                                                                     },
-                                                                    {text: 'Comission', dataIndex: 'COMISION', width: 90,
+                                                                    {text: 'Comission', dataIndex: 'COMISION', width: 100,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -848,6 +856,22 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             listeners: {
                                                                                 specialkey: 'eventKeyAdjustment'
                                                                             }
+                                                                        }
+                                                                    },
+                                                                    {text: 'Curr', dataIndex: 'MONEDAPAGO', width: 45,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Importe', dataIndex: 'IMPORTEPAG', width: 100,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
                                                                         }
                                                                     },
                                                                     {
@@ -893,9 +917,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                             layout: 'hbox',
                                             id: prototype.id + '-sumHeader',
                                             border: false,
-                                            margin: '0 0 0 350',
+                                            margin: '0 0 0 467 ',
                                             items: [
-                                                {xtype: 'tbspacer', width: 390},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Qty:',
@@ -921,12 +944,38 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSumAmountHead',
+                                                    id: prototype.id + '-de-txtSumAmountHead_Tot',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSumAmountHead_Com',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSumAmountHead_Net',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 45},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSumAmountHead_Imp',
                                                     fieldStyle: 'text-align:right',
                                                     enforceMaxLength: true,
                                                     readOnly: true,
                                                     width: 100
                                                 }
+                                                
                                             ]
                                         },
                                         //</editor-fold>
@@ -1456,7 +1505,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     id: prototype.id + '-panelDataInfoScan',
                                                     layout: 'vbox',
                                                     border: false,
-                                                    width: 1137,
+                                                    width: 1237,
                                                     height: 252,
                                                     hidden: false,
                                                     autoScroll: true,
@@ -1464,7 +1513,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                         {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScan',
-                                                            width: 1125,
+                                                            width: 1225,
                                                             height: 250,
                                                             columnLines: true,
                                                             plugins: [
@@ -1497,7 +1546,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Doc <br>Type', dataIndex: 'descTDOC', width: 65,
+                                                                    {text: 'Doc <br>Type', dataIndex: 'descTDOC', width: 55,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1515,7 +1564,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Key', dataIndex: 'FUNDSTRGK', width: 110,
+                                                                    {text: 'Nro. Liquida', dataIndex: 'FUNDSTRGK', width: 110,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1531,7 +1580,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Terminal', dataIndex: 'TERMI', width: 80,
+                                                                    {text: 'Terminal', dataIndex: 'TERMI', width: 65,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1563,7 +1612,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            {text: 'Auth.', dataIndex: 'SAUTHOC', width: 75,
+                                                                            {text: 'Auth.', dataIndex: 'SAUTHOC', width: 50,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1573,6 +1622,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             }
                                                                         ]
                                                                     },
+                                                                    
                                                                     {text: 'Curr', dataIndex: 'SCURRENCY', width: 45,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
@@ -1649,6 +1699,24 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                                 specialkey: 'eventKeyAdjustment'
                                                                             }
                                                                         }
+                                                                    },
+                                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 45,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+//                                                                            value = 'COP';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Importe',
+                                                                        dataIndex: 'IMPORTEPAG',
+                                                                        width: 100,
+                                                                        xtype: 'gridcolumn',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
                                                                     },
                                                                     {text: 'Red', dataIndex: 'RED', width: 45,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},

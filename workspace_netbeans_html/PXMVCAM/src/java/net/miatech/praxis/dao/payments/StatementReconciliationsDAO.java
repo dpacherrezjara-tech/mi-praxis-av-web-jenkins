@@ -2219,10 +2219,12 @@ public class StatementReconciliationsDAO {
                 beanTkt.MERCHAND = rst.getString("MERCHAND");
                 beanTkt.MONEDA = rst.getString("MONEDA");
                 beanTkt.MONEDALIQ = rst.getString("MONEDALIQ");
+                beanTkt.MONEDAPAGO = rst.getString("MONEDAPAGO");
                 beanTkt.PAISLIQ = rst.getString("PAISLIQ");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.COMISION = rst.getDouble("COMISION");
                 beanTkt.NETO = rst.getDouble("NETO");
+                beanTkt.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
 
                 lstTkts.add(beanTkt);
             }
