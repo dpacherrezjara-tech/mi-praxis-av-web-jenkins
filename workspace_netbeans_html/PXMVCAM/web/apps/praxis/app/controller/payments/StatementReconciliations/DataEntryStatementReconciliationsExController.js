@@ -127,7 +127,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-btnToggleSwitch').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1237);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1225);
+            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1229);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -139,7 +139,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") &&
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
-                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ")) {
+                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && !(this.beanResult.COREP.includes("EV") &&
+                    this.beanResult.SCOUNTRY.includes("PR"))) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -149,7 +150,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
-                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1220);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1184);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
                 this.onSearchCompleteHeader();
             } else {
@@ -176,7 +177,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") &&
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
                     this.beanResult.SCOUNTRY.includes("UY")) && !this.beanResult.COREP.includes("NB") &&
-                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ")) {
+                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && !(this.beanResult.COREP.includes("EV") &&
+                    this.beanResult.SCOUNTRY.includes("PR"))) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
@@ -226,7 +228,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtBANDOC', this.beanResult.BANDOC);
         this.setValue('de-txtSCURRENCY', this.beanResult.SCURRENCY);
         this.setValue('de-txtNETO', Ext.util.Format.number(this.beanResult.NETO, '0,000.00'));
-        this.setValue('de-txtMONEDAPAGO', this.beanResult.MONEDAPAGO);
+//        this.setValue('de-txtMONEDAPAGO', this.beanResult.MONEDAPAGO);
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATEL);
         this.setValue('de-txtMERCHANDL', this.beanResult.MERCHANDL);
         this.setValue('de-txtBANDOCL', this.beanResult.BANDOCL);
@@ -259,7 +261,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         bean.MERCHAND = this.getValue("de-txtMERCHAND");
         bean.BANDOC = this.getValue("de-txtBANDOC");
         bean.NETO = this.getValue("de-txtNETO");
-        bean.MONEDAPAGO = this.getValue("de-txtMONEDAPAGO");
+//        bean.MONEDAPAGO = this.getValue("de-txtMONEDAPAGO");
         bean.VALDATEL = this.getValue("de-txtVALDATEL");
         bean.MERCHANDL = this.getValue("de-txtMERCHANDL");
         bean.BANDOCL = this.getValue("de-txtBANDOCL");
@@ -530,7 +532,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             calculateButton.hide();
         }
 
-        this.sumAmount = 0;
+        this.sumAmount_Net = 0;
+        this.sumAmount_Imp = 0;
         this.lstSendManual = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
 
@@ -541,26 +544,28 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             if (dataRow1.data.STMANUAL !== 'Blocked') {
                 var neto = parseFloat(dataRow1.data.NETO) || 0;
                 var comistota = parseFloat(dataRow1.data.COMISTOTA) || 0;
+                var importe = parseFloat(dataRow1.data.IMPORTEPAG) || 0;
 
-//                if (comistota !== 0) {
-//                    this.sumAmount += neto + comistota;
-//                } else {
-                this.sumAmount += neto;
-//                }
+                this.sumAmount_Net += neto;
+                this.sumAmount_Imp += importe;
+                
             }
-            console.log(this.sumAmount);
+            console.log(this.sumAmount_Net);
+            console.log(this.sumAmount_Imp);
         }
 
         if (this.beanResult.STVAL === '1') {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.beanResult.NETOC, '0,000.00'));
         } else {
-            this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount, '0,000.00'));
-            this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.sumAmount, '0,000.00'));
-            console.log(Ext.util.Format.number(this.beanResult.NETO - this.sumAmount, '0,000.00'), 'hallar monto');
+            this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount_Net, '0,000.00'));
+            this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.sumAmount_Net, '0,000.00'));
+            console.log(Ext.util.Format.number(this.beanResult.NETO - this.sumAmount_Net, '0,000.00'), 'hallar monto');
         }
-        this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
-        console.log(this.sumAmount);
+        this.setValue('de-txtSumAmount_Net', Ext.util.Format.number(this.sumAmount_Net, '0,000.00'));
+        this.setValue('de-txtSumAmount_Imp', Ext.util.Format.number(this.sumAmount_Imp, '0,000.00'));
+        console.log(this.sumAmount_Net);
+        console.log(this.sumAmount_Imp);
         this.setValue('de-txtQty', store_gridInfoScan.data.length);
 
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
