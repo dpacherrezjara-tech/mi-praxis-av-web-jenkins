@@ -82,7 +82,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                 {
                                     xtype: 'datefield',
                                     name: 'IN_PRDAT',
-                                    fieldLabel: 'From',
+                                    fieldLabel: 'To',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
                                     labelWidth: 50,

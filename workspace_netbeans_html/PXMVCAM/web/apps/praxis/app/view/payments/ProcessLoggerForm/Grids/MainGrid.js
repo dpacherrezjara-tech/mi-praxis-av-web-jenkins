@@ -34,7 +34,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
             {text: 'Client<br>Name', dataIndex: 'AIRLINE_NAME', width: 120},
             {text: 'Processing<br>Date', dataIndex: 'FPRDA', width: 80},
-            {text: 'Proccessor', dataIndex: 'PROC_NAME', width: 120},
+            {text: 'Processor', dataIndex: 'PROC_NAME', width: 120},
             {text: 'Process<br>Init', dataIndex: 'FINI', width: 80},
             {text: 'Process<br>End', dataIndex: 'FFIN', width: 80},
             {text: 'Seq', dataIndex: 'SEQ', width: 50},
