@@ -746,11 +746,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             case  '-panelGridDataDetByF':
                 global.getFile(prototype.url + '/getXLSXDetailByF?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-                case  '-panelGridDataDetByS':
+            case  '-panelGridDataDetByS':
                 global.getFile(prototype.url + '/getXLSXDetailByS?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-                case  '-panelGridDataDetByD':
+            case  '-panelGridDataDetByD':
                 global.getFile(prototype.url + '/getXLSXDetailByD?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+            case '-panelGridDataDet':
+                global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(searchParams.beanString));
                 break;
                 default:
                 global.Msg(

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import static java.lang.String.format;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -52,6 +53,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.poi.ss.usermodel.DataFormat;
 
 /**
  *
@@ -2721,6 +2723,9 @@ public class ViewADMController extends BaseController {
             bodyStyle2.setLeftBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle2.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle2.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            DataFormat format = workbook.createDataFormat();
+            CellStyle decimalStyle = workbook.createCellStyle();
+            decimalStyle.setDataFormat(format.getFormat("0.00"));
             Integer vi2 = 0;
             Integer vj2 = 0; //Almacena el numero de fila
             Iterator iter2 = listaData2.iterator();
@@ -2867,30 +2872,35 @@ public class ViewADMController extends BaseController {
 
 
 
-                rcell20.setCellValue(listaData2.get(vi2).RN);
+                rcell20.setCellValue(listaData.get(vi2).RN);
                 rcell21.setCellValue("ADM");
-                rcell22.setCellValue(listaData2.get(vi2).CCUST);
-                rcell23.setCellValue(listaData2.get(vi2).SAGENT);
+                rcell22.setCellValue(listaData.get(vi2).CCIA);
+                rcell23.setCellValue(listaData.get(vi2).SAGENT);
                 rcell24.setCellValue("Auditoria Externa");
-                rcell25.setCellValue("" + listaData2.get(vi2).TOT_QTY);
-                rcell26.setCellValue("");
-                rcell27.setCellValue(listaData2.get(vi2).SDATE);
-                rcell28.setCellValue(listaData2.get(vi2).SDATE);
-                rcell29.setCellValue("");
-                rcell210.setCellValue("");
-                rcell211.setCellValue("Internacional");
-                rcell212.setCellValue("RT");
-                rcell213.setCellValue("");
-                rcell214.setCellValue(listaData2.get(vi2).SCURRENCY);
-                rcell215.setCellValue("" + listaData2.get(vi2).TOT_SVFOP);
-                rcell216.setCellValue(0);
-                rcell217.setCellValue(0);
-                rcell218.setCellValue(0);
-                rcell219.setCellValue(0);
+                rcell25.setCellValue("10");
+                rcell26.setCellValue(listaData.get(vi2).A720FVLO1);
+                rcell27.setCellValue(listaData.get(vi2).IN_DATE_FROM);
+                rcell28.setCellValue(listaData.get(vi2).IN_DATE_TO);
+                rcell29.setCellValue(listaData.get(vi2).A720RUTA0);
+                rcell210.setCellValue(listaData.get(vi2).A720RUTA1);
+                rcell211.setCellValue(listaData.get(vi2).ROUTETYPE);
+                rcell212.setCellValue(listaData.get(vi2).TYPETRAVEL);
+                rcell213.setCellValue("Sale Whitout Payment");
+                rcell214.setCellValue(listaData.get(vi2).SCURRENCY);
+                rcell215.setCellValue(listaData.get(vi2).SVFOPS);
+                rcell215.setCellStyle(decimalStyle);
+                rcell216.setCellValue(0.00);
+                rcell216.setCellStyle(decimalStyle);
+                rcell217.setCellValue(0.00);
+                rcell217.setCellStyle(decimalStyle);
+                rcell218.setCellValue(0.00);
+                rcell218.setCellStyle(decimalStyle);
+                rcell219.setCellValue(0.00);
+                rcell219.setCellStyle(decimalStyle);
                 rcell220.setCellValue("N");
                 rcell221.setCellValue("");
                 rcell222.setCellValue("");
-                rcell223.setCellValue("");
+                rcell223.setCellValue(listaData.get(vi2).A1721FRCA);
 
 
 
@@ -2952,6 +2962,7 @@ public class ViewADMController extends BaseController {
             bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
@@ -2978,7 +2989,7 @@ public class ViewADMController extends BaseController {
             CH1_2.setCellValue("Numero Ticket");
             CH1_3.setCellValue("Numero Cupon");
             CH1_4.setCellValue("Clase de Tarifa");
-            CH1_5.setCellValue("Monto ACM/ADM");
+            CH1_5.setCellValue("Tarifa");
             CH1_6.setCellValue("Penalidad");
             CH1_7.setCellValue("Comision Ticket");
             CH1_8.setCellValue("Admin Fee");
@@ -3044,16 +3055,22 @@ public class ViewADMController extends BaseController {
 
 
                 rcell0.setCellValue(listaData.get(vi).RN);
-                rcell1.setCellValue(listaData.get(vi).CCUST);
+                rcell1.setCellValue(listaData.get(vi).CCIA);
                 rcell2.setCellValue(listaData.get(vi).FORMA + listaData.get(vi).SERIE);
-                rcell3.setCellValue(1);
-                rcell4.setCellValue("");
-                rcell5.setCellValue("" + listaData.get(vi).SVFOPS);
-                rcell6.setCellValue(0);
-                rcell7.setCellValue(0);
-                rcell8.setCellValue(0);
-                rcell9.setCellValue(0);
-                rcell10.setCellValue(0);
+                rcell3.setCellValue(""+ 1);
+                rcell4.setCellValue(listaData.get(vi).A720FBUSO1);
+                rcell5.setCellValue(listaData.get(vi).SVFOPS);
+                rcell5.setCellStyle(decimalStyle);
+                rcell6.setCellValue(0.00);
+                rcell6.setCellStyle(decimalStyle);
+                rcell7.setCellValue(0.00);
+                rcell7.setCellStyle(decimalStyle);
+                rcell8.setCellValue(0.00);
+                rcell8.setCellStyle(decimalStyle);
+                rcell9.setCellValue(0.00);
+                rcell9.setCellStyle(decimalStyle);
+                rcell10.setCellValue(0.00);
+                rcell10.setCellStyle(decimalStyle);
 
 
 
@@ -3074,8 +3091,100 @@ public class ViewADMController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
 
+            
+            Sheet sheet3 = workbook.createSheet("Taxes");
+            XSSFCellStyle headerStyle3 = (XSSFCellStyle) workbook.createCellStyle();
+            CellStyle bodyStyle3 = workbook.createCellStyle();
+            Font headerFont3 = workbook.createFont();
+            headerFont3.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont3.setColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle3.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle3.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle3.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle3.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle3.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            headerStyle3.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle3.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle3.setFont(headerFont3);
+            bodyStyle3.setBorderRight(CellStyle.BORDER_THIN);
+            bodyStyle3.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            bodyStyle3.setBorderBottom(CellStyle.BORDER_THIN);
+            bodyStyle3.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            bodyStyle3.setBorderLeft(CellStyle.BORDER_THIN);
+            bodyStyle3.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            bodyStyle3.setBorderTop(CellStyle.BORDER_THIN);
+            bodyStyle3.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            Integer vi3 = 0;
+            Integer vj3 = 0; //Almacena el numero de fila
+            Iterator iter3 = listaData.iterator();
+            
+            Row row3 = sheet3.createRow(vj3);
+            Cell CH3_0 = row3.createCell(0);
+            Cell CH3_1 = row3.createCell(1);
+            Cell CH3_2 = row3.createCell(2);
+            Cell CH3_3 = row3.createCell(3);
+            Cell CH3_4 = row3.createCell(4);
+
 
             
+            CH3_0.setCellValue("ID");
+            CH3_1.setCellValue("Codigo Aerolinea Ticket");
+            CH3_2.setCellValue("Numero Ticket");
+            CH3_3.setCellValue("Codigo TAX");
+            CH3_4.setCellValue("Valor TAX");
+
+
+            CH3_0.setCellStyle(headerStyle3);
+            CH3_1.setCellStyle(headerStyle3);
+            CH3_2.setCellStyle(headerStyle3);
+            CH3_3.setCellStyle(headerStyle3);
+            CH3_4.setCellStyle(headerStyle3);
+
+
+            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
+            sheet3.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
+            sheet3.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
+            sheet3.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
+            sheet3.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet3.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
+
+
+            ++vj3;
+            
+            //============================================
+
+            while (iter3.hasNext()) {
+                row3 = sheet3.createRow(vj3);
+                Cell rcell30 = row3.createCell(0);
+                Cell rcell31 = row3.createCell(1);
+                Cell rcell32 = row3.createCell(2);
+                Cell rcell33 = row3.createCell(3);
+                Cell rcell34 = row3.createCell(4);
+
+
+                rcell30.setCellValue("");
+                rcell31.setCellValue("");
+                rcell32.setCellValue("");
+                rcell33.setCellValue("");
+                rcell34.setCellValue("");
+
+
+
+                iter3.next();
+                ++vi3;
+                ++vj3;
+            }
+
+            sheet3.autoSizeColumn(0, true);
+            sheet3.autoSizeColumn(1, true);
+            sheet3.autoSizeColumn(2, true);
+            sheet3.autoSizeColumn(3, true);
+            sheet3.autoSizeColumn(4, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");

@@ -21,6 +21,8 @@ import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2295Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 /**
  *
@@ -1650,37 +1652,32 @@ public class ViewADMDAO {
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
+                    int year = Integer.parseInt(filter.SDATE.trim().substring(0, 4));
+                    int month = Integer.parseInt(filter.SDATE.trim().substring(4, 6));
+                    YearMonth yearMonth = YearMonth.of(year, month);
+                    LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+                    beanTkt.IN_DATE_FROM = filter.SDATE.trim() + "01";
+                    beanTkt.IN_DATE_TO = lastDayOfMonth.toString();
+                    
                     
                     beanTkt.CCUST = rst.getString("CCUST").trim();
-
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
                     beanTkt.SERIE = rst.getString("SERIE").trim();
-                    beanTkt.TDOC = rst.getString("TDOC").trim();
-                    beanTkt.STVAL = rst.getString("STVAL").trim();
-                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
-                    beanTkt.strDescCountry = rst.getString("NAMES").trim();
                     beanTkt.SAGENT = rst.getString("SAGENT").trim();
-                    beanTkt.SDATE = rst.getString("SDATE").trim();
-                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
-                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                    beanTkt.CERROR = rst.getString("CERROR").trim();
-                    beanTkt.ERROR = rst.getString("ERROR").trim();
-                    beanTkt.DSEND = rst.getString("DSEND").trim();
+                    beanTkt.A720FBUSO1 = rst.getString("A720FBUSO1").trim();
+                    beanTkt.A720FVLO1 = rst.getString("A720FVLO1").trim();
+                    beanTkt.A720RUTA0 = rst.getString("A720RUTA0").trim();
+                    beanTkt.A720RUTA1 = rst.getString("A720RUTA1").trim();
+                    beanTkt.A1721FRCA = rst.getString("A1721FRCA").trim();
+                    beanTkt.ROUTETYPE = rst.getString("ROUTETYPE").trim();
+                    beanTkt.TYPETRAVEL = beanTkt.A720RUTA0.equals(beanTkt.A720RUTA1) ? "RT" : "OW";
                     beanTkt.RN = rst.getInt("RN");
-                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
-                        beanTkt.strDescStatus = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
-                    }
-//                    beanTkt.strSCURRENCY = rst.getString("MONEDAS").trim();
                     beanTkt.SVFOPS = rst.getDouble("SVFOP");
-                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
-                    beanTkt.strDescCard = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
+                    
                     //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
-                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
-                    beanTkt.FCONT = rst.getString("FCONT").trim();
-                    beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE.trim());
                     
                     beanTkt.lngTotAmount = lngTotAmount;
