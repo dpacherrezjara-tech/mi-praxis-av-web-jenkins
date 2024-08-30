@@ -700,21 +700,22 @@ public class MerchantNumberController extends BaseController {
                             obj.CODE = dataFormatter.formatCellValue(row.getCell(8));
                             obj.CORE = dataFormatter.formatCellValue(row.getCell(9));
                             obj.DREPORT = dataFormatter.formatCellValue(row.getCell(10));
-                            obj.VACIO = dataFormatter.formatCellValue(row.getCell(11));
-                            obj.FRANC1 = dataFormatter.formatCellValue(row.getCell(12));
-                            obj.FRANC2 = dataFormatter.formatCellValue(row.getCell(13));
-                            obj.FRANC3 = dataFormatter.formatCellValue(row.getCell(14));
-                            obj.FRANC4 = dataFormatter.formatCellValue(row.getCell(15));
-                            obj.PROCES = dataFormatter.formatCellValue(row.getCell(16));
-                            obj.CANAL = dataFormatter.formatCellValue(row.getCell(17));
-                            obj.BANKCM = dataFormatter.formatCellValue(row.getCell(18));
-                            obj.BANKCUR = dataFormatter.formatCellValue(row.getCell(19));
-                            obj.CODEBANK = dataFormatter.formatCellValue(row.getCell(20));
-                            obj.BANKNAM = dataFormatter.formatCellValue(row.getCell(21));
-                            obj.ACCNUMB = dataFormatter.formatCellValue(row.getCell(22));
-                            obj.ACCNUMA = dataFormatter.formatCellValue(row.getCell(23));
-                            obj.BENCEN = dataFormatter.formatCellValue(row.getCell(24));
-                            obj.COSTCEN = dataFormatter.formatCellValue(row.getCell(25));
+//                            obj.VACIO = dataFormatter.formatCellValue(row.getCell(11));
+                            obj.FRANC1 = dataFormatter.formatCellValue(row.getCell(11));
+                            obj.FRANC2 = dataFormatter.formatCellValue(row.getCell(12));
+                            obj.FRANC3 = dataFormatter.formatCellValue(row.getCell(13));
+                            obj.FRANC4 = dataFormatter.formatCellValue(row.getCell(14));
+                            obj.PROCES = dataFormatter.formatCellValue(row.getCell(15));
+                            obj.CANAL = dataFormatter.formatCellValue(row.getCell(16));
+                            obj.BANKCM = dataFormatter.formatCellValue(row.getCell(17));
+                            obj.BANKCUR = dataFormatter.formatCellValue(row.getCell(18));
+                            obj.CODEBANK = dataFormatter.formatCellValue(row.getCell(19));
+                            obj.BANKNAM = dataFormatter.formatCellValue(row.getCell(20));
+                            obj.ACCNUMB = dataFormatter.formatCellValue(row.getCell(21));
+                            obj.ACCNUMA = dataFormatter.formatCellValue(row.getCell(22));
+                            obj.BENCEN = dataFormatter.formatCellValue(row.getCell(23));
+                            obj.COSTCEN = dataFormatter.formatCellValue(row.getCell(24));
+                            obj.IDFISCAL = dataFormatter.formatCellValue(row.getCell(25));
                             lstData.add(obj);
                         }
                     }
