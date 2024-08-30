@@ -1694,7 +1694,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             }
                                                                         }
                                                                     },
-                                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 45,
+                                                                    {text: 'Curr', dataIndex: 'MONEDAPAGO', width: 45,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
 //                                                                            value = 'COP';

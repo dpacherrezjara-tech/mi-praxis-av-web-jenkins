@@ -2337,6 +2337,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.COMISTOTA = rst.getDouble("COMISTOTA");
                 beanTkt.TDOC = rst.getString("TDOC");
                 beanTkt.SEQ = rst.getString("SEQ");
+                beanTkt.MONEDAPAGO = rst.getString("MONEDAPAGO");
+                beanTkt.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
                 beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC"));
 
                 lstTkts.add(beanTkt);
