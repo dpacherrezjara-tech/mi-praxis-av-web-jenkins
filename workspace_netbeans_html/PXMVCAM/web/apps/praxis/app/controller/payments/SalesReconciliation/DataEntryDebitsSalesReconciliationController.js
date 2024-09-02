@@ -1021,6 +1021,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryDebitsSa
                 global.Msg({msg: 'Select the type of debit "Debit Type" '});
                 return false
             }
+            if(prefixDeb.includes('REFND') && !['RFND','RFND-DNG','DB-TKT','DOBLE-DB','NO-IDN','DBLEDB-R'].includes(debitType)){
+                global.Msg({msg: 'INVALID DEBIT TYPE FOR REFUND'});
+                return false
+            }
+            if(prefixDeb.includes('Chgbak') && !['CBCK-ID','CBCK-IDM','DB-TKT','DOBLE-DB','R-CBCK','NO-IDN','DBLEDB-C'].includes(debitType)){
+                global.Msg({msg: 'INVALID DEBIT TYPE FOR CHARGEBACK'});
+                return false
+            }
+            if(prefixDeb.includes('Acredit') && !['ACRED','DB-TKT','DOBLE-DB','NO-IDN','DBLEDB-A'].includes(debitType)){
+                global.Msg({msg: 'INVALID DEBIT TYPE FOR ACREDIT'});
+                return false
+            }
+            
             var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
             console.log(comment);
             if (comment !== '' && comment !== null) {

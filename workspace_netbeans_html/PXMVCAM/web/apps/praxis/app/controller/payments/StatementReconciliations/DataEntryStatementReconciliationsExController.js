@@ -895,7 +895,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     clear_tableNormal: function () {
 
         win.setValue('de-txtQty', '');
-        win.setValue('de-txtSumAmount', '');
+        win.setValue('de-txtSumAmount_Net', '');
         let storeDataClear = Ext.create('Ext.data.Store', {
             data: '',
             autoLoad: true
@@ -1392,7 +1392,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         //Modificacion
 
         var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtNETO').getValue().replace(/,/g, '').replace('.00', ''));
-        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
+        var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount_Net').getValue().replace(/,/g, '').replace('.00', ''));
         var BSVFOPHead = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmountHead_Net').getValue().replace(/,/g, '').replace('.00', ''));
         var DIFF = parseFloat(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
         var MONEDA = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue();
@@ -1564,7 +1564,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 NETO: record.get('NETO'),
                 RED: record.get('RED').trim(),
                 SEQ: record.get('SEQ').trim(),
-                NETOC: parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''))
+                NETOC: parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount_Net').getValue().replace(/,/g, '').replace('.00', ''))
             };
 
             listaDeDatos.push(registro);
