@@ -2059,7 +2059,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
+            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().contains("DBLEDB") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
                 String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2165,7 +2165,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
+            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().contains("DBLEDB") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
                 String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2272,7 +2272,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             strMsj = cstmt.getString(19);
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
+            if (!strMsj.contains("ROWS AFFECTED") && !filter.DEBTYPE.trim().equals("DB-TKT") && !filter.DEBTYPE.trim().contains("DBLEDB") && !filter.DEBTYPE.trim().equals("NO-IDN")) {
                 String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
