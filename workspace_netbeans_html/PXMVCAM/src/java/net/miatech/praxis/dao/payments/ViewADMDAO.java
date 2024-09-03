@@ -1673,7 +1673,7 @@ public class ViewADMDAO {
                     beanTkt.A720RUTA1 = rst.getString("A720RUTA1").trim();
                     beanTkt.A1721FRCA = rst.getString("A1721FRCA").trim();
                     beanTkt.ROUTETYPE = rst.getString("ROUTETYPE").trim();
-                    beanTkt.TYPETRAVEL = beanTkt.A720RUTA0.equals(beanTkt.A720RUTA1) ? "RT" : "OW";
+                    beanTkt.TYPETRAVEL = "RT";
                     beanTkt.RN = rst.getInt("RN");
                     beanTkt.SVFOPS = rst.getDouble("SVFOP");
                     
