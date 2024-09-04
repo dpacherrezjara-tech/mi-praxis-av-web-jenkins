@@ -65,6 +65,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.OutputsForm', {
                                         {
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter',
+                                            hidden: true
                                         }
                                         ,
                                         {
