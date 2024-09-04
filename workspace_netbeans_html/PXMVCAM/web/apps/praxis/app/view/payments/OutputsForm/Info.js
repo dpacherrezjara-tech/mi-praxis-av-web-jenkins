@@ -38,22 +38,40 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                     },
                     items: [
                         // --------------------------   GRID MAIN DATA---------------------
-                        //-----------------------------------------------------------------
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             padding: '1',
                             border: false,
-//                            margin: '1',
                             height: 550,
-                            width: 1000,
+                            width: 1200,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
                             },
-
                             items: [
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background: transparent;"',
+                                    margin: '10 2 2 20',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Download File',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
+                                            width: 130,
+                                            height: 25
+                                        }
+                                    ]
+                                },
                                 {
                                     xtype: 'panel',
                                     width: '100%',
@@ -69,7 +87,6 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             xtype: 'label',
                                             text: 'Search By:',
                                             padding: '3 0',
-//                                          hidden:true,
                                             width: 60
                                         },
                                         {
@@ -83,7 +100,6 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             autoSelect: true,
                                             editable: true,
                                             width: 120,
-//                                          value: "ADATE",
                                             typeAhead: true,
                                             hidden: true,
                                             valueField: 'code',
@@ -111,7 +127,6 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             valueField: 'code',
                                             displayField: 'name',
                                             emptyText: 'All',
-//                            labelWidth: 60,
                                             width: 70,
                                             anchor: '100%'
                                         },
@@ -133,34 +148,102 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             width: 70,
                                             anchor: '100%'
                                         },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Client:',
+                                            padding: '3 0',
+                                            width: 40
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbClient',
+                                            margin: '10 0 0 10',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Colombia',
+                                            margin: '13 0 0 10',
+                                            id: prototype.id + '-COL',
+                                            width: 60
+                                        },
+                                        {
+                                            xtype: 'component',
+                                            id: prototype.id + '-btnToggleSwitch',
+                                            margin: '13 0 0 10',
+                                            html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label></body></html>',
+                                            tooltip: 'Export to Report',
+                                            listeners: {
+                                                change: 'chgBash',
+                                                click: 'clickToggleSwitch'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Exterior',
+                                            margin: '13 0 0 10',
+                                            id: prototype.id + '-EXT',
+                                            width: 60
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Procesador:',
+                                            margin: '13 0 0 10',
+                                            hidden:true,
+                                            id: prototype.id + '-PRO',
+                                            width: 70
+                                        },
                                         {
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbCores',
                                             margin: '10 0 0 10',
+                                            hidden:true,
+                                            editable: false,
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:left;',
                                             queryMode: 'local',
                                             triggerAction: 'all',
                                             valueField: 'CODE',
                                             displayField: 'NAME',
-                                            width: 200,
+                                            width: 200
                                         },
                                         {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Settlement:',
+                                            padding: '3 0',
+                                            width: 70
+                                        },
                                         {
                                             xtype: 'button',
                                             id: prototype.id + '-btnTxtLIQUI',
                                             icon: 'resources/img/botones/txt.png',
                                             tooltip: 'Export to Txt Liquidacion',
-                                            padding: '3 0',
+                                            padding: '3 0'
                                         },
                                         {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Sales:',
+                                            padding: '3 0',
+                                            width: 40
+                                        },
                                         {
                                             xtype: 'button',
                                             id: prototype.id + '-btnTxtSALE',
                                             icon: 'resources/img/botones/txt.png',
                                             tooltip: 'Export to Txt Sale',
-                                            padding: '3 0',
-                                        },
+                                            padding: '3 0'
+                                        }
                                     ]
                                 },
                                 {xtype: 'tbspacer', width: 7, height: 10},
@@ -176,11 +259,6 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                     width: 998,
                                     height: 25,
                                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-//                                    defaults: {
-//                                        border: true,
-//                                        padding: '0px 5px 0px 5px'
-//                                    },
-//                                    padding: '1px 5px 1px 5px',
                                     items: [
                                         {
                                             xtype: 'panel',
@@ -191,8 +269,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                                 pack: 'center'
                                             },
                                             defaults: {
-                                                xtype: 'label',
-//                                                margin: '3px 0px 0px 5px'
+                                                xtype: 'label'
                                             },
                                             items: [
                                                 {
