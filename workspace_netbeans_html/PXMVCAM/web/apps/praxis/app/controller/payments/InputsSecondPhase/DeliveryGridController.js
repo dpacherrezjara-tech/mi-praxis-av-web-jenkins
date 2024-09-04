@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DeliveryGridControl
             proxy: {
                 type: 'ajax',
                 enablePaging: true,
-                url: `${me.url}/searchDelivery`,
+                url: `${me.url}/searchFileDelivery`,
                 extraParams: view.searchParams,
                 timeout: 600000,
                 reader: {

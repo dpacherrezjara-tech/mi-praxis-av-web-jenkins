@@ -34,15 +34,6 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Options', {
                         },
                         {
                             xtype: 'button',
-                            id: prototype.id + '-btnProcess',
-                            iconCls: 'prx-icon-image-process',
-                            tooltip: 'Process',
-                            listeners: {
-                                click: 'onClickProcessBtn'
-                            }
-                        },
-                        {
-                            xtype: 'button',
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options',

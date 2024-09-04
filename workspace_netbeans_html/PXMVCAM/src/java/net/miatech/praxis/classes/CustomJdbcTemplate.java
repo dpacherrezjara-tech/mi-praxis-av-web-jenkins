@@ -27,6 +27,9 @@ public class CustomJdbcTemplate extends JdbcTemplate {
             Map<String, Object> result = simpleJdbcCall.execute(in);
 
             return result;
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+            throw ex;
         } finally {
             // Cerrar la conexión después de la ejecución
             if (simpleJdbcCall instanceof SimpleJdbcCall) {
@@ -52,6 +55,9 @@ public class CustomJdbcTemplate extends JdbcTemplate {
             Map<String, Object> result = simpleJdbcCall.execute();
 
             return result;
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+            throw ex;
         } finally {
             // Cerrar la conexión después de la ejecución
             if (simpleJdbcCall instanceof SimpleJdbcCall) {
@@ -73,6 +79,9 @@ public class CustomJdbcTemplate extends JdbcTemplate {
             // Ejecutar la llamada
             Map<String, Object> result = simpleJdbcCall.execute(in);
             return result;
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+            throw ex;
         } finally {
             // Cerrar la conexión después de la ejecución
             if (simpleJdbcCall instanceof SimpleJdbcCall) {

@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.FilesGrid', {
             {text: 'Processing<br>Date', dataIndex: 'MF054PRDA', width: 80},
             {text: 'Load<br>Date', dataIndex: 'MF054FREGI', width: 80},
             {text: 'Source', dataIndex: 'DESC_PRO', flex: 1},
-            {text: 'File<br>Type', dataIndex: 'MF054FCOD', width: 120},
+            {text: 'File<br>Type', dataIndex: 'DESC_FILE', flex: 1},
             {text: 'Total Records',
                 defaults: {
                     menuDisabled: true,
@@ -59,6 +59,20 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.FilesGrid', {
                 }, columns: [
                     {text: 'Lines', dataIndex: 'MF054TLIN', width: 70},
                     {text: 'Trans.', dataIndex: 'MF054QTRN', width: 70}
+                ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Open',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-detail',
+                        tooltip: 'Open Delivery',
+                        handler: 'onClickDelivery'
+                    }
                 ]
             }
 

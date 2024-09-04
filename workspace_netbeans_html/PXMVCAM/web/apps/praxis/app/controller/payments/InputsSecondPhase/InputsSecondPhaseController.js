@@ -21,6 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.InputsSecondPhaseCo
                 valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
             cmbProcesadores.on('select', function (cmb, record) {
                 Ext.getCmp(prototype.id + '-txtSEQPRO').setValue(record.data.A4451SEQ || '');
+                me.onClickSearchBtn();
             });
             console.log(data);
         }
@@ -42,21 +43,23 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.InputsSecondPhaseCo
         const me = this;
         let panel = Ext.getCmp(prototype.id + '-mainContent');
         panel.mask('Loading...');
-        let params = me.formatParams();
-        if (params.IN_CODPRO === '') {
-            global.Msg({msg: 'Choose your Processor'});
-            return;
-        }
         let component = Ext.getCmp(prototype.id + '-calendarForm-01'); //obtener el componente por su ID
         if (component) {
             component.destroy(); //destruir el componente
         }
+        let params = me.formatParams();
+        if (params.IN_CODPRO === '') {
+            global.Msg({msg: 'Choose your Processor'});
+            panel.unmask();
+            return;
+        }
         const res = await fetch(prototype.url + '/searchCalendar?' + new URLSearchParams(params));
         if (res.ok) {
             const data = await res.json();
-                let calendario = Ext.create('Ext.Praxis.view.widgets.CalendarTmz', {
+            let calendario = Ext.create('Ext.Praxis.view.widgets.CalendarTmz', {
                 id: prototype.id + '-calendarForm-01',
                 ccust: params.IN_CCUST,
+                procesador: params.IN_CODPRO + params.IN_SEQPRO,
                 anio: params.IN_PRDAY,
                 dataFechas: data,
                 clickCallback: me.onClickFecha
@@ -66,9 +69,9 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.InputsSecondPhaseCo
         panel.unmask();
     },
     onClickFecha: function (obj) {
-        const {ccust,procesador,fecha} = obj;
-        let codpro = procesador.length === 5 ? procesador.slice(0,3) : procesador.slice(0,2);
-        let seqpro = procesador.length === 5 ? procesador.slice(3,5) : procesador.slice(2,4);
+        const {ccust, procesador, fecha} = obj;
+        let codpro = procesador.length === 5 ? procesador.slice(0, 3) : procesador.slice(0, 2);
+        let seqpro = procesador.length === 5 ? procesador.slice(3, 5) : procesador.slice(2, 4);
         let params = {
             IN_CCUST: ccust,
             IN_CODPRO: codpro,

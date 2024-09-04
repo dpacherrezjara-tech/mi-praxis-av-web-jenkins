@@ -48,9 +48,9 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.FilesGridController
     },
     onClickDelivery:function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const me = this;
-        const {MF054CCUST, MF054CODTB, MF054SUBCD, MF054PRDA} = record.data;
+        const {MF054CCUST, MF054TYPE, MF054TREGD, MF054PRDA,MF054NTAB} = record.data;
         let params = {IN_CCUST: MF054CCUST, IN_PRDA: MF054PRDA, 
-            IN_CODPRO: MF054CODTB, IN_SEQPRO: MF054SUBCD};
+            IN_TYPE: MF054TYPE, IN_REG: MF054TREGD,IN_NTAB: MF054NTAB};
         console.log('Parameters: ' , params);
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();

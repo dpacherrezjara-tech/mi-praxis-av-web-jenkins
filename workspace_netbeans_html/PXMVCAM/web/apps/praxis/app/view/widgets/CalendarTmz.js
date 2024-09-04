@@ -7,6 +7,7 @@ Ext.define('Ext.Praxis.view.widgets.CalendarTmz', {
     align: 'center',
     config: {
         ccust: null,
+        procesador: null,
         anio: null,
         dataFechas: [],
         diasLaborales: ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'],
@@ -285,7 +286,8 @@ Ext.define('Ext.Praxis.view.widgets.CalendarTmz', {
             fechaProceso ?
                     obj.status = fechaProceso.status : obj.status = 'none';
             obj.ccust = me.ccust;
-            obj.procesador = fechasProceso[0].procesador;
+            //obj.procesador = fechasProceso[0].procesador;
+            obj.procesador = me.procesador;
             response[mes].push(obj);
 
         });

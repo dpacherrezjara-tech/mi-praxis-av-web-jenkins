@@ -10,19 +10,18 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DeliveryGrid', 
     height: 'auto',
     width: '100%',
     viewConfig: {
-        stripeRows: true,
         enableTextSelection: true,
-        markDirty: false,
+        stripeRows: false, // Eliminar el efecto de rayas alternas
         listeners: {
-            refresh: function (dataview) {
-                Ext.each(dataview.panel.columns, function (column) {
-                    if (column.autoSizeColumn === true)
-                        column.autoSize();
+            refresh: function(view) {
+                // Acceder a cada fila del grid y eliminar los bordes
+                view.getEl().query('.x-grid-item').forEach(function(row) {
+                    row.style.borderBottom = 'none';
                 });
             }
         }
     },
-    columnLines: true,
+    //columnLines: true,
     columns: {
         defaults: {
             align: 'center',
@@ -32,21 +31,12 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DeliveryGrid', 
         items: [
             //<editor-fold defaultstate="collapsed" desc="Detail Cols">
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
-            {text: 'Line', dataIndex: 'MAXLONG', flex: 1},
-            {
-                sortable: false,
-                xtype: 'actioncolumn',
-                width: 40,
-                text: 'Edit',
-                locked: true,
-                align: 'center',
-                items: [
-                    {
-                        iconCls: 'prx-icon-detail',
-                        tooltip: 'Open Delivery',
-                        handler: 'onClickDelivery'
-                    }
-                ]
+            {text: 'Row<br>Number', dataIndex: 'REG', width: 80},
+            {text: 'Delivery Line', dataIndex: 'MAXLONG', flex: 1, 
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = 'text-align:left;';
+                    return value;
+                }
             }
             //</editor-fold>
         ]
