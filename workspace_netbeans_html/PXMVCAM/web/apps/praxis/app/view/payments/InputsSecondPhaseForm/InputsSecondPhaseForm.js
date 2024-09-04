@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.InputsSecondPhaseForm
         'Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.LoadedGrid',
         'Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.ExoneratedGrid',
         'Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.FilesGrid',
+        'Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DeliveryGrid',
         'Ext.Praxis.view.widgets.CalendarTmz'
     ],
     controller: 'InputsSecondPhaseController',

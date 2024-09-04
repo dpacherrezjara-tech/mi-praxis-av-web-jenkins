@@ -6,6 +6,7 @@ Ext.define('Ext.Praxis.view.widgets.CalendarTmz', {
     layout: 'container',
     align: 'center',
     config: {
+        ccust: null,
         anio: null,
         dataFechas: [],
         diasLaborales: ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'],
@@ -227,6 +228,7 @@ Ext.define('Ext.Praxis.view.widgets.CalendarTmz', {
                                             id: prototype.id + `-${!x.procesador ? 'none' : x.procesador}-m${e}-d${x}-f${x.rn}`,
                                             fecha:x.fecha,
                                             procesador:!x.procesador ? 'none' : x.procesador,
+                                            ccust: x.ccust,
                                             ...props
                                         });
                                     });
@@ -282,11 +284,12 @@ Ext.define('Ext.Praxis.view.widgets.CalendarTmz', {
             
             fechaProceso ?
                     obj.status = fechaProceso.status : obj.status = 'none';
+            obj.ccust = me.ccust;
             obj.procesador = fechasProceso[0].procesador;
             response[mes].push(obj);
 
         });
-        console.log(response.filter(x=>x!==undefined));
+        //console.log(response.filter(x=>x!==undefined));
         me.fechas = response.filter(x => x !== undefined);
 
     },

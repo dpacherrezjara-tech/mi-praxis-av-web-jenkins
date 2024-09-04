@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.miatech.praxis.logic.payments.InputsPhase2Logic;
+import net.miatech.praxis.payment.dto.CalendarDateInfo;
 import net.miatech.praxis.payment.dto.CalendarPhase2;
 import net.miatech.praxis.payment.dto.DeliveryDto;
 import net.miatech.praxis.payment.dto.SPIL001Filter;
@@ -14,6 +15,7 @@ import net.miatech.praxis.payment.dto.SPIL003Filter;
 import net.miatech.praxis.payment.dto.SPIL004Filter;
 import net.miatech.praxis.payment.dto.SPIL005Filter;
 import net.miatech.praxis.payment.dto.SPIL006Filter;
+import net.miatech.praxis.payment.dto.SPIL007Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.MPF054;
@@ -172,6 +174,15 @@ public class InputsPhase2DAO implements InputsPhase2Logic {
                 params, new BeanPropertyRowMapper(DeliveryDto.class));
         filter.setResponse((List<DeliveryDto>) obj.get("result"));
         filter.setPageOut(obj);
+        return filter;
+    }
+
+    @Override
+    public SPIL007Filter loadSPIL007Filter(SPIL007Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPIL007",
+                params, new BeanPropertyRowMapper(CalendarDateInfo.class));
+        filter.setResponse((List<CalendarDateInfo>) obj.get("result"));
         return filter;
     }
 

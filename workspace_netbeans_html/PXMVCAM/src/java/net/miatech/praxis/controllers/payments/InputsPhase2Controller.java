@@ -9,6 +9,7 @@ import net.miatech.praxis.payment.dto.SPIL003Filter;
 import net.miatech.praxis.payment.dto.SPIL004Filter;
 import net.miatech.praxis.payment.dto.SPIL005Filter;
 import net.miatech.praxis.payment.dto.SPIL006Filter;
+import net.miatech.praxis.payment.dto.SPIL007Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,14 @@ public class InputsPhase2Controller {
         System.out.println("***** InputsPhase2 - searchCalendar *****");
         List<CalendarPhase2> filter = logic.loadSPIL002Filter(params);
         System.out.println("Total: " + filter.size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "searchCalendarDateInfo")
+    public ResponseEntity<?> searchCalendarDateInfo(@ModelAttribute SPIL007Filter params) throws Exception{
+        System.out.println("***** InputsPhase2 - searchCalendarDateInfo *****");
+        SPIL007Filter filter = logic.loadSPIL007Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
     

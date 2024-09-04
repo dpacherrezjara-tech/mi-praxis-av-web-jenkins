@@ -1,11 +1,11 @@
-Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.FilesGridController', {
+Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DeliveryGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.FilesGridController',
+    alias: 'controller.DeliveryGridController',
     url: CONTEXTPATH + '/InputsPhase2',
     init: function (view) {
         if(view.backButton){
-            Ext.getCmp(prototype.id + '-files-btnBack').show();
-            Ext.getCmp(prototype.id + '-files-btnBack').on('click',view.backButton);
+            Ext.getCmp(prototype.id + '-delivery-btnBack').show();
+            Ext.getCmp(prototype.id + '-delivery-btnBack').on('click',view.backButton);
         }
     },
     afterRender: async function (obj, e) {
@@ -17,11 +17,11 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.FilesGridController
         const me = this;
         let store = Ext.create('Ext.data.Store', {
             loadMask: true,
-            //pageSize: 20,
+            pageSize: 20,
             proxy: {
                 type: 'ajax',
-                //enablePaging: true,
-                url: `${me.url}/searchFilesReceived`,
+                enablePaging: true,
+                url: `${me.url}/searchDelivery`,
                 extraParams: view.searchParams,
                 timeout: 600000,
                 reader: {
@@ -45,21 +45,6 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.FilesGridController
             }
         });
         view.setStore(store);
-    },
-    onClickDelivery:function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const me = this;
-        const {MF054CCUST, MF054CODTB, MF054SUBCD, MF054PRDA} = record.data;
-        let params = {IN_CCUST: MF054CCUST, IN_PRDA: MF054PRDA, 
-            IN_CODPRO: MF054CODTB, IN_SEQPRO: MF054SUBCD};
-        console.log('Parameters: ' , params);
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.items.items.at(-1).hide();
-        const deliveryPanel = Ext.create('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DeliveryGrid', {
-            id: prototype.id + '-DeliveryGrid-1',
-            searchParams: params,
-            backButton: me.view.backButton
-        });
-        mainPanel.add(deliveryPanel);
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

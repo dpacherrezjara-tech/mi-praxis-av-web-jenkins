@@ -56,15 +56,31 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.InputsSecondPhaseCo
             const data = await res.json();
                 let calendario = Ext.create('Ext.Praxis.view.widgets.CalendarTmz', {
                 id: prototype.id + '-calendarForm-01',
+                ccust: params.IN_CCUST,
                 anio: params.IN_PRDAY,
                 dataFechas: data,
-                clickCallback: null
+                clickCallback: me.onClickFecha
             });
             panel.add(calendario);
         }
         panel.unmask();
-
-
+    },
+    onClickFecha: function (obj) {
+        const {ccust,procesador,fecha} = obj;
+        let codpro = procesador.length === 5 ? procesador.slice(0,3) : procesador.slice(0,2);
+        let seqpro = procesador.length === 5 ? procesador.slice(3,5) : procesador.slice(2,4);
+        let params = {
+            IN_CCUST: ccust,
+            IN_CODPRO: codpro,
+            IN_SEQPRO: seqpro,
+            IN_PRDA: fecha
+        };
+        console.log(params);
+        let dataEntry = Ext.create('Ext.Praxis.view.payments.InputsSecondPhaseForm.DataEntrys.CalendarDataEntry', {
+            id: prototype.id + '-CalendarDataEntry-1',
+            searchParams: params
+        });
+        dataEntry.show();
     },
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
@@ -86,22 +102,6 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.InputsSecondPhaseCo
             year.hide();
         }
         mainPanel.removeAll();
-    },
-    onClickFecha: function (obj) {
-        alert('Hola');
-        /*
-        let searchParamsCalendarDE = {
-            CCUST: '139',
-            TIPO: obj.procesador || '',
-            FECHA_FROM: obj.fecha || ''
-        };
-        //console.log(searchParamsCalendarDE);
-        let dataEntry = Ext.create('Ext.Praxis.view.payments.InputsTamizForm.CalendarTmzDataEntry', {
-            id: prototype.id + '-calendarDataEntry-01',
-            searchParams: searchParamsCalendarDE
-        });
-        dataEntry.show();
-         */
     },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {

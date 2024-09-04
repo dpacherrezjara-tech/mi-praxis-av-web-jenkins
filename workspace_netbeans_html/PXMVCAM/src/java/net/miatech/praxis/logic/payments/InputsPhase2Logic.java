@@ -8,6 +8,7 @@ import net.miatech.praxis.payment.dto.SPIL003Filter;
 import net.miatech.praxis.payment.dto.SPIL004Filter;
 import net.miatech.praxis.payment.dto.SPIL005Filter;
 import net.miatech.praxis.payment.dto.SPIL006Filter;
+import net.miatech.praxis.payment.dto.SPIL007Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 
 /**
@@ -24,4 +25,5 @@ public interface InputsPhase2Logic {
     SPIL004Filter loadSPIL004Filter(SPIL004Filter filter) throws Exception;
     SPIL005Filter loadSPIL005Filter(SPIL005Filter filter) throws Exception;
     SPIL006Filter loadSPIL006Filter(SPIL006Filter filter) throws Exception;
+    SPIL007Filter loadSPIL007Filter(SPIL007Filter filter) throws Exception;
 }
