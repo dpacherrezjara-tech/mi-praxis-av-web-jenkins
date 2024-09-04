@@ -84,9 +84,25 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         });
     },
     xpanel_afterrender: function () {
+        $('#OutputsForm-btnToggleSwitch').change(function () {
+            me.procesador();
+        });
+
         this.setStoreData();
     },
 
+    procesador: function () {
+        console.log('switch');
+        let proces = Ext.getCmp(prototype.id + '-cmbCores');
+        if (!proces.isVisible()) {
+            Ext.getCmp(prototype.id + '-PRO').show();
+            Ext.getCmp(prototype.id + '-cmbCores').show();
+            
+        }else{
+            Ext.getCmp(prototype.id + '-PRO').hide();
+            Ext.getCmp(prototype.id + '-cmbCores').hide();
+        }
+    },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -121,6 +137,19 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         }));
         cmbFecFiltro.setValue("PRDA");
         
+        var cmbClient = Ext.getCmp(prototype.id + '-cmbClient');
+        cmbClient.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['CODE', 'NAME'],
+            data: [
+                ["134", "AVIANCA"],
+                ["202", "TACA"],
+                ["133", "LACSA"],
+                ["547", "AEROGAL"]
+            ]
+        }));
+        cmbClient.setValue("134");
+
 //        Ext.getCmp(prototype.id + '-cmbCores').setValue("");
         Ext.Ajax.request({
             url: prototype.url + '/obtainCores',
@@ -143,7 +172,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             },
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
-                
+
             }
         });
 
@@ -154,7 +183,17 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         me.bean = {};
         me.bean.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
-        me.bean.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
+        me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbClient').getValue();
+        let proces = Ext.getCmp(prototype.id + '-cmbCores');
+        if (!proces.isVisible()) {
+            //solo es colombia
+            me.bean.IN_FUENTE = 'C';
+        }else{
+            //exterior
+            me.bean.IN_FUENTE = 'E';
+            me.bean.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
+        }
+        
         var beanString = JSON.stringify(me.bean);
         console.log(me.bean);
         searchParams = {
@@ -164,8 +203,8 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 
     },
     btnSearch_click: function (obj, e) {
-        this.setFormatParameter();
-        this.setGridData();
+//        this.setFormatParameter();
+//        this.setGridData();
     },
     // <editor-fold defaultstate="collapsed" desc="setGridData">
     setGridData: function () {
