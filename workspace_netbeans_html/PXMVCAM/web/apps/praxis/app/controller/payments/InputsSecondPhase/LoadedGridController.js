@@ -46,6 +46,10 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.LoadedGridControlle
         });
         view.setStore(store);
     },
+    downloadExcel: function () {
+        let params = this.view.searchParams;
+        global.getFile(`${this.url}/downloadLoaded?${new URLSearchParams(params)}`);
+    },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);

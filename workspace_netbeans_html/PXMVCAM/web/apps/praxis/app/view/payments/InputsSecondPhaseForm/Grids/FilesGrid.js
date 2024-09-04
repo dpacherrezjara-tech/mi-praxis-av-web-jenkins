@@ -91,6 +91,7 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.FilesGrid', {
                 xtype: 'button',
                 iconCls: 'prx-icon-excel',
                 scale: 'small',
+                hidden: true,
                 tooltip: 'Export to Excel',
                 listeners: {
                     click: 'downloadExcel'

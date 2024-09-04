@@ -46,7 +46,7 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DetailGridControlle
         const me = this;
         const {CCUST, CODPRO, SEQPRO, PRDA} = record.data;
         let params = {IN_CCUST: CCUST, IN_PRDA: PRDA, IN_CODPRO: CODPRO, IN_SEQPRO: SEQPRO};
-        console.log('Parameters: ' , params);
+        console.log('Parameters: ', params);
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
         const loadedPanel = Ext.create('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.FilesGrid', {
@@ -60,7 +60,7 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DetailGridControlle
         const me = this;
         const {CCUST, CODPRO, SEQPRO, PRDA} = record.data;
         let params = {IN_CCUST: CCUST, IN_PRDA: PRDA, IN_CODPRO: CODPRO, IN_SEQPRO: SEQPRO};
-        console.log('Parameters: ' , params);
+        console.log('Parameters: ', params);
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
         const loadedPanel = Ext.create('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.LoadedGrid', {
@@ -74,7 +74,7 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DetailGridControlle
         const me = this;
         const {CCUST, CODPRO, SEQPRO, PRDA} = record.data;
         let params = {IN_CCUST: CCUST, IN_PRDA: PRDA, IN_CODPRO: CODPRO, IN_SEQPRO: SEQPRO};
-        console.log('Parameters: ' , params);
+        console.log('Parameters: ', params);
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
         const exoneratedPanel = Ext.create('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.ExoneratedGrid', {
@@ -95,6 +95,10 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DetailGridControlle
                 panelItems.at(-1).show();
             }
         }
+    },
+    downloadExcel: function () {
+        let params = this.view.searchParams;
+        global.getFile(`${this.url}/downloadSearch?${new URLSearchParams(params)}`);
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

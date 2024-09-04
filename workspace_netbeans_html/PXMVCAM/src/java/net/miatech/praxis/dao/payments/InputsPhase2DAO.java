@@ -58,7 +58,7 @@ public class InputsPhase2DAO implements InputsPhase2Logic {
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPIL001",
                 params, new BeanPropertyRowMapper(MPF126.class));
-        filter.setResponse((List<?>) obj.get("result"));
+        filter.setResponse((List<MPF126>) obj.get("result"));
         filter.setPageOut(obj);
         return filter;
     }
@@ -141,7 +141,7 @@ public class InputsPhase2DAO implements InputsPhase2Logic {
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPIL003",
                 params, new BeanPropertyRowMapper(MPF090.class));
-        filter.setResponse((List<?>) obj.get("result"));
+        filter.setResponse((List<MPF090>) obj.get("result"));
         filter.setPageOut(obj);
         return filter;
     }
@@ -152,7 +152,7 @@ public class InputsPhase2DAO implements InputsPhase2Logic {
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPIL004",
                 params, new BeanPropertyRowMapper(MPF089.class));
-        filter.setResponse((List<?>) obj.get("result"));
+        filter.setResponse((List<MPF089>) obj.get("result"));
         filter.setPageOut(obj);
         return filter;
     }

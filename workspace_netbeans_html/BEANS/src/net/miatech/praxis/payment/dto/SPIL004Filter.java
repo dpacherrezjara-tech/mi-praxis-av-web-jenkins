@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.miatech.praxis.payment.entities.MPF089;
 import net.miatech.utils.CustomPageImpl;
 
 /**
@@ -14,5 +15,5 @@ import net.miatech.utils.CustomPageImpl;
 @EqualsAndHashCode(callSuper = false)
 public class SPIL004Filter extends CustomPageImpl{
     private String IN_CCUST,IN_PRDA,IN_CODPRO,IN_SEQPRO;
-    List<?> response = new ArrayList<>();
+    List<MPF089> response = new ArrayList<>();
 }

@@ -3,9 +3,9 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.ExoneratedGridContr
     alias: 'controller.ExoneratedGridController',
     url: CONTEXTPATH + '/InputsPhase2',
     init: function (view) {
-        if(view.backButton){
+        if (view.backButton) {
             Ext.getCmp(prototype.id + '-exon-btnBack').show();
-            Ext.getCmp(prototype.id + '-exon-btnBack').on('click',view.backButton);
+            Ext.getCmp(prototype.id + '-exon-btnBack').on('click', view.backButton);
         }
     },
     afterRender: async function (obj, e) {
@@ -46,7 +46,10 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.ExoneratedGridContr
         });
         view.setStore(store);
     },
-
+    downloadExcel: function () {
+        let params = this.view.searchParams;
+        global.getFile(`${this.url}/downloadExonerated?${new URLSearchParams(params)}`);
+    },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);

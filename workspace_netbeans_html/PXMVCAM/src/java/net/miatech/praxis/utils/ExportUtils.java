@@ -5,7 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -300,4 +302,17 @@ public class ExportUtils {
         }
     }
 
+    public ResponseEntity<byte[]> createCsv(List<String> lines, String filename) throws Exception{
+        StringJoiner csvJoiner = new StringJoiner("\n");
+        lines.forEach(linea->{
+            csvJoiner.add(linea);
+        });
+        String csv = csvJoiner.toString();
+        byte[] csvBytes = csv.getBytes(StandardCharsets.UTF_8);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=" + filename + ".csv");
+        headers.add("Content-Type", "text/csv");
+        return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
+    }
 }
