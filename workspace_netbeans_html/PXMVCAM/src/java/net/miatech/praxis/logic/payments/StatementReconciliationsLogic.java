@@ -95,6 +95,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX269SQP05114PreDetail(filter);
     }
     
+    public List<A2290Filter> loadPX269SQP05114PreDetailFees(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05114PreDetailFees(filter);
+    }
+    
     public List<A2290Filter> loadPX269SQP05114Agrupa(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05114Agrupa(filter);
     }
