@@ -210,6 +210,8 @@ public class A2290Filter extends A2290 {
     public double RTEICAC = 0;
     public double NETO = 0;
     public double IMPORTEPAG = 0;
+    public double FEESTAXS = 0;
+    public double CHARGEBK = 0;
     public double COMISTOTA = 0;
 
     public double NETOL = 0;
@@ -597,6 +599,8 @@ public class A2290Filter extends A2290 {
     public String MONEDA = "";
     public String MONEDALIQ = "";
     public String MONEDAPAGO = "";
+    public String CODIGO = "";
+    public String IMPORTE = "";
     public String PAISLIQ = "";
     public String PMERCHID = "";
     public String PCURRENCY = "";

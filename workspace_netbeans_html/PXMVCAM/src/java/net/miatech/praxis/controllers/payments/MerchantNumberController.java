@@ -632,7 +632,7 @@ public class MerchantNumberController extends BaseController {
         A2354Filter filter = new A2354Filter();
         Gson gson = new Gson();
         String message = "";
-        String filename = "",option = "";
+        String filename = "", option = "";
         String beanString = "";
 
         try {
@@ -641,8 +641,8 @@ public class MerchantNumberController extends BaseController {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2354Filter.class);
             option = filter.OPTION;
-            
-            message = uploadFileMerchant(dataFile,option);
+
+            message = uploadFileMerchant(dataFile, option);
 
             map.put("success", true);
             map.put("msjResult", message);
@@ -653,7 +653,7 @@ public class MerchantNumberController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    private String uploadFileMerchant(byte[] bytes,String option) throws Exception {
+    private String uploadFileMerchant(byte[] bytes, String option) throws Exception {
 
         Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -685,6 +685,10 @@ public class MerchantNumberController extends BaseController {
                     i++;
                     Row row = rowIterator.next();
 
+                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null && row.getCell(5) == null) {
+                        break;
+                    }
+
                     if (i > 1) {
                         cont++;
                         if (row.getCell(0) != null) {
@@ -700,7 +704,6 @@ public class MerchantNumberController extends BaseController {
                             obj.CODE = dataFormatter.formatCellValue(row.getCell(8));
                             obj.CORE = dataFormatter.formatCellValue(row.getCell(9));
                             obj.DREPORT = dataFormatter.formatCellValue(row.getCell(10));
-//                            obj.VACIO = dataFormatter.formatCellValue(row.getCell(11));
                             obj.FRANC1 = dataFormatter.formatCellValue(row.getCell(11));
                             obj.FRANC2 = dataFormatter.formatCellValue(row.getCell(12));
                             obj.FRANC3 = dataFormatter.formatCellValue(row.getCell(13));
@@ -726,14 +729,14 @@ public class MerchantNumberController extends BaseController {
                     System.out.print("");
                     logic = new MerchantNumberLogic();
                     logic.setSession(this.serverSession.getServerSession());
-                    message = logic.loadPX305SQP00941(lstData,cont,option);
+                    message = logic.loadPX305SQP00941(lstData, cont, option);
                 }
 
             } catch (Exception e) {
                 message = e.getMessage();
                 e.printStackTrace();
             }
-          
+
             archivo.delete();
         } catch (Exception e) {
             message = e.getMessage();
