@@ -3,7 +3,7 @@ package net.miatech.praxis.dao.flown;
 // <editor-fold defaultstate="collapsed" desc="import">
 import static com.ibm.as400.data.PcmlMessageLog.logError;
 import static com.ibm.as400.data.PcmlMessageLog.logError;
-import static com.sun.corba.se.impl.activation.ServerMain.logError;
+//import static com.sun.corba.se.impl.activation.ServerMain.logError;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
