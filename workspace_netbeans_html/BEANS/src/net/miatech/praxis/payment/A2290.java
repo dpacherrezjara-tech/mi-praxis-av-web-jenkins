@@ -68,6 +68,9 @@ public class A2290 {
     public String ERROR = "";
     public String NEGOC = "";
     public String ACCNUMBER = "";
+    public String ACCOUNT = "";
+    public String CLAVE1 = "";
+    public String CLAVE3 = "";
     public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
