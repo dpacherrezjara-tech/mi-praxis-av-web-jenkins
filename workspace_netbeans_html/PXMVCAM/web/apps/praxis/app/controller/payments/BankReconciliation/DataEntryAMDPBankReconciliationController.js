@@ -836,8 +836,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             }
         });
     },
-    onUpdateClick: function (btn) {
-        var deci = this.preexecuteOption();
+    onUpdateClick: async function (btn) {
+        var deci = await this.preexecuteOption();
         if (deci) {
             Ext.Msg.show({
                 title: '.:Confirmation:.',
@@ -909,24 +909,28 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="executeOption">
-    preexecuteOption: function () {
+    preexecuteOption: async function () {
 
         var decide = false;
         console.log(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue(), 'txtSVFOPHide')
         console.log(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue(), 'txtSumAmount')
         var ASVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSVFOPHide').getValue().replace(/,/g, '').replace('.00', ''));
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
-        console.log(ASVFOP);
-        console.log(BSVFOP);
         if (ASVFOP == BSVFOP) {
 
             var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
             console.log(comment);
             if (comment !== '' && comment !== null) {
                 let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+                let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
+                let comentVisible = miGrillaAdj.isVisible();
                 let datos = {};
-                datos = this.procesarRegistros(miGrilla);
-                if (Array.isArray(datos) && datos.length === 0) {
+                datos = await this.procesarRegistros(miGrilla, miGrillaAdj);
+                if( datos == false){
+                    global.Msg({msg: 'The amount exceeds the allowed ranges'});
+                    return false
+                }
+                else if (Array.isArray(datos) && datos.length === 0) {
                     // Nadine
                 } else {
                     console.log('modificable');
@@ -944,7 +948,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         }
         return decide;
     },
-    executeOption: function (beanTemp, option) {
+    executeOption: async function (beanTemp, option) {
 
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
@@ -955,14 +959,16 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             // Llamada a la función procesarRegistros con la grilla como parámetro
             console.error('Entró al procesar Registros');
             if (comentVisible) {
-                datos = this.procesarRegistros(miGrilla, miGrillaAdj);
+                datos = await this.procesarRegistros(miGrilla, miGrillaAdj);
 
             } else {
-                datos = this.procesarRegistros(miGrilla);
+                datos = await this.procesarRegistros(miGrilla);
             }
-            console.log(datos);
 //            datos = this.procesarRegistros(miGrilla);
-            if (Array.isArray(datos) && datos.length === 0) {
+            if( datos == false){
+                global.Msg({msg: 'The amount exceeds the allowed ranges'});
+                return false
+            } else if (Array.isArray(datos) && datos.length === 0) {
                 // Nadine
             } else {
                 Ext.Ajax.request({
@@ -1080,12 +1086,56 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         }
     },        
     //</editor-fold>
-
-    procesarRegistros: function (grilla, miGrillaAdj) {
+   
+    procesarRegistros: async function (grilla, miGrillaAdj) {
         // Crear una lista para almacenar los datos
         let listaDeDatos = [];
         let ticketsOcupados = [];
         var cont = 0;
+        let montoAjuste = 0;
+        let cantidadAdj = 0;
+        let beanValidationAdj = {}
+        let amountMax = 0
+        let amountMin = 0
+        let isExistRange = false
+        let codRejec = Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue()
+        beanValidationAdj.SCURRENCY = meDe.bean.SCURRENCY;
+        console.log(beanValidationAdj, 'beanValidationAdj')
+         try {
+            const response = await new Promise((resolve, reject) => {
+                Ext.Ajax.request({
+                    url: prototype.url + '/validationAdj',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: Ext.JSON.encode(beanValidationAdj)},
+                    success: function (response) {
+                        resolve(response);
+                    },
+                    failure: function (response) {
+                        reject(new Error('server-side failure with status code ' + response.status));
+                    }
+                });
+            });
+
+            var res = Ext.JSON.decode(response.responseText);
+            console.log(res);
+            if (res.success) {
+                console.log(res.result, 'res.resultDASDSADA');
+                amountMax = res.result.MAXF2;
+                amountMin = res.result.MINF2;
+                if (!(amountMax === 0 && amountMin === 0)) {
+                    isExistRange = true;
+                }
+                console.log(amountMax, 'dadadadadas');
+                console.log(amountMin, 'dadadadaddadaas');
+            } else {
+                global.Msg({msg: res.sesion});
+            }
+
+        } catch (error) {
+            console.error(error.message);
+            return false;  // Manejo de error en la solicitud
+        }
         // Recorrer la grilla y agregar los datos a la lista
         grilla.getStore().each(function (record) {
             let registro = {
@@ -1121,6 +1171,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         if (miGrillaAdj && miGrillaAdj.getStore) {
             miGrillaAdj.getStore().each(function (record) {
+            cantidadAdj++;
+            montoAjuste = montoAjuste +  record.get('A1531VFOP');   
                 let registro = {
                     ASTVAL: '1', // Reemplaza 'id' con el campo correcto de tu modelo
                     ATDOC: 'A', // Reemplaza 'id' con el campo correcto de tu modelo
@@ -1147,7 +1199,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         } else {
             console.error('La grilla o su tienda no están definidas correctamente.');
         }
-
+        console.log(montoAjuste, 'montoAjuste')
+        console.log(amountMax, 'amountMax')
+        console.log(amountMin, 'amountMin')
+        console.log(codRejec, 'codRejec')
+        console.log('01')
+        let validada = codRejec == "01"
+        console.log(validada, 'validada')
+        console.log(isExistRange, 'isExistRange')
+        console.log(!(montoAjuste >= amountMin && montoAjuste <= amountMax), 'validateeeeeeeee')
+        if( codRejec == "01" && isExistRange && !(montoAjuste >= amountMin && montoAjuste <= amountMax) ){
+            console.log('ENTRA AL IF DE AJUSTES')
+            return false
+        }
         // Convertir la lista a JSON
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
         if (cont > 0) {

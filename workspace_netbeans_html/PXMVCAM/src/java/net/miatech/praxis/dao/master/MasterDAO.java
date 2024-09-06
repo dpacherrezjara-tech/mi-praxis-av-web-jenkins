@@ -1327,7 +1327,7 @@ public class MasterDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
 
-            strSQL = "SELECT DISTINCT A.CODE,(SELECT MAX(CORE) FROM PRAXISMP.MPF109 WHERE CODE = A.CODE) AS CORE FROM PRAXISMP.MPF109 A";
+            strSQL = "(SELECT DISTINCT A.CODE,(SELECT MAX(CORE) FROM PRAXISMP.MPF109 WHERE CODE = A.CODE) AS CORE FROM PRAXISMP.MPF109 A) UNION ALL (SELECT 'AT','UATP' FROM (VALUES ('')) AS TBL01)";
 
             //con = Proveedor.getConnectionIS(user);
             stmt = cnx.createStatement();

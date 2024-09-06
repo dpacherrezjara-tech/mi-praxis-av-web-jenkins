@@ -2431,8 +2431,10 @@ public class StatementReconciliationsDAO {
 
                 beanTkt = new A2290Filter();
                 beanTkt.CODIGO = rst.getString("CODIGO");
-                beanTkt.IMPORTE = rst.getString("IMPORTE");
                 beanTkt.MONEDA = rst.getString("MONEDA");
+                beanTkt.IMPORTE = rst.getString("IMPORTE");
+                beanTkt.MONEDAPAGO = rst.getString("MONEDAPAGO");
+                beanTkt.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
                 beanTkt.DESCRIP = rst.getString("DESCRIP");
                 lstTkts.add(beanTkt);
             }
