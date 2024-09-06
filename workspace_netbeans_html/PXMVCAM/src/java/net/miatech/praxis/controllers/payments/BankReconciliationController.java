@@ -577,6 +577,33 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "validationAdj")
+    public @ResponseBody
+    String validationAdj(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : validationAdj-------------");
+        map.put("success", true);
+
+        A2290Filter result = new A2290Filter();
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            result = logic.loadPX269SQPVALIADJ(filter);
+            map.put("result", result);
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "executeOption")
     public @ResponseBody

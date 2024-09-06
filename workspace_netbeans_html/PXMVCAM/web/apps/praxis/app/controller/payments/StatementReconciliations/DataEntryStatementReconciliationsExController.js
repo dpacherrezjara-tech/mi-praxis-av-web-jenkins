@@ -158,6 +158,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-gridDataInfoScanFees').show();
                 Ext.getCmp(prototype.id + '-Fees').show();
                 Ext.getCmp(prototype.id + '-de-txtSumAmount_Fee').show();
+                Ext.getCmp(prototype.id + '-de-txtSumAmount_FeeEx').show();
                 this.onSearchCompleteHeader();
             } else {
                 Ext.getCmp(prototype.id + '-header').hide();
@@ -172,6 +173,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-gridDataInfoScanFees').show();
                 Ext.getCmp(prototype.id + '-Fees').show();
                 Ext.getCmp(prototype.id + '-de-txtSumAmount_Fee').show();
+                Ext.getCmp(prototype.id + '-de-txtSumAmount_FeeEx').show();
                 this.onSearchCompleteDetail();
             }
 
@@ -199,13 +201,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-mainDetail').hide();
                 Ext.getCmp(prototype.id + '-mainDetail2').hide();
                 Ext.getCmp(prototype.id + '-gridColumnDeleteHead').show();
-                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1509);
+                Ext.getCmp(prototype.id + '-gridDataInfoScanHead').setWidth(1550);
 //                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(870);
                 Ext.getCmp(prototype.id + '-titleDetail').show();
                 Ext.getCmp(prototype.id + '-titleFees').hide();
                 Ext.getCmp(prototype.id + '-gridDataInfoScanFees').hide();
                 Ext.getCmp(prototype.id + '-Fees').hide();
                 Ext.getCmp(prototype.id + '-de-txtSumAmount_Fee').hide();
+                Ext.getCmp(prototype.id + '-de-txtSumAmount_FeeEx').hide();
                 this.onSearchCompleteHeader();
             } else {
                 Ext.getCmp(prototype.id + '-header').hide();
@@ -223,6 +226,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-gridDataInfoScanFees').hide();
                 Ext.getCmp(prototype.id + '-Fees').hide();
                 Ext.getCmp(prototype.id + '-de-txtSumAmount_Fee').hide();
+                Ext.getCmp(prototype.id + '-de-txtSumAmount_FeeEx').hide();
                 this.onSearchCompleteDetail();
             }
         }
@@ -559,6 +563,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.sumAmount_Fee = 0;
         this.lstSendManual = [];
         this.lstSendManualFees = [];
+        this.sumAmount_FeeEx = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         var store_gridInfoScanFees = Ext.getCmp(prototype.id + '-gridDataInfoScanFees').getStore();
 
@@ -585,7 +590,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.lstSendManualFees.push(dataRow1.data);
 
                 var importe = parseFloat(dataRow1.data.IMPORTE) || 0;
+                var importePag = parseFloat(dataRow1.data.IMPORTEPAG) || 0;
                 this.sumAmount_Fee += importe;
+                this.sumAmount_FeeEx += importePag;
                 
         }
 
@@ -602,6 +609,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtSumAmount_Net', Ext.util.Format.number(this.sumAmount_Net, '0,000.00'));
         this.setValue('de-txtSumAmount_Imp', Ext.util.Format.number(this.sumAmount_Imp, '0,000.00'));
         this.setValue('de-txtSumAmount_Fee', Ext.util.Format.number(this.sumAmount_Fee, '0,000.00'));
+        this.setValue('de-txtSumAmount_FeeEx', Ext.util.Format.number(this.sumAmount_FeeEx, '0,000.00'));
 //        console.log(this.sumAmount_Tot);
 //        console.log(this.sumAmount_Com);
 //        console.log(this.sumAmount_Net);
