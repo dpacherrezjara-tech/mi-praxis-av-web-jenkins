@@ -126,18 +126,19 @@ public class OutputsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05104(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05104(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST.trim());
             cstmt.setString(2, filter.IN_FILE.trim());
             cstmt.setString(3, filter.IN_PRDA.trim());
             cstmt.setString(4, filter.IN_DATE.trim());
             cstmt.setString(5, filter.IN_CORE.trim());
+            cstmt.setString(6, filter.IN_FUENTE.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -146,6 +147,7 @@ public class OutputsDAO {
                 bean.DDATA = rst.getString("DDATA").trim();
                 bean.DATEC = rst.getString("DATEC").trim();
                 bean.TRANC = rst.getString("TRANC").trim();
+                bean.COREP = rst.getString("COREP").trim();
                 lstData.add(bean);
             }
             rst.close();
@@ -182,24 +184,26 @@ public class OutputsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST.trim());
             cstmt.setString(2, filter.IN_FILE.trim());
             cstmt.setString(3, filter.IN_PRDA.trim());
             cstmt.setString(4, filter.IN_DATE.trim());
             cstmt.setString(5, filter.IN_CORE.trim());
+            cstmt.setString(6, filter.IN_FUENTE.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 bean = new A2353Filter();
                 bean.TRAMA = rst.getString("TRAMA").trim();
+                bean.COREP = rst.getString("COREP").trim();
                 lstData.add(bean);
             }
             rst.close();

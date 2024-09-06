@@ -24,10 +24,12 @@ public class A2353Filter extends A2353 {
      public String IN_SCOUNTRYNEW = "";
      public String IN_SCURRENCYNEW = "";
      public String IN_TEXTOLARNEW = "";
+     public String IN_CCUST = "";
      public String IN_FILE = "";
      public String IN_PRDA = "";
      public String IN_DATE = "";
      public String IN_CORE = "";
+     public String IN_FUENTE = "";
      public String IN_APLIC = "";
      public String IN_INPNAME = "";
      public String IN_OUTNAME = "";
