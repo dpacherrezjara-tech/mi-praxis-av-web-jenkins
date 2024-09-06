@@ -416,6 +416,18 @@ public class LoadSalesConciliationDAO {
         int duplicateCount = 0;
         int coorrelativo = lstdata.size();
         int coorrelativol = 1;
+        boolean isAdj = false;
+        for(int j = 0; j < lstdata.size(); j++){
+            if( lstdata.get(j).FCONCEP.trim().equals("")){
+                isAdj = true;
+            }
+        }
+        
+        if( !user.getUserInfo().USR.substring(0,2).equals("AV") && isAdj ){
+            rspt.MESSAGE = "You are not allowed to make an adjustment";
+            return rspt;
+        }
+        
         //COORRELATIVO TRAN
         A2290Filter filter = new A2290Filter();
         filter.IN_DATE = Functions.getFechaActual(); 

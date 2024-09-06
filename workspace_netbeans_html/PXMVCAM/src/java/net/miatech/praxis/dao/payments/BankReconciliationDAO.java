@@ -1775,6 +1775,58 @@ public class BankReconciliationDAO {
 
         return objRtn;
     }
+    
+    
+    public A2290Filter loadPX269SQPVALIADJ(A2290Filter filter) throws SQLException, Exception {
+
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+
+
+        //loadPX269SQP00833
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPVALID_ADJ_MPF113(?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.SCURRENCY.trim());
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn.CCUST = rs01.getString("CCUST");
+                objRtn.MINF2 = rs01.getDouble("MINF2");
+                objRtn.MAXF2 = rs01.getDouble("MAXF2");
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return objRtn;
+    }
 
     public String loadPX269SQP00834(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 

@@ -68,6 +68,10 @@ public class BankReconciliationLogic {
     public A2290Filter loadPX269SQPXXX(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQPXXX(filter);
     }
+    
+     public A2290Filter loadPX269SQPVALIADJ(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQPVALIADJ(filter);
+    }
 
     public String loadPX269SQP00834(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00834(filters, user);

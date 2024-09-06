@@ -237,6 +237,10 @@ public class LoadSalesConciliationController extends BaseController {
                             lstDataNotFound.add(obj);
                             System.out.println("Registros no reconocidos como ventas o ingresos");
                         }
+                        if(obj.SEQ.equals("") && obj.USERF.equals("") && obj.TYPETRAN.equals("") && obj.CCUST.equals("") 
+                           && obj.AMOUNT.equals("") && obj.SCURRENCY.equals("") ){       
+                            break;
+                        }
                         qty++;
                         lstData.add(obj);
                     }

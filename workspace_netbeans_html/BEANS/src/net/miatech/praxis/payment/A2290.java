@@ -120,6 +120,8 @@ public class A2290 {
     public double COMMFAREC = 0;
     public double TOTAL_ADM = 0;
     public double IDDEBF = 0;
+    public double MAXF2 = 0;
+    public double MINF2 = 0;
     public String ACURRENCY = "";
     public String ACARDN = "";
     public String ADATEXP = "";
