@@ -2,27 +2,27 @@
 Ext.create('Ext.Component', {
     renderTo: Ext.getBody(),
     html: '<style type="text/css">' +
-          '.button-off {' +
-          '  background-color: #f44336;' + // Red color for OFF
-          '  color: white;' +
-          '  border-radius: 50%;' +
-          '  border: none;' +
-          '  font-size: 12px;' +
-          '  cursor: pointer;' +
-          '  text-align: center;' +
-          '  line-height: 50px;' + // Ensure text is vertically centered
-          '}' +
-          '.button-on {' +
-          '  background-color: #4CAF50;' + // Green color for ON
-          '  color: white;' +
-          '  border-radius: 50%;' +
-          '  border: none;' +
-          '  font-size: 12px;' +
-          '  cursor: pointer;' +
-          '  text-align: center;' +
-          '  line-height: 50px;' + // Ensure text is vertically centered
-          '}' +
-          '</style>'
+            '.button-off {' +
+            '  background-color: #f44336;' + // Red color for OFF
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '.button-on {' +
+            '  background-color: #4CAF50;' + // Green color for ON
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '</style>'
 });
 
 Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                 border: false
             },
             items: [
-                
+
                 {
                     xtype: 'panel',
                     width: '100%',
@@ -195,7 +195,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                             editable: false,
                                             fieldLabel: '',
                                             width: 65,
-                //                            labelWidth: 0,
+                                            //                            labelWidth: 0,
                                             labelAlign: 'right',
                                             queryMode: 'local',
                                             triggerAction: 'all',
@@ -362,7 +362,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                             editable: false,
                                             fieldLabel: '',
                                             width: 65,
-                //                            labelWidth: 0,
+                                            //                            labelWidth: 0,
                                             labelAlign: 'right',
                                             queryMode: 'local',
                                             triggerAction: 'all',
@@ -398,7 +398,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                         {xtype: 'tbspacer', width: 10},
                                     ]
                                 },
-                                
+
                                 {
                                     xtype: 'container',
                                     layout: 'hbox',
@@ -495,7 +495,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                         },
                                     ]
                                 },
-                                
+
                                 {
                                     xtype: 'container',
                                     layout: 'hbox',
@@ -515,13 +515,13 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                             id: prototype.id + '-txtINVOICE_IBT',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
-                //                            maskRe: /[0-9]/,
+                                            //                            maskRe: /[0-9]/,
                                             maxLength: 18,
                                             width: 123,
                                             enableKeyEvents: true,
                                             listeners: {
-                //                                change: 'onValidarChange',
-                //                                keypress: 'BuscarTKT_keyDownHandler'
+                                                //                                change: 'onValidarChange',
+                                                //                                keypress: 'BuscarTKT_keyDownHandler'
                                             }
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -537,13 +537,13 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                             id: prototype.id + '-txtBANDOC_IBT',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
-                //                            maskRe: /[0-9]/,
+                                            //                            maskRe: /[0-9]/,
                                             maxLength: 10,
                                             width: 123,
                                             enableKeyEvents: true,
                                             listeners: {
-                //                                change: 'onValidarChange',
-                //                                keypress: 'BuscarTKT_keyDownHandler'
+                                                //                                change: 'onValidarChange',
+                                                //                                keypress: 'BuscarTKT_keyDownHandler'
                                             }
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -560,18 +560,18 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             maskRe: /[0-9]/,
-                //                            maxLength: 13,
+                                            //                            maxLength: 13,
                                             width: 123,
                                             enableKeyEvents: true,
                                             listeners: {
-                //                                change: 'onValidarChange',
-                //                                keypress: 'BuscarTKT_keyDownHandler'
+                                                //                                change: 'onValidarChange',
+                                                //                                keypress: 'BuscarTKT_keyDownHandler'
                                             }
                                         },
                                     ]
                                 },
                             ]
-                        },    
+                        },
 //                        {xtype: 'tbspacer', width: 60},
                         {
                             xtype: 'container',
@@ -593,7 +593,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             ]
                         }
 
-                   
+
                     ]
                 },
                 {
@@ -754,6 +754,15 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             listeners: {
                                 keypress: 'BuscarTKT_keyDownHandler'
                             }
+                        },
+                        {xtype: 'tbspacer', width: 50},
+                        {
+                            xtype: 'checkboxfield',
+                            id: prototype.id + '-chkTP',
+                            boxLabel: '<b>TP</b>',
+                            checked: true,
+                            hidden: false,
+                            width: 50,
                         },
                     ]
                 },
@@ -989,7 +998,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                 },
                             ]
                         },
-                        
+
                         {
                             xtype: 'radiogroup',
                             hidden: true,
@@ -1001,7 +1010,6 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                             ],
                             listeners: {change: 'cmbTranType_changeHandler'}
                         },
-                        
                     ]
                 },
             ]
