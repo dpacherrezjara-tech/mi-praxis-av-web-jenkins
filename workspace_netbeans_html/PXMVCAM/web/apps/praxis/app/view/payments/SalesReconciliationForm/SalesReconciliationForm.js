@@ -67,7 +67,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 710,
+                                            height: 720,
                                             layout: 'fit',
                                             items: [
                                                 {

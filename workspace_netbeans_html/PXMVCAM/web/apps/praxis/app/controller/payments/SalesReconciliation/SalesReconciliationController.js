@@ -998,7 +998,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     global.Msg({msg: 'Agent must contain 8 digits.'})
                     return false
                 }
-
+                
                 var selectedValuec = win.getValue('rbgType').rbgType;
                 switch (selectedValuec) {
                     case 'Sales':
@@ -1037,6 +1037,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 } else {
                     this.beanDetailTar.IN_TDOC = 'S';
                 }
+                
+                if (win.getValue('chkTP')) {
+                    this.beanDetailTar.IN_SCAR = 'Y';
+                } else {
+                    this.beanDetailTar.IN_SCAR = 'N';
+                }
+                
                 let consultPath = ''
                 switch (win.getValue('cmbTDOC')) {
                     case 'S':
@@ -2842,7 +2849,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
         }else {
             Ext.getCmp(prototype.id + '-columnTkt_DETALLE').show();
-            Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1505)
+            Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1525)
         }
     },
     searchDetMERCHAT: function (beanDetailMer) {
