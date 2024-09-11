@@ -141,8 +141,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") &&
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
-                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && !(this.beanResult.COREP.includes("EV") &&
-                    this.beanResult.SCOUNTRY.includes("PR"))) {
+                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
+                    !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -188,9 +188,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
             if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") &&
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
-                    this.beanResult.SCOUNTRY.includes("UY")) && !this.beanResult.COREP.includes("NB") &&
-                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && !(this.beanResult.COREP.includes("EV") &&
-                    this.beanResult.SCOUNTRY.includes("PR"))) {
+                    this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
+                    !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
+                    !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB")) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
@@ -372,11 +372,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
 
-                    var storeData = Ext.create('Ext.data.Store', {
+                    var storeDataNormal = Ext.create('Ext.data.Store', {
                         data: res.data,
                         autoLoad: true
                     });
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    var storeDataFees = Ext.create('Ext.data.Store', {
+                        data: res.dataFees,
+                        autoLoad: true
+                    });
+                    
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanFees').bindStore(storeDataFees);
+                    
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
                 } else {
@@ -1130,11 +1137,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     }
 
                     var storeDataNormal = Ext.create('Ext.data.Store', {
-                        data: lstNormal,
+                        data: res.data,
                         autoLoad: true
                     });
+                    var storeDataFees = Ext.create('Ext.data.Store', {
+                        data: res.dataFees,
+                        autoLoad: true
+                    });
+                    
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
-
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanFees').bindStore(storeDataFees);
+                    
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
                 } else {

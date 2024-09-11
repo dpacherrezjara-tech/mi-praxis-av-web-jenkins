@@ -726,16 +726,129 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                 },
                                                 columns: [
                                                     {text: 'Records', width: 90, dataIndex: 'QTYDOC',
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;";
-//                                                            return  value;
-//                                                        }
+                                                        listeners: {
+                                                            click: 'searchDataDetalle_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
                                                     }
                                                 ]
                                             }
                                         ]
                                     }
                                 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxDataDetalle',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+                            height: 516,
+                            width: 1012,
+                            margin: '10 0 0 180',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetalle',
+                                    width: 783,
+                                    columnLines: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: 'Seq', dataIndex: 'RN', width: 50},
+                                            {text: 'Processing',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Date', width: 100, dataIndex: 'PROCDATE'}
+                                                ]
+                                            },
+                                            {text: 'User',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
+                                                ]
+                                            },
+                                            {text: 'File',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Name', width: 70, dataIndex: 'CODE'}
+                                                ]
+                                            },
+                                            {text: 'File',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Name', width: 270, dataIndex: 'NAME'}
+                                                ]
+                                            },
+                                            {text: 'Value',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Date', width: 100, dataIndex: 'ADATE'}
+                                                ]
+                                            },
+                                            {text: 'Qty',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Records', width: 90, dataIndex: 'QTYDOC',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            return  value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.tot_QTYDOC, '0,000') + '<b>';
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
                             ]
                         },
                         {

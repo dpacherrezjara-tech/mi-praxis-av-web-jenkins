@@ -3347,6 +3347,7 @@ public class StatementReconciliationsController extends BaseController {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
             List<A2290Filter> lst = new ArrayList<>(0);
+            List<A2290Filter> lstFees = new ArrayList<>(0);
             A2290Filter filter;
             Gson gson = new Gson();
             String beanString;
@@ -3358,9 +3359,11 @@ public class StatementReconciliationsController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
 
             lst = logic.loadPX269SQP05114Detail(filter);
+            lstFees = logic.loadPX269SQP05114PreDetailFees(filter);
 
             map.put("success", true);
             map.put("data", lst);
+            map.put("dataFees", lstFees);
         } catch (SQLException e) {
             map.put("success", false);
             map.put("sesion", SESSION_CONTROL);

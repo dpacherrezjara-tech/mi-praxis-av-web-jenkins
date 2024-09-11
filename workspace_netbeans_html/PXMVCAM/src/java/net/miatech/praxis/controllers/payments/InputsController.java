@@ -553,6 +553,34 @@ public class InputsController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "searchDataDetalle")
+    public @ResponseBody
+    String searchDataDetalle(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Inputs : searchDataDetalle -------------");
+
+        map.put("success", true);
+        A1686Filter filter = new A1686Filter();
+        List<A2359> lst = new ArrayList<>(0);
+        Gson gson = new Gson();
+
+        try {
+            String beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A1686Filter.class);
+
+            logic = new InputsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            lst = logic.loadPX264SQP02958Det(filter);
+
+            System.out.println("Total : " + lst.size());
+            map.put("data", lst);
+
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(InputsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("data", lst);
+        }
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "getXLSX_Delivery")
     public @ResponseBody
