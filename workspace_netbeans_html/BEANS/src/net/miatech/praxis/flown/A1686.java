@@ -12,6 +12,7 @@ public class A1686 {
 
     public String CCUST = "";
     public String DTRANS = "";
+    public String INPNAME = "";
     public String DPRDA = "";
     public String FUENTE = "";
     public String STVAL = "";

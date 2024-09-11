@@ -111,8 +111,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         }
         this.btnSearch_click();
     },
-    selectCmbVista: function ( obj ) {
-        if(obj.getValue() === 'All'){
+    selectCmbVista: function (obj) {
+        if (obj.getValue() === 'All') {
             global.Msg({msg: 'Select source'});
         }
         if (obj.getValue() === 'C') {
@@ -123,7 +123,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             console.log('Entra a if de grid calendar');
             this.gridCalendar_clickHandler();
         }
-        if(obj.getValue() === 'D'){
+        if (obj.getValue() === 'D') {
             Ext.getCmp(prototype.id + '-Filters3_2').show();
             Ext.getCmp(prototype.id + '-Filters3_1').show();
             Ext.getCmp(prototype.id + '-infoCalendar').hide();
@@ -613,7 +613,41 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         Ext.getCmp(prototype.id + '-gridDataDetailAll').bindStore(storeGridDatas);
 
     },
-
+    searchDataDetalle_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        var beanDetAll = rowData.data;
+        beanDetAll.INPNAME = rowData.data.INPNAME;
+        console.log(beanDetAll.INPNAME);
+        me.paramsDetail.beanString = JSON.stringify(beanDetAll);
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDataDetalle';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        this.searchDataDetalle();
+    },
+    searchDataDetalle: function () {
+        win.lblUser_toolTip("Estructura: A2359");
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDataDetalle'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetail;
+                },
+                load: function (obj) {
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var data = obj.data.items[0].data;
+                        Ext.getCmp(prototype.id + '-gridDataDetalle').setTitle('<center style="font-size:12px;"> ' + data.strTitulo + '</center>');
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
+    },
     setGridDataCity: function () {
         me.beanCity = {};
         me.beanCity.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() +
