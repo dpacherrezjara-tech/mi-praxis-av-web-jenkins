@@ -92,6 +92,10 @@ public class InputsLogic {
         return InputsDAO.loadPX264SQP02958(filter);
    }
    
+   public List<A2359> loadPX264SQP02958Det(A1686Filter filter) throws SQLException, Exception {
+        return InputsDAO.loadPX264SQP02958Det(filter);
+   }
+   
    public List<A1686Filter> loadPX264SQP04615Log(A1686Filter filter) throws SQLException, Exception {
         return InputsDAO.loadPX264SQP04615Log(filter);
     }

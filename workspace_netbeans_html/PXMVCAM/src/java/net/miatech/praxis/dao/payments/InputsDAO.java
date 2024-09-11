@@ -1195,6 +1195,79 @@ public class InputsDAO {
         return lstRtn;
     }
     
+    public List<A2359> loadPX264SQP02958Det(A1686Filter filter) throws SQLException, Exception {
+
+        List<A2359> lstRtn = new ArrayList<A2359>(0);
+        A2359 objRtn;
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        Connection cnx = null;
+        String strTitulo = "";
+        
+        strTitulo = "Processing Date : " + filter.FECR + " File Name: " + filter.INPNAME;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958DET(?,?,?,?,?,?)}";
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.DTRANS);
+            cstmt01.setString(3, filter.INPNAME);
+            cstmt01.setString(4, filter.FECR);
+            cstmt01.setString(5, filter.USCR);
+            cstmt01.setString(6, filter.IN_ERROR);
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            int pos = 0;
+            while (rs01.next()) {
+                pos++;
+                objRtn = new A2359();
+                objRtn.RN = pos;
+                objRtn.CCUST = rs01.getString("CCUST").trim();
+                objRtn.CODE = rs01.getString("CODE").trim();
+                objRtn.BANK = rs01.getString("BANK").trim();
+                objRtn.NAME = rs01.getString("NAME").trim();
+                objRtn.ADATE = rs01.getString("ADATE").trim();
+                objRtn.PROCDATE = rs01.getString("PROCDATE").trim();
+                objRtn.QTYDOC = rs01.getInt("QTYDOC");
+                objRtn.tot_QTYDOC = rs01.getInt("TOT_QTYDOC");
+                
+                objRtn.strTitulo = strTitulo;
+                
+                objRtn.USCR = rs01.getString("USCR").trim();
+                objRtn.FECR = rs01.getString("FECR").trim();
+
+                lstRtn.add(objRtn);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
+    
     public List<A1686Filter> loadPX264SQP04615Log(A1686Filter filter) throws SQLException, Exception {
 
         List<A1686Filter> lstRtn = new ArrayList<A1686Filter>(0);
