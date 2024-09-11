@@ -285,7 +285,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             fields: ['code', 'name'],
             data: [
                 ["SDATE", "Sales Date"],
-                        //["BDATEP", "Reconciliation Date"]
+                        ["PAYDATE", "Pay Date"]
             ]
         }));
         cmbFecFiltro.setValue("SDATE");
@@ -503,7 +503,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '' 
                 || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbSource').getValue() !== '' 
                 || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''
-                || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== '')  {
+                || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== ''|| Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '')  {
+                   
+                
+                this.beanDetDay.strFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'PAYDATE' ? 'P' : 'S';
                 this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
                 this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
                 this.beanDetDay.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
@@ -511,6 +514,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 this.beanDetDay.IN_FTE = win.getValue('cmbSource');
                 this.beanDetDay.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
                 this.beanDetDay.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
+                this.beanDetDay.IN_BANDOC = win.getValue('txtBANDOC');
                 
                 me.panelActual = '-panelGridDataDetalle';
                 global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -1297,7 +1301,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetSett = {}
         this.beanDetSett.IN_DATEC = rowData.data.DATEC;
         this.beanDetSett.IN_TRANC = rowData.data.TRANC;
-        this.beanDetSett.IN_BANDOC = rowData.data.BANDOC;
+//        this.beanDetSett.IN_BANDOC = rowData.data.BANDOC;
         me.paramsDetail.beanString = JSON.stringify(this.beanDetSett);
         this.setGridDataDetalle();
     },
