@@ -167,7 +167,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-sumHeader').hide();
                 Ext.getCmp(prototype.id + '-mainDetail').show();
                 Ext.getCmp(prototype.id + '-mainDetail2').show();
-//                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(730);
+                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(730);
                 Ext.getCmp(prototype.id + '-titleDetail').hide();
                 Ext.getCmp(prototype.id + '-titleFees').hide();
                 Ext.getCmp(prototype.id + '-gridDataInfoScanFees').show();
@@ -220,7 +220,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-panelScanCard2').show();
                 Ext.getCmp(prototype.id + '-mainDetail').show();
                 Ext.getCmp(prototype.id + '-mainDetail2').show();
-//                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(780);
+                Ext.getCmp(prototype.id + '-dataEntryEx').setHeight(780);
                 Ext.getCmp(prototype.id + '-titleDetail').hide();
                 Ext.getCmp(prototype.id + '-titleFees').hide();
                 Ext.getCmp(prototype.id + '-gridDataInfoScanFees').hide();

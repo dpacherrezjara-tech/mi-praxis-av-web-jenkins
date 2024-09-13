@@ -285,7 +285,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             fields: ['code', 'name'],
             data: [
                 ["SDATE", "Sales Date"],
-                        ["PAYDATE", "Pay Date"]
+                        ["PAYDATE", "Payment Date"]
             ]
         }));
         cmbFecFiltro.setValue("SDATE");
