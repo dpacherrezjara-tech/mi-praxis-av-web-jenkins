@@ -13,4 +13,7 @@ public class MPF091 {
             FSELEC,FECSELEC,USCR,FECR,HOCR,PGMCR,USUP,FEUP,HOUP,PGMUP,CODE,CORRL,
             CODIGO,TIPOARCH,MONEDAPAGO;
     private Double IMPORTE,IMPORTEPAG;
+    
+    //OTROS CAMPOS
+    private String DESC_PRO;
 }

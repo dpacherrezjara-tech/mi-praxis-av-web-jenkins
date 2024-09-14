@@ -9,7 +9,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
     controller: 'BankReconDataEntryController',
     title: 'Bank Reconciliation - Form',
     header: true,
-    width: 1350,
+    width: 1600,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -109,6 +109,12 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                         }
                                     },
                                     value: 'None'
+                                },
+                                {
+                                    fieldLabel: 'Bandoc',
+                                    name: 'BANDOC',
+                                    labelWidth: 70,
+                                    width: 190
                                 }
                             ]
                         }
@@ -221,6 +227,12 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                     width: 140
                                 },
                                 {
+                                    fieldLabel: 'Currency',
+                                    name: 'SCURRENCY',
+                                    labelWidth: 80,
+                                    width: 150
+                                },
+                                {
                                     fieldLabel: 'NET Amount',
                                     name: 'NETO',
                                     labelWidth: 90,
@@ -255,32 +267,34 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                     defaults: {
                         xtype: 'panel',
                         width: '100%',
-                        margin: '3 3 3 3'
+                        margin: '3 3 3 3',
+                        border: false
                     },
                     items: [
                         {
-
                             id: prototype.idDE + '-panelMatch',
                             hidden: true,
-                            defaults: {
-                                xtype: 'grid',
-                                titleAlign: 'center',
-                                minHeight: 100,
-                                maxHeight: 120,
-                                width: '100%',
-                                viewConfig: {
-                                    stripeRows: true,
-                                    enableTextSelection: true,
-                                    markDirty: false
-                                },
-                                columnLines: true
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
                             },
                             items: [
                                 //<editor-fold defaultstate="collapsed" desc="Header">
                                 {
+                                    xtype: 'grid',
+                                    titleAlign: 'center',
+                                    minHeight: 100,
+                                    maxHeight: 140,
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        markDirty: false
+                                    },
+                                    columnLines: true,
                                     title: 'Headers',
                                     id: prototype.idDE + '-gridHeadersMatch',
-                                    hidden:true,
+                                    hidden: true,
+                                    width: '100%',
                                     columns: {
                                         defaults: {
                                             align: 'center',
@@ -296,8 +310,10 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                             },
                                             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
                                             {text: 'Settlement<br>Date', dataIndex: 'FLIQUIDACI', width: 80},
-                                            {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
-                                            {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 100},
+                                            {text: 'Merchant', dataIndex: 'MERCHAND', width: 110},
+                                            {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                            {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
+                                            {text: 'Account', dataIndex: 'ACCOUNT', width: 100},
                                             {
                                                 text: 'Payment Amounts',
                                                 defaults: {
@@ -311,13 +327,13 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     }
                                                 },
                                                 columns: [
-                                                    {text: 'Amount', dataIndex: 'IMPORTEPAG', width: 100},
                                                     {text: 'Curr.', dataIndex: 'MONEDAPAGO', width: 60,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "background-color:#F0D094";
                                                             return value;
                                                         }
-                                                    }
+                                                    },
+                                                    {text: 'Amount', dataIndex: 'IMPORTEPAG', width: 120}
                                                 ]
                                             },
                                             {
@@ -333,148 +349,318 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     }
                                                 },
                                                 columns: [
-                                                    {text: 'NET', dataIndex: 'NETO', width: 100},
                                                     {text: 'Curr.', dataIndex: 'MONEDA', width: 60,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "background-color:#85beff";
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Comm.', dataIndex: 'COMISION', width: 100},
-                                                    {text: 'Fee Tax', dataIndex: 'FEESTAXS', width: 100},
-                                                    {text: 'Chargeback', dataIndex: 'CHARGEBK', width: 100},
-                                                    {text: 'Misc.', dataIndex: 'MISCELNS', width: 100},
-                                                    {text: 'Others', dataIndex: 'OTROS', width: 100}
+                                                    {text: 'Amount', dataIndex: 'TOTAL', width: 120},
+                                                    {text: 'Comm.', dataIndex: 'COMISION', width: 120},
+                                                    {text: 'Fee Tax', dataIndex: 'FEESTAXS', width: 120},
+                                                    {text: 'NET', dataIndex: 'NETO', width: 120}
                                                 ]
                                             },
-                                            {text: 'Total', dataIndex: 'TOTAL', width: 100,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:right;background-color:#85ff85;font-weight:bold";
-                                                    value = Ext.util.Format.number(value, '0,000.00');
-                                                    return value;
-                                                }
-                                            }
-
+                                            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1}
                                         ]
                                     }
                                 },
                                 //</editor-fold>
-                                //<editor-fold defaultstate="collapsed" desc="Settlements">
                                 {
-                                    title: 'Settlements',
-                                    id: prototype.idDE + '-gridSettlementsMatch',
-                                    hidden:true,
-                                    minHeight: 100,
-                                    maxHeight: 180,
-                                    columns: {
-                                        defaults: {
-                                            align: 'center',
-                                            menuDisabled: true,
-                                            sortable: true
-                                        },
-                                        items: [
-                                            {
-                                                text: 'RN',
-                                                locked: true,
-                                                xtype: 'rownumberer', // Columna de número de fila
-                                                width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                    xtype: 'panel',
+                                    border: false,
+                                    width: '100%',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    items: [
+                                        //<editor-fold defaultstate="collapsed" desc="Settlements">
+                                        {
+                                            xtype: 'grid',
+                                            titleAlign: 'center',
+                                            viewConfig: {
+                                                stripeRows: true,
+                                                enableTextSelection: true,
+                                                markDirty: false
                                             },
-                                            {text: 'Client', dataIndex: 'CCUST', width: 60},
-                                            {text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70},
-                                            {text: 'Bankdoc', dataIndex: 'BANDOC', width: 130},
-                                            {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
-                                            {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 100},
-                                            {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
-                                            {
-                                                text: 'Settlement Information',
+                                            columnLines: true,
+                                            title: 'Settlements',
+                                            id: prototype.idDE + '-gridSettlementsMatch',
+                                            hidden: true,
+                                            width: '65%',
+                                            minHeight: 130,
+                                            maxHeight: 220,
+                                            columns: {
                                                 defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
                                                     align: 'center',
-                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        metaData.style = "background-color:#85beff;";
-                                                        return value;
-                                                    }
+                                                    menuDisabled: true,
+                                                    sortable: true
                                                 },
-                                                columns: [
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'Client', dataIndex: 'CCUST', width: 60},
+                                                    {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
+                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                                    {
+                                                        text: 'Payment Amounts',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center',
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:right;background-color:#F0D094";
+                                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                                return value;
+                                                            }
+                                                        },
+                                                        columns: [
+                                                            {text: 'Curr.', dataIndex: 'MONEDAPAGO', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "background-color:#F0D094";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Amount', dataIndex: 'IMPORTEPAG', width: 120}
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Settlement Information',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center',
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "background-color:#85beff;";
+                                                                return value;
+                                                            }
+                                                        },
+                                                        columns: [
+                                                            {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
+                                                            {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 80},
+                                                            {text: 'Card Number', dataIndex: 'SCARDN', width: 150},
+                                                            {text: 'Auth <br>Code', dataIndex: 'SAUTHOC', width: 80},
+                                                            {text: 'Curr', dataIndex: 'SCURRENCY', width: 60},
+                                                            {text: 'Amount', dataIndex: 'TOTAL', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#85beff;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Comm.', dataIndex: 'COMISION', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#85beff;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'NET', dataIndex: 'NETO', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#85beff;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
+                                                    {text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70},
+                                                    {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
+                                                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 150}
+                                                ]
+                                            },
+                                            bbar: {
+                                                xtype: 'pagingtoolbar',
+                                                displayInfo: true // Muestra información como "Page X of Y"
+                                            }
+                                        },
+                                        //</editor-fold>
+                                        //<editor-fold defaultstate="collapsed" desc="Taxes">
+                                        {
+                                            xtype: 'grid',
+                                            titleAlign: 'center',
+                                            minHeight: 130,
+                                            maxHeight: 220,
+                                            viewConfig: {
+                                                stripeRows: true,
+                                                enableTextSelection: true,
+                                                markDirty: false
+                                            },
+                                            columnLines: true,
+                                            title: 'Taxes',
+                                            id: prototype.idDE + '-gridTaxesMatch',
+                                            hidden: true,
+                                            width: '35%',
+                                            columns: {
+                                                defaults: {
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'Client', dataIndex: 'CCUST', width: 50},
+                                                    {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
                                                     {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
-                                                    {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 80},
-                                                    {text: 'Card Number', dataIndex: 'SCARDN', width: 150},
-                                                    {text: 'Auth <br>Code', dataIndex: 'SAUTHOC', width: 80},
-                                                    {text: 'NET', dataIndex: 'NETO', width: 100,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#85beff;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
+                                                    {text: 'Tax<br>Code', dataIndex: 'CODIGO', width: 100},
+                                                    {
+                                                        text: 'Amount Information',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center',
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "background-color:#85beff;";
+                                                                return value;
+                                                            }
+                                                        },
+                                                        columns: [
+                                                            {text: 'Curr.<br>Pay', dataIndex: 'MONEDAPAGO', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "background-color:#F0D094";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Amount<br>Pay', dataIndex: 'IMPORTEPAG', width: 120,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#F0D094;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: 'Curr.', dataIndex: 'MONEDA', width: 100},
+                                                            {text: 'Amount', dataIndex: 'IMPORTE', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#85beff;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return value;
+                                                                }
+                                                            }
+                                                        ]
                                                     },
-                                                    {text: 'Comm.', dataIndex: 'COMISION', width: 100,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#85beff;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    }
+                                                    {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
+                                                    {text: 'Bandoc', dataIndex: 'BANDOC', width: 120},
+                                                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 150}
+
                                                 ]
                                             }
 
-                                        ]
-                                    }
+                                        }
+                                        //</editor-fold>
+                                    ]
+                                },
+                                //<editor-fold defaultstate="collapsed" desc="Contadores">
+                                {
+                                    xtype: 'panel',
+                                    border: false,
+                                    width: '100%',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'textfield',
+                                        labelStyle: 'font-weight:bold;text-align:right;',
+                                        fieldStyle: 'text-align:right;',
+                                        readOnly: true,
+                                        value: '0',
+                                        labelWidth: 100,
+                                        width: 200,
+                                        margin: '3 3 3 3'
+                                    },
+                                    items: [
+                                        {
+                                            fieldLabel: 'Qty Headers',
+                                            id: prototype.idDE + '-txtQtyHeaders'
+                                        },
+                                        {
+                                            fieldLabel: 'Qty Sales',
+                                            id: prototype.idDE + '-txtQtySettlSales'
+                                        },
+                                        {
+                                            fieldLabel: 'Qty Debits',
+                                            id: prototype.idDE + '-txtQtySettlDebits'
+                                        },
+                                        {
+                                            fieldLabel: 'Qty Void',
+                                            id: prototype.idDE + '-txtQtySettlVoid'
+                                        },
+                                        {
+                                            fieldLabel: 'Qty Taxes',
+                                            id: prototype.idDE + '-txtQtySettlTaxes'
+                                        },
+                                        {
+                                            fieldLabel: 'Qty Settl.',
+                                            id: prototype.idDE + '-txtQtySettl'
+                                        }
+                                    ]
                                 },
                                 //</editor-fold>
-                                //<editor-fold defaultstate="collapsed" desc="Taxes">
+                                //<editor-fold defaultstate="collapsed" desc="Totales">
                                 {
-                                    title: 'Taxes',
-                                    id: prototype.idDE + '-gridTaxesMatch',
-                                    hidden:true,
-                                    columns: {
-                                        defaults: {
-                                            align: 'center',
-                                            menuDisabled: true,
-                                            sortable: true
-                                        },
-                                        items: [
-                                            {
-                                                text: 'RN',
-                                                locked: true,
-                                                xtype: 'rownumberer', // Columna de número de fila
-                                                width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                            },
-                                            {text: 'Client', dataIndex: 'CCUST', width: 60},
-                                            {text: 'Bandoc', dataIndex: 'BANDOC', width: 120},
-                                            {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
-                                            {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
-                                            {text: 'Code', dataIndex: 'CODIGO', width: 100},
-                                            {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
-                                            {
-                                                text: 'Taxes Amounts',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        metaData.style = "background-color:#85beff;";
-                                                        return value;
-                                                    }
-                                                },
-                                                columns: [
-                                                    {text: 'Amount', dataIndex: 'IMPORTE', width: 100,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#85beff;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Curr.', dataIndex: 'MONEDA', width: 100}
-                                                ]
+                                    xtype: 'panel',
+                                    border: false,
+                                    width: '100%',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'textfield',
+                                        labelStyle: 'font-weight:bold;text-align:right;',
+                                        fieldStyle: 'text-align:right;',
+                                        readOnly: true,
+                                        value: '0.00',
+                                        labelWidth: 100,
+                                        width: 200,
+                                        margin: '3 3 3 3',
+                                        listeners: {
+                                            change: function (field, newValue) {
+                                                field.setRawValue(Ext.util.Format.number(newValue, '0,000.00'));
                                             }
-
-                                        ]
-                                    }
+                                        }
+                                    },
+                                    items: [
+                                        {
+                                            fieldLabel: 'Total Headers',
+                                            id: prototype.idDE + '-txtTotalHeaders'
+                                        },
+                                        {
+                                            fieldLabel: 'Total Sales',
+                                            id: prototype.idDE + '-txtTotalSettlSales'
+                                        },
+                                        {
+                                            fieldLabel: 'Total Debits',
+                                            id: prototype.idDE + '-txtTotalSettlDebits'
+                                        },
+                                        {
+                                            fieldLabel: 'Total Void',
+                                            id: prototype.idDE + '-txtTotalSettlVoid'
+                                        },
+                                        {
+                                            fieldLabel: 'Total Taxes',
+                                            id: prototype.idDE + '-txtTotalSettlTaxes'
+                                        },
+                                        {
+                                            fieldLabel: 'Total',
+                                            id: prototype.idDE + '-txtTotalSettl'
+                                        }
+                                    ]
                                 }
                                 //</editor-fold>
-                            ]
 
+                            ]
                         }
                     ]
                 },
