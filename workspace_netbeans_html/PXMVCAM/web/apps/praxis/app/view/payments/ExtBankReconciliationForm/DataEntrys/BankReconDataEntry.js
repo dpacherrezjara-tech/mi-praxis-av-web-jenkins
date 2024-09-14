@@ -443,6 +443,17 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                         columns: [
                                                             {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
                                                             {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 80},
+                                                            {text: 'Doc. Type', dataIndex: 'TDOC', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "background-color:#85beff;";
+                                                                    const opts = {
+                                                                        'S':'Sale',
+                                                                        'D':'Debit',
+                                                                        'V':'Void'
+                                                                    };
+                                                                    return opts[value];
+                                                                }
+                                                            },
                                                             {text: 'Card Number', dataIndex: 'SCARDN', width: 150},
                                                             {text: 'Auth <br>Code', dataIndex: 'SAUTHOC', width: 80},
                                                             {text: 'Curr', dataIndex: 'SCURRENCY', width: 60},

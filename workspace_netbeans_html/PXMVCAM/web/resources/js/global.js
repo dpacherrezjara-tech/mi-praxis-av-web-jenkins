@@ -1445,6 +1445,33 @@ var LarSyrExt = function () {
             }
         }
     };
+    this.countBy = function(array, campo){
+        return array.reduce((acumulador, objeto) => {
+            // Obtener el valor del campo
+            const key = objeto[campo];
+
+            // Si la clave ya existe en el acumulador, incrementar el contador
+            if (acumulador[key]) {
+                acumulador[key]++;
+            } else {
+                // Si la clave no existe, inicializar el contador en 1
+                acumulador[key] = 1;
+            }
+
+            return acumulador;
+        }, {});
+    };
+    this.sumBy = function(array, campo){
+        return array.reduce((acumulador, objeto) => {
+            return acumulador + (objeto[campo] || 0); // Evitar valores indefinidos
+        }, 0);
+    };
+    this.sumByFilter = function(array, campo,campoFiltrado,valor){
+        return array.reduce((acumulador, objeto) => {
+            return objeto[campoFiltrado] || '' === valor ?  
+                acumulador + (objeto[campo] || 0): acumulador; // Evitar valores indefinidos
+        }, 0);
+    };
     this.PX_UTILS_URL = 'js/praxis.ui-1.0/praxis.utils-1.0.js';
 };
 

@@ -38,20 +38,22 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         const gridHeader = Ext.getCmp(prototype.idDE + '-gridHeadersMatch');
         const gridSettl = Ext.getCmp(prototype.idDE + '-gridSettlementsMatch');
         const gridTax = Ext.getCmp(prototype.idDE + '-gridTaxesMatch');
-        
+
         const qtyHeaders = Ext.getCmp(prototype.idDE + '-txtQtyHeaders');
         const qtySales = Ext.getCmp(prototype.idDE + '-txtQtySettlSales');
         const qtyDebits = Ext.getCmp(prototype.idDE + '-txtQtySettlDebits');
         const qtyVoid = Ext.getCmp(prototype.idDE + '-txtQtySettlVoid');
         const qtyTaxes = Ext.getCmp(prototype.idDE + '-txtQtySettlTaxes');
         const qtySettl = Ext.getCmp(prototype.idDE + '-txtQtySettl');
-        
+
         const totalHeaders = Ext.getCmp(prototype.idDE + '-txtTotalHeaders');
         const totalSales = Ext.getCmp(prototype.idDE + '-txtTotalSettlSales');
         const totalDebits = Ext.getCmp(prototype.idDE + '-txtTotalSettlDebits');
         const totalVoid = Ext.getCmp(prototype.idDE + '-txtTotalSettlVoid');
         const totalTaxes = Ext.getCmp(prototype.idDE + '-txtTotalSettlTaxes');
         const totalSettl = Ext.getCmp(prototype.idDE + '-txtTotalSettl');
+
+        let tsettl = 0, ttax = 0;
 
         if (me.headers.length > 0) {
             let storeHeader = new Ext.data.Store({
@@ -60,7 +62,16 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             gridHeader.setStore(storeHeader);
             gridHeader.show();
             qtyHeaders.setValue(storeHeader.getCount());
-            totalHeaders.setValue(storeHeader.sum('IMPORTEPAG'));
+            if (me.headers.filter(x => x.MONEDAPAGO.trim() === '').length > 0) {
+                totalHeaders.setValue(storeHeader.sum('NETO'));
+            } else {
+                totalHeaders.setValue(storeHeader.sum('IMPORTEPAG'));
+            }
+            qtyHeaders.show();
+            totalHeaders.show();
+        } else {
+            qtyHeaders.hide();
+            totalHeaders.hide();
         }
 
         if (me.settlements.length > 0) {
@@ -74,17 +85,28 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             });
             gridSettl.setStore(storeSettl);
             gridSettl.show();
-            
-            qtySales.setValue(storeSettl.query('TDOC', 'S').getCount());
-            qtyDebits.setValue(storeSettl.query('TDOC', 'D').getCount());
-            qtyVoid.setValue(storeSettl.query('TDOC', 'V').getCount());
-            qtySettl.setValue(storeSettl.getCount());
-            
-            console.log(storeSettl.query('TDOC', 'S'));
-            totalSales.setValue(storeSettl.query('TDOC', 'S').sum('IMPORTEPAG'));
-            totalDebits.setValue(storeSettl.query('TDOC', 'D').sum('IMPORTEPAG'));
-            totalVoid.setValue(storeSettl.query('TDOC', 'V').sum('IMPORTEPAG'));
-            totalSettl.setValue(storeSettl.sum('NETO'));
+
+            let contadores = global.countBy(me.settlements, 'TDOC');
+
+            qtySales.setValue(contadores.S || 0);
+            qtyDebits.setValue(contadores.D || 0);
+            qtyVoid.setValue(contadores.V || 0);
+            qtySettl.setValue(me.settlements.length);
+
+
+            if (me.settlements.filter(x => x.MONEDAPAGO.trim() === '').length > 0) {
+                totalSales.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'S'));
+                totalDebits.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'D'));
+                totalVoid.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'V'));
+                tsettl = global.sumBy(me.settlements, 'NETO');
+
+            } else {
+                totalSales.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'S'));
+                totalDebits.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'D'));
+                totalVoid.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'V'));
+                tsettl = global.sumBy(me.settlements, 'IMPORTEPAG');
+                ;
+            }
         }
 
         if (me.taxes.length > 0) {
@@ -94,8 +116,20 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             gridTax.setStore(storeTax);
             gridTax.show();
             qtyTaxes.setValue(storeTax.getCount());
-            totalTaxes.setValue(storeTax.sum('IMPORTEPAG'));
+            if (me.settlements.filter(x => x.MONEDAPAGO.trim().length === '') > 0) {
+                totalTaxes.setValue(storeTax.sum('IMPORTE'));
+                ttax = storeTax.sum('IMPORTE');
+            } else {
+                totalTaxes.setValue(storeTax.sum('IMPORTEPAG'));
+                ttax = storeTax.sum('IMPORTEPAG');
+            }
+            gridSettl.setWidth('65%');
+        } else {
+            gridSettl.setWidth('100%');
         }
+
+        totalSettl.setValue(tsettl + ttax);
+
         panelMatch.show();
     },
     onCancelClick: function () {
