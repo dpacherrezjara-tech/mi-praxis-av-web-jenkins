@@ -6,6 +6,8 @@ import java.util.Map;
 import net.miatech.praxis.logic.payments.BankReconciliationExtLogic;
 import net.miatech.praxis.payment.dto.SPBSR001Filter;
 import net.miatech.praxis.payment.dto.SPBSR002Filter;
+import net.miatech.praxis.payment.dto.SPBSR003Filter;
+import net.miatech.praxis.payment.dto.SPBSR004Filter;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
@@ -65,6 +67,29 @@ public class BankReconciliationExtDAO implements BankReconciliationExtLogic{
                 filter.setSettlements((List<MPF060>) obj.get("result2"));
                 filter.setTaxes((List<MPF091>) obj.get("result3"));
             }
+        }
+        return filter;
+    }
+
+    @Override
+    public SPBSR003Filter loadSPBSR003Filter(SPBSR003Filter filter) throws Exception {
+        filter.setPage();
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR003",
+                params, new BeanPropertyRowMapper(MPF060.class));
+        filter.setResponse((List<MPF060>) obj.get("result"));
+        filter.setPageOut(obj);
+        return filter;
+    }
+
+    @Override
+    public SPBSR004Filter loadSPBSR004Filter(SPBSR004Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR004",
+                params, new BeanPropertyRowMapper(MPF060.class));
+        List<MPF060> res = (List<MPF060>) obj.get("result");
+        if(!res.isEmpty()){
+            filter.setResponse(res.get(0));
         }
         return filter;
     }

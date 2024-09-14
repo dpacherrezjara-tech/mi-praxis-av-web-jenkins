@@ -13,6 +13,6 @@ import net.miatech.utils.CustomPageImpl;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SPPL001Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_PRDA,IN_CODPRO;
+    private String IN_CCUST,IN_PRDAF,IN_PRDAT,IN_CODPRO;
     List<?> response = new ArrayList<>();
 }

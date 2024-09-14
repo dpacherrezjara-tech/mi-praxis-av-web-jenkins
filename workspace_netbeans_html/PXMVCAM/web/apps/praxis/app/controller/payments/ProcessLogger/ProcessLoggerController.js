@@ -18,7 +18,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
             const cmbProcesadores = Ext.getCmp(prototype.id + '-cmbCODPRO');
             me.procesadores = data.procesadores;
             me.setComboStore({cmp: cmbProcesadores, data: me.procesadores,
-                valueField: 'CODETB', displayField: 'DESCRE1', value: ''});
+                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
             console.log(data);
         }
         filters.unmask();

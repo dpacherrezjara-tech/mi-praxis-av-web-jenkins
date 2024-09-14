@@ -9,7 +9,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
     controller: 'BankReconDataEntryController',
     title: 'Bank Reconciliation - Form',
     header: true,
-    width: 1600,
+    width: 1700,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -160,6 +160,12 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                     name: 'SOCIETY',
                                     labelWidth: 60,
                                     width: 160
+                                },
+                                {
+                                    fieldLabel: 'Reference',
+                                    name: 'REFER',
+                                    labelWidth: 90,
+                                    width: 230
                                 }
                             ]
                         },
@@ -170,7 +176,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                     name: 'TEXTO',
                                     fieldStyle: 'text-align:left;',
                                     labelWidth: 120,
-                                    width: 800
+                                    width: '95%'
                                 }
                             ]
                         },
@@ -182,8 +188,10 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                     fieldLabel: 'Large Text',
                                     name: 'TEXTOLAR',
                                     labelWidth: 120,
-                                    height: 80,
-                                    width: '90%'
+                                    grow: true, // Permitir que crezca según el contenido
+                                    growMax: 50, // Altura máxima
+                                    height: 50,
+                                    width: '95%'
                                 }
                             ]
                         }
@@ -308,6 +316,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                 xtype: 'rownumberer', // Columna de número de fila
                                                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                                             },
+                                            {text: 'Client', dataIndex: 'CCUST', width: 50},
                                             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
                                             {text: 'Settlement<br>Date', dataIndex: 'FLIQUIDACI', width: 80},
                                             {text: 'Merchant', dataIndex: 'MERCHAND', width: 110},
@@ -404,7 +413,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                         xtype: 'rownumberer', // Columna de número de fila
                                                         width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                                                     },
-                                                    {text: 'Client', dataIndex: 'CCUST', width: 60},
+                                                    {text: 'Client', dataIndex: 'CCUST', width: 50},
                                                     {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
                                                     {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
                                                     {
@@ -447,9 +456,9 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "background-color:#85beff;";
                                                                     const opts = {
-                                                                        'S':'Sale',
-                                                                        'D':'Debit',
-                                                                        'V':'Void'
+                                                                        'S': 'Sale',
+                                                                        'D': 'Debit',
+                                                                        'V': 'Void'
                                                                     };
                                                                     return opts[value];
                                                                 }

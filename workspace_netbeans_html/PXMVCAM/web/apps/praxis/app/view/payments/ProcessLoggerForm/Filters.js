@@ -95,8 +95,8 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                     name: 'IN_CODPRO',
                                     labelWidth: 70,
                                     width: 250,
-                                    valueField: 'CODETB',
-                                    displayField: 'DESCRE1',
+                                    valueField: 'A4451KEY2',
+                                    displayField: 'A4451DESC1',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,
@@ -108,6 +108,13 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
                                     value: ''
+                                },
+                                {
+                                    xtype:'textfield',
+                                    id: prototype.id + '-txtSEQPRO',
+                                    name:'IN_SEQPRO',
+                                    hidden :true,
+                                    value:''
                                 }
                             ]
                         }

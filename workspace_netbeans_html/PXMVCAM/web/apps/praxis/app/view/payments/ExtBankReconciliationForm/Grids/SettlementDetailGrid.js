@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailGrid', {
+Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementDetailGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-BankDetailGrid',
+    alias: 'widget.' + prototype.id + '-SettlementDetailGrid',
     requires: [
-        'Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetailGridController'
+        'Ext.Praxis.controller.payments.ExteriorBankReconciliation.SettlementDetailGridController'
     ],
-    controller: 'BankDetailGridController',
+    controller: 'SettlementDetailGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
@@ -32,32 +32,46 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailG
             {
                 sortable: false,
                 xtype: 'actioncolumn',
-                width: 40,
-                text: 'Edit',
+                width: 60,
+                text: 'Phase<br>1',
                 locked: true,
                 align: 'center',
                 items: [
                     {
                         iconCls: 'prx-icon-detail',
-                        tooltip: 'Open Detail',
-                        handler: 'onClickBPO'
+                        tooltip: 'Open Phase 1<br>Detail',
+                        handler: 'onClickBPOF1'
+                    }
+                ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 60,
+                text: 'Phase<br>2',
+                locked: true,
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-detail',
+                        tooltip: 'Open Phase 2<br>Detail',
+                        handler: 'onClickBPOF2'
                     }
                 ]
             },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
-
+            {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
             {text: 'Doc. Type', dataIndex: 'TDOC', width: 80,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
                         'S': 'Sale',
-                        'D': 'Debit'
+                        'D': 'Debit',
+                        'V': 'Void'
                     };
                     return opts[value];
                 }
             },
-            {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
-            {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
             {text: 'Status', dataIndex: 'STVAL', width: 160,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "text-align:center;font-weight:bold;background-color:#8EDFB3;";
@@ -71,43 +85,19 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailG
                     return opts[value] || '';
                 }
             },
-            {text: 'Suggested<br>Processor', dataIndex: 'DESC_SPRO', width: 160},
             {
-                text: 'Bank Statement Information',
+                text: 'Settlement Information',
                 defaults: {
                     menuDisabled: true,
                     sortable: true,
-                    align: 'center',
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        metaData.style = "background-color:#F0D094";
-                        return value;
-                    }
+                    align: 'center'
                 },
                 columns: [
                     {text: 'Country', dataIndex: 'SCOUNTRY', width: 80},
-                    {text: 'Bank Code', dataIndex: 'CODEBANK', width: 80},
-                    {text: 'Bank Name', dataIndex: 'DESC_BANK', width: 130},
-                    {text: 'Accounting<br>Code', dataIndex: 'ACCOUNT', width: 80},
-                    {text: 'Profit<br>Center', dataIndex: 'BENCENC', width: 80},
-                    {text: 'Bank<br>Account', dataIndex: 'ACCCOMP', width: 80},
-                    {text: 'Society', dataIndex: 'SOCIETY', width: 80},
-                    {text: 'Reference', dataIndex: 'REFER', width: 150},
-                    {text: 'Text', dataIndex: 'TEXTO', width: 400},
-                    {text: 'Large Text', dataIndex: 'TEXTOLAR', width: 500},
-                    {
-                        sortable: false,
-                        xtype: 'actioncolumn',
-                        width: 50,
-                        text: 'Open',
-                        align: 'center',
-                        items: [
-                            {
-                                iconCls: 'prx-icon-image-log',
-                                tooltip: 'Open Large Text',
-                                handler: 'onOpenLargeText'
-                            }
-                        ]
-                    }
+                    {text: 'Merchant', dataIndex: 'MERCHAND', width: 120},
+                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 160},
+                    {text: 'Country', dataIndex: 'SCOUNTRY', width: 60},
+                    {text: 'Agent', dataIndex: 'SAGENT', width: 80}
                 ]
             },
             {
@@ -121,30 +111,82 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailG
                         return value;
                     }
                 }, columns: [
-                    {text: 'Currency', dataIndex: 'SCURRENCY', width: 70},
+                    {text: 'Card<br>Type', dataIndex: 'TIPOTAR', width: 70},
+                    {text: 'Card<br>Code', dataIndex: 'SCARCOD', width: 50},
+                    {text: 'Card Number', dataIndex: 'SCARDN', width: 150},
+                    {text: 'Auth', dataIndex: 'SAUTHOC', width: 70},
+                    {text: 'Curr.', dataIndex: 'SCURRENCY', width: 70},
+                    {text: 'Transaction<br>Amount', dataIndex: 'TOTAL', width: 120,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        }
+                    },
+                    {text: 'Sales<br>Amount', dataIndex: 'SVFOP', width: 120,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        }
+                    },
+                    {text: 'Comm.', dataIndex: 'COMISION', width: 120,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        }
+                    },
                     {text: 'NET', dataIndex: 'NETO', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:right;background-color:#B2DAFA";
                             value = Ext.util.Format.number(value, '0,000.00');
                             return value;
                         }
-                    },
-                    {text: 'NET<br>Reconciled', dataIndex: 'NETOC', width: 120,
+                    }
+                    
+                ]
+            },
+            {
+               text: 'Payment Information',
+                defaults: {
+                    menuDisabled: true,
+                    sortable: true,
+                    align: 'center',
+                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                        metaData.style = "background-color:#fdff85";
+                        return value;
+                    }
+                }, 
+                columns:[
+                    {text: 'Curr.', dataIndex: 'MONEDAPAGO', width: 80},
+                    {text: 'Amount', dataIndex: 'IMPORTEPAG', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            metaData.style = "text-align:right;background-color:#fdff85";
                             value = Ext.util.Format.number(value, '0,000.00');
                             return value;
                         }
-                    },
-                    {text: 'Local<br>Currency 2', dataIndex: 'LOCRENCY2', width: 80},
-                    {text: 'Local<br>Amount 2', dataIndex: 'LOCAMOUNT2', width: 120,
-                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "text-align:right;background-color:#B2DAFA";
-                            value = Ext.util.Format.number(value, '0,000.00');
-                            return value;
-                        }
-                    },
-                    {text: 'Reconciled<br>Processor', dataIndex: 'DESC_PRO', width: 160}
+                    }
+                ]
+            },
+            {
+               text: 'Statement Information',
+                defaults: {
+                    menuDisabled: true,
+                    sortable: true,
+                    align: 'center',
+                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                        metaData.style = "background-color:#F0D094";
+                        return value;
+                    }
+                }, 
+                columns:[
+                    {text: 'Transaction<br>Number', dataIndex: 'TRAN', width: 90},
+                    {text: 'Bank Code', dataIndex: 'CODEBANK', width: 80},
+                    {text: 'Bank Name', dataIndex: 'DESC_BANK', width: 130},
+                    {text: 'Society', dataIndex: 'SOCIETY', width: 80},
+                    {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
+                    {text: 'Statement', dataIndex: 'LIQUIDACIO', width: 150}
                 ]
             },
             {
@@ -184,7 +226,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailG
             {
                 xtype: 'button',
                 scale: 'small',
-                id: prototype.id + '-bkd-btnBack',
+                id: prototype.id + '-stl-btnBack',
                 iconCls: 'prx-icon-back',
                 width: 25,
                 hidden: true,

@@ -1468,7 +1468,7 @@ var LarSyrExt = function () {
     };
     this.sumByFilter = function(array, campo,campoFiltrado,valor){
         return array.reduce((acumulador, objeto) => {
-            return objeto[campoFiltrado] || '' === valor ?  
+            return (objeto[campoFiltrado] || '') === valor ?  
                 acumulador + (objeto[campo] || 0): acumulador; // Evitar valores indefinidos
         }, 0);
     };

@@ -1,11 +1,11 @@
-Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetailGridController', {
+Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.SettlementDetailGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.BankDetailGridController',
+    alias: 'controller.SettlementDetailGridController',
     url: CONTEXTPATH + '/BankReconciliationExt',
     init: function (view) {
         if (view.backButton) {
-            Ext.getCmp(prototype.id + '-bkd-btnBack').show();
-            Ext.getCmp(prototype.id + '-bkd-btnBack').on('click', view.backButton);
+            Ext.getCmp(prototype.id + '-stl-btnBack').show();
+            Ext.getCmp(prototype.id + '-stl-btnBack').on('click', view.backButton);
         }
     },
     afterRender: async function (obj, e) {
@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetail
             proxy: {
                 type: 'ajax',
                 enablePaging: true,
-                url: `${me.url}/loadBankStatements`,
+                url: `${me.url}/loadSettlements`,
                 extraParams: view.searchParams,
                 timeout: 600000,
                 reader: {
@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetail
                     if (!successful) {
                         global.Msg({msg: 'Data not Found'});
                     } else {
-                        //console.log(records);
+                        console.log(records);
                         if (records.length === 0) {
                             global.Msg({msg: 'Data not Found'});
                         }
@@ -46,43 +46,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetail
         });
         view.setStore(store);
     },
-    onOpenLargeText: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
-        Ext.create('Ext.window.Window', {
-            title: 'Large Text',
-            width: 500,
-            modal: true, // Hace que la ventana sea modal
-            layout: 'fit',
-            items: {
-                xtype: 'form',
-                bodyPadding: 5,
-                defaults: {
-                    xtype: 'textarea',
-                    anchor: '100%'
-                },
-                items: [
-                    {
-                        name: 'TEXTOLAR',
-                        value: record.get('TEXTOLAR'), // Pasa el valor desde el record
-                        readOnly: true,
-                        height: 180
-                    }
-                ]
-            },
-            buttons: [
-                {
-                    text: 'Close',
-                    handler: function (btn) {
-                        btn.up('window').close();
-                    }
-                }
-            ]
-        }).show();
-    },
     onClickBPO: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
-        Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankReconDataEntry', {
-            id: prototype.id + '-BankReconDataEntry-1',
-            obj: record.data
-        }).show();
+        alert('Prueba');
     },
 //    downloadExcel: function () {
 //        let params = this.view.searchParams;

@@ -17,12 +17,12 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
         if (res.ok) {
             const data = await res.json();
             console.log(data);
-             me.corepro = data.PROCESADORES;
-             me.codebank = data.CODEBANK;
-             me.codpro = data.CODPRO;
-             me.paises = data.PAISES;
-             me.monedas = data.MONEDAS;
-            
+            me.corepro = data.PROCESADORES;
+            me.codebank = data.CODEBANK;
+            me.codpro = data.CODPRO;
+            me.paises = data.PAISES;
+            me.monedas = data.MONEDAS;
+
             //<editor-fold defaultstate="collapsed" desc="Bank Browser">
             const cmbBankCtry2 = Ext.getCmp(prototype.id + '-cmbBankCtry2');
             const cmbBankCurr2 = Ext.getCmp(prototype.id + '-cmbBankCurr2');
@@ -30,7 +30,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             const cmbBankCOREP2 = Ext.getCmp(prototype.id + '-cmbBankCOREP2');
             const cmbBankCODPRO2 = Ext.getCmp(prototype.id + '-cmbBankCODPRO2');
             const cmbBankCodebank2 = Ext.getCmp(prototype.id + '-cmbBankCodebank2');
-           
+
             me.setComboStore({cmp: cmbBankCtry2, data: me.paises,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
             me.setComboStore({cmp: cmbBankCurr2, data: me.monedas,
@@ -43,17 +43,37 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
                 valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
             me.setComboStore({cmp: cmbBankCodebank2, data: me.codebank,
                 valueField: 'CODBANKN', displayField: 'NAMEBANK', value: ''});
-            
+
             cmbBankCODPRO2.on('select', function (cmb, record) {
                 Ext.getCmp(prototype.id + '-txtBankSEQPRO2').setValue(record.data.A4451SEQ || '');
             });
             //</editor-fold>
+
+            //<editor-fold defaultstate="collapsed" desc="Settlement Browser">
+            const cmbSettlCtry2 = Ext.getCmp(prototype.id + '-cmbSettlCtry2');
+            const cmbSettlCurr2 = Ext.getCmp(prototype.id + '-cmbSettlCurr2');
+            const cmbSettlCODPRO2 = Ext.getCmp(prototype.id + '-cmbSettlCODPRO2');
+            const cmbSettlCodebank2 = Ext.getCmp(prototype.id + '-cmbSettlCodebank2');
+
+            me.setComboStore({cmp: cmbSettlCtry2, data: me.paises,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
+            me.setComboStore({cmp: cmbSettlCurr2, data: me.monedas,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
+            me.setComboStore({cmp: cmbSettlCODPRO2, data: me.codpro,
+                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
+            me.setComboStore({cmp: cmbSettlCodebank2, data: me.codebank,
+                valueField: 'CODBANKN', displayField: 'NAMEBANK', value: ''});
+
+            cmbSettlCODPRO2.on('select', function (cmb, record) {
+                Ext.getCmp(prototype.id + '-txtSettlSEQPRO2').setValue(record.data.A4451SEQ || '');
+            });
+            //</editor-fold>
+
             console.log(data);
         }
         filters.unmask();
     },
     loadByBank: async function () {
-        const me = this;
         const type = Ext.getCmp(prototype.id + '-cmbBankFilters').value;
         const mainPanel = Ext.getCmp(prototype.id + '-bankContent');
         mainPanel.removeAll();
@@ -64,6 +84,22 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
                 searchParams: params
             });
             mainPanel.add(panelDetail);
+        }
+    },
+    loadBySettlement: async function () {
+        const type = Ext.getCmp(prototype.id + '-cmbSettlFilters').value;
+        const mainPanel = Ext.getCmp(prototype.id + '-settlContent');
+        mainPanel.removeAll();
+        let params = this.formatSettlementParams();
+        if (type === 'F') {
+            if (params.IN_TGRID === 'S') {
+                const panelDetail = Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementDetailGrid', {
+                    id: prototype.id + '-SettlementDetailGrid-1',
+                    searchParams: params
+                });
+                mainPanel.add(panelDetail);
+            }
+
         }
     },
     onChangeModule: function (radiogroup, newValue, oldValue) {
@@ -100,6 +136,19 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
         return filters;
 
     },
+    formatSettlementParams: function () {
+        const type = Ext.getCmp(prototype.id + '-cmbSettlFilters').value;
+        let filters = {};
+        if (type === 'S') {
+            //Settlement Browser
+            filters = Ext.getCmp(prototype.id + '-formFiltersBS-1').getForm().getValues();
+        } else {
+            //Settlement Summary
+            filters = Ext.getCmp(prototype.id + '-formFiltersBS-2').getForm().getValues();
+        }
+        console.log('Search Params: ', filters);
+        return filters;
+    },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
@@ -107,7 +156,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
         if (rb === 'B') {
             this.loadByBank();
         } else {
-
+            this.loadBySettlement();
         }
     },
     onDisplayFilterBtn: function () {

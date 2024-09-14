@@ -11,7 +11,9 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.ExtBankReconcilia
         'Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBankReconciliationController',
         'Ext.Praxis.view.payments.ExtBankReconciliationForm.Options',
         'Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersByBank',
-        'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailGrid'
+        'Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettlement',
+        'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailGrid',
+        'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementDetailGrid'
     ],
     controller: 'ExteriorBankReconciliationController',
     layout: {
@@ -92,6 +94,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.ExtBankReconcilia
                                             xtype: 'panel',
                                             id: prototype.id + '-viewSettlement',
                                             hidden: true,
+                                            border: false,
                                             height: prototype.height,
                                             bodyStyle: 'background-color: #E3EAF9;',
                                             layout: {
@@ -99,19 +102,20 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.ExtBankReconcilia
                                                 align: 'center'
                                             },
                                             items: [
-//                                                {
-//                                                    xtype: prototype.id + '-settlFilters'
-//                                                },
-//                                                {
-//                                                    xtype: 'panel',
-//                                                    id: prototype.id + '-bankContent',
-//                                                    height: prototype.height,
-//                                                    bodyStyle: 'background-color: #E3EAF9;',
-//                                                    layout: {
-//                                                        type: 'vbox',
-//                                                        align: 'center'
-//                                                    }
-//                                                }
+                                                {
+                                                    xtype: prototype.id + '-settlFilters'
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-settlContent',
+                                                    height: prototype.height,
+                                                    border: false,
+                                                    bodyStyle: 'background-color: #E3EAF9;',
+                                                    layout: {
+                                                        type: 'vbox',
+                                                        align: 'center'
+                                                    }
+                                                }
                                             ]
                                         }
                                         //</editor-fold>

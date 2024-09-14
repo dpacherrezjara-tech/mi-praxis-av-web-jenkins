@@ -6,7 +6,11 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         const me = this;
         const cmbProcesadores = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
         me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
-            valueField: 'CODETB', displayField: 'DESCRE1', value: ''});
+            valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
+        cmbProcesadores.on('select', function (cmb, record) {
+                Ext.getCmp(prototype.id + '-txtSEQPRO').setValue(record.data.A4451SEQ || '');
+                me.onClickSearchBtn();
+            });
     },
     afterRender: async function () {
     },

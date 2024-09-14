@@ -388,7 +388,10 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersByBank', {
                                     editable: true, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(anioActual, mesActual, 1)
+                                    value: new Date(anioActual, mesActual, 1),
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
                                 },
                                 {
                                     xtype: 'datefield',
@@ -399,7 +402,10 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersByBank', {
                                     editable: true, // Deshabilita la edición del campo
                                     labelWidth: 30,
                                     width: 130,
-                                    value: fechaActual
+                                    value: fechaActual,
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
                                 },
                                 {
                                     xtype: 'combo',
