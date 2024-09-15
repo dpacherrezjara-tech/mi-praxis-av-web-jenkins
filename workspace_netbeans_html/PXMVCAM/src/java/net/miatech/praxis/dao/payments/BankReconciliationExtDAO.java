@@ -8,6 +8,7 @@ import net.miatech.praxis.payment.dto.SPBSR001Filter;
 import net.miatech.praxis.payment.dto.SPBSR002Filter;
 import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
+import net.miatech.praxis.payment.dto.SPBSR005Filter;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
@@ -91,6 +92,19 @@ public class BankReconciliationExtDAO implements BankReconciliationExtLogic{
         if(!res.isEmpty()){
             filter.setResponse(res.get(0));
         }
+        return filter;
+    }
+
+    @Override
+    public SPBSR005Filter loadSPBSR005Filter(SPBSR005Filter filter) throws Exception {
+        List<BeanPropertyRowMapper> lstMappers = new ArrayList<>();
+        lstMappers.add(new BeanPropertyRowMapper(MPF060.class));
+        lstMappers.add(new BeanPropertyRowMapper(MPF083.class));
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR005",
+                params, lstMappers);
+        filter.setResponse((List<MPF060>) obj.get("result0"));
+        filter.setHeaders((List<MPF083>) obj.get("result1"));
         return filter;
     }
     

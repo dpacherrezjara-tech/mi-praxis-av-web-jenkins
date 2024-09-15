@@ -16,7 +16,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
         const res = await fetch(`${me.miscUrl}/loadMdpFilters`);
         if (res.ok) {
             const data = await res.json();
-            console.log(data);
+            //console.log(data);
             me.corepro = data.PROCESADORES;
             me.codebank = data.CODEBANK;
             me.codpro = data.CODPRO;

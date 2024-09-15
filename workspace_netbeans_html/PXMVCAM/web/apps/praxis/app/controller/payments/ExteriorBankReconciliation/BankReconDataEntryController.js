@@ -2,13 +2,44 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     extend: 'Ext.app.ViewController',
     alias: 'controller.BankReconDataEntryController',
     url: CONTEXTPATH + '/BankReconciliationExt',
+    miscUrl: CONTEXTPATH + '/MiscellaneousCatalog',
     bean: {},
+    headers: [],
+    settlements: [],
+    taxes: [],
     init: function (view) {
+        Ext.util.CSS.createStyleSheet(`
+            .custom-toast {
+                font-size: 15px;
+            }
+        `, prototype.idDE + '-customStyle');
     },
     afterRender: async function () {
         this.view.mask('Loading...');
+        await this.loadFilters();
         await this.getData();
         this.view.unmask();
+    },
+    loadFilters: async function () {
+        const me = this;
+        const res = await fetch(`${me.miscUrl}/loadMdpFilters`);
+        if (res.ok) {
+            const data = await res.json();
+            me.codpro = data.CODPRO;
+            me.paises = data.PAISES;
+            me.monedas = data.MONEDAS;
+
+            //<editor-fold defaultstate="collapsed" desc="Bank Browser">
+            //const cmbBankCtry2 = Ext.getCmp(prototype.id + '-cmbBankCtry2');
+            //const cmbBankCurr2 = Ext.getCmp(prototype.id + '-cmbBankCurr2');
+            const cmbFilterCODPRO = Ext.getCmp(prototype.idDE + '-cmbFilterCODPRO');
+            global.setComboStore(cmbFilterCODPRO, me.codpro, 'A4451KEY2', 'A4451DESC1', '');
+
+            cmbFilterCODPRO.on('select', function (cmb, record) {
+                Ext.getCmp(prototype.idDE + '-txtFilterSEQPRO').setValue(record.data.A4451SEQ || '');
+            });
+            //</editor-fold>
+        }
     },
     getData: async function () {
         const me = this;
@@ -28,8 +59,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 me.settlements = data.settlements;
                 me.taxes = data.taxes;
                 me.setMatchGrids();
-                me.view.center();
+            } else {
+                me.setPendingGrids();
             }
+            me.view.center();
         }
     },
     setMatchGrids: function () {
@@ -105,7 +138,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 totalDebits.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'D'));
                 totalVoid.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'V'));
                 tsettl = global.sumBy(me.settlements, 'IMPORTEPAG');
-                ;
             }
         }
 
@@ -132,6 +164,92 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
 
         panelMatch.show();
     },
+    setPendingGrids: function () {
+        const me = this;
+        const panelMatch = Ext.getCmp(prototype.idDE + '-panelPending');
+        //const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
+        panelMatch.show();
+
+    },
+    onAddSettlements: async function () {
+        const me = this;
+        const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
+        panelPending.mask('Scanning...');
+        const formFilters = Ext.getCmp(prototype.idDE + '-pendingFilters').getForm();
+        let params = formFilters.getValues();
+        try {
+            const res = await fetch(`${me.url}/loadSettlementScanner?${new URLSearchParams(params)}`);
+            if (res.ok) {
+                const data = await res.json();
+                console.log(data);
+                me.addDataHeaders(data.headers);
+                me.addDataSettlements(data.response);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            me.view.center();
+        }
+        panelPending.unmask();
+    },
+    addDataHeaders: function (data) {
+        const me = this;
+        const gridHeaders = Ext.getCmp(prototype.idDE + '-gridHeadersPending');
+        let keys = ['CCUST', 'PRDA', 'CODPRO', 'CCUSTPRO', 'FLIQUIDACI',
+            'LIQUIDACIO', 'MERCHAND', 'MONEDALIQ', 'PAISLIQ', 'MONEDA', 'SDATE'];
+        let response = global.arrayAddUnique(data, me.headers, keys);
+        me.headers = response.data;
+        console.table(response);
+        if (me.headers.length > 0) {
+            gridHeaders.show();
+        }
+        let store = new Ext.data.Store({
+            data: me.headers
+        });
+        gridHeaders.setStore(store);
+    },
+    addDataSettlements: function (data) {
+        const me = this;
+        const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
+
+        let keys = ['CCUST', 'SDATE', 'SCOUNTRY', 'TDOC', 'CODEBANK',
+            'SCARCOD', 'SCARDN', 'SAUTHOC', 'SEQ', 'SVFOP'];
+
+        let response = global.arrayAddUnique(data, me.settlements, keys);
+        me.settlements = response.data;
+        console.table(response);
+
+        let store = new Ext.data.Store({
+            pageSize: 100,
+            data: me.settlements,
+            proxy: {
+                type: 'memory', // Los datos están cargados en memoria
+                enablePaging: true // Habilitar la paginación en memoria
+            }
+        });
+
+        gridSettlements.setStore(store);
+
+        Ext.toast({
+            html: `<div class = "custom-toast">Total found: <b style="color:blue">${response.added}</b><br>` +
+                    `Total Added: <b style="color:green">${response.inserted}</b><br>` +
+                    `Total Duplicated: <b style="color:red">${response.duplicated}</b></div>`,
+            title: 'Notification',
+            align: 't',
+            closable: true,
+            width: 300,
+            timeout: 15000 // 10 segundos
+        });
+    },
+    onCleanSettlGrid: function () {
+        const me = this;
+        const gridHeaders = Ext.getCmp(prototype.idDE + '-gridHeadersPending');
+        const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
+        me.headers = [];
+        me.settlements = [];
+        gridHeaders.setStore(null);
+        gridSettlements.setStore(null);
+    },
     onCancelClick: function () {
         this.view.close();
     },
@@ -153,8 +271,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
-    onCancelClick: function () {
-        this.view.close();
+    getCmp: function ( {id}){
+        return Ext.getCmp(prototype.id + id);
     },
     limpiaObjetoPX: function (obj) {
         for (let key in obj) {
@@ -188,32 +306,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             }
         }
         return resultado;
-    },
-    getFechaRango: function (fechaString) {
-        // Convertir la cadena en un objeto Date
-        const fecha = new Date(
-                fechaString.substring(0, 4),
-                fechaString.substring(4, 6) - 1,
-                fechaString.substring(6, 8)
-                );
-
-        // Obtener la fecha +1 día
-        const fechaMasUnDia = new Date(fecha);
-        fechaMasUnDia.setDate(fecha.getDate() + 1);
-        // Obtener la fecha -1 día
-        const fechaMenosUnDia = new Date(fecha);
-        fechaMenosUnDia.setDate(fecha.getDate() - 1);
-        // Formatear las nuevas fechas como cadenas
-        const fechaMasUnDiaString = fechaMasUnDia.toISOString().slice(0, 10).replace(/-/g, '');
-        const fechaMenosUnDiaString = fechaMenosUnDia.toISOString().slice(0, 10).replace(/-/g, '');
-
-        return [fechaMenosUnDiaString, fechaMasUnDiaString];
-    },
-    sumBy: function ( {data, key}){
-        let sum = data.reduce(function (total, item) {
-            return total + item[key];
-        }, 0);
-        return sum;
     }
     //</editor-fold>
 });

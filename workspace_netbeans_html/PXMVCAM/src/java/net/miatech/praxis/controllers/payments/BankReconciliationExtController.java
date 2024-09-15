@@ -5,7 +5,7 @@ import net.miatech.praxis.payment.dto.SPBSR001Filter;
 import net.miatech.praxis.payment.dto.SPBSR002Filter;
 import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
-import net.miatech.praxis.payment.dto.SPMC001Filter;
+import net.miatech.praxis.payment.dto.SPBSR005Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +58,14 @@ public class BankReconciliationExtController {
         System.out.println("***** BankReconciliationExt - loadSettlementInfo *****");
         SPBSR004Filter filter = logic.loadSPBSR004Filter(params);
         System.out.println("Item Found");
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadSettlementScanner")
+    public ResponseEntity<?> loadSettlementScanner(SPBSR005Filter params) throws Exception {
+        System.out.println("***** BankReconciliationExt - loadSettlementScanner *****");
+        SPBSR005Filter filter = logic.loadSPBSR005Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
 }

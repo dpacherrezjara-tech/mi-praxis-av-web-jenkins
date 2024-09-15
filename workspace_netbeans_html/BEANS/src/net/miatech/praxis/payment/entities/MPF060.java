@@ -23,4 +23,5 @@ public class MPF060 {
     
     //OTROS CAMPOS
     private String DESC_PRO;
+    private String HEADER_COD;
 }

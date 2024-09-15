@@ -1472,6 +1472,66 @@ var LarSyrExt = function () {
                 acumulador + (objeto[campo] || 0): acumulador; // Evitar valores indefinidos
         }, 0);
     };
+    this.getDistict = function(lst, key){
+        let valoresVistos = {};
+        // Filtra el array para eliminar duplicados según la columna "nombre"
+        let resultado = lst.filter(function (item) {
+            if (valoresVistos[item[key]]) {
+                // Si el valor ya se ha visto, exclúyelo
+                return false;
+            }
+            // Si es la primera vez que se ve, márcalo como visto y manténlo en el resultado
+            valoresVistos[item[key]] = true;
+            return true;
+        });
+        return resultado;
+    };
+    this.setComboStore = function(cmp, data, valueField, displayField, value){
+        //crea record vacio
+        let allRecord = {};
+        allRecord[displayField] = 'All';
+        allRecord[valueField] = '';
+        //limpia record de data
+        data.forEach(obj => {
+            for (let attr in obj) {
+                if (typeof obj[attr] === 'string') {
+                    obj[attr] = obj[attr].trimEnd();
+                }
+            }
+        });
+        //crea Store
+        let store = new Ext.data.Store({
+            autoLoad:true,
+            data: data
+        });
+        //inserta record vacio
+        store.insert(0, allRecord);
+        //renderiza Combo
+        cmp.valueField = valueField;
+        cmp.displayField = displayField;
+        cmp.suspendEvents(false);
+        cmp.bindStore(store);
+        cmp.setValue(value);
+        cmp.resumeEvents();
+    };
+    this.arrayAddUnique = function(newArray, array, keys){
+        let prev = array.length;
+        let added = newArray.length;
+        let newObjs = newArray.filter(obj => !array.some(x =>
+                keys.every(key => obj[key] === x[key])
+            ));
+        array = array.concat(newObjs);
+
+        let post = array.length;
+        return {
+            original : prev,
+            added: added,
+            inserted : (post - prev),
+            duplicated : added - (post - prev),
+            modified : post,
+            data : array
+        };
+    };
     this.PX_UTILS_URL = 'js/praxis.ui-1.0/praxis.utils-1.0.js';
 };
 
