@@ -266,6 +266,13 @@ public class BankReconciliationExtController {
                 row2.createCell(11).setCellValue(t.getDESC_PRO());
                 index[0]++;
             });
+            for (int c = 0; c < 12; c++) {
+                sheet2.autoSizeColumn(c, false);
+                int defaultWidth = 15 * 256;
+                if (sheet2.getColumnWidth(c) < defaultWidth) {
+                    sheet2.setColumnWidth(c, defaultWidth);
+                }
+            }
         }
         
         String prefix = "EECC_Conciliation_" + params.getBankInfo().getBANDOC();
