@@ -3,6 +3,7 @@ package net.miatech.praxis.controllers.payments;
 import net.miatech.praxis.logic.payments.MiscellaneousCatalogLogic;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
+import net.miatech.praxis.payment.dto.SPMC003Filter;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -40,6 +41,14 @@ public class MiscellaneousCatalogController {
         System.out.println("***** MiscellaneousCatalog - loadCodproFilter *****");
         SPMC002Filter filter = logic.loadSPMC002Filter();
         System.out.println("Total processors: " + filter.getProcesadores().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadPhase2Filter")
+    public ResponseEntity<?> loadPhase2Filter() throws Exception{
+        System.out.println("***** MiscellaneousCatalog - loadPhase2Filter *****");
+        SPMC003Filter filter = logic.loadSPMC003Filter();
+        System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import net.miatech.praxis.logic.payments.MiscellaneousCatalogLogic;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
+import net.miatech.praxis.payment.dto.SPMC003Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.A4451PK;
@@ -21,10 +22,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Scope("request")
-public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic{
+public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic {
+
     @Autowired
     private JdbcUtils jdbcUtils;
-    
+
     private static final String LIBRARY = "PRAXISMP";
 
     @Override
@@ -33,11 +35,14 @@ public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic{
         BeanPropertyRowMapper mapper = new BeanPropertyRowMapper(A4451PK.class);
         BeanPropertyRowMapper mapper2 = new BeanPropertyRowMapper(A4451.class);
         BeanPropertyRowMapper mapper3 = new BeanPropertyRowMapper(A2281.class);
-        lstMappers.add(mapper);lstMappers.add(mapper);lstMappers.add(mapper);lstMappers.add(mapper);
+        lstMappers.add(mapper);
+        lstMappers.add(mapper);
+        lstMappers.add(mapper);
+        lstMappers.add(mapper);
         lstMappers.add(mapper2);
         lstMappers.add(mapper3);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC001",
-                 lstMappers);
+                lstMappers);
         SPMC001Filter filter = new SPMC001Filter();
         filter.setPROCESADORES((List<A4451PK>) obj.get("result0"));
         filter.setCIAS((List<A4451PK>) obj.get("result1"));
@@ -50,10 +55,19 @@ public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic{
 
     @Override
     public SPMC002Filter loadSPMC002Filter() throws Exception {
-        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC002", 
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC002",
                 new BeanPropertyRowMapper(A4451.class));
         return SPMC002Filter.builder()
                 .procesadores((List<A4451>) obj.get("result"))
+                .build();
+    }
+
+    @Override
+    public SPMC003Filter loadSPMC003Filter() throws Exception {
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC003",
+                new BeanPropertyRowMapper(A4451PK.class));
+        return SPMC003Filter.builder()
+                .response((List<A4451PK>) obj.get("result"))
                 .build();
     }
 }

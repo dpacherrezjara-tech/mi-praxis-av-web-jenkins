@@ -6,11 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         const me = this;
         const cmbProcesadores = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
         me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
-            valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
-        cmbProcesadores.on('select', function (cmb, record) {
-                Ext.getCmp(prototype.id + '-txtSEQPRO').setValue(record.data.A4451SEQ || '');
-                me.onClickSearchBtn();
-            });
+            valueField: 'CODE', displayField: 'NAME', value: ''});
     },
     afterRender: async function () {
     },
@@ -19,21 +15,31 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         let params = Ext.getCmp(prototype.idDE + '-formFilters')
                 .getForm()
                 .getValues();
-        if(params.VP_CODPRO === ''){
-            global.Msg({msg:'Select Processor before Run'});
+
+        if (params.VP_PRDA.length !== 0 && params.VP_PRDA.length !== 8) {
+            global.Msg({msg: 'Invalid Date'});
             return;
         }
-        console.log('Parameters: ',params);
-        const res = await fetch(`${me.url}/process`, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(params)
-        });
-        if(res.ok){
-            global.Msg({msg:'Process Running...'});
-        }else{
-            global.Msg({msg:'Process Failed...'});
+        if (params.VP_CODPRO === '') {
+            global.Msg({msg: 'Select Processor before Run'});
+            return;
+        }
+        console.log('Parameters: ', params);
+        try {
+            const res = await fetch(`${me.url}/process`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            });
+            if (res.ok) {
+                global.Msg({msg: 'Process Running...'});
+            } else {
+                global.Msg({msg: 'Process Failed...'});
+            }
+        } catch (e) {
+            global.Msg({msg: 'Process Failed...'});
         }
         me.view.close();
     },

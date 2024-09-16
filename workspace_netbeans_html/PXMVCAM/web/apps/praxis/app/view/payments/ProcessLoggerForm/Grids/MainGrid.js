@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1000,
+    width: 1100,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
@@ -32,13 +32,20 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
         items: [
             //<editor-fold defaultstate="collapsed" desc="Detail Cols">
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
-            {text: 'Client<br>Name', dataIndex: 'AIRLINE_NAME', width: 120},
             {text: 'Processing<br>Date', dataIndex: 'FPRDA', width: 80},
-            {text: 'Processor', dataIndex: 'PROC_NAME', width: 120},
-            {text: 'Process<br>Init', dataIndex: 'FINI', width: 80},
-            {text: 'Process<br>End', dataIndex: 'FFIN', width: 80},
+            {text: 'Processor', dataIndex: 'PROC_NAME', flex: 1},
+            {text: 'Process<br>Init', dataIndex: 'FINI', width: 180},
+            {text: 'Process<br>End', dataIndex: 'FFIN', width: 180},
             {text: 'Seq', dataIndex: 'SEQ', width: 50},
-            {text: 'Log', dataIndex: 'VRESULT', flex: 1},
+            {text: 'Status', dataIndex: 'STAT', width: 90,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    const opts = {
+                      'X':'Processing...',
+                      '1':'OK'
+                    };
+                    return opts[value];
+                }
+            },
             {text: 'User', dataIndex: 'USCR', width: 90}
             //</editor-fold>
         ]

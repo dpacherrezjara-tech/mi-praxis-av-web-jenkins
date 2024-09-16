@@ -16,10 +16,14 @@ import net.miatech.praxis.payment.dto.SPBSR005Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
@@ -89,8 +93,33 @@ public class BankReconciliationExtController {
     @RequestMapping(value = "downloadExcelEECC",method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelEECC(@RequestBody LoadExcelEECC params) throws Exception {
         System.out.println("***** BankReconciliationExt - downloadExcelEECC *****");
+        System.out.println("Bandoc loaded: " + params.getBankInfo().getBANDOC());
+        System.out.println("Settlements loaded: " + params.getSettlements().size());
+        System.out.println("Headers loaded: " + params.getHeaders().size());
+        System.out.println("Taxes loaded: " + params.getTaxes().size());
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         Sheet sheet = workbook.createSheet("Settlements");
+        
+        XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+
+        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        headerFont.setColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+        headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+        headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+        headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        headerStyle.setWrapText(true);
+        headerStyle.setFont(headerFont);
+        
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Client");
         headerRow.createCell(1).setCellValue("Processing Date");
@@ -110,7 +139,9 @@ public class BankReconciliationExtController {
         headerRow.createCell(15).setCellValue("Bank\nCode");
         headerRow.createCell(16).setCellValue("Bandoc");
         headerRow.createCell(17).setCellValue("Processor");
-
+        for (int h = 0; h < 18; h++) {
+            headerRow.getCell(h).setCellStyle(headerStyle);
+        }
         final int[] index = {1};
         params.getSettlements().forEach(s -> {
             Row row = sheet.createRow(index[0]);
@@ -141,6 +172,8 @@ public class BankReconciliationExtController {
                 sheet.setColumnWidth(c, defaultWidth);
             }
         }
+        
+        //Sheet sheet2 = workbook.createSheet("Settlements");
 
         String prefix = "EECC_Conciliation_" + params.getBankInfo().getBANDOC();
         String suffix = ".xlsx";
@@ -164,7 +197,7 @@ public class BankReconciliationExtController {
         if (file != null) {
             file.delete();
         }
-        
+        System.out.println("Excel Downloaded...");
         //respuesta http
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

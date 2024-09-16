@@ -1,14 +1,10 @@
 package net.miatech.praxis.dao.payments;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
-import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
-import net.miatech.praxis.payment.entities.A4169;
-import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.MPF121Filter;
 import net.miatech.praxis.utils.JdbcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,19 +38,6 @@ public class ProcessLogDAO implements ProcessLogLogic{
         filter.setV_SQL_SQLCODE((String) obj.get("V_SQL_SQLCODE"));
         System.out.println("Response: " + filter.getV_SQL_MESSAGE());
         return filter;
-    }
-
-    @Override
-    public SPMC001Filter loadSPMC001Filter() throws Exception {
-        SPMC001Filter res = new SPMC001Filter();
-        List<BeanPropertyRowMapper> mappers = new ArrayList<>();
-        mappers.add(new BeanPropertyRowMapper(A4451.class));
-        mappers.add(new BeanPropertyRowMapper(A4451.class));
-        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC001",
-                mappers);
-        //res.setProcesadores((List<A4451>) obj.get("result0"));
-        //res.setCias((List<A4451>) obj.get("result1"));
-        return res;
     }
 
     @Override
