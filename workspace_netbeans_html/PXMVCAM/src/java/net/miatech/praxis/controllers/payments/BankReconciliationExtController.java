@@ -90,7 +90,7 @@ public class BankReconciliationExtController {
         return ResponseUtils.ok(filter);
     }
 
-    @RequestMapping(value = "downloadExcelEECC",method = RequestMethod.POST)
+    @RequestMapping(value = "downloadExcelEECC", method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelEECC(@RequestBody LoadExcelEECC params) throws Exception {
         System.out.println("***** BankReconciliationExt - downloadExcelEECC *****");
         System.out.println("Bandoc loaded: " + params.getBankInfo().getBANDOC());
@@ -98,8 +98,7 @@ public class BankReconciliationExtController {
         System.out.println("Headers loaded: " + params.getHeaders().size());
         System.out.println("Taxes loaded: " + params.getTaxes().size());
         SXSSFWorkbook workbook = new SXSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Settlements");
-        
+        //<editor-fold defaultstate="collapsed" desc="Estilos">
         XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
         Font headerFont = workbook.createFont();
 
@@ -119,52 +118,52 @@ public class BankReconciliationExtController {
         headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         headerStyle.setWrapText(true);
         headerStyle.setFont(headerFont);
-        
+        //</editor-fold>
+
+        Sheet sheet = workbook.createSheet("EECC");
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Client");
-        headerRow.createCell(1).setCellValue("Processing Date");
-        headerRow.createCell(2).setCellValue("Settlement");
-        headerRow.createCell(3).setCellValue("Payment\nCurrency");
-        headerRow.createCell(4).setCellValue("Payment\nAmount");
-        headerRow.createCell(5).setCellValue("Payment\nDate");
-        headerRow.createCell(6).setCellValue("Sale\nDate");
-        headerRow.createCell(7).setCellValue("Doc.\nType");
-        headerRow.createCell(8).setCellValue("Card Number");
-        headerRow.createCell(9).setCellValue("Auth");
-        headerRow.createCell(10).setCellValue("Currency");
-        headerRow.createCell(11).setCellValue("Amount");
-        headerRow.createCell(12).setCellValue("Comm.");
-        headerRow.createCell(13).setCellValue("NET");
-        headerRow.createCell(14).setCellValue("Merchant");
-        headerRow.createCell(15).setCellValue("Bank\nCode");
-        headerRow.createCell(16).setCellValue("Bandoc");
-        headerRow.createCell(17).setCellValue("Processor");
+        headerRow.createCell(1).setCellValue("Value Date");
+        headerRow.createCell(2).setCellValue("Processing\nDate");
+        headerRow.createCell(3).setCellValue("Suggested\nProcessor");
+        headerRow.createCell(4).setCellValue("Country");
+        headerRow.createCell(5).setCellValue("Doc. Type");
+        headerRow.createCell(6).setCellValue("Bandoc");
+        headerRow.createCell(7).setCellValue("Bank Code");
+        headerRow.createCell(8).setCellValue("Bank Name");
+        headerRow.createCell(9).setCellValue("Acc. Number");
+        headerRow.createCell(10).setCellValue("Profit Center");
+        headerRow.createCell(11).setCellValue("Bank Account");
+        headerRow.createCell(12).setCellValue("Society");
+        headerRow.createCell(13).setCellValue("Reference");
+        headerRow.createCell(14).setCellValue("Text");
+        headerRow.createCell(15).setCellValue("Large Text");
+        headerRow.createCell(16).setCellValue("Currency");
+        headerRow.createCell(17).setCellValue("NET");
         for (int h = 0; h < 18; h++) {
             headerRow.getCell(h).setCellStyle(headerStyle);
         }
-        final int[] index = {1};
-        params.getSettlements().forEach(s -> {
-            Row row = sheet.createRow(index[0]);
-            row.createCell(0).setCellValue(s.getCCUST());
-            row.createCell(1).setCellValue(s.getPRDA());
-            row.createCell(2).setCellValue(s.getLIQUIDACIO());
-            row.createCell(3).setCellValue(s.getIMPORTEPAG());
-            row.createCell(4).setCellValue(s.getMONEDAPAGO());
-            row.createCell(5).setCellValue(s.getADATE());
-            row.createCell(6).setCellValue(s.getSDATE());
-            row.createCell(7).setCellValue(s.getTDOC());
-            row.createCell(8).setCellValue(s.getSCARDN());
-            row.createCell(9).setCellValue(s.getSAUTHOC());
-            row.createCell(10).setCellValue(s.getSCURRENCY());
-            row.createCell(11).setCellValue(s.getTOTAL());
-            row.createCell(12).setCellValue(s.getCOMISION());
-            row.createCell(13).setCellValue(s.getNETO());
-            row.createCell(14).setCellValue(s.getMERCHAND());
-            row.createCell(15).setCellValue(s.getCODEBANK());
-            row.createCell(16).setCellValue(s.getBANDOC());
-            row.createCell(17).setCellValue(s.getDESC_PRO());
-            index[0]++;
-        });
+
+        Row row = sheet.createRow(1);
+        row.createCell(0).setCellValue(params.getBankInfo().getCCUST());
+        row.createCell(1).setCellValue(params.getBankInfo().getVALDATE());
+        row.createCell(2).setCellValue(params.getBankInfo().getPRDA());
+        row.createCell(3).setCellValue(params.getBankInfo().getDESC_SPRO());
+        row.createCell(4).setCellValue(params.getBankInfo().getSCOUNTRY());
+        row.createCell(5).setCellValue(params.getBankInfo().getTDOC());
+        row.createCell(6).setCellValue(params.getBankInfo().getBANDOC());
+        row.createCell(7).setCellValue(params.getBankInfo().getCODEBANK());
+        row.createCell(8).setCellValue(params.getBankInfo().getDESC_BANK());
+        row.createCell(9).setCellValue(params.getBankInfo().getACCCOMP());
+        row.createCell(10).setCellValue(params.getBankInfo().getBENCENC());
+        row.createCell(11).setCellValue(params.getBankInfo().getACCOUNT());
+        row.createCell(12).setCellValue(params.getBankInfo().getSOCIETY());
+        row.createCell(13).setCellValue(params.getBankInfo().getREFER());
+        row.createCell(14).setCellValue(params.getBankInfo().getTEXTO());
+        row.createCell(15).setCellValue(params.getBankInfo().getTEXTOLAR());
+        row.createCell(16).setCellValue(params.getBankInfo().getSCURRENCY());
+        row.createCell(17).setCellValue(params.getBankInfo().getNETO());
+
         for (int c = 0; c < 18; c++) {
             sheet.autoSizeColumn(c, false);
             int defaultWidth = 15 * 256;
@@ -172,9 +171,103 @@ public class BankReconciliationExtController {
                 sheet.setColumnWidth(c, defaultWidth);
             }
         }
-        
-        //Sheet sheet2 = workbook.createSheet("Settlements");
 
+        if (!params.getSettlements().isEmpty()) {
+            Sheet sheet1 = workbook.createSheet("Settlements");
+
+            Row headerRow1 = sheet1.createRow(0);
+            headerRow1.createCell(0).setCellValue("Client");
+            headerRow1.createCell(1).setCellValue("Processing Date");
+            headerRow1.createCell(2).setCellValue("Settlement");
+            headerRow1.createCell(3).setCellValue("Payment\nCurrency");
+            headerRow1.createCell(4).setCellValue("Payment\nAmount");
+            headerRow1.createCell(5).setCellValue("Payment\nDate");
+            headerRow1.createCell(6).setCellValue("Sale\nDate");
+            headerRow1.createCell(7).setCellValue("Doc.\nType");
+            headerRow1.createCell(8).setCellValue("Card Number");
+            headerRow1.createCell(9).setCellValue("Auth");
+            headerRow1.createCell(10).setCellValue("Currency");
+            headerRow1.createCell(11).setCellValue("Amount");
+            headerRow1.createCell(12).setCellValue("Comm.");
+            headerRow1.createCell(13).setCellValue("NET");
+            headerRow1.createCell(14).setCellValue("Merchant");
+            headerRow1.createCell(15).setCellValue("Bank\nCode");
+            headerRow1.createCell(16).setCellValue("Bandoc");
+            headerRow1.createCell(17).setCellValue("Processor");
+            for (int h = 0; h < 18; h++) {
+                headerRow1.getCell(h).setCellStyle(headerStyle);
+            }
+            final int[] index = {1};
+
+            params.getSettlements().forEach(s -> {
+                Row row1 = sheet1.createRow(index[0]);
+                row1.createCell(0).setCellValue(s.getCCUST());
+                row1.createCell(1).setCellValue(s.getPRDA());
+                row1.createCell(2).setCellValue(s.getLIQUIDACIO());
+                row1.createCell(3).setCellValue(s.getIMPORTEPAG());
+                row1.createCell(4).setCellValue(s.getMONEDAPAGO());
+                row1.createCell(5).setCellValue(s.getADATE());
+                row1.createCell(6).setCellValue(s.getSDATE());
+                row1.createCell(7).setCellValue(s.getTDOC());
+                row1.createCell(8).setCellValue(s.getSCARDN());
+                row1.createCell(9).setCellValue(s.getSAUTHOC());
+                row1.createCell(10).setCellValue(s.getSCURRENCY());
+                row1.createCell(11).setCellValue(s.getTOTAL());
+                row1.createCell(12).setCellValue(s.getCOMISION());
+                row1.createCell(13).setCellValue(s.getNETO());
+                row1.createCell(14).setCellValue(s.getMERCHAND());
+                row1.createCell(15).setCellValue(s.getCODEBANK());
+                row1.createCell(16).setCellValue(s.getBANDOC());
+                row1.createCell(17).setCellValue(s.getDESC_PRO());
+                index[0]++;
+            });
+            for (int c = 0; c < 18; c++) {
+                sheet1.autoSizeColumn(c, false);
+                int defaultWidth = 15 * 256;
+                if (sheet1.getColumnWidth(c) < defaultWidth) {
+                    sheet1.setColumnWidth(c, defaultWidth);
+                }
+            }
+        }
+
+        if (!params.getTaxes().isEmpty()) {
+            Sheet sheet2 = workbook.createSheet("Taxes");
+
+            Row headerRow2 = sheet2.createRow(0);
+            headerRow2.createCell(0).setCellValue("Client");
+            headerRow2.createCell(1).setCellValue("Processing Date");
+            headerRow2.createCell(2).setCellValue("Payment Date");
+            headerRow2.createCell(3).setCellValue("Tax Code");
+            headerRow2.createCell(4).setCellValue("Payment\nCurr.");
+            headerRow2.createCell(5).setCellValue("Payment\nAmount");
+            headerRow2.createCell(6).setCellValue("Curr.");
+            headerRow2.createCell(7).setCellValue("Amount");
+            headerRow2.createCell(8).setCellValue("Merchant");
+            headerRow2.createCell(9).setCellValue("Bandoc");
+            headerRow2.createCell(10).setCellValue("Settlement");
+            headerRow2.createCell(11).setCellValue("Processor");
+            for (int h = 0; h < 12; h++) {
+                headerRow2.getCell(h).setCellStyle(headerStyle);
+            }
+            final int[] index = {1};
+            params.getTaxes().forEach(t->{
+                Row row2 = sheet2.createRow(index[0]);
+                row2.createCell(0).setCellValue(t.getCCUST());
+                row2.createCell(1).setCellValue(t.getPRDA());
+                row2.createCell(2).setCellValue(t.getFLIQUIDACI());
+                row2.createCell(3).setCellValue(t.getCODIGO());
+                row2.createCell(4).setCellValue(t.getMONEDAPAGO());
+                row2.createCell(5).setCellValue(t.getIMPORTEPAG());
+                row2.createCell(6).setCellValue(t.getMONEDA());
+                row2.createCell(7).setCellValue(t.getIMPORTE());
+                row2.createCell(8).setCellValue(t.getMERCHAND());
+                row2.createCell(9).setCellValue(t.getBANDOC());
+                row2.createCell(10).setCellValue(t.getLIQUIDACIO());
+                row2.createCell(11).setCellValue(t.getDESC_PRO());
+                index[0]++;
+            });
+        }
+        
         String prefix = "EECC_Conciliation_" + params.getBankInfo().getBANDOC();
         String suffix = ".xlsx";
         File file = File.createTempFile(prefix + UUID.randomUUID(), suffix);

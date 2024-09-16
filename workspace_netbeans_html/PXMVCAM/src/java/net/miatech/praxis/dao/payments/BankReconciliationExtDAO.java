@@ -100,11 +100,13 @@ public class BankReconciliationExtDAO implements BankReconciliationExtLogic{
         List<BeanPropertyRowMapper> lstMappers = new ArrayList<>();
         lstMappers.add(new BeanPropertyRowMapper(MPF060.class));
         lstMappers.add(new BeanPropertyRowMapper(MPF083.class));
+        lstMappers.add(new BeanPropertyRowMapper(MPF091.class));
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR005",
                 params, lstMappers);
         filter.setResponse((List<MPF060>) obj.get("result0"));
         filter.setHeaders((List<MPF083>) obj.get("result1"));
+        filter.setTaxes((List<MPF091>) obj.get("result2"));
         return filter;
     }
     

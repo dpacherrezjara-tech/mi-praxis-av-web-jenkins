@@ -803,15 +803,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     enforceMaxLength: true
                                                 },
                                                 {
-                                                    fieldLabel: 'Nbr. Trans.',
-                                                    labelWidth: 80,
-                                                    width: 160,
-                                                    name: 'IN_TRAN',
-                                                    maskRe: /[0-9]/,
-                                                    maxLength: 6,
-                                                    enforceMaxLength: true
-                                                },
-                                                {
                                                     fieldLabel: 'Merchant ID',
                                                     labelWidth: 80,
                                                     width: 200,
@@ -819,64 +810,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     maxLength: 15,
                                                     maskRe: /[0-9]/,
                                                     enforceMaxLength: true
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            items: [
-                                                {
-                                                    fieldLabel: 'Card Code',
-                                                    labelWidth: 80,
-                                                    width: 120,
-                                                    name: 'IN_SCARCOD',
-                                                    maxLength: 2,
-                                                    maskRe: /[a-zA-Z]/,
-                                                    enforceMaxLength: true,
-                                                    listeners: {
-                                                        change: function (field, newValue) {
-                                                            field.setValue(newValue.toUpperCase());  // Convierte a mayúsculas
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    fieldLabel: 'Card Number',
-                                                    labelWidth: 90,
-                                                    width: 220,
-                                                    name: 'IN_SCARDN',
-                                                    maxLength: 19,
-                                                    maskRe: /[0-9%\*X]/,
-                                                    enforceMaxLength: true
-                                                },
-                                                {
-                                                    fieldLabel: 'Auth',
-                                                    labelWidth: 50,
-                                                    width: 110,
-                                                    name: 'IN_SAUTHOC',
-                                                    maxLength: 6,
-                                                    maskRe: /[0-9]/,
-                                                    enforceMaxLength: true
-                                                },
-                                                {
-                                                    fieldLabel: 'NET',
-                                                    labelWidth: 60,
-                                                    width: 160,
-                                                    name: 'IN_NETO',
-                                                    maxLength: 15,
-                                                    enforceMaxLength: true,
-                                                    maskRe: /[0-9\.\-]/, // Máscara para números y punto decimal
-                                                    regex: /^[-]?\d+(\.\d{1,2})?$/, // Validación para permitir hasta 2 decimales
-                                                    regexText: 'Invalid Amount'
-                                                },
-                                                {
-                                                    fieldLabel: 'Pay Amt',
-                                                    labelWidth: 80,
-                                                    width: 180,
-                                                    name: 'IN_IMPORTEPAG',
-                                                    maxLength: 15,
-                                                    enforceMaxLength: true,
-                                                    maskRe: /[0-9\.\-]/, // Máscara para números y punto decimal
-                                                    regex: /^[-]?\d+(\.\d{1,2})?$/, // Validación para permitir hasta 2 decimales
-                                                    regexText: 'Invalid Amount'
                                                 },
                                                 {
                                                     xtype: 'button',
@@ -899,16 +832,74 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
-                                                    id:prototype.idDE + '-downloadConciliation',
+                                                    id: prototype.idDE + '-downloadConciliation',
                                                     iconCls: 'prx-icon-excel',
                                                     tooltip: 'Download Conciliation',
-                                                    disabled:true,
+                                                    disabled: true,
                                                     listeners: {
                                                         click: 'onDownloadConciliation'
                                                     }
                                                 }
                                             ]
-                                        }
+                                        },
+//                                        {
+//                                            items: [
+//                                                {
+//                                                    fieldLabel: 'Card Code',
+//                                                    labelWidth: 80,
+//                                                    width: 120,
+//                                                    name: 'IN_SCARCOD',
+//                                                    maxLength: 2,
+//                                                    maskRe: /[a-zA-Z]/,
+//                                                    enforceMaxLength: true,
+//                                                    listeners: {
+//                                                        change: function (field, newValue) {
+//                                                            field.setValue(newValue.toUpperCase());  // Convierte a mayúsculas
+//                                                        }
+//                                                    }
+//                                                },
+//                                                {
+//                                                    fieldLabel: 'Card Number',
+//                                                    labelWidth: 90,
+//                                                    width: 220,
+//                                                    name: 'IN_SCARDN',
+//                                                    maxLength: 19,
+//                                                    maskRe: /[0-9%\*X]/,
+//                                                    enforceMaxLength: true
+//                                                },
+//                                                {
+//                                                    fieldLabel: 'Auth',
+//                                                    labelWidth: 50,
+//                                                    width: 110,
+//                                                    name: 'IN_SAUTHOC',
+//                                                    maxLength: 6,
+//                                                    maskRe: /[0-9]/,
+//                                                    enforceMaxLength: true
+//                                                },
+//                                                {
+//                                                    fieldLabel: 'NET',
+//                                                    labelWidth: 60,
+//                                                    width: 160,
+//                                                    name: 'IN_NETO',
+//                                                    maxLength: 15,
+//                                                    enforceMaxLength: true,
+//                                                    maskRe: /[0-9\.\-]/, // Máscara para números y punto decimal
+//                                                    regex: /^[-]?\d+(\.\d{1,2})?$/, // Validación para permitir hasta 2 decimales
+//                                                    regexText: 'Invalid Amount'
+//                                                },
+//                                                {
+//                                                    fieldLabel: 'Pay Amt',
+//                                                    labelWidth: 80,
+//                                                    width: 180,
+//                                                    name: 'IN_IMPORTEPAG',
+//                                                    maxLength: 15,
+//                                                    enforceMaxLength: true,
+//                                                    maskRe: /[0-9\.\-]/, // Máscara para números y punto decimal
+//                                                    regex: /^[-]?\d+(\.\d{1,2})?$/, // Validación para permitir hasta 2 decimales
+//                                                    regexText: 'Invalid Amount'
+//                                                },
+//                                            ]
+//                                        }
                                     ]
                                 },
                                 //</editor-fold>
@@ -917,7 +908,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                     xtype: 'grid',
                                     titleAlign: 'center',
                                     minHeight: 100,
-                                    maxHeight: 140,
+                                    maxHeight: 160,
                                     viewConfig: {
                                         stripeRows: true,
                                         enableTextSelection: true,
@@ -1056,7 +1047,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     },
                                                     {text: 'Client', dataIndex: 'CCUST', width: 50},
                                                     {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
-                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                                    {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
                                                     {
                                                         text: 'Payment Amounts',
                                                         defaults: {
@@ -1091,7 +1082,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                             }
                                                         },
                                                         columns: [
-                                                            {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
+
                                                             {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 80},
                                                             {text: 'Doc. Type', dataIndex: 'TDOC', width: 80,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1133,7 +1124,23 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
                                                     {text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70},
                                                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
-                                                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 150}
+                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 150},
+                                                    {
+                                                        sortable: false,
+                                                        xtype: 'actioncolumn',
+                                                        width: 40,
+                                                        text: 'Del.',
+                                                        //id: prototype.id + '-gridColumnDelete',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-image-trash',
+                                                                tooltip: 'Delete',
+                                                                handler: 'onDeleteSettlPending'
+                                                            }
+                                                        ]
+                                                    }
                                                 ]
                                             },
                                             bbar: {
@@ -1174,7 +1181,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     },
                                                     {text: 'Client', dataIndex: 'CCUST', width: 50},
                                                     {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
-                                                    {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
+                                                    {text: 'Payment<br>Date', dataIndex: 'FLIQUIDACI', width: 80},
                                                     {text: 'Tax<br>Code', dataIndex: 'CODIGO', width: 100},
                                                     {
                                                         text: 'Amount Information',
@@ -1213,7 +1220,23 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     },
                                                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
                                                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 120},
-                                                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 150}
+                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 120},
+                                                    {text: 'Processor', dataIndex: 'DESC_PRO', width: 150},
+                                                    {
+                                                        sortable: false,
+                                                        xtype: 'actioncolumn',
+                                                        width: 40,
+                                                        text: 'Del.',
+                                                        //id: prototype.id + '-gridColumnDelete',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-image-trash',
+                                                                tooltip: 'Delete',
+                                                                handler: 'onDeleteTaxPending'
+                                                            }
+                                                        ]
+                                                    }
 
                                                 ]
                                             }

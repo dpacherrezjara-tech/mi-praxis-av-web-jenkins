@@ -184,11 +184,15 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 //console.log(data);
                 me.addDataHeaders(data.headers);
                 me.addDataSettlements(data.response);
+                me.addDataTaxes(data.taxes);
             }
         } catch (e) {
             console.error(e);
         } finally {
             me.view.center();
+            if (me.settlements.length > 0 && me.taxes.length > 0) {
+                Ext.getCmp(prototype.idDE + '-downloadConciliation').setDisabled(false);
+            }
         }
         panelPending.unmask();
     },
@@ -198,7 +202,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             'LIQUIDACIO', 'MERCHAND', 'MONEDALIQ', 'PAISLIQ', 'MONEDA', 'SDATE'];
         let response = global.arrayAddUnique(data, me.headers, keys);
         me.headers = response.data;
-        console.log(response);
+        console.log('Headers: ', response);
         me.reloadHeaders();
     },
     addDataSettlements: function (data) {
@@ -207,10 +211,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             'SCARCOD', 'SCARDN', 'SAUTHOC', 'SEQ', 'SVFOP'];
         let response = global.arrayAddUnique(data, me.settlements, keys);
         me.settlements = response.data;
-        if(response.modified>0){
-            Ext.getCmp(prototype.idDE + '-downloadConciliation').setDisabled(false);
-        }
-        console.log(response);
+//        if(response.modified>0){
+//            Ext.getCmp(prototype.idDE + '-downloadConciliation').setDisabled(false);
+//        }
+        console.log('Settlements: ', response);
         me.reloadSettlements();
         Ext.toast({
             html: `<div class = "custom-toast">Total found: <b style="color:blue">${response.added}</b><br>` +
@@ -223,39 +227,197 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             timeout: 15000
         });
     },
+    addDataTaxes: function (data) {
+        const me = this;
+        let keys = ['CCUST', 'PRDA', 'CODPRO', 'CCUSTPRO', 'FLIQUIDACI',
+            'LIQUIDACIO', 'MERCHAND', 'MONEDA', 'CODIGO', 'CORRL'];
+        let response = global.arrayAddUnique(data, me.taxes, keys);
+        me.taxes = response.data;
+        console.log('Taxes: ', response);
+        me.reloadTaxes();
+    },
     onCleanSettlGrid: function () {
         const me = this;
         const gridHeaders = Ext.getCmp(prototype.idDE + '-gridHeadersPending');
         const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
+        const gridTaxes = Ext.getCmp(prototype.idDE + '-gridTaxesPending');
         me.headers = [];
         me.settlements = [];
+        me.taxes = [];
         gridHeaders.setStore(null);
         gridHeaders.hide();
         gridSettlements.setStore(null);
+        gridTaxes.setStore(null);
     },
-    onDeleteHeaderPending: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onDeleteHeaderPending: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
-        const {CCUST,CODPRO,CCUSTPRO,LIQUIDACIO,FLIQUIDACI,MERCHAND} = record.data;
-        let removeArray = me.settlements.filter(x=>
-                x.CCUST.trim() === CCUST.trim() &&
-                x.CODPRO.trim() === CODPRO.trim() &&
-                x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
-                x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
-                x.ADATE.trim() === FLIQUIDACI.trim() &&
-                x.MERCHAND.trim() === MERCHAND.trim()
+        const {CCUST, CODPRO, CCUSTPRO, LIQUIDACIO, FLIQUIDACI, MERCHAND} = record.data;
+        let removeSettl = me.settlements.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.ADATE.trim() === FLIQUIDACI.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
         );
-        console.log('Index Del: ',grid.getStore().indexOf(record));
-        me.headers.splice(grid.getStore().indexOf(record),1);
+        let removeTaxes = me.taxes.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.FLIQUIDACI.trim() === FLIQUIDACI.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
+        );
+
+        console.log('Index Del: ', grid.getStore().indexOf(record));
+        me.headers.splice(grid.getStore().indexOf(record), 1);
         //grid.getStore().remove(record);
-        let keys = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'ADATE','MERCHAND'];
-        let response = global.arrayRemove(removeArray,me.settlements,keys);
-        console.log(response);
+        let keysSettl = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'ADATE', 'MERCHAND'];
+        let response = global.arrayRemove(removeSettl, me.settlements, keysSettl);
         me.settlements = response.data;
+        let settlRemoved = response.removed;
+
+        let keysTaxes = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
+        response = global.arrayRemove(removeTaxes, me.taxes, keysTaxes);
+        me.taxes = response.data;
+        let taxRemoved = response.removed;
+
         me.reloadHeaders();
         me.reloadSettlements();
-        
+        me.reloadTaxes();
+
         Ext.toast({
-            html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${response.removed}</b>`,
+            html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${settlRemoved}</b><br>
+                    Total Taxes removed: <b style="color:red">${taxRemoved}</b><br>`,
+            title: 'Notification',
+            align: 't',
+            closable: true,
+            width: 300,
+            timeout: 15000 // 10 segundos
+        });
+    },
+    onDeleteSettlPending: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
+        const {CCUST, CODPRO, CCUSTPRO, LIQUIDACIO, ADATE, MERCHAND} = record.data;
+        let removeHeaders = me.headers.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.FLIQUIDACI.trim() === ADATE.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
+        );
+        let removeTaxes = me.taxes.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.FLIQUIDACI.trim() === ADATE.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
+        );
+        let removedHeaders = 0;
+        let removedSettl = 0;
+        let removedTaxes = 0;
+
+        console.log('Total headers removed ', removeHeaders.length);
+        if (removeHeaders.length > 0) {
+            let removeSettl = me.settlements.filter(x =>
+                x.CCUST.trim() === CCUST.trim() &&
+                        x.CODPRO.trim() === CODPRO.trim() &&
+                        x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                        x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                        x.ADATE.trim() === ADATE.trim() &&
+                        x.MERCHAND.trim() === MERCHAND.trim()
+            );
+            let keysHeader = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
+            let response = global.arrayRemove(removeHeaders, me.headers, keysHeader);
+            removedHeaders = response.removed;
+            me.headers = response.data;
+
+            response = global.arrayRemove(removeTaxes, me.taxes, keysHeader);
+            removedTaxes = response.removed;
+            me.taxes = response.data;
+
+            let keysSettl = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'ADATE', 'MERCHAND'];
+            response = global.arrayRemove(removeSettl, me.settlements, keysSettl);
+            removedSettl = response.removed;
+            me.settlements = response.data;
+        } else {
+            console.log('Index Del: ', grid.getStore().indexOf(record));
+            me.settlements.splice(grid.getStore().indexOf(record), 1);
+            removedSettl = 1;
+        }
+
+        me.reloadHeaders();
+        me.reloadSettlements();
+        me.reloadTaxes();
+
+        Ext.toast({
+            html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${removedSettl}</b><br>
+                    Total Headers removed: <b style="color:red">${removedHeaders}</b><br>
+                    Total Taxes removed: <b style="color:red">${removedTaxes}</b>`,
+            title: 'Notification',
+            align: 't',
+            closable: true,
+            width: 300,
+            timeout: 15000 // 10 segundos
+        });
+
+    },
+    onDeleteTaxPending: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
+        const {CCUST, CODPRO, CCUSTPRO, LIQUIDACIO, FLIQUIDACI, MERCHAND} = record.data;
+        let removeHeaders = me.headers.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.FLIQUIDACI.trim() === FLIQUIDACI.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
+        );
+        let removeSettl = me.settlements.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.ADATE.trim() === FLIQUIDACI.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
+        );
+        let removeTaxes = me.taxes.filter(x =>
+            x.CCUST.trim() === CCUST.trim() &&
+                    x.CODPRO.trim() === CODPRO.trim() &&
+                    x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                    x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                    x.FLIQUIDACI.trim() === FLIQUIDACI.trim() &&
+                    x.MERCHAND.trim() === MERCHAND.trim()
+        );
+        let removedHeaders = 0;
+        let removedSettl = 0;
+        let removedTaxes = 0;
+
+        let keysHeader = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
+        let response = global.arrayRemove(removeHeaders, me.headers, keysHeader);
+        removedHeaders = response.removed;
+        me.headers = response.data;
+
+        let keysSettl = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'ADATE', 'MERCHAND'];
+        response = global.arrayRemove(removeSettl, me.settlements, keysSettl);
+        removedSettl = response.removed;
+        me.settlements = response.data;
+
+        let keysTaxes = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
+        response = global.arrayRemove(removeTaxes, me.taxes, keysTaxes);
+        removedTaxes = response.removed;
+        me.taxes = response.data;
+
+        me.reloadHeaders();
+        me.reloadSettlements();
+        me.reloadTaxes();
+
+        Ext.toast({
+            html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${removedSettl}</b><br>
+                    Total Headers removed: <b style="color:red">${removedHeaders}</b><br>
+                    Total Taxes removed: <b style="color:red">${removedTaxes}</b>`,
             title: 'Notification',
             align: 't',
             closable: true,
@@ -268,7 +430,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     onCancelClick: function () {
         this.view.close();
     },
-    onDownloadConciliation: async function(){
+    onDownloadConciliation: async function () {
         const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
         panelPending.mask('Downloading...');
         const me = this;
@@ -319,11 +481,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 })
                 .catch(error => console.error('Error:', error));
         panelPending.unmask();
-        global.Msg({msg:'Downloaded successfully'});
+        global.Msg({msg: 'Downloaded successfully'});
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Reload Grids">
-    reloadHeaders: function(){
+    reloadHeaders: function () {
         const me = this;
         const gridHeaders = Ext.getCmp(prototype.idDE + '-gridHeadersPending');
         const qtyHeaders = Ext.getCmp(prototype.idDE + '-txtQtyHeaders2');
@@ -342,20 +504,20 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             totalHeaders.setValue(store.sum('IMPORTEPAG'));
         }
     },
-    reloadSettlements: function(){
+    reloadSettlements: function () {
         const me = this;
         const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
-        
+
         const qtySales = Ext.getCmp(prototype.idDE + '-txtQtySettlSales2');
         const qtyDebits = Ext.getCmp(prototype.idDE + '-txtQtySettlDebits2');
         const qtyVoid = Ext.getCmp(prototype.idDE + '-txtQtySettlVoid2');
         const qtySettl = Ext.getCmp(prototype.idDE + '-txtQtySettl2');
-        
+
         const totalSales = Ext.getCmp(prototype.idDE + '-txtTotalSettlSales2');
         const totalDebits = Ext.getCmp(prototype.idDE + '-txtTotalSettlDebits2');
         const totalVoid = Ext.getCmp(prototype.idDE + '-txtTotalSettlVoid2');
         const totalSettl = Ext.getCmp(prototype.idDE + '-txtTotalSettl2');
-        
+
         let store = new Ext.data.Store({
             pageSize: 100,
             data: me.settlements,
@@ -365,14 +527,14 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             }
         });
         gridSettlements.setStore(store);
-        
+
         let contadores = global.countBy(me.settlements, 'TDOC');
 
         qtySales.setValue(contadores.S || 0);
         qtyDebits.setValue(contadores.D || 0);
         qtyVoid.setValue(contadores.V || 0);
         qtySettl.setValue(me.settlements.length);
-        
+
         let tsettl = 0.00;
         if (me.settlements.filter(x => x.MONEDAPAGO.trim() === '').length > 0) {
             totalSales.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'S'));
@@ -387,6 +549,25 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             tsettl = global.sumBy(me.settlements, 'IMPORTEPAG');
         }
         totalSettl.setValue(tsettl);
+    },
+    reloadTaxes: function () {
+        const me = this;
+        const gridTaxes = Ext.getCmp(prototype.idDE + '-gridTaxesPending');
+        const qtyTaxes = Ext.getCmp(prototype.idDE + '-txtQtySettlTaxes2');
+        const totalTaxes = Ext.getCmp(prototype.idDE + '-txtTotalSettlTaxes2');
+        let store = new Ext.data.Store({
+            data: me.taxes
+        });
+        gridTaxes.setStore(store);
+
+        qtyTaxes.setValue(me.taxes.length);
+
+        if (me.taxes.filter(x => x.MONEDAPAGO.trim() === '').length > 0) {
+            totalTaxes.setValue(global.sumBy(me.taxes, 'IMPORTE'));
+
+        } else {
+            totalTaxes.setValue(global.sumBy(me.taxes, 'IMPORTEPAG'));
+        }
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Formateo de Parametros">

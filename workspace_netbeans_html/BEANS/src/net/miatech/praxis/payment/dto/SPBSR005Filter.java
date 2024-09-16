@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Data;
 import net.miatech.praxis.payment.entities.MPF060;
 import net.miatech.praxis.payment.entities.MPF083;
+import net.miatech.praxis.payment.entities.MPF091;
 
 /**
  *
@@ -18,4 +19,5 @@ public class SPBSR005Filter {
     
     List<MPF060> response = new ArrayList<>();
     List<MPF083> headers = new ArrayList<>();
+    List<MPF091> taxes = new ArrayList<>();
 }
