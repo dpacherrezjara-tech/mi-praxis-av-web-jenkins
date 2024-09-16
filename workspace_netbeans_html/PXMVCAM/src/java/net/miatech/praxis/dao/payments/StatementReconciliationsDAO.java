@@ -2641,6 +2641,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.NETO = rst.getDouble("NETO");
+                beanTkt.COMISION = rst.getDouble("COMISION");
                 beanTkt.MONEDAPAGO = rst.getString("MONEDAPAGO");
                 beanTkt.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
                 beanTkt.COMISTOTA = rst.getDouble("COMISTOTA");
