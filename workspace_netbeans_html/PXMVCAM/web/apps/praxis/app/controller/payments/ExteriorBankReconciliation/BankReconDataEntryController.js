@@ -65,6 +65,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             me.view.center();
         }
     },
+    //<editor-fold defaultstate="collapsed" desc="Match">
     setMatchGrids: function () {
         const me = this;
         const panelMatch = Ext.getCmp(prototype.idDE + '-panelMatch');
@@ -164,12 +165,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
 
         panelMatch.show();
     },
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Pending">
     setPendingGrids: function () {
-        const me = this;
         const panelMatch = Ext.getCmp(prototype.idDE + '-panelPending');
-        //const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
         panelMatch.show();
-
     },
     onAddSettlements: async function () {
         const me = this;
@@ -181,7 +181,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             const res = await fetch(`${me.url}/loadSettlementScanner?${new URLSearchParams(params)}`);
             if (res.ok) {
                 const data = await res.json();
-                console.log(data);
+                //console.log(data);
                 me.addDataHeaders(data.headers);
                 me.addDataSettlements(data.response);
             }
@@ -194,42 +194,24 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     },
     addDataHeaders: function (data) {
         const me = this;
-        const gridHeaders = Ext.getCmp(prototype.idDE + '-gridHeadersPending');
         let keys = ['CCUST', 'PRDA', 'CODPRO', 'CCUSTPRO', 'FLIQUIDACI',
             'LIQUIDACIO', 'MERCHAND', 'MONEDALIQ', 'PAISLIQ', 'MONEDA', 'SDATE'];
         let response = global.arrayAddUnique(data, me.headers, keys);
         me.headers = response.data;
-        console.table(response);
-        if (me.headers.length > 0) {
-            gridHeaders.show();
-        }
-        let store = new Ext.data.Store({
-            data: me.headers
-        });
-        gridHeaders.setStore(store);
+        console.log(response);
+        me.reloadHeaders();
     },
     addDataSettlements: function (data) {
         const me = this;
-        const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
-
         let keys = ['CCUST', 'SDATE', 'SCOUNTRY', 'TDOC', 'CODEBANK',
             'SCARCOD', 'SCARDN', 'SAUTHOC', 'SEQ', 'SVFOP'];
-
         let response = global.arrayAddUnique(data, me.settlements, keys);
         me.settlements = response.data;
-        console.table(response);
-
-        let store = new Ext.data.Store({
-            pageSize: 100,
-            data: me.settlements,
-            proxy: {
-                type: 'memory', // Los datos están cargados en memoria
-                enablePaging: true // Habilitar la paginación en memoria
-            }
-        });
-
-        gridSettlements.setStore(store);
-
+        if(response.modified>0){
+            Ext.getCmp(prototype.idDE + '-downloadConciliation').setDisabled(false);
+        }
+        console.log(response);
+        me.reloadSettlements();
         Ext.toast({
             html: `<div class = "custom-toast">Total found: <b style="color:blue">${response.added}</b><br>` +
                     `Total Added: <b style="color:green">${response.inserted}</b><br>` +
@@ -238,7 +220,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             align: 't',
             closable: true,
             width: 300,
-            timeout: 15000 // 10 segundos
+            timeout: 15000
         });
     },
     onCleanSettlGrid: function () {
@@ -248,11 +230,165 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         me.headers = [];
         me.settlements = [];
         gridHeaders.setStore(null);
+        gridHeaders.hide();
         gridSettlements.setStore(null);
     },
+    onDeleteHeaderPending: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        const {CCUST,CODPRO,CCUSTPRO,LIQUIDACIO,FLIQUIDACI,MERCHAND} = record.data;
+        let removeArray = me.settlements.filter(x=>
+                x.CCUST.trim() === CCUST.trim() &&
+                x.CODPRO.trim() === CODPRO.trim() &&
+                x.CCUSTPRO.trim() === CCUSTPRO.trim() &&
+                x.LIQUIDACIO.trim() === LIQUIDACIO.trim() &&
+                x.ADATE.trim() === FLIQUIDACI.trim() &&
+                x.MERCHAND.trim() === MERCHAND.trim()
+        );
+        console.log('Index Del: ',grid.getStore().indexOf(record));
+        me.headers.splice(grid.getStore().indexOf(record),1);
+        //grid.getStore().remove(record);
+        let keys = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'ADATE','MERCHAND'];
+        let response = global.arrayRemove(removeArray,me.settlements,keys);
+        console.log(response);
+        me.settlements = response.data;
+        me.reloadHeaders();
+        me.reloadSettlements();
+        
+        Ext.toast({
+            html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${response.removed}</b>`,
+            title: 'Notification',
+            align: 't',
+            closable: true,
+            width: 300,
+            timeout: 15000 // 10 segundos
+        });
+    },
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Handlers">
     onCancelClick: function () {
         this.view.close();
     },
+    onDownloadConciliation: async function(){
+        const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
+        panelPending.mask('Downloading...');
+        const me = this;
+        await fetch(`${me.url}/downloadExcelEECC`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'  // O el encabezado necesario para tu API
+            },
+            body: JSON.stringify({
+                bankInfo: me.bean,
+                headers: me.headers,
+                settlements: me.settlements,
+                taxes: me.taxes
+            })
+        })
+                .then(response => {
+                    // Verificar que la respuesta sea exitosa
+                    if (response.ok) {
+                        // Extraer el nombre del archivo desde el encabezado Content-Disposition
+                        const contentDisposition = response.headers.get('Content-Disposition');
+                        let nombreArchivo = 'archivo.zip';  // Nombre por defecto
+
+                        if (contentDisposition) {
+                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            const matches = filenameRegex.exec(contentDisposition);
+                            if (matches !== null && matches[1]) {
+                                nombreArchivo = matches[1].replace(/['"]/g, '');  // Limpiar comillas
+                            }
+                        }
+
+                        return response.blob().then(blob => ({
+                                blob: blob,
+                                nombreArchivo: nombreArchivo
+                            }));
+                    } else {
+                        throw new Error('Error al descargar el archivo');
+                    }
+                })
+                .then(({ blob, nombreArchivo }) => {
+                    // Crear un enlace para descargar el Blob como archivo
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = nombreArchivo;  // Usar el nombre del archivo extraído
+                    document.body.appendChild(a);
+                    a.click();  // Simular un clic para descargar el archivo
+                    a.remove();  // Eliminar el enlace temporal
+                })
+                .catch(error => console.error('Error:', error));
+        panelPending.unmask();
+        global.Msg({msg:'Downloaded successfully'});
+    },
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Reload Grids">
+    reloadHeaders: function(){
+        const me = this;
+        const gridHeaders = Ext.getCmp(prototype.idDE + '-gridHeadersPending');
+        const qtyHeaders = Ext.getCmp(prototype.idDE + '-txtQtyHeaders2');
+        const totalHeaders = Ext.getCmp(prototype.idDE + '-txtTotalHeaders2');
+        if (me.headers.length > 0) {
+            gridHeaders.show();
+        }
+        let store = new Ext.data.Store({
+            data: me.headers
+        });
+        gridHeaders.setStore(store);
+        qtyHeaders.setValue(me.headers.length);
+        if (me.headers.filter(x => x.MONEDAPAGO.trim() === '').length > 0) {
+            totalHeaders.setValue(store.sum('NETO'));
+        } else {
+            totalHeaders.setValue(store.sum('IMPORTEPAG'));
+        }
+    },
+    reloadSettlements: function(){
+        const me = this;
+        const gridSettlements = Ext.getCmp(prototype.idDE + '-gridSettlementsPending');
+        
+        const qtySales = Ext.getCmp(prototype.idDE + '-txtQtySettlSales2');
+        const qtyDebits = Ext.getCmp(prototype.idDE + '-txtQtySettlDebits2');
+        const qtyVoid = Ext.getCmp(prototype.idDE + '-txtQtySettlVoid2');
+        const qtySettl = Ext.getCmp(prototype.idDE + '-txtQtySettl2');
+        
+        const totalSales = Ext.getCmp(prototype.idDE + '-txtTotalSettlSales2');
+        const totalDebits = Ext.getCmp(prototype.idDE + '-txtTotalSettlDebits2');
+        const totalVoid = Ext.getCmp(prototype.idDE + '-txtTotalSettlVoid2');
+        const totalSettl = Ext.getCmp(prototype.idDE + '-txtTotalSettl2');
+        
+        let store = new Ext.data.Store({
+            pageSize: 100,
+            data: me.settlements,
+            proxy: {
+                type: 'memory', // Los datos están cargados en memoria
+                enablePaging: true // Habilitar la paginación en memoria
+            }
+        });
+        gridSettlements.setStore(store);
+        
+        let contadores = global.countBy(me.settlements, 'TDOC');
+
+        qtySales.setValue(contadores.S || 0);
+        qtyDebits.setValue(contadores.D || 0);
+        qtyVoid.setValue(contadores.V || 0);
+        qtySettl.setValue(me.settlements.length);
+        
+        let tsettl = 0.00;
+        if (me.settlements.filter(x => x.MONEDAPAGO.trim() === '').length > 0) {
+            totalSales.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'S'));
+            totalDebits.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'D'));
+            totalVoid.setValue(global.sumByFilter(me.settlements, 'NETO', 'TDOC', 'V'));
+            tsettl = global.sumBy(me.settlements, 'NETO');
+
+        } else {
+            totalSales.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'S'));
+            totalDebits.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'D'));
+            totalVoid.setValue(global.sumByFilter(me.settlements, 'IMPORTEPAG', 'TDOC', 'V'));
+            tsettl = global.sumBy(me.settlements, 'IMPORTEPAG');
+        }
+        totalSettl.setValue(tsettl);
+    },
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Formateo de Parametros">
     formatParameters: function (obj) {
         let params = {

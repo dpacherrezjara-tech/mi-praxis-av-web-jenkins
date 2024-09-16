@@ -890,19 +890,21 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
-                                                    iconCls: 'prx-icon-image-trash',
-                                                    tooltip: 'Delete Records',
+                                                    iconCls: 'prx-icon-delete',
+                                                    tooltip: 'Clean Grid',
                                                     listeners: {
-                                                        click: 'onDeleteSettlRecs'
+                                                        click: 'onCleanSettlGrid'
                                                     }
                                                 },
                                                 {
                                                     xtype: 'button',
                                                     width: 25,
-                                                    iconCls: 'prx-icon-delete',
-                                                    tooltip: 'Clean Grid',
+                                                    id:prototype.idDE + '-downloadConciliation',
+                                                    iconCls: 'prx-icon-excel',
+                                                    tooltip: 'Download Conciliation',
+                                                    disabled:true,
                                                     listeners: {
-                                                        click: 'onCleanSettlGrid'
+                                                        click: 'onDownloadConciliation'
                                                     }
                                                 }
                                             ]
@@ -993,7 +995,22 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     {text: 'NET', dataIndex: 'NETO', width: 120}
                                                 ]
                                             },
-                                            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1}
+                                            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 40,
+                                                text: 'Del.',
+                                                //id: prototype.id + '-gridColumnDelete',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-image-trash',
+                                                        tooltip: 'Delete',
+                                                        handler: 'onDeleteHeaderPending'
+                                                    }
+                                                ]
+                                            },
                                         ]
                                     }
                                 },

@@ -1532,6 +1532,22 @@ var LarSyrExt = function () {
             data : array
         };
     };
+    this.arrayRemove = function (removeArray, array, keys) {
+        let prev = array.length;
+        array = array.filter(item =>
+            !removeArray.some(x =>
+                keys.every(key => item[key] === x[key])
+            )
+        );
+        let post = array.length;
+
+        return {
+            original: prev,
+            removed: removeArray.length,
+            modified: post,
+            data: array
+        };
+    };
     this.PX_UTILS_URL = 'js/praxis.ui-1.0/praxis.utils-1.0.js';
 };
 

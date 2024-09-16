@@ -1,12 +1,16 @@
 package net.miatech.praxis.payment.entities;
 
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  *
  * @author dvicente
  */
 @Data
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MPF060 {
     private String CCUST,TDOC,STVAL,SCOUNTRY,FTE,SDATE,SAGENT,NEGOC,MERCHAND,SUCMERCH,SPNR,
             PRDA,TRAN,ADATE,VALDATE,TIPOTAR,SCARCOD,SCARDN,SCARDNCOR,SAUTHOC,SDATEXP,SOCIETY,CODEBANK,
