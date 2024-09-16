@@ -120,7 +120,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQMANUAL', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetBankS'
                                                                 },
@@ -132,11 +132,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQDIFF, '0,000') + '<b>';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Total', dataIndex: 'lngQTOTSAL', width: 100,
+                                                                text: 'Total', dataIndex: 'lngTOTALE', width: 100,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                                     return Ext.util.Format.number(value, '0,000');
@@ -144,7 +144,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTOTSAL, '0,000') + '<b>';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotTOTALE, '0,000') + '<b>';
                                                                 }
                                                             }
                                                         ]
@@ -176,7 +176,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         ]
                                                     },
                                                     {
-                                                        text: 'Total', dataIndex: 'Total', width: 140,
+                                                        text: 'Total', dataIndex: 'lngQSALES', width: 140,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
                                                             return Ext.util.Format.number(value, '0,000');
@@ -184,7 +184,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotTotal, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '<b>';
                                                         }
                                                     }
                                                 ]
@@ -196,7 +196,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         text: 'Match', menuDisabled: true,
                                                         columns: [
                                                             {
-                                                                text: 'Auto', dataIndex: 'lngQMATCHL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'Auto', dataIndex: 'lngQTMATCH', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
                                                                     click: 'onGridDetProceLIQByS'
                                                                 },
@@ -208,12 +208,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHL, '0,000') + '<b>';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMATCH, '0,000') + '<b>';
                                                                 }
                                                             },
                                                            
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFFL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'Manual', dataIndex: 'lngQTMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
                                                                     click: 'onGridDetProceLIQByS'
                                                                 },
@@ -225,7 +225,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQDIFFL, '0,000') + '<b>';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMANUAL, '0,000') + '<b>';
                                                                 }
                                                             }
                                                         ]
@@ -234,7 +234,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         text: 'Settlement', menuDisabled: true,
                                                         columns: [
                                                             {
-                                                                text: 'w/o Sales', dataIndex: 'lngQPENDL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'w/o Sales', dataIndex: 'lngQTPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
                                                                     click: 'onGridDetProceLIQByS'
                                                                 },
@@ -246,7 +246,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPENDL, '0,000') + '<b>';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTPEND, '0,000') + '<b>';
                                                                 }
                                                             }
                                                         ]
@@ -271,7 +271,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         ]
                                                     },
                                                     {
-                                                        text: 'Total', dataIndex: 'TotalL', width: 100, align: 'center', menuDisabled: true,
+                                                        text: 'Total', dataIndex: 'lngTOTALL', width: 100, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             return Ext.util.Format.number(value, '0,000');
@@ -279,7 +279,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotTotalL, '0,000') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotTOTALL, '0,000') + '<b>';
                                                         }
                                                     },
 

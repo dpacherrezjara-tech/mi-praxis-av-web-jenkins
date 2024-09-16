@@ -56,8 +56,9 @@ public class StatementReconciliationsDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQWECC = 0, lngTotQPEND = 0, lngTotQDIFF = 0, lngTotQTOTSAL = 0, total = 0;
-        long lngTotQMATCHL = 0, lngTotQWECCL = 0, lngTotQPENDL = 0, lngTotQDIFFL = 0, totalL = 0;
+        long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQSALES = 0;
+        long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0;
+                
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
         filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");//YYYY
         filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
@@ -68,7 +69,8 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00838(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+//        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00838(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00838MAIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -106,17 +108,17 @@ public class StatementReconciliationsDAO {
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
+
+                //QMATCH, QMANUAL, TOTALE, QPEND, QSALES,QTMATCH, QTMANUAL, QTPEND,  TOTALL
                 lngTotQMATCH = rst.getLong("QMATCH");
-                lngTotQMATCHL = rst.getLong("QMATCHL");
-                lngTotQDIFF = rst.getLong("QDIFF");
-                lngTotQDIFFL = rst.getLong("QDIFFL");
-                lngTotQTOTSAL = lngTotQMATCH + lngTotQDIFF;
-                lngTotQWECC = rst.getLong("QWECC");
-                lngTotQWECCL = rst.getLong("QWECCL");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotTOTALE = rst.getLong("TOTALE");
                 lngTotQPEND = rst.getLong("QPEND");
-                lngTotQPENDL = rst.getLong("QPENDL");
-                total = lngTotQMATCH + lngTotQWECC + lngTotQPEND + lngTotQDIFF;
-                totalL = lngTotQMATCHL + lngTotQWECCL + lngTotQPENDL + lngTotQDIFFL;
+                lngTotQSALES = rst.getLong("QSALES");
+                lngTotQTMATCH = rst.getLong("QTMATCH");
+                lngTotQTMANUAL = rst.getLong("QTMANUAL");
+                lngTotQTPEND = rst.getLong("QTPEND");
+                lngTotTOTALL = rst.getLong("TOTALL");
             }
             rst.close();
 
@@ -138,29 +140,25 @@ public class StatementReconciliationsDAO {
                     beanTkt.SDATE = rst.getString("DATE").trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
                     beanTkt.lngQMATCH = rst.getLong("QMATCH");
-                    beanTkt.lngQMATCHL = rst.getLong("QMATCHL");
-                    beanTkt.lngQDIFF = rst.getLong("QDIFF");
-                    beanTkt.lngQDIFFL = rst.getLong("QDIFFL");
-                    beanTkt.lngQTOTSAL = rst.getLong("QMATCH") + rst.getLong("QDIFF");
-                    beanTkt.lngQWECC = rst.getLong("QWECC");
-                    beanTkt.lngQWECCL = rst.getLong("QWECCL");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngTOTALE = rst.getLong("TOTALE");
                     beanTkt.lngQPEND = rst.getLong("QPEND");
-                    beanTkt.lngQPENDL = rst.getLong("QPENDL");
-
-                    beanTkt.Total = beanTkt.lngQMATCH + beanTkt.lngQWECC + beanTkt.lngQPEND + beanTkt.lngQDIFF;
-                    beanTkt.TotalL = beanTkt.lngQMATCHL + beanTkt.lngQWECCL + beanTkt.lngQPENDL + beanTkt.lngQDIFFL;
+                    beanTkt.lngQSALES = rst.getLong("QSALES");
+                    
+                    beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
+                    beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
+                    beanTkt.lngQTPEND = rst.getLong("QTPEND");
+                    beanTkt.lngTOTALL = rst.getLong("TOTALL");
 
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
-                    beanTkt.lngTotQMATCHL = lngTotQMATCHL;
-                    beanTkt.lngTotQWECC = lngTotQWECC;
-                    beanTkt.lngTotQWECCL = lngTotQWECCL;
-                    beanTkt.lngTotQTOTSAL = lngTotQTOTSAL;
+                    beanTkt.lngTotQMANUAL = lngTotQMANUAL;
+                    beanTkt.lngTotTOTALE = lngTotTOTALE;
                     beanTkt.lngTotQPEND = lngTotQPEND;
-                    beanTkt.lngTotQPENDL = lngTotQPENDL;
-                    beanTkt.lngTotQDIFF = lngTotQDIFF;
-                    beanTkt.lngTotQDIFFL = lngTotQDIFFL;
-                    beanTkt.lngTotTotal = total;
-                    beanTkt.lngTotTotalL = totalL;
+                    beanTkt.lngTotQSALES = lngTotQSALES;
+                    beanTkt.lngTotQTMATCH = lngTotQTMATCH;
+                    beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
+                    beanTkt.lngTotQTPEND = lngTotQTPEND;
+                    beanTkt.lngTotTOTALL = lngTotTOTALL;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
