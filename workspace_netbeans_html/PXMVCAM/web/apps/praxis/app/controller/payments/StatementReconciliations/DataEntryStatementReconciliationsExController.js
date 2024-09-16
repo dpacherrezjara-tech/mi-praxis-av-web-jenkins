@@ -142,7 +142,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
                     !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
-                    !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB")) {
+                    !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB") &&
+                    !["CT", "SK","BD"].includes(this.beanResult.COREP) ) {
+                //WITH HEADER
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-mainHeader').show();
@@ -161,6 +163,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-de-txtSumAmount_FeeEx').show();
                 this.onSearchCompleteHeader();
             } else {
+                //WITHOUT HEADER
                 Ext.getCmp(prototype.id + '-header').hide();
                 Ext.getCmp(prototype.id + '-detail').show();
                 Ext.getCmp(prototype.id + '-mainHeader').hide();
@@ -190,7 +193,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
                     !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
-                    !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB")) {
+                    !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB") &&
+                    !["CT", "SK","BD"].includes(this.beanResult.COREP) ) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
