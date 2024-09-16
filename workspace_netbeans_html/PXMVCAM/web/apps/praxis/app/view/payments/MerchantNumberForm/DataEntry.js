@@ -1049,6 +1049,26 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 130
                                     },
+                                    {xtype: 'tbspacer', width: 490},
+                                    {
+                                        xtype: 'label',
+                                        text: 'ID B. Cen.',
+                                        style: 'font-weight:bold;',
+                                        width: 87
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-IDFBENEF',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 8,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 152
+                                    },
                                 ]
                             },
                             {
