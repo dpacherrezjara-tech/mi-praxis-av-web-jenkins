@@ -38,7 +38,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             this.onSearchCompleteDetail();
             Ext.getCmp(prototype.id + '-btn-update').hide();
 //            this.bean.FCONT == '' ? Ext.getCmp(prototype.id + '-btn-reverse').show() : Ext.getCmp(prototype.id + '-btn-reverse').hide()
-            Ext.getCmp(prototype.id + '-btn-reverse').show();
+            console.log(this.bean.CERROR, 'asdadadsdadadasdasdadwadafa')
+            if(!['45', '46'].includes(this.bean.CERROR)){
+                Ext.getCmp(prototype.id + '-btn-reverse').show();
+            }else{
+                Ext.getCmp(prototype.id + '-btn-reverse').hide();
+            }
+            
         } else {
             this.onSearchPendingDetail();
             Ext.getCmp(prototype.id + '-btn-update').show();
