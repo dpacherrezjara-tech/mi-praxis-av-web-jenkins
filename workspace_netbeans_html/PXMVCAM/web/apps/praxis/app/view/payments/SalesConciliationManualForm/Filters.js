@@ -329,14 +329,14 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                         {
                             xtype: 'textfield',
                             labelStyle: 'font-weight: bold;',
-                            fieldLabel: 'Tran Numb:',
+                            fieldLabel: 'Report Numb:',
                             id: prototype.id+'-txtTRANL',     
                             fieldStyle: 'text-align:center',
                             enforceMaxLength: true,     
                             maskRe: /[0-9]/,      
 //                            maxLength: 13,
                             maxLength: 8,
-                            labelWidth: 80,
+                            labelWidth: 100,
                             width: 230,
                             enableKeyEvents: true,                          
                             listeners:{
@@ -358,6 +358,74 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             maxLength: 4,
                             labelWidth: 80,
                             width: 225,
+                            enableKeyEvents: true,                          
+                            listeners:{
+                                change: 'onValidarChange',
+                                keypress: 'eventKey'
+                            }
+                        } ,   
+                        {xtype: 'tbspacer', width: 30},
+                        {
+                            xtype: 'label',
+                            text: 'Card Number:',
+                            padding: '3 0',
+                            width: 80,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Credit Card Number'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtSCARDN1',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 6,
+                            width: 85,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keyup: 'tarjeta_keyDownHandler'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 8},
+                        {
+                            xtype: 'label',
+                            text: '*****(*)',
+                            padding: '3 0',
+                            width: 65,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': '5 encrypted characters for AMEX and 6 characters for the rest.'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtSCARDN2',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 4,
+                            width: 70,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'eventKey'
+                            }
+                        }, 
+                        {xtype: 'tbspacer', width: 30},
+                        
+                        {
+                            xtype: 'textfield',
+                            labelStyle: 'font-weight: bold;',
+                            fieldLabel: 'Cod. Author:',
+                            id: prototype.id+'-txtSAUTHOC',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[a-zA-Z0-9]/,     
+//                            maxLength: 13,
+                            maxLength: 6,
+                            labelWidth: 80,
+                            width: 177,
                             enableKeyEvents: true,                          
                             listeners:{
                                 change: 'onValidarChange',
