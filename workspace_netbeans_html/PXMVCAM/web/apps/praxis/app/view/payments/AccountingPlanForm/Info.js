@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1600,
+                width: 1740,
                 height: 'auto',
                 align: 'center'
             },
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1482,
+                            width: 1622,
                             margin: '10 0 0 0',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1472,
+                                    width: 1612,
                                     columnLines: true,
 //                                    features: [{
 //                                        ftype: 'summary'
@@ -233,6 +233,18 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.Info', {
                                                             return value;
                                                         }
                                                     }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Date',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'From', dataIndex: 'DATINI', width: 70, hidden: false},
+                                                    {text: 'To', dataIndex: 'DATFIN', width: 70, hidden: false},
                                                 ]
                                             },
                                             {

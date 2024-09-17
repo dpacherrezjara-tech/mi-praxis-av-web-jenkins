@@ -231,10 +231,12 @@ public class A2290Filter extends A2290 {
     public long lngQMATCH = 0;
     public long lngQMATCHL = 0;
     public double lngQMATCHPercent = 0;
+    public double lngQTMATCHPercent = 0;
     public double lngQMATCHPercentRF = 0;
     public double lngQMATCHPercentCH = 0;
     public double lngQMATCHPercentAC = 0;
     public double lngTotQMATCHPercent = 0;
+    public double lngTotQTMATCHPercent = 0;
     public double lngTotQMATCHPercentRF = 0;
     public double lngTotQMATCHPercentCH = 0;
     public double lngTotQMATCHPercentAC = 0;

@@ -144,11 +144,14 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTOTALE = rst.getLong("TOTALE");
                     beanTkt.lngQPEND = rst.getLong("QPEND");
                     beanTkt.lngQSALES = rst.getLong("QSALES");
+                    beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
+                    
                     
                     beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
                     beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
                     beanTkt.lngQTPEND = rst.getLong("QTPEND");
                     beanTkt.lngTOTALL = rst.getLong("TOTALL");
+                    beanTkt.lngQTMATCHPercent = (beanTkt.lngTOTALL > 0) ? (beanTkt.lngQTMATCH * 100.0) / beanTkt.lngTOTALL : 0.00;
 
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
@@ -159,6 +162,9 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
                     beanTkt.lngTotQTPEND = lngTotQTPEND;
                     beanTkt.lngTotTOTALL = lngTotTOTALL;
+                    
+                    beanTkt.lngTotQMATCHPercent = (beanTkt.lngTotQSALES > 0) ? (beanTkt.lngTotQMATCH * 100.0) / beanTkt.lngTotQSALES : 0.00;
+                    beanTkt.lngTotQTMATCHPercent = (beanTkt.lngTotTOTALL > 0) ? (beanTkt.lngTotQTMATCH * 100.0) / beanTkt.lngTotTOTALL : 0.00;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
