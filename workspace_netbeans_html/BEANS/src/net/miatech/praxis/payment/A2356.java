@@ -44,6 +44,8 @@ public class A2356 {
         public String TTRAN  = "";  
         public String TOPER  = "";  
         public String ACCNUMBER  = "";  
+        public String DATINI  = "";  
+        public String DATFIN  = "";  
         public String PAYDATE  = "";  
         public String BANDOC  = "";  
         public String REFERENCE  = "";  

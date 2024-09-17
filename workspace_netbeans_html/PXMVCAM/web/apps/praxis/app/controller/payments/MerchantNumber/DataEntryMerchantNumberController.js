@@ -145,6 +145,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SCURRENCY').setEditable(true);
                 Ext.getCmp(prototype.id + '-SBENCEN').setEditable(true);
                 Ext.getCmp(prototype.id + '-COSTCEN').setEditable(true);
+                Ext.getCmp(prototype.id + '-IDFBENEF').setEditable(true);
 //                Ext.getCmp(prototype.id + '-de-txtMERCHN').setDisabled(false);
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -263,6 +264,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.SCURRENCY = this.getValue("SCURRENCY")
         beanTemp.SBENCEN = this.getValue("SBENCEN")
         beanTemp.COSTCEN = this.getValue("COSTCEN") 
+        beanTemp.IDFBENEF = this.getValue("IDFBENEF") 
         
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();

@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
-    init: function(view) {
+    init: function (view) {
         prototype.id = 'AccountingPlanForm';
         prototype.url = CONTEXTPATH + '/AccountingPlan';
         meDE = this;
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         this.bean = this.p.rec;
         this.lstCountry = this.p.lstCountry;
     },
-    afterRender: function() {
+    afterRender: function () {
         this.obtainData();
         this.limpiarData();
         switch (this.actionCode) {
@@ -40,8 +40,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
                 break;
         }
     },
-    
-    mostrarData: function() {
+
+    mostrarData: function () {
 //        console.log(meDE.beanResult);
         this.setValue('de-txtCODTRAN', this.beanResult.CODTRAN);
         this.setValue('de-txtDESCRI', this.beanResult.DESCRI);
@@ -51,6 +51,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         this.setValue('de-txtSCOUNTRY', this.beanResult.SCOUNTRY);
         this.setValue('de-txtCODCLIT', this.beanResult.CODCLIT);
         this.setValue('de-txtCTACTB', this.beanResult.CTACTB);
+
+        this.setValue('de-txtINI', this.beanResult.DATINI);
+        this.setValue('de-txtFIN', this.beanResult.DATFIN);
+
 //        this.setValue('de-txtCIACTA', this.beanResult.CIACTA);
 //        this.setValue('de-txtUNIDAD', this.beanResult.UNIDAD);
 //        this.setValue('de-txtCECOS', this.beanResult.CECOS);
@@ -59,19 +63,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
 //        this.setValue('de-txtSUBCTA', this.beanResult.SUBCTA);
 //        this.setValue('de-txtEQUIPO', this.beanResult.EQUIPO);
 //        this.setValue('de-txtICIA', this.beanResult.ICIA);
-        
+
         this.setValue('de-txtNROPOLIZ', this.beanResult.NROPOLIZ);
         this.setValue('de-txtCLASE', this.beanResult.CLASE);
         this.setValue('de-txtDIRCLIT', this.beanResult.DIRCLIT);
         this.setValue('de-txtCODAGRU', this.beanResult.CODAGRU);
         this.setValue('de-txtDESMLINE', this.beanResult.DESMLINE);
-        
+
         this.setValue('de-txtCOSTCEN', this.beanResult.COSTCEN);
         this.setValue('de-cmbNEGOC', this.beanResult.NEGOC);
         this.setValue('de-txtTTRAN', this.beanResult.TTRAN);
         this.setValue('de-txtTOPER', this.beanResult.TOPER);
         this.setValue('de-txtACCNUMBER', this.beanResult.ACCNUMBER);
-        
+
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
         this.setValue('txtHOCR', this.beanResult.HOCR);
@@ -79,8 +83,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
     },
-    obtainData: function() {
-        
+    obtainData: function () {
+
 //        var cmbSTATT = Ext.getCmp(prototype.id + '-de-cmbSTATT');
 //        cmbSTATT.bindStore(Ext.create('Ext.data.ArrayStore', {
 //            autoLoad: false,
@@ -115,7 +119,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
 //            ]
 //        }));
 //        cmbFSELEC.setValue('');
-        
+
         var cmbNEGOC = Ext.getCmp(prototype.id + '-de-cmbNEGOC');
         cmbNEGOC.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
@@ -129,8 +133,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         cmbNEGOC.setValue('1');
 
     },
-    llenarData: function(beanTemp) {
-        
+    llenarData: function (beanTemp) {
+
         beanTemp.CODTRAN = this.getValue("de-txtCODTRAN").trim();
         beanTemp.DESCRI = this.getValue("de-txtDESCRI").trim();
         beanTemp.TIPREG = this.getValue("de-txtTIPREG").trim();
@@ -139,6 +143,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         beanTemp.SCOUNTRY = this.getValue("de-txtSCOUNTRY").trim();
         beanTemp.CODCLIT = this.getValue("de-txtCODCLIT").trim();
         beanTemp.CTACTB = this.getValue("de-txtCTACTB").trim();
+
+        beanTemp.DATINI = this.getValue("de-txtINI");
+        beanTemp.DATFIN = this.getValue("de-txtFIN");
+
 //        beanTemp.CIACTA = this.getValue("de-txtCIACTA").trim();
 //        beanTemp.UNIDAD = this.getValue("de-txtUNIDAD").trim();
 //        beanTemp.CECOS = this.getValue("de-txtCECOS").trim();
@@ -152,7 +160,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         beanTemp.DIRCLIT = this.getValue("de-txtDIRCLIT").trim();
         beanTemp.CODAGRU = this.getValue("de-txtCODAGRU").trim();
         beanTemp.DESMLINE = this.getValue("de-txtDESMLINE").trim();
-        
+
         beanTemp.COSTCEN = this.getValue("de-txtCOSTCEN").trim();
         beanTemp.NEGOC = this.getValue("de-cmbNEGOC");
         beanTemp.TTRAN = this.getValue("de-txtTTRAN").trim();
@@ -161,7 +169,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
 
 //        console.log(beanTemp);
     },
-    getData: function() {
+    getData: function () {
 
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({
@@ -170,7 +178,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
             timeout: 60000000,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             params: {beanString: beanString},
-            success: function(response, options) {
+            success: function (response, options) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 meDE.beanResult = res.result;
@@ -181,7 +189,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
-    limpiarData: function() {
+    limpiarData: function () {
         this.setValue('de-txtCODTRAN', '');
         this.setValue('de-txtDESCRI', '');
         this.setValue('de-txtTIPREG', '');
@@ -203,7 +211,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
 //        this.setValue('de-txtEQUIPO', '');
 //        this.setValue('de-txtICIA', '');
         this.setValue('de-txtDESMLINE', '');
-        
+
         this.setValue('txtUSCR', '');
         this.setValue('txtFECR', '');
         this.setValue('txtHOCR', '');
@@ -212,9 +220,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         this.setValue('txtHOUP', '');
     },
     //</editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Botones">
-    onSaveClick: function(btn) {
+    onSaveClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to insert ?',
@@ -222,7 +230,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     var beanTemp = {};
                     this.llenarData(beanTemp);
@@ -235,29 +243,35 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
                     }
                 }
             }
-        });         
+        });
     },
-    onUpdateClick: function(btn) {
-        Ext.Msg.show(
-            {
-                title: '.:PRAXIS:.',
-                msg: 'Are you sure to update ?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                animateTarget: btn,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function(btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        this.llenarData(beanTemp);
-                        beanTemp.option = 'U';
-                        this.maintenanceBean(beanTemp);
-                    }
-                }
-            });
+    onUpdateClick: function (btn) {
+        var msj = this.validateDates();
+
+        if (msj === '') {
+            Ext.Msg.show(
+                    {
+                        title: '.:PRAXIS:.',
+                        msg: 'Are you sure to update ?',
+                        buttons: Ext.MessageBox.YESNO,
+                        scope: this,
+                        animateTarget: btn,
+                        icon: Ext.MessageBox.QUESTION,
+                        modal: true,
+                        fn: function (btn) {
+                            if (btn === 'yes') {
+                                var beanTemp = {};
+                                this.llenarData(beanTemp);
+                                beanTemp.option = 'U';
+                                this.maintenanceBean(beanTemp);
+                            }
+                        }
+                    });
+        } else {
+            global.Msg({msg: msj});
+        }
     },
-    onDeleteClick: function(btn) {
+    onDeleteClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to delete ?',
@@ -265,7 +279,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     var beanTemp = {};
                     this.llenarData(beanTemp);
@@ -275,15 +289,15 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
             }
         });
     },
-    onCancelClick: function(btn) {
+    onCancelClick: function (btn) {
         this.view.close();
     },
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
-    maintenanceBean: function(beanTemp) {
+    maintenanceBean: function (beanTemp) {
         var beanString = JSON.stringify(beanTemp);
-        Ext.Ajax.request({           
+        Ext.Ajax.request({
             url: prototype.url + '/maintenanceBean',
             method: 'POST',
             timeout: 60000000,
@@ -292,7 +306,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
                 option: beanTemp.option
             },
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function(response, opts) {
+            success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
@@ -307,18 +321,33 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
     },
     //</editor-fold>
 
-    validacionInsert: function(beanTemp) {
+    validacionInsert: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("de-txtSCOUNTRY") === '' || 
-            this.getValue("de-txtCODEBANK") === '' || 
-            this.getValue("de-txtSCURRENCY") === '' || 
-            this.getValue("de-txtCODTRAN") === '' || 
-            this.getValue("de-txtTIPREG") === '') {
+        if (this.getValue("de-txtSCOUNTRY") === '' ||
+                this.getValue("de-txtCODEBANK") === '' ||
+                this.getValue("de-txtSCURRENCY") === '' ||
+                this.getValue("de-txtCODTRAN") === '' ||
+                this.getValue("de-txtTIPREG") === '') {
             msjResult = "You must enter the required field.";
         }
         return msjResult;
     },
-    DeshabilitarCampoClave: function() {
+    validateDates: function () {
+        var DATINI = this.getValue("de-txtINI");
+        var DATFIN = this.getValue("de-txtFIN");
+        var msj = '';
+
+        if (DATINI.length === 8 && DATFIN.length === 8) {
+            if (DATFIN < DATINI) {
+                msj = 'Error in dates';
+            }
+        } else {
+            msj = 'Error in date lenghts'
+        }
+
+        return msj;
+    },
+    DeshabilitarCampoClave: function () {
 
         Ext.getCmp(prototype.id + '-de-txtCODTRAN').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtTIPREG').setReadOnly(true);
@@ -326,19 +355,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         Ext.getCmp(prototype.id + '-de-txtSCOUNTRY').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtSCURRENCY').setReadOnly(true);
     },
-    Habilitarlbl: function() {
+    Habilitarlbl: function () {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();
         Ext.getCmp(prototype.id + '-txtDESSOU').hide();
         Ext.getCmp(prototype.id + '-lbldes2').show();
     },
-    desHabilitartxt: function() {
+    desHabilitartxt: function () {
         if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
             Ext.getCmp(prototype.id + '-lbldes').hide();
         } else {
             Ext.getCmp(prototype.id + '-lbldes').show();
         }
     },
-    Habilitarlbl1: function() {
+    Habilitarlbl1: function () {
         Ext.getCmp(prototype.id + '-lbldes').hide();
         if (this.getValue("txtCODSOUR") == '') {
             Ext.getCmp(prototype.id + '-lbldes2').hide();
@@ -347,19 +376,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingPlan.DataEntryAccountingPla
         }
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getValue: function(id) {
+    getValue: function (id) {
         return Ext.getCmp(prototype.id + '-' + id).getValue();
     },
-    focus: function(id) {
+    focus: function (id) {
         Ext.getCmp(prototype.id + '-' + id).focus();
     },
-    setValue: function(id, txt) {
+    setValue: function (id, txt) {
         Ext.getCmp(prototype.id + '-' + id).setValue(txt);
     },
-    onUpperValue: function(field, newValue, oldValue) {
+    onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    onTextKeypress: function(obj, e, eOpts) {
+    onTextKeypress: function (obj, e, eOpts) {
         if (e.getKey() === e.ENTER) {
 //            this.btnSearch_click();
         }
