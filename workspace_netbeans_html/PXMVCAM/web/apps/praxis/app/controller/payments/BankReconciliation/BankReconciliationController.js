@@ -1360,12 +1360,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="onGridTicket">
     onGridTicket: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        if(rowData.data.CERROR == '45'){
-            global.Msg({
-                            msg: 'Manual Conciliation AV - w/o Accounting'
-                        });
-            return false
-        }
+//        if(rowData.data.CERROR == '45'){
+//            global.Msg({
+//                            msg: 'Manual Conciliation AV - w/o Accounting'
+//                        });
+//            return false
+//        }
         if(rowData.data.lngQTYTKT == 0){
             return false
         }
@@ -1810,12 +1810,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         console.log(rec.data);
         console.log(rec.data.CERROR, 'rec.data.CERROR');
         
-        if(rec.data.CERROR == '45'){
-            global.Msg({
-                            msg: 'Manual Conciliation AV - w/o Accounting'
-                        });
-            return false
-        }
+//        if(rec.data.CERROR == '45'){
+//            global.Msg({
+//                            msg: 'Manual Conciliation AV - w/o Accounting'
+//                        });
+//            return false
+//        }
         
         if (rec.data.IN_ADYEN === 'Y' && (rec.data.IN_STVAL === '2' || rec.data.IN_STVAL === '3')) {
             
