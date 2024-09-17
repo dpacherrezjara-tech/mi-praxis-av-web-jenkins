@@ -5443,6 +5443,95 @@ public class LoadConciliationDAO {
 
         return hmResultado;
     }
+    
+    public List<A2290Filter> loadPX263MPS097(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        double lngTotMONTO = 0;
+        double lngTotRATE = 0;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS097(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_TDOC);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                lngTotMONTO = rst.getDouble("AMOUNT");
+                lngTotRATE = rst.getDouble("RATE");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    
+//                    PLACA,TKT,FUENTE,AGENT,COUNTRY,DATE,CONSOL,PNR,CARDN,AUTHOC,CARCOD,STATE,INVOICE,CURRENCY,AMOUNT
+                    
+                    beanTkt.PLACA = rst.getString("PLACA").trim();
+                    beanTkt.TKT = rst.getString("TKT").trim();
+                    beanTkt.FUENTE = rst.getString("FUENTE").trim();
+                    beanTkt.AGENT = rst.getString("AGENT").trim();
+                    beanTkt.COUNTRY = rst.getString("COUNTRY").trim();
+                    beanTkt.DATE = rst.getString("DATE").trim();
+                    beanTkt.CONSOL = rst.getString("CONSOL").trim();
+                    beanTkt.PNR = rst.getString("PNR").trim();
+                    beanTkt.CARDN = rst.getString("CARDN").trim();
+                    beanTkt.AUTHOC = rst.getString("AUTHOC").trim();
+                    beanTkt.CARCOD = rst.getString("CARCOD").trim();
+                    beanTkt.STATE = rst.getString("STATE").trim();
+                    beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                    beanTkt.CURRENCY = rst.getString("CURRENCY").trim();
+                    beanTkt.MONTO = rst.getDouble("AMOUNT");
+                    beanTkt.USCURR = rst.getString("USCURR").trim();
+                    beanTkt.MONTOUSD = rst.getDouble("RATE");
+                    
+                    beanTkt.lngTotMONTO = lngTotMONTO;
+                    beanTkt.lngTotRATE = lngTotRATE;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
 
     public HashMap<String, List<A2290Filter>> loadPX263SQP00715_REFND(A2290Filter filter) throws SQLException, Exception {
 

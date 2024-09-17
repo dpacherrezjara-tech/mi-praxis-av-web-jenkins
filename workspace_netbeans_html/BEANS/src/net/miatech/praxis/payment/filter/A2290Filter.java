@@ -710,6 +710,9 @@ public class A2290Filter extends A2290 {
     public String LIQUIDAC = "";
     public String FECHA = "";
     public double MONTO = 0;
+    public double MONTOUSD = 0;
+    public double lngTotMONTO = 0;
+    public double lngTotRATE = 0;
     public String FSELECT = "";
     public String TREG = "";
     public String CURRENCY1 = "";
