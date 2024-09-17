@@ -292,17 +292,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     onGridDetProceLIQByS: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var cant = 0;
         switch (columnNum) {
-            case 6:
+            case 7:
                 console.log('ENTRA AL MATCH');
                 rowData.data.IN_STVAL = "1";
                 cant = rowData.data.lngQMATCHL;
                 break;
-            case 7:
-                console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = "4";
+            case 9:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQDIFFL;
                 break;
-            case 8:
+            case 10:
                 console.log('ENTRA AL PEND');
                 rowData.data.IN_STVAL = "3";
                 cant = rowData.data.lngQPENDL;
@@ -915,16 +915,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 panelId = 'panelGridDetProceByS';
                 pagginId = 'paggin11';
                 break;
-            case 2:
-                console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = "4";
+            case 3:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQDIFF;
                 consultPath = 'searchDetBankByS';
                 gridId = 'gridDataDetProceByS';
                 panelId = 'panelGridDetProceByS';
                 pagginId = 'paggin11';
                 break;
-            case 4:
+            case 5:
                 console.log('ENTRA AL PEND');
                 rowData.data.IN_STVAL = "P";
                 cant = rowData.data.lngQPEND;
