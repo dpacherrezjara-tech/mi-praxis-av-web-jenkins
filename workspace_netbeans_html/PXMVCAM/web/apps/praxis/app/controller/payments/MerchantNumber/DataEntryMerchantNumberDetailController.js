@@ -153,6 +153,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SCURRENCY_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(true);
 //                Ext.getCmp(prototype.id + '-bankSection').hide();
 //                Ext.getCmp(prototype.id + '-iataSection').hide();
 //                Ext.getCmp(prototype.id + '-bSection_1').hide();
@@ -230,6 +231,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('SCURRENCY_D', this.bean.data.SCURRENCY)
         this.setValue('SBENCEN_D', this.bean.data.SBENCEN)
         this.setValue('COSTCEN_D', this.bean.data.COSTCEN)
+        this.setValue('IDFBENEF_D', this.bean.data.IDFBENEF)
         
 
         this.setValue('txtUSCR_D', this.bean.data.USCR);
@@ -278,6 +280,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.IN_SCURRENCY = this.getValue("SCURRENCY_D")
         beanTemp.IN_SBENCEN = this.getValue("SBENCEN_D")
         beanTemp.IN_COSTCEN = this.getValue("COSTCEN_D")
+        beanTemp.IN_IDFBENEF = this.getValue("IDFBENEF_D")
         beanTemp.USCR = this.getValue("txtUSCR_D").trim();
         beanTemp.FECR = this.getValue("txtFECR_D").trim();
         beanTemp.HOCR = this.getValue("txtHOCR_D").trim();

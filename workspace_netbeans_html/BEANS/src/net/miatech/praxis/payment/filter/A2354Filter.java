@@ -33,6 +33,7 @@ public String desSTATUS = "";
 public String IN_STATUS = "";
 public String IN_COUNTRY = "";
 public String CODE = "";
+public String COREP = "";
 public String NAME = "";
 public String IN_CMERCHAN = "";
 public String IN_SUCMERCH = "";
@@ -66,6 +67,7 @@ public String IN_SOCIETY = "";
 public String IN_SCURRENCY = "";
 public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
+public String IN_IDFBENEF = "";
 public String OPTION = "";
 public String CMERCHAN = "";
 public String BMERCHAN = "";
@@ -103,6 +105,7 @@ public String SOCIETY = "";
 public String SCURRENCY = "";
 public String SBENCEN = "";
 public String COSTCEN = "";
+public String IDFBENEF = "";
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);

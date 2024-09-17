@@ -771,7 +771,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -814,9 +814,10 @@ public class MerchantNumberDAO {
             cstmt.setString(33, filter.IN_SCURRENCY.trim());
             cstmt.setString(34, filter.IN_SBENCEN.trim());
             cstmt.setString(35, filter.IN_COSTCEN.trim());
-            cstmt.setString(36, session.getUserView().getUserInfo().USR);
-            cstmt.setString(37, Functions.getFechaActual());
-            cstmt.setString(38, Functions.getHoraActual());
+            cstmt.setString(36, filter.IN_IDFBENEF.trim());
+            cstmt.setString(37, session.getUserView().getUserInfo().USR);
+            cstmt.setString(38, Functions.getFechaActual());
+            cstmt.setString(39, Functions.getHoraActual());
             cstmt.execute();
             cstmt.close();
 //            }
@@ -871,7 +872,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -908,9 +909,10 @@ public class MerchantNumberDAO {
             cstmt.setString(28, filter.SCURRENCY.trim());
             cstmt.setString(29, filter.SBENCEN.trim());
             cstmt.setString(30, filter.COSTCEN.trim());
-            cstmt.setString(31, session.getUserView().getUserInfo().USR);
-            cstmt.setString(32, Functions.getFechaActual());
-            cstmt.setString(33, Functions.getHoraActual());
+            cstmt.setString(31, filter.IDFBENEF.trim());
+            cstmt.setString(32, session.getUserView().getUserInfo().USR);
+            cstmt.setString(33, Functions.getFechaActual());
+            cstmt.setString(34, Functions.getHoraActual());
             cstmt.execute();
             cstmt.close();
 
@@ -1007,6 +1009,7 @@ public class MerchantNumberDAO {
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN = rs01.getString("SBENCEN").trim();
                 objRtn.COSTCEN = rs01.getString("COSTCEN").trim();
+                objRtn.IDFBENEF = rs01.getString("IDFBENEF").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -1098,6 +1101,7 @@ public class MerchantNumberDAO {
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
                 objRtn.SBENCEN = rs01.getString("SBENCEN").trim();
                 objRtn.COSTCEN = rs01.getString("COSTCEN").trim();
+                objRtn.IDFBENEF = rs01.getString("IDFBENEF").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -1250,53 +1254,55 @@ public class MerchantNumberDAO {
         String msj = "";
         int cantReg = 0, cantDup = 0, cantUpd = 0;
         Connection cnx = null;
-        String SQLCLL01 = "{CALL PRAXISMP.SQP04614MERCHANT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP04614MERCHANT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         cnx = session.getCNXIBMDB2().getIBMDB2Connection();
         cs = cnx.prepareCall(SQLCLL01);
         try {
             for (int i = 0; i < filter.size(); i++) {
                 try {
-                    cs.registerOutParameter(31, Types.INTEGER);
+                    
 
                     cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
                     cs.setString(2, option);
                     cs.setString(3, filter.get(i).CMERCHAN.trim());
                     cs.setString(4, filter.get(i).SUCMERCH.trim());
                     cs.setString(5, filter.get(i).CODE.trim());
-                    cs.setString(6, filter.get(i).CORE.trim());
-                    cs.setString(7, filter.get(i).DREPORT.trim());
-                    cs.setString(8, filter.get(i).FRANC1.trim());
-                    cs.setString(9, filter.get(i).FRANC2.trim());
-                    cs.setString(10, filter.get(i).FRANC3.trim());
-                    cs.setString(11, filter.get(i).FRANC4.trim());
-                    cs.setString(12, filter.get(i).CODEBANK.trim());
-                    cs.setString(13, filter.get(i).BANKNAM.trim());
-                    cs.setString(14, filter.get(i).BANKCM.trim());
-                    cs.setString(15, filter.get(i).BANKCUR.trim());
-                    cs.setString(16, filter.get(i).ACCNUMB.trim());
-                    cs.setString(17, filter.get(i).ACCNUMOLD.trim());
-                    cs.setString(18, filter.get(i).DDISCON.trim());
-                    cs.setString(19, filter.get(i).ACCNUMA.trim());
-                    cs.setString(20, filter.get(i).BENCEN.trim());
-                    cs.setString(21, filter.get(i).DEUSAP.trim());
-                    cs.setString(22, filter.get(i).SAGENT.trim());
-                    cs.setString(23, filter.get(i).CANAL.trim());
-                    cs.setString(24, filter.get(i).PROCES.trim());
-                    cs.setString(25, filter.get(i).SCOUNTRY.trim());
-                    cs.setString(26, filter.get(i).SOCIETY.trim());
-                    cs.setString(27, filter.get(i).SCURRENCY.trim());
-                    cs.setString(28, filter.get(i).SBENCEN.trim());
-                    cs.setString(29, filter.get(i).COSTCEN.trim());
-                    cs.setString(30, filter.get(i).IDFISCAL.trim());
-                    cs.setInt(31, 0);
-                    cs.setString(32, session.getUserView().getUserInfo().USR);
-                    cs.setString(33, Functions.getFechaActual());
-                    cs.setString(34, Functions.getHoraActual());
+                    cs.setString(6, filter.get(i).COREP.trim());
+                    cs.setString(7, filter.get(i).CORE.trim());
+                    cs.setString(8, filter.get(i).DREPORT.trim());
+                    cs.setString(9, filter.get(i).FRANC1.trim());
+                    cs.setString(10, filter.get(i).FRANC2.trim());
+                    cs.setString(11, filter.get(i).FRANC3.trim());
+                    cs.setString(12, filter.get(i).FRANC4.trim());
+                    cs.setString(13, filter.get(i).CODEBANK.trim());
+                    cs.setString(14, filter.get(i).BANKNAM.trim());
+                    cs.setString(15, filter.get(i).BANKCM.trim());
+                    cs.setString(16, filter.get(i).BANKCUR.trim());
+                    cs.setString(17, filter.get(i).ACCNUMB.trim());
+                    cs.setString(18, filter.get(i).ACCNUMOLD.trim());
+                    cs.setString(19, filter.get(i).DDISCON.trim());
+                    cs.setString(20, filter.get(i).ACCNUMA.trim());
+                    cs.setString(21, filter.get(i).BENCEN.trim());
+                    cs.setString(22, filter.get(i).DEUSAP.trim());
+                    cs.setString(23, filter.get(i).SAGENT.trim());
+                    cs.setString(24, filter.get(i).CANAL.trim());
+                    cs.setString(25, filter.get(i).PROCES.trim());
+                    cs.setString(26, filter.get(i).SCOUNTRY.trim());
+                    cs.setString(27, filter.get(i).SOCIETY.trim());
+                    cs.setString(28, filter.get(i).SCURRENCY.trim());
+                    cs.setString(29, filter.get(i).SBENCEN.trim());
+                    cs.setString(30, filter.get(i).COSTCEN.trim());
+                    cs.setString(31, filter.get(i).IDFISCAL.trim());
+                    cs.setString(32, filter.get(i).IDFBENEF.trim());
+                    cs.registerOutParameter(33, Types.INTEGER);
+                    cs.setString(34, session.getUserView().getUserInfo().USR);
+                    cs.setString(35, Functions.getFechaActual());
+                    cs.setString(36, Functions.getHoraActual());
                     System.out.println(i);
                     cs.execute();
 
                     cantReg++;
-                    cantUpd += cs.getInt(31);
+                    cantUpd = cantUpd + cs.getInt(33);
 
                 } catch (Exception e) {
                     if (e.getMessage().contains("dupl")) {
