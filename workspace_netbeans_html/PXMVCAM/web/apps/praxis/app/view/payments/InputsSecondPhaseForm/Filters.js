@@ -172,7 +172,7 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Filters', {
                                             ['134', 'AV - AVIANCA'],
                                             ['202', 'TA - TACA'],
                                             ['547', '2K - AEROGAL'],
-                                            ['133', 'LR - LATSA']
+                                            ['133', 'LR - LACSA']
                                         ]
                                     }),
                                     labelWidth: 60,

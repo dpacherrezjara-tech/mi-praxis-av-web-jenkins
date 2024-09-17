@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import net.miatech.praxis.logic.payments.BankReconciliationExtLogic;
-import net.miatech.praxis.payment.dto.LoadExcelEECC;
+import net.miatech.praxis.payment.dto.ConciliacionF1Dto;
 import net.miatech.praxis.payment.dto.SPBSR001Filter;
 import net.miatech.praxis.payment.dto.SPBSR002Filter;
 import net.miatech.praxis.payment.dto.SPBSR003Filter;
@@ -91,7 +91,7 @@ public class BankReconciliationExtController {
     }
 
     @RequestMapping(value = "downloadExcelEECC", method = RequestMethod.POST)
-    public ResponseEntity<?> downloadExcelEECC(@RequestBody LoadExcelEECC params) throws Exception {
+    public ResponseEntity<?> downloadExcelEECC(@RequestBody ConciliacionF1Dto params) throws Exception {
         System.out.println("***** BankReconciliationExt - downloadExcelEECC *****");
         System.out.println("Bandoc loaded: " + params.getBankInfo().getBANDOC());
         System.out.println("Settlements loaded: " + params.getSettlements().size());
@@ -275,6 +275,49 @@ public class BankReconciliationExtController {
             }
         }
         
+        if (!params.getHeaders().isEmpty()) {
+            Sheet sheet3 = workbook.createSheet("Taxes");
+            Row headerRow3 = sheet3.createRow(0);
+            headerRow3.createCell(0).setCellValue("Client");
+            headerRow3.createCell(1).setCellValue("Processing\nDate");
+            headerRow3.createCell(2).setCellValue("Settlement\nDate");
+            headerRow3.createCell(3).setCellValue("Merchant");
+            headerRow3.createCell(4).setCellValue("Settlement");
+            headerRow3.createCell(5).setCellValue("Bandoc");
+            headerRow3.createCell(6).setCellValue("Account");
+            headerRow3.createCell(7).setCellValue("Payment\nCurr.");
+            headerRow3.createCell(8).setCellValue("Payment\nAmount");
+            headerRow3.createCell(9).setCellValue("Curr.");
+            headerRow3.createCell(10).setCellValue("Amount");
+            headerRow3.createCell(11).setCellValue("Comm.");
+            headerRow3.createCell(12).setCellValue("Fee Tax");
+            headerRow3.createCell(13).setCellValue("NET");
+            headerRow3.createCell(14).setCellValue("Processor");
+            for (int h = 0; h < 15; h++) {
+                headerRow3.getCell(h).setCellStyle(headerStyle);
+            }
+            final int[] index = {1};
+            params.getHeaders().forEach(h->{
+                Row row3 = sheet3.createRow(index[0]);
+                row3.createCell(0).setCellValue(h.getCCUST());
+                row3.createCell(1).setCellValue(h.getPRDA());
+                row3.createCell(2).setCellValue(h.getFLIQUIDACI());
+                row3.createCell(3).setCellValue(h.getMERCHAND());
+                row3.createCell(4).setCellValue(h.getLIQUIDACIO());
+                row3.createCell(5).setCellValue(h.getBANDOC());
+                row3.createCell(6).setCellValue(h.getACCOUNT());
+                row3.createCell(7).setCellValue(h.getMONEDAPAGO());
+                row3.createCell(8).setCellValue(h.getIMPORTEPAG());
+                row3.createCell(9).setCellValue(h.getMONEDA());
+                row3.createCell(10).setCellValue(h.getTOTAL());
+                row3.createCell(11).setCellValue(h.getCOMISION());
+                row3.createCell(12).setCellValue(h.getFEESTAXS());
+                row3.createCell(13).setCellValue(h.getNETO());
+                row3.createCell(14).setCellValue(h.getDESC_PRO());
+                index[0]++;
+            });
+        }
+        
         String prefix = "EECC_Conciliation_" + params.getBankInfo().getBANDOC();
         String suffix = ".xlsx";
         File file = File.createTempFile(prefix + UUID.randomUUID(), suffix);
@@ -303,5 +346,21 @@ public class BankReconciliationExtController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment", prefix + ".zip");
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "loadConciliationF1", method = RequestMethod.POST)
+    public ResponseEntity<?> loadConciliationF1(@RequestBody ConciliacionF1Dto params) throws Exception {
+        System.out.println("***** BankReconciliationExt - loadConciliationF1 *****");
+        System.out.println("Bandoc loaded: " + params.getBankInfo().getBANDOC());
+        System.out.println("Settlements loaded: " + params.getSettlements().size());
+        System.out.println("Headers loaded: " + params.getHeaders().size());
+        System.out.println("Taxes loaded: " + params.getTaxes().size());
+        
+        //Insercion Settlements
+        if(!params.getSettlements().isEmpty()){
+            
+        }
+        
+        return ResponseUtils.create();
     }
 }
