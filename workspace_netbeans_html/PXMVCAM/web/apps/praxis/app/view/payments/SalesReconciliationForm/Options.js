@@ -291,11 +291,21 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            hidden:true,
                             id: prototype.id+'-btnQuery',
                             icon: 'resources/img/botones/query.png',
                             tooltip: 'Query',
                             listeners: {
                                 click: 'btnQuery_click'
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id+'-btnReport',
+                            icon: 'resources/img/botones/query.png',
+                            tooltip: 'Report',
+                            listeners: {
+                                click: 'btnReport_click'
                             }
                         },
                         {

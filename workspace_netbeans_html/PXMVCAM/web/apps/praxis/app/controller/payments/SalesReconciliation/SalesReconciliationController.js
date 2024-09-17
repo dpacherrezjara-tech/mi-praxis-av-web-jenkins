@@ -853,14 +853,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         controller.startDisplay();
         MatchTkt.show();
     },
-    btnReport_click: function (obj, e) {
-        var beanReport = {};
-
-        var MatchTkt = Ext.create('Ext.Praxis.view.program.ProMatchTktForm', {id: 'ProMatchTktForm'});
-        var controller = MatchTkt.getController();
-        controller.bean = beanReport;
-        controller.startDisplay();
-        MatchTkt.show();
+    btnReport_click: function () {
+       
+        Ext.create('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
+            id: prototype.id + '-dataEntryReport',  
+        }).show();
     },
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
 
