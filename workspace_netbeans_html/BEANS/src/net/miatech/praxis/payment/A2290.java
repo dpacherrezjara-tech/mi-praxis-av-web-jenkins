@@ -16,6 +16,20 @@ public class A2290 {
     public String FORMA = "";
     public String SERIE = "";
     public String TKT = "";
+    
+    public String PLACA = "";
+    public String AGENT = "";
+    public String FUENTE = "";
+    public String COUNTRY = "";
+    public String DATE = "";
+    public String CONSOL = "";
+    public String CARDN = "";
+    public String AUTHOC = "";
+    public String CARCOD = "";
+    public String STATE = "";
+    public String CURRENCY = "";
+    public String USCURR = "";
+    
     public String TDOC = "";
     public String descTDOC = "";
     public String DATABASE = "";
@@ -195,6 +209,7 @@ public class A2290 {
     public double totTCOMISCA = 0;
     public double totDiffTCOMIS = 0;
     public double TOTAMOUNT = 0;
+    public double lngTotAMOUNT = 0;
     public String ADMNUM = "";
     public String NUMADM = "";
     public String DATEADM = "";
