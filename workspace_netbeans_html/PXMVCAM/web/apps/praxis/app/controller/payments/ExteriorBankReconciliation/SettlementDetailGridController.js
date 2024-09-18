@@ -1,51 +1,58 @@
-Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryController', {
+Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.SettlementDetailGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.ProcessDataEntryController',
-    url: CONTEXTPATH + '/ProcessLog',
+    alias: 'controller.SettlementDetailGridController',
+    url: CONTEXTPATH + '/BankReconciliationExt',
     init: function (view) {
-        const me = this;
-        const cmbProcesadores = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
-        me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
-            valueField: 'CODE', displayField: 'NAME', value: ''});
-    },
-    afterRender: async function () {
-    },
-    onProcessClick: async function () {
-        const me = this;
-        let params = Ext.getCmp(prototype.idDE + '-formFilters')
-                .getForm()
-                .getValues();
-
-        if (params.VP_PRDA.length !== 0 && params.VP_PRDA.length !== 8) {
-            global.Msg({msg: 'Invalid Date'});
-            return;
+        if (view.backButton) {
+            Ext.getCmp(prototype.id + '-stl-btnBack').show();
+            Ext.getCmp(prototype.id + '-stl-btnBack').on('click', view.backButton);
         }
-        if (params.VP_CODPRO === '') {
-            global.Msg({msg: 'Select Processor before Run'});
-            return;
-        }
-        console.log('Parameters: ', params);
-        try {
-            const res = await fetch(`${me.url}/process`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            });
-            if (res.ok) {
-                global.Msg({msg: 'Process Running...'});
-            } else {
-                global.Msg({msg: 'Process Failed...'});
+    },
+    afterRender: async function (obj, e) {
+        const me = this;
+        const view = me.view;
+        this.getData(view);
+    },
+    getData: function (view) {
+        const me = this;
+        let store = Ext.create('Ext.data.Store', {
+            loadMask: true,
+            pageSize: 20,
+            proxy: {
+                type: 'ajax',
+                enablePaging: true,
+                url: `${me.url}/loadSettlements`,
+                extraParams: view.searchParams,
+                timeout: 600000,
+                reader: {
+                    type: 'json',
+                    rootProperty: 'response',
+                    totalProperty: 'total'
+                }
+            },
+            autoLoad: true,
+            listeners: {
+                load: function (store, records, successful, operation) {
+                    if (!successful) {
+                        global.Msg({msg: 'Data not Found'});
+                    } else {
+                        console.log(records);
+                        if (records.length === 0) {
+                            global.Msg({msg: 'Data not Found'});
+                        }
+                    }
+                }
             }
-        } catch (e) {
-            global.Msg({msg: 'Process Failed...'});
-        }
-        me.view.close();
+        });
+        view.setStore(store);
     },
-    onClose: function () {
-        this.view.close();
+    onClickBPO: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        alert('Prueba');
     },
+//    downloadExcel: function () {
+//        let params = this.view.searchParams;
+//        global.getFile(`${this.url}/downloadExonerated?${new URLSearchParams(params)}`);
+//    },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);

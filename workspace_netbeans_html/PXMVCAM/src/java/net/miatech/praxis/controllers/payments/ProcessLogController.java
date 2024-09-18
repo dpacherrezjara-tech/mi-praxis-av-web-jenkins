@@ -2,7 +2,6 @@ package net.miatech.praxis.controllers.payments;
 
 import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
-import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +24,6 @@ public class ProcessLogController {
     
     @Autowired
     private ProcessLogLogic logic;
-    
-    @RequestMapping(value = "loadFilters")
-    public ResponseEntity<?> loadFilters() throws Exception{
-        System.out.println("***** ProcessLog - loadFilters *****");
-        SPMC001Filter filter = logic.loadSPMC001Filter();
-        return ResponseUtils.ok(filter);
-    }
     
     @RequestMapping(value = "search")
     public ResponseEntity<?> search(@ModelAttribute SPPL001Filter params) throws Exception{

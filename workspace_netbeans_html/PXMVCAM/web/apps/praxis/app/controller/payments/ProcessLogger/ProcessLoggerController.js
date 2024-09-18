@@ -2,6 +2,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
     extend: 'Ext.app.ViewController',
     alias: 'controller.ProcessLoggerController',
     url: CONTEXTPATH + '/ProcessLog',
+    urlMisc : CONTEXTPATH + '/MiscellaneousCatalog',
     procesadores: [],
     init: function (view) {
     },
@@ -12,13 +13,14 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
         const me = this;
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
         filters.mask('Loading...');
-        const res = await fetch(`${me.url}/loadFilters`);
+        const res = await fetch(`${me.urlMisc}/loadPhase2Filter`);
         if (res.ok) {
             const data = await res.json();
+            //debugger;
             const cmbProcesadores = Ext.getCmp(prototype.id + '-cmbCODPRO');
-            me.procesadores = data.procesadores;
+            me.procesadores = data.response;
             me.setComboStore({cmp: cmbProcesadores, data: me.procesadores,
-                valueField: 'CODETB', displayField: 'DESCRE1', value: ''});
+                valueField: 'CODE', displayField: 'NAME', value: ''});
             console.log(data);
         }
         filters.unmask();
@@ -42,13 +44,6 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
         this.loadGrid();
-    },
-    onAddRecord: function () {
-        const dataEntry = Ext.create('Ext.Praxis.view.payments.MiscellaneousCatalogForm.DataEntrys.MaintenanceDataEntry', {
-            id: prototype.id + '-MaintenanceDataEntry-1',
-            option: 'C'
-        });
-        dataEntry.show();
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');

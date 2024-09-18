@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                             ['134', 'AV - AVIANCA'],
                                             ['202', 'TA - TACA'],
                                             ['547', '2K - AEROGAL'],
-                                            ['133', 'LR - LATSA']
+                                            ['133', 'LR - LACSA']
                                         ]
                                     }),
                                     labelWidth: 80,
@@ -95,8 +95,8 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                     name: 'IN_CODPRO',
                                     labelWidth: 70,
                                     width: 250,
-                                    valueField: 'CODETB',
-                                    displayField: 'DESCRE1',
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,
