@@ -3,16 +3,21 @@ package net.miatech.praxis.controllers.payments;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import net.miatech.praxis.logic.payments.BankReconciliationExtLogic;
 import net.miatech.praxis.payment.dto.ConciliacionF1Dto;
+import net.miatech.praxis.payment.dto.MPS037Filter;
 import net.miatech.praxis.payment.dto.SPBSR001Filter;
 import net.miatech.praxis.payment.dto.SPBSR002Filter;
 import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
 import net.miatech.praxis.payment.dto.SPBSR005Filter;
+import net.miatech.praxis.payment.dto.SPBSR006Filter;
+import net.miatech.praxis.payment.entities.X3180;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.apache.commons.io.FileUtils;
@@ -24,6 +29,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
@@ -356,11 +362,83 @@ public class BankReconciliationExtController {
         System.out.println("Headers loaded: " + params.getHeaders().size());
         System.out.println("Taxes loaded: " + params.getTaxes().size());
         
+        String cuuid = UUID.randomUUID().toString().replace("-", "");
+        
+        List<X3180> lstConcil = new ArrayList<>();
+        
         //Insercion Settlements
         if(!params.getSettlements().isEmpty()){
-            
+            final int[] index = {1};
+            params.getSettlements().forEach(s->{
+                X3180 settl = X3180.builder()
+                        .CUUID(cuuid)
+                        .SEQID(index[0])
+                        .TIPO("S")
+                        .TTABLA("MPF060")
+                        .build();
+                BeanUtils.copyProperties(s, settl);
+                lstConcil.add(settl);
+                index[0]++;
+            });
         }
         
-        return ResponseUtils.create();
+        if(!params.getHeaders().isEmpty()){
+            final int[] index = {1};
+            params.getHeaders().forEach(h->{
+                X3180 head = X3180.builder()
+                        .CUUID(cuuid)
+                        .SEQID(index[0])
+                        .TIPO("H")
+                        .TTABLA("MPF083")
+                        .build();
+                BeanUtils.copyProperties(h, head);
+                lstConcil.add(head);
+                index[0]++;
+            });
+        }
+        
+        if(!params.getTaxes().isEmpty()){
+            final int[] index = {1};
+            params.getTaxes().forEach(t->{
+                X3180 tax = X3180.builder()
+                        .CUUID(cuuid)
+                        .SEQID(index[0])
+                        .TIPO("T")
+                        .TTABLA("MPF091")
+                        .build();
+                BeanUtils.copyProperties(t, tax);
+                lstConcil.add(tax);
+                index[0]++;
+            });
+        }
+        String codpro = lstConcil.get(0).getCODPRO();
+        String ccustpro = lstConcil.get(0).getCCUSTPRO();
+        
+        SPBSR006Filter filter = SPBSR006Filter.builder()
+                .IN_CCUST(params.getBankInfo().getCCUST())
+                .IN_BANDOC(params.getBankInfo().getBANDOC())
+                .IN_ADATE(params.getBankInfo().getADATE())
+                .IN_MERCHANT(params.getBankInfo().getMERCHAND())
+                .IN_CODEBANK(params.getBankInfo().getCODEBANK())
+                .IN_SOCIETY(params.getBankInfo().getSOCIETY())
+                .IN_DATECI(params.getBankInfo().getDATECI())
+                .IN_TRANCI(params.getBankInfo().getTRANCI())
+                .IN_CODPRO(codpro)
+                .IN_CCUSTPRO(ccustpro)
+                .IN_CUUID(cuuid)
+                .build();
+        System.out.println("Bandoc Conciliado: " + filter.getIN_BANDOC());
+        
+        filter.setConciliation(lstConcil);
+        filter = logic.loadSPBSR006Filter(filter);
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "reverseConciliationF1")
+    public ResponseEntity<?> reverseConciliationF1(MPS037Filter params) throws Exception {
+        System.out.println("***** BankReconciliationExt - reverseConciliationF1 *****");
+        MPS037Filter filter = logic.loadMPS037Filter(params);
+        System.out.println("Message: " + filter.getVMESSAGE());
+        return ResponseUtils.ok(filter);
     }
 }

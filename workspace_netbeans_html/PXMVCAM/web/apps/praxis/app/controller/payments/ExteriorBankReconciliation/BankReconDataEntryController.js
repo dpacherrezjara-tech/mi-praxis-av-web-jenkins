@@ -483,6 +483,51 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         panelPending.unmask();
         global.Msg({msg: 'Downloaded successfully'});
     },
+    onUpdateConciliation: function (btn) {
+        let params = this.formatUpdateParams();
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to update?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    animateTarget: btn,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.maintenanceEECC(params);
+                        }
+                    }
+                });
+    },
+    maintenanceEECC: async function(params){
+        const me = this;
+        me.view.mask('Loading...');
+        try {
+            const res = await fetch(`${me.url}/loadConciliationF1`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'  // O el encabezado necesario para tu API
+                },
+                body: JSON.stringify(params)
+            });
+            if(res.ok){
+                const data = await res.json();
+                const{SQLRES,SQLMSG} = data;
+                if(SQLRES === 1){
+                    global.Msg({msg:`Error on Update:<br>${SQLMSG}`});
+                }else{
+                    global.Msg({msg:`${SQLMSG}`});
+                    me.getData();
+                }
+            }
+        } catch (e) {
+            console.error(e);
+            global.Msg({msg:`System Error.`});
+        }
+        me.view.unmask();
+    },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Reload Grids">
     reloadHeaders: function () {
@@ -581,8 +626,17 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             IN_DATECI: obj.DATECI,
             IN_TRANCI: obj.TRANCI,
             IN_CODPRO: obj.CODPRO,
-            IN_SEQPRO: obj.CCUSTPRO,
-            IN_STVAL: obj.STVAL
+            IN_SEQPRO: obj.CCUSTPRO
+        };
+        return params;
+    },
+    formatUpdateParams: function () {
+        const me = this;
+        let params = {
+            bankInfo: me.bean,
+            headers: me.headers,
+            settlements: me.settlements,
+            taxes: me.taxes
         };
         return params;
     },

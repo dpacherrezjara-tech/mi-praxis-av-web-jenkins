@@ -1449,6 +1449,14 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
             },
             items: [
                 {
+                    text: 'Update',
+                    id: prototype.idDE + '-btn-update',
+                    iconCls: 'prx-icon-update',
+                    listeners: {
+                        click: 'onUpdateConciliation'
+                    }
+                },
+                {
                     text: 'Cancel',
                     id: prototype.idDE + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
