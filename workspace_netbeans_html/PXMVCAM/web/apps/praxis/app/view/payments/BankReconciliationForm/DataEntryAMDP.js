@@ -1938,13 +1938,25 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            {text: 'Invoice', dataIndex: 'INVOICE', width: 220, id: prototype.id + '-columnINVOICE',
+                                                                            {text: 'Invoice', dataIndex: 'INVOICE', width: 134, id: prototype.id + '-columnINVOICE',
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:center;";
                                                                                     if (record.data.TDOC === 'A') {
                                                                                         metaData.style += "background-color:#bff5bf;";
                                                                                     }
+                                                                                    return value;
+                                                                                },
+                                                                            },
+                                                                            {text: 'Acc<br>Account.', dataIndex: 'ACCNUMA', width: 86, id: prototype.id + '-columnACCNUMA',
+                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
+                                                                                    metaData.tdAttr = record.data.COSTCEN != '' && record.data.COSTCEN != undefined ? 'data-qtip="' + "Cost Center: " + record.data.COSTCEN + '"' : '';
+                                                                                    
                                                                                     return value;
                                                                                 },
                                                                             },

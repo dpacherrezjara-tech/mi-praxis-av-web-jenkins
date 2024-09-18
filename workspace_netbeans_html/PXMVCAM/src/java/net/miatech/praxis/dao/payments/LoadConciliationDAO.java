@@ -5453,7 +5453,7 @@ public class LoadConciliationDAO {
         double lngTotMONTO = 0;
         double lngTotRATE = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS097(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS097_1(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5465,6 +5465,7 @@ public class LoadConciliationDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_TDOC);
             cstmt.setString(5, filter.IN_SCURRENCY);
+            cstmt.setString(6, filter.IN_TP);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
