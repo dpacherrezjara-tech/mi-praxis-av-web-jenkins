@@ -1955,6 +1955,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     if (record.data.TDOC === 'A') {
                                                                                         metaData.style += "background-color:#bff5bf;";
                                                                                     }
+                                                                                    metaData.tdAttr = record.data.COSTCEN != '' && record.data.COSTCEN != undefined ? 'data-qtip="' + "Cost Center: " + record.data.COSTCEN + '"' : '';
+                                                                                    
                                                                                     return value;
                                                                                 },
                                                                             },

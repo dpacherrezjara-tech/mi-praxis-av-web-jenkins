@@ -171,7 +171,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
                                 INVOICE: item.INVOICE,
-                                ACCNUMA: item.ACCNUMA
+                                ACCNUMA: item.ACCNUMA,
+                                COSTCEN: item.COSTCEN
                             })
 
 
@@ -199,7 +200,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
                                 INVOICE: item.INVOICE,
-                                ACCNUMA: item.ACCNUMA
+                                ACCNUMA: item.ACCNUMA,
+                                COSTCEN: item.COSTCEN
                             })
 
                             console.log(lstNormal, 'lstNormalAfterPush')
