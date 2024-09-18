@@ -54,6 +54,8 @@ public class A2290Filter extends A2290 {
     public String IN_TOSDATE = "";
     public String IN_INVOICE = "";
     public String INVOICE = "";
+    public String ACCNUMA = "";
+    public String COSTCEN = "";
     public String SCONSOL = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
@@ -100,6 +102,7 @@ public class A2290Filter extends A2290 {
     public String IN_SDATEE = "";
     public String IN_CBANK = "";
     public String IN_SCURRENCY = "";
+    public String IN_TP = "";
     public String descSDATE = "";
     public String NUMAVIS = "";
     public String IN_TICKET = "";

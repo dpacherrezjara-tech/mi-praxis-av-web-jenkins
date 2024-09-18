@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
     title: 'Ticket Report - Data Entry Report Form',
     header: true,
     height: 200,
-    width: 800,
+    width: 870,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
         {
             xtype: 'form',
             height: 200,
-            width: 800,
+            width: 870,
             scrollable: true,
             defaults: {
                 style: 'margin: 3px;',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                             border: false,
                             bodyStyle: 'background:white;',
                             margin: '0 20 3 10',
-                            width: 790,
+                            width: 860,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                     border: false,
                                     bodyStyle: 'background:white;',
                                     margin: '40 0 0 0',
-                                    width: 780,
+                                    width: 850,
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -228,6 +228,15 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                             labelWidth: 60,
                                             width: 160,
                                             anchor: '100%'
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'checkboxfield',
+                                            id: prototype.id + '-chkTPS',
+                                            boxLabel: '<b>TP</b>',
+                                            checked: true,
+                                            hidden: false,
+                                            width: 50,
                                         },
                                     ]
                                 },

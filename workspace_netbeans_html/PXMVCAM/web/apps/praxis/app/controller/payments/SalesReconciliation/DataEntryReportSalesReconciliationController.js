@@ -53,25 +53,25 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         Ext.getCmp(prototype.id + '-cmbDateToDayReport').setValue("01");
 
         Ext.getCmp(prototype.id + '-cmbTDOCRe').bindStore(Ext.create('Ext.data.ArrayStore',
-        {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["S", "Sales"],
-                ["R", "Refund"]
-            ]
-        }));
+                {
+                    autoLoad: false,
+                    fields: ['code', 'name'],
+                    data: [
+                        ["S", "Sales"],
+                        ["R", "Refund"]
+                    ]
+                }));
         Ext.getCmp(prototype.id + '-cmbTDOCRe').setValue("S");
-        
+
         Ext.getCmp(prototype.id + '-cmbSCURRENCY').bindStore(Ext.create('Ext.data.ArrayStore',
-        {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["COP", "Colombia"],
-                ["NOP", "Others"]
-            ]
-        }));
+                {
+                    autoLoad: false,
+                    fields: ['code', 'name'],
+                    data: [
+                        ["COP", "Colombia"],
+                        ["NOP", "Others"]
+                    ]
+                }));
         Ext.getCmp(prototype.id + '-cmbSCURRENCY').setValue("COP");
 
     },
@@ -82,6 +82,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDayReport').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCRe').getValue();
         me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbSCURRENCY').getValue();
+
+        if (win.getValue('chkTPS')) {
+            me.bean.IN_TP = 'Y';
+        } else {
+            me.bean.IN_TP = 'N';
+        }
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -146,7 +152,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
             Ext.getCmp(prototype.id + '-cmbDateFromDayReport').setValue('');
         }
     },
-    cbxDateFromDay_changeHandler: function() {
+    cbxDateFromDay_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToDayReport').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDayReport').getValue());
     },
     onCancelClick: function (btn) {
