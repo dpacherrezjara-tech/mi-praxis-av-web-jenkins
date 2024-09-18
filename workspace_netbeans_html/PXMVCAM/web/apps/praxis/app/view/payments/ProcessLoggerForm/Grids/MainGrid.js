@@ -40,10 +40,20 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
             {text: 'Status', dataIndex: 'STAT', width: 90,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
-                      'X':'Processing...',
-                      '1':'OK'
+                        'X': () => {
+                            metaData.tdAttr = `data-qtip="${record.data.VRESULT}"`;
+                            return '<img src="resources/img/icon/16x16/loading_robot.png"/>';
+                        },
+                        '1': () => {
+                            metaData.tdAttr = `data-qtip="${record.data.VRESULT}"`;
+                            return '<img src="resources/img/icon/16x16/check.png"/>';
+                        },
+                        '':() => {
+                            metaData.tdAttr = `data-qtip="Error"`;
+                            return '<img src="resources/img/icon/delete.png"/>';
+                        }
                     };
-                    return opts[value];
+                    return opts[value.trim()]();
                 }
             },
             {text: 'User', dataIndex: 'USCR', width: 90}

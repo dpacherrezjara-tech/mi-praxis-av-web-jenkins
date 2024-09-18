@@ -77,8 +77,8 @@ public class MailUtils {
                 InternetAddress[] Ccp = new InternetAddress[Ccpy.size()];
                 for (int i = 0; i < Ccp.length; i++) {
                     Ccp[i] = new InternetAddress(Ccpy.get(i));
-                    message.addRecipients(Message.RecipientType.CC, Ccp);
                 }
+                message.addRecipients(Message.RecipientType.CC, Ccp);
             }
         }
 
