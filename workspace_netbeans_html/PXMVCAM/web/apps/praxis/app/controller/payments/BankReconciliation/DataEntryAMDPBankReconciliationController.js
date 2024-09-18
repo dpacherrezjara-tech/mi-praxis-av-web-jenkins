@@ -170,7 +170,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 A1531VFOP: item.A1531VFOP,
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
-                                INVOICE: item.INVOICE
+                                INVOICE: item.INVOICE,
+                                ACCNUMA: item.ACCNUMA
                             })
 
 
@@ -197,7 +198,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 A1531VFOP: item.A1531VFOP,
                                 tot_VFOP: item.tot_VFOP,
                                 CFUENTE: item.CFUENTE,
-                                INVOICE: item.INVOICE
+                                INVOICE: item.INVOICE,
+                                ACCNUMA: item.ACCNUMA
                             })
 
                             console.log(lstNormal, 'lstNormalAfterPush')
@@ -459,6 +461,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-panelScanCard_2').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
+            Ext.getCmp(prototype.id + '-columnACCNUMA').show();
 //            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1072);
 //            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1074);
             Ext.getCmp(prototype.id + '-vacioComment').show();
@@ -470,6 +473,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-panelScanCard_2').show();
             Ext.getCmp(prototype.id + '-gridColumnDelete').show();
             Ext.getCmp(prototype.id + '-gridColumnAdj').show();
+            Ext.getCmp(prototype.id + '-columnACCNUMA').hide();
             Ext.getCmp(prototype.id + '-columnINVOICE').setWidth(143);
 //            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1154);
             Ext.getCmp(prototype.id + '-vacioComment').hide();

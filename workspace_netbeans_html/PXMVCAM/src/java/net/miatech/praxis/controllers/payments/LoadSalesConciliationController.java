@@ -224,19 +224,22 @@ public class LoadSalesConciliationController extends BaseController {
                         obj.STCON = filter.IN_CONTAB.equals("true") ? "1" : "";
                         System.out.println(i);
                         System.out.println(obj.AMOUNT);
-                        if (obj.TYPETRAN.contains("Ingreso") ) {
+                        if (obj.TYPETRAN.toLowerCase().contains("ingreso") ) {
                            obj.FCONCEP = "I";
 //                            lstDataIngreso.add(obj);
-                        }else if(obj.TYPETRAN.contains("Venta")){
+                        }else if(obj.TYPETRAN.toLowerCase().contains("venta")){
                             obj.FCONCEP = "V";
 //                            lstDataVenta.add(obj);
-                        }else if (obj.TYPETRAN.contains("Debito")){
+                        }else if (obj.TYPETRAN.toLowerCase().contains("debito")){
                             obj.FCONCEP = "D";
+                        }else if (obj.TYPETRAN.toLowerCase().contains("ajuste")){
+                            obj.FCONCEP = "A";
                         }else{
-                            obj.FCONCEP = "";
+                            obj.FCONCEP = "N";
                             lstDataNotFound.add(obj);
                             System.out.println("Registros no reconocidos como ventas o ingresos");
                         }
+                        
                         if(obj.SEQ.equals("") && obj.USERF.equals("") && obj.TYPETRAN.equals("") && obj.CCUST.equals("") 
                            && obj.AMOUNT.equals("") && obj.SCURRENCY.equals("") ){       
                             break;

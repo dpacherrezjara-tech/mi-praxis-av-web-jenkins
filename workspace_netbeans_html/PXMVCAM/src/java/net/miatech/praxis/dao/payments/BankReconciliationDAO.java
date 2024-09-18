@@ -4778,6 +4778,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
                 beanTkt.BANDOC = rst.getString("BANDOC").trim();
                 lstData.add(beanTkt);
             }
@@ -5549,6 +5550,7 @@ public class BankReconciliationDAO {
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
 
                 lstData.add(beanTkt);
             }
