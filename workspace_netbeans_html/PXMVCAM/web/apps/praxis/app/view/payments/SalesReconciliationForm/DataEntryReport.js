@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
     title: 'Ticket Report - Data Entry Report Form',
     header: true,
     height: 200,
-    width: 700,
+    width: 800,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
         {
             xtype: 'form',
             height: 200,
-            width: 700,
+            width: 800,
             scrollable: true,
             defaults: {
                 style: 'margin: 3px;',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                             border: false,
                             bodyStyle: 'background:white;',
                             margin: '0 20 3 10',
-                            width: 690,
+                            width: 790,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -51,14 +51,14 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                     layout: 'hbox',
                                     border: false,
                                     bodyStyle: 'background:white;',
-                                    margin: '40 0 0 30',
-                                    width: 680,
+                                    margin: '40 0 0 0',
+                                    width: 780,
                                     defaults: {
                                         anchor: '100%'
                                     },
                                     items: [
                                         //<editor-fold defaultstate="collapsed" desc="cmbDate">
-                                        {xtype: 'tbspacer', width: 50},
+//                                        {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbDateFromYearReport',
@@ -210,7 +210,25 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                             width: 160,
                                             anchor: '100%'
                                         },
-                                        
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbSCURRENCY',
+                                            fieldLabel: 'Currency',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 60,
+                                            width: 160,
+                                            anchor: '100%'
+                                        },
                                     ]
                                 },
                             ]

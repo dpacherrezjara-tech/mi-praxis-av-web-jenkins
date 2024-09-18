@@ -47,32 +47,41 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         Ext.getCmp(prototype.id + '-cmbDateToMonthReport').bindStore(storeComboDataMonth);
 
 
-        Ext.getCmp(prototype.id + '-cmbDateFromDayReport').bindStore(win.getStoreDays(true));
-        Ext.getCmp(prototype.id + '-cmbDateToDayReport').bindStore(win.getStoreDays(true));
-        Ext.getCmp(prototype.id + '-cmbDateFromDayReport').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateToDayReport').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromDayReport').bindStore(win.getStoreDays(false));
+        Ext.getCmp(prototype.id + '-cmbDateToDayReport').bindStore(win.getStoreDays(false));
+        Ext.getCmp(prototype.id + '-cmbDateFromDayReport').setValue("01");
+        Ext.getCmp(prototype.id + '-cmbDateToDayReport').setValue("01");
 
         Ext.getCmp(prototype.id + '-cmbTDOCRe').bindStore(Ext.create('Ext.data.ArrayStore',
         {
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["", "All"],
                 ["S", "Sales"],
                 ["R", "Refund"]
             ]
         }));
         Ext.getCmp(prototype.id + '-cmbTDOCRe').setValue("S");
+        
+        Ext.getCmp(prototype.id + '-cmbSCURRENCY').bindStore(Ext.create('Ext.data.ArrayStore',
+        {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["COP", "Colombia"],
+                ["NOP", "Others"]
+            ]
+        }));
+        Ext.getCmp(prototype.id + '-cmbSCURRENCY').setValue("COP");
 
     },
     setFormatParameter: function () {
         me.bean = {};
 
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDayReport').getValue();
-//        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDayReport').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDayReport').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCRe').getValue();
-
+        me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbSCURRENCY').getValue();
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
