@@ -7,12 +7,14 @@ package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +23,15 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.AgentsCatalogLogic;
+import net.miatech.praxis.logic.payments.MerchantNumberLogic;
+import net.miatech.praxis.payment.filter.A2354Filter;
+import net.miatech.praxis.payment.filter.MPF106Filter;
 import net.miatech.praxis.payment.filter.MPF106Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -34,13 +40,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -108,6 +117,120 @@ public class AgentsCatalogController extends BaseController {
             throw new SpringException(e);
         }
         return lst;
+    }
+    
+    @RequestMapping(value = "setUploadAgents", method = RequestMethod.POST)
+    public @ResponseBody
+    String setUploadAgents(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+
+        byte[] bytes = null;
+        MPF106Filter filter = new MPF106Filter();
+        Gson gson = new Gson();
+        String message = "";
+        String filename = "", option = "";
+        String beanString = "";
+
+        try {
+
+            byte[] dataFile = excelfile.getBytes();
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF106Filter.class);
+            option = filter.OPTION;
+
+            message = uploadFileAgents(dataFile, option);
+
+            map.put("success", true);
+            map.put("msjResult", message);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msjResult", message);
+        }
+        return new Gson().toJson(map);
+    }
+    
+    private String uploadFileAgents(byte[] bytes, String option) throws Exception {
+
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        logic = new AgentsCatalogLogic();
+        List<MPF106Filter> lstData = new ArrayList<>();
+        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+        String message = "";
+        int i = 0, cont = 0;
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "Agents." + strSesion + ".xlsx";
+
+            String strArchivo = ruta + "\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter dataFormatter = new DataFormatter(Locale.US);
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            try {
+                while (rowIterator.hasNext()) {
+                    i++;
+                    Row row = rowIterator.next();
+
+                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null && row.getCell(5) == null) {
+                        break;
+                    }
+
+                    if (i > 1) {
+                        cont++;
+                        if (row.getCell(0) != null) {
+                            MPF106Filter obj = new MPF106Filter();
+                            
+//                            SOCIETY	CAGENCY	CIACOME	SBENCEN	COUNTRY	NAMEA	CANAL	NEGOC
+
+                            obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(0));
+                            obj.CAGENCY = dataFormatter.formatCellValue(row.getCell(1));
+                            obj.CIACOME = dataFormatter.formatCellValue(row.getCell(2));
+                            obj.SBENCEN = dataFormatter.formatCellValue(row.getCell(3));
+                            obj.COUNTRY = dataFormatter.formatCellValue(row.getCell(4));
+                            obj.NAMEA = dataFormatter.formatCellValue(row.getCell(5));
+                            obj.CANAL = dataFormatter.formatCellValue(row.getCell(6));
+                            obj.NEGOC = dataFormatter.formatCellValue(row.getCell(7));
+                            obj.OPTION = dataFormatter.formatCellValue(row.getCell(8));
+                            
+                            if(obj.OPTION.equals("Adicionar")){
+                                obj.OPTION = "I";
+                            }else{
+                                obj.OPTION = "U";
+                            }
+                            
+                            lstData.add(obj);
+                        }
+                    }
+                }
+                file.close();
+
+                if (message.equals("")) {
+                    System.out.print("");
+                    logic = new AgentsCatalogLogic();
+                    logic.setSession(this.serverSession.getServerSession());
+                    message = logic.loadPX305SQP00941(lstData, cont, option);
+                }
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                e.printStackTrace();
+            }
+
+            archivo.delete();
+        } catch (Exception e) {
+            message = e.getMessage();
+            e.printStackTrace();
+        }
+        return message;
     }
 
     @RequestMapping(value = "getXLSX")

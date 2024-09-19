@@ -27,6 +27,10 @@ public class AgentsCatalogLogic {
     public List<MPF106Filter> loadPX616SQP04941(MPF106Filter filter) throws SQLException, Exception {
         return agentsCatalogDAO.loadPX616SQP04941(filter);
     }
+    
+    public String loadPX305SQP00941(List<MPF106Filter> lst,int contador,String option) throws SQLException, Exception {
+        return agentsCatalogDAO.loadPX305SQP00941(lst,contador,option);
+    }
 
     public String loadPX616SQP04942(MPF106Filter filter, String option) throws SQLException, Exception {
         return agentsCatalogDAO.loadPX616SQP04942(filter, option);

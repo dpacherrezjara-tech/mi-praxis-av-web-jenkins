@@ -69,6 +69,7 @@ public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
 public String IN_IDFBENEF = "";
 public String OPTION = "";
+public String NEGOC = "";
 public String CMERCHAN = "";
 public String BMERCHAN = "";
 public String SCARCOD = "";

@@ -137,6 +137,70 @@ public class AgentsCatalogDAO {
 
         return lstData;
     }
+    
+    public String loadPX305SQP00941(List<MPF106Filter> filter, int Contador,String option) throws Exception {
+
+        CallableStatement cs = null;
+        String msj = "";
+        int cantReg = 0, cantDup = 0, cantUpd = 0;
+        Connection cnx = null;
+        String SQLCLL01 = "{CALL PRAXISMP.SQP04614AGENTS(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        cs = cnx.prepareCall(SQLCLL01);
+        try {
+            for (int i = 0; i < filter.size(); i++) {
+                try {
+                    
+                    cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cs.setString(2, filter.get(i).OPTION.trim());
+                    cs.setString(3, filter.get(i).SOCIETY.trim());
+                    cs.setString(4, filter.get(i).CAGENCY.trim());
+                    cs.setString(5, filter.get(i).CIACOME.trim());
+                    cs.setString(6, filter.get(i).SBENCEN.trim());
+                    cs.setString(7, filter.get(i).COUNTRY.trim());
+                    cs.setString(8, filter.get(i).NAMEA.trim());
+                    cs.setString(9, filter.get(i).CANAL.trim());
+                    cs.setString(10, filter.get(i).NEGOC.trim());
+                    cs.registerOutParameter(11, Types.INTEGER);
+                    cs.setString(12, session.getUserView().getUserInfo().USR);
+                    cs.setString(13, Functions.getFechaActual());
+                    cs.setString(14, Functions.getHoraActual());
+                    
+                    cs.execute();
+
+                    cantReg++;
+                    cantUpd = cantUpd + cs.getInt(11);
+
+                } catch (Exception e) {
+                    if (e.getMessage().contains("dupl")) {
+                        cantDup++;
+                    } else {
+                        System.out.println("Error" + e);
+                        msj = e.getMessage();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            msj += "<b>Loadeds : " + Contador + "<b><br>";
+            if (option.equals("I")) {
+                msj += "<b>Inserts : " + cantReg + "<b><br>";
+
+            } else if (option.equals("U")) {
+                msj += "<b>Updates : " + cantUpd + "<b><br>";
+            }
+
+            if (cantDup > 0) {
+                msj += "<b>Duplicates : " + cantDup + "<b>";
+            }
+
+        } catch (Exception e2) {
+            System.out.println("Error" + e2);
+            msj = e2.getMessage();
+            e2.printStackTrace();
+        }
+        return msj;
+    }
 
     public String loadPX616SQP04942(MPF106Filter filter, String option) throws SQLException, Exception {
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2280.
