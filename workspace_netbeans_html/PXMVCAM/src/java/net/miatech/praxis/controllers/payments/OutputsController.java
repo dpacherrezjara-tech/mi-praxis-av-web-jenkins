@@ -239,6 +239,8 @@ public class OutputsController extends BaseController {
                 beanL.CAMP23 = fields[23];
                 beanL.CAMP24 = fields[24];
                 beanL.CAMP25 = fields[25];
+                beanL.CAMP26 = fields[26];
+                beanL.CAMP27 = fields[27];
 
                 beanL.DATEC = lstAr.get(i).DATEC;
                 beanL.TRANC = lstAr.get(i).TRANC;
@@ -328,12 +330,14 @@ public class OutputsController extends BaseController {
             Cell CH1_27 = row1.createCell(27);
             Cell CH1_28 = row1.createCell(28);
             Cell CH1_29 = row1.createCell(29);
+            Cell CH1_30 = row1.createCell(30);
+            Cell CH1_31 = row1.createCell(31);
 
             CH1_0.setCellValue("Transaction Number");
             CH1_2.setCellValue("Sales Data");
-            CH1_27.setCellValue("Date Conciliations");
-            CH1_28.setCellValue("Transactions Conc.");
-            CH1_29.setCellValue("Core Process");
+            CH1_29.setCellValue("Date Conciliations");
+            CH1_30.setCellValue("Transactions Conc.");
+            CH1_31.setCellValue("Core Process");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -365,13 +369,15 @@ public class OutputsController extends BaseController {
             CH1_27.setCellStyle(headerStyle);
             CH1_28.setCellStyle(headerStyle);
             CH1_29.setCellStyle(headerStyle);
+            CH1_30.setCellStyle(headerStyle);
+            CH1_31.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 26));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 27, 27));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 28, 28));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 29, 29));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 30, 30));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 31, 31));
             ++vj;
             //============================================
 
@@ -407,6 +413,8 @@ public class OutputsController extends BaseController {
                 Cell rcell27 = row1.createCell(27);
                 Cell rcell28 = row1.createCell(28);
                 Cell rcell29 = row1.createCell(29);
+                Cell rcell30 = row1.createCell(30);
+                Cell rcell31 = row1.createCell(31);
 
                 rcell0.setCellValue(listaData.get(vi).TRAN);
                 rcell1.setCellValue(listaData.get(vi).CAMP00);
@@ -435,9 +443,11 @@ public class OutputsController extends BaseController {
                 rcell24.setCellValue(listaData.get(vi).CAMP23);
                 rcell25.setCellValue(listaData.get(vi).CAMP24);
                 rcell26.setCellValue(listaData.get(vi).CAMP25);
-                rcell27.setCellValue(listaData.get(vi).DATEC);
-                rcell28.setCellValue(listaData.get(vi).TRANC);
-                rcell29.setCellValue(listaData.get(vi).COREP);
+                rcell27.setCellValue(listaData.get(vi).CAMP26);
+                rcell28.setCellValue(listaData.get(vi).CAMP27);
+                rcell29.setCellValue(listaData.get(vi).DATEC);
+                rcell30.setCellValue(listaData.get(vi).TRANC);
+                rcell31.setCellValue(listaData.get(vi).COREP);
                 System.out.println(vi);
                 iter.next();
                 ++vi;
@@ -509,7 +519,7 @@ public class OutputsController extends BaseController {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
             String cadena;
 
-            cadena = "Fecha de Abono | Fecha de Transaccion | IATA | Terminal | Codigo de venta | Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto | Nro Tarjeta de Credito Debito | Autorizacion | Tipo de Tarjeta | Nro de cuenta | Cod Banco | Cod unico | Red | Nro Tiquete | LLAVE | DOC SAP | STVAL | KEYC | CORE PROC";
+            cadena = "Fecha de Abono | Fecha de Transaccion | IATA | Terminal | Codigo de venta | Tipo Doc | Moneda | Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto | Nro Tarjeta de Credito Debito | Autorizacion | Tipo de Tarjeta | Nro de cuenta | Cod Banco | Cod unico | Red | Nro Tiquete | LLAVE | DOC SAP | STVAL | KEYC | CORE PROC";
             writer.println("" + cadena);
 
             for (vi = 0; vi < len; vi++) {

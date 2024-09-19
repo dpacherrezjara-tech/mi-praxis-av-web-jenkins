@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     strSTVAL: '',
     NPROG: '',
     f_boxDetTktS: '',
-    dpick:null,
+    dpick: null,
     beanboxDetTktS1: {},
     beanboxDetTktS2: {},
     beanboxDetTktS3: {},
@@ -29,14 +29,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanDetailAgent: {},
     init: function (view) {
         me = this;
-        
+
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
         prototypeProgram.modulo = '';
         this.control({
             // -------------------Eventos Genericos --------------------
-            
+
             '#SalesReconciliationForm-cmbDateDay': {
                 select: this.selectComboFromDay
             },
@@ -52,16 +52,26 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             '#SalesReconciliationForm-cmbDateToMonth_IBT': {
                 afterrender: this.afterRenderMonth
             },
-     
 
         });
-        
+
     },
     afterRender: function () {
+        $('#SalesReconciliationForm-btnToggleSwitch').change(function () {
+            me.procesador();
+        });
+
         this.setStoreData();
         this.initDate();
         this.obtainData();
-        console.log(prototype.id, 'prototype.id')
+    },
+    procesador: function () {
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            Ext.getCmp(prototype.id + '-TEST').show();
+        } else {
+            Ext.getCmp(prototype.id + '-TEST').hide();
+        }
     },
     // <editor-fold defaultstate="collapsed" desc="Combo Date">
     initDate: function () {
@@ -71,13 +81,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         //        if(mes < 10) mes = "0"+mes;
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
-        
+
         Ext.getCmp(prototype.id + '-cmbDateFromYear_IBT').setValue(new Date().getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear_IBT').setValue(new Date().getFullYear());
 
         //        Ext.getCmp(prototype.id+'-cmbDateFromDay').setValue('');
         //        Ext.getCmp(prototype.id+'-cmbDateToDay').setValue('');
-        
+
 
     },
     cbxDateFromYear_changeHandler: function () {
@@ -86,7 +96,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue());
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -95,19 +105,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
-        if( comboToYear.getValue() < comboFromYear.getValue()  ){
-           comboFromYear.setValue(comboToYear.getValue()); 
+        if (comboToYear.getValue() < comboFromYear.getValue()) {
+            comboFromYear.setValue(comboToYear.getValue());
         }
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
     cbxDateFromMonth_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue());
-        if(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() != ''){
+        if (Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() != '') {
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
-        }else {
+        } else {
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
@@ -146,8 +156,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 comboFromDay.setValue(obj.getValue());
             }
         }
-        if(comboFromDay.getValue() === ''){
-            
+        if (comboFromDay.getValue() === '') {
+
             comboFromDay.setValue(obj.getValue())
         }
     },
@@ -155,22 +165,22 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         var storeComboDataYear = win.getStoreYear(false);
         Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(storeComboDataYear);
         Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
-        
+
         Ext.getCmp(prototype.id + '-cmbDateFromYear_IBT').bindStore(storeComboDataYear);
         Ext.getCmp(prototype.id + '-cmbDateToYear_IBT').bindStore(storeComboDataYear);
 
         var storeComboDataMonth = win.getStoreMonth(true);
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
         Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
-        
+
         Ext.getCmp(prototype.id + '-cmbDateFromMonth_IBT').bindStore(storeComboDataMonth);
         Ext.getCmp(prototype.id + '-cmbDateToMonth_IBT').bindStore(storeComboDataMonth);
-        
+
         Ext.getCmp(prototype.id + '-cmbDateDay').bindStore(win.getStoreDays(true));
         Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(win.getStoreDays(true));
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
-        
+
         Ext.getCmp(prototype.id + '-cmbDateDay_IBT').bindStore(win.getStoreDays(true));
         Ext.getCmp(prototype.id + '-cmbDateToDay_IBT').bindStore(win.getStoreDays(true));
         Ext.getCmp(prototype.id + '-cmbDateDay_IBT').setValue("");
@@ -182,19 +192,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     // </editor-fold>
     selectDocType: function (obj) {
         console.log('wadafafafa')
-        if( obj.getValue() == 'D' || obj.getValue() == 'R' || obj.getValue() == 'C' || obj.getValue() == 'A' ){
+        if (obj.getValue() == 'D' || obj.getValue() == 'R' || obj.getValue() == 'C' || obj.getValue() == 'A') {
             Ext.getCmp(prototype.id + '-cmbDebitType').show()
             Ext.getCmp(prototype.id + '-contADJ').hide()
             Ext.getCmp(prototype.id + '-chkADYEN').setValue(false)
             Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue('')
             Ext.getCmp(prototype.id + '-lblTDOC').show();
-        }else{
-           Ext.getCmp(prototype.id + '-cmbDebitType').hide() 
-           Ext.getCmp(prototype.id + '-contADJ').show() 
-           Ext.getCmp(prototype.id + '-lblTDOC').hide()
-           Ext.getCmp(prototype.id + '-cmbDebitType').setValue('')
+        } else {
+            Ext.getCmp(prototype.id + '-cmbDebitType').hide()
+            Ext.getCmp(prototype.id + '-contADJ').show()
+            Ext.getCmp(prototype.id + '-lblTDOC').hide()
+            Ext.getCmp(prototype.id + '-cmbDebitType').setValue('')
         }
-        
+
         switch (obj.getValue()) {
             case 'D':
                 Ext.getCmp(prototype.id + '-txtTicket').setDisabled(true)
@@ -206,7 +216,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 Ext.getCmp(prototype.id + '-txtTicket').setDisabled(false)
                 Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
                 Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
-                
+
                 break;
             case 'C':
                 Ext.getCmp(prototype.id + '-txtTicket').setDisabled(true)
@@ -216,7 +226,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 Ext.getCmp(prototype.id + '-txtAUTHNBR').setValue('')
                 Ext.getCmp(prototype.id + '-txtSAGENT').setValue('')
                 break;
-             case 'A':
+            case 'A':
                 Ext.getCmp(prototype.id + '-txtTicket').setDisabled(true)
                 Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
                 Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
@@ -226,11 +236,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 Ext.getCmp(prototype.id + '-txtTicket').setDisabled(false)
                 Ext.getCmp(prototype.id + '-txtAUTHNBR').setDisabled(false)
                 Ext.getCmp(prototype.id + '-txtSAGENT').setDisabled(false)
-                
+
                 break;
         }
-        
-        
+
+
     },
     cmbTranType_changeHandler: function () {
         var filtro = win.getValue('cmbFecFiltro');
@@ -309,7 +319,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         switch (e.getKey()) {
             case 13:
                 this.btnSearch_click()
-                
+
         }
     },
     BuscarPNR_keyDownHandler: function (obj, e, eOpts) {
@@ -366,7 +376,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -434,7 +444,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -452,7 +462,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetCountry_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS');
-        
+
         beanDet.IN_STVAL = '1';
         this.searchDetCountryByStval_1(beanDet);
     },
@@ -477,69 +487,69 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetCountry_clickHandler_MATCH_REFND: function (column, e, row, column, x, rowData) {
         var beanREFND = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_REFND');
-        
+
         beanREFND.IN_STVAL = '1';
-        console.log(beanREFND.IN_TDOC, 'IN_TDOC' )
+        console.log(beanREFND.IN_TDOC, 'IN_TDOC')
         console.log(beanREFND.strFecFiltro, 'strFecFiltro')
         this.searchDetCountryByStval_REFND(beanREFND);
     },
     gridDetCountry_clickHandler_MANUAL_REFND: function (column, e, row, column, x, rowData) {
         var beanREFND = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_REFND');
-        
+
         beanREFND.IN_STVAL = '5';
         this.searchDetCountryByStval_REFND(beanREFND);
     },
     gridDetCountry_clickHandler_PEND_REFND: function (column, e, row, column, x, rowData) {
         var beanREFND = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_REFND');
-        
+
         beanREFND.IN_STVAL = '3';
         this.searchDetCountryByStval_REFND(beanREFND);
     },
     gridDetCountry_clickHandler_MATCH_CHGBAK: function (column, e, row, column, x, rowData) {
         var beanCHGBAK = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
-        
+
         beanCHGBAK.IN_STVAL = '1';
-        console.log(beanCHGBAK.IN_TDOC, 'IN_TDOC' )
+        console.log(beanCHGBAK.IN_TDOC, 'IN_TDOC')
         console.log(beanCHGBAK.strFecFiltro, 'strFecFiltro')
         this.searchDetCountryByStval_CHGBAK(beanCHGBAK);
     },
     gridDetCountry_clickHandler_MANUAL_CHGBAK: function (column, e, row, column, x, rowData) {
         var beanCHGBAK = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
-        
+
         beanCHGBAK.IN_STVAL = '5';
         this.searchDetCountryByStval_CHGBAK(beanCHGBAK);
     },
     gridDetCountry_clickHandler_PEND_CHGBAK: function (column, e, row, column, x, rowData) {
         var beanCHGBAK = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_CHGBAK');
-        
+
         beanCHGBAK.IN_STVAL = '3';
         this.searchDetCountryByStval_CHGBAK(beanCHGBAK);
     },
     gridDetCountry_clickHandler_MATCH_ACREDIT: function (column, e, row, column, x, rowData) {
         var beanACREDIT = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
-        
+
         beanACREDIT.IN_STVAL = '1';
-        console.log(beanACREDIT.IN_TDOC, 'IN_TDOC' )
+        console.log(beanACREDIT.IN_TDOC, 'IN_TDOC')
         console.log(beanACREDIT.strFecFiltro, 'strFecFiltro')
         this.searchDetCountryByStval_ACREDIT(beanACREDIT);
     },
     gridDetCountry_clickHandler_MANUAL_ACREDIT: function (column, e, row, column, x, rowData) {
         var beanACREDIT = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
-        
+
         beanACREDIT.IN_STVAL = '5';
         this.searchDetCountryByStval_ACREDIT(beanACREDIT);
     },
     gridDetCountry_clickHandler_PEND_ACREDIT: function (column, e, row, column, x, rowData) {
         var beanACREDIT = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS_ACREDIT');
-        
+
         beanACREDIT.IN_STVAL = '3';
         this.searchDetCountryByStval_ACREDIT(beanACREDIT);
     },
@@ -551,38 +561,38 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 //        beanACREDIT.IN_STVAL = '';
 //        this.searchDetCountryByStval_ACREDIT(beanACREDIT);
     },
-    onGridDetCardSMain_DEBITS_MATCH: function (column, e, row, column, x, rowData){
-        
-        var beanDEBITS= x.record.data;
+    onGridDetCardSMain_DEBITS_MATCH: function (column, e, row, column, x, rowData) {
+
+        var beanDEBITS = x.record.data;
         win.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
-        
+
         beanDEBITS.IN_STVAL = '1';
         this.searchDetCountryByStval_DEBITS(beanDEBITS);
     },
-    onGridDetCardSMain_DEBITS_MATCH_MANUAL: function (column, e, row, column, x, rowData){
-        
-        var beanDEBITS= x.record.data;
+    onGridDetCardSMain_DEBITS_MATCH_MANUAL: function (column, e, row, column, x, rowData) {
+
+        var beanDEBITS = x.record.data;
         win.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
-        
+
         beanDEBITS.IN_STVAL = '5';
         this.searchDetCountryByStval_DEBITS(beanDEBITS);
     },
-    onGridDetCardSMain_DEBITS_PEND: function (column, e, row, column, x, rowData){
+    onGridDetCardSMain_DEBITS_PEND: function (column, e, row, column, x, rowData) {
         console.log('BAJADA POR MATCH EN SUMARY')
-        var beanDEBITS= x.record.data;
+        var beanDEBITS = x.record.data;
         win.selectedChild('vskMain', 'panelGridDetCardByS_Debits');
-        
+
         beanDEBITS.IN_STVAL = '3';
         this.searchDetCountryByStval_DEBITS(beanDEBITS);
     },
-    gridDet_DEBITS_clickHandler: function (column, e, row, column, x, rowData){
+    gridDet_DEBITS_clickHandler: function (column, e, row, column, x, rowData) {
         var beanDetDebits = x.record.data;
-        if( beanDetDebits.IN_STVAL == '1' || beanDetDebits.IN_STVAL == '5' ){
+        if (beanDetDebits.IN_STVAL == '1' || beanDetDebits.IN_STVAL == '5') {
             beanDetDebits.IN_TDOC = 'M'
-        }else if( beanDetDebits.IN_STVAL == '3' ){
+        } else if (beanDetDebits.IN_STVAL == '3') {
             beanDetDebits.IN_TDOC = 'D'
         }
-        console.log(beanDetDebits,'WADAFAADADADAD')
+        console.log(beanDetDebits, 'WADAFAADADADAD')
         console.log(beanDetDebits.IN_STVAL, 'IN_STVAL')
         console.log(beanDetDebits.IN_TDOC, 'IN_TDOC')
         win.selectedChild('vskMain', 'panelGridDataDetalle_DEBITS');
@@ -690,7 +700,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         this.beanProMasterTicket.IN_SERIE = strTkt.substr(8, 6);
         this.beanProMasterTicket.IN_SEQ = '00';
         console.log(this.beanProMasterTicket, 'beanProMasterTicket')
-        
+
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
@@ -707,7 +717,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         this.beanProMasterTicket.IN_SERIE = strTkt.substr(8, 6);
         this.beanProMasterTicket.IN_SEQ = '00';
         console.log(this.beanProMasterTicket, 'beanProMasterTicket')
-        
+
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
@@ -730,7 +740,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetCardS_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCardS');
-        
+
         beanDet.IN_STVAL = '1';
         this.searchDetCardCodeByStval(beanDet);
     },
@@ -761,7 +771,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetDayS_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetDayS');
-        
+
         beanDet.IN_STVAL = '1';
         this.searchDetDayByStval(beanDet);
     },
@@ -805,7 +815,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     gridDetTicketS_clickHandler_MATCH: function (column, e, row, column, x, rowData) {
         var beanDetE = x.record.data;
         win.selectedChild('vskMain', 'boxDetTicket');
-        
+
         beanDetE.IN_STVAL = '1';
         this.searchDetTktByStval(beanDetE);
     },
@@ -826,7 +836,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         let consultPath = 'searchDetTktByStval_REFND'
         win.selectedChild('vskMain', 'boxDetTktS_DEBITS');
         let paggin = 'paggin17'
-        
+
 //        beanDetE.IN_STVAL = '1';
         this.searchDetTktByStval_DEBITS(beanDetE, consultPath, paggin);
     },
@@ -842,7 +852,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         let consultPath = 'searchDetTktByStval_ACREDIT'
         win.selectedChild('vskMain', 'boxDetTktS_DEBITS');
         let paggin = 'paggin17'
-        this.searchDetTktByStval_DEBITS(beanDetE, consultPath, paggin );
+        this.searchDetTktByStval_DEBITS(beanDetE, consultPath, paggin);
     },
     btnQuery_click: function (obj, e) {
         var beanQuery = {};
@@ -854,9 +864,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         MatchTkt.show();
     },
     btnReport_click: function () {
-       
+
         Ext.create('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
-            id: prototype.id + '-dataEntryReport',  
+            id: prototype.id + '-dataEntryReport',
         }).show();
     },
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
@@ -868,10 +878,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         console.log(rec.data);
         this.winDataEntryDebits()
 //        this.searchBeanDebits(rec) 
-        setTimeout(function() {
+        setTimeout(function () {
             item.enable()
         }, 1000); // Simular una tarea de 1 segundo
-       
+
     },
     winDataEntryDebits: function () {
         //action, beanCons
@@ -889,7 +899,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         }).show();
     },
     searchBeanDebits: function (rec) {
-        
+
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanAMDP',
             method: 'POST',
@@ -966,45 +976,45 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
     //<editor-fold defaultstate="collapsed" desc="Options">
     btnSearch_click: function (obj, e) {
-        console.log(Ext.getCmp(prototype.id + '-chkADYEN').getValue(), 'wadaafafaaaafaf') 
-        if( Ext.getCmp(prototype.id + '-vskIBT').isVisible()){
+        console.log(Ext.getCmp(prototype.id + '-chkADYEN').getValue(), 'wadaafafaaaafaf')
+        if (Ext.getCmp(prototype.id + '-vskIBT').isVisible()) {
             this.setStoreDataIBT()
-        }else{
+        } else {
             if (win.getValue('txtTicket').trim() !== '' || win.getValue('txtMERCHN').trim() !== '' || win.getValue('txtAUTHNBR').trim() !== '' || win.getValue('txtSAGENT').trim() !== ''
                     || win.getValue('txtCard1').trim() !== '' || win.getValue('txtCard2').trim() !== '' || win.getValue('txtPNR').trim() !== '' || win.getValue('cmbSource').trim() !== '' || win.getValue('cmbDebitType') !== '' || win.getValue('cmbADJTYPE') !== ''
-                    || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-chkADYEN').getValue() ) {
+                    || win.getValue('cmbCardType').trim() !== '' || win.getValue('cmbStatus').trim() !== '' || win.getValue('txtAMOUNT').trim() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-chkADYEN').getValue()) {
                 //***********CONSULTA A DETALLE***********
-                if( win.getValue('txtTicket').trim() !== '' && win.getValue('txtTicket').trim().length !== 13 ){
+                if (win.getValue('txtTicket').trim() !== '' && win.getValue('txtTicket').trim().length !== 13) {
                     win.setValue('txtTicket', '');
                     global.Msg({msg: 'Ticket number must contain 13 digits.'});
                     return false
                 }
-                if( win.getValue('txtPNR').trim() !== '' && win.getValue('txtPNR').length !== 6 && win.getValue('txtPNR').trim().length !== 4 && win.getValue('txtPNR').trim().length !== 5  ){
+                if (win.getValue('txtPNR').trim() !== '' && win.getValue('txtPNR').length !== 6 && win.getValue('txtPNR').trim().length !== 4 && win.getValue('txtPNR').trim().length !== 5) {
                     win.setValue('txtPNR', '');
                     global.Msg({msg: 'PNR must contain 6 characters.'});
                     return false
                 }
-                if( win.getValue('txtCard1').trim() !== '' && win.getValue('txtCard1').trim().length !== 6){
+                if (win.getValue('txtCard1').trim() !== '' && win.getValue('txtCard1').trim().length !== 6) {
                     win.setValue('txtCard1', '');
                     global.Msg({msg: 'Cc number must contain 6 digits.'})
                     return false
                 }
-                if( win.getValue('txtCard2').trim() !== '' && win.getValue('txtCard2').trim().length !== 4 ){
+                if (win.getValue('txtCard2').trim() !== '' && win.getValue('txtCard2').trim().length !== 4) {
                     win.setValue('txtCard2', '');
                     global.Msg({msg: 'Coorrelative must contain 4 digits.'})
                     return false
                 }
-                if( win.getValue('txtAUTHNBR').trim() !== '' && win.getValue('txtAUTHNBR').trim().length !== 6 && win.getValue('txtAUTHNBR').trim().length !== 4){
+                if (win.getValue('txtAUTHNBR').trim() !== '' && win.getValue('txtAUTHNBR').trim().length !== 6 && win.getValue('txtAUTHNBR').trim().length !== 4) {
                     win.setValue('txtAUTHNBR', '');
                     global.Msg({msg: 'Authorization Number must contain 6 digits.'})
                     return false
                 }
-                if( win.getValue('txtSAGENT').trim() !== '' && win.getValue('txtSAGENT').trim().length !== 8 ){
+                if (win.getValue('txtSAGENT').trim() !== '' && win.getValue('txtSAGENT').trim().length !== 8) {
                     win.setValue('txtSAGENT', '');
                     global.Msg({msg: 'Agent must contain 8 digits.'})
                     return false
                 }
-                
+
                 var selectedValuec = win.getValue('rbgType').rbgType;
                 switch (selectedValuec) {
                     case 'Sales':
@@ -1037,13 +1047,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.beanDetailTar.IN_ADJTYPE = win.getValue('cmbADJTYPE');
                 this.beanDetailTar.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
                 this.beanDetailTar.IN_DEBTYPE = win.getValue('cmbDebitType');
-                console.log(Ext.getCmp(prototype.id + '-chkADYEN').getValue(), 'wadaafafaaaafaf')        
+                console.log(Ext.getCmp(prototype.id + '-chkADYEN').getValue(), 'wadaafafaaaafaf')
                 if (win.getValue('chkADYEN')) {
                     this.beanDetailTar.IN_TDOC = 'A';
                 } else {
                     this.beanDetailTar.IN_TDOC = 'S';
                 }
-                
+
                 if (win.getValue('chkTP')) {
                     this.beanDetailTar.IN_SCAR = 'Y';
                 } else {
@@ -1079,8 +1089,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.beanDetailAcc.strMonthTo = win.getValue('cmbDateToMonth');
                 this.beanDetailAcc.IN_COUNTRY = win.getValue('cmbCountry');
 
+                if (win.getValue('chkTP')) {
+                    this.beanDetailAcc.IN_SCAR = 'Y';
+                } else {
+                    this.beanDetailAcc.IN_SCAR = 'N';
+                }
+
                 this.searchAcc(this.beanDetailAcc);
-            }else if(win.getValue('cmbTDOC').trim() === 'D' || win.getValue('cmbTDOC').trim() === 'R' || win.getValue('cmbTDOC').trim() === 'C' || win.getValue('cmbTDOC').trim() === 'A' ){
+            } else if (win.getValue('cmbTDOC').trim() === 'D' || win.getValue('cmbTDOC').trim() === 'R' || win.getValue('cmbTDOC').trim() === 'C' || win.getValue('cmbTDOC').trim() === 'A') {
                 //***********CONSULTA A SUMARIO DEBITOS***********
                 this.beanDebits.strFecFiltro = win.getValue('cmbFecFiltro');
                 this.beanDebits.strYearFrom = win.getValue('cmbDateFromYear');
@@ -1089,11 +1105,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.beanDebits.strMonthTo = win.getValue('cmbDateToMonth');
 
                 this.beanDebits.IN_COUNTRY = win.getValue('cmbCountry');
-    //            this.bean.IN_PAYMENT = win.getValue('cmbFOP');
+                //            this.bean.IN_PAYMENT = win.getValue('cmbFOP');
                 this.beanDebits.IN_CARDC = win.getValue('cmbCardType');
                 this.beanDebits.IN_TICKET = win.getValue('txtTicket').trim();
                 this.beanDebits.IN_FTE = win.getValue('cmbSource');
-    //            this.beanDebits.IN_AFTE = win.getValue('cmbAFTE');
+                //            this.beanDebits.IN_AFTE = win.getValue('cmbAFTE');
                 this.beanDebits.IN_CARDN1 = win.getValue('txtCard1').trim();
                 this.beanDebits.IN_CARDN2 = win.getValue('txtCard2').trim();
                 this.beanDebits.IN_MERCHN = win.getValue('txtMERCHN').trim();
@@ -1109,6 +1125,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 this.bean.strYearTo = win.getValue('cmbDateToYear');
                 this.bean.strMonthTo = win.getValue('cmbDateToMonth');
 
+                if (win.getValue('chkTP')) {
+                    this.bean.IN_SCAR = 'Y';
+                } else {
+                    this.bean.IN_SCAR = 'N';
+                }
+                
+                let proces = Ext.getCmp(prototype.id + '-TEST');
+                if (!proces.isVisible()) {
+                    this.bean.IN_EXT = 'N';
+                } else {
+                    this.bean.IN_EXT = 'Y';
+                }
+
                 var selectedValue = win.getValue('rbgType').rbgType;
                 switch (selectedValue) {
                     case 'Sales':
@@ -1119,36 +1148,36 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         break;
                 }
                 this.bean.IN_COUNTRY = win.getValue('cmbCountry');
-    //            this.bean.IN_PAYMENT = win.getValue('cmbFOP');
+                //            this.bean.IN_PAYMENT = win.getValue('cmbFOP');
                 this.bean.IN_CARDC = win.getValue('cmbCardType');
                 this.bean.IN_TICKET = win.getValue('txtTicket').trim();
                 this.bean.IN_FTE = win.getValue('cmbSource');
-    //            this.bean.IN_AFTE = win.getValue('cmbAFTE');
+                //            this.bean.IN_AFTE = win.getValue('cmbAFTE');
                 this.bean.IN_CARDN1 = win.getValue('txtCard1').trim();
                 this.bean.IN_CARDN2 = win.getValue('txtCard2').trim();
                 this.bean.IN_MERCHN = win.getValue('txtMERCHN').trim();
                 this.bean.IN_AUTHNBR = win.getValue('txtAUTHNBR').trim();
                 this.bean.IN_SAGENT = win.getValue('txtSAGENT').trim();
                 this.bean.IN_SPNR = win.getValue('txtPNR').trim();
-                
+
                 //            if(vskPrincipal.selectedChild == boxCharts){
                 //                    with(boxSearchFilter){visible = false; includeInLayout = false}
                 //                    imgFilter.toolTip = (boxSearchFilter.visible == true) ? 'Hidden filter' : 'Display filter';
                 //                    imgSearchChart_clickHandler();
                 //
                 //            }else{
-    //            if (win.getValue('cmbFOP') === 'CA') {
-    //                this.searchCashMonth(this.bean);
-    //            } else {
+                //            if (win.getValue('cmbFOP') === 'CA') {
+                //                this.searchCashMonth(this.bean);
+                //            } else {
                 this.search(this.bean);
-    //                this.searchDetDay(this.bean);
-    //            }
+                //                this.searchDetDay(this.bean);
+                //            }
                 //            }	
             }
         }
-        
-        
-        
+
+
+
     },
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
@@ -1160,24 +1189,24 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     imgExcel_clickHandler: function (obj, e) {
 
-            Ext.Msg.show({
-                title: '.:PRAXIS:.',
-                msg: 'Download Excel ?',
-                buttons: Ext.MessageBox.OKCANCEL,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'ok') {
-                        this.exportExcel();
-                    }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Excel ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportExcel();
                 }
-            });
+            }
+        });
     },
     exportExcel: function () {
         console.log(this.peek(), 'this.peek()')
         switch (this.peek()) {
-            
+
             case  prototype.id + '-boxMainData':
                 console.log('boxMainData')
                 global.getFile(prototype.url + '/getXLSX?beanString=' + JSON.stringify(this.bean));
@@ -1194,7 +1223,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             case prototype.id + '-boxDetTktS':
                 console.log(me.f_boxDetTktS, 'me.f_boxDetTktS')
                 if (me.f_boxDetTktS === '1') {
-                    
+
                     global.getFileExcelPost('searchDetTICKET', JSON.stringify(me.beanboxDetTktS1), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
                 } else if (me.f_boxDetTktS === '2') {
                     global.getFileExcelPost('searchDetTktByStval', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
@@ -1202,7 +1231,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     console.log(Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.TDOC, 'valor de grilla')
                     console.log(Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.DATABASE, 'valor de DATABASE')
                     switch (Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.TDOC) {
-                        
+
                         case 'S':
                             me.beanboxDetTktS3.TabMPF = 'MPF100'
                             break;
@@ -1213,7 +1242,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             me.beanboxDetTktS3.TabMPF = 'MPF076'
                             break;
                         case 'A':
-                            switch (Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.DATABASE){
+                            switch (Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.DATABASE) {
                                 case 'MPF100':
                                     me.beanboxDetTktS3.TabMPF = 'MPF100'
                                     break;
@@ -1221,15 +1250,15 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                                     me.beanboxDetTktS3.TabMPF = 'MPF077'
                                     break;
                             }
-                        break
+                            break
                         case 'D':
                             me.beanboxDetTktS3.TabMPF = 'DEBITS'
                             break;
                         default:
                             me.beanboxDetTktS3.TabMPF = 'MPF100'
                     }
-                   
-                    global.getFile(prototype.url + '/getXLSXDetalle?beanString=' +  encodeURI(JSON.stringify(me.beanboxDetTktS3)));
+
+                    global.getFile(prototype.url + '/getXLSXDetalle?beanString=' + encodeURI(JSON.stringify(me.beanboxDetTktS3)));
 //                    global.getFileExcelPost('searchDetTARJETA', JSON.stringify(me.beanboxDetTktS3), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
                 } else if (me.f_boxDetTktS === '4') {
                     global.getFileExcelPost('searchDetMERCHAT', JSON.stringify(me.beanboxDetTktS4), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
@@ -1258,8 +1287,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 //                global.getFileExcelPost('searchDetTktByStval_REFND', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktByStval_DEBITS').config.columns.items);
 //                break
             default:
-                break;    
-            
+                break;
+
         }
     },
     btnClear_click: function (obj, e) {
@@ -1292,7 +1321,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="obtainData">
     obtainData: function () {
-        
+
         Ext.Ajax.request({
             url: prototype.url + '/obtainMessagesDT',
             method: 'POST',
@@ -1314,10 +1343,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             },
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
-                
+
             }
         });
-        
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainDataAdjs',
             method: 'POST',
@@ -1342,7 +1371,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 console.log('server-side failure with status code ' + response.status);
             }
         });
-        
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -1401,7 +1430,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1524,7 +1553,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1553,7 +1582,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     if (res.success) {
                         if (obj.data.length > 0) {
                             var obj = obj.data.items[0].data;
-                            let titleDetCard = obj.strTitulo 
+                            let titleDetCard = obj.strTitulo
                             Ext.getCmp(prototype.id + '-gridDetCard').setTitle('<center style="font-size:12px;">' + titleDetCard + '</center>');
 //                            if (obj.strFecFiltro === 'DATEC') {
 //                                Ext.getCmp(prototype.id + '-gridDetCard').setTitle("Reconciliation Date : " + obj.strFormatDate + " - Country : " + obj.strDescCountry);
@@ -1580,7 +1609,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1633,7 +1662,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1690,7 +1719,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1724,7 +1753,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1758,7 +1787,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1792,7 +1821,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -1937,7 +1966,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     var beanCons = res.beanCons;
-                    if (beanCons !== undefined ) {
+                    if (beanCons !== undefined) {
                         var DataEntryTicket = Ext.create('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                             id: 'DataEntryTicketSalesReconciliationForm'
                         });
@@ -1948,7 +1977,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         controller.actionCode = win.DE_ACT_SELECT;
                         DataEntryTicket.show();
                     } else {
-                        
+
                         global.Msg({msg: 'An error has ocurred. Please contact our System Department'});
                     }
                 } else
@@ -2028,7 +2057,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         //                        }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2062,7 +2091,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2095,7 +2124,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2128,7 +2157,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2161,7 +2190,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2195,7 +2224,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2230,7 +2259,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2280,7 +2309,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                                 Ext.getCmp(prototype.id + '-sin1').show();
                             }
 
-                            Ext.getCmp(prototype.id + '-gridDetCCSE').show();
+//                            Ext.getCmp(prototype.id + '-gridDetCCSE').show();
                         } else {
                             Ext.getCmp(prototype.id + '-gridDetCCSE').hide();
                         }
@@ -2297,7 +2326,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         //                        }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2341,7 +2370,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                                 objER = cbxDetErrorDAC[q];
                             }
                             //                            
-                            Ext.getCmp(prototype.id + '-gridDetDSE').show();
+//                            Ext.getCmp(prototype.id + '-gridDetDSE').show();
                         } else {
                             Ext.getCmp(prototype.id + '-gridDetDSE').hide();
                         }
@@ -2358,7 +2387,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         //                        }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2444,7 +2473,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     }
                 } else
 //                    global.Msg({msg: res.sesion});
-                global.clear();
+                    global.clear();
             },
             failure: function (response, opts) {
                 Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -2452,25 +2481,25 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             }
         });
     },
-    
+
     searchDetTktByStval_DEBITS: function (beanDetE, consultPath, paggin) {
 //        me.f_boxDetTktS = '2';
 //        me.beanboxDetTktS2 = beanDetE;
         let nameTable = ''
         let hideTkt = false
-        if(consultPath.includes('REFND')){
+        if (consultPath.includes('REFND')) {
             nameTable = 'MPF075'
             hideTkt = false
-        } else if (consultPath.includes('CHGBAK')){
+        } else if (consultPath.includes('CHGBAK')) {
             nameTable = 'MPF076'
             hideTkt = true
-        } else if (consultPath.includes('ACREDIT')){
+        } else if (consultPath.includes('ACREDIT')) {
             nameTable = 'MPF077'
             hideTkt = true
         }
-        
-        
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
                 url: prototype.url + '/' + consultPath
             },
@@ -2485,7 +2514,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     win.lblUser_toolTip("Estructura: " + nameTable);
 
                     var res = Ext.JSON.decode(response._response.responseText);
-                    
+
 
                     if (res.success) {
                         var gridDetTktSAC = res.data;
@@ -2495,7 +2524,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         } else {
                             global.Msg({msg: 'Data not found'});
                         }
-                    } else{
+                    } else {
                         global.Msg({msg: res.sesion});
                     }
                     global.clear();
@@ -2505,15 +2534,15 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
         Ext.getCmp(prototype.id + '-gridDetTktByStval_DEBITS').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin17').bindStore(storeGridDatas);
-        if(hideTkt){
+        if (hideTkt) {
             Ext.getCmp(prototype.id + '-columnTkt_debits').hide();
             Ext.getCmp(prototype.id + '-gridDetTktByStval_DEBITS').setWidth(910)
 
-        }else {
+        } else {
             Ext.getCmp(prototype.id + '-columnTkt_debits').show();
             Ext.getCmp(prototype.id + '-gridDetTktByStval_DEBITS').setWidth(1030)
         }
-        
+
 //        Ext.Ajax.request({
 //            url: prototype.url + '/' + consultPath,
 //            method: 'POST',
@@ -2680,7 +2709,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2780,19 +2809,19 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         console.log(me.beanboxDetTktS3, 'me.beanboxDetTktS3')
         let nameTable = ''
         let hideTkt = false
-        if(consultPath.includes('REFND')){
-           nameTable = 'MPF075'
-           hideTkt = false
-        } else if (consultPath.includes('CHGBAK')){
-           nameTable = 'MPF076'
-           hideTkt = true
-        } else if (consultPath.includes('ACREDIT')){
-           nameTable = 'MPF077'
-           hideTkt = true
-        } else if (consultPath.includes('ALLDEBITS')){
+        if (consultPath.includes('REFND')) {
+            nameTable = 'MPF075'
+            hideTkt = false
+        } else if (consultPath.includes('CHGBAK')) {
+            nameTable = 'MPF076'
+            hideTkt = true
+        } else if (consultPath.includes('ACREDIT')) {
+            nameTable = 'MPF077'
+            hideTkt = true
+        } else if (consultPath.includes('ALLDEBITS')) {
             nameTable = 'AllDebits'
             hideTkt = false
-        }else{
+        } else {
             nameTable = 'MPF100'
             hideTkt = false
         }
@@ -2843,17 +2872,17 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
         Ext.getCmp(prototype.id + '-gridDetTktByStval').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin10').bindStore(storeGridDatas);
-        if(hideTkt){
+        if (hideTkt) {
             Ext.getCmp(prototype.id + '-columnTkt_DETALLE').hide();
             Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1383)
 
-        }else {
+        } else {
             Ext.getCmp(prototype.id + '-columnTkt_DETALLE').show();
             Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1525)
         }
@@ -2908,7 +2937,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
@@ -2930,8 +2959,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 //            }
 //        });
 //    },
-    setStoreDataIBT:function (){
-        
+    setStoreDataIBT: function () {
+
         me.beanIBT = {}
         me.beanIBT.strFecFiltro = win.getValue('cmbFecFiltro_IBT');
         me.beanIBT.strYearFrom = win.getValue('cmbDateFromYear_IBT');
@@ -2973,14 +3002,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                         }
                     } else
 //                        global.Msg({msg: res.sesion});
-                    global.clear();
+                        global.clear();
                 }
             }
         });
         Ext.getCmp(prototype.id + '-gridIBT').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin19').bindStore(storeGridDatas);
     },
-    ocultarFiltersMain: function(){
+    ocultarFiltersMain: function () {
         Ext.getCmp(prototype.id + '-contSales').hide()
         Ext.getCmp(prototype.id + '-contFilterDate1').hide()
         Ext.getCmp(prototype.id + '-contSecondFilter').hide()
@@ -2989,7 +3018,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         Ext.getCmp(prototype.id + '-contInvoice').show()
         Ext.getCmp(prototype.id + '-contFilterDate2').show()
     },
-    verFiltersMain: function(){
+    verFiltersMain: function () {
         Ext.getCmp(prototype.id + '-contSales').show()
         Ext.getCmp(prototype.id + '-contFilterDate1').show()
         Ext.getCmp(prototype.id + '-contSecondFilter').show()
@@ -2998,25 +3027,25 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         Ext.getCmp(prototype.id + '-contInvoice').hide()
         Ext.getCmp(prototype.id + '-contFilterDate2').hide()
     },
-    onViewIBT: function (){
+    onViewIBT: function () {
 //        let filter = Ext.getCmp(prototype.id + '-contentFilter');
 //        let filter_IBT = Ext.getCmp(prototype.id + '-contentFilter_IBT');
-        
+
         let panelMain = Ext.getCmp(prototype.id + '-vskMain');
         let panel_IBT = Ext.getCmp(prototype.id + '-vskIBT');
-        if(!panel_IBT.isVisible()){
+        if (!panel_IBT.isVisible()) {
             this.ocultarFiltersMain()
             this.setStoreDataIBT()
             panel_IBT.show()
 
             panelMain.hide()
-        }else{
+        } else {
             panel_IBT.hide()
 
             panelMain.show()
             this.verFiltersMain()
         }
-        
+
 //        var panelMain = Ext.getCmp(prototype.id + '-panelMain');
 //        var panelTW = Ext.getCmp(prototype.id + '-panelTW');
 //        
@@ -3122,7 +3151,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         win.enabled('txtAUTHNBR', true);
         win.enabled('cmbCardType', true);
         win.enabled('txtSAGENT', true);
-        
+
     },
     vaciarFiltrosByFCONT: function () {
         win.setValue('cmbSource', '');
@@ -3137,7 +3166,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     selectFecFiltro: function () {
         console.log('evento select')
-        if( win.getValue('cmbFecFiltro').trim() == 'FCONT' ){
+        if (win.getValue('cmbFecFiltro').trim() == 'FCONT') {
             this.inhabilitarFiltrosByFCONT()
             this.vaciarFiltrosByFCONT()
         } else {
@@ -3184,20 +3213,20 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             Ext.getCmp(prototype.id + '-boxPaginacion').hide();
             Ext.getCmp(prototype.id + '-boxPagDetail').hide();
             console.log('NIKAAAAAAAAAA')
-            
+
         } else {
-            
+
             var pagData = paggin.getPageData();
             console.log('selectedChild');
             console.log(padre + child + add);
             console.log(Ext.getCmp(prototype.id + '-paggin9'));
             console.log(paggin);
             console.log(pagData);
-            
+
             var currentPage = win.formatLngNumber(pagData.currentPage);
             var pageCount = win.formatLngNumber(pagData.pageCount);
             var total = win.formatLngNumber(pagData.total);
-            console.log('paginado: ', currentPage, pageCount, total )
+            console.log('paginado: ', currentPage, pageCount, total)
 
             win.setText('lblPagActual', currentPage);
             win.setText('lblPagTotal', pageCount);
@@ -3218,9 +3247,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         }
     },
     getPaggin: function () {
-        if( Ext.getCmp(prototype.id + '-vskIBT').isVisible()){
+        if (Ext.getCmp(prototype.id + '-vskIBT').isVisible()) {
             return Ext.getCmp(prototype.id + '-paggin19');
-        }else{
+        } else {
             switch (this.peek()) {
                 case prototype.id + '-boxMainData':
                     return Ext.getCmp(prototype.id + '-paggin');
@@ -3246,8 +3275,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     return Ext.getCmp(prototype.id + '-paggin11');
                 case prototype.id + '-boxDetBySAGENT':
                     return Ext.getCmp(prototype.id + '-paggin12');
-    //            case prototype.id + '-gridDetCountryS_REFND':
-    //                return Ext.getCmp(prototype.id + '-paggin13');
+                    //            case prototype.id + '-gridDetCountryS_REFND':
+                    //                return Ext.getCmp(prototype.id + '-paggin13');
                 case prototype.id + '-boxDetTktS_DEBITS':
                     console.log('wadafa')
                     return Ext.getCmp(prototype.id + '-paggin17');
@@ -3258,7 +3287,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     return null;
             }
         }
-        
+
     },
     peek: function () {
         if (this.stack.length > 0) {
@@ -3304,8 +3333,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     sendMail_clickHandler: function () {
 
         console.log('sendMail_clickHandler');
-        
-        me.dpick= win = Ext.create('Ext.window.Window', {
+
+        me.dpick = win = Ext.create('Ext.window.Window', {
             title: 'Seleccionar Fecha',
             modal: true,
             width: 280,
@@ -3315,7 +3344,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             items: [
                 {
                     xtype: 'monthpicker',
-                    id:prototype.id + '-monthPicker',
+                    id: prototype.id + '-monthPicker',
 //                    listeners: {
 ////                        cancelclick: 'cancelarSeleccionFecha',
 //                        monthdblclick: 'aceptarSeleccionFecha'
@@ -3331,9 +3360,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             ]
         });
         me.dpick.show();
-           
+
     },
-    aceptarSeleccionFecha: function(button) {
+    aceptarSeleccionFecha: function (button) {
 //        var window = button.up('window'); // Obtener la ventana que contiene el MonthPicker
 //        var monthpicker = window.down('monthpicker'); // Obtener el componente MonthPicker
         var monthpicker = Ext.getCmp(prototype.id + '-monthPicker'); // Obtener el componente MonthPicker
@@ -3342,14 +3371,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         if (selectedDate) {
             var year = selectedDate[1]; // Obtener el año seleccionado
             var month = selectedDate[0] + 1; // Obtener el mes seleccionado (los meses son base 0)
-            month = Ext.String.leftPad(month,2,'0');
-            
+            month = Ext.String.leftPad(month, 2, '0');
+
             console.log('Año seleccionado:', year);
             console.log('Mes seleccionado:', month);
-            
+
             // Luego puedes realizar las acciones que necesites con el año y el mes seleccionados
             // Por ejemplo, enviar esta información al servidor para enviar un correo electrónico
-            me.enviarCorreo(year +''+ month);
+            me.enviarCorreo(year + '' + month);
         } else {
             console.error('No se ha seleccionado ninguna fecha');
         }
@@ -3359,8 +3388,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         me.dpick.close();
         console.log('enviarCorreo');
         console.log(fecha);
-        var msj='¿Estás seguro de enviar Correo para la fecha : '+ fecha + ' ?';
-        
+        var msj = '¿Estás seguro de enviar Correo para la fecha : ' + fecha + ' ?';
+
         Ext.Msg.show({
             title: '.:Confirmation:.',
             msg: msj,
@@ -3395,7 +3424,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 }
             }
         });
-            
+
     }
-    
+
 });

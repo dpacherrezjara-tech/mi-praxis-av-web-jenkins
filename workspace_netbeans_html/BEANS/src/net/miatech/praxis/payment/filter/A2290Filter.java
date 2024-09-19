@@ -72,6 +72,7 @@ public class A2290Filter extends A2290 {
     public String IN_STVAL = "";
     public String IN_ADJTYPE = "";
     public String IN_SCAR = "";
+    public String IN_EXT = "";
     public String IN_FROMADATEHE = "";
     public String IN_TOADATEHE = "";
     public String IN_LIQUIDACIOHE = "";
@@ -248,6 +249,7 @@ public class A2290Filter extends A2290 {
     public long lngQMANUAL = 0;
     public long lngTOTALE = 0;
     public long lngQPEND = 0;
+    public long lngQEXT = 0;
     public long lngQPENDL = 0;
     public long lngQTICKET = 0;
     public long lngQTMATCH = 0;
@@ -319,6 +321,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQMANUAL = 0;
     public long lngTotTOTALE = 0;
     public long lngTotQPEND = 0;
+    public long lngTotQEXT = 0;
     public long lngTotQPENDL = 0;
     public long lngTotQTICKET = 0;
     public long lngTotQTMATCH = 0;
