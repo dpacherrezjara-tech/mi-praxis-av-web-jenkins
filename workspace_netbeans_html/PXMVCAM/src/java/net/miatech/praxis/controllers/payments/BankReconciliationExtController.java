@@ -434,8 +434,8 @@ public class BankReconciliationExtController {
         return ResponseUtils.ok(filter);
     }
     
-    @RequestMapping(value = "reverseConciliationF1")
-    public ResponseEntity<?> reverseConciliationF1(MPS037Filter params) throws Exception {
+    @RequestMapping(value = "reverseConciliationF1",method = RequestMethod.POST)
+    public ResponseEntity<?> reverseConciliationF1(@RequestBody MPS037Filter params) throws Exception {
         System.out.println("***** BankReconciliationExt - reverseConciliationF1 *****");
         MPS037Filter filter = logic.loadMPS037Filter(params);
         System.out.println("Message: " + filter.getVMESSAGE());

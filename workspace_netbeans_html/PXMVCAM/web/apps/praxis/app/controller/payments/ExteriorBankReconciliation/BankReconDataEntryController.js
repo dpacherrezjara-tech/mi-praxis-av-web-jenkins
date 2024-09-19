@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
             me.limpiaObjetoPX(data.response);
             me.bean = data.response;
-
+            me.clearData();
             form.reset();
             form.setValues(me.bean);
             if (me.bean.STVAL !== '3') {
@@ -68,6 +68,9 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     //<editor-fold defaultstate="collapsed" desc="Match">
     setMatchGrids: function () {
         const me = this;
+        Ext.getCmp(prototype.idDE + '-btn-update').hide();
+        Ext.getCmp(prototype.idDE + '-btn-reverse').show();
+        Ext.getCmp(prototype.idDE + '-btn-excel').show();
         const panelMatch = Ext.getCmp(prototype.idDE + '-panelMatch');
         const gridHeader = Ext.getCmp(prototype.idDE + '-gridHeadersMatch');
         const gridSettl = Ext.getCmp(prototype.idDE + '-gridSettlementsMatch');
@@ -169,6 +172,9 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     //<editor-fold defaultstate="collapsed" desc="Pending">
     setPendingGrids: function () {
         const panelMatch = Ext.getCmp(prototype.idDE + '-panelPending');
+        Ext.getCmp(prototype.idDE + '-btn-update').show();
+        Ext.getCmp(prototype.idDE + '-btn-reverse').hide();
+        Ext.getCmp(prototype.idDE + '-btn-excel').hide();
         panelMatch.show();
     },
     onAddSettlements: async function () {
@@ -190,7 +196,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             console.error(e);
         } finally {
             me.view.center();
-            if (me.settlements.length > 0 && me.taxes.length > 0) {
+            if (me.settlements.length > 0 || me.taxes.length > 0) {
                 Ext.getCmp(prototype.idDE + '-downloadConciliation').setDisabled(false);
             }
         }
@@ -211,9 +217,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             'SCARCOD', 'SCARDN', 'SAUTHOC', 'SEQ', 'SVFOP'];
         let response = global.arrayAddUnique(data, me.settlements, keys);
         me.settlements = response.data;
-//        if(response.modified>0){
-//            Ext.getCmp(prototype.idDE + '-downloadConciliation').setDisabled(false);
-//        }
         console.log('Settlements: ', response);
         me.reloadSettlements();
         Ext.toast({
@@ -515,18 +518,117 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             if(res.ok){
                 const data = await res.json();
                 const{SQLRES,SQLMSG} = data;
-                if(SQLRES === 1){
-                    global.Msg({msg:`Error on Update:<br>${SQLMSG}`});
+                if(SQLRES === 0){
+                    global.Msg({msg:`Error on Update:<br><b style="color:red;">${SQLMSG}</b>`});
                 }else{
                     global.Msg({msg:`${SQLMSG}`});
-                    me.getData();
                 }
             }
         } catch (e) {
             console.error(e);
             global.Msg({msg:`System Error.`});
-        }
-        me.view.unmask();
+        }finally {
+            me.getData();
+            me.view.unmask();
+        }   
+    },
+    onReverseConciliation:function(btn){
+        let params = this.formatReverseParams();
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to reverse?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    animateTarget: btn,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.reverseEECC(params);
+                        }
+                    }
+                });
+    },
+    reverseEECC:async function(params){
+        const me = this;
+        me.view.mask('Loading...');
+        try {
+            const res = await fetch(`${me.url}/reverseConciliationF1`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'  // O el encabezado necesario para tu API
+                },
+                body: JSON.stringify(params)
+            });
+            if(res.ok){
+                global.Msg({msg:`Reversed Conciliation`});
+            }else{
+                throw new Error('System Error');
+            }
+        } catch (e) {
+            console.error(e);
+            global.Msg({msg:`System Error.`});
+        }finally {
+            await me.getData();
+            me.view.unmask();
+        }   
+    },
+    onOpenFilters:function(){
+        const openFilters = Ext.getCmp(prototype.idDE + '-btn-openFilters');
+        const hideFilters = Ext.getCmp(prototype.idDE + '-btn-hideFilters');
+        const formFilters = Ext.getCmp(prototype.idDE + '-filterGrids');
+        openFilters.hide();
+        formFilters.show();
+        hideFilters.show();
+    },
+    onHideFilters:function(){
+        const openFilters = Ext.getCmp(prototype.idDE + '-btn-openFilters');
+        const hideFilters = Ext.getCmp(prototype.idDE + '-btn-hideFilters');
+        const formFilters = Ext.getCmp(prototype.idDE + '-filterGrids');
+        openFilters.show();
+        formFilters.hide();
+        hideFilters.hide();
+    },
+    onDeleteByFilter: function(btn){
+        const me = this;
+        let keys = btn.up('form').getForm().getValues();
+        
+        let removeHeaders = global.filterArrayByObj(me.headers,keys,true);
+        let removeSettl = global.filterArrayByObj(me.settlements,keys,true);
+        let removeTaxes = global.filterArrayByObj(me.taxes,keys,true);
+        
+        let removedHeaders = 0, removedSettl = 0, removedTaxes = 0;
+        
+        let keysHeader = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
+        let response = global.arrayRemove(removeHeaders, me.headers, keysHeader);
+        removedHeaders = response.removed;
+        me.headers = response.data;
+
+        let keysSettl = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'ADATE', 'MERCHAND'];
+        response = global.arrayRemove(removeSettl, me.settlements, keysSettl);
+        removedSettl = response.removed;
+        me.settlements = response.data;
+
+        let keysTaxes = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
+        response = global.arrayRemove(removeTaxes, me.taxes, keysTaxes);
+        removedTaxes = response.removed;
+        me.taxes = response.data;
+
+        me.reloadHeaders();
+        me.reloadSettlements();
+        me.reloadTaxes();
+        
+        Ext.toast({
+            html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${removedSettl}</b><br>
+                    Total Headers removed: <b style="color:red">${removedHeaders}</b><br>
+                    Total Taxes removed: <b style="color:red">${removedTaxes}</b>`,
+            title: 'Notification',
+            align: 't',
+            closable: true,
+            width: 300,
+            timeout: 15000 // 10 segundos
+        });
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Reload Grids">
@@ -614,6 +716,25 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             totalTaxes.setValue(global.sumBy(me.taxes, 'IMPORTEPAG'));
         }
     },
+    clearData:function(){
+        const me = this;
+        const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
+        const panelMatch = Ext.getCmp(prototype.idDE + '-panelMatch');
+        panelPending.hide();
+        panelMatch.hide();
+        const gridHeader = Ext.getCmp(prototype.idDE + '-gridHeadersMatch');
+        const gridSettl = Ext.getCmp(prototype.idDE + '-gridSettlementsMatch');
+        const gridTax = Ext.getCmp(prototype.idDE + '-gridTaxesMatch');
+        gridHeader.setStore(null);
+        gridSettl.setStore(null);
+        gridTax.setStore(null);
+        me.settlements = [];
+        me.headers = [];
+        me.taxes = [];
+        me.reloadHeaders();
+        me.reloadSettlements();
+        me.reloadTaxes();
+    },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Formateo de Parametros">
     formatParameters: function (obj) {
@@ -637,6 +758,20 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             headers: me.headers,
             settlements: me.settlements,
             taxes: me.taxes
+        };
+        return params;
+    },
+    formatReverseParams: function(){
+        const me = this;
+        let params = {
+            VP_CCUST:me.bean.CCUST,
+            VP_PRDA: '',
+            VP_CODPRO: me.bean.CODPRO,
+            VP_CCUSTPRO: me.bean.CCUSTPRO,
+            VP_BANDOC: me.bean.BANDOC,
+            VP_DATECI: me.bean.DATECI,
+            VP_TRANCI: me.bean.TRANCI,
+            VP_FASE: ''
         };
         return params;
     },
