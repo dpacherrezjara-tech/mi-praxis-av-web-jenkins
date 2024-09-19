@@ -82,6 +82,8 @@ public class A2353 {
     public String CAMP23 = "";
     public String CAMP24 = "";
     public String CAMP25 = "";
+    public String CAMP26 = "";
+    public String CAMP27 = "";
 
 //    public String CCUST = "";
     public String RCCUST = "";
