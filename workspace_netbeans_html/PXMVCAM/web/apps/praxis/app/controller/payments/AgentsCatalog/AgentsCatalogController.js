@@ -180,6 +180,96 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
         };
 //        console.log(searchParams);
     },
+    onLoadClick: function () {
+        var msjPregunta = 'Sure to load file?';
+
+        Ext.MessageBox.show({
+            title: 'Load Agents',
+            msg: msjPregunta,
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    me.onFileLoad();
+                }
+            }
+        });
+    },
+//    onFileLoadAsk: function () {
+//        var value = '';
+//        var msjPregunta = 'You want to INSERT or UPDATE?';
+//
+//        // Cierra cualquier instancia previa de MessageBox
+//        Ext.MessageBox.hide();
+//
+//        // Crear un panel personalizado para los botones
+//        Ext.create('Ext.window.Window', {
+//            title: 'Load Merchants',
+//            width: 300,
+//            height: 150,
+//            layout: 'fit',
+//            modal: true,
+//            items: [{
+//                    xtype: 'panel',
+//                    html: msjPregunta,
+//                    bodyPadding: 10
+//                }],
+//            buttons: [
+//                {
+//                    text: 'INSERT',
+//                    handler: function () {
+//                        value = 'I';
+//                        console.log(value);
+//                        this.up('window').close(); // Cierra la ventana
+//                        me.onFileLoad(value);
+//                    }
+//                },
+//                {
+//                    text: 'UPDATE',
+//                    handler: function () {
+//                        value = 'U';
+//                        console.log(value);
+//                        this.up('window').close(); // Cierra la ventana
+//                        me.onFileLoad(value);
+//                    }
+//                }
+//            ]
+//        }).show();
+//    },
+    onFileLoad: function () {
+        var me = this;
+        let beanValidation = {};
+        beanValidation.OPTION = '1';
+        console.log(beanValidation.OPTION);
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        let beanString = JSON.stringify(beanValidation);
+        if (!file) {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+
+        var form = Ext.getCmp(prototype.id + '-formAgents').getForm();
+
+        form.submit({
+            url: prototype.url + '/setUploadAgents',
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (f, o) {
+
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult;
+                global.Msg({msg: msjResult});
+                Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
         this.setGridData();
