@@ -56,7 +56,7 @@ public class StatementReconciliationsDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQSALES = 0;
+        long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQPEND1 = 0, lngTotQPEND3 = 0, lngTotQSALES = 0;
         long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0;
                 
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
@@ -114,6 +114,8 @@ public class StatementReconciliationsDAO {
                 lngTotQMANUAL = rst.getLong("QMANUAL");
                 lngTotTOTALE = rst.getLong("TOTALE");
                 lngTotQPEND = rst.getLong("QPEND");
+                lngTotQPEND1 = rst.getLong("QPEND1");
+                lngTotQPEND3 = rst.getLong("QPEND3");
                 lngTotQSALES = rst.getLong("QSALES");
                 lngTotQTMATCH = rst.getLong("QTMATCH");
                 lngTotQTMANUAL = rst.getLong("QTMANUAL");
@@ -143,27 +145,31 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
                     beanTkt.lngTOTALE = rst.getLong("TOTALE");
                     beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngQPEND1 = rst.getLong("QPEND1");
+                    beanTkt.lngQPEND3 = rst.getLong("QPEND3");
                     beanTkt.lngQSALES = rst.getLong("QSALES");
-                    beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
+                    beanTkt.lngQMATCHPercent = ((beanTkt.lngQSALES - beanTkt.lngQPEND1) > 0) ? (beanTkt.lngQMATCH * 100.0) / (beanTkt.lngQSALES - beanTkt.lngQPEND1) : 0.00;
                     
                     
                     beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
                     beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
                     beanTkt.lngQTPEND = rst.getLong("QTPEND");
                     beanTkt.lngTOTALL = rst.getLong("TOTALL");
-                    beanTkt.lngQTMATCHPercent = (beanTkt.lngTOTALL > 0) ? (beanTkt.lngQTMATCH * 100.0) / beanTkt.lngTOTALL : 0.00;
+                    beanTkt.lngQTMATCHPercent = ((beanTkt.lngTOTALL - beanTkt.lngQTPEND) > 0) ? (beanTkt.lngQTMATCH * 100.0) / (beanTkt.lngTOTALL - beanTkt.lngQTPEND) : 0.00;
 
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
                     beanTkt.lngTotTOTALE = lngTotTOTALE;
                     beanTkt.lngTotQPEND = lngTotQPEND;
+                    beanTkt.lngTotQPEND1 = lngTotQPEND1;
+                    beanTkt.lngTotQPEND3 = lngTotQPEND3;
                     beanTkt.lngTotQSALES = lngTotQSALES;
                     beanTkt.lngTotQTMATCH = lngTotQTMATCH;
                     beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
                     beanTkt.lngTotQTPEND = lngTotQTPEND;
                     beanTkt.lngTotTOTALL = lngTotTOTALL;
                     
-                    beanTkt.lngTotQMATCHPercent = (beanTkt.lngTotQSALES > 0) ? (beanTkt.lngTotQMATCH * 100.0) / beanTkt.lngTotQSALES : 0.00;
+                    beanTkt.lngTotQMATCHPercent = ((beanTkt.lngTotQSALES - beanTkt.lngTotQPEND1) > 0) ? (beanTkt.lngTotQMATCH * 100.0) / (beanTkt.lngTotQSALES - beanTkt.lngTotQPEND1) : 0.00;
                     beanTkt.lngTotQTMATCHPercent = (beanTkt.lngTotTOTALL > 0) ? (beanTkt.lngTotQTMATCH * 100.0) / beanTkt.lngTotTOTALL : 0.00;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
@@ -1371,6 +1377,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -1519,6 +1527,9 @@ public class StatementReconciliationsDAO {
                     beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.CERROR = rst.getString("CERROR").trim();
                     beanTkt.strCERROR = rst.getString("ERROR").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
                     } else {
@@ -1676,6 +1687,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.CERROR = rst.getString("CERROR").trim();
                     beanTkt.strCERROR = rst.getString("ERROR").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
                     } else {
@@ -1830,6 +1843,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -1977,7 +1992,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
-
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
 //                    if (filter.IN_DATE.trim().equals("VALDATE")) {
 //                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;
 //                    } else {
