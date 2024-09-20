@@ -1548,6 +1548,18 @@ var LarSyrExt = function () {
             data: array
         };
     };
+    this.filterArrayByObj = function(array,obj,equals){
+        let lst = array.filter(x =>{
+            return Object.keys(obj).every(key=>{
+                return obj[key] === '' || (
+                        //variable equals
+                        equals ? obj[key] === x[key].trim() :
+                            obj[key] !== x[key].trim()
+                        );
+            });
+        });
+        return lst;
+    };
     this.PX_UTILS_URL = 'js/praxis.ui-1.0/praxis.utils-1.0.js';
 };
 

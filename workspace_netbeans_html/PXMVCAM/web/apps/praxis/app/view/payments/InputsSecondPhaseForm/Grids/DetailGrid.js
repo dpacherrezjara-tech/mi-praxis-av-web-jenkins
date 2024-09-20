@@ -36,6 +36,27 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DetailGrid', {
             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
             {text: 'Load<br>Date', dataIndex: 'FECR', width: 80},
             {text: 'Source', dataIndex: 'DESC_PRO', flex: 1},
+            {text: 'Status', dataIndex: 'ESTADO', width: 90,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.tdAttr = `data-qtip="${record.data.VRESULT}"`;
+                    const opts = {
+                        '': () => {
+                            return '<img src="resources/img/icon/16x16/loading_robot.png"/>';
+                        },
+                        '1': () => {
+                            
+                            return '<img src="resources/img/icon/16x16/check.png"/>';
+                        },
+                        '0':() => {
+                            return '<img src="resources/img/icon/delete.png"/>';
+                        },
+                        'E':() => {
+                            return '<img src="resources/img/icon/list-error.png"/>';
+                        }
+                    };
+                    return opts[value.trim()]();
+                }
+            },
             {text: 'Total Records',
                 defaults: {
                     menuDisabled: true,
