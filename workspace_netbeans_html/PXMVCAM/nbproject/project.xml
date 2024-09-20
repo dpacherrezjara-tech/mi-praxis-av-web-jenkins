@@ -10,6 +10,7 @@
         <data xmlns="http://www.netbeans.org/ns/web-project/3">
             <name>PXMVCAM</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
+            <explicit-platform explicit-source-supported="true"/>
             <web-module-libraries>
                 <library dirs="200">
                     <file>${reference.BEANS.jar}</file>
@@ -28,16 +29,20 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.LibraryPoi.classpath}</file>
+                    <file>${libs.LibraryJDBC.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.LibraryPoi11.classpath}</file>
-                    <path-in-war>WEB-INF/classes</path-in-war>
+                    <file>${libs.LibraryPOI.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Web.classpath}</file>
-                    <path-in-war>WEB-INF/classes</path-in-war>
+                    <file>${libs.LibraryCommons.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.LibraryWeb.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.LibraryStandard.classpath}</file>
@@ -52,27 +57,19 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.LibraryCommons.classpath}</file>
+                    <file>${libs.LibraryXLSXStream.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jsoup-1.13.1.jar}</file>
+                    <file>${libs.LibraryAOP.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jna-platform.jar}</file>
+                    <file>${libs.LibraryValidations.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jna.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${libs.LibraryJDBC.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.mssql-jdbc-9.2.1.jre8.jar}</file>
+                    <file>${libs.LibraryJNA.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
