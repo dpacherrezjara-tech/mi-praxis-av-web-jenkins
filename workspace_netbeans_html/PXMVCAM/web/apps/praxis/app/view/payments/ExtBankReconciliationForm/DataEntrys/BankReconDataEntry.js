@@ -321,7 +321,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
                                             {text: 'Settlement<br>Date', dataIndex: 'FLIQUIDACI', width: 80},
                                             {text: 'Merchant', dataIndex: 'MERCHAND', width: 110},
-                                            {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                            {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 200},
                                             {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
                                             {text: 'Account', dataIndex: 'ACCOUNT', width: 100},
                                             {
@@ -417,7 +417,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     },
                                                     {text: 'Client', dataIndex: 'CCUST', width: 50},
                                                     {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
-                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
                                                     {
                                                         text: 'Payment Amounts',
                                                         defaults: {
@@ -491,9 +490,12 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                             }
                                                         ]
                                                     },
+                                                    {text: 'Funds Transfer Ground', dataIndex: 'FUNDSTRGR', width: 250},
+                                                    {text: 'Funds Transfer<br>Key', dataIndex: 'FUNDSTRGK', width: 100},
                                                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
                                                     {text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70},
                                                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
+                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 200},
                                                     {text: 'Processor', dataIndex: 'DESC_PRO', width: 150}
                                                 ]
                                             },
@@ -573,6 +575,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     },
                                                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
                                                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 120},
+                                                    {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 200},
                                                     {text: 'Processor', dataIndex: 'DESC_PRO', width: 150}
 
                                                 ]
@@ -734,7 +737,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                             ['134', 'AV - AVIANCA'],
                                                             ['202', 'TA - TACA'],
                                                             ['547', '2K - AEROGAL'],
-                                                            ['133', 'LR - LATSA']
+                                                            ['133', 'LR - LACSA']
                                                         ]
                                                     }),
                                                     labelWidth: 60,
@@ -839,67 +842,76 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     listeners: {
                                                         click: 'onDownloadConciliation'
                                                     }
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    id: prototype.idDE + '-btn-openFilters',
+                                                    iconCls: 'prx-icon-filter',
+                                                    tooltip: 'Open Filters',
+                                                    listeners: {
+                                                        click: 'onOpenFilters'
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    width: 25,
+                                                    hidden: true,
+                                                    id: prototype.idDE + '-btn-hideFilters',
+                                                    iconCls: 'prx-icon-cancel',
+                                                    tooltip: 'Hide Filters',
+                                                    listeners: {
+                                                        click: 'onHideFilters'
+                                                    }
                                                 }
                                             ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'form',
+                                    id: prototype.idDE + '-filterGrids',
+                                    bodyStyle: 'background: #dcff85',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    hidden: true,
+                                    margin: '5 5 5 5',
+                                    border: true,
+                                    width: '100%',
+                                    defaults: {
+                                        xtype: 'textfield',
+                                        margin: '3 3 3 3',
+                                        labelStyle: 'text-align:right;font-weight:bold'
+                                    },
+                                    items: [
+                                        {
+                                            fieldLabel: 'Merchant ID',
+                                            labelWidth: 80,
+                                            width: 200,
+                                            name: 'MERCHAND',
+                                            maxLength: 15,
+                                            maskRe: /[0-9]/,
+                                            enforceMaxLength: true
                                         },
-//                                        {
-//                                            items: [
-//                                                {
-//                                                    fieldLabel: 'Card Code',
-//                                                    labelWidth: 80,
-//                                                    width: 120,
-//                                                    name: 'IN_SCARCOD',
-//                                                    maxLength: 2,
-//                                                    maskRe: /[a-zA-Z]/,
-//                                                    enforceMaxLength: true,
-//                                                    listeners: {
-//                                                        change: function (field, newValue) {
-//                                                            field.setValue(newValue.toUpperCase());  // Convierte a mayúsculas
-//                                                        }
-//                                                    }
-//                                                },
-//                                                {
-//                                                    fieldLabel: 'Card Number',
-//                                                    labelWidth: 90,
-//                                                    width: 220,
-//                                                    name: 'IN_SCARDN',
-//                                                    maxLength: 19,
-//                                                    maskRe: /[0-9%\*X]/,
-//                                                    enforceMaxLength: true
-//                                                },
-//                                                {
-//                                                    fieldLabel: 'Auth',
-//                                                    labelWidth: 50,
-//                                                    width: 110,
-//                                                    name: 'IN_SAUTHOC',
-//                                                    maxLength: 6,
-//                                                    maskRe: /[0-9]/,
-//                                                    enforceMaxLength: true
-//                                                },
-//                                                {
-//                                                    fieldLabel: 'NET',
-//                                                    labelWidth: 60,
-//                                                    width: 160,
-//                                                    name: 'IN_NETO',
-//                                                    maxLength: 15,
-//                                                    enforceMaxLength: true,
-//                                                    maskRe: /[0-9\.\-]/, // Máscara para números y punto decimal
-//                                                    regex: /^[-]?\d+(\.\d{1,2})?$/, // Validación para permitir hasta 2 decimales
-//                                                    regexText: 'Invalid Amount'
-//                                                },
-//                                                {
-//                                                    fieldLabel: 'Pay Amt',
-//                                                    labelWidth: 80,
-//                                                    width: 180,
-//                                                    name: 'IN_IMPORTEPAG',
-//                                                    maxLength: 15,
-//                                                    enforceMaxLength: true,
-//                                                    maskRe: /[0-9\.\-]/, // Máscara para números y punto decimal
-//                                                    regex: /^[-]?\d+(\.\d{1,2})?$/, // Validación para permitir hasta 2 decimales
-//                                                    regexText: 'Invalid Amount'
-//                                                },
-//                                            ]
-//                                        }
+                                        {
+                                            fieldLabel: 'Settlement ID',
+                                            labelWidth: 90,
+                                            width: 300,
+                                            name: 'LIQUIDACIO',
+                                            maxLength: 50,
+                                            enforceMaxLength: true
+                                        },
+                                        {
+                                            xtype: 'button',
+                                            width: 25,
+                                            iconCls: 'prx-icon-image-trash',
+                                            tooltip: 'Delete by Filter',
+                                            listeners: {
+                                                click: 'onDeleteByFilter'
+                                            }
+                                        }
                                     ]
                                 },
                                 //</editor-fold>
@@ -936,7 +948,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
                                             {text: 'Settlement<br>Date', dataIndex: 'FLIQUIDACI', width: 80},
                                             {text: 'Merchant', dataIndex: 'MERCHAND', width: 110},
-                                            {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                            {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 200},
                                             {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
                                             {text: 'Account', dataIndex: 'ACCOUNT', width: 100},
                                             {
@@ -1001,7 +1013,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                         handler: 'onDeleteHeaderPending'
                                                     }
                                                 ]
-                                            },
+                                            }
                                         ]
                                     }
                                 },
@@ -1121,10 +1133,12 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                             }
                                                         ]
                                                     },
+                                                    {text: 'Funds Transfer Ground', dataIndex: 'FUNDSTRGR', width: 250},
+                                                    {text: 'Funds Transfer<br>Key', dataIndex: 'FUNDSTRGK', width: 100},
                                                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
                                                     {text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70},
                                                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
-                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 130},
+                                                    {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 200},
                                                     {text: 'Processor', dataIndex: 'DESC_PRO', width: 150},
                                                     {
                                                         sortable: false,
@@ -1220,7 +1234,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                                     },
                                                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 100},
                                                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 120},
-                                                    {text: 'Settlement', dataIndex: 'LIQUIDACIO', width: 120},
+                                                    {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 200},
                                                     {text: 'Processor', dataIndex: 'DESC_PRO', width: 150},
                                                     {
                                                         sortable: false,
@@ -1440,6 +1454,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
             ui: 'footer',
             border: false,
             margin: '7 0 7 0',
+            padding: '3 0 3 0',
             layout: {
                 pack: 'center'
             },
@@ -1448,6 +1463,33 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                 scale: 'medium'
             },
             items: [
+                {
+                    text: 'Update',
+                    id: prototype.idDE + '-btn-update',
+                    iconCls: 'prx-icon-update',
+                    hidden: true,
+                    listeners: {
+                        click: 'onUpdateConciliation'
+                    }
+                },
+                {
+                    text: 'Reverse Match',
+                    hidden: true,
+                    id: prototype.idDE + '-btn-reverse',
+                    iconCls: 'prx-icon-delete',
+                    listeners: {
+                        click: 'onReverseConciliation'
+                    }
+                },
+                {
+                    text: 'Download Excel',
+                    hidden: true,
+                    id: prototype.idDE + '-btn-excel',
+                    iconCls: 'prx-icon-excel',
+                    listeners: {
+                        click: 'onDownloadConciliation'
+                    }
+                },
                 {
                     text: 'Cancel',
                     id: prototype.idDE + '-btn-cancel',

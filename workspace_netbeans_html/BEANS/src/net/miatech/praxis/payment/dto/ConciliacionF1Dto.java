@@ -17,7 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoadExcelEECC {
+public class ConciliacionF1Dto {
     MPF102 bankInfo = new MPF102();
     List<MPF083> headers = new ArrayList<>();
     List<MPF060> settlements = new ArrayList<>();

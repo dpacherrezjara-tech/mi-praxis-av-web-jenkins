@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import net.miatech.praxis.logic.payments.BankReconciliationExtLogic;
+import net.miatech.praxis.payment.dto.MPS037Filter;
 import net.miatech.praxis.payment.dto.SPBSR001Filter;
 import net.miatech.praxis.payment.dto.SPBSR002Filter;
 import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
 import net.miatech.praxis.payment.dto.SPBSR005Filter;
+import net.miatech.praxis.payment.dto.SPBSR006Filter;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
@@ -107,6 +109,39 @@ public class BankReconciliationExtDAO implements BankReconciliationExtLogic{
         filter.setResponse((List<MPF060>) obj.get("result0"));
         filter.setHeaders((List<MPF083>) obj.get("result1"));
         filter.setTaxes((List<MPF091>) obj.get("result2"));
+        return filter;
+    }
+
+    @Override
+    public SPBSR006Filter loadSPBSR006Filter(SPBSR006Filter filter) throws Exception {
+        //<editor-fold defaultstate="collapsed" desc="SQL">
+        final String sql = "INSERT INTO PRAXISMP.X3180 "
+                + "VALUES"
+                + "(:CCUST,:CODPRO,:CCUSTPRO,:PRDA,:ADATE,:FLIQUIDACI,:LIQUIDACIO,:MONEDA,:MONEDAPAGO,"
+                + ":IMPORTE,:IMPORTEPAG,:TDOC,:SDATE,:SCOUNTRY,:CODEBANK,:SCARCOD,:SCARDN,:SAUTHOC,:SEQ,:SVFOP,:NETO,"
+                + ":MONEDALIQ,:PAISLIQ,:CORRL,:CUUID,:TIPO,:SEQID,:TTABLA)";
+        BeanPropertySqlParameterSource[] insertParams = new BeanPropertySqlParameterSource[filter.getConciliation().size()];
+        for (int i = 0; i < filter.getConciliation().size(); i++) {
+            insertParams[i] = new BeanPropertySqlParameterSource(filter.getConciliation().get(i));
+        }
+        //</editor-fold>
+        jdbcUtils.executeNamedParam(sql, insertParams);
+        System.out.println("Liquidaciones Cargadas");
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR006",
+                new BeanPropertySqlParameterSource(filter));
+        
+        filter.setSQLRES((Integer) obj.get("SQLRES"));
+        filter.setSQLMSG((String) obj.get("SQLMSG"));
+        
+        return filter;
+    }
+
+    @Override
+    public MPS037Filter loadMPS037Filter(MPS037Filter filter) throws Exception {
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "MPS037",
+                new BeanPropertySqlParameterSource(filter));
+        filter.setVSQLCODE((Integer) obj.get("VSQLCODE"));
+        filter.setVMESSAGE((String) obj.get("VMESSAGE"));
         return filter;
     }
     

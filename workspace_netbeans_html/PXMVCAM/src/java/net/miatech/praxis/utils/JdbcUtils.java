@@ -112,7 +112,12 @@ public class JdbcUtils {
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         try {
             return namedParameterJdbcTemplate.batchUpdate(sql, params);
-        } finally {
+        }
+        catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+            throw ex;
+        }
+        finally {
             jdbcTemplate.getDataSource().getConnection().close();
         }
 

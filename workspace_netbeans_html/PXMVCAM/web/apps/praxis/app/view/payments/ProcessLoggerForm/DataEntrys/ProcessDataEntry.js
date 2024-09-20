@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                                     ['134', 'AV - AVIANCA'],
                                     ['202', 'TA - TACA'],
                                     ['547', '2K - AEROGAL'],
-                                    ['133', 'LR - LATSA']
+                                    ['133', 'LR - LACSA']
                                 ]
                             }),
                             labelWidth: 80,
