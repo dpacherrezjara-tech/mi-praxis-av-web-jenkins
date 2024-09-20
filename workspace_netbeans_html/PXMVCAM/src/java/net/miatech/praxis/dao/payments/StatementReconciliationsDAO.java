@@ -1377,6 +1377,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -1525,6 +1527,9 @@ public class StatementReconciliationsDAO {
                     beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.CERROR = rst.getString("CERROR").trim();
                     beanTkt.strCERROR = rst.getString("ERROR").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
                     } else {
@@ -1682,6 +1687,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.CERROR = rst.getString("CERROR").trim();
                     beanTkt.strCERROR = rst.getString("ERROR").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
                     } else {
@@ -1836,6 +1843,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -1983,7 +1992,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
-
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+                    beanTkt.FSTVAL = rst.getString("STVAL").trim();
 //                    if (filter.IN_DATE.trim().equals("VALDATE")) {
 //                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;
 //                    } else {

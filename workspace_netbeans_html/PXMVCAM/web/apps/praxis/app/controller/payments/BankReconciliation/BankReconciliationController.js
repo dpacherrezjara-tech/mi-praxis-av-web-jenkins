@@ -506,7 +506,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== ''|| Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '')  {
                    
                 
-                this.beanDetDay.strFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'PAYDATE' ? 'P' : 'S';
+                this.beanDetDay.TYPEDATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() === 'PAYDATE' ? 'P' : 'S';
                 this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
                 this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
                 this.beanDetDay.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();

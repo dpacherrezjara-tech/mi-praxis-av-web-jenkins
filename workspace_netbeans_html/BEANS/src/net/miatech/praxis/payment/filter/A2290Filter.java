@@ -703,6 +703,7 @@ public class A2290Filter extends A2290 {
     public String SCLOSE = "";
     public String IN_UNICODE = "";
     public String IN_BANDOC = "";
+    public String TYPEDATE = "";
     public String IN_VALDATE = "";
     public String IN_SALECOD = "";
     public String IN_TERM = "";

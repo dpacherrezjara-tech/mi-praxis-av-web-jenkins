@@ -747,7 +747,7 @@ public class BankReconciliationDAO {
             cstmt.setString(18, filter.IN_DATEC.trim());
             cstmt.setString(19, filter.IN_TRANC.trim());
             cstmt.setString(20, filter.IN_BANDOC.trim());
-            cstmt.setString(21, filter.strFecFiltro.trim());
+            cstmt.setString(21, filter.TYPEDATE.trim());
 
             cstmt.setInt(22, filter.page.PAGNUM);
             cstmt.setInt(23, filter.page.PAGROW);
@@ -805,6 +805,8 @@ public class BankReconciliationDAO {
                     beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.CERROR = rst.getString("CERROR").trim();
                     beanTkt.strCERROR = rst.getString("ERROR").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+                    beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.COREP = rst.getString("COREP").trim();
                     beanTkt.strDescripcionCOREP = rst.getString("COREPN").trim();
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
@@ -3451,6 +3453,8 @@ public class BankReconciliationDAO {
                     beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
                     beanTkt.TERMI = rst.getString("TERMI").trim();
                     beanTkt.DATEF = rst.getString("DATEF").trim();
+                    beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+                    beanTkt.STVAL = rst.getString("STVAL").trim();
                     if (rst.getString("BDATEP").trim().length() == 6) {
                         beanTkt.BDATEP = Functions.FormatFecha(rst.getString("BDATEP").trim(), "yyMMdd", "yyyyMMdd");
                     } else {
