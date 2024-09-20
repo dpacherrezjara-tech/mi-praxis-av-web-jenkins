@@ -585,7 +585,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetDayByS'
                                                                 },
@@ -741,7 +741,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetLiquidaByS'
                                                                 },
@@ -1887,7 +1887,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 90,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 90,
                                                                 listeners: {
                                                                     click: 'onGridDetDayByS'
                                                                 },
@@ -2863,7 +2863,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetBankS'
                                                                 },
@@ -2956,7 +2956,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                             },
 
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFFL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'Manual', dataIndex: 'lngQDIFFL', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
                                                                     click: 'onGridDetProceLIQByS'
                                                                 },

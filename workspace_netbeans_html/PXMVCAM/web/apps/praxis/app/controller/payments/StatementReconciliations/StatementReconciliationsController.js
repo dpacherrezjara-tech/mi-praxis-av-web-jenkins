@@ -706,7 +706,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 break;
             case 2:
                 console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = "4";
+                rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQDIFF;
                 break;
             case 4:
@@ -924,7 +924,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 panelId = 'panelGridDetProceByS';
                 pagginId = 'paggin11';
                 break;
-            case 5:
+            case 4:
                 console.log('ENTRA AL PEND');
                 rowData.data.IN_STVAL = "P";
                 cant = rowData.data.lngQPEND;
@@ -940,7 +940,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 consultPath = 'searchDetBankByPend';
                 panelId = 'panelGridDetProceByPend';
                 gridId = 'gridDataDetProceByPend';
-//                pagginId = 'paggin13';
+                pagginId = 'paggin13';
                 break;
         }
 
@@ -1032,7 +1032,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 break;
             case 5:
                 console.log('ENTRA AL DIFF');
-                rowData.data.IN_STVAL = "4";
+                rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQDIFF;
                 break;
             case 7:
