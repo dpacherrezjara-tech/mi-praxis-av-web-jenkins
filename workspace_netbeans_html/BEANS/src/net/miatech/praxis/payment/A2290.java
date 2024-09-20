@@ -37,6 +37,7 @@ public class A2290 {
 //    public double IDDEB = 0;
     public String SEQ = "";
     public String STVAL = "";
+    public String FSTVAL = "";
     public String VALDATE = "";
     public String VALDATEL = "";
     public String UNICODE = "";
@@ -141,6 +142,7 @@ public class A2290 {
     public double MINF2 = 0;
     public String ACURRENCY = "";
     public String ACARDN = "";
+    public String PENDINGDAYS = "";
     public String ADATEXP = "";
     public String AAUTHOC = "";
     public String AINVN = "";

@@ -292,17 +292,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     onGridDetProceLIQByS: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var cant = 0;
         switch (columnNum) {
-            case 7:
+            case 8:
                 console.log('ENTRA AL MATCH');
                 rowData.data.IN_STVAL = "1";
                 cant = rowData.data.lngQTMATCH;
                 break;
-            case 9:
+            case 10:
                 console.log('ENTRA AL MANUAL');
                 rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQTMANUAL;
                 break;
-            case 10:
+            case 11:
                 console.log('ENTRA AL PEND');
                 rowData.data.IN_STVAL = "3";
                 cant = rowData.data.lngQTPEND;
@@ -932,6 +932,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 panelId = 'panelGridDetProceByPend';
                 gridId = 'gridDataDetProceByPend';
                 pagginId = 'paggin13';
+                break;
+            case 6:
+                console.log('ENTRA AL PEND1');
+                rowData.data.IN_STVAL = "E";
+                cant = rowData.data.lngQPEND1;
+                consultPath = 'searchDetBankByPend';
+                panelId = 'panelGridDetProceByPend';
+                gridId = 'gridDataDetProceByPend';
+//                pagginId = 'paggin13';
                 break;
         }
 

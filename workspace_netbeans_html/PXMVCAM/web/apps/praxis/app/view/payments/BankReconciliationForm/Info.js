@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1575,
+                            width: 1475,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
-                                    width: 1562,
+                                    width: 1462,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -137,7 +137,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true,hidden: true, //flex: 1
                                                                 listeners: {
                                                                     click: 'onGridDetCardSMain'
                                                                 },
@@ -2492,7 +2492,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Process', dataIndex: 'COREP', width: 100, align: 'center',
+                                                text: 'Process', dataIndex: 'COREP', width: 60, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
@@ -2519,6 +2519,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            
                                             {
                                                 text: 'Sales<br>Date',dataIndex: 'SDATE', width: 80, align: 'center', id: prototype.id + '-ColumnDateDetalle',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -2727,6 +2728,25 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;   
+//                                                    metaData.tdAttr = 'data-qtip="' + data.strDescFTE + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    console.log(data.STVAL,'data.STVAL')
+                                                    if (data.STVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                        metaData.style += "background-color:#fcec82;";
+                                                    }
+                                                    if(['1','4','5'].includes(data.STVAL) ){
+                                                        metaData.style += "background-color:#ddf0d3;";
+                                                        value = '' 
+                                                    }
+                                                    
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 sortable: false,
@@ -3149,7 +3169,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1467,
+                            width: 1507,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -3159,7 +3179,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetCardNbrByS',
-                                    width: 1467,
+                                    width: 1507,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -3178,6 +3198,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    
+                                                    
                                                     return value;
                                                 }
                                             },
@@ -3289,6 +3311,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     },
                                                 ]
                                             },
+                                            
                                             {
                                                 text: 'Bank Information',
                                                 columns: [
@@ -3394,6 +3417,22 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     var data = Ext.getCmp(prototype.id + '-gridDataDetCardNbrByS').getStore().getData().items[0].data;
                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                     return '<b>' + Ext.util.Format.number(data.lngTotQTYTKT, '0,000') + '<b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;   
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    if (data.STVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                        metaData.style += "background-color:#fcec82;";
+                                                    }
+                                                    if(['1','4','5'].includes(data.STVAL) ){
+                                                        metaData.style += "background-color:#ddf0d3;";
+                                                        value = '' 
+                                                    }
+                                                    return value;
                                                 }
                                             },
                                             {
