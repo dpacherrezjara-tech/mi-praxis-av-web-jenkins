@@ -56,7 +56,7 @@ public class StatementReconciliationsDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQSALES = 0;
+        long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQPEND1 = 0, lngTotQPEND3 = 0, lngTotQSALES = 0;
         long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0;
                 
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
@@ -114,6 +114,8 @@ public class StatementReconciliationsDAO {
                 lngTotQMANUAL = rst.getLong("QMANUAL");
                 lngTotTOTALE = rst.getLong("TOTALE");
                 lngTotQPEND = rst.getLong("QPEND");
+                lngTotQPEND1 = rst.getLong("QPEND1");
+                lngTotQPEND3 = rst.getLong("QPEND3");
                 lngTotQSALES = rst.getLong("QSALES");
                 lngTotQTMATCH = rst.getLong("QTMATCH");
                 lngTotQTMANUAL = rst.getLong("QTMANUAL");
@@ -143,6 +145,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
                     beanTkt.lngTOTALE = rst.getLong("TOTALE");
                     beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngQPEND1 = rst.getLong("QPEND1");
+                    beanTkt.lngQPEND3 = rst.getLong("QPEND3");
                     beanTkt.lngQSALES = rst.getLong("QSALES");
                     beanTkt.lngQMATCHPercent = (beanTkt.lngQSALES > 0) ? (beanTkt.lngQMATCH * 100.0) / beanTkt.lngQSALES : 0.00;
                     
@@ -157,6 +161,8 @@ public class StatementReconciliationsDAO {
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
                     beanTkt.lngTotTOTALE = lngTotTOTALE;
                     beanTkt.lngTotQPEND = lngTotQPEND;
+                    beanTkt.lngTotQPEND1 = lngTotQPEND1;
+                    beanTkt.lngTotQPEND3 = lngTotQPEND3;
                     beanTkt.lngTotQSALES = lngTotQSALES;
                     beanTkt.lngTotQTMATCH = lngTotQTMATCH;
                     beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;

@@ -933,6 +933,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 gridId = 'gridDataDetProceByPend';
                 pagginId = 'paggin13';
                 break;
+            case 6:
+                console.log('ENTRA AL PEND1');
+                rowData.data.IN_STVAL = "E";
+                cant = rowData.data.lngQPEND1;
+                consultPath = 'searchDetBankByPend';
+                panelId = 'panelGridDetProceByPend';
+                gridId = 'gridDataDetProceByPend';
+//                pagginId = 'paggin13';
+                break;
         }
 
         if (cant > 0) {

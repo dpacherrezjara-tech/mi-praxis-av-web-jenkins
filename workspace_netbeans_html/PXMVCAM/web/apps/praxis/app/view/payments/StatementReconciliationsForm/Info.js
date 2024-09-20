@@ -171,7 +171,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         },
                                                         columns: [
                                                             {
-                                                                text: 'without Settlement', dataIndex: 'lngQPEND', width: 160,
+                                                                text: 'w/o Settlement', dataIndex: 'lngQPEND', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetBankS'
                                                                 },
@@ -185,11 +185,27 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                                     return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '<b>';
                                                                 }
+                                                            },
+                                                            {
+                                                                text: 'Other', dataIndex: 'lngQPEND1', width: 100,
+                                                                listeners: {
+                                                                    click: 'onGridDetBankS'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#c0e0fc";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                                    return '<a href="#payments-statement-reconciliations-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND1, '0,000') + '<b>';
+                                                                }
                                                             }
                                                         ]
                                                     },
                                                     {
-                                                        text: 'Total', dataIndex: 'lngQSALES', width: 140,
+                                                        text: 'Total', dataIndex: 'lngQSALES', width: 100,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
                                                             return Ext.util.Format.number(value, '0,000');

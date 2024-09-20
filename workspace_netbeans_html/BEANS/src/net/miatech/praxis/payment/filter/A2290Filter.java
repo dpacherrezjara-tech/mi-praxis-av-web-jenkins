@@ -249,6 +249,8 @@ public class A2290Filter extends A2290 {
     public long lngQMANUAL = 0;
     public long lngTOTALE = 0;
     public long lngQPEND = 0;
+    public long lngQPEND1 = 0;
+    public long lngQPEND3 = 0;
     public long lngQEXT = 0;
     public long lngQPENDL = 0;
     public long lngQTICKET = 0;
@@ -321,6 +323,8 @@ public class A2290Filter extends A2290 {
     public long lngTotQMANUAL = 0;
     public long lngTotTOTALE = 0;
     public long lngTotQPEND = 0;
+    public long lngTotQPEND1 = 0;
+    public long lngTotQPEND3 = 0;
     public long lngTotQEXT = 0;
     public long lngTotQPENDL = 0;
     public long lngTotQTICKET = 0;
