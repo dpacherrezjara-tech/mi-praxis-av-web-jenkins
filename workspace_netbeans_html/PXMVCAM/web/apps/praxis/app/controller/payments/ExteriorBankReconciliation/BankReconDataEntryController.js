@@ -60,9 +60,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 params: params
             });
             const data = res.data;
+            global.cleanPXobj(data.response);
             console.log(data);
             const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
-            me.limpiaObjetoPX(data.response);
+            //me.limpiaObjetoPX(data.response);
+            
             me.bean = data.response;
             me.clearData();
             form.reset();
@@ -79,6 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         } catch (e) {
             console.error(e);
             me.notifier.alert('Error on load Bank Info');
+            me.view.close();
         }
     },
     //<editor-fold defaultstate="collapsed" desc="Match">

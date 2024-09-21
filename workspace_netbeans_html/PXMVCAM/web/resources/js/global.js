@@ -1590,6 +1590,13 @@ var LarSyrExt = function () {
         'Sucessfully Downloaded',
         'Error on Download');
     };
+    this.cleanPXobj = function(obj){
+        for (let key in obj) {
+            if (typeof obj[key] === 'string') {
+                obj[key] = obj[key].trimEnd();
+            }
+        }
+    };
 };
 
 var global = new LarSyrExt();
