@@ -451,38 +451,13 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     onDownloadConciliation: async function () {
         const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
         const me = this;
-        me.notifier.async(
-            me.request.post('/downloadExcelEECC', {
+        let params  = {
             bankInfo: me.bean,
             headers: me.headers,
             settlements: me.settlements,
             taxes: me.taxes
-        }, 
-        {
-            responseType: 'blob'  // Configuración para recibir un Blob
-        }).then(response => {
-            // Procesar la descarga del archivo
-            const contentDisposition = response.headers['content-disposition'];
-            let nombreArchivo = 'archivo.zip';
-
-            if (contentDisposition) {
-                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                const matches = filenameRegex.exec(contentDisposition);
-                if (matches !== null && matches[1]) {
-                    nombreArchivo = matches[1].replace(/['"]/g, '');
-                }
-            }
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = nombreArchivo;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        }),
-        'Sucessfully Downloaded',
-        'Error on Download');
+        };
+        global.downloadFile(me.request,'/downloadExcelEECC',params);
     },
     onUpdateConciliation: function (btn) {
         let params = this.formatUpdateParams();

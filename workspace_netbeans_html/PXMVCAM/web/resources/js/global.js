@@ -1561,6 +1561,35 @@ var LarSyrExt = function () {
         return lst;
     };
     this.PX_UTILS_URL = 'js/praxis.ui-1.0/praxis.utils-1.0.js';
+    this.downloadFile = function(objAxios,url,params,typeFile = 'zip'){
+        new AWN().async(
+            objAxios.post(url,params? params : null, 
+        {
+            responseType: 'blob'  // Configuración para recibir un Blob
+        }).then(response => {
+            // Procesar la descarga del archivo
+            const contentDisposition = response.headers['content-disposition'];
+            let nombreArchivo = `file.${typeFile}`;
+
+            if (contentDisposition) {
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(contentDisposition);
+                if (matches !== null && matches[1]) {
+                    nombreArchivo = matches[1].replace(/['"]/g, '');
+                }
+            }
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreArchivo;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        }),
+        'Sucessfully Downloaded',
+        'Error on Download');
+    };
 };
 
 var global = new LarSyrExt();
