@@ -79,15 +79,19 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetail
         }).show();
     },
     onClickBPO: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
         Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankReconDataEntry', {
             id: prototype.id + '-BankReconDataEntry-1',
-            obj: record.data
+            obj: record.data,
+            reloadGrid: ()=> {
+                me.view.getStore().load();
+            }
         }).show();
     },
-//    downloadExcel: function () {
-//        let params = this.view.searchParams;
-//        global.getFile(`${this.url}/downloadExonerated?${new URLSearchParams(params)}`);
-//    },
+    downloadExcel: function () {
+        let params = this.view.searchParams;
+        global.getFile(`${this.url}/downloadBankDetail?${new URLSearchParams(params)}`);
+    },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);

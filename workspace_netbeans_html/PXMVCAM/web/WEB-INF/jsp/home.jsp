@@ -23,7 +23,7 @@
     <link href="<c:url value="/resources/css/mt-calendar.css" />" rel="stylesheet" />
     <link href="<c:url value="/resources/img/sprites/images.sprite.css" />" rel="stylesheet" />
     <link rel="Shortcut Icon" href="<c:url value="/resources/img/login/favicon_2.png" />"  />
-
+    <link href="<c:url value="/resources/js/AwesomeNotifications/AwesomeNotifications.css"/>" rel="stylesheet" />
     <script type="text/javascript">
         var Ext = Ext || {};
         var CONTEXTPATH = '<%=request.getContextPath()%>';
@@ -50,7 +50,8 @@
     <script src="<c:url value="/resources/js/jquery.min.1.11.2.js" />"></script>
     <script src="<c:url value="/resources/js/SimpleViewer/js/jquery.verySimpleImageViewer.min.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/global.js" />"></script>
-
+    <script type="text/javascript" src="<c:url value="/resources/js/AwesomeNotifications/AwesomeNotifications.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/Axios/axios.min.js"/>"></script>
     <script type="text/javascript">       
             
         Ext.Loader.setConfig({

@@ -1,3 +1,5 @@
+/* global axios */
+
 Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconDataEntryController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.BankReconDataEntryController',
@@ -7,6 +9,15 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     headers: [],
     settlements: [],
     taxes: [],
+    request: axios.create({
+        baseURL: CONTEXTPATH + '/BankReconciliationExt',
+        timeout: 20000
+      }),
+    miscRequest: axios.create({
+        baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
+        timeout: 20000
+      }),
+    notifier: new AWN(),
     init: function (view) {
         Ext.util.CSS.createStyleSheet(`
             .custom-toast {
@@ -22,31 +33,33 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     },
     loadFilters: async function () {
         const me = this;
-        const res = await fetch(`${me.miscUrl}/loadMdpFilters`);
-        if (res.ok) {
-            const data = await res.json();
+        //const res = await fetch(`${me.miscUrl}/loadMdpFilters`);
+        try {
+            const res = await me.miscRequest.get('/loadMdpFilters');
+            const data = res.data;
             me.codpro = data.CODPRO;
             me.paises = data.PAISES;
             me.monedas = data.MONEDAS;
-
             //<editor-fold defaultstate="collapsed" desc="Bank Browser">
-            //const cmbBankCtry2 = Ext.getCmp(prototype.id + '-cmbBankCtry2');
-            //const cmbBankCurr2 = Ext.getCmp(prototype.id + '-cmbBankCurr2');
             const cmbFilterCODPRO = Ext.getCmp(prototype.idDE + '-cmbFilterCODPRO');
             global.setComboStore(cmbFilterCODPRO, me.codpro, 'A4451KEY2', 'A4451DESC1', '');
-
             cmbFilterCODPRO.on('select', function (cmb, record) {
                 Ext.getCmp(prototype.idDE + '-txtFilterSEQPRO').setValue(record.data.A4451SEQ || '');
             });
             //</editor-fold>
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('Filters not loaded');
         }
     },
     getData: async function () {
         const me = this;
         let params = me.formatParameters(me.view.obj);
-        const res = await fetch(`${me.url}/loadStatementInfo?${new URLSearchParams(params)}`);
-        if (res.ok) {
-            const data = await res.json();
+        try {
+            const res = await me.request('/loadStatementInfo',{
+                params: params
+            });
+            const data = res.data;
             console.log(data);
             const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
             me.limpiaObjetoPX(data.response);
@@ -63,6 +76,9 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 me.setPendingGrids();
             }
             me.view.center();
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('Error on load Bank Info');
         }
     },
     //<editor-fold defaultstate="collapsed" desc="Match">
@@ -184,14 +200,13 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         const formFilters = Ext.getCmp(prototype.idDE + '-pendingFilters').getForm();
         let params = formFilters.getValues();
         try {
-            const res = await fetch(`${me.url}/loadSettlementScanner?${new URLSearchParams(params)}`);
-            if (res.ok) {
-                const data = await res.json();
-                //console.log(data);
-                me.addDataHeaders(data.headers);
-                me.addDataSettlements(data.response);
-                me.addDataTaxes(data.taxes);
-            }
+            const res = await me.request.get('loadSettlementScanner',{
+                params: params
+            });
+            const data = res.data;
+            me.addDataHeaders(data.headers);
+            me.addDataSettlements(data.response);
+            me.addDataTaxes(data.taxes);
         } catch (e) {
             console.error(e);
         } finally {
@@ -435,56 +450,39 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     },
     onDownloadConciliation: async function () {
         const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
-        panelPending.mask('Downloading...');
         const me = this;
-        await fetch(`${me.url}/downloadExcelEECC`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'  // O el encabezado necesario para tu API
-            },
-            body: JSON.stringify({
-                bankInfo: me.bean,
-                headers: me.headers,
-                settlements: me.settlements,
-                taxes: me.taxes
-            })
-        })
-                .then(response => {
-                    // Verificar que la respuesta sea exitosa
-                    if (response.ok) {
-                        // Extraer el nombre del archivo desde el encabezado Content-Disposition
-                        const contentDisposition = response.headers.get('Content-Disposition');
-                        let nombreArchivo = 'archivo.zip';  // Nombre por defecto
+        me.notifier.async(
+            me.request.post('/downloadExcelEECC', {
+            bankInfo: me.bean,
+            headers: me.headers,
+            settlements: me.settlements,
+            taxes: me.taxes
+        }, 
+        {
+            responseType: 'blob'  // Configuración para recibir un Blob
+        }).then(response => {
+            // Procesar la descarga del archivo
+            const contentDisposition = response.headers['content-disposition'];
+            let nombreArchivo = 'archivo.zip';
 
-                        if (contentDisposition) {
-                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                            const matches = filenameRegex.exec(contentDisposition);
-                            if (matches !== null && matches[1]) {
-                                nombreArchivo = matches[1].replace(/['"]/g, '');  // Limpiar comillas
-                            }
-                        }
-
-                        return response.blob().then(blob => ({
-                                blob: blob,
-                                nombreArchivo: nombreArchivo
-                            }));
-                    } else {
-                        throw new Error('Error al descargar el archivo');
-                    }
-                })
-                .then(({ blob, nombreArchivo }) => {
-                    // Crear un enlace para descargar el Blob como archivo
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = nombreArchivo;  // Usar el nombre del archivo extraído
-                    document.body.appendChild(a);
-                    a.click();  // Simular un clic para descargar el archivo
-                    a.remove();  // Eliminar el enlace temporal
-                })
-                .catch(error => console.error('Error:', error));
-        panelPending.unmask();
-        global.Msg({msg: 'Downloaded successfully'});
+            if (contentDisposition) {
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(contentDisposition);
+                if (matches !== null && matches[1]) {
+                    nombreArchivo = matches[1].replace(/['"]/g, '');
+                }
+            }
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreArchivo;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        }),
+        'Sucessfully Downloaded',
+        'Error on Download');
     },
     onUpdateConciliation: function (btn) {
         let params = this.formatUpdateParams();
@@ -504,35 +502,29 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                     }
                 });
     },
-    maintenanceEECC: async function(params){
+    maintenanceEECC: async function (params) {
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await fetch(`${me.url}/loadConciliationF1`,{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'  // O el encabezado necesario para tu API
-                },
-                body: JSON.stringify(params)
-            });
-            if(res.ok){
-                const data = await res.json();
-                const{SQLRES,SQLMSG} = data;
-                if(SQLRES === 0){
-                    global.Msg({msg:`Error on Update:<br><b style="color:red;">${SQLMSG}</b>`});
-                }else{
-                    global.Msg({msg:`${SQLMSG}`});
-                }
+            const res = await me.request.post('loadConciliationF1',params);
+                //console.log(res);
+            const{SQLRES, SQLMSG} = res.data;
+            if (SQLRES === 0) {
+                me.notifier.warning(`Error on Update:<br><b style="color:#fc9b63;">${SQLMSG}</b>`
+                        , {durations: {warning: 0}});
+            } else {
+                me.notifier.success(SQLMSG);
             }
         } catch (e) {
             console.error(e);
-            global.Msg({msg:`System Error.`});
-        }finally {
+            me.notifier.alert(e.response.data);
+        } finally {
             me.getData();
             me.view.unmask();
-        }   
+            me.view.reloadGrid();
+        }
     },
-    onReverseConciliation:function(btn){
+    onReverseConciliation: function (btn) {
         let params = this.formatReverseParams();
         Ext.Msg.show(
                 {
@@ -550,31 +542,22 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                     }
                 });
     },
-    reverseEECC:async function(params){
+    reverseEECC: async function (params) {
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await fetch(`${me.url}/reverseConciliationF1`,{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'  // O el encabezado necesario para tu API
-                },
-                body: JSON.stringify(params)
-            });
-            if(res.ok){
-                global.Msg({msg:`Reversed Conciliation`});
-            }else{
-                throw new Error('System Error');
-            }
+            const res = await me.request.post('/reverseConciliationF1', params);
+            console.log(res);
+            me.notifier.success(`Reversed Conciliation`);
         } catch (e) {
             console.error(e);
-            global.Msg({msg:`System Error.`});
-        }finally {
+            me.notifier.alert('System Error');
+        } finally {
             await me.getData();
             me.view.unmask();
-        }   
+        }
     },
-    onOpenFilters:function(){
+    onOpenFilters: function () {
         const openFilters = Ext.getCmp(prototype.idDE + '-btn-openFilters');
         const hideFilters = Ext.getCmp(prototype.idDE + '-btn-hideFilters');
         const formFilters = Ext.getCmp(prototype.idDE + '-filterGrids');
@@ -582,7 +565,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         formFilters.show();
         hideFilters.show();
     },
-    onHideFilters:function(){
+    onHideFilters: function () {
         const openFilters = Ext.getCmp(prototype.idDE + '-btn-openFilters');
         const hideFilters = Ext.getCmp(prototype.idDE + '-btn-hideFilters');
         const formFilters = Ext.getCmp(prototype.idDE + '-filterGrids');
@@ -590,16 +573,16 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         formFilters.hide();
         hideFilters.hide();
     },
-    onDeleteByFilter: function(btn){
+    onDeleteByFilter: function (btn) {
         const me = this;
         let keys = btn.up('form').getForm().getValues();
-        
-        let removeHeaders = global.filterArrayByObj(me.headers,keys,true);
-        let removeSettl = global.filterArrayByObj(me.settlements,keys,true);
-        let removeTaxes = global.filterArrayByObj(me.taxes,keys,true);
-        
+
+        let removeHeaders = global.filterArrayByObj(me.headers, keys, true);
+        let removeSettl = global.filterArrayByObj(me.settlements, keys, true);
+        let removeTaxes = global.filterArrayByObj(me.taxes, keys, true);
+
         let removedHeaders = 0, removedSettl = 0, removedTaxes = 0;
-        
+
         let keysHeader = ['CCUST', 'CODPRO', 'CCUSTPRO', 'LIQUIDACIO', 'FLIQUIDACI', 'MERCHAND'];
         let response = global.arrayRemove(removeHeaders, me.headers, keysHeader);
         removedHeaders = response.removed;
@@ -618,7 +601,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         me.reloadHeaders();
         me.reloadSettlements();
         me.reloadTaxes();
-        
+
         Ext.toast({
             html: `<div class = "custom-toast">Total Settlements removed: <b style="color:red">${removedSettl}</b><br>
                     Total Headers removed: <b style="color:red">${removedHeaders}</b><br>
@@ -716,7 +699,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             totalTaxes.setValue(global.sumBy(me.taxes, 'IMPORTEPAG'));
         }
     },
-    clearData:function(){
+    clearData: function () {
         const me = this;
         const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
         const panelMatch = Ext.getCmp(prototype.idDE + '-panelMatch');
@@ -761,10 +744,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         };
         return params;
     },
-    formatReverseParams: function(){
+    formatReverseParams: function () {
         const me = this;
         let params = {
-            VP_CCUST:me.bean.CCUST,
+            VP_CCUST: me.bean.CCUST,
             VP_PRDA: '',
             VP_CODPRO: me.bean.CODPRO,
             VP_CCUSTPRO: me.bean.CCUSTPRO,
