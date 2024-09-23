@@ -55,7 +55,8 @@ public class BankReconciliationExtController {
 
     @Autowired
     private ExportUtils exportUtils;
-
+    
+    //<editor-fold defaultstate="collapsed" desc="By Bank">
     @RequestMapping(value = "loadBankStatements")
     public ResponseEntity<?> loadStatements(SPBSR001Filter params) throws Exception {
         System.out.println("***** BankReconciliationExt - loadStatements *****");
@@ -71,7 +72,9 @@ public class BankReconciliationExtController {
         System.out.println("Item Found");
         return ResponseUtils.ok(filter);
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="By Settlement">
     @RequestMapping(value = "loadSettlements")
     public ResponseEntity<?> loadSettlements(SPBSR003Filter params) throws Exception {
         System.out.println("***** BankReconciliationExt - loadSettlements *****");
@@ -87,7 +90,9 @@ public class BankReconciliationExtController {
         System.out.println("Item Found");
         return ResponseUtils.ok(filter);
     }
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Mantenimiento By Settlement">
     @RequestMapping(value = "loadSettlementScanner")
     public ResponseEntity<?> loadSettlementScanner(SPBSR005Filter params) throws Exception {
         System.out.println("***** BankReconciliationExt - loadSettlementScanner *****");
@@ -95,7 +100,97 @@ public class BankReconciliationExtController {
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
-
+    
+    @RequestMapping(value = "loadConciliationF1", method = RequestMethod.POST)
+    public ResponseEntity<?> loadConciliationF1(@RequestBody ConciliacionF1Dto params) throws Exception {
+        System.out.println("***** BankReconciliationExt - loadConciliationF1 *****");
+        System.out.println("Bandoc loaded: " + params.getBankInfo().getBANDOC());
+        System.out.println("Settlements loaded: " + params.getSettlements().size());
+        System.out.println("Headers loaded: " + params.getHeaders().size());
+        System.out.println("Taxes loaded: " + params.getTaxes().size());
+        
+        String cuuid = UUID.randomUUID().toString().replace("-", "");
+        
+        List<X3180> lstConcil = new ArrayList<>();
+        
+        //Insercion Settlements
+        if(!params.getSettlements().isEmpty()){
+            final int[] index = {1};
+            params.getSettlements().forEach(s->{
+                X3180 settl = X3180.builder()
+                        .CUUID(cuuid)
+                        .SEQID(index[0])
+                        .TIPO("S")
+                        .TTABLA("MPF060")
+                        .build();
+                BeanUtils.copyProperties(s, settl);
+                lstConcil.add(settl);
+                index[0]++;
+            });
+        }
+        
+        if(!params.getHeaders().isEmpty()){
+            final int[] index = {1};
+            params.getHeaders().forEach(h->{
+                X3180 head = X3180.builder()
+                        .CUUID(cuuid)
+                        .SEQID(index[0])
+                        .TIPO("H")
+                        .TTABLA("MPF083")
+                        .build();
+                BeanUtils.copyProperties(h, head);
+                lstConcil.add(head);
+                index[0]++;
+            });
+        }
+        
+        if(!params.getTaxes().isEmpty()){
+            final int[] index = {1};
+            params.getTaxes().forEach(t->{
+                X3180 tax = X3180.builder()
+                        .CUUID(cuuid)
+                        .SEQID(index[0])
+                        .TIPO("T")
+                        .TTABLA("MPF091")
+                        .build();
+                BeanUtils.copyProperties(t, tax);
+                lstConcil.add(tax);
+                index[0]++;
+            });
+        }
+        String codpro = lstConcil.get(0).getCODPRO();
+        String ccustpro = lstConcil.get(0).getCCUSTPRO();
+        
+        SPBSR006Filter filter = SPBSR006Filter.builder()
+                .IN_CCUST(params.getBankInfo().getCCUST())
+                .IN_BANDOC(params.getBankInfo().getBANDOC())
+                .IN_ADATE(params.getBankInfo().getADATE())
+                .IN_MERCHANT(params.getBankInfo().getMERCHAND())
+                .IN_CODEBANK(params.getBankInfo().getCODEBANK())
+                .IN_SOCIETY(params.getBankInfo().getSOCIETY())
+                .IN_DATECI(params.getBankInfo().getDATECI())
+                .IN_TRANCI(params.getBankInfo().getTRANCI())
+                .IN_CODPRO(codpro)
+                .IN_CCUSTPRO(ccustpro)
+                .IN_CUUID(cuuid)
+                .build();
+        System.out.println("Bandoc Conciliado: " + filter.getIN_BANDOC());
+        
+        filter.setConciliation(lstConcil);
+        filter = logic.loadSPBSR006Filter(filter);
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "reverseConciliationF1",method = RequestMethod.POST)
+    public ResponseEntity<?> reverseConciliationF1(@RequestBody MPS037Filter params) throws Exception {
+        System.out.println("***** BankReconciliationExt - reverseConciliationF1 *****");
+        MPS037Filter filter = logic.loadMPS037Filter(params);
+        System.out.println("Message: " + filter.getVMESSAGE());
+        return ResponseUtils.ok(filter);
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Descarga de Exceles">
     @RequestMapping(value = "downloadExcelEECC", method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelEECC(@RequestBody ConciliacionF1Dto params) throws Exception {
         System.out.println("***** BankReconciliationExt - downloadExcelEECC *****");
@@ -353,92 +448,5 @@ public class BankReconciliationExtController {
         headers.setContentDispositionFormData("attachment", prefix + ".zip");
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
-    
-    @RequestMapping(value = "loadConciliationF1", method = RequestMethod.POST)
-    public ResponseEntity<?> loadConciliationF1(@RequestBody ConciliacionF1Dto params) throws Exception {
-        System.out.println("***** BankReconciliationExt - loadConciliationF1 *****");
-        System.out.println("Bandoc loaded: " + params.getBankInfo().getBANDOC());
-        System.out.println("Settlements loaded: " + params.getSettlements().size());
-        System.out.println("Headers loaded: " + params.getHeaders().size());
-        System.out.println("Taxes loaded: " + params.getTaxes().size());
-        
-        String cuuid = UUID.randomUUID().toString().replace("-", "");
-        
-        List<X3180> lstConcil = new ArrayList<>();
-        
-        //Insercion Settlements
-        if(!params.getSettlements().isEmpty()){
-            final int[] index = {1};
-            params.getSettlements().forEach(s->{
-                X3180 settl = X3180.builder()
-                        .CUUID(cuuid)
-                        .SEQID(index[0])
-                        .TIPO("S")
-                        .TTABLA("MPF060")
-                        .build();
-                BeanUtils.copyProperties(s, settl);
-                lstConcil.add(settl);
-                index[0]++;
-            });
-        }
-        
-        if(!params.getHeaders().isEmpty()){
-            final int[] index = {1};
-            params.getHeaders().forEach(h->{
-                X3180 head = X3180.builder()
-                        .CUUID(cuuid)
-                        .SEQID(index[0])
-                        .TIPO("H")
-                        .TTABLA("MPF083")
-                        .build();
-                BeanUtils.copyProperties(h, head);
-                lstConcil.add(head);
-                index[0]++;
-            });
-        }
-        
-        if(!params.getTaxes().isEmpty()){
-            final int[] index = {1};
-            params.getTaxes().forEach(t->{
-                X3180 tax = X3180.builder()
-                        .CUUID(cuuid)
-                        .SEQID(index[0])
-                        .TIPO("T")
-                        .TTABLA("MPF091")
-                        .build();
-                BeanUtils.copyProperties(t, tax);
-                lstConcil.add(tax);
-                index[0]++;
-            });
-        }
-        String codpro = lstConcil.get(0).getCODPRO();
-        String ccustpro = lstConcil.get(0).getCCUSTPRO();
-        
-        SPBSR006Filter filter = SPBSR006Filter.builder()
-                .IN_CCUST(params.getBankInfo().getCCUST())
-                .IN_BANDOC(params.getBankInfo().getBANDOC())
-                .IN_ADATE(params.getBankInfo().getADATE())
-                .IN_MERCHANT(params.getBankInfo().getMERCHAND())
-                .IN_CODEBANK(params.getBankInfo().getCODEBANK())
-                .IN_SOCIETY(params.getBankInfo().getSOCIETY())
-                .IN_DATECI(params.getBankInfo().getDATECI())
-                .IN_TRANCI(params.getBankInfo().getTRANCI())
-                .IN_CODPRO(codpro)
-                .IN_CCUSTPRO(ccustpro)
-                .IN_CUUID(cuuid)
-                .build();
-        System.out.println("Bandoc Conciliado: " + filter.getIN_BANDOC());
-        
-        filter.setConciliation(lstConcil);
-        filter = logic.loadSPBSR006Filter(filter);
-        return ResponseUtils.ok(filter);
-    }
-    
-    @RequestMapping(value = "reverseConciliationF1",method = RequestMethod.POST)
-    public ResponseEntity<?> reverseConciliationF1(@RequestBody MPS037Filter params) throws Exception {
-        System.out.println("***** BankReconciliationExt - reverseConciliationF1 *****");
-        MPS037Filter filter = logic.loadMPS037Filter(params);
-        System.out.println("Message: " + filter.getVMESSAGE());
-        return ResponseUtils.ok(filter);
-    }
+    //</editor-fold> 
 }
