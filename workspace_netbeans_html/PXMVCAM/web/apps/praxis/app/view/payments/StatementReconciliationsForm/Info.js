@@ -148,18 +148,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                     return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
                                                                 }
                                                             },
-                                                            {
-                                                                text: 'Total', dataIndex: 'lngTOTALE', width: 100,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#c0e0fc";
-                                                                    return Ext.util.Format.number(value, '0,000');
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotTOTALE, '0,000') + '<b>';
-                                                                }
-                                                            }
                                                         ]
                                                     },
                                                     {
@@ -186,28 +174,40 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                     return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '<b>';
                                                                 }
                                                             },
-                                                            {
-                                                                text: 'Other', dataIndex: 'lngQPEND1', width: 100,
-                                                                listeners: {
-//                                                                    click: 'onGridDetBankS'
-                                                                },
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;color:#057ECB;background-color:#c0e0fc";
-                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
-                                                                    return '<a href="#payments-statement-reconciliations-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND1, '0,000') + '<b>';
-                                                                }
-                                                            }
                                                         ]
+                                                    },
+                                                    {
+                                                        text: 'Total', dataIndex: 'lngTOTALE', width: 100,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#c0e0fc";
+                                                            return Ext.util.Format.number(value, '0,000');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotTOTALE, '0,000') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Other', dataIndex: 'lngQPEND1', width: 100,
+                                                        listeners: {
+                                                            click: 'onGridDetBankS'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;color:#057ECB;";
+                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '<b>';
+                                                            return '<a href="#payments-statement-reconciliations-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.lngTotQPEND1, '0,000') + '<b>';
+                                                        }
                                                     },
                                                     {
                                                         text: 'Total', dataIndex: 'lngQSALES', width: 100,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
+                                                            metaData.style = "text-align:right;font-weight:bold";
                                                             return Ext.util.Format.number(value, '0,000');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -585,7 +585,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetDayByS'
                                                                 },
@@ -741,7 +741,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetLiquidaByS'
                                                                 },
@@ -979,17 +979,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                text: 'Pen.<br>Day', dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
-                                                    var data = record.data;   
+                                                    var data = record.data;
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                    if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4) {
                                                         metaData.style += "background-color:#fcec82;";
                                                     }
-                                                    if(['1','4','5'].includes(data.FSTVAL) ){
+                                                    if (['1', '4', '5'].includes(data.FSTVAL)) {
                                                         metaData.style += "background-color:#ddf0d3;";
-                                                        value = '' 
+                                                        value = ''
                                                     }
                                                     return value;
                                                 }
@@ -1149,18 +1149,18 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     }
                                                 ]
                                             },
-                                             {
-                                                text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                            {
+                                                text: 'Pen.<br>Day', dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
-                                                    var data = record.data;   
+                                                    var data = record.data;
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                    if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4) {
                                                         metaData.style += "background-color:#fcec82;";
                                                     }
-                                                    if(['1','4','5'].includes(data.FSTVAL) ){
+                                                    if (['1', '4', '5'].includes(data.FSTVAL)) {
                                                         metaData.style += "background-color:#ddf0d3;";
-                                                        value = '' 
+                                                        value = ''
                                                     }
                                                     return value;
                                                 }
@@ -1321,17 +1321,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                text: 'Pen.<br>Day', dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
-                                                    var data = record.data;   
+                                                    var data = record.data;
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                    if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4) {
                                                         metaData.style += "background-color:#fcec82;";
                                                     }
-                                                    if(['1','4','5'].includes(data.FSTVAL) ){
+                                                    if (['1', '4', '5'].includes(data.FSTVAL)) {
                                                         metaData.style += "background-color:#ddf0d3;";
-                                                        value = '' 
+                                                        value = ''
                                                     }
                                                     return value;
                                                 }
@@ -1887,7 +1887,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 90,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 90,
                                                                 listeners: {
                                                                     click: 'onGridDetDayByS'
                                                                 },
@@ -2513,18 +2513,18 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                             return value;
                                                         }
                                                     },
-                                                     {
-                                                        text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                    {
+                                                        text: 'Pen.<br>Day', dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;   
+                                                            var data = record.data;
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                            if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4) {
                                                                 metaData.style += "background-color:#fcec82;";
                                                             }
-                                                            if(['1','4','5'].includes(data.FSTVAL) ){
+                                                            if (['1', '4', '5'].includes(data.FSTVAL)) {
                                                                 metaData.style += "background-color:#ddf0d3;";
-                                                                value = '' 
+                                                                value = ''
                                                             }
                                                             return value;
                                                         }
@@ -2753,17 +2753,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Pen.<br>Day',dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                        text: 'Pen.<br>Day', dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;   
+                                                            var data = record.data;
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4 ) {
+                                                            if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4) {
                                                                 metaData.style += "background-color:#fcec82;";
                                                             }
-                                                            if(['1','4','5'].includes(data.FSTVAL) ){
+                                                            if (['1', '4', '5'].includes(data.FSTVAL)) {
                                                                 metaData.style += "background-color:#ddf0d3;";
-                                                                value = '' 
+                                                                value = ''
                                                             }
                                                             return value;
                                                         }
@@ -2863,7 +2863,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100,
+                                                                text: 'Manual', dataIndex: 'lngQDIFF', width: 100,
                                                                 listeners: {
                                                                     click: 'onGridDetBankS'
                                                                 },
@@ -2956,7 +2956,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                             },
 
                                                             {
-                                                                text: 'Diff', dataIndex: 'lngQDIFFL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'Manual', dataIndex: 'lngQDIFFL', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
                                                                     click: 'onGridDetProceLIQByS'
                                                                 },
