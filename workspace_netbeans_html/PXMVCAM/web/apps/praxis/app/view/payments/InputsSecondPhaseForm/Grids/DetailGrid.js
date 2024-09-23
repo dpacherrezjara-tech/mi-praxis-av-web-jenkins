@@ -72,7 +72,7 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DetailGrid', {
                             'click': 'onClickReceived'
                         }
                     },
-                    {text: 'Loaded', dataIndex: 'TTRNDB', width: 70,
+                    {text: 'Loaded', dataIndex: 'QLINEA', width: 70,
                         listeners: {
                             'click': 'onClickLoaded'
                         }
