@@ -699,6 +699,7 @@ public class A2290Filter extends A2290 {
     public double tot_VFOP = 0;
     public String A720FECVTA = "";
     public String A720PNR = "";
+    public String A720SCOUNTRY = "";
     public String A720AGENTE = "";
     public String SCLOSE = "";
     public String IN_UNICODE = "";

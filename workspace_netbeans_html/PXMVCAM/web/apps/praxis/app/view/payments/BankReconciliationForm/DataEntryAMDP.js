@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
     title: 'Bank Reconciliation - Data Entry Form',
     header: true,
     height: 920,
-    width: 1240,
+    width: 1310,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
         {
             xtype: 'form',
             height: 950,
-            width: 1240,
+            width: 1310,
             scrollable: true,
             defaults: {
                 style: 'margin: 3px;',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                             border: false,
                             bodyStyle: 'background:white;',
                             margin: '0 20 3 10',
-                            width: 1240,
+                            width: 1310,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -1737,14 +1737,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     layout: 'hbox',
                                     border: false,
                                     margin: '0 0 0 0',
-                                    width: 1180,
+                                    width: 1250,
                                     //bodyStyle: 'background:#efe5e5;',
                                     items: [
                                         {
                                             xtype: 'tabpanel',
                                             id: prototype.id + '-tabMain',
                                             deferredRender: true,
-                                            width: 1180,
+                                            width: 1250,
                                             border: false,
 //                                            height: 182, //820
 //                                            anchor: '100%',
@@ -1767,7 +1767,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                             id: prototype.id + '-panelDataInfoScan',
                                                             layout: 'vbox',
                                                             border: false,
-                                                            width: 1339,
+                                                            width: 1359,
 //                                                            height: 180,
                                                             hidden: false,
                                                             autoScroll: true,
@@ -1849,6 +1849,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                     return value;
                                                                                 }
                                                                             },
+                                                                            {text: 'Country', dataIndex: 'A720SCOUNTRY', width: 63,
+                                                                                editor: {xtype: 'textfield', editable: false},
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center;";
+                                                                                    if (record.data.TDOC === 'A') {
+                                                                                        metaData.style += "background-color:#bff5bf;";
+                                                                                    }
+                                                                                    return value;
+                                                                                }
+                                                                            },                                                                            
                                                                             {text: 'Ticket', dataIndex: 'A1531TKT', width: 110,
                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
