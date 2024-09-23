@@ -152,8 +152,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
         meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
+        if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
+        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+            meDE.bean.data.IN_STVAL = '5';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
@@ -186,8 +188,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI;
         meDE.bean.data.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
 
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
+        if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
+        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+            meDE.bean.data.IN_STVAL = '5';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
