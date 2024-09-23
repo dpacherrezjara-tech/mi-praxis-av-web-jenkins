@@ -315,7 +315,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                     Ext.getCmp(prototype.id + '-de-txtSTVAL').setValue(res.result.strDescStatus)
                     Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue(res.result.QTYTRAN1)
                     Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue(res.result.ACCNUMBER)
-                    if( res.result.STVAL == '1'){
+                    if( res.result.STVAL == '1' || res.result.STVAL == '5' ){
                         global.Msg({msg: "REGISTRATION IN MATCH STATUS"});
                         Ext.getCmp(prototype.id + '-file').setDisabled(true)
                         
