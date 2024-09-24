@@ -54,6 +54,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.apache.poi.ss.usermodel.DataFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -2735,10 +2737,13 @@ public class ViewADMController extends BaseController {
             
             Sheet sheet2 = workbook.createSheet("Header");
             XSSFCellStyle headerStyle2 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle21 = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle2 = workbook.createCellStyle();
             Font headerFont2 = workbook.createFont();
+            Font headerFont21 = workbook.createFont();
             headerFont2.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            headerFont2.setColor(IndexedColors.BLACK.getIndex());
+            headerFont2.setColor(IndexedColors.YELLOW.getIndex());
+            headerFont21.setColor(IndexedColors.WHITE.getIndex());
             headerStyle2.setBorderRight(CellStyle.BORDER_THIN);
             headerStyle2.setRightBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle2.setBorderBottom(CellStyle.BORDER_THIN);
@@ -2748,10 +2753,23 @@ public class ViewADMController extends BaseController {
             headerStyle2.setBorderTop(CellStyle.BORDER_THIN);
             headerStyle2.setTopBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle2.setAlignment(CellStyle.ALIGN_CENTER);
-            headerStyle2.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            headerStyle2.setFillForegroundColor(new XSSFColor(new java.awt.Color(153, 153, 255)));
             headerStyle2.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle2.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle21.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle21.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle21.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle21.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle21.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle21.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle21.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle21.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle21.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle21.setFillForegroundColor(new XSSFColor(new java.awt.Color(153, 153, 255)));
+            headerStyle21.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle21.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle2.setFont(headerFont2);
+            headerStyle21.setFont(headerFont21);
             bodyStyle2.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle2.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle2.setBorderBottom(CellStyle.BORDER_THIN);
@@ -2765,7 +2783,7 @@ public class ViewADMController extends BaseController {
             decimalStyle.setDataFormat(format.getFormat("0.00"));
             Integer vi2 = 0;
             Integer vj2 = 0; //Almacena el numero de fila
-            Iterator iter2 = listaData2.iterator();
+            Iterator iter2 = listaData.iterator();
             
             Row row2 = sheet2.createRow(vj2);
             Cell CH2_0 = row2.createCell(0);
@@ -2826,23 +2844,23 @@ public class ViewADMController extends BaseController {
             CH2_3.setCellStyle(headerStyle2);
             CH2_4.setCellStyle(headerStyle2);
             CH2_5.setCellStyle(headerStyle2);
-            CH2_6.setCellStyle(headerStyle2);
+            CH2_6.setCellStyle(headerStyle21);
             CH2_7.setCellStyle(headerStyle2);
             CH2_8.setCellStyle(headerStyle2);
-            CH2_9.setCellStyle(headerStyle2);
-            CH2_10.setCellStyle(headerStyle2);
+            CH2_9.setCellStyle(headerStyle21);
+            CH2_10.setCellStyle(headerStyle21);
             CH2_11.setCellStyle(headerStyle2);
             CH2_12.setCellStyle(headerStyle2);
             CH2_13.setCellStyle(headerStyle2);
             CH2_14.setCellStyle(headerStyle2);
-            CH2_15.setCellStyle(headerStyle2);
-            CH2_16.setCellStyle(headerStyle2);
-            CH2_17.setCellStyle(headerStyle2);
-            CH2_18.setCellStyle(headerStyle2);
-            CH2_19.setCellStyle(headerStyle2);
-            CH2_20.setCellStyle(headerStyle2);
-            CH2_21.setCellStyle(headerStyle2);
-            CH2_22.setCellStyle(headerStyle2);
+            CH2_15.setCellStyle(headerStyle21);
+            CH2_16.setCellStyle(headerStyle21);
+            CH2_17.setCellStyle(headerStyle21);
+            CH2_18.setCellStyle(headerStyle21);
+            CH2_19.setCellStyle(headerStyle21);
+            CH2_20.setCellStyle(headerStyle21);
+            CH2_21.setCellStyle(headerStyle21);
+            CH2_22.setCellStyle(headerStyle21);
             CH2_23.setCellStyle(headerStyle2);
 
 
@@ -2913,18 +2931,18 @@ public class ViewADMController extends BaseController {
                 rcell21.setCellValue("ADM");
                 rcell22.setCellValue(listaData.get(vi2).CCIA);
                 rcell23.setCellValue(listaData.get(vi2).SAGENT);
-                rcell24.setCellValue("Auditoria Externa");
-                rcell25.setCellValue("10");
+                rcell24.setCellValue("Operaciones Bancarias CO");
+                rcell25.setCellValue(Integer.parseInt(listaData.get(vi2).IN_DATE_FROM.substring(4,6)));
                 rcell26.setCellValue(listaData.get(vi2).A720FVLO1);
-                rcell27.setCellValue(listaData.get(vi2).IN_DATE_FROM);
-                rcell28.setCellValue(listaData.get(vi2).IN_DATE_TO);
+                rcell27.setCellValue(convertirFecha(listaData.get(vi2).IN_DATE_FROM));
+                rcell28.setCellValue(convertirFecha(listaData.get(vi2).IN_DATE_TO));
                 rcell29.setCellValue(listaData.get(vi2).A720RUTA0);
                 rcell210.setCellValue(listaData.get(vi2).A720RUTA1);
                 rcell211.setCellValue(listaData.get(vi2).ROUTETYPE);
                 rcell212.setCellValue(listaData.get(vi2).TYPETRAVEL);
-                rcell213.setCellValue("Sale Whitout Payment");
+                rcell213.setCellValue("Conciliación tarjetas de crédito e inconsistencia en pago con tarjetas de crédito");
                 rcell214.setCellValue(listaData.get(vi2).SCURRENCY);
-                rcell215.setCellValue(listaData.get(vi2).SVFOPS);
+                rcell215.setCellValue(0.00);
                 rcell215.setCellStyle(decimalStyle);
                 rcell216.setCellValue(0.00);
                 rcell216.setCellStyle(decimalStyle);
@@ -2937,7 +2955,7 @@ public class ViewADMController extends BaseController {
                 rcell220.setCellValue("N");
                 rcell221.setCellValue("");
                 rcell222.setCellValue("");
-                rcell223.setCellValue(listaData.get(vi2).A1721FRCA);
+                rcell223.setCellValue(listaData.get(vi2).TYPEADJ);
 
 
 
@@ -2974,10 +2992,13 @@ public class ViewADMController extends BaseController {
             
             Sheet sheet = workbook.createSheet("Ticket");
             XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle11 = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
+            Font headerFont11 = workbook.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
             headerFont.setColor(IndexedColors.BLACK.getIndex());
+            headerFont11.setColor(IndexedColors.WHITE.getIndex());
             headerStyle.setBorderRight(CellStyle.BORDER_THIN);
             headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -2987,10 +3008,23 @@ public class ViewADMController extends BaseController {
             headerStyle.setBorderTop(CellStyle.BORDER_THIN);
             headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
-            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 215, 247)));
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle11.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle11.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle11.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle11.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle11.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle11.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle11.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle11.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle11.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle11.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 215, 247)));
+            headerStyle11.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle11.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle.setFont(headerFont);
+            headerStyle11.setFont(headerFont11);
             bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -3039,13 +3073,13 @@ public class ViewADMController extends BaseController {
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
             CH1_3.setCellStyle(headerStyle);
-            CH1_4.setCellStyle(headerStyle);
+            CH1_4.setCellStyle(headerStyle11);
             CH1_5.setCellStyle(headerStyle);
             CH1_6.setCellStyle(headerStyle);
             CH1_7.setCellStyle(headerStyle);
             CH1_8.setCellStyle(headerStyle);
-            CH1_9.setCellStyle(headerStyle);
-            CH1_10.setCellStyle(headerStyle);
+            CH1_9.setCellStyle(headerStyle11);
+            CH1_10.setCellStyle(headerStyle11);
 
 
 
@@ -3134,7 +3168,7 @@ public class ViewADMController extends BaseController {
             CellStyle bodyStyle3 = workbook.createCellStyle();
             Font headerFont3 = workbook.createFont();
             headerFont3.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            headerFont3.setColor(IndexedColors.BLACK.getIndex());
+            headerFont3.setColor(IndexedColors.WHITE.getIndex());
             headerStyle3.setBorderRight(CellStyle.BORDER_THIN);
             headerStyle3.setRightBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle3.setBorderBottom(CellStyle.BORDER_THIN);
@@ -3144,7 +3178,7 @@ public class ViewADMController extends BaseController {
             headerStyle3.setBorderTop(CellStyle.BORDER_THIN);
             headerStyle3.setTopBorderColor(IndexedColors.BLACK.getIndex());
             headerStyle3.setAlignment(CellStyle.ALIGN_CENTER);
-            headerStyle3.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            headerStyle3.setFillForegroundColor(new XSSFColor(new java.awt.Color(223, 127, 127)));
             headerStyle3.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle3.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle3.setFont(headerFont3);
@@ -3234,5 +3268,36 @@ public class ViewADMController extends BaseController {
         } catch (IOException e) {
             throw new SpringException(e);
         }
+    }
+    public static String convertirMes(String numeroMesStr) {
+        try {
+            // Convertir la cadena a un número entero
+            int numeroMes = Integer.parseInt(numeroMesStr);
+
+            String[] meses = {
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
+            };
+            if (numeroMes >= 1 && numeroMes <= 12) {
+                return meses[numeroMes - 1];
+            } else {
+                return "Mes inválido";
+            }
+        } catch (NumberFormatException e) {
+            return "Formato inválido";
+        }
+    }
+    public static String convertirFecha(String fechaYYYYMMDD) {
+        // Definir el formato de entrada (YYYYMMDD)
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyyMMdd");
+        
+        // Definir el formato de salida (dd/MM/yyyy)
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        // Convertir la cadena a LocalDate usando el formato de entrada
+        LocalDate fecha = LocalDate.parse(fechaYYYYMMDD, formatoEntrada);
+        
+        // Convertir la fecha al formato de salida
+        return fecha.format(formatoSalida);
     }
 }

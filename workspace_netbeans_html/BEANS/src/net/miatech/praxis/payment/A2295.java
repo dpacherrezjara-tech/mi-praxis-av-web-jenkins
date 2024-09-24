@@ -97,6 +97,7 @@ public class A2295 {
     public String A720RUTA1 = "";
     public String A1721FRCA = "";
     public String ROUTETYPE = "";
+    public String TYPEADJ = "";
     public String TYPETRAVEL = "";
     
     public double SVFOPOT = 0;
