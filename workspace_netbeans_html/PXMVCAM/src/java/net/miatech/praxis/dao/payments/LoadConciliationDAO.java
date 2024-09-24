@@ -1183,16 +1183,16 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01828_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(20, Types.INTEGER);
             cstmt.registerOutParameter(21, Types.INTEGER);
             cstmt.registerOutParameter(22, Types.INTEGER);
             cstmt.registerOutParameter(23, Types.INTEGER);
+            cstmt.registerOutParameter(24, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -1214,20 +1214,21 @@ public class LoadConciliationDAO {
             cstmt.setString(17, filter.IN_strSVFOP);
             cstmt.setString(18, filter.IN_ADJTYPE);
             cstmt.setString(19, filter.IN_SCAR);
+            cstmt.setString(20, filter.IN_EXT.trim());
             
-            cstmt.setInt(20, filter.page.PAGNUM);
-            cstmt.setInt(21, filter.page.PAGROW);
-            cstmt.setInt(22, filter.page.TOTPAG);
-            cstmt.setInt(23, filter.page.TOTROW);
+            cstmt.setInt(21, filter.page.PAGNUM);
+            cstmt.setInt(22, filter.page.PAGROW);
+            cstmt.setInt(23, filter.page.TOTPAG);
+            cstmt.setInt(24, filter.page.TOTROW);
 
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
-            filter.page.PAGNUM = cstmt.getInt(20);
-            filter.page.PAGROW = cstmt.getInt(21);
-            filter.page.TOTPAG = cstmt.getInt(22);
-            filter.page.TOTROW = cstmt.getInt(23);
+            filter.page.PAGNUM = cstmt.getInt(21);
+            filter.page.PAGROW = cstmt.getInt(22);
+            filter.page.TOTPAG = cstmt.getInt(23);
+            filter.page.TOTROW = cstmt.getInt(24);
 
             while (rst.next()) {
                 lngTotCant += rst.getLong("CANT");

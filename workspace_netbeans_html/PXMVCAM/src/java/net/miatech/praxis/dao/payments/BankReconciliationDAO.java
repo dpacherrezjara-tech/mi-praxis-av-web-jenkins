@@ -5552,6 +5552,9 @@ public class BankReconciliationDAO {
                 beanTkt.tot_VFOP = rst.getDouble("SVFOP");
                 beanTkt.A720FECVTA = rst.getString("SDATE").trim();
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
+                
+                beanTkt.A720SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                
                 beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();

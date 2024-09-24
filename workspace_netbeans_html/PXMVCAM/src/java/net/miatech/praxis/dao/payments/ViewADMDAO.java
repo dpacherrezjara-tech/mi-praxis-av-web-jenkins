@@ -1723,7 +1723,7 @@ public class ViewADMDAO {
                     YearMonth yearMonth = YearMonth.of(year, month);
                     LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
                     beanTkt.IN_DATE_FROM = filter.SDATE.trim() + "01";
-                    beanTkt.IN_DATE_TO = lastDayOfMonth.toString();
+                    beanTkt.IN_DATE_TO = lastDayOfMonth.toString().replace("-","");
                     
                     
                     beanTkt.CCUST = rst.getString("CCUST").trim();
@@ -1739,6 +1739,7 @@ public class ViewADMDAO {
                     beanTkt.A720RUTA1 = rst.getString("A720RUTA1").trim();
                     beanTkt.A1721FRCA = rst.getString("A1721FRCA").trim();
                     beanTkt.ROUTETYPE = rst.getString("ROUTETYPE").trim();
+                    beanTkt.TYPEADJ = rst.getString("TYPEADJ").trim();
                     beanTkt.TYPETRAVEL = "RT";
                     beanTkt.RN = rst.getInt("RN");
                     beanTkt.SVFOPS = rst.getDouble("SVFOP");

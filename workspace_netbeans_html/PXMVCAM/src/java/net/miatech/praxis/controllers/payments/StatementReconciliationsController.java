@@ -231,7 +231,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "searchDetBankByS")
     public @ResponseBody
     String searchDetBankCodeByS(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankReconciliation : searchDetBankCodeByStval-------------");
+        System.out.println("-------------- BankReconciliation : searchDetBankByS-------------");
 
         map.put("success", true);
         List<A2290Filter> lst = this.getListDetBankCodeByS(request, false);

@@ -1060,6 +1060,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     this.beanDetailTar.IN_SCAR = 'N';
                 }
                 
+                let proces = Ext.getCmp(prototype.id + '-TEST');
+                if (!proces.isVisible()) {
+                    this.beanDetailTar.IN_EXT = 'N';
+                } else {
+                    this.beanDetailTar.IN_EXT = 'Y';
+                }
+                
                 let consultPath = ''
                 switch (win.getValue('cmbTDOC')) {
                     case 'S':
