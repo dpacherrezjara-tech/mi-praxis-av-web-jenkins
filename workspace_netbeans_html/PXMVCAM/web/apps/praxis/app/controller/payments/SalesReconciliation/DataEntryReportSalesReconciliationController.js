@@ -62,6 +62,18 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
                     ]
                 }));
         Ext.getCmp(prototype.id + '-cmbTDOCRe').setValue("S");
+        
+        Ext.getCmp(prototype.id + '-cmbSTREP').bindStore(Ext.create('Ext.data.ArrayStore',
+                {
+                    autoLoad: false,
+                    fields: ['code', 'name'],
+                    data: [
+                        ["", "All"],
+                        ["M", "Match"],
+                        ["P", "Pending"]
+                    ]
+                }));
+        Ext.getCmp(prototype.id + '-cmbSTREP').setValue("");
 
         Ext.getCmp(prototype.id + '-cmbSCURRENCY').bindStore(Ext.create('Ext.data.ArrayStore',
                 {
@@ -81,6 +93,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDayReport').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDayReport').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCRe').getValue();
+        me.bean.IN_STAT = Ext.getCmp(prototype.id + '-cmbSTREP').getValue();
         me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbSCURRENCY').getValue();
 
         if (win.getValue('chkTPS')) {

@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
     title: 'Ticket Report - Data Entry Report Form',
     header: true,
     height: 200,
-    width: 870,
+    width: 1030,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
         {
             xtype: 'form',
             height: 200,
-            width: 870,
+            width: 1030,
             scrollable: true,
             defaults: {
                 style: 'margin: 3px;',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                             border: false,
                             bodyStyle: 'background:white;',
                             margin: '0 20 3 10',
-                            width: 860,
+                            width: 1020,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                     border: false,
                                     bodyStyle: 'background:white;',
                                     margin: '40 0 0 0',
-                                    width: 850,
+                                    width: 1010,
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -196,6 +196,25 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbTDOCRe',
                                             fieldLabel: 'Doc Type',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 60,
+                                            width: 160,
+                                            anchor: '100%'
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbSTREP',
+                                            fieldLabel: 'Status',
                                             labelAlign: 'right',
                                             queryMode: 'local',
                                             triggerAction: 'all',
