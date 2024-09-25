@@ -53,6 +53,9 @@ public class A2295 {
     public String SPNR = "";
     public String USERF = "";
     public String CERROR = "";
+    public String ACCNUMA = "";
+    public String COSTCEN = "";
+    public String TRANL = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
     public String SCURRENCY1 = "";
