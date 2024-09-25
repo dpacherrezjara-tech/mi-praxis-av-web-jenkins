@@ -107,10 +107,9 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                                 fields: ['code', 'name'],
                                                 data: [
                                                     ["X", "Normal"],
-                                                    ["T", "All"],
                                                     ["1", "Adjustment"],
-                                                    ["2", "Adjustments GenCon"],
-                                                    ["3", "Adjustments BPO"],
+                                                    ["2", "Adj. GenCon"],
+                                                    ["3", "Adj. BPO"],
                                                     ["D", "Debit"],
                                                     ["F", "FP"]
                                                 ]
@@ -124,7 +123,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             typeAhead: true,
                                             valueField: 'code', displayField: 'name',
                                             labelWidth: 80,
-                                            width: 220,
+                                            width: 210,
                                             //height: 26,
                                             value: "X",
                                             listConfig: {maxHeight: 111},
@@ -141,34 +140,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             store: new Ext.data.SimpleStore({
                                                 fields: ['code', 'name'],
                                                 data: [
-                                                    ["  ", "All"],
-                                                    ["AX ", "American Express"],
-                                                    ["CT ", "Cardnet"],
-                                                    ["BP ", "Banco Pichincha"],
-                                                    ["BG ", "Banco Guayaquil"],
-                                                    ["PF ", "Banco Pacificar"],
-                                                    ["ET ", "Expressnet"],
-                                                    ["DC ", "Banco Diners"],
-                                                    ["SK ", "Scotiabank"],
-                                                    ["WP ", "Worldpay"],
-                                                    ["WPI", "Worldpay I"],
-                                                    ["WPP", "Worldpay Pazien"],
-                                                    ["BM ", "Banco Maduro"],
-                                                    ["LK ", "Linkser"],
-                                                    ["IP ", "Izipay"],
-                                                    ["CE ", "Cielo"],
-                                                    ["DS ", "Discover"],
-                                                    ["NB ", "Niubiz"],
-                                                    ["FD ", "First Data"],
-                                                    ["VN ", "Visanet"],
-                                                    ["TB ", "Transback"],
-                                                    ["EV ", "Elavon"],
-                                                    ["SD ", "Santander"],
-                                                    ["BD ", "Bancard"],
-                                                    ["PB ", "Banco Produbanco"],
-                                                    ["CM ", "Credomatic"],
-                                                    ["PM ", "Prisma"],
-                                                    ["IG ", "Ingenico"]
+                                                    ["   ", "All"]
                                                 ]
                                             }),
                                             queryMode: 'local',
@@ -182,7 +154,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                                             labelWidth: 80,
                                             width: 220,
                                             //height: 26,
-                                            value: "  ",
+                                            value: "   ",
                                             listConfig: {maxHeight: 111},
                                             enableKeyEvents: true,
                                             padding: '6 0',
@@ -304,7 +276,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.DataEntry', {
                 {
                     xtype: 'label',
                     padding: '10 0 10 0',                    
-                    html: '<font color="green"><h3 id="GenerationOfAccountingFormMsg">...</h3></font>'
+                    html: '<font color="green"><h3 id="RegistrationOfAccountingFormMsg">...</h3></font>'
                 }
             ]
         }

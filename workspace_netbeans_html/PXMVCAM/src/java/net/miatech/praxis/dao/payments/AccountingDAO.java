@@ -5,14 +5,20 @@
  */
 package net.miatech.praxis.dao.payments;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.CallableStatement;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.praxis.A051;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.payment.filter.SQP05252Filter;
 import net.miatech.praxis.payment.filter.SQP05253Filter;
@@ -372,5 +378,103 @@ public class AccountingDAO {
 
         return lstData;
     }
+    
+    public List<A051> loadProcessors() throws SQLException, Exception {
 
+        List<A051> lista = new ArrayList<>();
+        A051 record;
+        int i = 1;
+        record = new A051();
+        
+        record.NO = i;
+        record.A051KEY1 = "PR";
+        record.A051KEY2 = "   ";
+        record.A051DESCR1 = "All";
+        lista.add(record);
+        
+        i++;
+        
+        Statement stmt = null;
+
+        String sql = "SELECT A051KEY1, A051KEY2, A051DESCR1 FROM PRAXIS.A051 WHERE A051KEY1 = 'PR' AND A051KEY2 != '' ORDER BY A051DESCR1";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            stmt = cnx.createStatement();
+            rst = stmt.executeQuery(sql);
+            
+            while (rst.next()) {
+                record = new A051();
+                record.NO = i;
+                record.A051KEY1 = rst.getString("A051KEY1").trim();
+                record.A051KEY2 = rst.getString("A051KEY2").substring(0,3);
+                record.A051DESCR1 = rst.getString("A051DESCR1").trim();
+                lista.add(record);
+                i++;
+            }
+            
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+        }
+
+        return lista;
+    }
+    
+//    public void updatePending() throws SQLException, Exception {
+//        
+//        CallableStatement cstmt = null;
+//
+//        String SQLCLL01 = "{CALL PRAXISMP.STMP001(?,?,?)}";
+//
+//        Connection cnx = null;
+//        
+//        try {
+//            
+//            BufferedReader br = new BufferedReader(new FileReader("C:\\Documentos_Reenviar_2.csv"));
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                String[] values = line.split(";");
+//                String refd = values[0];
+//                
+//                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//                cstmt = cnx.prepareCall(SQLCLL01);
+//                cstmt.setString(1, "134");
+//                cstmt.setString(2, "20240926");
+//                cstmt.setString(3, refd);
+//                cstmt.execute();
+//            }
+//            
+//            br.close();
+//            
+//        } finally {
+//            if (rst != null) {
+//                try {
+//                    rst.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//        }
+//    }
 }
