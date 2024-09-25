@@ -22,7 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     drillDown: [],
     lstCountry: [],
     gridActual: '',
-    fileLIQvsEC:'',
+    fileLIQvsEC: '',
     panelActual: '',
     fileName: '',
     reg99: 0,
@@ -97,7 +97,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
     },
     xpanel_afterrender: function (obj, e) {
+        $('#StatementReconciliationsForm-btnToggleSwitch').change(function () {
+            me.procesador();
+        });
+
         this.obtainData();
+    },
+    procesador: function () {
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            Ext.getCmp(prototype.id + '-TEST').show();
+        } else {
+            Ext.getCmp(prototype.id + '-TEST').hide();
+        }
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -222,8 +234,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.bean.IN_TTRAN = Ext.getCmp(prototype.id + '-cmbTTRAN').getValue();
 
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
-        me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue()
-        me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+        me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
+        me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            me.bean.IN_EXT = 'N';
+        } else {
+            me.bean.IN_EXT = 'Y';
+        }
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -958,6 +977,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanDetBankByS.IN_BANK = rowData.data.IN_BANK;
             this.beanDetBankByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
             this.beanDetBankByS.IN_COREP = rowData.data.IN_COREP;
+            let proces = Ext.getCmp(prototype.id + '-TEST');
+            if (!proces.isVisible()) {
+                this.beanDetBankByS.IN_EXT = 'N';
+            } else {
+                this.beanDetBankByS.IN_EXT = 'Y';
+            }
+
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
             this.setGridDataDetBankS(consultPath, gridId, pagginId);
 
@@ -1282,12 +1308,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     },
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
-        if(rec.data.SCOUNTRY === 'CO' && rec.data.SCURRENCY === 'COP'){
+        if (rec.data.SCOUNTRY === 'CO' && rec.data.SCURRENCY === 'COP') {
             this.winDataEntry('U', rec);
-        }else{
+        } else {
             this.winDataEntryEx('U', rec);
         }
-        
+
     },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
@@ -1426,7 +1452,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }
         });
     },
-    
+
     onLoadClick_conciliaEC: function () {
 
 //        var valorcmbGrp = Ext.getCmp(prototype.id + '-cmbTypeGroup').getValue();
@@ -1434,22 +1460,22 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 //        if (valorcmbGrp === '') {
 //            global.Msg({msg: 'Please select Load Type'});
 //        } else {
-            var msjPregunta = '', msjError = '';
-            msjPregunta = 'Sure to load file?';
+        var msjPregunta = '', msjError = '';
+        msjPregunta = 'Sure to load file?';
 
-            if (msjError === '') {
-                Ext.MessageBox.show({
-                    title: 'Icon Support',
-                    msg: msjPregunta,
-                    buttons: Ext.MessageBox.OKCANCEL,
-                    icon: Ext.MessageBox.WARNING,
-                    fn: function (btn) {
-                        if (btn === 'ok') {
-                            me.onFileLoadToTemp();
-                        }
+        if (msjError === '') {
+            Ext.MessageBox.show({
+                title: 'Icon Support',
+                msg: msjPregunta,
+                buttons: Ext.MessageBox.OKCANCEL,
+                icon: Ext.MessageBox.WARNING,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        me.onFileLoadToTemp();
                     }
-                });
-            }
+                }
+            });
+        }
 //        }
     },
     onFileLoadToTemp_bk: function () {
@@ -1458,7 +1484,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         var me = this;
         let beanValidation = {}
-        
+
         beanValidation.IN_ACCNUMBER = '***********';
         var fileField = Ext.getCmp(prototype.id + '-file');
         var file = fileField.fileInputEl.dom.files[0];
@@ -1474,7 +1500,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         // Crear una instancia de FormData para enviar el archivo
         var formData = new FormData();
         formData.append('excelfile', file);
-        
+
         // Realizar una solicitud AJAX para cargar el archivo
         Ext.Ajax.request({
             url: prototype.url + '/setUploadLiquivsEC',
@@ -1486,7 +1512,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
             },
             success: function (response) {
-                
+
                 var res = Ext.JSON.decode(response.responseText);
                 var msjResult = res.msjResult;
                 global.Msg({msg: msjResult});
@@ -1516,14 +1542,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
 
     },
-    
+
     onFileLoadToTemp: function () {
 
 
 
         var me = this;
         let beanValidation = {}
-        
+
         beanValidation.IN_ACCNUMBER = '***********';
 //        var fileField = Ext.getCmp(prototype.id + '-file');
 //        var file = fileField.fileInputEl.dom.files[0];
@@ -1539,7 +1565,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
 
         var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
-        
+
         // Realizar una solicitud AJAX para cargar el archivo
         form.submit({
             url: prototype.url + '/setUploadLiquivsEC',
@@ -1551,12 +1577,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 //            headers: {
 //                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
 //            },
-            success: function (f,o) {
-                
+            success: function (f, o) {
+
                 var res = Ext.decode(o.response.responseText);
                 var msjResult = res.msjResult;
                 global.Msg({msg: msjResult});
-                
+
             },
             failure: function (response) {
                 console.log('server-side failure with status code ' + response.status);
