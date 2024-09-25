@@ -87,6 +87,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             '#StatementReconciliationsForm-cmbDateToMonth': {
                 select: this.selectComboToMonth
             },
+            '#StatementReconciliationsForm-cmbDateDay': {
+                select: this.selectComboFromDay
+            },
+            '#StatementReconciliationsForm-cmbDateToDay': {
+                select: this.selectComboToDay
+            },
             '#StatementReconciliationsForm-cmbCOREP': {
                 select: this.selectCombocmbCOREP
             },
@@ -136,6 +142,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
+        
+        Ext.getCmp(prototype.id + '-cmbDateDay').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(win.getStoreDays(true));
+        
+        Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
 
 
         var cmbDateSel = Ext.getCmp(prototype.id + '-cmbDateSel');
@@ -253,7 +265,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
-        if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '') {
+        if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' 
+            || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== ''    ) {
             this.btnSearch_BANDOC();
         } else {
             this.setGridData();
@@ -1235,7 +1248,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     eventKey_BANDOC: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
-            if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '') {
+            if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' 
+            || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' ) {
                 this.btnSearch_BANDOC();
             } else {
                 this.btnSearch_click();
@@ -1249,9 +1263,24 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.panelActual = '-boxDetDetails';
         global.selectedChild(this.childs, prototype.id + me.panelActual);
 
+        this.beanDetails.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+        this.beanDetails.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        this.beanDetails.strDayFrom = Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
+        this.beanDetails.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
+        this.beanDetails.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        this.beanDetails.strDayTo = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         this.beanDetails.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         this.beanDetails.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         this.beanDetails.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
+        this.beanDetails.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
+        this.beanDetails.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        this.beanDetails.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanDetails.IN_EXT = 'N';
+        } else {
+            this.beanDetails.IN_EXT = 'Y';
+        }
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
         this.setGridDataDetBANDOC();
     },
@@ -1690,6 +1719,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     selectComboFromMonth: function (obj) {
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToMonth.setValue(obj.getValue());
+        if(obj.getValue() != ''){
+            Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
+            
+        }else {
+            Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
+            Ext.getCmp(prototype.id + '-cmbDateDay').setValue('');
+        }
     },
     selectComboToMonth: function (obj) {
         var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
@@ -1704,6 +1743,22 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     selectComboFromDay: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
+    },
+    selectComboToDay: function (obj) {
+        var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        var comboFromDay = Ext.getCmp(prototype.id + '-cmbDateDay');
+        if (comboFromMonth.getValue() === comboToMonth.getValue()) {
+            if (obj.getValue() < comboFromDay.getValue()) {
+                comboFromDay.setValue(obj.getValue());
+            }
+        }
+        if(comboFromDay.getValue() === ''){
+
+            comboFromDay.setValue(obj.getValue())
+        }
     },
     /*     
      * Funciones para la paginacion     

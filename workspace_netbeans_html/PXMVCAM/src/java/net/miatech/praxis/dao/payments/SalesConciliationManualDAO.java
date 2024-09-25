@@ -437,6 +437,9 @@ public class SalesConciliationManualDAO {
                 objRtn.SEQ = rs01.getString("SEQ").trim();
                 objRtn.USERF = rs01.getString("USERF").trim();
                 objRtn.CERROR = rs01.getString("ERROR").trim();
+                objRtn.ACCNUMA = rs01.getString("ACCNUMA").trim();
+                objRtn.COSTCEN = rs01.getString("COSTCEN").trim();
+                objRtn.TRANL = rs01.getString("TRANL").trim();
 
                 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;

@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 1500,
                             margin: '0 0 0 0 ',
