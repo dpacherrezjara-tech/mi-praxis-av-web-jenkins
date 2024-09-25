@@ -12,7 +12,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
             border: false,
             bodyStyle: 'background: transparent',
             padding: '2px 5px 1px 5px',
-            margin: '0 0 0 40px',
+            margin: '0 0 0 30px',
             layout: 'column',
             defaults: {
 //                labelStyle: 'font-weight:bold;',
@@ -81,6 +81,30 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     width: 70,
                     anchor: '100%'
                 },
+//                {xtype: 'tbspacer', width: 10},
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbDateDay',
+                    labelAlign: 'right',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    disabled: true,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+//                            hidden: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    width: 70,
+                    anchor: '100%',
+                    listener: {
+                        change: 'onDateFromDaySelect',
+                        expand: 'eventSelectFromDay'
+
+                    }
+                },
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbDateToYear',
@@ -117,6 +141,80 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     width: 70,
                     anchor: '100%'
                 },
+//                {xtype: 'tbspacer', width: 10},
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbDateToDay',
+                    labelAlign: 'right',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    disabled: true,
+//                            hidden: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    width: 70,
+                    anchor: '100%',
+                    listener: {
+                        change: 'onDateToDaySelect',
+                        expand: 'eventSelectToDay'
+                    }
+                },
+                {
+                    xtype: 'label',
+                    text: 'Country:',
+                    padding: '8 0 0 30 ',
+                    width: 90
+                },
+                
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCountry',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 219,
+                    typeAhead: true,
+                    valueField: 'A006PAIS',
+                    displayField: 'A006NOMBRE',
+                    listConfig: {maxHeight: 111},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                },
+                {
+                    xtype: 'label',
+                    text: 'Processor:',
+                    padding: '8 0 0 30 ',
+                    width: 90,
+//                    hidden:true
+                },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCOREP',
+                    queryMode: 'local',
+                    allowBlank: false,
+//                    hidden: true,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 219,
+                    typeAhead: true,
+                    valueField: 'VALUE',
+                    displayField: 'NAME',
+                    listConfig: {maxHeight: 111},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                },
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Merchant Number:',
@@ -142,7 +240,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
             border: false,
             id: prototype.id + '-filterMain_2',
             bodyStyle: 'background: transparent',
-            margin: '10px 2px 10px 40px',
+            margin: '10px 2px 10px 30px',
             layout: 'column',
             defaults: {
 //                labelStyle: 'font-weight:bold;',
@@ -165,7 +263,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     displayField: 'IN_CODE_IN_NAME',
                     emptyText: 'All',
                     fieldStyle: 'text-align: left;',
-                    width: 353,
+                    width: 295,
                     labelWidth: 85,
                     labelAlign: 'left'
                 }
@@ -211,7 +309,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
                     maxLength: 10,
-                    width: 100,
+                    width: 90,
                     enableKeyEvents: true,
                     listeners: {
                         keypress: 'eventKey_BANDOC'
@@ -243,8 +341,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 {
                     xtype: 'label',
                     text: 'Doc. Type:',
-                    padding: '3 0 0 30',
-                    width: 120,
+                    padding: '3 0 0 5',
+                    width: 80,
                 },
                 {
                     xtype: 'combo',
@@ -256,7 +354,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     valueField: 'value',
                     displayField: 'description',
                     fieldStyle: 'text-align: left;',
-                    width: 110,
+                    width: 75,
                     hidden: false,
                     value: '',
                      store: {
@@ -268,17 +366,26 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         ]
                     }
                 },
-                
                 {
                     xtype: 'label',
-                    text: 'Country:',
-                    padding: '3 0 0 30 ',
-                    width: 90
+                    text: 'Status:',
+                    padding: '3 30 0 30',
+                    hidden: false,
+                    width: 80,
+                    autoEl: {
+                        tag: 'label',
+                        'data-qtip': 'Status'
+                    }
                 },
-                
                 {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbCountry',
+                    xtype:'combo',
+                    id: prototype.id+'-cmbStatus',
+                    store: new Ext.data.SimpleStore({
+                        fields: ['value', 'description'],
+                        data: [
+                            ["", "All"], ["1", "Match"], ["3", "Statement w/o Settlement"], ["5", "Match Manual"]
+                        ]
+                    }),
                     queryMode: 'local',
                     allowBlank: false,
                     forceSelection: true,
@@ -286,45 +393,22 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     caseSensitive: false,
                     autoSelect: true,
                     editable: true,
-                    width: 219,
+                    width: 100,
+                    value: "",
+                    hidden: false,
                     typeAhead: true,
-                    valueField: 'A006PAIS',
-                    displayField: 'A006NOMBRE',
-                    listConfig: {maxHeight: 111},
+                    valueField: 'value', displayField: 'description',
                     enableKeyEvents: true,
                     triggerAction: 'all',
+                    listeners:{
+                    }
                 },
-                {
-                    xtype: 'label',
-                    text: 'Processor:',
-                    padding: '3 0 0 30 ',
-                    width: 90,
-//                    hidden:true
-                },
-                {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbCOREP',
-                    queryMode: 'local',
-                    allowBlank: false,
-//                    hidden: true,
-                    forceSelection: true,
-                    selectOnFocus: true,
-                    caseSensitive: false,
-                    autoSelect: true,
-                    editable: true,
-                    width: 219,
-                    typeAhead: true,
-                    valueField: 'VALUE',
-                    displayField: 'NAME',
-                    listConfig: {maxHeight: 111},
-                    enableKeyEvents: true,
-                    triggerAction: 'all',
-                },
+                 {xtype: 'tbspacer', width: 20},
                 {
                     xtype: 'radiogroup',
                     hidden: true,
 //                    fieldLabel: 'Transaction',
-                    margin: '0px 5px 0px 10px',
+//                    margin: '0px 5px 0px 10px',
                     id: prototype.id + '-rbgType',
                     items: [
                         {boxLabel: '<strong style="color:#148D28" >Doc Sap   </strong>', name: 'rb', inputValue: 'rbDOCS', width: 80, checked: true},
@@ -333,7 +417,54 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     listeners: {
                         change: 'searchTRANSA_clickHandler'
                     }
-                }
+                },
+//                 {xtype: 'tbspacer', width: 20},
+                {
+                    xtype: 'form',
+                    id: prototype.id + '-formLIQvsEC',
+                    border: false,
+                    padding: '0 0 0 25',
+                    bodyStyle: 'background-color: #E3EAF9;',
+//                                  layout: 'vbox',
+                    items: [{
+
+                            xtype: 'filefield',
+                            id: prototype.id + '-file',
+                            name: 'excelfile',
+//                                fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
+                            allowBlank: true,
+                            accept: '.xlsx, .xls',
+                            labelWidth: 85,
+                            width: 280,
+                            buttonAlign: 'left', 
+                            buttonText: 'Select excel...',
+                            regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                            regexText: 'Only XLS and XLSX formats are accepted',
+                            buttonConfig: {
+                                text: '<strong>Select</strong>',
+                                width: 80,
+                                style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
+                            },
+                            listeners: {
+                                //change: 'onUploadChange'
+                            }
+                        }]
+                },
+//                {xtype: 'tbspacer', width: 20},
+                {
+                    xtype: 'button',
+                    id: prototype.id + '-btn_Concilia_LIQvsEC',
+                    margin: '1 0 0 5',
+                    html: '<strong style="color:white;">Conciliar</strong>',
+                    style: 'background:#24678D;color:white;font-weight:bold;',
+//                                  icon: 'resources/img/botones/process_load.png',
+                    //disabled: true,
+                    border: false,
+                    listeners: {
+                        click: 'onLoadClick_conciliaEC'
+                    }
+                },
+                
             ]
         },
         ,
@@ -342,7 +473,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
             border: false,
             id: prototype.id + '-filterMain_4',
             bodyStyle: 'background: transparent',
-            margin: '10px 2px 10px 20px',
+            margin: '10px 2px 10px 0px',
             layout: 'column',
             defaults: {
 //                labelStyle: 'font-weight:bold;',
@@ -356,50 +487,40 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
             },
             items: [
                 
+                    
                     {
-                        xtype: 'form',
-                        id: prototype.id + '-formLIQvsEC',
-                        border: false,
-                        bodyStyle: 'background-color: #E3EAF9;',
-//                                  layout: 'vbox',
-                        items: [{
-                               
-                                xtype: 'filefield',
-                                id: prototype.id + '-file',
-                                name: 'excelfile',
-//                                fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
-                                allowBlank: true,
-                                accept: '.xlsx, .xls',
-                                labelWidth: 85,
-                                width: 400,
-                                buttonAlign: 'left', 
-                                buttonText: 'Select excel...',
-                                regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
-                                regexText: 'Only XLS and XLSX formats are accepted',
-                                buttonConfig: {
-                                    text: '<strong>Select</strong>',
-                                    width: 80,
-                                    style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
-                                },
-                                listeners: {
-                                    //change: 'onUploadChange'
-                                }
-                            }]
+                        xtype: 'label',
+                        text: 'Colombia',
+                        margin: '3 0 0 3',
+                        id: prototype.id + '-COL',
+                        width: 60
                     },
-                    {xtype: 'tbspacer', width: 20},
                     {
-                        xtype: 'button',
-                        id: prototype.id + '-btn_Concilia_LIQvsEC',
-                        margin: '2 0 0 0',
-                        html: '<strong style="color:white;">Conciliar</strong>',
-                        style: 'background:#24678D;color:white;font-weight:bold;',
-//                                  icon: 'resources/img/botones/process_load.png',
-                        //disabled: true,
-                        border: false,
+                        xtype: 'component',
+                        id: prototype.id + '-btnToggleSwitch',
+                        margin: '3 0 0 3',
+                        html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label></body></html>',
+                        tooltip: 'Export to Report',
                         listeners: {
-                            click: 'onLoadClick_conciliaEC'
+                            change: 'chgBash',
+                            click: 'clickToggleSwitch'
                         }
-                    }
+                    },
+                    {
+                        xtype: 'label',
+                        text: 'Exterior',
+                        margin: '3 0 0 13',
+                        id: prototype.id + '-EXT',
+                        width: 60
+                    },
+                    {
+                        xtype: 'label',
+                        text: ' ',
+                        margin: '13 0 0 10',
+                        id: prototype.id + '-TEST',
+                        hidden: true,
+                        width: 1
+                    },
                 
             ]
         }
