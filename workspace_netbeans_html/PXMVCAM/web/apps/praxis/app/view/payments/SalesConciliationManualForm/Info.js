@@ -467,7 +467,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1187,
+                            width: 1477,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -477,7 +477,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDet',
-                                    width: 1187,
+                                    width: 1477,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -485,7 +485,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
-                                            sortable: false,
+                                            sortable: true,
                                             align: 'center'
                                         },
                                         items: [
@@ -513,9 +513,19 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
-                                                    strConcep = value == 'I' ? 'Settlement' : 'Sales';
+//                                                    strConcep = value == 'I' ? 'Settlement' : 'Sales';
                                                     metaData.tdAttr = 'data-qtip="' + strConcep + '"';
-                                                    let descConcept = value == 'I' ? "Settlement" : "Ticket"
+//                                                    let descConcept = value == 'I' ? "Settlement" : "Ticket"
+                                                    let descConcept = ''
+                                                    if(value == 'I'){
+                                                       descConcept = "Settlement" 
+                                                    }else if(value == 'D'){
+                                                        descConcept = "Debito" 
+                                                    }else if(value == 'V'){
+                                                        descConcept = "Ticket" 
+                                                    }else if(value == 'A'){
+                                                        descConcept = "Adjustment" 
+                                                    }
                                                     return descConcept;
                                                 }
                                             },
@@ -569,6 +579,24 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                             {text: 'Cuenta', dataIndex: 'ACCNUMA', width: 90,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    //metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Cost Cen.', dataIndex: 'COSTCEN', width: 90,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    //metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
                                             {text: 'Seq.', dataIndex: 'SEQ', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
@@ -577,7 +605,14 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            
+                                            {text: 'Rep. Numb', dataIndex: 'TRANL', width: 80,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
                                             {text: 'User', dataIndex: 'USERF', width: 90,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     //metaData.style = "text-align:center;";
@@ -587,11 +622,13 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Comment', dataIndex: 'CERROR', width: 150,
+                                           
+                                            {text: 'Comment', dataIndex: 'CERROR', width: 180,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
+                                                    metaData.tdAttr = record.data.CERROR != '' && record.data.CERROR != undefined ? 'data-qtip="' + record.data.CERROR + '"' : '';
                                                     return value;
                                                 }
                                             },
