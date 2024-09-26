@@ -10,6 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     searchParams: {},
     searchParamsPending: {},
     beanDetails: {},
+    beanScanEX: {},
     beanAgrupa: {},
     lstA1852: {},
     dataObtain: {},
@@ -345,26 +346,27 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     onSearchCompleteDetail: function () {
-        meDE.bean.data.IN_FROMADATE = meDE.bean.data.VALDATE;
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
-        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
-        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-        meDE.bean.data.IN_DATECI = meDE.beanResult.DATECI;
-        meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI;
-        meDE.bean.data.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
-        meDE.bean.data.IN_FUNDSTRGK = meDE.beanResult.FUNDSTRGK;
+        this.beanScanEX = {}
+        this.beanScanEX.IN_FROMADATE = meDE.bean.data.VALDATE;
+        this.beanScanEX.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        this.beanScanEX.IN_MERCHAND = meDE.bean.data.MERCHAND;
+        this.beanScanEX.IN_BANDOC = meDE.bean.data.BANDOC;
+        this.beanScanEX.IN_NETO = meDE.bean.data.NETO + "";
+        this.beanScanEX.IN_RED = meDE.bean.data.RED;
+        this.beanScanEX.IN_STVAL = meDE.bean.data.STVAL;
+        this.beanScanEX.IN_DATECI = meDE.beanResult.DATECI;
+        this.beanScanEX.IN_TRANCI = meDE.beanResult.TRANCI;
+        this.beanScanEX.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
+        this.beanScanEX.IN_FUNDSTRGK = meDE.beanResult.FUNDSTRGK;
 
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
-            meDE.bean.data.IN_STVAL = '1';
+        if (this.beanScanEX.IN_STVAL === 'Match' || this.beanScanEX.IN_STVAL === 'Match Manual') {
+            this.beanScanEX.IN_STVAL = '1';
         } else {
-            meDE.bean.data.IN_STVAL = 'P';
+            this.beanScanEX.IN_STVAL = 'P';
         }
         console.log(meDE.bean.data.IN_MERCHAND, 'meDE.bean.data.IN_MERCHAND ')
         console.log(meDE.bean.data.IN_BANDOC, 'meDE.bean.data.IN_BANDOC ')
-        var beanString = JSON.stringify(meDE.bean.data);
+        var beanString = JSON.stringify(this.beanScanEX);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL',
             method: 'POST',
@@ -795,20 +797,76 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     exportExcel: function () {
-        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
-        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
-        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
-        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
-        this.beanDetails.IN_RED = meDE.bean.data.RED;
-        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
-        this.beanDetails.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
-        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
-            this.beanDetails.IN_STVAL = '1';
-        } else {
-            this.beanDetails.IN_STVAL = 'P';
-        }
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
+//        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
+//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
+//        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
+//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
+//        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
+//        this.beanDetails.IN_RED = meDE.bean.data.RED;
+//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+//        this.beanDetails.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
+//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
+//            this.beanDetails.IN_STVAL = '1';
+//        } else {
+//            this.beanDetails.IN_STVAL = 'P';
+//        }
+
+
+//        this.beanDetails = {}
+//        let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
+//        let chkKEY = Ext.getCmp(prototype.id01 + '-chkKEY').getValue();
+//        let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
+//        let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
+//        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
+//        var fecha_a_validar = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+//        this.beanDetails.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+//
+//        this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+//        if (this.beanDetails.IN_ACCNUMBER === '') {
+//            this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+//        }
+//        if (!chkACCNUMBER) {
+//            this.beanDetails.IN_ACCNUMBER = '';
+//        }
+//
+//        this.beanDetails.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
+//        if (this.beanDetails.IN_FUNDSTRGK === '') {
+//            this.beanDetails.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-de-txtACCOUNT').getValue();
+//        }
+//        if (!chkKEY) {
+//            this.beanDetails.IN_FUNDSTRGK = '';
+//        }
+//
+//        this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
+//        if (this.beanDetails.IN_MERCHAND === '') {
+//            this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
+//        }
+//        if (!chkMERCHANT) {
+//            this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
+//        }
+//
+//        if (this.beanDetails.IN_FROMADATE === '') {
+//            this.beanDetails.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+//        }
+//        if (!chkADATE) {
+//            this.beanDetails.IN_FROMADATE = '';
+//        }
+//
+//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
+//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
+//        this.beanDetails.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
+//        this.beanDetails.IN_RED = meDE.bean.data.RED;
+//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
+//            this.beanDetails.IN_STVAL = '1';
+//        } else {
+//            this.beanDetails.IN_STVAL = 'P';
+//        }
+        me.paramsDetail.beanString = JSON.stringify(this.beanScanEX);
         console.log(this.beanDetails);
         global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
     },
@@ -1007,70 +1065,71 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
+        this.beanScanEX = {}
         let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
         let chkKEY = Ext.getCmp(prototype.id01 + '-chkKEY').getValue();
         let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
         let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
         let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
         var fecha_a_validar = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
-        meDE.bean.data.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+        this.beanScanEX.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
+        this.beanScanEX.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
+        this.beanScanEX.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+        this.beanScanEX.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+        this.beanScanEX.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
 
-        meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
-        if (meDE.bean.data.IN_ACCNUMBER === '') {
-            meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+        this.beanScanEX.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+        if (this.beanScanEX.IN_ACCNUMBER === '') {
+            this.beanScanEX.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
         }
         if (!chkACCNUMBER) {
-            meDE.bean.data.IN_ACCNUMBER = '';
+            this.beanScanEX.IN_ACCNUMBER = '';
         }
 
-        meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
-        if (meDE.bean.data.IN_FUNDSTRGK === '') {
-            meDE.bean.data.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-de-txtACCOUNT').getValue();
+        this.beanScanEX.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-txtFUNDSTRGK').getValue();
+        if (this.beanScanEX.IN_FUNDSTRGK === '') {
+            this.beanScanEX.IN_FUNDSTRGK = Ext.getCmp(prototype.id + '-de-txtACCOUNT').getValue();
         }
         if (!chkKEY) {
-            meDE.bean.data.IN_FUNDSTRGK = '';
+            this.beanScanEX.IN_FUNDSTRGK = '';
         }
 
-        meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
-        if (meDE.bean.data.IN_MERCHAND === '') {
-            meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
+        this.beanScanEX.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
+        if (this.beanScanEX.IN_MERCHAND === '') {
+            this.beanScanEX.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
         }
         if (!chkMERCHANT) {
-            meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
+            this.beanScanEX.IN_MERCHAND = meDE.bean.data.MERCHAND;
         }
 
-        if (meDE.bean.data.IN_FROMADATE === '') {
-            meDE.bean.data.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+        if (this.beanScanEX.IN_FROMADATE === '') {
+            this.beanScanEX.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         }
         if (!chkADATE) {
-            meDE.bean.data.IN_FROMADATE = '';
+            this.beanScanEX.IN_FROMADATE = '';
         }
 
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
-        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
-            meDE.bean.data.IN_STVAL = '1';
+        this.beanScanEX.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        this.beanScanEX.IN_BANDOC = meDE.bean.data.BANDOC;
+        this.beanScanEX.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
+        this.beanScanEX.IN_RED = meDE.bean.data.RED;
+        this.beanScanEX.IN_STVAL = meDE.bean.data.STVAL;
+        if (this.beanScanEX.IN_STVAL === 'Match' || this.beanScanEX.IN_STVAL === 'Match Manual') {
+            this.beanScanEX.IN_STVAL = '1';
         } else {
-            meDE.bean.data.IN_STVAL = 'P';
+            this.beanScanEX.IN_STVAL = 'P';
         }
 
         if (
-                !this.bean.data.IN_FROMADATE &&
-                !this.bean.data.IN_TOADATE &&
-                !this.bean.data.IN_FROMSDATE &&
-                !this.bean.data.IN_TOSDATE &&
-                !this.bean.data.IN_SCARCOD &&
-                !this.bean.data.IN_ACCNUMBER &&
-                !this.bean.data.IN_VALDATE &&
-                !this.bean.data.IN_FUNDSTRGK &&
-                !this.bean.data.IN_strNETO
+                !this.beanScanEX.IN_FROMADATE &&
+                !this.beanScanEX.IN_TOADATE &&
+                !this.beanScanEX.IN_FROMSDATE &&
+                !this.beanScanEX.IN_TOSDATE &&
+                !this.beanScanEX.IN_SCARCOD &&
+                !this.beanScanEX.IN_ACCNUMBER &&
+                !this.beanScanEX.IN_VALDATE &&
+                !this.beanScanEX.IN_FUNDSTRGK &&
+                !this.beanScanEX.IN_strNETO
                 ) {
             global.Msg({msg: 'Fields to Scan must be filled out'});
             return;
@@ -1095,7 +1154,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.FUNDSTRGK}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
         }
 
-        var beanString = JSON.stringify(meDE.bean.data);
+        var beanString = JSON.stringify(this.beanScanEX);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL',
             method: 'POST',
