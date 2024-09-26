@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Filters', {
                             ["J", "Ajuste"],
                             ["D", "Debito"],
                             ["E", "Exterior"],
-                            ["F", "FP"],
+                            ["F", "FP"]
                         ]
                     }),
                     queryMode: 'local',

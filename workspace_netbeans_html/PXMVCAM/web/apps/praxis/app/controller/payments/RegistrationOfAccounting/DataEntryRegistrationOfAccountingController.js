@@ -8,7 +8,8 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
     },
     afterRender: function () {
 //        console.log(this.view.params.action);
-//        
+        this.loadProcessors();//        
+
         if (this.view.params.action === 'R') {
             Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
         }
@@ -26,8 +27,31 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         Ext.getCmp(prototype.id + '-PSTGD1').setValue(new Date(currentYear, startMonth, 01));
         
     },
-    //</editor-fold>
+    loadProcessors: function() {
+        var processors = new Array();
+        var store;
+        Ext.Ajax.request({
+            url: prototype.url + '/loadProcessors',
+            method: 'POST',
+            timeout: 60000,
+            autoLoad: true,
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                var data = res.data;
 
+                data.forEach(function callback(record, index, array) {
+                    processors.push([record.A051KEY2, record.A051DESCR1]);
+                });
+                store = Ext.create('Ext.data.ArrayStore', {
+                    storeId: 'processors', autoLoad: true, data: processors, fields: ['code', 'name']
+                });
+                Ext.getCmp(prototype.id + '-cmb02').bindStore(store);
+            },
+            failure: function(response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {
 //        this.setValue('de-txtCODTRAN', '');        
@@ -62,7 +86,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         // Adicional
         var vl_additional = "X";
         // Procesador
-        var vl_processor = "XX";
+        var vl_processor = "XXX";
         
         var vl_op01 = Ext.getCmp(prototype.id + '-op01').getValue();
         var vl_op02 = Ext.getCmp(prototype.id + '-op02').getValue();
@@ -75,7 +99,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         if(vl_op02) vl_mode = 'E';
 
         if(vl_cmb01) vl_additional = vl_cmb01;
-        if(vl_cmb01 === 'D' && vl_mode === 'E') vl_additional = 'B';
+        if(vl_additional === 'D' && vl_mode === 'E') vl_additional = 'B';
         if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
 
         beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
@@ -125,7 +149,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
         Ext.Ajax.request({
             url: prototype.url + '/cargarArchivos',
             method: 'POST',
-            timeout: 60000000,
+            timeout: 60000,
             params: {
                 beanString: beanString
                 // option: beanTemp.option
@@ -156,9 +180,9 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.DataEntryReg
     reversarContabilidad: function (beanTemp) {
         var beanString = JSON.stringify(beanTemp);
         Ext.Ajax.request({
-            url: prototype.url + '/reversarContabilidad',
+            url: prototype.url + '/reversar',
             method: 'POST',
-            timeout: 60000000,
+            timeout: 60000,
             params: {
                 beanString: beanString
                         // option: beanTemp.option

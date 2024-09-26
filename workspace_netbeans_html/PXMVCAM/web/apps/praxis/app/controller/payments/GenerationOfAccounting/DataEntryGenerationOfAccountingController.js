@@ -8,7 +8,8 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     afterRender: function () {
 //        console.log(this.view.params.action);
-        // Solo cuando sea Form: Download
+        this.loadProcessors();
+        // Download
         if (this.view.params.action === 'D') {
             var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
             panel.removeAll();
@@ -26,11 +27,39 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
             }
         }
         
+        // Reversar
         if (this.view.params.action === 'R') {
             Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
+            Ext.getCmp(prototype.id + '-PSTGD2').setVisible(false);
         }
     },
     //</editor-fold>
+    loadProcessors: function() {
+        var processors = new Array();
+//        var paises = new Array();
+        var store;
+        Ext.Ajax.request({
+            url: prototype.url + '/loadProcessors',
+            method: 'POST',
+            timeout: 60000,
+            autoLoad: true,
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                var data = res.data;
+
+                data.forEach(function callback(record, index, array) {
+                    processors.push([record.A051KEY2, record.A051DESCR1]);
+                });
+                store = Ext.create('Ext.data.ArrayStore', {
+                    storeId: 'processors', autoLoad: true, data: processors, fields: ['code', 'name']
+                });
+                Ext.getCmp(prototype.id + '-cmb02').bindStore(store);
+            },
+            failure: function(response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {
@@ -59,9 +88,9 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         beanTemp.VP_TIPO = "";
         
         // Modo
-        var vl_mode = " ";
+        var vl_mode = "X";
         // Adicional
-        var vl_additional = " ";
+        var vl_additional = "X";
         // Procesador
         var vl_processor = "   ";
         
@@ -76,7 +105,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
           if(vl_op02) vl_mode = 'E';
           
           if(vl_cmb01) vl_additional = vl_cmb01;
-          if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
+          if(vl_cmb02) vl_processor = vl_cmb02;
           
           beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
     },
@@ -122,7 +151,47 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         Ext.Ajax.request({
             url: prototype.url + '/procesarArchivos',
             method: 'POST',
-            timeout: 60000000,
+            timeout: 60000,
+            params: {
+                beanString: beanString
+            },
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+
+                var objRtn = res.objRtn;
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...', '');
+                global.Msg({
+                    msg: objRtn.dbException.MESSAGE,
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () { 
+                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        elem.innerHTML = objRtn.dbException.MESSAGE;                        
+                    }
+                });
+            },
+            error: function(){
+                // will fire when timeout is reached
+                global.Msg({
+                    msg: "Server Timeout",
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () { 
+                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        elem.innerHTML = "Server Timeout";                       
+                    }
+                });
+            }
+        });
+    },
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Revertir archivos">
+    reversarContabilidad: function (beanTemp) {
+        var beanString = JSON.stringify(beanTemp);
+        Ext.Ajax.request({
+            url: prototype.url + '/reversar',
+            method: 'POST',
+            timeout: 60000,
             params: {
                 beanString: beanString
                         // option: beanTemp.option
@@ -145,37 +214,15 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                         //me.onCancelClick();                           
                     }
                 });
-            }
-        });
-    },
-    //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Revertir archivos">
-    reversarContabilidad: function (beanTemp) {
-        var beanString = JSON.stringify(beanTemp);
-        Ext.Ajax.request({
-            url: prototype.url + '/reversarContabilidad',
-            method: 'POST',
-            timeout: 60000000,
-            params: {
-                beanString: beanString
-                        // option: beanTemp.option
             },
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function (response, opts) {
-                var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
-
-                var objRtn = res.objRtn;
-                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...', '');
+            error: function(){
+                // will fire when timeout is reached
                 global.Msg({
-                    msg: objRtn.dbException.MESSAGE,
+                    msg: "Server Timeout",
                     icon: objRtn.dbException.SQLCODE,
-                    fn: function () {
-                        //culmino PROCESO                           
-                        //Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});   
+                    fn: function () { 
                         var elem = document.getElementById('GenerationOfAccountingFormMsg');
-                        elem.innerHTML = objRtn.dbException.MESSAGE;
-                        //me.onCancelClick();                           
+                        elem.innerHTML = "Server Timeout";                       
                     }
                 });
             }
@@ -212,7 +259,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         bean.IN_PROCESA = rec.A4556CPROC;
         bean.IN_LEXT = in_NARCH;
         if (rec.A4556CPROC.trim() !== '')
-            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim() + '_Parte' + in_NARCH;
+            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim() + '_' + in_NARCH;
         else
             bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + in_NARCH;
 

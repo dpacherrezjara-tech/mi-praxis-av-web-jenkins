@@ -154,5 +154,25 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
                 rec: rec
             }
         }).show();
+    },
+    btnPagFirst_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.moveFirst();
+    },
+    btnPagPrev_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.movePrevious();
+    },
+    btnPagAfter_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.moveNext();
+    },
+    btnPagLast_click: function(obj, e) {
+        var pag = Ext.getCmp(prototype.id + '-paggin');
+        var pagData = pag.getPageData();
+        pag.moveLast();
     }
 });

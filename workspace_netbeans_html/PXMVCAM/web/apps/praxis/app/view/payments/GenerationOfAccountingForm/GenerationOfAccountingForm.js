@@ -1,4 +1,4 @@
-prototype.widthContenedor = 800;
+prototype.widthContenedor = 790;
 prototype.widthGrid = '100%';
 prototype.id = 'GenerationOfAccountingForm';
 prototype.id01 = 'DataEntryDownload';
@@ -68,7 +68,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.GenerationOfAcco
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-panel-contenedor-grid',
-                                            height: 520,
+                                            height: 600,
                                             layout: 'fit',
                                             items: [
                                                 // <editor-fold defaultstate="collapsed" desc="setGridData">
