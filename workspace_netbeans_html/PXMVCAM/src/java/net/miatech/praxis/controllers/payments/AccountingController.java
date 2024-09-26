@@ -22,6 +22,7 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.praxis.A051;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.AccountingLogic;
@@ -50,6 +51,26 @@ public class AccountingController extends BaseController {
     private static final Logger logError = Logger.getLogger("errorLog");
     private AccountingLogic logic;
 
+    
+    @RequestMapping(value = "/loadProcessors")
+    public @ResponseBody
+    String searchProcessor(ModelMap map, HttpServletRequest request) {
+        List<A051> listaData;
+        try {
+
+            logic = new AccountingLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+            listaData = logic.loadProcessors();
+            map.put("data", listaData);
+            map.put("success", true);
+        } catch (Exception ex) {
+            map.put("success", false);
+            System.out.println(ex.getMessage());
+        }
+        
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "procesarArchivos")
     public @ResponseBody
     String procesarArchivos(ModelMap map, HttpServletRequest request) {
@@ -73,7 +94,6 @@ public class AccountingController extends BaseController {
             map.put("sesion", ex.getMessage());
         }
         return new Gson().toJson(map);
-
     }
     
     @RequestMapping(value = "cargarArchivos")
@@ -102,7 +122,7 @@ public class AccountingController extends BaseController {
 
     }
     
-    @RequestMapping(value = "reversarContabilidad")
+    @RequestMapping(value = "reversar")
     public @ResponseBody
     String reversarContabilidad(ModelMap map, HttpServletRequest request) {
 
@@ -171,7 +191,6 @@ public class AccountingController extends BaseController {
         filter.page.START = 0;
         filter.page.LIMIT = 0;
         try {
-
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             filter.page.PAGROW = 20;
@@ -193,30 +212,24 @@ public class AccountingController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-
+    
     @RequestMapping(value = "getDownloadFileTxt")
     public @ResponseBody
     void getDownloadFileTxt(HttpServletRequest request, HttpServletResponse response) {
+        
         SQP05252Filter filter = new SQP05252Filter();
         String rutaFile = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-        Date date = new Date();
         LocalDateTime myDateObj = LocalDateTime.now();
-//        System.out.println("Before formatting: " + myDateObj);
-//        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("ddMMyyyy");
         String formattedDate = myDateObj.format(myFormatObj);
-//        System.out.println("After formatting: " + formattedDate);
 
         try {
-            //Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
 
             logic = new AccountingLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             List<SQP05252Filter> lst = logic.getSQP05252Filter(filter);
 
-            int len = lst.size();
-            Integer vi = 0;
             String vl_fileName = "CARGUE_TC_" + formattedDate + "_" + filter.FNAME; // + filter.IN_LEXT;
             File file = new File(rutaFile + "\\" + vl_fileName + ".txt");
 
@@ -227,29 +240,22 @@ public class AccountingController extends BaseController {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
             String cadena;
 
-//            cadena = "NO_CONTROL|UNIDAD_OPERATIVA|TRANSACCION_ORIGEN|MONTO_DISPONIBLE|MONEDA_TRX_ORIGEN|TIPO|ESTADO|CUENTA|NUMERO_CLIENTE_ORIGEN|";
-//            cadena += "TRANSACCION_DESTINO|TIPO_DOCUMENTO|MONEDA|NUMERO CLIENTE DESTINO|MONTO A APLICAR|TIPO DE CAMBIO|VALOR TIPO|FECHA(DD-MM-YYYY)|";
-//            cadena += "DESCRIPCION|REFERENCIA";
-//            writer.println("" + cadena );
-            int j = 0;
-            for (vi = 0; vi < len; vi++) {
+            int len = lst.size();
+            for (int vi = 0; vi < len; vi++) {
                 cadena = "";
-                j++;
-                cadena += "" + lst.get(vi).DETA;                
+                cadena += "" + lst.get(vi).DETA;
                 writer.println("" + cadena);
             }
             writer.flush();
-            writer.close();
 
-            /**
-             * Comprimimos archivo generado para su optima descarga
-             */
+//            Comprimimos archivo generado para su optima descarga
 //            if (!zip(vl_fileName))            
 //            response.setContentType("application/zip");
 //            response.setHeader("Content-Disposition", "attachment;filename=\"" + rutaFile + "\\" + vl_fileName + ".zip" + "\"");
 //            InputStream is = new FileInputStream(rutaFile + "\\" + vl_fileName + ".zip");
 //            IOUtils.copy(is, response.getOutputStream());
 //            response.flushBuffer();
+
             response.setContentType("application/text");
             response.setHeader("Content-Disposition", "attachment;filename=\"" + vl_fileName + ".txt" + "\"");
             InputStream is = new FileInputStream(rutaFile + "\\" + vl_fileName + ".txt");
@@ -303,4 +309,18 @@ public class AccountingController extends BaseController {
         zipOutputStream.close();
         fileOutputStream.close();
     }
+    
+//    @RequestMapping(value = "/updatePending")
+//    public
+//    void updatePending(ModelMap map, HttpServletRequest request) {
+//        try {
+//
+//            logic = new AccountingLogic();
+//            logic.setSession((IServerSession) serverSession.getServerSession());
+//            logic.updatePending();
+//        } catch (Exception ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//        
+//    }
 }

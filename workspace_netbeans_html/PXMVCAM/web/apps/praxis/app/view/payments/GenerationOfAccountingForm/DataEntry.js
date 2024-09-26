@@ -107,7 +107,6 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                                 fields: ['code', 'name'],
                                                 data: [
                                                     ["X", "Normal"],
-                                                    ["T", "All"],
                                                     ["J", "Adjustment"],
                                                     ["D", "Debit"],
                                                     ["F", "FP"]
@@ -139,34 +138,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             store: new Ext.data.SimpleStore({
                                                 fields: ['code', 'name'],
                                                 data: [
-                                                    ["   ", "All"],
-                                                    ["AX ", "American Express"],
-                                                    ["CT ", "Cardnet"],
-                                                    ["BP ", "Banco Pichincha"],
-                                                    ["BG ", "Banco Guayaquil"],
-                                                    ["PF ", "Banco Pacificar"],
-                                                    ["ET ", "Expressnet"],
-                                                    ["DC ", "Banco Diners"],
-                                                    ["SK ", "Scotiabank"],
-                                                    ["WP ", "Worldpay"],
-                                                    ["WPI", "Worldpay I"],
-                                                    ["WPP", "Worldpay Pazien"],
-                                                    ["BM ", "Banco Maduro"],
-                                                    ["LK ", "Linkser"],
-                                                    ["IP ", "Izipay"],
-                                                    ["CE ", "Cielo"],
-                                                    ["DS ", "Discover"],
-                                                    ["NB ", "Niubiz"],
-                                                    ["FD ", "First Data"],
-                                                    ["VN ", "Visanet"],
-                                                    ["TB ", "Transback"],
-                                                    ["EV ", "Elavon"],
-                                                    ["SD ", "Santander"],
-                                                    ["BD ", "Bancard"],
-                                                    ["PB ", "Banco Produbanco"],
-                                                    ["CM ", "Credomatic"],
-                                                    ["PM ", "Prisma"],
-                                                    ["IG ", "Ingenico"]
+                                                    ["   ", "All"]
                                                 ]
                                             }),
                                             queryMode: 'local',
