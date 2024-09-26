@@ -383,18 +383,68 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     exportExcel: function () {
-        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
+//        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
+//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
+//        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
+//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
+//        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
+//        this.beanDetails.IN_RED = meDE.bean.data.RED;
+//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
+//            this.beanDetails.IN_STVAL = '1';
+//        } else {
+//            this.beanDetails.IN_STVAL = 'P';
+//        }
+        let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
+        let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
+        let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
+        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
+        var fecha_a_validar = "";
+        this.beanDetails.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
+        this.beanDetails.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
+        this.beanDetails.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+        this.beanDetails.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+        this.beanDetails.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+
+       this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+        if (this.beanDetails.IN_ACCNUMBER === '') {
+            this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+        }
+        if (!chkACCNUMBER) {
+            this.beanDetails.IN_ACCNUMBER = '';
+        }
+
+        this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
+        if (this.beanDetails.IN_MERCHAND === '') {
+            this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
+        }
+        if (!chkMERCHANT) {
+            this.beanDetails.IN_MERCHAND = '';
+        }
+
+        if (this.beanDetails.IN_FROMADATE === '') {
+            this.beanDetails.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+        }
+        if (!chkADATE) {
+            this.beanDetails.IN_FROMADATE = '';
+        }
+
         this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
         this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
-        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
+        this.beanDetails.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
         this.beanDetails.IN_RED = meDE.bean.data.RED;
         this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+        
+        this.beanDetails.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
+        this.beanDetails.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
+        this.beanDetails.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
+        
         if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
             this.beanDetails.IN_STVAL = '1';
         } else {
             this.beanDetails.IN_STVAL = 'P';
         }
+
         me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
         global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
     },
