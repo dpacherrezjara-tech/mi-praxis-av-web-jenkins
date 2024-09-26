@@ -103,7 +103,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
     },
     xpanel_afterrender: function (obj, e) {
-        $('#StatementReconciliationsForm-btnToggleSwitch').change(function () {
+        $('#StatementReconciliationsForm-btnToggleSwitchFT').change(function () {
             me.procesador();
         });
 

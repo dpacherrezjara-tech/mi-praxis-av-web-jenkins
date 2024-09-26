@@ -10,6 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     searchParams: {},
     searchParamsPending: {},
     beanDetails: {},
+    beanScan: {},
     beanAgrupa: {},
     lstA1852: {},
     dataObtain: {},
@@ -177,25 +178,28 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     onSearchCompleteDetail: function () {
         console.log('onSearchCompleteDetail');
-        meDE.bean.data.IN_FROMADATE = meDE.bean.data.VALDATE;
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
-        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
-        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
-        meDE.bean.data.IN_DATECI = meDE.beanResult.DATECI;
-        meDE.bean.data.IN_TRANCI = meDE.beanResult.TRANCI;
-        meDE.bean.data.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
+        console.log(meDE.bean.data, 'BEAN DATA DE JOSUE');
+        this.beanScan = {}
+        this.beanScan.IN_FROMADATE = meDE.bean.data.VALDATE;
+        this.beanScan.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        this.beanScan.IN_MERCHAND = meDE.bean.data.MERCHAND;
+        this.beanScan.IN_BANDOC = meDE.bean.data.BANDOC;
+        this.beanScan.IN_NETO = meDE.bean.data.NETO + "";
+        this.beanScan.IN_RED = meDE.bean.data.RED;
+        this.beanScan.IN_STVAL = meDE.bean.data.STVAL;
+        this.beanScan.IN_DATECI = meDE.beanResult.DATECI;
+        this.beanScan.IN_TRANCI = meDE.beanResult.TRANCI;
+        this.beanScan.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
 
-        if (meDE.bean.data.IN_STVAL === 'Match' ) {
-            meDE.bean.data.IN_STVAL = '1';
-        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
-            meDE.bean.data.IN_STVAL = '5';
+        if (this.beanScan.IN_STVAL === 'Match' ) {
+            this.beanScan.IN_STVAL = '1';
+        } else if ( this.beanScan.IN_STVAL === 'Match Manual' ){
+            this.beanScan.IN_STVAL = '5';
         } else {
-            meDE.bean.data.IN_STVAL = 'P';
+            this.beanScan.IN_STVAL = 'P';
         }
-        var beanString = JSON.stringify(meDE.bean.data);
+        console.log(this.beanScan, 'this.beanScan')
+        var beanString = JSON.stringify(this.beanScan);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL',
             method: 'POST',
@@ -211,6 +215,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                         data: res.data,
                         autoLoad: true
                     });
+                    console.log(res.data, 'res.data complete detail')
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
@@ -383,19 +388,72 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     exportExcel: function () {
-        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
-        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
-        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
-        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
-        this.beanDetails.IN_RED = meDE.bean.data.RED;
-        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
-        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
-            this.beanDetails.IN_STVAL = '1';
-        } else {
-            this.beanDetails.IN_STVAL = 'P';
-        }
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetails);
+//        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
+//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
+//        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
+//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
+//        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
+//        this.beanDetails.IN_RED = meDE.bean.data.RED;
+//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
+//            this.beanDetails.IN_STVAL = '1';
+//        } else {
+//            this.beanDetails.IN_STVAL = 'P';
+//        }
+
+        
+//        this.beanDetails = {}
+//        let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
+//        let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
+//        let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
+//        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
+//        var fecha_a_validar = "";
+//        this.beanDetails.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+//        this.beanDetails.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+//
+//       this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+//        if (this.beanDetails.IN_ACCNUMBER === '') {
+//            this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+//        }
+//        if (!chkACCNUMBER) {
+//            this.beanDetails.IN_ACCNUMBER = '';
+//        }
+//
+//        this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
+//        if (this.beanDetails.IN_MERCHAND === '') {
+//            this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
+//        }
+//        if (!chkMERCHANT) {
+//            this.beanDetails.IN_MERCHAND = '';
+//        }
+//
+//        if (this.beanDetails.IN_FROMADATE === '') {
+//            this.beanDetails.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+//        }
+//        if (!chkADATE) {
+//            this.beanDetails.IN_FROMADATE = '';
+//        }
+//
+//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
+//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
+//        this.beanDetails.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
+//        this.beanDetails.IN_RED = meDE.bean.data.RED;
+//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
+//        
+//        this.beanDetails.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
+//        this.beanDetails.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
+//        this.beanDetails.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
+//        
+//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
+//            this.beanDetails.IN_STVAL = '1';
+//        } else {
+//            this.beanDetails.IN_STVAL = 'P';
+//        }
+
+        me.paramsDetail.beanString = JSON.stringify(this.beanScan);
         global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
     },
     mostrarCombinacionValida: function (combination, diff) {
@@ -494,65 +552,66 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.sumAmount = 0;
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
+        this.beanScan = {}
         let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
         let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
         let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
         let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
         var fecha_a_validar = "";
-        meDE.bean.data.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
-        meDE.bean.data.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+        this.beanScan.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
+        this.beanScan.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
+        this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+        this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+        this.beanScan.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
 
-        meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
-        if (meDE.bean.data.IN_ACCNUMBER === '') {
-            meDE.bean.data.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+        this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
+        if (this.beanScan.IN_ACCNUMBER === '') {
+            this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
         }
         if (!chkACCNUMBER) {
-            meDE.bean.data.IN_ACCNUMBER = '';
+            this.beanScan.IN_ACCNUMBER = '';
         }
 
-        meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
-        if (meDE.bean.data.IN_MERCHAND === '') {
-            meDE.bean.data.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
+        this.beanScan.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
+        if (this.beanScan.IN_MERCHAND === '') {
+            this.beanScan.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
         }
         if (!chkMERCHANT) {
-            meDE.bean.data.IN_MERCHAND = '';
+            this.beanScan.IN_MERCHAND = '';
         }
 
-        if (meDE.bean.data.IN_FROMADATE === '') {
-            meDE.bean.data.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
+        if (this.beanScan.IN_FROMADATE === '') {
+            this.beanScan.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
         }
         if (!chkADATE) {
-            meDE.bean.data.IN_FROMADATE = '';
+            this.beanScan.IN_FROMADATE = '';
         }
 
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
-        meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
+        this.beanScan.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        this.beanScan.IN_BANDOC = meDE.bean.data.BANDOC;
+        this.beanScan.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
+        this.beanScan.IN_RED = meDE.bean.data.RED;
+        this.beanScan.IN_STVAL = meDE.bean.data.STVAL;
         
-        meDE.bean.data.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
-        meDE.bean.data.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
-        meDE.bean.data.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
+        this.beanScan.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
+        this.beanScan.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
+        this.beanScan.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
         
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
-            meDE.bean.data.IN_STVAL = '1';
+        if (this.beanScan.IN_STVAL === 'Match' || this.beanScan.IN_STVAL === 'Match Manual') {
+            this.beanScan.IN_STVAL = '1';
         } else {
-            meDE.bean.data.IN_STVAL = 'P';
+            this.beanScan.IN_STVAL = 'P';
         }
 
         if (
-                !this.bean.data.IN_FROMADATE &&
-                !this.bean.data.IN_TOADATE &&
-                !this.bean.data.IN_FROMSDATE &&
-                !this.bean.data.IN_TOSDATE &&
-                !this.bean.data.IN_SCARCOD &&
-                !this.bean.data.IN_ACCNUMBER &&
-                !this.bean.data.IN_VALDATE &&
-                !this.bean.data.IN_strNETO
+                !this.beanScan.IN_FROMADATE &&
+                !this.beanScan.IN_TOADATE &&
+                !this.beanScan.IN_FROMSDATE &&
+                !this.beanScan.IN_TOSDATE &&
+                !this.beanScan.IN_SCARCOD &&
+                !this.beanScan.IN_ACCNUMBER &&
+                !this.beanScan.IN_VALDATE &&
+                !this.beanScan.IN_strNETO
                 ) {
             global.Msg({msg: 'Fields to Scan must be filled out'});
             return;
@@ -571,13 +630,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 arrayNormal.push(value.data);
             }
         }
+        console.log(arrayNormal,'arrayNormal')
         let listAux = {};
 
         for (let value of arrayNormal) {
             listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
         }
-
-        var beanString = JSON.stringify(meDE.bean.data);
+        
+        var beanString = JSON.stringify(this.beanScan);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL',
             method: 'POST',
@@ -590,6 +650,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
                 if (res.success) {
                     let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
+                    console.log(lstNormal, 'lstNormal')
+                    console.log(res.data, 'res.data')
                     for (let item of res.data) {
                         if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
                             continue
@@ -620,6 +682,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                         data: lstNormal,
                         autoLoad: true
                     });
+                    console.log(lstNormal, 'lstNormal dadadadada')
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
 
                     meDE.calcularMontos();
@@ -723,6 +786,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     onCancelClick: function (btn) {
+        
         this.view.close();
     },
     // </editor-fold>
