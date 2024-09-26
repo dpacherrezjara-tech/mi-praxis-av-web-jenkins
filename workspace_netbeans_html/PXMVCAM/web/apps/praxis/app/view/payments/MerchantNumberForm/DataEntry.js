@@ -505,7 +505,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     },
                                                                 },
                                                                 {
-                                                                    text: 'Bank Name', dataIndex: 'BANKNAM', width: 317, align: 'left',
+                                                                    text: 'Bank Name', dataIndex: 'BANKNAM', width: 305, align: 'left',
 //                                                                    editor: {
 //                                                                        xtype: 'textfield',
 //                                                                        editable: true,
@@ -669,7 +669,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     },
                                                                 },
                                                                 {
-                                                                    text: 'Country C.', dataIndex: 'SCOUNTRY', width: 79,
+                                                                    text: 'Country C.', dataIndex: 'SCOUNTRY', width: 67,
                                                                     editor: {
                                                                         xtype: 'textfield',
                                                                         editable: true,
