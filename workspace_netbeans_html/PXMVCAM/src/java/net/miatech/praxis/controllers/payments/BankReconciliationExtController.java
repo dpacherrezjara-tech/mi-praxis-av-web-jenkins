@@ -1,5 +1,5 @@
 package net.miatech.praxis.controllers.payments;
-
+//<editor-fold defaultstate="collapsed" desc="Imports">
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,9 +17,12 @@ import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
 import net.miatech.praxis.payment.dto.SPBSR005Filter;
 import net.miatech.praxis.payment.dto.SPBSR006Filter;
+import net.miatech.praxis.payment.dto.SPBSR007Filter;
+import net.miatech.praxis.payment.dto.SPBSR008Filter;
 import net.miatech.praxis.payment.entities.X3180;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
+import net.miatech.utils.CustomExcelCell;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -41,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+//</editor-fold>
 /**
  *
  * @author dvicente
@@ -88,6 +92,22 @@ public class BankReconciliationExtController {
         System.out.println("***** BankReconciliationExt - loadSettlementInfo *****");
         SPBSR004Filter filter = logic.loadSPBSR004Filter(params);
         System.out.println("Item Found");
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadTaxes")
+    public ResponseEntity<?> loadTaxes(SPBSR007Filter params) throws Exception {
+        System.out.println("***** BankReconciliationExt - loadTaxes *****");
+        SPBSR007Filter filter = logic.loadSPBSR007Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadHeaders")
+    public ResponseEntity<?> loadHeaders(SPBSR008Filter params) throws Exception {
+        System.out.println("***** BankReconciliationExt - loadHeaders *****");
+        SPBSR008Filter filter = logic.loadSPBSR008Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
     //</editor-fold>
@@ -448,5 +468,194 @@ public class BankReconciliationExtController {
         headers.setContentDispositionFormData("attachment", prefix + ".zip");
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "downloadBankStatements",method = RequestMethod.POST)
+    public ResponseEntity<?> downloadStatements(@RequestBody SPBSR001Filter params) throws Exception{
+        System.out.println("***** BankReconciliationExt - loadStatements *****");
+        params.setExcel(true);
+        SPBSR001Filter filter = logic.loadSPBSR001Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 6);
+        String title = "BankReconciliation - Bank_" 
+                + params.getIN_PRDAF() + "_" + params.getIN_PRDAT()
+                + "_" + uuid;
+        
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Processing\nDate"));
+        header.add(new CustomExcelCell("Doc. Type"));
+        header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Payment\nDate"));
+        header.add(new CustomExcelCell("Status"));
+        header.add(new CustomExcelCell("Suggested\nProcessor"));
+        header.add(new CustomExcelCell("Country"));
+        header.add(new CustomExcelCell("Bank Code"));
+        header.add(new CustomExcelCell("Bank Name"));
+        header.add(new CustomExcelCell("Accounting\nCode"));
+        header.add(new CustomExcelCell("Profit\nCenter"));
+        header.add(new CustomExcelCell("Bank\nAccount"));
+        header.add(new CustomExcelCell("Society"));
+        header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("Text"));
+        header.add(new CustomExcelCell("Large Text"));
+        header.add(new CustomExcelCell("Currency"));
+        header.add(new CustomExcelCell("NET"));
+        header.add(new CustomExcelCell("NET\nReconciled"));
+        header.add(new CustomExcelCell("Local\nCurrency 2"));
+        header.add(new CustomExcelCell("Local\nAmount 2"));
+        header.add(new CustomExcelCell("Reconciled\nProcessor"));
+        header.add(new CustomExcelCell("User\nUpdate"));
+        header.add(new CustomExcelCell("Date\nUpdate"));
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getPRDA()));
+            row.add(new CustomExcelCell(formatTDOC(obj.getTDOC())));
+            row.add(new CustomExcelCell(obj.getVALDATE()));
+            row.add(new CustomExcelCell(obj.getADATE()));
+            row.add(new CustomExcelCell(formatSTVAL(obj.getSTVAL())));
+            row.add(new CustomExcelCell(obj.getDESC_SPRO()));
+            row.add(new CustomExcelCell(obj.getSCOUNTRY()));
+            row.add(new CustomExcelCell(obj.getCODEBANK()));
+            row.add(new CustomExcelCell(obj.getDESC_BANK()));
+            row.add(new CustomExcelCell(obj.getACCOUNT()));
+            row.add(new CustomExcelCell(obj.getBENCENC()));
+            row.add(new CustomExcelCell(obj.getACCCOMP()));
+            row.add(new CustomExcelCell(obj.getSOCIETY()));
+            row.add(new CustomExcelCell(obj.getREFER()));
+            row.add(new CustomExcelCell(obj.getTEXTO()));
+            row.add(new CustomExcelCell(obj.getTEXTOLAR()));
+            row.add(new CustomExcelCell(obj.getSCURRENCY()));
+            row.add(new CustomExcelCell(obj.getNETO()));
+            row.add(new CustomExcelCell(obj.getNETOC()));
+            row.add(new CustomExcelCell(obj.getLOCRENCY2()));
+            row.add(new CustomExcelCell(obj.getLOCAMOUNT2()));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getUSUP()));
+            row.add(new CustomExcelCell(obj.getFEUP()));
+            data.add(row);
+        });
+        return exportUtils.createCustomExcel(data,title);
+    }
+    
+    @RequestMapping(value = "downloadSettlements",method = RequestMethod.POST)
+    public ResponseEntity<?> downloadSettlements(@RequestBody SPBSR003Filter params) throws Exception{
+        System.out.println("***** BankReconciliationExt - loadStatements *****");
+        params.setExcel(true);
+        SPBSR003Filter filter = logic.loadSPBSR003Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 6);
+        String title = "BankReconciliation - Settl_"
+                + params.getIN_PRDAF() + "_" + params.getIN_PRDAT() 
+                + "_" + uuid;
+        
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Processing\nDate"));
+        header.add(new CustomExcelCell("Payment\nDate"));
+        header.add(new CustomExcelCell("Doc. Type"));
+        header.add(new CustomExcelCell("Status"));
+        header.add(new CustomExcelCell("Country"));
+        header.add(new CustomExcelCell("Merchant"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Agent"));
+        header.add(new CustomExcelCell("Card\nType"));
+        header.add(new CustomExcelCell("Card\nCode"));
+        header.add(new CustomExcelCell("Card Number"));
+        header.add(new CustomExcelCell("Auth"));
+        header.add(new CustomExcelCell("Curr."));
+        header.add(new CustomExcelCell("Trans. Amount"));
+        header.add(new CustomExcelCell("Sales Amount"));
+        header.add(new CustomExcelCell("Comm."));
+        header.add(new CustomExcelCell("NET"));
+        header.add(new CustomExcelCell("Payment\nCurrency"));
+        header.add(new CustomExcelCell("Payment\nAmount"));
+        header.add(new CustomExcelCell("Transaction\nNumber"));
+        header.add(new CustomExcelCell("Bank\nCode"));
+        header.add(new CustomExcelCell("Society"));
+        header.add(new CustomExcelCell("Bandoc"));
+        header.add(new CustomExcelCell("Statement ID"));
+        header.add(new CustomExcelCell("User\nUpdate"));
+        header.add(new CustomExcelCell("Date\nUpdate"));
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getPRDA()));
+            row.add(new CustomExcelCell(obj.getADATE()));
+            row.add(new CustomExcelCell(formatTDOC(obj.getTDOC())));
+            row.add(new CustomExcelCell(formatSTVAL(obj.getSTVAL())));
+            row.add(new CustomExcelCell(obj.getSCOUNTRY()));
+            row.add(new CustomExcelCell(obj.getMERCHAND()));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getSAGENT()));
+            row.add(new CustomExcelCell(obj.getTIPOTAR()));
+            row.add(new CustomExcelCell(obj.getSCARCOD()));
+            row.add(new CustomExcelCell(obj.getSCARDN()));
+            row.add(new CustomExcelCell(obj.getSAUTHOC()));
+            row.add(new CustomExcelCell(obj.getSCURRENCY()));
+            row.add(new CustomExcelCell(obj.getTOTAL()));
+            row.add(new CustomExcelCell(obj.getSVFOP()));
+            row.add(new CustomExcelCell(obj.getCOMISION()));
+            row.add(new CustomExcelCell(obj.getNETO()));
+            row.add(new CustomExcelCell(obj.getMONEDAPAGO()));
+            row.add(new CustomExcelCell(obj.getIMPORTEPAG()));
+            row.add(new CustomExcelCell(obj.getTRAN()));
+            row.add(new CustomExcelCell(obj.getCODEBANK()));
+            row.add(new CustomExcelCell(obj.getSOCIETY()));
+            row.add(new CustomExcelCell(obj.getBANDOC()));
+            row.add(new CustomExcelCell(obj.getLIQUIDACIO()));
+            row.add(new CustomExcelCell(obj.getUSUP()));
+            row.add(new CustomExcelCell(obj.getFEUP()));
+            data.add(row);
+        });
+        return exportUtils.createCustomExcel(data,title);
+    }
     //</editor-fold> 
+    
+    //<editor-fold defaultstate="collapsed" desc="Functions">
+    private static String formatSTVAL(String stval){
+        String status = "";
+        switch (stval) {
+            case "1":
+                status = "Match";
+                break;
+            case "2":
+                status = "Settlement w/o Statement";
+                break;
+            case "3":
+                status = "Statement w/o Settlement";
+                break;
+            case "4":
+                status = "Match Difference";
+                break;
+            case "5":
+                status = "Match Manual";
+                break;
+        }
+        return status;
+    }
+    
+    private static String formatTDOC(String tdoc){
+        String doc = "";
+        switch (tdoc) {
+            case "S":
+                doc = "Sale";
+                break;
+            case "D":
+                doc = "Debit";
+                break;
+            case "V":
+                doc = "Void";
+                break;
+        }
+        return doc;
+    
+    }
+//</editor-fold>
 }

@@ -33,29 +33,14 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementD
                 sortable: false,
                 xtype: 'actioncolumn',
                 width: 60,
-                text: 'Phase<br>1',
+                text: 'Detail',
                 locked: true,
                 align: 'center',
                 items: [
                     {
                         iconCls: 'prx-icon-detail',
                         tooltip: 'Open Phase 1<br>Detail',
-                        handler: 'onClickBPOF1'
-                    }
-                ]
-            },
-            {
-                sortable: false,
-                xtype: 'actioncolumn',
-                width: 60,
-                text: 'Phase<br>2',
-                locked: true,
-                align: 'center',
-                items: [
-                    {
-                        iconCls: 'prx-icon-detail',
-                        tooltip: 'Open Phase 2<br>Detail',
-                        handler: 'onClickBPOF2'
+                        handler: 'onClickBPO'
                     }
                 ]
             },
@@ -96,7 +81,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementD
                     {text: 'Country', dataIndex: 'SCOUNTRY', width: 80},
                     {text: 'Merchant', dataIndex: 'MERCHAND', width: 120},
                     {text: 'Processor', dataIndex: 'DESC_PRO', width: 160},
-                    {text: 'Country', dataIndex: 'SCOUNTRY', width: 60},
                     {text: 'Agent', dataIndex: 'SAGENT', width: 80}
                 ]
             },
@@ -183,7 +167,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementD
                 columns:[
                     {text: 'Transaction<br>Number', dataIndex: 'TRAN', width: 90},
                     {text: 'Bank Code', dataIndex: 'CODEBANK', width: 80},
-                    {text: 'Bank Name', dataIndex: 'DESC_BANK', width: 130},
                     {text: 'Society', dataIndex: 'SOCIETY', width: 80},
                     {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
                     {text: 'Statement', dataIndex: 'LIQUIDACIO', width: 150}
