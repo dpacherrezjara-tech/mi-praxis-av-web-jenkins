@@ -458,6 +458,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     mostrarData: function () {
 //        this.setValue('de-txtSDATE', meDe.bean.SDATE);
+        if( this.bean.NEGOC !== '1' ){
+            Ext.getCmp(prototype.id + '-containerPanelScan').hide();
+        }else{
+            Ext.getCmp(prototype.id + '-containerPanelScan').show();
+        }
+            
         if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
             Ext.getCmp(prototype.id + '-mostrarComment').hide();
             Ext.getCmp(prototype.id + '-labelScan').hide();
@@ -469,7 +475,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 //            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1072);
 //            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1074);
             Ext.getCmp(prototype.id + '-vacioComment').show();
-            this.hiddenByMatch()
+            this.hiddenByMatch();
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
             Ext.getCmp(prototype.id + '-labelScan').show();
@@ -496,6 +502,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtINVORNBR', this.bean.INVORNBR);
         this.setValue('de-txtZONE', this.bean.ZONE);
         this.setValue('de-txtCOUNTRY', this.bean.DESC_SCOUNTRY);
+        this.setValue('de-txtNEGOC', this.bean.NEGOC);
         this.setValue('de-txtSTCON', this.bean.STCON);
         this.setValue('de-txtFCONT', this.bean.FCONT);
 //        this.setValue('de-txtIDCON', this.bean.IDCON);
