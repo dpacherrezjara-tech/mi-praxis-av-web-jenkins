@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.SettlementDetailGridController', {
+Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.HeaderDetailGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.SettlementDetailGridController',
+    alias: 'controller.HeaderDetailGridController',
     url: CONTEXTPATH + '/BankReconciliationExt',
     request: axios.create({
         baseURL: CONTEXTPATH + '/BankReconciliationExt',
@@ -8,8 +8,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.Settlement
       }),
     init: function (view) {
         if (view.backButton) {
-            Ext.getCmp(prototype.id + '-stl-btnBack').show();
-            Ext.getCmp(prototype.id + '-stl-btnBack').on('click', view.backButton);
+            Ext.getCmp(prototype.id + '-head-btnBack').show();
+            Ext.getCmp(prototype.id + '-head-btnBack').on('click', view.backButton);
         }
     },
     afterRender: async function (obj, e) {
@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.Settlement
             proxy: {
                 type: 'ajax',
                 enablePaging: true,
-                url: `${me.url}/loadSettlements`,
+                url: `${me.url}/loadHeaders`,
                 extraParams: view.searchParams,
                 timeout: 600000,
                 reader: {
@@ -50,9 +50,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.Settlement
         });
         view.setStore(store);
     },
-    onClickBPO: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
-        alert('Prueba');
-    },
     downloadExcel: function () {
         const me = this;
         let params = me.view.searchParams;
@@ -66,7 +63,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.Settlement
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            global.downloadFile(me.request,'/downloadSettlements',params);
+                            global.downloadFile(me.request,'/downloadHeaders',params);
                         }
                     }
                 });

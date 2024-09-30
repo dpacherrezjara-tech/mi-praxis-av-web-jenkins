@@ -11,10 +11,8 @@ import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
 import net.miatech.praxis.payment.dto.SPBSR005Filter;
 import net.miatech.praxis.payment.dto.SPBSR006Filter;
-import net.miatech.praxis.payment.dto.SPMC001Filter;
-import net.miatech.praxis.payment.entities.A2281;
-import net.miatech.praxis.payment.entities.A4451;
-import net.miatech.praxis.payment.entities.A4451PK;
+import net.miatech.praxis.payment.dto.SPBSR007Filter;
+import net.miatech.praxis.payment.dto.SPBSR008Filter;
 import net.miatech.praxis.payment.entities.MPF060;
 import net.miatech.praxis.payment.entities.MPF083;
 import net.miatech.praxis.payment.entities.MPF091;
@@ -144,5 +142,26 @@ public class BankReconciliationExtDAO implements BankReconciliationExtLogic{
         filter.setVMESSAGE((String) obj.get("VMESSAGE"));
         return filter;
     }
+
+    @Override
+    public SPBSR007Filter loadSPBSR007Filter(SPBSR007Filter filter) throws Exception {
+        filter.setPage();
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR007",
+                params, new BeanPropertyRowMapper(MPF091.class));
+        filter.setResponse((List<MPF091>) obj.get("result"));
+        filter.setPageOut(obj);
+        return filter;
+    }
     
+    @Override
+    public SPBSR008Filter loadSPBSR008Filter(SPBSR008Filter filter) throws Exception {
+        filter.setPage();
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPBSR008",
+                params, new BeanPropertyRowMapper(MPF083.class));
+        filter.setResponse((List<MPF083>) obj.get("result"));
+        filter.setPageOut(obj);
+        return filter;
+    }
 }
