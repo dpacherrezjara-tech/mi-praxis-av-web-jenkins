@@ -2,6 +2,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetail
     extend: 'Ext.app.ViewController',
     alias: 'controller.BankDetailGridController',
     url: CONTEXTPATH + '/BankReconciliationExt',
+    request: axios.create({
+        baseURL: CONTEXTPATH + '/BankReconciliationExt',
+        timeout: 20000
+      }),
     init: function (view) {
         if (view.backButton) {
             Ext.getCmp(prototype.id + '-bkd-btnBack').show();
@@ -89,8 +93,23 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankDetail
         }).show();
     },
     downloadExcel: function () {
-        let params = this.view.searchParams;
-        global.getFile(`${this.url}/downloadBankDetail?${new URLSearchParams(params)}`);
+        const me = this;
+        let params = me.view.searchParams;
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download Excel?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            global.downloadFile(me.request,'/downloadBankStatements',params);
+                        }
+                    }
+                });
+        //global.getFile(`${this.url}/downloadBankStatements?${new URLSearchParams(params)}`);
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
