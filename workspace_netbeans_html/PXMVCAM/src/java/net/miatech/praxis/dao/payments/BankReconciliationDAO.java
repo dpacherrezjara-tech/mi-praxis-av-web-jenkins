@@ -1702,11 +1702,13 @@ public class BankReconciliationDAO {
 
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY");
                 objRtn.CERROR = rs01.getString("CERROR").trim();
+                objRtn.NEGOC = rs01.getString("NEGOC").trim();
                 objRtn.DES_CERROR = rs01.getString("DES_CERROR").trim();
                 objRtn.CERROIN = rs01.getString("CERROIN").trim();
                 objRtn.DES_CERROIN = rs01.getString("DES_CERROIN").trim();
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
                 objRtn.QTYDOC = rs01.getInt("QTYDOC");
+               
                 
 
                 objRtn.COMMFAREC = rs01.getDouble("COMMFAREC");

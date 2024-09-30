@@ -555,6 +555,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         }else if(pestañaActiva.includes('Acredit')){
             prefixDeb = 'Acredit'
         }
+        if( this.bean.NEGOC !== '1' ){
+            Ext.getCmp(prototype.id + '-containerPanelScan').hide();
+        }else{
+            Ext.getCmp(prototype.id + '-containerPanelScan').show();
+        }
 //        this.setValue('de-txtSDATE', meDe.bean.SDATE);
         if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
             Ext.getCmp(prototype.id + '-mostrarComment').hide();
@@ -612,6 +617,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         this.setValue('de-txtINVORNBR', this.bean.INVORNBR);
         this.setValue('de-txtZONE', this.bean.ZONE);
         this.setValue('de-txtCOUNTRY', this.bean.DESC_SCOUNTRY);
+        this.setValue('de-txtNEGOC', this.bean.NEGOC);
         this.setValue('de-txtSTCON', this.bean.STCON);
         this.setValue('de-txtFCONT', this.bean.FCONT);
 //        this.setValue('de-txtIDCON', this.bean.IDCON);
