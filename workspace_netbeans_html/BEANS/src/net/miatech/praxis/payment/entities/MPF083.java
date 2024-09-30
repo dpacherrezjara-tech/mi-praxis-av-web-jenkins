@@ -21,5 +21,5 @@ public class MPF083 {
     
     //OTROS CAMPOS
     private String DESC_PRO;
-    private Integer QTY_SETTL,QTY_TAX;
+    private Integer QTY_SETTL,QTY_TAX,QTY_DETAIL;
 }

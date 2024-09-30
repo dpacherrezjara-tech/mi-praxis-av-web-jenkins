@@ -14,7 +14,8 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.ExtBankReconcilia
         'Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettlement',
         'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailGrid',
         'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementDetailGrid',
-        'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGrid'
+        'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGrid',
+        'Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.HeaderDetailGrid'
     ],
     controller: 'ExteriorBankReconciliationController',
     layout: {
@@ -120,7 +121,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.ExtBankReconcilia
                                             ]
                                         }
                                         //</editor-fold>
-
                                     ]
                                 }
                             ]

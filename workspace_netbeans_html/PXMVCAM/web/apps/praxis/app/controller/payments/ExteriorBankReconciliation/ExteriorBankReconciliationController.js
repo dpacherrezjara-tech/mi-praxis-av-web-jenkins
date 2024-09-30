@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             });
             //</editor-fold>
             
-            //<editor-fold defaultstate="collapsed" desc="Settlement Browser">
+            //<editor-fold defaultstate="collapsed" desc="Tax Browser">
             const cmbSettlCurr3 = Ext.getCmp(prototype.id + '-cmbSettlCurr3');
             const cmbSettlCODPRO3 = Ext.getCmp(prototype.id + '-cmbSettlCODPRO3');
             const cmbSettlPCurr3 = Ext.getCmp(prototype.id + '-cmbSettlPCurr3');
@@ -86,6 +86,22 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             });
             //</editor-fold>
 
+            //<editor-fold defaultstate="collapsed" desc="Header Browser">
+            const cmbSettlCurr4 = Ext.getCmp(prototype.id + '-cmbSettlCurr4');
+            const cmbSettlCODPRO4 = Ext.getCmp(prototype.id + '-cmbSettlCODPRO4');
+            const cmbSettlPCurr4 = Ext.getCmp(prototype.id + '-cmbSettlPCurr4');
+
+            me.setComboStore({cmp: cmbSettlCurr4, data: me.monedas,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
+            me.setComboStore({cmp: cmbSettlCODPRO4, data: me.codpro,
+                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
+            me.setComboStore({cmp: cmbSettlPCurr4, data: me.monedas,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
+
+            cmbSettlCODPRO3.on('select', function (cmb, record) {
+                Ext.getCmp(prototype.id + '-txtSettlSEQPRO4').setValue(record.data.A4451SEQ || '');
+            });
+            //</editor-fold>
             console.log(data);
         }
         filters.unmask();
@@ -120,6 +136,12 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
                 searchParams: params
             });
             mainPanel.add(taxDetail);
+        } else if (type === 'H'){
+            const headerDetail = Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.HeaderDetailGrid', {
+                id: prototype.id + '-HeaderDetailGrid-1',
+                searchParams: params
+            });
+            mainPanel.add(headerDetail);
         }
     },
     onChangeModule: function (radiogroup, newValue, oldValue) {
@@ -133,6 +155,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
         }
     },
     onChangeFiltersBB: function (btn) {
+        const mainPanel = Ext.getCmp(prototype.id + '-bankContent');
+        mainPanel.removeAll();
         if (btn.value === 'F') {
             Ext.getCmp(prototype.id + '-formFiltersBB-1').hide();
             Ext.getCmp(prototype.id + '-formFiltersBB-2').show();
@@ -142,14 +166,23 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
         }
     },
     onChangeFiltersBS: function(btn) {
+        const mainPanel = Ext.getCmp(prototype.id + '-settlContent');
+        mainPanel.removeAll();
         if (btn.value === 'F') {
             Ext.getCmp(prototype.id + '-formFiltersBS-1').hide();
             Ext.getCmp(prototype.id + '-formFiltersBS-2').show();
             Ext.getCmp(prototype.id + '-formFiltersBS-3').hide();
+            Ext.getCmp(prototype.id + '-formFiltersBS-4').hide();
         } else if (btn.value === 'T') {
             Ext.getCmp(prototype.id + '-formFiltersBS-1').hide();
             Ext.getCmp(prototype.id + '-formFiltersBS-2').hide();
             Ext.getCmp(prototype.id + '-formFiltersBS-3').show();
+            Ext.getCmp(prototype.id + '-formFiltersBS-4').hide();
+        } else if (btn.value === 'H') {
+            Ext.getCmp(prototype.id + '-formFiltersBS-1').hide();
+            Ext.getCmp(prototype.id + '-formFiltersBS-2').hide();
+            Ext.getCmp(prototype.id + '-formFiltersBS-3').hide();
+            Ext.getCmp(prototype.id + '-formFiltersBS-4').show();
         }
     },
     //<editor-fold defaultstate="collapsed" desc="Format Parameters">
@@ -178,6 +211,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             filters = Ext.getCmp(prototype.id + '-formFiltersBS-2').getForm().getValues();
         } else if (type === 'T'){
             filters = Ext.getCmp(prototype.id + '-formFiltersBS-3').getForm().getValues();
+        } else if (type === 'H'){
+            filters = Ext.getCmp(prototype.id + '-formFiltersBS-4').getForm().getValues();
         }
         console.log('Search Params: ', filters);
         return filters;

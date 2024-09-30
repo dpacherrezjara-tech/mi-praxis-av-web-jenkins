@@ -18,8 +18,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SPBSR008Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_TDATE,IN_PRDAF,IN_PRDAT,IN_CODPRO,IN_SEQPRO,IN_LIQUIDACIO,IN_MONEDA,IN_MERCHANT,
-            IN_BANDOC,IN_FSELEC,IN_ACCOUNT;
+    private String IN_CCUST,IN_TDATE,IN_PRDAF,IN_PRDAT,IN_CODPRO,IN_SEQPRO,IN_LIQUIDACIO,IN_MONEDA,IN_MONEDAPAGO
+            ,IN_MERCHANT,IN_BANDOC,IN_FSELEC,IN_ACCOUNT;
     private Double IN_IMPORTE,IN_IMPORTEPAG;
     List<MPF083> response = new ArrayList<>();
 }

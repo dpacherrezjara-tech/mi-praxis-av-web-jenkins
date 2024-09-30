@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGrid', {
+Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.HeaderDetailGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-TaxDetailGrid',
+    alias: 'widget.' + prototype.id + '-HeaderDetailGrid',
     requires: [
-        'Ext.Praxis.controller.payments.ExteriorBankReconciliation.TaxDetailGridController'
+        'Ext.Praxis.controller.payments.ExteriorBankReconciliation.HeaderDetailGridController'
     ],
-    controller: 'TaxDetailGridController',
+    controller: 'HeaderDetailGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGr
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
             {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 80},
             {text: 'Payment<br>Date', dataIndex: 'FLIQUIDACI', width: 80},
-            {text: 'Status', dataIndex: 'FSELEC', width: 160,
+            {text: 'Status', dataIndex: 'FSELEC', width: 110,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "text-align:center;font-weight:bold;background-color:#8EDFB3;";
                     const opts = {
@@ -42,11 +42,11 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGr
                     return opts[value.trim()] || '';
                 }
             },
-            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 180},
             {text: 'Merchant ID', dataIndex: 'MERCHAND', width: 130},
             {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 210},
             {
-                text: 'Tax Information',
+                text: 'Header Information',
                 defaults: {
                     menuDisabled: true,
                     sortable: true,
@@ -56,9 +56,29 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGr
                         return value;
                     }
                 }, columns: [
-                    {text: 'Code', dataIndex: 'CODIGO', width: 120},
                     {text: 'Curr.', dataIndex: 'MONEDA', width: 80},
-                    {text: 'Amount', dataIndex: 'IMPORTE', width: 100,
+                    {text: 'Amount', dataIndex: 'TOTAL', width: 110,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        }
+                    },
+                    {text: 'Comm.', dataIndex: 'COMISION', width: 110,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        }
+                    },
+                    {text: 'NET', dataIndex: 'NETO', width: 110,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:right;background-color:#B2DAFA";
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        }
+                    },
+                    {text: 'Others', dataIndex: 'OTROS', width: 110,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:right;background-color:#B2DAFA";
                             value = Ext.util.Format.number(value, '0,000.00');
@@ -66,13 +86,30 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGr
                         }
                     },
                     {text: 'Payment<br>Curr.', dataIndex: 'MONEDAPAGO', width: 80},
-                    {text: 'Payment<br>Amount', dataIndex: 'IMPORTEPAG', width: 100,
+                    {text: 'Payment<br>NET', dataIndex: 'IMPORTEPAG', width: 110,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:right;background-color:#B2DAFA";
                             value = Ext.util.Format.number(value, '0,000.00');
                             return value;
                         }
                     }
+                    
+                ]
+            },
+            {
+                text: 'Total',
+                defaults: {
+                    menuDisabled: true,
+                    sortable: true,
+                    align: 'center',
+                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                        metaData.style = "background-color:#fdff85";
+                        return value;
+                    }
+                }, columns: [
+                    {text: 'Qty<br>Settlement', dataIndex: 'QTY_SETTL', width: 80},
+                    {text: 'Qty<br>Taxes', dataIndex: 'QTY_TAX', width: 80},
+                    {text: 'Qty<br>Records', dataIndex: 'QTY_DETAIL', width: 80}
                 ]
             },
             {text: 'Bandoc', dataIndex: 'BANDOC', width: 130},
@@ -113,7 +150,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGr
             {
                 xtype: 'button',
                 scale: 'small',
-                id: prototype.id + '-tax-btnBack',
+                id: prototype.id + '-head-btnBack',
                 iconCls: 'prx-icon-back',
                 width: 25,
                 hidden: true,
