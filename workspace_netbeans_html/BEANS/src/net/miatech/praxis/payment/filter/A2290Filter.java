@@ -100,6 +100,7 @@ public class A2290Filter extends A2290 {
     public String NAME = "";
     public String NAMEP = "";
     public String IN_SDATE = "";
+    public String IN_CORE = "";
     public String IN_SDATEE = "";
     public String IN_CBANK = "";
     public String IN_SCURRENCY = "";

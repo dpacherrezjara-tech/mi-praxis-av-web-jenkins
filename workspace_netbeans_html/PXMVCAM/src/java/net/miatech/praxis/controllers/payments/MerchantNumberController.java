@@ -720,7 +720,9 @@ public class MerchantNumberController extends BaseController {
                             obj.BENCEN = dataFormatter.formatCellValue(row.getCell(24));
                             obj.COSTCEN = dataFormatter.formatCellValue(row.getCell(25));
                             obj.IDFISCAL = dataFormatter.formatCellValue(row.getCell(26));
-                            obj.IDFBENEF = dataFormatter.formatCellValue(row.getCell(27));
+//                            obj.IDFBENEF = dataFormatter.formatCellValue(row.getCell(27));
+                            obj.ACCNUMOLD = dataFormatter.formatCellValue(row.getCell(27));
+                            obj.DDISCON = dataFormatter.formatCellValue(row.getCell(27));
                             lstData.add(obj);
                         }
                     }

@@ -61,11 +61,13 @@ public class A2290 {
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String COREP = "";
+    public String desCOREP = "";
     public String CORES = "";
     public String strSCURRENCY = "";
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
     public String TERMI = "";
+    public String descTERMI = "";
     public String RED = "";
     public String DESAGENT = "";
     public String SDATE = "";
@@ -82,6 +84,7 @@ public class A2290 {
     public String FCONT = "";
     public String ERROR = "";
     public String NEGOC = "";
+    public String descNEGOC = "";
     public String ACCNUMBER = "";
     public String ACCOUNT = "";
     public String CLAVE1 = "";
