@@ -6310,7 +6310,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_RFND_1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6325,6 +6325,7 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.SDATE.trim());
             cstmt.setString(7, filter.SPNR.trim());
             cstmt.setString(8, filter.SAGENT.trim());
+            cstmt.setString(9, filter.SCARCOD.trim());
 
             cstmt.execute();
 
@@ -6415,7 +6416,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_CHGBAK(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_CHGBAK_1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6430,6 +6431,7 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.SDATE.trim());
             cstmt.setString(7, filter.SPNR.trim());
             cstmt.setString(8, filter.SAGENT.trim());
+            cstmt.setString(9, filter.SCARCOD.trim());
 
             cstmt.execute();
 
@@ -6523,7 +6525,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_ACREDIT(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_ACREDIT_1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6538,6 +6540,7 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.SDATE.trim());
             cstmt.setString(7, filter.SPNR.trim());
             cstmt.setString(8, filter.SAGENT.trim());
+            cstmt.setString(9, filter.SCARCOD.trim());
 
             cstmt.execute();
 

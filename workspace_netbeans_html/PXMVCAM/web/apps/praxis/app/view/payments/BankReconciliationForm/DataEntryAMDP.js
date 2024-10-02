@@ -1239,18 +1239,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             bodyStyle: 'background:#efe5e5;',
                                             items: [
                                                 {xtype: 'tbspacer', width: 7},
-                                                /*{
-                                                 xtype: 'button',
-                                                 width: 25,
-                                                 hidden: true,
-                                                 //margin: '4 1 1 1',
-                                                 iconCls: 'prx-icon-add',
-                                                 tooltip: 'Add',
-                                                 listeners: {
-                                                 click: 'txtTKTScan_keyDownHandler'
-                                                 }
-                                                 
-                                                 },*/
                                                 {xtype: 'tbspacer', width: 40},
                                                 {
                                                     xtype: 'label',

@@ -1201,7 +1201,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 msjResult = 'Invalid Sequence Number.';
             } else if (Ext.getCmp(prototype.id + '-de-txtMERCHN').getErrors().length > 0) {
                 msjResult = 'Invalid Merchant Number.';
-            } else if (Ext.getCmp(prototype.id + '-de-cmbSCARCOD').getErrors().length > 0) {
+            } else if (Ext.getCmp(prototype.id + '-de-cmbSCARCODE').getErrors().length > 0) {
                 msjResult = 'Invalid Card Code.';
             }
         } else {
@@ -1212,7 +1212,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     deshabilitarCampos1: function () {
         Ext.getCmp(prototype.id + '-de-cmbCODEBANK').disable(true);
         Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').disable(true);
-        Ext.getCmp(prototype.id + '-de-cmbSCARCOD').disable(true);
+        Ext.getCmp(prototype.id + '-de-cmbSCARCODE').disable(true);
         Ext.getCmp(prototype.id + '-de-txtSAUTHOC').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtPNR').setReadOnly(true);
         Ext.getCmp(prototype.id + '-de-txtCard1').setReadOnly(true);
