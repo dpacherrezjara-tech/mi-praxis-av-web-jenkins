@@ -1605,6 +1605,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            {
+                                                text: 'Process', dataIndex: 'COREP', width: 60, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.tdAttr = 'data-qtip="' + data.strDescripcionCOREP + '"';
+                                                    return value;
+                                                }
+                                            },
                                             {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
@@ -2862,19 +2871,19 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-                                            },
                                             {
                                                 text: 'Process', dataIndex: 'COREP', width: 60, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     var data = record.data;
                                                     metaData.tdAttr = 'data-qtip="' + data.strDescripcionCOREP + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Doc. Type', dataIndex: 'descTDOC', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },
