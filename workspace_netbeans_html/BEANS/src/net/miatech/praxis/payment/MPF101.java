@@ -107,8 +107,16 @@ public class MPF101 {
     public String  PGMUP   ="";   
     public String  UAUDIT  ="";   
     public String  CODPRO  ="";   
-
     
+    public String  CCUSTPRO  ="";   
+//    public String  PRDA  ="";  
+    public String  FLIQUI  ="";  
+    public String  NLIQUI  ="";  
+    public String  MERCHAND  ="";  
+    public String  TIPOL  ="";  
+
+
+  
     
     public String  CCUST_EC  =""; 
     public String  ADATE  =""; 
