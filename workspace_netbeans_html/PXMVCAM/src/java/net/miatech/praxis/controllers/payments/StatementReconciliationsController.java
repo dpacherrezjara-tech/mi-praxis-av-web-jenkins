@@ -3516,8 +3516,8 @@ public class StatementReconciliationsController extends BaseController {
                     if (i > 1) {//no toma en cuenta cabecera
                         
                         cont++;
-                        if (row.getCell(0) != null) {
-                            BANDOC = dataFormatter.formatCellValue(row.getCell(17));
+                        if (row.getCell(0) != null && !dataFormatter.formatCellValue(row.getCell(0)).trim().equals("") ) {
+                            BANDOC = dataFormatter.formatCellValue(row.getCell(23));
                             if(i>2 && !BANDOC.trim().equals("")){
                                 /*Guardo ultimo grupo de liquidaciones y EC*/
                                 obj = new MPF101();
@@ -3544,17 +3544,25 @@ public class StatementReconciliationsController extends BaseController {
                             obj.TOTAL = Double.parseDouble(dataFormatter.formatCellValue(row.getCell(10)) );
                             obj.NETO = Double.parseDouble(dataFormatter.formatCellValue(row.getCell(11)) );
                             obj.CODPRO =  dataFormatter.formatCellValue(row.getCell(12));
+                            obj.CCUSTPRO =  dataFormatter.formatCellValue(row.getCell(13));
+                            obj.PRDA =  dataFormatter.formatCellValue(row.getCell(14));
+                            obj.FLIQUI =  dataFormatter.formatCellValue(row.getCell(15));
+                            obj.NLIQUI =  dataFormatter.formatCellValue(row.getCell(16));
+                            obj.MERCHAND =  dataFormatter.formatCellValue(row.getCell(17));
+                            obj.TIPOL =  dataFormatter.formatCellValue(row.getCell(18));
+                            
+                            
                             /*EC*/
 
                             /*Estados de cuenta*/
 //                            if(cont==1){
                             if(!BANDOC.equals("")){
                                 cont = 1 ;
-                                obj.CCUST_EC = dataFormatter.formatCellValue(row.getCell(13));
-                                obj.ADATE = dataFormatter.formatCellValue(row.getCell(14));
-                                obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(15));
-                                obj.CODEBANK_EC = dataFormatter.formatCellValue(row.getCell(16));
-                                obj.BANDOC = dataFormatter.formatCellValue(row.getCell(17));
+                                obj.CCUST_EC = dataFormatter.formatCellValue(row.getCell(19));
+                                obj.ADATE = dataFormatter.formatCellValue(row.getCell(20));
+                                obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(21));
+                                obj.CODEBANK_EC = dataFormatter.formatCellValue(row.getCell(22));
+                                obj.BANDOC = dataFormatter.formatCellValue(row.getCell(23));
                                 if(obj.BANDOC.trim().equals("")){
                                     message ="Ingresar un Bandoc.";
                                     break;
@@ -3562,8 +3570,10 @@ public class StatementReconciliationsController extends BaseController {
                                 regsEC = obj.CCUST_EC+ ";" + obj.ADATE+ ";" + obj.SOCIETY+ ";" + obj.CODEBANK_EC+ ";" + obj.BANDOC ; 
                             }
                             
-                            regs = regs + "|"  + obj.CCUST + ";" + obj.SDATE + ";" + obj.SCOUNTRY + ";" + obj.TDOC + ";" + obj.CODEBANK + ";" + obj.SCARCOD + ";" + obj.SCARDN
-                            + ";" + obj.SAUTHOC+ ";" + obj.SEQ+ ";" + obj.SVFOP+ ";" + obj.TOTAL+ ";" + obj.NETO+ ";" + obj.CODPRO;
+                            regs = regs + "|"  + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";" 
+                            + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
+                            + ";" + obj.SAUTHOC.trim()+ ";" + obj.SEQ.trim()+ ";" + obj.SVFOP+ ";" + obj.TOTAL+ ";" + obj.NETO+ ";" + obj.CODPRO.trim()
+                            + ";" + obj.CCUSTPRO.trim()+ ";" + obj.PRDA.trim()+ ";" + obj.FLIQUI.trim()+ ";" + obj.NLIQUI.trim()+ ";" + obj.MERCHAND.trim()+ ";" + obj.TIPOL.trim();
                             
 //                            System.out.println("Campo " + i + " docnum :" + obj.TKT);
                         }
