@@ -716,6 +716,7 @@ public class A2290Filter extends A2290 {
     public String IN_ACCNUMBER = "";
     public String DATECI = "";
     public String TRANCI = "";
+    public String TDOC_E = "";
 
     public String CID = "";
     public String UUID = "";

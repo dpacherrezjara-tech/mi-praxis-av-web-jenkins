@@ -2741,7 +2741,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(6, filter.MERCHAND.trim());
             cstmt.setString(7, filter.DATECI.trim());
             cstmt.setString(8, filter.TRANCI.trim());
-            cstmt.setString(9, filter.TDOC.trim());
+            cstmt.setString(9, filter.TDOC_E.trim());
             cstmt.setString(10, filter.FECSELEC.trim());
             cstmt.setString(11, filter.FSELEC.trim());
             cstmt.setInt(12, filters.size());
