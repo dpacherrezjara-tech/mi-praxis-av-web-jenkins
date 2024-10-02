@@ -674,7 +674,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                             ADATE: item.ADATE,
                             NETO: item.NETO,
                             RED: item.RED,
-                            SEQ: item.SEQ
+                            SEQ: item.SEQ,
+                            TDOC: item.TDOC
                         })
                     }
 
@@ -880,13 +881,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     procesarRegistros: function (grilla) {
         var listaDeDatos = [];
         grilla.getStore().each(function (record) {
-
+        console.log(record.get('TDOC'), 'recorget tdoc')  
+        console.log(record.get('SCARCOD'), 'recorget tdoc')  
             let registro = {
                 CODEBANK: Ext.getCmp(prototype.id + '-de-txtCODEBANK').getValue(),
                 VALDATE: Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue(),
                 DATECI: Ext.getCmp(prototype.id + '-de-txtDATECI').getValue(),
                 TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
-//                TDOC: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(),
+                TDOC_E: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(),
                 TDOC: record.get('TDOC').trim(),
                 MERCHAND: Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
