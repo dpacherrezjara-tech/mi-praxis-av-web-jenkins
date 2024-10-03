@@ -24,6 +24,7 @@ public class MPF106 {
     public String NEGOC = "";
     public String descNEGOC = "";
     public String TERMI = "";
+    public String MERCHAND = "";
     public String CONTAC = "";
     public String EMAILS = "";
     public String NPHONE = "";
