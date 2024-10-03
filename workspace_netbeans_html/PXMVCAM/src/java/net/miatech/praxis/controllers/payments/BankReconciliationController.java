@@ -173,6 +173,56 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
+    
+    @RequestMapping(value = "searchCore")
+    public @ResponseBody
+    String searchCore(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchCore -------------");
+
+        map.put("success", true);
+
+        List<A2290Filter> lst = this.getListCore(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListCore(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX269SQP00698Core(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 
      @RequestMapping(value = "searchCountryDebits")
     public @ResponseBody

@@ -1010,6 +1010,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
+//                                                                    {text: 'Doc', dataIndex: 'TDOC', width: 65, 
+//                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                                            metaData.style = "text-align:center;";
+//                                                                            return value;
+//                                                                        }
+//                                                                    },
                                                                     {text: 'Value<br>Date', dataIndex: 'ADATE', width: 75,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";

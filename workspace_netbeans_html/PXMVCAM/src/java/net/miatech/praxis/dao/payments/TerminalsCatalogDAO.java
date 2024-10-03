@@ -219,4 +219,67 @@ public class TerminalsCatalogDAO {
         return objRtn;
     }
     
+    public String loadPX305SQP00941(List<MPF106Filter> filter, int Contador,String option) throws Exception {
+
+        CallableStatement cs = null;
+        String msj = "";
+        int cantReg = 0, cantDup = 0;
+        int cantUpd_MPF106 = 0, cantIns_MPF106 = 0;
+        int cantUpd_MPF016 = 0, cantIns_MPF016 = 0;
+        Connection cnx = null;
+        String SQLCLL01 = "{CALL PRAXISMP.SQP04614TERMI(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        cs = cnx.prepareCall(SQLCLL01);
+        try {
+            for (int i = 0; i < filter.size(); i++) {
+                try {
+                    
+                    cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cs.setString(2, filter.get(i).OPTION.trim());
+                    cs.setString(3, filter.get(i).SAGENT.trim());
+                    cs.setString(4, filter.get(i).TERMI.trim());
+                    cs.setString(5, filter.get(i).MERCHAND.trim());
+                    cs.setString(6, filter.get(i).NEGOC.trim());
+                    cs.registerOutParameter(7, Types.INTEGER);
+                    cs.registerOutParameter(8, Types.INTEGER);
+                    cs.registerOutParameter(9, Types.INTEGER);
+                    cs.registerOutParameter(10, Types.INTEGER);
+                    cs.setString(11, session.getUserView().getUserInfo().USR);
+                    cs.setString(12, Functions.getFechaActual());
+                    cs.setString(13, Functions.getHoraActual());
+                    
+                    cs.execute();
+                    cantReg++;
+                    
+                    cantIns_MPF106 = cantIns_MPF106 + cs.getInt(7);
+                    cantUpd_MPF106 = cantUpd_MPF106 + cs.getInt(8);
+                    cantIns_MPF016 = cantIns_MPF016 + cs.getInt(9);
+                    cantUpd_MPF016 = cantUpd_MPF016 + cs.getInt(10);
+
+                } catch (Exception e) {
+                    if (e.getMessage().contains("dupl")) {
+                        cantDup++;
+                    } else {
+                        System.out.println("Error" + e);
+                        msj = e.getMessage();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            msj += "<b>Loadeds : " + Contador + "<b><br>";
+            
+            msj += "<b>Inserts Agents: " + cantIns_MPF106 + "<b><br>";
+            msj += "<b>Updates Agents: " + cantUpd_MPF106 + "<b><br>";
+            msj += "<b>Inserts Terminals: " + cantIns_MPF016 + "<b><br>";
+            msj += "<b>Updates Terminals: " + cantUpd_MPF016 + "<b><br>";
+            
+        } catch (Exception e2) {
+            System.out.println("Error" + e2);
+            msj = e2.getMessage();
+            e2.printStackTrace();
+        }
+        return msj;
+    }
+    
 }
