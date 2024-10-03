@@ -249,51 +249,59 @@ public class AccountingDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05352(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05352(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            //cstmt.setString(1, "134");
             cstmt.setString(2, filter.VP_OPCION);
-            cstmt.setString(3, filter.VP_FDATE1);
-            cstmt.setString(4, filter.VP_FDATE2);
+            cstmt.setString(3, filter.VP_MODO);
+            cstmt.setString(4, filter.VP_PROCESA);
+            cstmt.setString(5, filter.VP_IDCON);
+            cstmt.setString(6, filter.VP_DTYPE);
+            cstmt.setString(7, filter.VP_FDATE1);
+            cstmt.setString(8, filter.VP_FDATE2);
 
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
 
                 bean = new SQP05352Filter();
-                bean.RN = rst.getInt("RN");
-                bean.A4545CCUST = rst.getString("A4545CCUST").trim();
-                bean.A4545IDCON = rst.getString("A4545IDCON").trim();
-                bean.A4545DOCBA = rst.getString("A4545DOCBA").trim();
-                bean.A4545PSTGD = rst.getString("A4545PSTGD").trim();
-                bean.A4545DCONT = rst.getString("A4545DCONT").trim();
-                bean.A4545MODO_0 = rst.getString("A4545MODO_0").trim();
-                bean.A4545COREP = rst.getString("A4545COREP").trim();
-                bean.A4545REFD  = rst.getString("A4545REFD").trim();
-                bean.A4545ITEMS = rst.getString("A4545ITEMS").trim();   
+                bean.RN         = rst.getInt("RN");
+                bean.CCUST      = rst.getString("CCUST").trim();
+                bean.CCUST_0    = rst.getString("CCUST_0").trim();
+                bean.HEADER     = rst.getString("HEADER").trim();
+                bean.BANDOC     = rst.getString("BANDOC").trim();
+                bean.PSTGD      = rst.getString("PSTGD").trim();
+                bean.DCONT      = rst.getString("DCONT").trim();
+                bean.MODO       = rst.getString("MODO").trim();
+                bean.MODO_0     = rst.getString("MODO_0").trim();
+                bean.CODPRO     = rst.getString("CODPRO").trim();
+                bean.SCURRENCY  = rst.getString("SCURRENCY").trim();
+                bean.NETO       = rst.getDouble("NETO");
+                bean.STCON      = rst.getString("STCON").trim();
+                bean.STCON_0    = rst.getString("STCON_0").trim();
+                bean.ITEMS      = rst.getInt("ITEMS");   
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -434,47 +442,56 @@ public class AccountingDAO {
         return lista;
     }
     
-//    public void updatePending() throws SQLException, Exception {
-//        
-//        CallableStatement cstmt = null;
-//
-//        String SQLCLL01 = "{CALL PRAXISMP.STMP001(?,?,?)}";
-//
-//        Connection cnx = null;
-//        
-//        try {
-//            
-//            BufferedReader br = new BufferedReader(new FileReader("C:\\Documentos_Reenviar_2.csv"));
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                String[] values = line.split(";");
-//                String refd = values[0];
-//                
-//                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-//                cstmt = cnx.prepareCall(SQLCLL01);
-//                cstmt.setString(1, "134");
-//                cstmt.setString(2, "20240926");
-//                cstmt.setString(3, refd);
-//                cstmt.execute();
-//            }
-//            
-//            br.close();
-//            
-//        } finally {
-//            if (rst != null) {
-//                try {
-//                    rst.close();
-//                } catch (SQLException e) {
-//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-//                }
-//            }
-//            if (cstmt != null) {
-//                try {
-//                    cstmt.close();
-//                } catch (SQLException e) {
-//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-//                }
-//            }
-//        }
-//    }
+    public void updatePending() throws SQLException, Exception {
+        
+        CallableStatement cstmt = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.STMP001(?,?)}";
+
+        Connection cnx = null;
+        
+        try {
+            
+            BufferedReader br = new BufferedReader(new FileReader("D:\\UserFilesMiatech\\gnovoa\\Mis documentos\\Colombia_Reprocesar.csv"));
+            String line;
+            int i = 0;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(";");
+                
+                String bandoc = values[0];
+                String refd = values[1];
+                String dcont = values[2];
+                String neto =  values[3];
+   
+                
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt = cnx.prepareCall(SQLCLL01);
+                cstmt.setString(1, bandoc);
+                cstmt.setString(2, refd);
+                cstmt.execute();
+                
+                i++;
+                if (i % 10 == 0)
+                    System.out.println("Line " + i);
+            }
+            
+            br.close();
+            
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+        }
+    }
 }

@@ -7,14 +7,12 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         this.bean = this.p.rec;
     },
     afterRender: function () {
-//        console.log(this.view.params.action);
         this.loadProcessors();
         // Download
         if (this.view.params.action === 'D') {
             var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
             panel.removeAll();
             for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
-//                console.log('i>>' + i);
                 var radioField = Ext.create({
                     xtype: 'radiofield',
                     id: prototype.id01 + '-op' + i,
@@ -238,7 +236,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         return msjResult;
     },
     onDownloadFilesClick: function () {
-//        console.log('onDownloadFilesClick');
+
         var NARCH = 0;
         for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
             if (Ext.getCmp(prototype.id01 + '-op' + i).getValue()) {
@@ -259,9 +257,9 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         bean.IN_PROCESA = rec.A4556CPROC;
         bean.IN_LEXT = in_NARCH;
         if (rec.A4556CPROC.trim() !== '')
-            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim() + '_' + in_NARCH;
+            bean.FNAME = rec.A4556FFILE + '_' + rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim() + '_' + in_NARCH;
         else
-            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + in_NARCH;
+            bean.FNAME = rec.A4556FFILE + '_' + rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + in_NARCH;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',
