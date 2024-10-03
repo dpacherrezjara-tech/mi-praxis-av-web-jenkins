@@ -3406,8 +3406,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             me.panelActual = '-panelGridDataTotalCORE';
             me.flag = 'all';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-
-            this.beanDetCardByS.strFecFiltro = 'SDATE';
+            
+            this.beanDetCardByS.IN_TDOC = rowData.data.IN_TDOC;
+            this.beanDetCardByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
+            this.beanDetCardByS.strFecFiltro = rowData.data.strFecFiltro;
             this.beanDetCardByS.IN_SDATE = rowData.data.IN_SDATE;
             this.beanDetCardByS.IN_CODEBANK = rowData.data.CODEBANK;
             this.beanDetCardByS.strFormatDate = rowData.data.strFormatDate;
