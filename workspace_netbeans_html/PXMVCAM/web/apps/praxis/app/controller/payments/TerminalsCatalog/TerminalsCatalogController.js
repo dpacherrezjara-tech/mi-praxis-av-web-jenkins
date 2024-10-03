@@ -344,6 +344,55 @@ Ext.define('Ext.Praxis.controller.payments.TerminalsCatalog.TerminalsCatalogCont
         });
 
     },
+    onLoadClick: function () {
+        var msjPregunta = 'Sure to load file?';
+
+        Ext.MessageBox.show({
+            title: 'Load Terminals',
+            msg: msjPregunta,
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    me.onFileLoad();
+                }
+            }
+        });
+    },
+    onFileLoad: function () {
+        var me = this;
+        let beanValidation = {};
+        beanValidation.OPTION = '1';
+        console.log(beanValidation.OPTION);
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        let beanString = JSON.stringify(beanValidation);
+        if (!file) {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+
+        var form = Ext.getCmp(prototype.id + '-formTerminals').getForm();
+
+        form.submit({
+            url: prototype.url + '/setUploadTerminals',
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (f, o) {
+
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult;
+                global.Msg({msg: msjResult});
+                Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible()) {
