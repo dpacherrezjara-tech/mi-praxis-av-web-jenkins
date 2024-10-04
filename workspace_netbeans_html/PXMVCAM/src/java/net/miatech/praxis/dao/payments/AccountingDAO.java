@@ -64,11 +64,9 @@ public class AccountingDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.registerOutParameter(5, Types.VARCHAR);
             cstmt.registerOutParameter(6, Types.VARCHAR);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            //cstmt.setString(1, "134");
-            cstmt.setString(2, filter.VP_FECHA_INI);
-            cstmt.setString(3, filter.VP_FECHA_FIN);
-            cstmt.setString(4, filter.VP_TIPO);
+            cstmt.setString(1, filter.VP_CCUST);
+            cstmt.setString(2, filter.VP_FECHA);
+            cstmt.setString(3, filter.VP_TIPO);
             cstmt.execute();
             filter.dbException.SQLCODE = cstmt.getString(5);
             filter.dbException.MESSAGE = cstmt.getString(6);

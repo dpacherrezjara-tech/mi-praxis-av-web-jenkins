@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     afterRender: function () {
         this.loadProcessors();
+        //this.getCustomer();
         // Download
         if (this.view.params.action === 'D') {
             var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
@@ -28,7 +29,6 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         // Reversar
         if (this.view.params.action === 'R') {
             Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
-            Ext.getCmp(prototype.id + '-PSTGD2').setVisible(false);
         }
     },
     //</editor-fold>
@@ -81,8 +81,8 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     llenarData: function (beanTemp) {
         
-        beanTemp.VP_FECHA_INI = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-        beanTemp.VP_FECHA_FIN = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+        beanTemp.VP_CCUST = Ext.getCmp(prototype.id + '-CCUST').getValue();
+        beanTemp.VP_FECHA = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD').getValue(), 'Ymd');
         beanTemp.VP_TIPO = "";
         
         // Modo
@@ -229,8 +229,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     //</editor-fold>
     validacionInsert: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("PSTGD1") === '' ||
-                this.getValue("PSTGD2") === '') {
+        if (this.getValue("PSTGD") === '' ) {
             msjResult = "You must enter the required field.";
         }
         return msjResult;
