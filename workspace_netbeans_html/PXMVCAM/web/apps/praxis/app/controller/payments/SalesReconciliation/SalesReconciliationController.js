@@ -478,6 +478,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 //        beanDet.IN_STVAL = '5';
 //        this.searchDetCountryByStval_1(beanDet);
     },
+    gridDetCore_clickHandler: function (column, e, row, column, x, rowData) {
+        var beanDet = x.record.data;
+        win.selectedChild('vskMain', 'boxMainDataCore');
+        this.searchCore(beanDet);
+    },
     gridDetCountry_clickHandler_PEND: function (column, e, row, column, x, rowData) {
         var beanDet = x.record.data;
         win.selectedChild('vskMain', 'boxDetCountryS');
@@ -1443,6 +1448,38 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
         Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+    },
+    searchCore: function (bean) {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchCore'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(bean)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                    win.lblUser_toolTip("Estructura: MPF108");
+
+                    me.selectedChild('vskMain', 'boxMainDataCore');
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        if (obj.data.length > 0) {
+                            var obj = obj.data.items[0].data;
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+                    } else
+//                        global.Msg({msg: res.sesion});
+                        global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataCore').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pagginCore').bindStore(storeGridDatas);
     },
     searchAcc: function (bean) {
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
