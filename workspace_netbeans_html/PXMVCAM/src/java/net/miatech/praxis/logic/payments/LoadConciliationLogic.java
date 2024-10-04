@@ -28,6 +28,10 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263SQP00652(filter);
     }
     
+    public List<A2290Filter> loadPX263SQP00652CORE(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP00652CORE(filter);
+    }
+    
     public List<A2290Filter> loadPX263SQP00652DEBITS(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00652DEBITS(filter);
     }

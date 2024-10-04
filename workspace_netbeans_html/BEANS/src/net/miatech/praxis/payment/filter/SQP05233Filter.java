@@ -14,8 +14,7 @@ import net.miatech.beans.DBException;
 public class SQP05233Filter {
 
     public String VP_CCUST = "";
-    public String VP_FECHA_INI = "";
-    public String VP_FECHA_FIN = "";
+    public String VP_FECHA = "";
     public String VP_TIPO = "";  //-- P=Pasajes A=Carga C=Correo, J=Ajuste, D=Debito, E=Exterior, F=FP
     public DBException dbException = new DBException();
 
