@@ -48,9 +48,9 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.GenerationOfAc
         bean.IN_PROCESA = rec.A4556CPROC;
         bean.IN_LEXT = in_LEXT;
         if (rec.A4556CPROC.trim() !== '')
-            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim();
+            bean.FNAME = rec.A4556FFILE + '_' + rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim();
         else
-            bean.FNAME = rec.A4556CCUST + '_' + rec.A4556TFILE_0;
+            bean.FNAME = rec.A4556FFILE + '_' + rec.A4556CCUST + '_' + rec.A4556TFILE_0;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',
