@@ -57,7 +57,7 @@ public class AccountingLogic {
         return accountingDAO.loadProcessors();
     }
     
-//    public void updatePending() throws SQLException, Exception {
-//        accountingDAO.updatePending();
-//    }
+    public void updatePending() throws SQLException, Exception {
+        accountingDAO.updatePending();
+    }
 }

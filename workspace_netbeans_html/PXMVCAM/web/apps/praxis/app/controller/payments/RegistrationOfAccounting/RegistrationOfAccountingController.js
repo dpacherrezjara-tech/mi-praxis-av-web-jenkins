@@ -12,12 +12,15 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
     ],
     bean: {},
     searchParams: {},
+    
     me: '',
     init: function () {
         me = this;
+        me.panelActual = '-gridMainData';
     },
     afterRender: function () {
         this.setStoreDataGrid(); //del grid selected
+        this.loadProcessors();//   
         this.btnSearch_click();
     },
     setStoreDataGrid: function () {
@@ -30,20 +33,40 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
     onRevertClick: function () {
         this.winDataEntry('R', undefined);
     },
-    onDownloadClick: function (grid, rowIndex) {
+    loadProcessors: function() {
+        var processors = new Array();
+        var store;
+        Ext.Ajax.request({
+            url: prototype.url + '/loadProcessors',
+            method: 'POST',
+            timeout: 60000,
+            autoLoad: true,
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                var data = res.data;
 
-        var rec = grid.getStore().getAt(rowIndex);
-        var NARCH = parseInt(rec.data.A4556NARCH);
-        if (NARCH === 1) {
-            this.getDownloadFileTxt(rec.data, NARCH);
-        } else {
-            this.winDownloadFiles('D', rec.data);
-        }     
+                data.forEach(function callback(record, index, array) {
+                    processors.push([record.A051KEY2, record.A051DESCR1]);
+                });
+                store = Ext.create('Ext.data.ArrayStore', {
+                    storeId: 'processors', autoLoad: true, data: processors, fields: ['code', 'name']
+                });
+                Ext.getCmp(prototype.id + '-cmbProcessor').bindStore(store);
+            },
+            failure: function(response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
     },
     setFormatParameter: function () {
         var me = this;
         me.bean = {};
-        me.bean.VP_OPCION = Ext.getCmp(prototype.id + '-cmbfiltro').getValue();        
+        me.bean.VP_CCUST  = Ext.getCmp(prototype.id + '-cmbAirline').getValue();
+        me.bean.VP_OPCION = "";    
+        me.bean.VP_MODO = Ext.getCmp(prototype.id + '-cmbMode').getValue();
+        me.bean.VP_PROCESA = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        me.bean.VP_IDCON = Ext.getCmp(prototype.id + '-txtAccountingId').getValue();
+        me.bean.VP_DTYPE = Ext.getCmp(prototype.id + '-cmbdateType').getValue();
         me.bean.VP_FDATE1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha1').getValue(), 'Ymd');
         me.bean.VP_FDATE2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-fecha2').getValue(), 'Ymd');  
         var beanString = JSON.stringify(me.bean);
@@ -61,7 +84,7 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
         return msj;
     },
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A4545");
+        win.lblUser_toolTip("Estructura: MPF101 - A4545");
         var msj = this.validateFields();
         if (msj !== '') {
             global.Msg({msg: msj
@@ -128,6 +151,44 @@ Ext.define('Ext.Praxis.controller.payments.RegistrationOfAccounting.Registration
                 rec: rec
             }
         }).show();
+    },
+    btnExcel_click: function(obj, e) {
+
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function(btn) {
+                    if (btn === 'ok') {
+                        this.exportExcel();
+                    }
+                }
+            });
+        }
+    },
+    exportExcel: function() {
+        this.setFormatParameter();
+        switch (me.panelActual) {
+            case  '-gridMainData':
+                global.getFile(prototype.url + '/getXLSXRegistration?beanString=' + encodeURI(searchParams.beanString));
+//                global.getFileExcelPost('search', JSON.stringify(me.bean), Ext.getCmp(prototype.id + '-gridDataAirport').config.columns.items);
+                console.log('Excel Test');
+                break;
+            default:
+                global.Msg(
+                    {msg: 'Under Construction'
+                });
+        }
+
     },
     btnPagFirst_click: function(obj, e) {
         var pag = Ext.getCmp(prototype.id + '-paggin');
