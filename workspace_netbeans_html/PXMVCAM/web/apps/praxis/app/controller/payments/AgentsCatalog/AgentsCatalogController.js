@@ -295,7 +295,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
 
                     },
                     load: function (obj) {
-//                        console.log(obj.data);
+                        console.log(obj.data, 'obj.data');
                         var pag = Ext.getCmp(prototype.id + '-paggin');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -312,6 +312,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
 
 //            console.log(storeGridDatas);
             global.clear();
+            console.log(storeGridDatas,'storeGridDatas')
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
