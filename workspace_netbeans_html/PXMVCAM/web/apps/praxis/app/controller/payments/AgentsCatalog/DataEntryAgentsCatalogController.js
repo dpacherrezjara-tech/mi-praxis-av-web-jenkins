@@ -47,8 +47,10 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
     mostrarData: function () {
 //        console.log(meDE.beanResult, );
         console.log(this.beanResult, 'this.beanResult')
-        this.setValue('de-txtCAGENCY', this.beanResult.CAGENCY);
-        this.setValue('de-txtNAMEA', this.beanResult.NAMEA);
+//        this.setValue('de-txtCAGENCY', this.beanResult.CAGENCY);
+        this.setValue('de-txtCAGENCY', this.beanResult.SAGENT);
+//        this.setValue('de-txtNAMEA', this.beanResult.NAMEA);
+        this.setValue('de-txtNAMEA', this.beanResult.DESCSAGENT);
         this.setValue('de-txtCANAL', this.beanResult.CANAL);
         this.setValue('de-cmbCOUNTRY', this.beanResult.COUNTRY);
         this.setValue('de-cmbCITY', this.beanResult.CITY);
@@ -171,7 +173,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         beanTemp.CONTAC = this.getValue("de-cmbCONTACT");
         beanTemp.EMAILS = this.getValue("de-cmbEMAILS");
         beanTemp.NPHONE = this.getValue("de-cmbNPHONE");
-        beanTemp.CAGENCY = this.beanResult.CAGENCY;
+        beanTemp.CAGENCY = this.beanResult.SAGENT;
         beanTemp.EMAILS2 = this.getValue("de-cmbEMAILS2");
         beanTemp.EMAILS3 = this.getValue("de-cmbEMAILS3");
         beanTemp.EMAILS4 = this.getValue("de-cmbEMAILS4");
