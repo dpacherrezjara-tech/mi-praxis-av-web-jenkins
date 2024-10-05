@@ -98,6 +98,8 @@ public class AgentsCatalogDAO {
                     bean.descNEGOC = "CORREO";
                 }
                 bean.TERMI = rst.getString("TERMI").trim();
+                bean.SAGENT = rst.getString("CAGENCY").trim();
+                bean.DESCSAGENT = rst.getString("NAMEA").trim();
                 bean.CONTAC = rst.getString("CONTAC").trim();
                 bean.EMAILS = rst.getString("EMAILS").trim();
                 bean.NPHONE = rst.getString("NPHONE").trim();
@@ -267,7 +269,7 @@ public class AgentsCatalogDAO {
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt01.setString(2, filter.CAGENCY.trim());
+            cstmt01.setString(2, filter.SAGENT.trim());
 
             cstmt01.execute();
 
@@ -276,6 +278,8 @@ public class AgentsCatalogDAO {
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.COUNTRY = rs01.getString("COUNTRY").trim();
                 objRtn.CAGENCY = rs01.getString("CAGENCY").trim();
+                objRtn.SAGENT = rs01.getString("CAGENCY").trim();
+                objRtn.DESCSAGENT = rs01.getString("NAMEA").trim();
                 objRtn.NAMEA = rs01.getString("NAMEA").trim();
                 objRtn.CANAL = rs01.getString("CANAL").trim();
                 objRtn.CITY = rs01.getString("CITY").trim();

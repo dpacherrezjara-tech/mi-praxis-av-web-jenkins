@@ -66,8 +66,8 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                         items: [
                                             {text: 'Nbr', dataIndex: 'RN', width: 40},
                                             {text: 'Country', dataIndex: 'COUNTRY', width: 80},
-                                            {text: 'Code', dataIndex: 'CAGENCY', width: 80},                                            
-                                            {text: 'Name', dataIndex: 'NAMEA', width: 200, align: 'left'},
+                                            {text: 'Code', dataIndex: 'SAGENT', width: 80},                                            
+                                            {text: 'Name', dataIndex: 'DESCSAGENT', width: 200, align: 'left'},
                                             {text: 'Channel', dataIndex: 'CANAL', width: 70},
                                             {text: 'City', dataIndex: 'CITY', width: 70},
                                             {text: 'Bussines', dataIndex: 'descNEGOC', width: 90},
