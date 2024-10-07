@@ -31,6 +31,10 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00698Main(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698Main(filter);
     }
+    
+    public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX287SQP00838(filter);
+    }
 
     public List<A2290Filter> loadPX269SQP00698Country(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698Country(filter);

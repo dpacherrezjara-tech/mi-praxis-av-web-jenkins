@@ -59,7 +59,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options'
+                                            xtype: prototype.id + '-options',
+                                            id: prototype.id + '-contentOptions'
                                         }
                                         ,
                                         {
@@ -75,6 +76,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
                                         ,
                                         {
                                             xtype: 'panel',
+                                            id: prototype.id + '-heigGraf',
                                             height: 630,
                                             width: 1900,
                                             layout: 'fit',
