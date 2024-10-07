@@ -142,10 +142,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-        
+
         Ext.getCmp(prototype.id + '-cmbDateDay').bindStore(win.getStoreDays(true));
         Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(win.getStoreDays(true));
-        
+
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
 
@@ -265,8 +265,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
-        if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' 
-            || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== ''    ) {
+        if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
+                || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '') {
             this.btnSearch_BANDOC();
         } else {
             this.setGridData();
@@ -1248,8 +1248,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     eventKey_BANDOC: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
-            if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' 
-            || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' ) {
+            if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
+                    || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '') {
                 this.btnSearch_BANDOC();
             } else {
                 this.btnSearch_click();
@@ -1425,6 +1425,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
     },
     exportExcel: function () {
+        
+        console.log('oeoeoeoe');
+        console.log(me.panelActual);
 
         this.setFormatParameter();
         switch (me.panelActual) {
@@ -1454,6 +1457,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 break;
             case '-panelGridDetDetailProceByS':
                 global.getFile(prototype.url + '/getXLSXDetDetailProceByS?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+            case '-boxDetDetails':
+                global.getFile(prototype.url + '/getXLSXDetDetails?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
         }
     },
@@ -1719,11 +1725,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     selectComboFromMonth: function (obj) {
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToMonth.setValue(obj.getValue());
-        if(obj.getValue() != ''){
+        if (obj.getValue() != '') {
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(false);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false);
-            
-        }else {
+
+        } else {
             Ext.getCmp(prototype.id + '-cmbDateDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
@@ -1755,7 +1761,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 comboFromDay.setValue(obj.getValue());
             }
         }
-        if(comboFromDay.getValue() === ''){
+        if (comboFromDay.getValue() === '') {
 
             comboFromDay.setValue(obj.getValue())
         }
