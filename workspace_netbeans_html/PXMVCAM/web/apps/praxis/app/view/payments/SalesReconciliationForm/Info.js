@@ -1333,7 +1333,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDataAcc',
-                                                    width: 870,
+                                                    width: 770,
                                                     columnLines: true,
                                                     features: [{
                                                             ftype: 'summary'
