@@ -1106,6 +1106,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 } else {
                     this.beanDetailAcc.IN_SCAR = 'N';
                 }
+                
+                let proces = Ext.getCmp(prototype.id + '-TEST');
+                if (!proces.isVisible()) {
+                    this.beanDetailAcc.IN_EXT = 'N';
+                } else {
+                    this.beanDetailAcc.IN_EXT = 'Y';
+                }
 
                 this.searchAcc(this.beanDetailAcc);
             } else if (win.getValue('cmbTDOC').trim() === 'D' || win.getValue('cmbTDOC').trim() === 'R' || win.getValue('cmbTDOC').trim() === 'C' || win.getValue('cmbTDOC').trim() === 'A') {
