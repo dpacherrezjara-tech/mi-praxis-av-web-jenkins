@@ -210,7 +210,7 @@ public class AgentsCatalogDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -228,12 +228,16 @@ public class AgentsCatalogDAO {
             cstmt.setString(9, filter.TERMI.trim());
             cstmt.setString(10, filter.CONTAC.trim());
             cstmt.setString(11, filter.EMAILS.trim());
-            cstmt.setString(12, filter.NPHONE.trim());
-            cstmt.setString(13, filter.NEW_CAGENCY.trim());
+            cstmt.setString(12, filter.EMAILS2.trim());
+            cstmt.setString(13, filter.EMAILS3.trim());
+            cstmt.setString(14, filter.EMAILS4.trim());
+            cstmt.setString(15, filter.EMAILS5.trim());
+            cstmt.setString(16, filter.NPHONE.trim());
+            cstmt.setString(17, filter.NEW_CAGENCY.trim());
 
-            cstmt.setString(14, session.getUserView().getUserInfo().USR);
-            cstmt.setString(15, Functions.getFechaActual());
-            cstmt.setString(16, Functions.getHoraActual());
+            cstmt.setString(18, session.getUserView().getUserInfo().USR);
+            cstmt.setString(19, Functions.getFechaActual());
+            cstmt.setString(20, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {
