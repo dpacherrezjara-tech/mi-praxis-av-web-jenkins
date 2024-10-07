@@ -354,6 +354,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanProceLiqByS.IN_TDOC = rowData.data.IN_TDOC;
             this.beanProceLiqByS.IN_COREP = rowData.data.IN_COREP;
 
+            let proces = Ext.getCmp(prototype.id + '-TEST');
+            if (!proces.isVisible()) {
+                this.beanProceLiqByS.IN_EXT = 'N';
+            } else {
+                this.beanProceLiqByS.IN_EXT = 'Y';
+            }
 
             me.paramsDetail.beanString = JSON.stringify(this.beanProceLiqByS);
 
@@ -417,6 +423,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiqDetail.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanLiqDetail.IN_TDOC = rowData.data.IN_TDOC;
         this.beanLiqDetail.IN_COREP = rowData.data.IN_COREP;
+
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+            if (!proces.isVisible()) {
+                this.beanLiqDetail.IN_EXT = 'N';
+            } else {
+                this.beanLiqDetail.IN_EXT = 'Y';
+            }
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiqDetail);
 
