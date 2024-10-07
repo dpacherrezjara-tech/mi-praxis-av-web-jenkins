@@ -486,8 +486,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 selectOnFocus: true
             },
             items: [
-                
-                    
                     {
                         xtype: 'label',
                         text: 'Colombia',
