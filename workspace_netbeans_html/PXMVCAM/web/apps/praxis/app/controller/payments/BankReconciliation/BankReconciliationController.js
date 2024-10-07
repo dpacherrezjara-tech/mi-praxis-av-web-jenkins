@@ -141,8 +141,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         });
     },
     xpanel_afterrender: function (obj, e) {
+        
+        $('#BankReconciliationForm-btnToggleSwitchFTGraf').change(function () {
+            me.procesador();
+        });
+        
         this.setStoreData();
         this.setStoreDataGraf();
+    },
+    procesador: function () {
+        let proces = Ext.getCmp(prototype.id + '-TESTGraf');
+        if (!proces.isVisible()) {
+            Ext.getCmp(prototype.id + '-TESTGraf').show();
+        } else {
+            Ext.getCmp(prototype.id + '-TESTGraf').hide();
+        }
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -171,7 +184,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             this.setFormatParameter();
         } else {
 
-            Ext.getCmp(prototype.id + '-rbChart_IA').items.items[0].setValue(true);
+            Ext.getCmp(prototype.id + '-rbChart_IA').items.items[1].setValue(true);
             Ext.getCmp(prototype.id + '-rbChart_IA').cheked = true;
 
             option.setVisible(true);
@@ -181,9 +194,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-contentOptions').hide();
             Ext.getCmp(prototype.id + '-heigGraf').setHeight(810);
 
-            Ext.getCmp(prototype.id + '-rbFaseI').show();
-            Ext.getCmp(prototype.id + '-rbFaseII').hide();
-            this.searchGrafLiqI();
+            Ext.getCmp(prototype.id + '-rbFaseII').show();
+            Ext.getCmp(prototype.id + '-rbFaseI').hide();
+            this.searchGrafLiqII();
 
         }
 
@@ -226,6 +239,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         beanGraf.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYearGraf').getValue();
         beanGraf.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf').getValue();
         beanGraf.strFecFiltro = 'SDATE';
+
+        let proces = Ext.getCmp(prototype.id + '-TESTGraf');
+        if (!proces.isVisible()) {
+            beanGraf.IN_EXT = 'N';
+        } else {
+            beanGraf.IN_EXT = 'Y';
+        }
 
         var beanStringbeanGraf = JSON.stringify(beanGraf);
         searchParamsbeanGraf = {
