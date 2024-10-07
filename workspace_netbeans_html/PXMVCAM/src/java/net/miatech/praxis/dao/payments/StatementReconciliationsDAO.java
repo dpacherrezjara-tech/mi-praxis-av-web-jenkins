@@ -1634,7 +1634,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(5, filter.IN_TDOC.trim());
             cstmt.setString(6, filter.IN_COUNTRY.trim());
             cstmt.setString(7, filter.IN_COREP.trim());
-            cstmt.setString(8, filter.IN_COREP.trim());
+            cstmt.setString(8, filter.IN_EXT.trim());
 
             cstmt.setInt(9, filter.page.PAGNUM);
             cstmt.setInt(10, filter.page.PAGROW);
