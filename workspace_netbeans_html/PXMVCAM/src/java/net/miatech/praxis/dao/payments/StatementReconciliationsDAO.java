@@ -1964,55 +1964,61 @@ public class StatementReconciliationsDAO {
 
                 while (rst.next()) {
 
+//                  CCUST|BANDOC|MERCHAND|STVAL|TDOC|SCOUNTRY|VALDATE|ADATE|SCURRENCY|NETO|NETOC|ACCOUNT|BENCENC|ACCCOMP|SOCIETY|CIACOME|REFER|CLAVE1|CLAVE3|TEXTO|TEXTOLAR|
+                    
                     beanTkt = new A2290Filter();
+                    beanTkt.CCUST = session.getUserView().getCustomerInfo().CCUST;
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_MERCHN = filter.IN_MERCHN.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
 
-//                  beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
                     beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
-
+                    
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
+                    beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
-
                     beanTkt.descTDOC = hmDescDocType.containsKey(rst.getString("TDOC").trim().toUpperCase()) ? hmDescDocType.get(rst.getString("TDOC").trim()).toString() : rst.getString("TDOC").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
-
-                    beanTkt.SDATE = rst.getString("SDATE").trim();
+                    beanTkt.VALDATE = rst.getString("VALDATE").trim();
                     beanTkt.ADATE = rst.getString("ADATE").trim();
-                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
-                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
                     beanTkt.totNETO = totNETO;
                     beanTkt.totNETOC = totNETOC;
+                    beanTkt.ACCOUNT = rst.getString("ACCOUNT").trim();
+                    beanTkt.BENCENC = rst.getString("BENCENC").trim();
+                    beanTkt.ACCCOMP = rst.getString("ACCCOMP").trim();
+                    beanTkt.SOCIETY = rst.getString("SOCIETY").trim();
+                    beanTkt.CIACOME = rst.getString("CIACOME").trim();
+                    beanTkt.REFER = rst.getString("REFER").trim();
+                    beanTkt.CLAVE1 = rst.getString("CLAVE1").trim();
+                    beanTkt.CLAVE3 = rst.getString("CLAVE3").trim();
+                    beanTkt.TEXTO = rst.getString("TEXTO").trim();
+                    beanTkt.TEXTOLAR = rst.getString("TEXTOLAR").trim();
+                    
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
+                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
                     beanTkt.QTYTRAS = rst.getInt("QTYTRAS");
                     beanTkt.QTYTRAN1 = rst.getInt("QTYTRAN1");
                     beanTkt.totQTYTRAN1 = totQTYTRAN1;
                     beanTkt.QTYTRAN3 = rst.getInt("QTYTRAN3");
                     beanTkt.totQTYTRAN3 = totQTYTRAN3;
                     beanTkt.totQTYTRAS = totQTYTRAS;
-                    beanTkt.VALDATE = rst.getString("VALDATE").trim();
-                    beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
                     beanTkt.RED = rst.getString("RED").trim();
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.DATECI = rst.getString("DATECI").trim();
                     beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
                     beanTkt.FSTVAL = rst.getString("STVAL").trim();
-//                    if (filter.IN_DATE.trim().equals("VALDATE")) {
-//                        beanTkt.strTitulo = "Value Date : " + beanTkt.VALDATE + " - Bank : " + beanTkt.IN_CBANK;
-//                    } else {
-//                        beanTkt.strTitulo = "Abono Date : " + beanTkt.ADATE + " - Bank : " + beanTkt.IN_CBANK;
-//                    }
                     beanTkt.strTitulo = "";
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
