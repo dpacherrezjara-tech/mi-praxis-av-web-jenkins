@@ -591,7 +591,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         },
                                                         items: [
                                                             {
-                                                                text: 'Sales',
+                                                                text: 'Payment',
                                                                 columns: [
                                                                     {
                                                                         text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true, //flex: 1
@@ -609,7 +609,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
-                                                                text: 'Settlement Reconciliation',
+                                                                text: 'Statement Reconciliation',
                                                                 columns: [
                                                                     {
                                                                         text: 'Match', menuDisabled: true,
@@ -666,10 +666,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Settlement', menuDisabled: true,
+                                                                        text: 'Statement', menuDisabled: true,
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                text: 'w/o Sett.', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;background-color:#d5f4d5";
                                                                                     return Ext.util.Format.number(value, '0,000');
@@ -784,7 +784,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         },
                                                         items: [
                                                             {
-                                                                text: 'Sales',
+                                                                text: 'Payment',
                                                                 columns: [
                                                                     {
                                                                         text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true,
@@ -802,7 +802,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
-                                                                text: 'Sales Reconciliation',
+                                                                text: 'Settlement Reconciliation',
                                                                 defaults: {
                                                                     menuDisabled: true,
                                                                     sortable: false,
@@ -857,7 +857,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                         ]
                                                                     },
                                                                     {
-                                                                        text: 'Sales',
+                                                                        text: 'Settlement',
                                                                         defaults: {
                                                                             menuDisabled: true,
                                                                             sortable: false,
@@ -865,7 +865,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                         },
                                                                         columns: [
                                                                             {
-                                                                                text: 'w/o Reconcili.', dataIndex: 'lngQTPEND', width: 100,
+                                                                                text: 'w/o State.', dataIndex: 'lngQTPEND', width: 100,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;background-color:#d5f4d5";
                                                                                     return Ext.util.Format.number(value, '0,000');

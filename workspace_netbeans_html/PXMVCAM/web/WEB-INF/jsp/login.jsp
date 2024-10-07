@@ -76,7 +76,7 @@
                                             <div id="theader_iata"></div>
                                             <div id="theader_miatech"></div>
                                         </div>
-                                        <center><h3 class="instancia">Praxis System</h3></center>
+                                        <center><h3 class="instancia">&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAVIANCA</h3></center>
                                         <div id="theader_body">
                                             <div id="theader_revenue"></div>
                                         </div>

@@ -87,6 +87,12 @@ public class A2290 {
     public String descNEGOC = "";
     public String ACCNUMBER = "";
     public String ACCOUNT = "";
+    public String BENCENC = "";
+    public String ACCCOMP = "";
+    public String CIACOME = "";
+    public String REFER = "";
+    public String TEXTO = "";
+    public String TEXTOLAR = "";
     public String CLAVE1 = "";
     public String CLAVE3 = "";
     public String CECO = "";
