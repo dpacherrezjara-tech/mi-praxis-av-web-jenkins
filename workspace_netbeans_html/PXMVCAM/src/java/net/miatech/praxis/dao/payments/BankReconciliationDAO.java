@@ -1115,6 +1115,8 @@ public class BankReconciliationDAO {
                     beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
                     beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.COREP = rst.getString("COREP").trim();
+                    beanTkt.MERCHNC = rst.getString("MERCHNC").trim();
+                    beanTkt.SPNR = rst.getString("SPNR").trim();
                     beanTkt.strDescripcionCOREP = rst.getString("COREPN").trim();
                     if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
                         beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();

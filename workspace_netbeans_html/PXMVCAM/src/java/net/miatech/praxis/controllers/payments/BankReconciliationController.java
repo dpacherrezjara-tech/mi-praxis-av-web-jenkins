@@ -2476,18 +2476,19 @@ public class BankReconciliationController extends BaseController {
                 Cell CH1_16 = row1.createCell(16);
                 Cell CH1_17 = row1.createCell(17);
                 Cell CH1_18 = row1.createCell(18);
+                Cell CH1_19 = row1.createCell(19);
 
                 CH1_0.setCellValue("CODEBANK");
-                CH1_1.setCellValue("SCSARCOD");
+                CH1_1.setCellValue("SCARCOD");
                 CH1_2.setCellValue("SCARDN");
                 CH1_3.setCellValue("SAUTHOC");
                 CH1_4.setCellValue("SCURRENCY");
                 CH1_5.setCellValue("SVFOP");
-                CH1_6.setCellValue("SMERCH");
+                CH1_6.setCellValue("MERCHNC");
                 CH1_7.setCellValue("SPNR");
                 CH1_8.setCellValue("SAGENT");
                 CH1_9.setCellValue("NEGOC");
-                CH1_10.setCellValue("TDO");
+                CH1_10.setCellValue("TDOC");
                 CH1_11.setCellValue("PAYDATE");
                 CH1_12.setCellValue("ACCNUMBER");
                 CH1_13.setCellValue("TERMI");
@@ -2496,6 +2497,7 @@ public class BankReconciliationController extends BaseController {
                 CH1_16.setCellValue("FCONT");
                 CH1_17.setCellValue("QTYDOC");
                 CH1_18.setCellValue("QTYTKT");
+                CH1_19.setCellValue("PEND_DAYS");
 
                 CH1_0.setCellStyle(headerStyle);
                 CH1_1.setCellStyle(headerStyle);
@@ -2516,6 +2518,7 @@ public class BankReconciliationController extends BaseController {
                 CH1_16.setCellStyle(headerStyle);
                 CH1_17.setCellStyle(headerStyle);
                 CH1_18.setCellStyle(headerStyle);
+                CH1_19.setCellStyle(headerStyle);
 
                 //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -2537,6 +2540,7 @@ public class BankReconciliationController extends BaseController {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
                 ++vj;
                 //============================================
                 while (iter.hasNext()) {
@@ -2560,6 +2564,7 @@ public class BankReconciliationController extends BaseController {
                     Cell rcell16 = row1.createCell(16);
                     Cell rcell17 = row1.createCell(17);
                     Cell rcell18 = row1.createCell(18);
+                    Cell rcell19 = row1.createCell(19);
 
                     rcell0.setCellValue(listaData.get(vi).CODEBANK);
                     rcell1.setCellValue(listaData.get(vi).SCARCOD);
@@ -2578,8 +2583,9 @@ public class BankReconciliationController extends BaseController {
                     rcell14.setCellValue(listaData.get(vi).BANDOC);
                     rcell15.setCellValue(listaData.get(vi).STCON);
                     rcell16.setCellValue(listaData.get(vi).FCONT);
-                    rcell17.setCellValue(listaData.get(vi).QTYDOC);
-                    rcell18.setCellValue(listaData.get(vi).QTYTKT);
+                    rcell17.setCellValue(listaData.get(vi).lngQTYDOC);
+                    rcell18.setCellValue(listaData.get(vi).lngQTYTKT);
+                    rcell19.setCellValue(listaData.get(vi).PENDINGDAYS);
 
                     rcell0.setCellStyle(bodyStyle);
                     rcell1.setCellStyle(bodyStyle);
@@ -2600,6 +2606,7 @@ public class BankReconciliationController extends BaseController {
                     rcell16.setCellStyle(bodyStyle);
                     rcell17.setCellStyle(bodyStyle);
                     rcell18.setCellStyle(bodyStyle);
+                    rcell19.setCellStyle(bodyStyle);
 
                     iter.next();
                     ++vi;
@@ -2625,6 +2632,7 @@ public class BankReconciliationController extends BaseController {
                 sheet.autoSizeColumn(16, true);
                 sheet.autoSizeColumn(17, true);
                 sheet.autoSizeColumn(18, true);
+                sheet.autoSizeColumn(19, true);
 
                 //============================================
                 response.setContentType("application/vnd.openxml");
@@ -2649,7 +2657,7 @@ public class BankReconciliationController extends BaseController {
 
                 PrintWriter writer = new PrintWriter(fileA, "UTF-8");
                 String cadena;
-                cadena = "CODEBANK,SCSARCOD,SCARDN,SAUTHOC,SCURRENCY,SVFOP,SMERCH,SPNR,SAGENT,NEGOC,TDOC,PAYDATE,ACCNUMBER,TERMI,BANDOC,STCON,FCONT,QTYDOC,QTYTKT";
+                cadena = "CODEBANK|SCARCOD|SCARDN|SAUTHOC|SCURRENCY|SVFOP|MERCHNC|SPNR|SAGENT|NEGOC|TDOC|PAYDATE|ACCNUMBER|TERMI|BANDOC|STCON|FCONT|QTYDOC|QTYTKT|PEND_DAYS";
                 writer.println("" + cadena);
 
                 for (vi = 0; vi < len; vi++) {
@@ -2671,8 +2679,9 @@ public class BankReconciliationController extends BaseController {
                     cadena += "" + listaData.get(vi).BANDOC + "|";
                     cadena += "" + listaData.get(vi).STCON + "|";
                     cadena += "" + listaData.get(vi).FCONT + "|";
-                    cadena += "" + listaData.get(vi).QTYDOC + "|";
-                    cadena += "" + listaData.get(vi).QTYTKT;
+                    cadena += "" + listaData.get(vi).lngQTYDOC + "|";
+                    cadena += "" + listaData.get(vi).lngQTYTKT + "|";
+                    cadena += "" + listaData.get(vi).PENDINGDAYS ;
                     cadena = cadena.replaceAll("null", "");
                     writer.println("" + cadena);
                 }
