@@ -43,6 +43,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     beanDetailTW: {},
     me: '',
     searchParams: {},
+    searchParamsbeanGraf: {},
     paramsObtainData: {},
     paramsDetail: {},
     init: function (view) {
@@ -118,11 +119,30 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             '#BankReconciliationForm-btnBackTW': {
                 click: this.btnBackTW_click
             },
+            '#BankReconciliationForm-btnBackGraf': {
+                click: this.btnDisplay_click
+            },
+            '#BankReconciliationForm-btnSearchGraf': {
+                click: this.btnChangeGraf
+            },
+            '#BankReconciliationForm-cmbDateFromYearGraf': {
+                select: this.selectComboFromYearGraf
+            },
+            '#BankReconciliationForm-cmbDateToYearGraf': {
+                select: this.selectComboToYearGraf
+            },
+            '#BankReconciliationForm-cmbDateFromMonthGraf': {
+                select: this.selectComboFromMonthGraf
+            },
+            '#BankReconciliationForm-cmbDateToMonthGraf': {
+                select: this.selectComboToMonthGraf
+            },
 
         });
     },
     xpanel_afterrender: function (obj, e) {
         this.setStoreData();
+        this.setStoreDataGraf();
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -139,6 +159,145 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
+    btnDisplay_click: function () {
+
+        var option = Ext.getCmp(prototype.id + '-panelGraf');
+        if (option.isVisible()) {
+            option.setVisible(false);
+            Ext.getCmp(prototype.id + '-panelGridDataMain').show();
+            Ext.getCmp(prototype.id + '-contentFilter').show();
+            Ext.getCmp(prototype.id + '-contentOptions').show();
+            Ext.getCmp(prototype.id + '-heigGraf').setHeight(630);
+            this.setFormatParameter();
+        } else {
+
+            Ext.getCmp(prototype.id + '-rbChart_IA').items.items[0].setValue(true);
+            Ext.getCmp(prototype.id + '-rbChart_IA').cheked = true;
+
+            option.setVisible(true);
+            this.setFormatParameterGraf();
+            Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+            Ext.getCmp(prototype.id + '-contentFilter').hide();
+            Ext.getCmp(prototype.id + '-contentOptions').hide();
+            Ext.getCmp(prototype.id + '-heigGraf').setHeight(810);
+
+            Ext.getCmp(prototype.id + '-rbFaseI').show();
+            Ext.getCmp(prototype.id + '-rbFaseII').hide();
+            this.searchGrafLiqI();
+
+        }
+
+    },
+    btnChangeGraf: function () {
+
+        this.setFormatParameterGraf();
+        Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+        Ext.getCmp(prototype.id + '-contentFilter').hide();
+        Ext.getCmp(prototype.id + '-contentOptions').hide();
+        Ext.getCmp(prototype.id + '-heigGraf').setHeight(810);
+
+        console.log('ERROR');
+
+        var valueRadio = Ext.getCmp(prototype.id + '-rbChart_IA').getValue().rb;
+
+        console.log(valueRadio);
+
+        switch (valueRadio) {
+            case 'rbF1':
+                Ext.getCmp(prototype.id + '-rbFaseI').show();
+                Ext.getCmp(prototype.id + '-rbFaseII').hide();
+                this.searchGrafLiqI();
+                break;
+            case 'rbF2':
+                Ext.getCmp(prototype.id + '-rbFaseI').hide();
+                Ext.getCmp(prototype.id + '-rbFaseII').show();
+                this.searchGrafLiqII();
+                break;
+        }
+
+    },
+    setFormatParameterGraf: function () {
+        var beanGraf = {};
+
+        beanGraf.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf').getValue();
+        beanGraf.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf').getValue();
+        beanGraf.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf').getValue();
+        beanGraf.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearGraf').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthGraf').getValue();
+        beanGraf.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYearGraf').getValue();
+        beanGraf.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf').getValue();
+        beanGraf.strFecFiltro = 'SDATE';
+
+        var beanStringbeanGraf = JSON.stringify(beanGraf);
+        searchParamsbeanGraf = {
+            beanString: beanStringbeanGraf,
+            bean: beanGraf
+        };
+    },
+    //<editor-fold defaultstate="collapsed" desc="setStoreData">
+    selectComboFromYearGraf: function (obj) {
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
+        var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf');
+        comboToYear.bindStore(storeComboDataYear);
+        comboToYear.setValue(obj.getValue());
+
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
+    },
+    selectComboToYearGraf: function (obj) {
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
+        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf');
+        if (comboToYear.getValue() < comboFromYear.getValue()) {
+            comboFromYear.setValue(comboToYear.getValue());
+        }
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
+            comboFromMonth.setValue(comboToMonth.getValue());
+        }
+    },
+    selectComboFromMonthGraf: function (obj) {
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf');
+        comboToMonth.setValue(obj.getValue());
+    },
+    selectComboToMonthGraf: function (obj) {
+        var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
+        var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf');
+        if (comboFromYear.getValue() === comboToYear.getValue()) {
+            if (obj.getValue() < comboFromMonth.getValue()) {
+                comboFromMonth.setValue(obj.getValue());
+            }
+        }
+    },
+    selectComboToDayGraf: function (obj) {
+
+        var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
+        var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf');
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf');
+    },
+    setStoreDataGraf: function () {
+
+        var month = this.fecha.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        Ext.getCmp(prototype.id + '-cmbDateFromYearGraf').bindStore(win.getStoreYear(false));
+        Ext.getCmp(prototype.id + '-cmbDateToYearGraf').bindStore(win.getStoreYear(false));
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateToMonthGraf').bindStore(win.getStoreMonth(true));
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearGraf').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateToYearGraf').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToMonthGraf').setValue("");
+
+    },
+    //</editor-fold>
     selectComboFromYear: function (obj) {
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
@@ -483,6 +642,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     btnSearch_click: function (obj, e) {
         console.log('btnSearch_click');
+        this.beanDetDay = {};
         this.beanDetDay.IN_CARDN1 = '';
         this.beanDetDay.IN_CARDN2 = '';
         this.beanDetDay.IN_SCARDNCOR = '';
@@ -1020,6 +1180,98 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataMain').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        }
+    },
+    searchGrafLiqI: function (obj, val) {
+        win.lblUser_toolTip("Estructura: MPF107");
+        if (me.panelActual !== '-panelGraf') {
+            me.panelActual = '-panelGraf';
+        }
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchGraf'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParamsbeanGraf;
+                        Ext.getCmp(prototype.id + '-panelGraf').mask('Loading...');
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGraf').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var obj = obj.data.items[0].data;
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataGrafLiqI').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-displayGrafLiqI').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-gridDataGrafSaleI').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-displayGrafSaleI').bindStore(storeGridDatas);
+
+        }
+    },
+    searchGrafLiqII: function (obj, val) {
+        win.lblUser_toolTip("Estructura: MPF107");
+        if (me.panelActual !== '-panelGraf') {
+            me.panelActual = '-panelGraf';
+        }
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchMain'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParamsbeanGraf;
+                        Ext.getCmp(prototype.id + '-panelGraf').mask('Loading...');
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGraf').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var obj = obj.data.items[0].data;
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataGrafLiqII').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-displayGrafLiqII').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-gridDataGrafSaleII').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-displayGrafSaleII').bindStore(storeGridDatas);
+
         }
     },
     //<editor-fold defaultstate="collapsed" desc="onGridCountry">
@@ -3406,7 +3658,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             me.panelActual = '-panelGridDataTotalCORE';
             me.flag = 'all';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-            
+
             this.beanDetCardByS.IN_TDOC = rowData.data.IN_TDOC;
             this.beanDetCardByS.IN_COUNTRY = rowData.data.IN_COUNTRY;
             this.beanDetCardByS.strFecFiltro = rowData.data.strFecFiltro;
@@ -3449,7 +3701,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         var bean = obj.data.items[0].data;
                         var title = '';
                         title = bean.strTitulo;
-                        Ext.getCmp(prototype.id + '-gridDataTotalCORE').setTitle('<center style="font-size:12px;">' + title + '</center>');              
+                        Ext.getCmp(prototype.id + '-gridDataTotalCORE').setTitle('<center style="font-size:12px;">' + title + '</center>');
                     }
                 }
             }
