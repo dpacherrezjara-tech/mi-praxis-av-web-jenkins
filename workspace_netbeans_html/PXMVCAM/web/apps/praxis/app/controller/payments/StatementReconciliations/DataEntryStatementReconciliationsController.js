@@ -201,7 +201,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         console.log(this.beanScan, 'this.beanScan')
         var beanString = JSON.stringify(this.beanScan);
         Ext.Ajax.request({
-            url: prototype.url + '/searchBean_DETAIL',
+            url: prototype.url + '/searchBean_DETAIL_CO',
             method: 'POST',
             timeout: 60000000,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
@@ -639,7 +639,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         
         var beanString = JSON.stringify(this.beanScan);
         Ext.Ajax.request({
-            url: prototype.url + '/searchBean_DETAIL',
+            url: prototype.url + '/searchBean_DETAIL_CO',
             method: 'POST',
             timeout: 60000000,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),

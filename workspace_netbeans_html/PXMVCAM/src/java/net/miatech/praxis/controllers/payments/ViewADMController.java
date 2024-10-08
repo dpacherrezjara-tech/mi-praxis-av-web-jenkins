@@ -13,6 +13,7 @@ import static java.lang.String.format;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -56,6 +57,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.apache.poi.ss.usermodel.DataFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import org.apache.poi.ss.usermodel.CreationHelper;
 
 /**
  *
@@ -2726,8 +2729,8 @@ public class ViewADMController extends BaseController {
             File file = File.createTempFile(fileNameDownload, ".xlsx");
             ViewADMLogic logic = new ViewADMLogic();
             logic.setSession(this.serverSession.getServerSession());
-                filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             filter.page.PAGROW = -1;
             filter.page.PAGNUM = 1;
             List<A2295Filter> listaData = logic.loadPX644SQPMPF100ADM_REPORT(filter);
@@ -2739,6 +2742,9 @@ public class ViewADMController extends BaseController {
             XSSFCellStyle headerStyle2 = (XSSFCellStyle) workbook.createCellStyle();
             XSSFCellStyle headerStyle21 = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle2 = workbook.createCellStyle();
+            CellStyle cellStyleDate = workbook.createCellStyle();
+            CreationHelper creationHelper = workbook.getCreationHelper();
+            cellStyleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd/MM/yyyy"));
             Font headerFont2 = workbook.createFont();
             Font headerFont21 = workbook.createFont();
             headerFont2.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -2934,13 +2940,18 @@ public class ViewADMController extends BaseController {
                 rcell24.setCellValue("Operaciones Bancarias CO");
                 rcell25.setCellValue(Integer.parseInt(listaData.get(vi2).IN_DATE_FROM.substring(4,6)));
                 rcell26.setCellValue(listaData.get(vi2).A720FVLO1);
-                rcell27.setCellValue(convertirFecha(listaData.get(vi2).IN_DATE_FROM));
-                rcell28.setCellValue(convertirFecha(listaData.get(vi2).IN_DATE_TO));
+                
+                Date fechaDate = dateFormat.parse(convertirFecha(listaData.get(vi2).IN_DATE_FROM));  // Convertir String a Date
+                rcell27.setCellValue(fechaDate);
+                rcell27.setCellStyle(cellStyleDate);
+                Date fechaDate2 = dateFormat.parse(convertirFecha(listaData.get(vi2).IN_DATE_TO)); 
+                rcell28.setCellValue(fechaDate2);
+                rcell28.setCellStyle(cellStyleDate);
                 rcell29.setCellValue(listaData.get(vi2).A720RUTA0);
                 rcell210.setCellValue(listaData.get(vi2).A720RUTA1);
                 rcell211.setCellValue(listaData.get(vi2).ROUTETYPE);
                 rcell212.setCellValue(listaData.get(vi2).TYPETRAVEL);
-                rcell213.setCellValue("Conciliación tarjetas de crédito e inconsistencia en pago con tarjetas de crédito");
+                rcell213.setCellValue("Inconsistencia en pago con tarjetas de credito");
                 rcell214.setCellValue(listaData.get(vi2).SCURRENCY);
                 rcell215.setCellValue(0.00);
                 rcell215.setCellStyle(decimalStyle);
