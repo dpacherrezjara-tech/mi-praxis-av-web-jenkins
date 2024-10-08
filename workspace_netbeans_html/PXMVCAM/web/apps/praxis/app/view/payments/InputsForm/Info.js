@@ -617,8 +617,8 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                             border: true,
                             hidden: false,
                             height: 516,
-                            width: 1012,
-                            margin: '10 0 0 150',
+                            width: 712,
+                            margin: '10 0 0 300',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -628,7 +628,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailAll',
                                     height: 510,
-                                    width: 1012,
+                                    width: 712,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -651,39 +651,39 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     {text: 'Date', width: 100, dataIndex: 'PROCDATE'}
                                                 ]
                                             },
-                                            {text: 'Loading',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, dataIndex: 'LOADDATE'}
-                                                ]
-                                            },
-                                            {text: 'Generation',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, dataIndex: 'FECR'}
-                                                ]
-                                            },
-                                            {text: 'User',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
-                                                ]
-                                            },
+//                                            {text: 'Loading',
+//                                                defaults: {
+//                                                    menuDisabled: true,
+//                                                    sortable: true,
+//                                                    align: 'center',
+//                                                    border: true
+//                                                },
+//                                                columns: [
+//                                                    {text: 'Date', width: 100, dataIndex: 'LOADDATE'}
+//                                                ]
+//                                            },
+//                                            {text: 'Generation',
+//                                                defaults: {
+//                                                    menuDisabled: true,
+//                                                    sortable: true,
+//                                                    align: 'center',
+//                                                    border: true
+//                                                },
+//                                                columns: [
+//                                                    {text: 'Date', width: 100, dataIndex: 'FECR'}
+//                                                ]
+//                                            },
+//                                            {text: 'User',
+//                                                defaults: {
+//                                                    menuDisabled: true,
+//                                                    sortable: true,
+//                                                    align: 'center',
+//                                                    border: true
+//                                                },
+//                                                columns: [
+//                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
+//                                                ]
+//                                            },
                                             {text: 'File',
                                                 defaults: {
                                                     menuDisabled: true,
@@ -746,7 +746,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                             id: prototype.id + '-boxDataDetalle',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
-                            height: 516,
+                            
                             width: 1012,
                             margin: '10 0 0 180',
                             layout: {
@@ -757,8 +757,10 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    width: 783,
+                                    width: 695,
+                                    height: 516,
                                     columnLines: true,
+                                    autoScroll: true,
                                     features: [{
                                             ftype: 'summary'
                                         }],
@@ -781,17 +783,17 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     {text: 'Date', width: 100, dataIndex: 'PROCDATE'}
                                                 ]
                                             },
-                                            {text: 'User',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
-                                                ]
-                                            },
+//                                            {text: 'User',
+//                                                defaults: {
+//                                                    menuDisabled: true,
+//                                                    sortable: true,
+//                                                    align: 'center',
+//                                                    border: true
+//                                                },
+//                                                columns: [
+//                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
+//                                                ]
+//                                            },
                                             {text: 'File',
                                                 defaults: {
                                                     menuDisabled: true,
@@ -834,9 +836,21 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                 },
                                                 columns: [
                                                     {text: 'Records', width: 90, dataIndex: 'QTYDOC',
+                                                        listeners: {
+                                                            click: 'searchDataLine_clickHandler'
+                                                        },
+
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-                                                            return  value;
+                                                            var data = record.data;
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            console.log(data,'data')
+                                                            if ( data.CODE == 'EXT'){
+                                                                console.log('entro al ext')
+                                                                return value;
+                                                            }else{
+                                                                
+                                                                return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                            }
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
