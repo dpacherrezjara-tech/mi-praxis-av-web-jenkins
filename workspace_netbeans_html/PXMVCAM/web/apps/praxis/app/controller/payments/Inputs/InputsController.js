@@ -448,6 +448,9 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                 }
             });
             global.clear();
+            Ext.getCmp(prototype.id + '-gridMainDataAll').setTitle('')
+            Ext.getCmp(prototype.id + '-gridMainData').setTitle('')
+            Ext.getCmp(prototype.id + '-gridDataDetalle').setTitle('')
             Ext.getCmp(prototype.id + '-gridMainDataAll').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
