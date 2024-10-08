@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -119,10 +120,11 @@ public class InputsController extends BaseController {
 
         List<A1686Filter> lst = new ArrayList<>(0);
         A1686Filter filter = new A1686Filter();
+        
         Gson gson = new Gson();
         String beanString = "";
         String consulta = "1";
-
+        String[] fuenteCO = {"LIQUI-ORIG", "LIQUI-DEB", "EECC-UNI"};
         try {
             logic = new InputsLogic();
             logic.setSession(this.serverSession.getServerSession());
@@ -141,6 +143,9 @@ public class InputsController extends BaseController {
             
             if (filter.IN_FUENTE.trim().equals("")) {
                 lst = logic.loadPX264SQP02957(filter);
+            } else if ( Arrays.asList(fuenteCO).contains(filter.IN_FUENTE.trim())){
+                //Arrays.asList(fuenteCO).contains(filter.IN_FUENTE.trim());
+                lst = logic.loadPX264SQP02958Det(filter);
             } else {
                 lst = logic.loadPX264SQP00665(filter, consulta);
             }
@@ -561,7 +566,7 @@ public class InputsController extends BaseController {
 
         map.put("success", true);
         A1686Filter filter = new A1686Filter();
-        List<A2359> lst = new ArrayList<>(0);
+        List<A1686Filter> lst = new ArrayList<>(0);
         Gson gson = new Gson();
 
         try {
