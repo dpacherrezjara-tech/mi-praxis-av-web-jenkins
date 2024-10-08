@@ -891,13 +891,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
 //                                            },
                                             {text: 'Doc SAP Bank', dataIndex: 'BANDOC', width: 110,
                                                 listeners: {
-                                                    click: 'onGridDetDetails'
+//                                                    click: 'onGridDetDetails'
                                                 },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 
                                                     if (record.data.STVAL === 'Match' || record.data.STVAL === 'Match Manual') {
-                                                        metaData.style = "text-align:center;color:#057ECB";
-                                                        value = '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                        metaData.style = "text-align:center;color:#057ECB";
+                                                        
+//                                                        value = '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                     } else {
                                                         metaData.style = "text-align:center;";
                                                     }
@@ -1073,12 +1074,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                             },
                                             {text: 'Doc SAP Bank', dataIndex: 'BANDOC', width: 110,
                                                 listeners: {
-                                                    click: 'onGridDetDetails'
+//                                                    click: 'onGridDetDetails'
                                                 },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
+//                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
 
-                                                    return record.data.STVAL == 'Match' ? '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>' : value;
+                                                    return record.data.STVAL == 'Match' ?  value  : value;
                                                 },
                                             },
                                             {
@@ -1244,12 +1245,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                             },
                                             {text: 'Doc SAP Bank', dataIndex: 'BANDOC', width: 110,
                                                 listeners: {
-                                                    click: 'onGridDetDetails'
+//                                                    click: 'onGridDetDetails'
                                                 },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
+//                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
 
-                                                    return record.data.STVAL == 'Match' ? '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>' : value;
+                                                    return record.data.STVAL == 'Match' ? value  : value;
                                                 },
                                             },
                                             {

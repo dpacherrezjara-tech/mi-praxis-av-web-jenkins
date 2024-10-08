@@ -3565,6 +3565,41 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "/searchBean_DETAIL_CO")
+    public @ResponseBody
+    String searchBean_DETAIL_CO(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean_DETAIL_CO-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = new ArrayList<>(0);
+            List<A2290Filter> lstFees = new ArrayList<>(0);
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQP05114Detail(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("dataFees", lstFees);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    
     @RequestMapping(value = "/searchBean_DETAIL")
     public @ResponseBody
     String searchBean_DETAIL(ModelMap map, HttpServletRequest request) {
