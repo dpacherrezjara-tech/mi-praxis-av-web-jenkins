@@ -656,9 +656,9 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
     },
     searchDataLine_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData){
-        if(rowData.data.BANK == 'EXT'){
-            return false
-        }
+//        if(rowData.data.BANK == 'EXT'){
+//            return false
+//        }
         var beanDetLine = rowData.data;
         beanDetLine.FUENTE = rowData.data.INPNAME;
         beanDetLine.FECR = rowData.data.PROCDATE;

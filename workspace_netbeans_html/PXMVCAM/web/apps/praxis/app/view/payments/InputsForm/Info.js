@@ -843,14 +843,14 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            console.log(data,'data')
-                                                            if ( data.CODE == 'EXT'){
-                                                                console.log('entro al ext')
-                                                                return value;
-                                                            }else{
+//                                                            console.log(data,'data')
+//                                                            if ( data.CODE == 'EXT'){
+//                                                                console.log('entro al ext')
+//                                                                return value;
+//                                                            }else{
                                                                 
                                                                 return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                            }
+//                                                            }
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
