@@ -833,18 +833,18 @@ public class InputsDAO {
         hmTablaFuente.put("AXLIGATB-D", "A4125");
         hmTablaFuente.put("WORLDPAY-D", "A4039");
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            cstmt01.registerOutParameter(10, Types.VARCHAR);
-            cstmt01.registerOutParameter(11, Types.INTEGER);
-            cstmt01.registerOutParameter(12, Types.INTEGER);
-            cstmt01.registerOutParameter(13, Types.INTEGER);
+            cstmt01.registerOutParameter(13, Types.VARCHAR);
             cstmt01.registerOutParameter(14, Types.INTEGER);
+            cstmt01.registerOutParameter(15, Types.INTEGER);
+            cstmt01.registerOutParameter(16, Types.INTEGER);
+            cstmt01.registerOutParameter(17, Types.INTEGER);
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.FECHA); // FECRFILE
@@ -855,18 +855,21 @@ public class InputsDAO {
             cstmt01.setString(7, filter.IN_ERROR);
             cstmt01.setString(8, filter.IN_FECRFILE);            
             cstmt01.setString(9, consulta);
-            cstmt01.setString(10, "");
-            cstmt01.setInt(11, filter.page.PAGNUM);
-            cstmt01.setInt(12, filter.page.PAGROW);
-            cstmt01.setInt(13, filter.page.TOTPAG);
-            cstmt01.setInt(14, filter.page.TOTROW);
+            cstmt01.setString(10, filter.IN_CODEBANK);
+            cstmt01.setString(11, filter.IN_ADATE);
+            cstmt01.setString(12, filter.IN_NAME);
+            cstmt01.setString(13, "");
+            cstmt01.setInt(14, filter.page.PAGNUM);
+            cstmt01.setInt(15, filter.page.PAGROW);
+            cstmt01.setInt(16, filter.page.TOTPAG);
+            cstmt01.setInt(17, filter.page.TOTROW);
             cstmt01.execute();
 
-            filter.strFormatDate4 = cstmt01.getString(10);
-            filter.page.PAGNUM = cstmt01.getInt(11);
-            filter.page.PAGROW = cstmt01.getInt(12);
-            filter.page.TOTPAG = cstmt01.getInt(13);
-            filter.page.TOTROW = cstmt01.getInt(14);
+            filter.strFormatDate4 = cstmt01.getString(13);
+            filter.page.PAGNUM = cstmt01.getInt(14);
+            filter.page.PAGROW = cstmt01.getInt(15);
+            filter.page.TOTPAG = cstmt01.getInt(16);
+            filter.page.TOTROW = cstmt01.getInt(17);
 
             rs01 = cstmt01.getResultSet();
             int pos = 0;
@@ -1121,7 +1124,7 @@ public class InputsDAO {
                 + " - User Creator : " + filter.USCR;*/
         strTitulo = "Processing Date : " + filter.DTRANS;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958_V1(?,?,?,?,?)}";
 
         try {
 
@@ -1141,32 +1144,33 @@ public class InputsDAO {
                 pos++;
                 objRtn = new A2359();
                 objRtn.RN = pos;
-                objRtn.CCUST = rs01.getString("CCUST").trim();
+//                objRtn.CCUST = rs01.getString("CCUST").trim();
                 objRtn.SEQNUM = rs01.getString("SEQNUM").trim();
                 objRtn.INPNAME = rs01.getString("INPNAME").trim();
-                objRtn.LIBNAME = rs01.getString("LIBNAME").trim();
-                objRtn.OUTNAME = rs01.getString("OUTNAME").trim();
+//                objRtn.LIBNAME = rs01.getString("LIBNAME").trim();
+//                objRtn.OUTNAME = rs01.getString("OUTNAME").trim();
                 objRtn.PROCDATE = rs01.getString("PROCDATE").trim();
-                objRtn.LOADDATE = rs01.getString("LOADDATE").trim();
+//                objRtn.LOADDATE = rs01.getString("LOADDATE").trim();
                 objRtn.TRFSTAT = rs01.getString("TRFSTAT").trim();
+                objRtn.CONTROL = rs01.getString("CONTROL").trim();
                 objRtn.QTYDOC = rs01.getInt("QTYDOC");
                 
-                if(objRtn.INPNAME.trim().toUpperCase().startsWith("X")){
-                    objRtn.CONTROL = "CONTROL";
-                }else{
-                    objRtn.CONTROL = "DATA";
-                }
-                if(objRtn.TRFSTAT.trim().equals("L")){
-                    objRtn.TRFSTAT = "LOADED";
-                }else if(objRtn.TRFSTAT.trim().equals("E")){
-                    objRtn.TRFSTAT = "ERROR";
-                }else{
-                    objRtn.TRFSTAT = "PENDING";
-                }
+//                if(objRtn.INPNAME.trim().toUpperCase().startsWith("X")){
+//                    objRtn.CONTROL = "CONTROL";
+//                }else{
+//                    objRtn.CONTROL = "DATA";
+//                }
+//                if(objRtn.TRFSTAT.trim().equals("L")){
+//                    objRtn.TRFSTAT = "LOADED";
+//                }else if(objRtn.TRFSTAT.trim().equals("E")){
+//                    objRtn.TRFSTAT = "ERROR";
+//                }else{
+//                    objRtn.TRFSTAT = "PENDING";
+//                }
                 objRtn.strTitulo = strTitulo;
                 
-                objRtn.USCR = rs01.getString("USCR").trim();
-                objRtn.FECR = rs01.getString("FECR").trim();
+//                objRtn.USCR = rs01.getString("USCR").trim();
+//                objRtn.FECR = rs01.getString("FECR").trim();
 
                 lstRtn.add(objRtn);
             }
@@ -1195,10 +1199,10 @@ public class InputsDAO {
         return lstRtn;
     }
     
-    public List<A2359> loadPX264SQP02958Det(A1686Filter filter) throws SQLException, Exception {
+    public List<A1686Filter> loadPX264SQP02958Det(A1686Filter filter) throws SQLException, Exception {
 
-        List<A2359> lstRtn = new ArrayList<A2359>(0);
-        A2359 objRtn;
+        List<A1686Filter> lstRtn = new ArrayList<A1686Filter>(0);
+        A1686Filter objRtn;
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
         Connection cnx = null;
@@ -1206,7 +1210,7 @@ public class InputsDAO {
         
         strTitulo = "Processing Date : " + filter.FECR + " File Name: " + filter.INPNAME;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958DET(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958DET(?,?,?,?,?,?,?,?)}";
 
         try {
 
@@ -1215,19 +1219,22 @@ public class InputsDAO {
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.DTRANS);
-            cstmt01.setString(3, filter.INPNAME);
-            cstmt01.setString(4, filter.FECR);
-            cstmt01.setString(5, filter.USCR);
-            cstmt01.setString(6, filter.IN_ERROR);
+            cstmt01.setString(3, filter.IN_FECHA_FROM);
+            cstmt01.setString(4, filter.IN_FECHA_TO);
+            cstmt01.setString(5, filter.INPNAME);
+            cstmt01.setString(6, filter.FECR);
+            cstmt01.setString(7, filter.USCR);
+            cstmt01.setString(8, filter.IN_ERROR);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
             int pos = 0;
             while (rs01.next()) {
                 pos++;
-                objRtn = new A2359();
+                objRtn = new A1686Filter();
                 objRtn.RN = pos;
                 objRtn.CCUST = rs01.getString("CCUST").trim();
+                objRtn.INPNAME = filter.INPNAME;
                 objRtn.CODE = rs01.getString("CODE").trim();
                 objRtn.BANK = rs01.getString("BANK").trim();
                 objRtn.NAME = rs01.getString("NAME").trim();
@@ -1238,7 +1245,7 @@ public class InputsDAO {
                 
                 objRtn.strTitulo = strTitulo;
                 
-                objRtn.USCR = rs01.getString("USCR").trim();
+//                objRtn.USCR = rs01.getString("USCR").trim();
                 objRtn.FECR = rs01.getString("FECR").trim();
 
                 lstRtn.add(objRtn);

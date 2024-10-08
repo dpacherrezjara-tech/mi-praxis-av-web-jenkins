@@ -306,6 +306,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         me.beanCity.IN_FPROC = Ext.getCmp(prototype.id + '-txtDateField').getValue();
 
         me.beanCity.IN_FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
+        me.beanCity.INPNAME = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
+        console.log(me.beanCity, 'me.beanCity')
 
 
         var beanString = JSON.stringify(me.beanCity);
@@ -329,6 +331,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+        me.bean.INPNAME = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
     },
     btnSearch_click: function (obj, e) {
 
@@ -408,11 +411,13 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     setGridData: function () {
         win.lblUser_toolTip("Estructura: A2270");
         var FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
-
+        console.log(FUENTE,'FUENTE')
 //        me.drillDown.push(me.panelActual);
         if (FUENTE === 'All') {
             me.panelActual = '-boxMainAll';
 //            me.panelActual = '-panelGridData';
+        } else if ( ['LIQUI-ORIG','LIQUI-DEB','EECC-UNI'].includes(FUENTE)){
+            me.panelActual = '-boxDataDetalle';
         } else {
             me.panelActual = '-panelGridData';
         }
@@ -445,6 +450,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             global.clear();
             Ext.getCmp(prototype.id + '-gridMainDataAll').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
         }
     },
     searchLOGSA1910: function (obj, val) {
@@ -616,6 +622,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     searchDataDetalle_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var beanDetAll = rowData.data;
         beanDetAll.INPNAME = rowData.data.INPNAME;
+        beanDetAll.FECR = rowData.data.PROCDATE;
         console.log(beanDetAll.INPNAME);
         me.paramsDetail.beanString = JSON.stringify(beanDetAll);
         me.drillDown.push(me.panelActual);
@@ -647,6 +654,55 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         });
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
+    },
+    searchDataLine_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData){
+//        if(rowData.data.BANK == 'EXT'){
+//            return false
+//        }
+        var beanDetLine = rowData.data;
+        beanDetLine.FUENTE = rowData.data.INPNAME;
+        beanDetLine.FECR = rowData.data.PROCDATE;
+        beanDetLine.IN_ADATE = rowData.data.ADATE;
+        beanDetLine.IN_CODEBANK = rowData.data.BANK;
+        beanDetLine.IN_NAME = rowData.data.NAME.trim();
+        beanDetLine.consulta = '';
+//        console.log(beanDetAll.INPNAME);
+        me.paramsDetail.beanString = JSON.stringify(beanDetLine);
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDelivery';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        this.searchDataLine();
+    },
+    searchDataLine: function () {
+        win.lblUser_toolTip("Estructura: A2359");
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDelivery'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetail;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin2');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                    } else {
+                        var beanD = obj.data.items[0].data;
+                        win.lblUser_toolTip("Estructura: " + beanD.strFormatDate4);
+                        var fuente = me.Fuente + " Information";
+                        Ext.getCmp(prototype.id + '-txtFuente').setText(fuente);
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridMainData_2').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
     },
     setGridDataCity: function () {
         me.beanCity = {};
