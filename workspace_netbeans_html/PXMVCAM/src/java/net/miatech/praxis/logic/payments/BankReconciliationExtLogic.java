@@ -7,6 +7,8 @@ import net.miatech.praxis.payment.dto.SPBSR003Filter;
 import net.miatech.praxis.payment.dto.SPBSR004Filter;
 import net.miatech.praxis.payment.dto.SPBSR005Filter;
 import net.miatech.praxis.payment.dto.SPBSR006Filter;
+import net.miatech.praxis.payment.dto.SPBSR007Filter;
+import net.miatech.praxis.payment.dto.SPBSR008Filter;
 
 /**
  *
@@ -20,4 +22,6 @@ public interface BankReconciliationExtLogic {
     SPBSR005Filter loadSPBSR005Filter(SPBSR005Filter filter) throws Exception;
     SPBSR006Filter loadSPBSR006Filter(SPBSR006Filter filter) throws Exception;
     MPS037Filter loadMPS037Filter(MPS037Filter filter) throws Exception;
+    SPBSR007Filter loadSPBSR007Filter(SPBSR007Filter filter) throws Exception;
+    SPBSR008Filter loadSPBSR008Filter(SPBSR008Filter filter) throws Exception;
 }

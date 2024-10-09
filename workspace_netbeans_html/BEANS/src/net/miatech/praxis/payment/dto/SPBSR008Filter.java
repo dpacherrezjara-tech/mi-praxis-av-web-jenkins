@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.miatech.praxis.payment.entities.MPF060;
+import net.miatech.praxis.payment.entities.MPF083;
 import net.miatech.utils.CustomPageImpl;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -17,9 +17,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @EqualsAndHashCode(callSuper = false)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SPBSR003Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_TDATE,IN_PRDAF,IN_PRDAT,IN_TDOC,IN_BANDOC,IN_CODPRO,IN_SEQPRO,IN_SCARDN,IN_SAUTHOC,
-            IN_SCARCOD,IN_STVAL,IN_SCOUNTRY,IN_SCURRENCY,IN_MERCHANT;
-    private Double IN_NETO;
-    List<MPF060> response = new ArrayList<>();
+public class SPBSR008Filter extends CustomPageImpl{
+    private String IN_CCUST,IN_TDATE,IN_PRDAF,IN_PRDAT,IN_CODPRO,IN_SEQPRO,IN_LIQUIDACIO,IN_MONEDA,IN_MONEDAPAGO
+            ,IN_MERCHANT,IN_BANDOC,IN_FSELEC,IN_ACCOUNT;
+    private Double IN_IMPORTE,IN_IMPORTEPAG;
+    List<MPF083> response = new ArrayList<>();
 }
