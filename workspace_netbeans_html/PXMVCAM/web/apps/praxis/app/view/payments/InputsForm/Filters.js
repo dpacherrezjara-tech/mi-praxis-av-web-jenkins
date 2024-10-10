@@ -283,7 +283,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     queryMode: 'local',
                     triggerAction: 'all',
                     listeners:{
-                        select: 'btnSearch_click'
+                        select: 'searchDetAllFilter_clickHandler'
                     }
                 }           
             ]
