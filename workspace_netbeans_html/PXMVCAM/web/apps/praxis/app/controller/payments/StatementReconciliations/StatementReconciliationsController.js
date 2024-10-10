@@ -425,11 +425,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiqDetail.IN_COREP = rowData.data.IN_COREP;
 
         let proces = Ext.getCmp(prototype.id + '-TEST');
-            if (!proces.isVisible()) {
-                this.beanLiqDetail.IN_EXT = 'N';
-            } else {
-                this.beanLiqDetail.IN_EXT = 'Y';
-            }
+        if (!proces.isVisible()) {
+            this.beanLiqDetail.IN_EXT = 'N';
+        } else {
+            this.beanLiqDetail.IN_EXT = 'Y';
+        }
 
         me.paramsDetail.beanString = JSON.stringify(this.beanLiqDetail);
 
@@ -489,6 +489,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanBank.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanBank.strFormatDate = rowData.data.strFormatDate;
         this.beanBank.IN_COREP = rowData.data.IN_COREP;
+
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanBank.IN_EXT = 'N';
+        } else {
+            this.beanBank.IN_EXT = 'Y';
+        }
 
         me.paramsDetail.beanString = JSON.stringify(this.beanBank);
         this.setGridDataDetBank();
@@ -554,6 +561,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDay.strDescripcion = rowData.data.strDescripcion;
         this.beanDay.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY;
         this.beanDay.strDescripcionCOREP = rowData.data.strDescripcionCOREP;
+        
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanDay.IN_EXT = 'N';
+        } else {
+            this.beanDay.IN_EXT = 'Y';
+        }
+        
         me.paramsDetail.beanString = JSON.stringify(this.beanDay);
         this.setGridDataDetDay();
     },
@@ -613,6 +628,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDayLiqByS.strDescripcion = rowData.data.strDescripcion;
         this.beanDayLiqByS.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY;
         this.beanDayLiqByS.strDescripcionCOREP = rowData.data.strDescripcionCOREP;
+        
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanDayLiqByS.IN_EXT = 'N';
+        } else {
+            this.beanDayLiqByS.IN_EXT = 'Y';
+        }
+        
         me.paramsDetail.beanString = JSON.stringify(this.beanDayLiqByS);
 
         this.setGridDataDetDayProcLIQByS();
@@ -678,6 +701,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanLiquidaDate.strDescripcion = rowData.data.strDescripcion;
         this.beanLiquidaDate.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY;
         this.beanLiquidaDate.strDescripcionCOREP = rowData.data.strDescripcionCOREP;
+        
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanLiquidaDate.IN_EXT = 'N';
+        } else {
+            this.beanLiquidaDate.IN_EXT = 'Y';
+        }
+        
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquidaDate);
         this.setGridDataDetLiquida();
     },
@@ -1067,6 +1098,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDayByS.IN_SCURRENCY = rowData.data.SCURRENCY;
         this.beanDayByS.IN_COUNTRY = rowData.data.SCOUNTRY;
         this.beanDayByS.IN_COREP = rowData.data.COREP;
+
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanDayByS.IN_EXT = 'N';
+        } else {
+            this.beanDayByS.IN_EXT = 'Y';
+        }
+
         this.beanDayByS.strDescripcion = rowData.data.strDescripcion;
         this.beanDayByS.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY;
         this.beanDayByS.strDescripcionCOREP = rowData.data.strDescripcionCOREP;
@@ -1110,6 +1149,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.beanDetBankByS.strDescripcion = rowData.data.strDescripcion;
             this.beanDetBankByS.strDescripcionSCOUNTRY = rowData.data.strDescripcionSCOUNTRY;
             this.beanDetBankByS.strDescripcionCOREP = rowData.data.strDescripcionCOREP;
+
+            let proces = Ext.getCmp(prototype.id + '-TEST');
+            if (!proces.isVisible()) {
+                this.beanDetBankByS.IN_EXT = 'N';
+            } else {
+                this.beanDetBankByS.IN_EXT = 'Y';
+            }
+
             me.paramsDetail.beanString = JSON.stringify(this.beanDetBankByS);
             this.setGridDataDetDayByS();
 
@@ -1438,7 +1485,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
     },
     exportExcel: function () {
-        
+
         console.log('oeoeoeoe');
         console.log(me.panelActual);
 
