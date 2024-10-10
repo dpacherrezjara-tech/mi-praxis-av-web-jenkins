@@ -19,7 +19,6 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                 bodyStyle: 'background: transparent;',
                 border: false,
                 width: 1900,
-//                height: 516,
                 align: 'center'
             },
             items: [
@@ -34,13 +33,13 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                     items: [
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-panelGridData',
+                            id: prototype.id + '-boxMainAll',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             hidden: false,
-                            height: 516,
-                            width: 1265,
-                            margin: '10 0 0 80',
+                            height: 550,
+                            width: 1094,
+                            margin: '10 0 0 150',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -48,17 +47,11 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id + '-gridMainData',
-//                                    height: 510,
-                                    width: 1265,
+                                    id: prototype.id + '-gridMainDataAll',
+                                    height: 510,
+                                    width: 1094,
                                     hidden: false,
                                     columnLines: true,
-                                    height: 516,
-//                                    scrollable: {
-//                                        direction: 'vertical',
-//                                    },
-//                                    autoScroll: true,
-//                                    overflowY: 'scroll',
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -76,9 +69,192 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
+                                                    {text: 'Date', width: 100, flex: 1, dataIndex: 'strFormatDate'}
+                                                ]
+                                            },
+                                            {text: 'Files',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Expected', dataIndex: 'QEXPT', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'text-align:right;';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Received', dataIndex: 'QRECT', width: 70, align: 'center',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Loaded', dataIndex: 'QRECL', width: 70, align: 'center',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Not Found', width: 80, dataIndex: 'QRECN',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Error', width: 70, dataIndex: 'QRECE',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'Control',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Expected', dataIndex: 'QEXPB', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'text-align:right;background-color:#FFF8DC;';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Received', dataIndex: 'QCONT', width: 70, align: 'center',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Loaded', dataIndex: 'QCONL', width: 70, align: 'center',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Not Found', width: 80, dataIndex: 'QCONN',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Error', width: 70, dataIndex: 'QCONE',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {text: 'BSP',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Received', dataIndex: 'QBSPT', width: 70, align: 'center',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#b5d0f9;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Loaded', dataIndex: 'QBSPL', width: 70, align: 'center',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#b5d0f9;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
+                                                    {text: 'Error', width: 70, dataIndex: 'QBSPE',
+                                                        listeners: {
+                                                            click: 'searchDetAll_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#b5d0f9;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridData',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            hidden: false,
+                            height: 516,
+                            width: 1265,
+                            margin: '10 0 0 80',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridMainData',
+                                    width: 1265,
+                                    hidden: false,
+                                    columnLines: true,
+                                    height: 516,
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: 'Seq', dataIndex: 'RN', width: 50},
+                                            {text: 'Processing',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
                                                     {text: 'Date', width: 100, flex: 1, dataIndex: 'strFormatDate',
                                                         listeners: {
-                                                            click: 'searchDelivery_clickHandler'
+                                                            click: 'searchDataDetalle_clickHandler'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
@@ -145,6 +321,112 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                         ]
                                     }
                                 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxDataDetalle',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+
+                            width: 1012,
+                            margin: '10 0 0 180',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetalle',
+                                    width: 695,
+                                    height: 516,
+                                    columnLines: true,
+                                    autoScroll: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: 'Seq', dataIndex: 'RN', width: 50},
+                                            {text: 'Processing',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Date', width: 100, dataIndex: 'PROCDATE'}
+                                                ]
+                                            },
+                                            {text: 'File',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Name', width: 70, dataIndex: 'CODE'}
+                                                ]
+                                            },
+                                            {text: 'File',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Name', width: 270, dataIndex: 'NAME'}
+                                                ]
+                                            },
+                                            {text: 'Value',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Date', width: 100, dataIndex: 'ADATE'}
+                                                ]
+                                            },
+                                            {text: 'Qty',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center',
+                                                    border: true
+                                                },
+                                                columns: [
+                                                    {text: 'Records', width: 90, dataIndex: 'QTYDOC',
+                                                        listeners: {
+                                                            click: 'searchDataLine_clickHandler'
+                                                        },
+
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.tot_QTYDOC, '0,000') + '<b>';
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
                             ]
                         },
                         {
@@ -426,190 +708,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                 }
                             ]
                         },
-                        {
-                            xtype: 'panel',
-                            id: prototype.id + '-boxMainAll',
-                            bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
-                            hidden: false,
-                            height: 550,
-                            width: 1094,
-                            margin: '10 0 0 150',
-                            layout: {
-                                type: 'vbox',
-                                align: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'grid',
-                                    id: prototype.id + '-gridMainDataAll',
-                                    height: 510,
-                                    width: 1094,
-                                    hidden: false,
-                                    columnLines: true,
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: true,
-                                            align: 'center'
 
-                                        },
-                                        items: [
-                                            {text: 'Seq', dataIndex: 'RN', width: 50},
-                                            {text: 'Processing',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, flex: 1, dataIndex: 'strFormatDate'}
-                                                ]
-                                            },
-                                            {text: 'Files',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Expected', dataIndex: 'QEXPT', width: 70,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'text-align:right;';
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Received', dataIndex: 'QRECT', width: 70, align: 'center',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Loaded', dataIndex: 'QRECL', width: 70, align: 'center',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Not Found', width: 80, dataIndex: 'QRECN',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Error', width: 70, dataIndex: 'QRECE',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {text: 'Control',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Expected', dataIndex: 'QEXPB', width: 70,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'text-align:right;background-color:#FFF8DC;';
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Received', dataIndex: 'QCONT', width: 70, align: 'center',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Loaded', dataIndex: 'QCONL', width: 70, align: 'center',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Not Found', width: 80, dataIndex: 'QCONN',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Error', width: 70, dataIndex: 'QCONE',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#FFF8DC;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {text: 'BSP',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Received', dataIndex: 'QBSPT', width: 70, align: 'center',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#b5d0f9;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Loaded', dataIndex: 'QBSPL', width: 70, align: 'center',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#b5d0f9;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    },
-                                                    {text: 'Error', width: 70, dataIndex: 'QBSPE',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;background-color:#b5d0f9;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetailAll',
@@ -651,39 +750,6 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     {text: 'Date', width: 100, dataIndex: 'PROCDATE'}
                                                 ]
                                             },
-//                                            {text: 'Loading',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Date', width: 100, dataIndex: 'LOADDATE'}
-//                                                ]
-//                                            },
-//                                            {text: 'Generation',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Date', width: 100, dataIndex: 'FECR'}
-//                                                ]
-//                                            },
-//                                            {text: 'User',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
-//                                                ]
-//                                            },
                                             {text: 'File',
                                                 defaults: {
                                                     menuDisabled: true,
@@ -741,130 +807,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                 }
                             ]
                         },
-                        {
-                            xtype: 'panel',
-                            id: prototype.id + '-boxDataDetalle',
-                            bodyStyle: 'background-color: #E3EAEF;',
-                            border: false,
-                            
-                            width: 1012,
-                            margin: '10 0 0 180',
-                            layout: {
-                                type: 'vbox',
-                                align: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'grid',
-                                    id: prototype.id + '-gridDataDetalle',
-                                    width: 695,
-                                    height: 516,
-                                    columnLines: true,
-                                    autoScroll: true,
-                                    features: [{
-                                            ftype: 'summary'
-                                        }],
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: false,
-                                            align: 'center'
-                                        },
-                                        items: [
-                                            {text: 'Seq', dataIndex: 'RN', width: 50},
-                                            {text: 'Processing',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, dataIndex: 'PROCDATE'}
-                                                ]
-                                            },
-//                                            {text: 'User',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Date', width: 100, dataIndex: 'USCR'}
-//                                                ]
-//                                            },
-                                            {text: 'File',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Name', width: 70, dataIndex: 'CODE'}
-                                                ]
-                                            },
-                                            {text: 'File',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Name', width: 270, dataIndex: 'NAME'}
-                                                ]
-                                            },
-                                            {text: 'Value',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Date', width: 100, dataIndex: 'ADATE'}
-                                                ]
-                                            },
-                                            {text: 'Qty',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center',
-                                                    border: true
-                                                },
-                                                columns: [
-                                                    {text: 'Records', width: 90, dataIndex: 'QTYDOC',
-                                                        listeners: {
-                                                            click: 'searchDataLine_clickHandler'
-                                                        },
-
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-//                                                            console.log(data,'data')
-//                                                            if ( data.CODE == 'EXT'){
-//                                                                console.log('entro al ext')
-//                                                                return value;
-//                                                            }else{
-                                                                
-                                                                return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
-//                                                            }
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
-                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.tot_QTYDOC, '0,000') + '<b>';
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                },
-                            ]
-                        },
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxDataLog',
@@ -3071,69 +3014,6 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                         }
                     ]
                 }
-//        {
-//                    xtype: 'panel',
-//                    id: prototype.id + '-pie',
-//                    layout: {
-//                        type: 'hbox',
-//                        pack: 'center'
-//                    },
-//                    border: true,
-//                    height: 25,
-//                    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-//                    defaults: {
-//                        border: true,
-//                        padding: '0px 1px 0px 1px'
-//                    },
-//                    padding: '1px 1px 1px 1px',
-//                    items: [
-//                        {
-//                            xtype: 'panel',
-//                            id: prototype.id + '-panelPie',
-//                            width: 780,
-//                            height: 25,
-//                            layout: {
-//                                type: 'hbox',
-//                                pack: 'center'
-//                            },
-//                            defaults: {
-//                                xtype: 'label',
-//                                margin: '3px 0px 0px 5px'
-//                            },
-//                            items: [
-//                                {
-//                                    text: 'Page',
-//                                    width: 50
-//                                },
-//                                {
-//                                    id: prototype.id + '-lbl-currentPage',
-//                                    text: '1',
-//                                    width: 50
-//                                },
-//                                {
-//                                    text: 'Of',
-//                                    width: 50
-//                                },
-//                                {
-//                                    id: prototype.id + '-lbl-pageCount',
-//                                    text: '0',
-//                                    width: 50
-//                                },
-//                                {xtype: 'tbspacer', width: 100},
-//                                {
-//                                    text: 'Total found',
-//                                    width: 80
-//                                },
-//                                {
-//                                    id: prototype.id + '-lbl-total',
-//                                    text: '0',
-//                                    width: 50
-//                                }
-//                            ]
-//                        }
-//                    ]
-//                }
-
             ]
 
         },
