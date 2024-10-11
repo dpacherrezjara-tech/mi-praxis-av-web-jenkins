@@ -139,7 +139,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
     onWindowBlocked_Acredit: function () {
         //Evento de pestaña
     },
-
+    joinMultiSelect: function (element){
+        let comboBox = element.getValue();
+        return comboBox.join('|');
+    },
     addCreditCard_keyDownHandler: function () {
         let pestañaActiva = Ext.getCmp(prototype.id + '-tabTableDebits').getActiveTab().getId();
         let prefixDeb = '';
@@ -166,8 +169,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
         this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue();
         this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
-        this.bean_scan.SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
-
+//        this.bean_scan.SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+        this.bean_scan.SCARCOD = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbSCARCOD'));
         if (
                 !this.bean_scan.TICKET &&
                 !this.bean_scan.CARD1 &&
