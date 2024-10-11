@@ -1559,19 +1559,37 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                                     width: 80
                                                 },
                                                 {xtype: 'tbspacer', width: 5},
+//                                                {
+//                                                    xtype: 'combo',
+//                                                    id: prototype.id + '-cmbSCARCOD',
+//                                                    style: 'font-weight:bold;color:#0B333C;',
+//                                                    fieldStyle: 'text-align:left;',
+//                                                    queryMode: 'local',
+//                                                    triggerAction: 'all',
+//                                                    valueField: 'CODE',
+//                                                    displayField: 'NAME',
+//                                                    width: 220,
+//                                                    labelWidth: 10,
+//                                                    hiddenLabel: false,
+//                                                    editable: false
+//                                                },
                                                 {
                                                     xtype: 'combo',
+//                                                    fieldLabel: 'Select Items',
                                                     id: prototype.id + '-cmbSCARCOD',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     fieldStyle: 'text-align:left;',
-                                                    queryMode: 'local',
-                                                    triggerAction: 'all',
                                                     valueField: 'CODE',
                                                     displayField: 'NAME',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    filterPickList: true,
                                                     width: 220,
-                                                    labelWidth: 10,
-                                                    hiddenLabel: false,
-                                                    editable: false
+                                                    editable: false,
+                                                    multiSelect: true,  
+                                                    forceSelection: true ,
+
+
                                                 },
                                                 {xtype: 'tbspacer', width: 457},
                                             ]

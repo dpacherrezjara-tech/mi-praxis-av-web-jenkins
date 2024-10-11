@@ -674,7 +674,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_NEGOC = '';
         this.beanDetDay.IN_COMENT = '';
         this.beanDetDay.IN_AGENCY = '';
-
+        console.log(Ext.getCmp(prototype.id + '-cmbTDOC').getValue(),'combo multi')
         if (Ext.getCmp(prototype.id + '-panelTW').isVisible()) {
             this.searchTW();
         } else {
@@ -682,13 +682,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== ''
                     || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbSource').getValue() !== ''
                     || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''
-                    || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== '' || Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '') {
+                    || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== '' || Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || this.isVerifyMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC')) ) {
 
 
                 this.beanDetDay.TYPEDATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() === 'PAYDATE' ? 'P' : 'S';
                 this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
                 this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
-                this.beanDetDay.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
+                this.beanDetDay.IN_TDOC = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC'));
                 this.beanDetDay.IN_STVAL = win.getValue('cmbStatus');
                 this.beanDetDay.IN_FTE = win.getValue('cmbSource');
                 this.beanDetDay.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
@@ -744,7 +744,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 console.log(me.paramsDetail.beanString);
                 this.setGridDataDetalle();
 
-            } else if (win.getValue('cmbTDOC').trim() === 'D') {
+            } else if (this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC')) === 'D') {
                 this.beanDebits.strFecFiltro = win.getValue('cmbFecFiltro');
                 this.beanDebits.strYearFrom = win.getValue('cmbDateFromYear');
                 this.beanDebits.strMonthFrom = win.getValue('cmbDateFromMonth');
@@ -801,6 +801,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         }
         this.btnSearch_click();
     },
+    isVerifyMultiSelect: function (element){
+        let comboBox = element.getValue();
+        if ( comboBox.length > 1 ){
+            return true;
+        }else{
+            return false;
+        }
+    },
+    joinMultiSelect: function (element){
+        let comboBox = element.getValue();
+        return comboBox.join('|');
+    },
     setFormatParameter: function () {
         var bean = {};
 
@@ -810,8 +822,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         bean.IN_CARDN2 = Ext.getCmp(prototype.id + '-txtCard2').getValue();
         bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
-        bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
-
+        bean.IN_TDOC = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC'));
+        console.log(Ext.getCmp(prototype.id + '-cmbTDOC').getValue(), 'combo multiple')
+        
+        
+        
         var beanString = JSON.stringify(bean);
         searchParams = {
             beanString: beanString,

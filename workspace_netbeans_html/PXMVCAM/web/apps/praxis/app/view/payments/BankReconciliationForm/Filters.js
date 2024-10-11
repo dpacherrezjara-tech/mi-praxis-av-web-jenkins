@@ -525,28 +525,55 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbTDOC',
-                            triggerAction: 'all',
-                            enableKeyEvents: true,
-                            readOnly: false,
-                            editable: true,
-                            valueField: 'value',
-                            displayField: 'description',
-                            fieldStyle: 'text-align: left;',
-                            width: 100,
-                            hidden: false,
-                            value: 'S',
+//                            fieldLabel: 'Doc',
                             store: {
-                                fields: ['value', 'description'],
+                                fields: ['value', 'name'],
                                 data: [
-
-                                    {value: 'S', description: 'SALES'},
-                                    {value: 'D', description: 'DEBITS'},
-                                    {value: 'R', description: 'RFND'},
-                                    {value: 'C', description: 'CHARGEBAK'},
-                                    {value: 'A', description: 'ACREDIT'}
+                                    { value: 'S', name: 'Sales' },
+                                    { value: 'D', name: 'Debito' },
+                                    { value: 'R', name: 'Refund' },
+                                    { value: 'C', name: 'Chargbck' },
+                                    { value: 'A', name: 'Acredit' }
                                 ]
-                            }
+                            },
+                            width: 100,
+                            emptyText: 'All',
+                            value: 'S',  
+                            displayField: 'name',
+                            valueField: 'value',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: true, 
+                            forceSelection: true ,
+
+
                         },
+//                        {
+//                            xtype: 'combo',
+//                            id: prototype.id + '-cmbTDOC',
+//                            triggerAction: 'all',
+//                            enableKeyEvents: true,
+//                            readOnly: false,
+//                            editable: true,
+//                            valueField: 'value',
+//                            displayField: 'description',
+//                            fieldStyle: 'text-align: left;',
+//                            width: 100,
+//                            hidden: false,
+//                            value: 'S',
+//                            store: {
+//                                fields: ['value', 'description'],
+//                                data: [
+//
+//                                    {value: 'S', description: 'SALES'},
+//                                    {value: 'D', description: 'DEBITS'},
+//                                    {value: 'R', description: 'RFND'},
+//                                    {value: 'C', description: 'CHARGEBAK'},
+//                                    {value: 'A', description: 'ACREDIT'}
+//                                ]
+//                            }
+//                        },
                         {xtype: 'tbspacer', width: 25},
 
 //                        {xtype: 'tbspacer', width: 25},
