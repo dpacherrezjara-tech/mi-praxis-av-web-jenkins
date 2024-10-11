@@ -1023,7 +1023,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698DETALLE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698DETALLE_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5103,6 +5103,7 @@ public class BankReconciliationDAO {
                 beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
                 beanTkt.COSTCEN = rst.getString("COSTCEN").trim();
                 beanTkt.BANDOC = rst.getString("BANDOC").trim();
+                beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
                 lstData.add(beanTkt);
             }
             rst.close();
@@ -5818,7 +5819,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_1(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5835,6 +5836,7 @@ public class BankReconciliationDAO {
             cstmt.setString(8, filter.SAGENT.trim());
             cstmt.setString(9, filter.SCURRENCY.trim());
             cstmt.setString(10, filter.SCARCOD.trim());
+            cstmt.setString(11, filter.SCONSOL.trim());
 
             cstmt.execute();
 
@@ -5879,6 +5881,7 @@ public class BankReconciliationDAO {
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
                 beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
                 beanTkt.COSTCEN = rst.getString("COSTCEN").trim();
+                beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
 
                 lstData.add(beanTkt);
             }
@@ -5986,6 +5989,7 @@ public class BankReconciliationDAO {
                 beanTkt.STVAL = rst.getString("STVAL").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
 
                 lstData.add(beanTkt);
             }
@@ -6469,7 +6473,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_RFND_1(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_RFND(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6575,7 +6579,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_CHGBAK_1(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_CHGBAK(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6684,7 +6688,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_ACREDIT_1(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_DEBITS_SCAN_ACREDIT(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

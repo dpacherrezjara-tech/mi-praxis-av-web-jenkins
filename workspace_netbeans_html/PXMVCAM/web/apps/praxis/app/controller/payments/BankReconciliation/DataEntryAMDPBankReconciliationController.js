@@ -47,6 +47,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         }
         meDe.agregaTicket(meDe.bean);
     },
+    joinMultiSelect: function (element){
+        let comboBox = element.getValue();
+        return comboBox.join('|');
+    },
     addCreditCard_keyDownHandler: function () {
         var fecha_a_validar = "";
         this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScan1').getValue();
@@ -58,8 +62,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
         this.bean_scan.SCURRENCY = this.bean.SCURRENCY;
         this.bean_scan.CCUSTCC = Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue();
-        this.bean_scan.SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
-
+//        this.bean_scan.SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+        this.bean_scan.SCARCOD = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbSCARCOD'));
+        this.bean_scan.SCONSOL = Ext.getCmp(prototype.id + '-txtSCONSOL').getValue();
         if (
                 !this.bean_scan.TICKET &&
                 !this.bean_scan.CARD1 &&
@@ -68,7 +73,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 !this.bean_scan.SDATE &&
                 !this.bean_scan.SPNR &&
                 !this.bean_scan.SAGENT &&
-                !this.bean_scan.SCARCOD
+                !this.bean_scan.SCARCOD &&
+                !this.bean_scan.SCONSOL
                 ) {
             console.log("Todos los campos son vacíos. No se realizará la solicitud Ajax.");
             global.Msg({msg: 'Fields to Scan must be filled out'});
@@ -157,7 +163,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 CFUENTE: item.CFUENTE,
                                 INVOICE: item.INVOICE,
                                 ACCNUMA: item.ACCNUMA,
-                                COSTCEN: item.COSTCEN
+                                COSTCEN: item.COSTCEN,
+                                SCONSOL: item.SCONSOL
                             });
                         } else {
                             if (`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A720SCOUNTRY}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}` in listAux) {
@@ -180,7 +187,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                 CFUENTE: item.CFUENTE,
                                 INVOICE: item.INVOICE,
                                 ACCNUMA: item.ACCNUMA,
-                                COSTCEN: item.COSTCEN
+                                COSTCEN: item.COSTCEN,
+                                SCONSOL: item.SCONSOL
                             });
                         }
                     }
