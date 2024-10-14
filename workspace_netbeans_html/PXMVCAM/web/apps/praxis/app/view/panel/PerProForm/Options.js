@@ -85,15 +85,15 @@ Ext.define('Ext.Praxis.view.panel.PerProForm.Options', {
                                 click: 'btnSearch_click'
                             }
                         },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnFilter',
-                            iconCls: 'prx-icon-filter',
-                            tooltip: 'Display filter',
-                            listeners: {
-                                click: 'btnFilter_click'
-                            }
-                        },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnFilter',
+//                            iconCls: 'prx-icon-filter',
+//                            tooltip: 'Display filter',
+//                            listeners: {
+//                                click: 'btnFilter_click'
+//                            }
+//                        },
 //                        {
 //                            xtype: 'button',
 //                            id: prototype.id + '-btnDisplay',

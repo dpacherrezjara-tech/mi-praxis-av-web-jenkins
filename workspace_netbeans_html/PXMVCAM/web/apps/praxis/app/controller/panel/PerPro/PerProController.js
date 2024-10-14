@@ -3,6 +3,7 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
     alias: 'controller.PerProController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     fecha: new Date(),
+    beanOption: '',
     searchParams: {},    
     _path: '',
     // </editor-fold>
@@ -24,7 +25,7 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
     onMostrarFiltrosChange: function(cmp, newValue, oldValue, eOpts) {
         
     },
-    // <editor-fold defaultstate="collapsed" desc="Combo Date">
+    // <editor-fold defaultstate="collapsed" desc="Combos">
     setStoreData: function() {
         var cboGroup = Ext.getCmp(prototype.id + '-cboGroup');
         cboGroup.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -33,6 +34,24 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
             data: [
                 ["1", "User"],
                 ["2", "Program Id"]
+            ]
+        }));
+        var cboModuleGroup = Ext.getCmp(prototype.id + '-cboModuleGroup');
+        cboModuleGroup.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "ALL"],
+                ["10", "SALES"],
+                ["11", "FLOWN"],
+                ["12", "INTERLINE"],
+                ["14", "TNU"],
+                ["15", "PAYMENTS CONTROL"],
+                ["16", "BI TOOLS"],
+                ["17", "OTHERS"],
+                ["19", "PANEL"],
+                ["21", "SALES AUDIT"],
+                ["23", "FOREIGN"]
             ]
         }));
     },
@@ -129,11 +148,7 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
                 group: group,
                 option: option
             };
-        
-        // <editor-fold defaultstate="collapsed" desc="llenarData">
-        
-        // </editor-fold>
-        
+             
         // <editor-fold defaultstate="collapsed" desc="asignación">
         _path = prototype.url+'/getXLSX?' +
                 'group='+searchParams.group+'&' +
@@ -181,9 +196,176 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
     
     exportExcel: function() {
         if (Ext.getCmp(prototype.id+'-boxMainData').isVisible()) {
+            this.setFormatParameter();
+            console.log("PATH XLS: "+_path);
             global.getFile(_path);
         }
     },
+    onCopyUSR: function(btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to copy ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    this.beanOption = {strOption : "CO"};
+                    this.llenarData();
+                    if (this.validaRequiredFields()) {
+                        this.crud();
+                    } else {
+                        var msg = this.msjAlert;
+                        if (msg==='') msg = 'You must enter all required fields.';
+                        global.Msg({
+                            msg: msg
+                        });
+                    }
+                }
+            }
+        });                                     
+    },
+    onInsertModule: function(btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to insert ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    this.beanOption = {strOption : "IM"};
+                    this.llenarData();
+                    if (this.validaRequiredFields()) {
+                        this.crud();
+                    } else {
+                        var msg = this.msjAlert;
+                        if (msg==='') msg = 'You must enter all required fields.';
+                        global.Msg({
+                            msg: msg
+                        });
+                    }
+                }
+            }
+        });                                     
+    },
+    onDeleteModule: function(btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to delete ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    this.beanOption = {strOption : "DM"};
+                    this.llenarData();
+                    if (this.validaRequiredFields()) {
+                        this.crud();
+                    } else {
+                        var msg = this.msjAlert;
+                        if (msg==='') msg = 'You must enter all required fields.';
+                        global.Msg({
+                            msg: msg
+                        });
+                    }
+                }
+            }
+        });                                     
+    },
+    validaRequiredFields: function() {
+        var option = this.beanOption.strOption;
+        if(option === "CO"){
+            var startUSR = Ext.getCmp(prototype.id+'-startUSR').getValue();
+            var endUSR = Ext.getCmp(prototype.id+'-endUSR').getValue();
+            if (startUSR ==='' || endUSR === '') {
+                this.msjAlert='Enter correct data';
+                return false;
+            }
+            return true;
+        }
+        else if(option === "IM" || option === "DM"){
+            var moduleUSR = Ext.getCmp(prototype.id+'-moduleUSR').getValue();
+            var MODULE = Ext.getCmp(prototype.id+'-cboModuleGroup').getValue();
+            if (moduleUSR ==='') {
+                this.msjAlert='Enter correct data';
+                return false;
+            }
+            return true;
+        }
+    },
+    // <editor-fold defaultstate="collapsed" desc="llenarData">
+    llenarData: function() {
+        var option = this.beanOption.strOption;
+        this.beanOption = {};
+        var USR = '';
+        if(option === "IM" || option === "DM"){
+            USR = Ext.getCmp(prototype.id+'-moduleUSR').getValue();
+        }
+        else if(option === "CO"){
+            USR = Ext.getCmp(prototype.id+'-endUSR').getValue();
+        }
+        var startUSR = Ext.getCmp(prototype.id+'-startUSR').getValue();
+        var MODULE = Ext.getCmp(prototype.id+'-cboModuleGroup').getValue();
+        var PERMA =  Ext.getCmp(prototype.id+'-moduleChkAccess').getValue() ? 'Y' : 'N';
+        var PERML =  Ext.getCmp(prototype.id+'-moduleChkRead').getValue() ? 'Y' : 'N';
+        var PERMC =  Ext.getCmp(prototype.id+'-moduleChkInsert').getValue() ? 'Y' : 'N';
+        var PERMM =  Ext.getCmp(prototype.id+'-moduleChkUpdate').getValue() ? 'Y' : 'N';
+        var PERMX =  Ext.getCmp(prototype.id+'-moduleChkExport').getValue() ? 'Y' : 'N';
+        var PERME =  Ext.getCmp(prototype.id+'-moduleChkDelete').getValue() ? 'Y' : 'N';
+        this.beanOption = {
+            USR: USR,
+            USRCOPY: startUSR,
+            MODULE: MODULE,
+            PERMA: PERMA,
+            PERML: PERML,
+            PERMC: PERMC,
+            PERMM: PERMM,
+            PERMX: PERMX,
+            PERME: PERME,
+            STAT:"A",
+            strOption: option
+        };
+        console.log('beanOption');
+        console.log(this.beanOption);     
+        
+    },
+    // </editor-fold>
+    crud: function() {
+        Ext.Ajax.request({
+            url: prototype.url + '/crud',
+            method: 'POST',
+            timeout: 60000000,
+            params: this.beanOption,
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    var msg = res.response;                    
+                    var icon=1;
+                    global.Msg({
+                        msg: msg,
+                        icon: icon,
+                        fn: function() {
+                            if (msg==='Operation was successful') {
+                                Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                            }
+                        }
+                    });
+                } else {
+                    global.Msg({
+                        msg: res.sesion
+                    });
+                }
+            },
+            failure: function(response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
+    
     limpiarFiltros: function() {
         // <editor-fold defaultstate="collapsed" desc="Clear Option">
         Ext.getCmp(prototype.id+'-cboGroup').setValue('1');
