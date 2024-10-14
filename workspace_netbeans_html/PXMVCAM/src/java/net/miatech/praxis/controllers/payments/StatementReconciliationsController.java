@@ -3671,6 +3671,34 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "reverseOption",  method = RequestMethod.POST)
+    public @ResponseBody
+    String reverseOption(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : reverseOption-------------");
+        
+        Gson gson = new Gson();
+        A2290Filter filter = new A2290Filter();
+        A2290Filter result = new A2290Filter();
+        String beanString;
+        try {
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2290Filter.class);
+
+        logic = new StatementReconciliationsLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        UserView user = this.serverSession.getServerSession().getUserView();
+        
+            result = logic.SQPREVERSA_MPF102_F1(filter, user);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "executeOptionHead")
     public @ResponseBody
     String executeOptionHead(ModelMap map, HttpServletRequest request) {
