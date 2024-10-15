@@ -1398,7 +1398,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     },
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
+        
         me.recGlobal = grid.getStore().getAt(rowIndex);
+        
         if (rec.data.SCOUNTRY === 'CO' && rec.data.SCURRENCY === 'COP') {
             this.winDataEntry('U', rec);
         } else {
