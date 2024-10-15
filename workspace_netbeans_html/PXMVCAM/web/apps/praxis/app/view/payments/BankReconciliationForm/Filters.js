@@ -314,24 +314,41 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 //                            hidden:true,
                             width: 65
                         },
+//                        {
+//                            xtype: 'combo',
+//                            id: prototype.id + '-cmbNEGOC',
+//                            queryMode: 'local',
+//                            allowBlank: false,
+//                            forceSelection: true,
+//                            selectOnFocus: true,
+//                            caseSensitive: false,
+//                            autoSelect: true,
+//                            editable: true,
+//                            listConfig: {maxHeight: 130},
+//                            width: 66,
+//                            typeAhead: true,
+////                            hidden:true,
+//                            valueField: 'code',
+//                            displayField: 'name',
+//                            enableKeyEvents: true,
+//                            triggerAction: 'all',
+//                        },
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbNEGOC',
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
-                            listConfig: {maxHeight: 130},
+//                            fieldLabel: 'Doc',
                             width: 66,
-                            typeAhead: true,
-//                            hidden:true,
-                            valueField: 'code',
+                            emptyText: 'All',
+                            value: '',  
                             displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
+                            valueField: 'code',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: true, 
+                            forceSelection: true ,
+
+
                         },
                     ]
                 },
@@ -585,24 +602,43 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             //                    hidden:true
                         },
 
+//                        {
+//                            xtype: 'combo',
+//                            id: prototype.id + '-cmbCOREP',
+//                            queryMode: 'local',
+//                            allowBlank: false,
+//                            //                    hidden: true,
+//                            forceSelection: true,
+//                            selectOnFocus: true,
+//                            caseSensitive: false,
+//                            autoSelect: true,
+//                            editable: true,
+//                            width: 130,
+//                            typeAhead: true,
+//                            valueField: 'VALUE',
+//                            displayField: 'NAME',
+//                            listConfig: {maxHeight: 111},
+//                            enableKeyEvents: true,
+//                            triggerAction: 'all',
+//                        },
+                        
+                        
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbCOREP',
-                            queryMode: 'local',
-                            allowBlank: false,
-                            //                    hidden: true,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
+//                            fieldLabel: 'Doc',
                             width: 130,
-                            typeAhead: true,
-                            valueField: 'VALUE',
+                            emptyText: 'All',
+                            value: '',  
                             displayField: 'NAME',
-                            listConfig: {maxHeight: 111},
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
+                            valueField: 'VALUE',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: true, 
+                            forceSelection: true ,
+
+
                         },
 
                         {xtype: 'tbspacer', width: 10},
@@ -639,31 +675,49 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 'data-qtip': 'Status'
                             }
                         },
+//                        {
+//                            xtype: 'combo',
+//                            id: prototype.id + '-cmbStatus',
+//                            
+//                            queryMode: 'local',
+//                            allowBlank: false,
+//                            forceSelection: true,
+//                            selectOnFocus: true,
+//                            caseSensitive: false,
+//                            autoSelect: true,
+//                            editable: true,
+//                            width: 100,
+//                            value: "",
+//                            hidden: false,
+//                            typeAhead: true,
+//                            valueField: 'value', displayField: 'description',
+//                            enableKeyEvents: true,
+//                            triggerAction: 'all',
+//                            listeners: {
+//                            }
+//                        },
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbStatus',
+//                            fieldLabel: 'Doc',
                             store: new Ext.data.SimpleStore({
                                 fields: ['value', 'description'],
                                 data: [
-                                    ["", "All"], ["1", "Match"], ["3", "Settlement Without Sales"], ["5", "Match Manual"]
+                                   ["1", "Match"], ["3", "Settlement Without Sales"], ["5", "Match Manual"]
                                 ]
                             }),
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
                             width: 100,
-                            value: "",
-                            hidden: false,
-                            typeAhead: true,
-                            valueField: 'value', displayField: 'description',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners: {
-                            }
+                            emptyText: 'All',
+                            value: '',  
+                            displayField: 'description',
+                            valueField: 'value',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: true, 
+                            forceSelection: true ,
+
+
                         },
                         {xtype: 'tbspacer', width: 20},
                         {
@@ -707,30 +761,53 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             padding: '3 0',
                             width: 55
                         },
+//                        {
+//                            xtype: 'combo',
+//                            id: prototype.id + '-cmbSource',
+//                            store: new Ext.data.SimpleStore({
+//                                fields: ['code', 'name'],
+//                                data: [
+//                                    ["", "All"], ["A", "ARC"], ["B", "BSP"], ["S", "ASR"], ["T", "TC"]
+//                                ]
+//                            }),
+//                            queryMode: 'local',
+//                            allowBlank: false,
+//                            forceSelection: true,
+//                            selectOnFocus: true,
+//                            caseSensitive: false,
+//                            autoSelect: true,
+//                            editable: true,
+//                            width: 80,
+//                            value: "",
+//                            typeAhead: true,
+//                            valueField: 'code', displayField: 'name',
+//                            enableKeyEvents: true,
+//                            triggerAction: 'all',
+//                            listeners: {
+//                            }
+//                        },
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbSource',
+//                            fieldLabel: 'Doc',
                             store: new Ext.data.SimpleStore({
                                 fields: ['code', 'name'],
                                 data: [
-                                    ["", "All"], ["A", "ARC"], ["B", "BSP"], ["S", "ASR"], ["T", "TC"]
+                                    ["A", "ARC"], ["B", "BSP"], ["S", "ASR"], ["T", "TC"]
                                 ]
                             }),
-                            queryMode: 'local',
-                            allowBlank: false,
-                            forceSelection: true,
-                            selectOnFocus: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            editable: true,
                             width: 80,
-                            value: "",
-                            typeAhead: true,
-                            valueField: 'code', displayField: 'name',
-                            enableKeyEvents: true,
-                            triggerAction: 'all',
-                            listeners: {
-                            }
+                            emptyText: 'All',
+                            value: '',  
+                            displayField: 'name',
+                            valueField: 'code',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: true, 
+                            forceSelection: true ,
+
+
                         },
                         {xtype: 'tbspacer', width: 20},
                         {
