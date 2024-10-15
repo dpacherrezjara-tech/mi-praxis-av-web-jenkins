@@ -205,7 +205,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         console.log(Ext.getCmp(prototype.id + '-chkCONTAB').getValue(), 'chkcontab')
         beanProcess.IN_CERROR = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '46' : '45'
         beanProcess.IN_STCON = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '1' : '2'
-        let msgCONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? 'Generate policy?' : 'Not generate policy?'
+        let msgCONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? 'Generate with accounting?' : 'Generate without accounting?'
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: msgCONTAB,

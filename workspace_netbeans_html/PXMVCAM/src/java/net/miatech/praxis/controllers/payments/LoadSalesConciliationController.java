@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jxl.CellType;
 import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
@@ -201,6 +202,7 @@ public class LoadSalesConciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 0) {
                         A2290Filter obj = new A2290Filter();
+                     
                         obj.SEQ = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim();
                         obj.USERF = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
                         obj.TYPETRAN = formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
@@ -224,18 +226,25 @@ public class LoadSalesConciliationController extends BaseController {
                         obj.STCON = filter.IN_CONTAB.equals("true") ? "1" : "";
                         System.out.println(i);
                         System.out.println(obj.AMOUNT);
-                        if (obj.TYPETRAN.contains("Ingreso") ) {
+                        if (obj.TYPETRAN.toLowerCase().contains("ingreso") ) {
                            obj.FCONCEP = "I";
 //                            lstDataIngreso.add(obj);
-                        }else if(obj.TYPETRAN.contains("Venta")){
+                        }else if(obj.TYPETRAN.toLowerCase().contains("venta")){
                             obj.FCONCEP = "V";
 //                            lstDataVenta.add(obj);
-                        }else if (obj.TYPETRAN.contains("Debito")){
+                        }else if (obj.TYPETRAN.toLowerCase().contains("debito")){
                             obj.FCONCEP = "D";
+                        }else if (obj.TYPETRAN.toLowerCase().contains("ajuste")){
+                            obj.FCONCEP = "A";
                         }else{
-                            obj.FCONCEP = "";
+                            obj.FCONCEP = "N";
                             lstDataNotFound.add(obj);
                             System.out.println("Registros no reconocidos como ventas o ingresos");
+                        }
+                        
+                        if(obj.SEQ.equals("") && obj.USERF.equals("") && obj.TYPETRAN.equals("") && obj.CCUST.equals("") 
+                           && obj.AMOUNT.equals("") && obj.SCURRENCY.equals("") ){       
+                            break;
                         }
                         qty++;
                         lstData.add(obj);

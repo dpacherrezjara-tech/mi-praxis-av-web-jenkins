@@ -20,69 +20,12 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.lstCountry = this.p.lstCountry;
-//        console.log(this.p);
-//        this.obtainData();
-        //this.dataStatic();
         
     },
     afterRender: function () {
-//        console.log('afterRender');
         switch (this.actionCode) {
             case 'I':
                 
-//                var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
-//                cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "None"],
-//                        ["1", "Aerovias MX"],
-//                        ["2", "Aeromexico Cargo"],
-//                        ["3", "PLM"]
-//                    ]
-//                }));
-//                cmbUNIOPE.setValue('');
-//                var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
-//                cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "None"],
-//                        ["0", "Disabled"],
-//                        ["1", "Enabled"],
-//                    ]
-//                }));
-//                cmbSTATUS.setValue('');
-//                var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
-//                cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "none"],
-//                        ["ATO", "ATO - Aeropuert"],
-//                        ["CTO", "CTO - Oficina"],
-//                        ["CCT", "CCT - Reserva"],
-//                        ["WEB", "WEB - Web"],
-//                        ["GSA", "GSA - G.S.Agte"],
-//                        ["FRA", "FRA - Franquic"],
-//                    ]
-//                }));
-//                cmbCANAL.setValue('');
-//                var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
-//                cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
-//                    autoLoad: false,
-//                    fields: ['code', 'name'],
-//                    data: [
-//                        ["", "none"],
-//                        ["US", "US - UNITED STATES"],
-//                        ["CA", "CA - CANADA"],
-//                        ["AR", "AR - ARGENTINA"],
-//                        ["JP", "JP - JAPAN"],
-//                        ["ES", "ES - SPAIN"],
-//                        ["MX", "MX - MEXICO"],
-//                    ]
-//                }));
-//                cmbSCOUNTRY.setValue('');
             this.dataObtain.CARD = 2;
             this.dataObtain.COREP = 2;
             Ext.Ajax.request({
@@ -145,6 +88,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SCURRENCY').setEditable(true);
                 Ext.getCmp(prototype.id + '-SBENCEN').setEditable(true);
                 Ext.getCmp(prototype.id + '-COSTCEN').setEditable(true);
+                Ext.getCmp(prototype.id + '-IDFBENEF').setEditable(true);
 //                Ext.getCmp(prototype.id + '-de-txtMERCHN').setDisabled(false);
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -181,8 +125,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         }
     },
     mostrarData: function () {
-//        console.log(meDE.beanResult);
-//        console.log(this.beanResult.CODEREJ);
+
         this.dataObtain.CARD = 2;
         this.dataObtain.COREP = 2;
         Ext.Ajax.request({
@@ -263,6 +206,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.SCURRENCY = this.getValue("SCURRENCY")
         beanTemp.SBENCEN = this.getValue("SBENCEN")
         beanTemp.COSTCEN = this.getValue("COSTCEN") 
+        beanTemp.IDFBENEF = this.getValue("IDFBENEF") 
         
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
@@ -271,130 +215,16 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.FEUP = this.getValue("txtFEUP").trim();
         beanTemp.HOUP = this.getValue("txtHOUP").trim();
 
-//        let grillaBank = Ext.getCmp(prototype.id + '-gridDataInfoBANCOS').getStore().data.items;
-//        console.log(grillaBank, 'grillaBank')
-//        let listaNuevaBank = []
-//        let beanBank = {}
-//        for(let item of grillaBank){
-//            console.log(item.data.CIATA, 'item.data.CIATA')
-//            beanBank.CMERCHAN = this.getValue("de-txtMERCHN")
-//            beanBank.SUCMERCH = this.getValue("de-txtAFBRANCH")
-//            beanBank.DREPORT = this.getValue("de-txtDOWNREPORT")
-//            beanBank.CODE = this.getValue("de-txtAPCODE")
-//            beanBank.CORE = this.getValue("de-txtACQPROC")
-//            beanBank.FRANC1 = this.getValue("de-txtFRANCH1")
-//            beanBank.FRANC2 = this.getValue("de-txtFRANCH2")
-//            beanBank.FRANC3 = this.getValue("de-txtFRANCH3")
-//            beanBank.FRANC4 = this.getValue("de-txtFRANCH4")
-//            beanBank.CODEBANK = item.data.CODEBANK
-//            beanBank.BANKCM = item.data.BANKCM
-//            beanBank.BANKCUR = item.data.BANKCUR
-//            beanBank.ACCNUMB = item.data.ACCNUMB
-//            beanBank.ACCNUMA = item.data.ACCNUMA
-//            beanBank.BENCEN = item.data.BENCEN
-//            listaNuevaBank.push(beanBank)
-//        }
-//        
-//        let grillaIatas = Ext.getCmp(prototype.id + '-gridDataInfoIATAS').getStore().data.items;
-//        let listaNuevaIata = []
-//        let beanIata= {}
-//        console.log(grillaIatas, 'grillaIatas')
-//        for( let item of grillaIatas ){
-//            beanIata.CMERCHAN = this.getValue("de-txtMERCHN")
-//            beanIata.SUCMERCH = this.getValue("de-txtAFBRANCH")
-//            beanIata.DREPORT = this.getValue("de-txtDOWNREPORT")
-//            beanIata.CODE = this.getValue("de-txtAPCODE")
-//            beanIata.CORE = this.getValue("de-txtACQPROC")
-//            beanIata.FRANC1 = this.getValue("de-txtFRANCH1")
-//            beanIata.FRANC2 = this.getValue("de-txtFRANCH2")
-//            beanIata.FRANC3 = this.getValue("de-txtFRANCH3")
-//            beanIata.FRANC4 = this.getValue("de-txtFRANCH4")
-//            beanIata.DEUSAP = item.data.DEUSAP
-//            beanIata.SAGENT = item.data.SAGENT
-//            beanIata.CANAL = item.data.CANAL
-//            beanIata.PROCES = item.data.PROCES
-//            beanIata.SCOUNTRY = item.data.SCOUNTRY
-//            beanIata.SOCIETY = item.data.SOCIETY
-//            beanIata.SCURRENCY = item.data.SCURRENCY
-//            beanIata.SBENCEN = item.data.SBENCEN
-//            beanIata.COSTCEN = item.data.COSTCEN   
-//            listaNuevaIata.push(beanIata)
-//        }
-//        beanTemp.lstBank = listaNuevaBank
-//        beanTemp.lstIata = listaNuevaIata
-//        var listaGrilla = Ext.getCmp(prototype.id + '-gridIATA').getStore().data;
-//        var beanDet = {};
-//        var listaNueva = [];
-//
-//        for (var i = 0; i < listaGrilla.length; i++) {
-//            beanDet = listaGrilla.items[i];
-//
-//            var beanNuevo = {};
-//            beanNuevo.CIATA = beanDet.data.CIATA;
-//            beanNuevo.MERCHN = this.getValue("de-txtMERCHN");
-//            beanNuevo.SCOUNTRY = beanDet.data.SCOUNTRY;
-//            beanNuevo.CANAL = beanDet.data.CANAL;
-//
-//            listaNueva.push(beanNuevo);
-//        }
-//        beanTemp.lstDetalle = listaNueva;
-
     },
     getData: function () {
-//        console.log('getData');
-//        var cmbUNIOPE = Ext.getCmp(prototype.id + '-de-cmbUNIOPE');
-//        cmbUNIOPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "None"],
-//                ["1", "Aerovias MX"],
-//                ["2", "Aeromexico Cargo"],
-//                ["3", "PLM"]
-//            ]
-//        }));
-//        cmbUNIOPE.setValue('');
-//        var cmbSTATUS = Ext.getCmp(prototype.id + '-de-cmbSTATUS');
-//        cmbSTATUS.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "None"],
-//                ["0", "Disabled"],
-//                ["1", "Enabled"],
-//            ]
-//        }));
-//        cmbSTATUS.setValue('');
-//
-//        var cmbCANAL = Ext.getCmp(prototype.id + '-de-cmbCANAL');
-//        cmbCANAL.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "none"],
-//                ["ATO", "ATO - Aeropuert"],
-//                ["CTO", "CTO - Oficina"],
-//                ["CCT", "CCT - Reserva"],
-//                ["WEB", "WEB - Web"],
-//                ["GSA", "GSA - G.S.Agte"],
-//                ["FRA", "FRA - Franquic"],
-//            ]
-//        }));
-//
-//        var cmbSCOUNTRY = Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY');
-//        cmbSCOUNTRY.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "none"],
-//                ["US", "US - UNITED STATES"],
-//                ["CA", "CA - CANADA"],
-//                ["AR", "AR - ARGENTINA"],
-//                ["JP", "JP - JAPAN"],
-//                ["ES", "ES - SPAIN"],
-//                ["MX", "MX - MEXICO"],
-//            ]
-//        }));
+        if(meDE.bean.data.CMERCHAN === ''){
+            meDE.bean.data.CMERCHAN = '0';
+        }
+        
+        if(meDE.bean.data.SUCMERCH === ''){
+            meDE.bean.data.SUCMERCH = '0';
+        }
+
         console.log(this.bean.data, 'this.bean')
         console.log('antes al llamado')
         console.log(prototype.url, 'prototype.url dataentry')

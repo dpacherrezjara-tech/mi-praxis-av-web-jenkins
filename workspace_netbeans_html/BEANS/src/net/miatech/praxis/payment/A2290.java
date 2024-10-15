@@ -16,6 +16,20 @@ public class A2290 {
     public String FORMA = "";
     public String SERIE = "";
     public String TKT = "";
+    
+    public String PLACA = "";
+    public String AGENT = "";
+    public String FUENTE = "";
+    public String COUNTRY = "";
+    public String DATE = "";
+    public String CONSOL = "";
+    public String CARDN = "";
+    public String AUTHOC = "";
+    public String CARCOD = "";
+    public String STATE = "";
+    public String CURRENCY = "";
+    public String USCURR = "";
+    
     public String TDOC = "";
     public String descTDOC = "";
     public String DATABASE = "";
@@ -23,6 +37,7 @@ public class A2290 {
 //    public double IDDEB = 0;
     public String SEQ = "";
     public String STVAL = "";
+    public String FSTVAL = "";
     public String VALDATE = "";
     public String VALDATEL = "";
     public String UNICODE = "";
@@ -46,11 +61,13 @@ public class A2290 {
     public String SFLOAD = "";
     public String SCOUNTRY = "";
     public String COREP = "";
+    public String desCOREP = "";
     public String CORES = "";
     public String strSCURRENCY = "";
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
     public String TERMI = "";
+    public String descTERMI = "";
     public String RED = "";
     public String DESAGENT = "";
     public String SDATE = "";
@@ -67,7 +84,17 @@ public class A2290 {
     public String FCONT = "";
     public String ERROR = "";
     public String NEGOC = "";
+    public String descNEGOC = "";
     public String ACCNUMBER = "";
+    public String ACCOUNT = "";
+    public String BENCENC = "";
+    public String ACCCOMP = "";
+    public String CIACOME = "";
+    public String REFER = "";
+    public String TEXTO = "";
+    public String TEXTOLAR = "";
+    public String CLAVE1 = "";
+    public String CLAVE3 = "";
     public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
@@ -120,8 +147,11 @@ public class A2290 {
     public double COMMFAREC = 0;
     public double TOTAL_ADM = 0;
     public double IDDEBF = 0;
+    public double MAXF2 = 0;
+    public double MINF2 = 0;
     public String ACURRENCY = "";
     public String ACARDN = "";
+    public String PENDINGDAYS = "";
     public String ADATEXP = "";
     public String AAUTHOC = "";
     public String AINVN = "";
@@ -190,6 +220,7 @@ public class A2290 {
     public double totTCOMISCA = 0;
     public double totDiffTCOMIS = 0;
     public double TOTAMOUNT = 0;
+    public double lngTotAMOUNT = 0;
     public String ADMNUM = "";
     public String NUMADM = "";
     public String DATEADM = "";

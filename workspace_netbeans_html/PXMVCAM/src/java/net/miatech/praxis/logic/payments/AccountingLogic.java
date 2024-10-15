@@ -5,9 +5,11 @@
  */
 package net.miatech.praxis.logic.payments;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.praxis.A051;
 import net.miatech.praxis.dao.payments.AccountingDAO;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.payment.filter.SQP05252Filter;
@@ -42,9 +44,20 @@ public class AccountingLogic {
     public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
         return accountingDAO.setSQP05343Filter(filter);
     }
+    
+    public SQP05343Filter setSQP05393Filter(SQP05343Filter filter) throws SQLException, Exception {
+        return accountingDAO.setSQP05393Filter(filter);
+    }
 
     public List<SQP05252Filter> getSQP05252Filter(SQP05252Filter filter) throws SQLException, Exception {
         return accountingDAO.getSQP05252Filter(filter);
     }
-
+    
+    public List<A051> loadProcessors() throws SQLException, Exception {
+        return accountingDAO.loadProcessors();
+    }
+    
+    public void updatePending() throws SQLException, Exception {
+        accountingDAO.updatePending();
+    }
 }

@@ -1710,7 +1710,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.FiltersBT', {
                                             padding: '10 0 0 0',
                                             id: prototype.id + '-gridDataColumns',
                                             height: 188,
-                                            width: 195,
+                                            width: 204,
                                             resizable: true,
                                             columnLines: true,
                 //                            viewConfig: {

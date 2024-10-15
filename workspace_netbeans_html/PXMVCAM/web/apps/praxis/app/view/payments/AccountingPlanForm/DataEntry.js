@@ -194,7 +194,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.DataEntry', {
                                             fieldStyle: 'text-align: center;',
                                             enforceMaxLength: true,
                                             maxLength: 5,
-                                            maskRe: /[0-9]/,
+                                            maskRe: /[0-9A-Za-z]/,
                                             padding: '3 0',
                                             width: 60
                                         },
@@ -216,6 +216,60 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.DataEntry', {
                                             maskRe: /[0-9]/,
                                             padding: '3 0',
                                             width: 40
+                                        },
+                                        {xtype: 'tbspacer', width: 145}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    margin: '0 2 1 0',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 660
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Date from',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 133
+
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtINI',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            width: 80,
+                                            enforceMaxLength: true,
+                                            maxLength: 8,
+                                            maskRe: /[0-9]/,
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Date To',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 113
+
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtFIN',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            width: 80,
+                                            enforceMaxLength: true,
+                                            maxLength: 8,
+                                            maskRe: /[0-9]/,
                                         },
                                         {xtype: 'tbspacer', width: 145}
                                     ]
@@ -473,7 +527,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingPlanForm.DataEntry', {
                                             maxLength: 15,
                                             padding: '3 0',
                                             width: 150,
-                                            
+
                                         },
                                     ]
                                 },

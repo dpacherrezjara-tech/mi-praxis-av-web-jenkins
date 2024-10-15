@@ -35,5 +35,9 @@ public class TerminalsCatalogLogic {
     public MPF106Filter loadPX620SQP05107(MPF106Filter filter) throws SQLException, Exception {
         return terminalsCatalogDAO.loadPX620SQP05107(filter);
     }
-
+    
+    public String loadPX305SQP00941(List<MPF106Filter> lst,int contador,String option) throws SQLException, Exception {
+        return terminalsCatalogDAO.loadPX305SQP00941(lst,contador,option);
+    }
+    
 }

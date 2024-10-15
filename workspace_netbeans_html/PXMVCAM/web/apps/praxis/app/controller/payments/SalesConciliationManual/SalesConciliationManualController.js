@@ -143,7 +143,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             data: [
                 ["", "All"],
                 ["I", "Settlement"],
-                ["V", "Sales"]
+                ["V", "Sales"],
+                ["A", "Adjustment"]
             ]
         }));
         cmbFCONCEP.setValue("");
@@ -208,6 +209,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbSTVAL').getValue();
         me.bean.IN_TRANL = Ext.getCmp(prototype.id + '-txtTRANL').getValue();
         me.bean.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
+        me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
+        me.bean.IN_SCARDN1 = Ext.getCmp(prototype.id + '-txtSCARDN1').getValue();
+        me.bean.IN_SCARDN2 = Ext.getCmp(prototype.id + '-txtSCARDN2').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
 //        me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
 //        me.bean.IN_SPNR = Ext.getCmp(prototype.id + '-txtSPNR').getValue().trim();
@@ -229,7 +233,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         if( Ext.getCmp(prototype.id + '-txtTKT').getValue() != '' || Ext.getCmp(prototype.id + '-cmbFCONCEP').getValue() != '' 
             || Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue() != '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() != ''
             || Ext.getCmp(prototype.id + '-cmbSTVAL').getValue() != '' || Ext.getCmp(prototype.id + '-txtTRANL').getValue() != ''
-            || Ext.getCmp(prototype.id + '-txtSEQ').getValue() != ''){
+            || Ext.getCmp(prototype.id + '-txtSEQ').getValue() != '' || Ext.getCmp(prototype.id + '-txtSCARDN1').getValue() != ''
+            || Ext.getCmp(prototype.id + '-txtSCARDN2').getValue() != ''  || Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue() != ''){
             this.setGridDataDetail()
         }else{
             this.setGridData(); 
@@ -746,11 +751,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             case  '-panelGridDataDetByF':
                 global.getFile(prototype.url + '/getXLSXDetailByF?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-                case  '-panelGridDataDetByS':
+            case  '-panelGridDataDetByS':
                 global.getFile(prototype.url + '/getXLSXDetailByS?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-                case  '-panelGridDataDetByD':
+            case  '-panelGridDataDetByD':
                 global.getFile(prototype.url + '/getXLSXDetailByD?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+            case '-panelGridDataDet':
+                global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(searchParams.beanString));
                 break;
                 default:
                 global.Msg(

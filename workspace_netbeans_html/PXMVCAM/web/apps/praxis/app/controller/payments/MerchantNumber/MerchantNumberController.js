@@ -103,32 +103,31 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.BANK = 1;
-        this.dataObtain.CARD = 2;           
-        
+        this.dataObtain.CARD = 2;
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(this.dataObtain)},
-            success: function(response, options) {
-                var res = Ext.JSON.decode(response.responseText); 
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
                 console.log(res, 'res')
                 if (res.success) {
-                    
+
                     me.lstCountry = res.lstCountry;
                     me.lstBank = res.lstBank;
                     Ext.getCmp(prototype.id + '-cmbScarCode').bindStore(
-                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-cmbScarCode').setValue('');   
-                    
-                 
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-cmbScarCode').setValue('');
+
+
                     me.btnSearch_click();
                 } else
                     global.Msg({msg: res.sesion});
             }
         });
     },
-
 
     setFormatParameter: function () {
 
@@ -137,7 +136,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
         me.bean.IN_BMERCHAN = Ext.getCmp(prototype.id + '-txtBMERCHAN').getValue();
         me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbScarCode').getValue();
         me.bean.IN_CTABANK = Ext.getCmp(prototype.id + '-txtCTABANK').getValue();
-        
+
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,
@@ -187,14 +186,107 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
-            
+
         }
+    },
+    onLoadClick: function () {
+        var msjPregunta = 'Sure to load file?';
+
+        Ext.MessageBox.show({
+            title: 'Load Merchants',
+            msg: msjPregunta,
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    me.onFileLoadAsk();
+                }
+            }
+        });
+    },
+
+    onFileLoadAsk: function () {
+        var value = '';
+        var msjPregunta = 'You want to INSERT or UPDATE?';
+
+        // Cierra cualquier instancia previa de MessageBox
+        Ext.MessageBox.hide();
+
+        // Crear un panel personalizado para los botones
+        Ext.create('Ext.window.Window', {
+            title: 'Load Merchants',
+            width: 300,
+            height: 150,
+            layout: 'fit',
+            modal: true,
+            items: [{
+                    xtype: 'panel',
+                    html: msjPregunta,
+                    bodyPadding: 10
+                }],
+            buttons: [
+                {
+                    text: 'INSERT',
+                    handler: function () {
+                        value = 'I';
+                        console.log(value);
+                        this.up('window').close(); // Cierra la ventana
+                        me.onFileLoad(value);
+                    }
+                },
+                {
+                    text: 'UPDATE',
+                    handler: function () {
+                        value = 'U';
+                        console.log(value);
+                        this.up('window').close(); // Cierra la ventana
+                        me.onFileLoad(value);
+                    }
+                }
+            ]
+        }).show();
+    },
+
+    onFileLoad: function (value) {
+        var me = this;
+        let beanValidation = {};
+        beanValidation.OPTION = value;
+        console.log(beanValidation.OPTION);
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        let beanString = JSON.stringify(beanValidation);
+        if (!file) {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+
+        var form = Ext.getCmp(prototype.id + '-formMerchant').getForm();
+
+        form.submit({
+            url: prototype.url + '/setUploadMerchant',
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (f, o) {
+
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult;
+                global.Msg({msg: msjResult});
+                Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+
     },
     // </editor-fold>
     buscarFilter: function (obj, e, eOpts) {
         switch (e.getKey()) {
             case 13:
-                if (Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue().length > 0 || Ext.getCmp(prototype.id + '-txtCTABANK').getValue().length > 0 || Ext.getCmp(prototype.id + '-cmbScarCode').getValue().length > 0 ) {
+                if (Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue().length > 0 || Ext.getCmp(prototype.id + '-txtCTABANK').getValue().length > 0 || Ext.getCmp(prototype.id + '-cmbScarCode').getValue().length > 0) {
 //                    if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 7 || Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 8) {
 //                        this.btnSearch_click();
 //                    } else {

@@ -57,7 +57,7 @@ public class AccountingPlanDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02848(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02848ME(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -146,6 +146,8 @@ public class AccountingPlanDAO {
                 bean.TTRAN = rst.getString("TTRAN").trim();
                 bean.TOPER = rst.getString("TOPER").trim();
                 bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                bean.DATINI = rst.getString("DATINI").trim();
+                bean.DATFIN = rst.getString("DATFIN").trim();
                 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -251,6 +253,8 @@ public class AccountingPlanDAO {
                 bean.TTRAN = rst.getString("TTRAN").trim();
                 bean.TOPER = rst.getString("TOPER").trim();
                 bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                bean.DATINI = rst.getString("DATINI").trim();
+                bean.DATFIN = rst.getString("DATFIN").trim();
                 
                 bean.USCR = rst.getString("USCR");
                 bean.FECR = rst.getString("FECR");
@@ -291,7 +295,7 @@ public class AccountingPlanDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02857(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02857ME(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -326,9 +330,11 @@ public class AccountingPlanDAO {
             cstmt.setString(26, filter.TTRAN.trim());
             cstmt.setString(27, filter.TOPER.trim());
             cstmt.setString(28, filter.ACCNUMBER.trim());
-            cstmt.setString(29, session.getUserView().getUserInfo().USR);
-            cstmt.setString(30, Functions.getFechaActual());
-            cstmt.setString(31, Functions.getHoraActual());
+            cstmt.setString(29, filter.DATINI.trim());
+            cstmt.setString(30, filter.DATFIN.trim());
+            cstmt.setString(31, session.getUserView().getUserInfo().USR);
+            cstmt.setString(32, Functions.getFechaActual());
+            cstmt.setString(33, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {

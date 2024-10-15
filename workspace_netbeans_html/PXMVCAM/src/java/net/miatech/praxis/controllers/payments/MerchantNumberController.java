@@ -7,12 +7,14 @@ package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +24,15 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.MerchantNumberLogic;
+import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.A4202;
+import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.filter.A2354Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -36,13 +41,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -436,7 +444,7 @@ public class MerchantNumberController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "MaintenanceMPF109")
     public @ResponseBody
     String MaintenanceMPF109(ModelMap map, HttpServletRequest request) {
@@ -614,6 +622,131 @@ public class MerchantNumberController extends BaseController {
             throw new SpringException(e);
         }
         return lst;
+    }
+
+    @RequestMapping(value = "setUploadMerchant", method = RequestMethod.POST)
+    public @ResponseBody
+    String setUploadMerchant(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+
+        byte[] bytes = null;
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String message = "";
+        String filename = "", option = "";
+        String beanString = "";
+
+        try {
+
+            byte[] dataFile = excelfile.getBytes();
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+            option = filter.OPTION;
+
+            message = uploadFileMerchant(dataFile, option);
+
+            map.put("success", true);
+            map.put("msjResult", message);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msjResult", message);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private String uploadFileMerchant(byte[] bytes, String option) throws Exception {
+
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        logic = new MerchantNumberLogic();
+        List<A2354Filter> lstData = new ArrayList<>();
+        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+        String message = "";
+        int i = 0, cont = 0;
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "Revision." + strSesion + ".xlsx";
+
+            String strArchivo = ruta + "\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter dataFormatter = new DataFormatter(Locale.US);
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            try {
+                while (rowIterator.hasNext()) {
+                    i++;
+                    Row row = rowIterator.next();
+
+                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null && row.getCell(5) == null) {
+                        break;
+                    }
+
+                    if (i > 1) {
+                        cont++;
+                        if (row.getCell(0) != null) {
+                            A2354Filter obj = new A2354Filter();
+                            obj.CMERCHAN = dataFormatter.formatCellValue(row.getCell(0));
+                            obj.SUCMERCH = dataFormatter.formatCellValue(row.getCell(1));
+                            obj.DEUSAP = dataFormatter.formatCellValue(row.getCell(2));
+                            obj.SAGENT = dataFormatter.formatCellValue(row.getCell(3));
+                            obj.SCOUNTRY = dataFormatter.formatCellValue(row.getCell(4));
+                            obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(5));
+                            obj.SCURRENCY = dataFormatter.formatCellValue(row.getCell(6));
+                            obj.SBENCEN = dataFormatter.formatCellValue(row.getCell(7));
+                            obj.CODE = dataFormatter.formatCellValue(row.getCell(8));
+                            obj.COREP = dataFormatter.formatCellValue(row.getCell(9));
+                            obj.CORE = dataFormatter.formatCellValue(row.getCell(10));
+                            obj.DREPORT = dataFormatter.formatCellValue(row.getCell(11));
+                            obj.FRANC1 = dataFormatter.formatCellValue(row.getCell(12));
+                            obj.FRANC2 = dataFormatter.formatCellValue(row.getCell(13));
+                            obj.FRANC3 = dataFormatter.formatCellValue(row.getCell(14));
+                            obj.FRANC4 = dataFormatter.formatCellValue(row.getCell(15));
+                            obj.PROCES = dataFormatter.formatCellValue(row.getCell(16));
+                            obj.CANAL = dataFormatter.formatCellValue(row.getCell(17));
+                            obj.BANKCM = dataFormatter.formatCellValue(row.getCell(18));
+                            obj.BANKCUR = dataFormatter.formatCellValue(row.getCell(19));
+                            obj.CODEBANK = dataFormatter.formatCellValue(row.getCell(20));
+                            obj.BANKNAM = dataFormatter.formatCellValue(row.getCell(21));
+                            obj.ACCNUMB = dataFormatter.formatCellValue(row.getCell(22));
+                            obj.ACCNUMA = dataFormatter.formatCellValue(row.getCell(23));
+                            obj.BENCEN = dataFormatter.formatCellValue(row.getCell(24));
+                            obj.COSTCEN = dataFormatter.formatCellValue(row.getCell(25));
+                            obj.IDFISCAL = dataFormatter.formatCellValue(row.getCell(26));
+//                            obj.IDFBENEF = dataFormatter.formatCellValue(row.getCell(27));
+                            obj.ACCNUMOLD = dataFormatter.formatCellValue(row.getCell(27));
+                            obj.DDISCON = dataFormatter.formatCellValue(row.getCell(27));
+                            lstData.add(obj);
+                        }
+                    }
+                }
+                file.close();
+
+                if (message.equals("")) {
+                    System.out.print("");
+                    logic = new MerchantNumberLogic();
+                    logic.setSession(this.serverSession.getServerSession());
+                    message = logic.loadPX305SQP00941(lstData, cont, option);
+                }
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                e.printStackTrace();
+            }
+
+            archivo.delete();
+        } catch (Exception e) {
+            message = e.getMessage();
+            e.printStackTrace();
+        }
+        return message;
     }
 
 }

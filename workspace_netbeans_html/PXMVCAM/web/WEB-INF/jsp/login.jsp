@@ -76,7 +76,7 @@
                                             <div id="theader_iata"></div>
                                             <div id="theader_miatech"></div>
                                         </div>
-                                        <center><h3 class="instancia">Praxis System</h3></center>
+                                        <center><h3 class="instancia">       AVIANCA</h3></center>
                                         <div id="theader_body">
                                             <div id="theader_revenue"></div>
                                         </div>
@@ -87,10 +87,12 @@
                                 <td width="766" height="210" align="center">
                                     <table align="center" border="0" cellpadding="0" cellspacing="0">
                                         <tbody><tr>
-                                            <td width="366" height="210" background="assets/img/bg_options.gif">
+                                            <!--<td width="366" height="210" background="assets/img/bg_options.gif">-->
+                                            <td width="366" height="210" >
                                                 <img alt="Header Login" src="resources/img/login/avion_atardecer.jpg" align="left" width="366" height="210">
                                             </td>
-                                            <td width="400" height="210" valign="middle" bgcolor="#DDE5E8" background="assets/img/bg_options.gif">
+                                            <!--<td width="400" height="210" valign="middle" bgcolor="#DDE5E8" background="assets/img/bg_options.gif">-->
+                                            <td width="400" height="210" valign="middle" bgcolor="#DDE5E8">
                                                 <table width="350" border="0" cellpadding="0" cellspacing="0">
                                                     <tbody><tr>
                                                         <td colspan="3" align="center" height="20">&nbsp;

@@ -17,6 +17,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Options', {
                 {
                     xtype: 'toolbar',
                     cls: 'x-toolbar-pag',
+                    hidden:true,
                     items: [
                         {
                             xtype: 'button',
@@ -67,19 +68,19 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Options', {
                 {
                     xtype: 'toolbar',
                     items: [
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnSearch',
-                            iconCls: 'prx-icon-search',
-                            tooltip: 'Search'
-                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnFilter',
-                            iconCls: 'prx-icon-filter',
-                            tooltip: 'Display filter'
-
-                        },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnSearch',
+//                            iconCls: 'prx-icon-search',
+//                            tooltip: 'Search'
+//                        },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnFilter',
+//                            iconCls: 'prx-icon-filter',
+//                            tooltip: 'Display filter'
+//
+//                        },
 //                        {
 //                            xtype: 'button',
 //                            id: prototype.id + '-btnAdd',
@@ -116,12 +117,12 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Options', {
 //                                click: 'btnQuery_click'
 //                            }
 //                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnBack',
-                            iconCls: 'prx-icon-back',
-                            tooltip: 'Back'
-                        }
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnBack',
+//                            iconCls: 'prx-icon-back',
+//                            tooltip: 'Back'
+//                        }
                     ]
                 }
             ]

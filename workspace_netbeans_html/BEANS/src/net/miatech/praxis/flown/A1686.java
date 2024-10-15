@@ -12,6 +12,13 @@ public class A1686 {
 
     public String CCUST = "";
     public String DTRANS = "";
+    public String INPNAME = "";
+    public String CODE = "";
+    public String BANK = "";
+    public String NAME = "";
+    public String ADATE = "";
+    public String PROCDATE = "";
+    public String strTitulo = "";
     public String DPRDA = "";
     public String FUENTE = "";
     public String STVAL = "";
@@ -21,6 +28,8 @@ public class A1686 {
     public int QRECOR = 0;
     public int QRECORG = 0;
     public int QRECERR = 0;
+    public int QTYDOC = 0;
+    public int tot_QTYDOC = 0;
     public String MENSA = "";
 
     //AUDITORIA

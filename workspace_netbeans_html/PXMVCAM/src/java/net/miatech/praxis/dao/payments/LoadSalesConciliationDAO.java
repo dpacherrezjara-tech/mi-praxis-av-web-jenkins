@@ -416,6 +416,18 @@ public class LoadSalesConciliationDAO {
         int duplicateCount = 0;
         int coorrelativo = lstdata.size();
         int coorrelativol = 1;
+        boolean isAdj = false;
+        for(int j = 0; j < lstdata.size(); j++){
+            if( lstdata.get(j).FCONCEP.trim().equals("")){
+                isAdj = true;
+            }
+        }
+        
+        if( !user.getUserInfo().USR.substring(0,2).equals("AV") && isAdj && !user.getUserInfo().USR.equals("SAP58") ){
+            rspt.MESSAGE = "You are not allowed to make an adjustment";
+            return rspt;
+        }
+        
         //COORRELATIVO TRAN
         A2290Filter filter = new A2290Filter();
         filter.IN_DATE = Functions.getFechaActual(); 
@@ -454,7 +466,7 @@ public class LoadSalesConciliationDAO {
                         cstmt.setString(8, lstdata.get(i).SDATE.trim());
                         cstmt.setString(9, lstdata.get(i).SCARDN.trim());
                         cstmt.setString(10, lstdata.get(i).SAUTHOC.trim());
-                        cstmt.setDouble(11, Double.parseDouble(lstdata.get(i).AMOUNT.trim().replace(".","")));
+                        cstmt.setDouble(11, Double.parseDouble(formatAmount(lstdata.get(i).AMOUNT.trim())));
                         cstmt.setString(12, lstdata.get(i).SCURRENCY.trim());
                         cstmt.setString(13, lstdata.get(i).STVAL.trim());
                         cstmt.setString(14, lstdata.get(i).ACCNUMBER.trim());
@@ -538,7 +550,18 @@ public class LoadSalesConciliationDAO {
         return rspt;
     }
      
-     
+     public String formatAmount(String amount) {
+
+        if (amount.substring(amount.length() - 3).contains(",")) {
+            amount = amount.replace(".", "").replace(",", ".");
+        } else if (amount.substring(amount.length() - 3).contains(".")) {
+            amount = amount.replace(",", "");
+        } else {
+            amount = amount;
+        }
+
+        return amount;
+    } 
      public A2290Filter getCORRELATIVO(A2290Filter filter) throws SQLException, Exception {
 
         A2290Filter objRtn = new A2290Filter();

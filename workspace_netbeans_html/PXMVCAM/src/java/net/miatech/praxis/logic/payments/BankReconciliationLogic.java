@@ -31,9 +31,17 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00698Main(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698Main(filter);
     }
+    
+    public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX287SQP00838(filter);
+    }
 
     public List<A2290Filter> loadPX269SQP00698Country(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698Country(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698Core(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Core(filter);
     }
     
     public List<A2290Filter> loadPX269SQP00698CountryDebits(A2290Filter filter) throws SQLException, Exception {
@@ -67,6 +75,10 @@ public class BankReconciliationLogic {
 
     public A2290Filter loadPX269SQPXXX(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQPXXX(filter);
+    }
+    
+     public A2290Filter loadPX269SQPVALIADJ(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQPVALIADJ(filter);
     }
 
     public String loadPX269SQP00834(List<A2290Filter> filters, UserView user) throws SQLException, Exception {

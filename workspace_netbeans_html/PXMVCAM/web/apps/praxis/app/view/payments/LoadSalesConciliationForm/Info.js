@@ -348,7 +348,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                         {xtype: 'tbspacer', width: 20},
                                         {
                                             xtype: 'label',
-                                            text: 'Tran. numb.',
+                                            text: 'Report numb',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 80
                                         },

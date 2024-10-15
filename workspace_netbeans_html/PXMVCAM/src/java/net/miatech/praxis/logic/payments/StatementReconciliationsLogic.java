@@ -95,6 +95,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX269SQP05114PreDetail(filter);
     }
     
+    public List<A2290Filter> loadPX269SQP05114PreDetailFees(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05114PreDetailFees(filter);
+    }
+    
     public List<A2290Filter> loadPX269SQP05114Agrupa(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05114Agrupa(filter);
     }
@@ -105,6 +109,10 @@ public class StatementReconciliationsLogic {
 
     public String loadPX269SQP05115(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05115(filter, user);
+    }
+    
+    public A2290Filter SQPREVERSA_MPF102_F1(A2290Filter filter, UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.SQPREVERSA_MPF102_F1(filter, user);
     }
     
     public String loadPX269SQP05115Head(List<A2290Filter> filter, UserView user) throws SQLException, Exception {

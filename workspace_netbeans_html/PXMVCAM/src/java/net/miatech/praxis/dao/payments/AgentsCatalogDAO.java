@@ -98,6 +98,8 @@ public class AgentsCatalogDAO {
                     bean.descNEGOC = "CORREO";
                 }
                 bean.TERMI = rst.getString("TERMI").trim();
+                bean.SAGENT = rst.getString("CAGENCY").trim();
+                bean.DESCSAGENT = rst.getString("NAMEA").trim();
                 bean.CONTAC = rst.getString("CONTAC").trim();
                 bean.EMAILS = rst.getString("EMAILS").trim();
                 bean.NPHONE = rst.getString("NPHONE").trim();
@@ -137,6 +139,70 @@ public class AgentsCatalogDAO {
 
         return lstData;
     }
+    
+    public String loadPX305SQP00941(List<MPF106Filter> filter, int Contador,String option) throws Exception {
+
+        CallableStatement cs = null;
+        String msj = "";
+        int cantReg = 0, cantDup = 0, cantUpd = 0;
+        Connection cnx = null;
+        String SQLCLL01 = "{CALL PRAXISMP.SQP04614AGENTS(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        cs = cnx.prepareCall(SQLCLL01);
+        try {
+            for (int i = 0; i < filter.size(); i++) {
+                try {
+                    
+                    cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cs.setString(2, filter.get(i).OPTION.trim());
+                    cs.setString(3, filter.get(i).SOCIETY.trim());
+                    cs.setString(4, filter.get(i).CAGENCY.trim());
+                    cs.setString(5, filter.get(i).CIACOME.trim());
+                    cs.setString(6, filter.get(i).SBENCEN.trim());
+                    cs.setString(7, filter.get(i).COUNTRY.trim());
+                    cs.setString(8, filter.get(i).NAMEA.trim());
+                    cs.setString(9, filter.get(i).CANAL.trim());
+                    cs.setString(10, filter.get(i).NEGOC.trim());
+                    cs.registerOutParameter(11, Types.INTEGER);
+                    cs.setString(12, session.getUserView().getUserInfo().USR);
+                    cs.setString(13, Functions.getFechaActual());
+                    cs.setString(14, Functions.getHoraActual());
+                    
+                    cs.execute();
+
+                    cantReg++;
+                    cantUpd = cantUpd + cs.getInt(11);
+
+                } catch (Exception e) {
+                    if (e.getMessage().contains("dupl")) {
+                        cantDup++;
+                    } else {
+                        System.out.println("Error" + e);
+                        msj = e.getMessage();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            msj += "<b>Loadeds : " + Contador + "<b><br>";
+            if (option.equals("I")) {
+                msj += "<b>Inserts : " + cantReg + "<b><br>";
+
+            } else if (option.equals("U")) {
+                msj += "<b>Updates : " + cantUpd + "<b><br>";
+            }
+
+            if (cantDup > 0) {
+                msj += "<b>Duplicates : " + cantDup + "<b>";
+            }
+
+        } catch (Exception e2) {
+            System.out.println("Error" + e2);
+            msj = e2.getMessage();
+            e2.printStackTrace();
+        }
+        return msj;
+    }
 
     public String loadPX616SQP04942(MPF106Filter filter, String option) throws SQLException, Exception {
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2280.
@@ -144,7 +210,7 @@ public class AgentsCatalogDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -162,12 +228,16 @@ public class AgentsCatalogDAO {
             cstmt.setString(9, filter.TERMI.trim());
             cstmt.setString(10, filter.CONTAC.trim());
             cstmt.setString(11, filter.EMAILS.trim());
-            cstmt.setString(12, filter.NPHONE.trim());
-            cstmt.setString(13, filter.NEW_CAGENCY.trim());
+            cstmt.setString(12, filter.EMAILS2.trim());
+            cstmt.setString(13, filter.EMAILS3.trim());
+            cstmt.setString(14, filter.EMAILS4.trim());
+            cstmt.setString(15, filter.EMAILS5.trim());
+            cstmt.setString(16, filter.NPHONE.trim());
+            cstmt.setString(17, filter.NEW_CAGENCY.trim());
 
-            cstmt.setString(14, session.getUserView().getUserInfo().USR);
-            cstmt.setString(15, Functions.getFechaActual());
-            cstmt.setString(16, Functions.getHoraActual());
+            cstmt.setString(18, session.getUserView().getUserInfo().USR);
+            cstmt.setString(19, Functions.getFechaActual());
+            cstmt.setString(20, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {
@@ -203,7 +273,7 @@ public class AgentsCatalogDAO {
             cstmt01 = cnx.prepareCall(SQLCLL01);
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt01.setString(2, filter.CAGENCY.trim());
+            cstmt01.setString(2, filter.SAGENT.trim());
 
             cstmt01.execute();
 
@@ -212,6 +282,8 @@ public class AgentsCatalogDAO {
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.COUNTRY = rs01.getString("COUNTRY").trim();
                 objRtn.CAGENCY = rs01.getString("CAGENCY").trim();
+                objRtn.SAGENT = rs01.getString("CAGENCY").trim();
+                objRtn.DESCSAGENT = rs01.getString("NAMEA").trim();
                 objRtn.NAMEA = rs01.getString("NAMEA").trim();
                 objRtn.CANAL = rs01.getString("CANAL").trim();
                 objRtn.CITY = rs01.getString("CITY").trim();

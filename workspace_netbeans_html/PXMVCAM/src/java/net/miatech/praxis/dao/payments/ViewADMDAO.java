@@ -21,6 +21,8 @@ import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2295Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 /**
  *
@@ -1112,6 +1114,72 @@ public class ViewADMDAO {
         return strMsj;
     }
     
+    public String loadPX644SQPMPF100ADM_REVERSE(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
+        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
+        CallableStatement cstmt = null;
+        CallableStatement cstmt2 = null;
+        CallableStatement cstmt3 = null;
+        Connection cnx = null;
+        Connection cnx2 = null;
+        Connection cnx3 = null;
+        String responseSQL = "";
+        
+        try {
+            A2290Filter filter = filters.get(0);
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REVERSETKT(?,?,?,?,?,?,?,?,?)}";
+            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt2 = cnx2.prepareCall(SQLCLL02);
+
+            for (int i = 0; i < filters.size(); i++) {
+
+                cstmt2 = cnx2.prepareCall(SQLCLL02);
+                A2290Filter filterC = filters.get(i);
+
+                cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                cstmt2.setString(2, filterC.SCARDN.trim());
+                cstmt2.setString(3, filterC.SAUTHOC.trim());
+                cstmt2.setString(4, filterC.TDOC.trim());
+                cstmt2.setString(5, filterC.TICKET.trim());
+                cstmt2.setString(6, user.getUserInfo().USR);
+                cstmt2.setString(7, Functions.getFechaActual());
+                cstmt2.setString(8, Functions.getHoraActual());
+                cstmt2.registerOutParameter(9, Types.VARCHAR);
+
+                cstmt2.execute();
+                
+                responseSQL = cstmt2.getString(9);
+                if( responseSQL.contains("NOT") ){
+                    break;
+                }
+                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+            }
+            
+            if(responseSQL.contains("NOT")){
+                return responseSQL;
+            }
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                    cstmt2.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
+    
     public List<A2295Filter> loadPX644SQPMPF100ADM_DET(A2295Filter filter) throws SQLException, Exception {
         List<A2295Filter> lstTkts = new ArrayList<A2295Filter>(0);
         A2295Filter beanTkt;
@@ -1650,37 +1718,33 @@ public class ViewADMDAO {
                     beanTkt.IN_SDATE = filter.IN_SDATE.trim();
                     beanTkt.IN_FSEND = filter.IN_FSEND.trim();
                     beanTkt.IN_FRCV = filter.IN_FRCV.trim();
+                    int year = Integer.parseInt(filter.SDATE.trim().substring(0, 4));
+                    int month = Integer.parseInt(filter.SDATE.trim().substring(4, 6));
+                    YearMonth yearMonth = YearMonth.of(year, month);
+                    LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+                    beanTkt.IN_DATE_FROM = filter.SDATE.trim() + "01";
+                    beanTkt.IN_DATE_TO = lastDayOfMonth.toString().replace("-","");
+                    
                     
                     beanTkt.CCUST = rst.getString("CCUST").trim();
-
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
                     beanTkt.SERIE = rst.getString("SERIE").trim();
-                    beanTkt.TDOC = rst.getString("TDOC").trim();
-                    beanTkt.STVAL = rst.getString("STVAL").trim();
-                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
-                    beanTkt.strDescCountry = rst.getString("NAMES").trim();
                     beanTkt.SAGENT = rst.getString("SAGENT").trim();
-                    beanTkt.SDATE = rst.getString("SDATE").trim();
-                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
-                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                    beanTkt.CERROR = rst.getString("CERROR").trim();
-                    beanTkt.ERROR = rst.getString("ERROR").trim();
-                    beanTkt.DSEND = rst.getString("DSEND").trim();
+                    beanTkt.A720FBUSO1 = rst.getString("A720FBUSO1").trim();
+                    beanTkt.A720FVLO1 = rst.getString("A720FVLO1").trim();
+                    beanTkt.A720RUTA0 = rst.getString("A720RUTA0").trim();
+                    beanTkt.A720RUTA1 = rst.getString("A720RUTA1").trim();
+                    beanTkt.A1721FRCA = rst.getString("A1721FRCA").trim();
+                    beanTkt.ROUTETYPE = rst.getString("ROUTETYPE").trim();
+                    beanTkt.TYPEADJ = rst.getString("TYPEADJ").trim();
+                    beanTkt.TYPETRAVEL = "RT";
                     beanTkt.RN = rst.getInt("RN");
-                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
-                        beanTkt.strDescStatus = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
-                    }
-//                    beanTkt.strSCURRENCY = rst.getString("MONEDAS").trim();
                     beanTkt.SVFOPS = rst.getDouble("SVFOP");
-                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
-                    beanTkt.strDescCard = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
+                    
                     //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
-                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
-                    beanTkt.FCONT = rst.getString("FCONT").trim();
-                    beanTkt.STCON = rst.getString("STCON").trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(filter.IN_SDATE.trim());
                     
                     beanTkt.lngTotAmount = lngTotAmount;

@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import static java.lang.System.console;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -193,7 +194,7 @@ public class OutputsController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
@@ -238,9 +239,12 @@ public class OutputsController extends BaseController {
                 beanL.CAMP23 = fields[23];
                 beanL.CAMP24 = fields[24];
                 beanL.CAMP25 = fields[25];
+                beanL.CAMP26 = fields[26];
+                beanL.CAMP27 = fields[27];
 
                 beanL.DATEC = lstAr.get(i).DATEC;
                 beanL.TRANC = lstAr.get(i).TRANC;
+                beanL.COREP = lstAr.get(i).COREP;
                 System.out.println(i);
 
                 listaData.add(beanL);
@@ -325,11 +329,15 @@ public class OutputsController extends BaseController {
             Cell CH1_26 = row1.createCell(26);
             Cell CH1_27 = row1.createCell(27);
             Cell CH1_28 = row1.createCell(28);
+            Cell CH1_29 = row1.createCell(29);
+            Cell CH1_30 = row1.createCell(30);
+            Cell CH1_31 = row1.createCell(31);
 
             CH1_0.setCellValue("Transaction Number");
             CH1_2.setCellValue("Sales Data");
-            CH1_27.setCellValue("Date Conciliations");
-            CH1_28.setCellValue("Transactions Conc.");
+            CH1_29.setCellValue("Date Conciliations");
+            CH1_30.setCellValue("Transactions Conc.");
+            CH1_31.setCellValue("Core Process");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -360,12 +368,16 @@ public class OutputsController extends BaseController {
             CH1_26.setCellStyle(headerStyle);
             CH1_27.setCellStyle(headerStyle);
             CH1_28.setCellStyle(headerStyle);
+            CH1_29.setCellStyle(headerStyle);
+            CH1_30.setCellStyle(headerStyle);
+            CH1_31.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 26));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 27, 27));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 28, 28));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 29, 29));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 30, 30));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 31, 31));
             ++vj;
             //============================================
 
@@ -400,6 +412,9 @@ public class OutputsController extends BaseController {
                 Cell rcell26 = row1.createCell(26);
                 Cell rcell27 = row1.createCell(27);
                 Cell rcell28 = row1.createCell(28);
+                Cell rcell29 = row1.createCell(29);
+                Cell rcell30 = row1.createCell(30);
+                Cell rcell31 = row1.createCell(31);
 
                 rcell0.setCellValue(listaData.get(vi).TRAN);
                 rcell1.setCellValue(listaData.get(vi).CAMP00);
@@ -428,8 +443,11 @@ public class OutputsController extends BaseController {
                 rcell24.setCellValue(listaData.get(vi).CAMP23);
                 rcell25.setCellValue(listaData.get(vi).CAMP24);
                 rcell26.setCellValue(listaData.get(vi).CAMP25);
-                rcell27.setCellValue(listaData.get(vi).DATEC);
-                rcell28.setCellValue(listaData.get(vi).TRANC);
+                rcell27.setCellValue(listaData.get(vi).CAMP26);
+                rcell28.setCellValue(listaData.get(vi).CAMP27);
+                rcell29.setCellValue(listaData.get(vi).DATEC);
+                rcell30.setCellValue(listaData.get(vi).TRANC);
+                rcell31.setCellValue(listaData.get(vi).COREP);
                 System.out.println(vi);
                 iter.next();
                 ++vi;
@@ -456,12 +474,42 @@ public class OutputsController extends BaseController {
         System.out.println("LIQUIDACION : getTXT");
         String rutaFile = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
 
+        A2353Filter filter = new A2353Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        String name = "LIQUIDACION - ";
+
+        HashMap<String, String> hmCCUST = new HashMap<String, String>();
+        hmCCUST.put("134", "AVIANCA");
+        hmCCUST.put("202", "TACA");
+        hmCCUST.put("133", "LACSA");
+        hmCCUST.put("547", "AEROGAL");
+
         try {
             List<A2353Filter> listaData = this.getList(request, true);
 
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
+
+            name += filter.IN_PRDA;
+
+            if (hmCCUST.containsKey(filter.IN_CCUST)) {
+                name += " - " + hmCCUST.get(filter.IN_CCUST);
+            } else {
+                name += " - AVIANCA";
+            }
+            if (filter.IN_FUENTE.equals("C")) {
+                name += " - COLOMBIA";
+            } else {
+                name += " - EXTERIOR";
+            }
+            if (!filter.IN_CORE.equals("")) {
+                name += " - " + filter.IN_CORE;
+            }
+
             int len = listaData.size();
             Integer vi = 0;
-            String fileName = "LIQUIDACION - " + Functions.getFechaActual() + ".txt";
+            String fileName = name;
             File file = new File(rutaFile + "\\" + fileName + ".txt");
 
             if (file.exists()) {
@@ -471,16 +519,16 @@ public class OutputsController extends BaseController {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
             String cadena;
 
-            cadena = "Fecha de Abono | Fecha de Transaccion | IATA | Terminal | Codigo de venta | Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto | Nro Tarjeta de Credito Debito | Autorizacion | Tipo de Tarjeta | Nro de cuenta | Cod Banco | Cod unico | Red | Nro Tiquete | LLAVE | DOC SAP | STVAL | KEYC";
+            cadena = "Fecha de Abono | Fecha de Transaccion | IATA | Terminal | Codigo de venta | Tipo Doc | Moneda | Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto | Nro Tarjeta de Credito Debito | Autorizacion | Tipo de Tarjeta | Nro de cuenta | Cod Banco | Cod unico | Red | Nro Tiquete | LLAVE | DOC SAP | STVAL | KEYC | CORE PROC";
             writer.println("" + cadena);
 
             for (vi = 0; vi < len; vi++) {
                 cadena = "";
                 cadena += "" + listaData.get(vi).DDATA.replaceAll(";", "|") + "|";//
                 if (listaData.get(vi).DATEC == null || listaData.get(vi).DATEC.isEmpty()) {
-                    cadena += "" + "|"; 
+                    cadena += "" + "|" + listaData.get(vi).COREP;
                 } else {
-                    cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC + "|"; 
+                    cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC + "|" + listaData.get(vi).COREP;
                 }
                 cadena = cadena.replaceAll("null", "");
                 writer.println("" + cadena);
@@ -506,13 +554,43 @@ public class OutputsController extends BaseController {
         System.out.println("TICKETS : getTXT100");
         String rutaFile = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
 
+        A2353Filter filter = new A2353Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        String name = "TICKETS - ";
+
+        HashMap<String, String> hmCCUST = new HashMap<String, String>();
+        hmCCUST.put("134", "AVIANCA");
+        hmCCUST.put("202", "TACA");
+        hmCCUST.put("133", "LACSA");
+        hmCCUST.put("547", "AEROGAL");
+
         try {
 
             List<A2353Filter> listaData = this.getList100(request, true);
 
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
+
+            name += filter.IN_PRDA;
+
+            if (hmCCUST.containsKey(filter.IN_CCUST)) {
+                name += " - CLIENT " + hmCCUST.get(filter.IN_CCUST);
+            } else {
+                name += " - CLIENT AVIANCA";
+            }
+            if (filter.IN_FUENTE.equals("C")) {
+                name += " - COLOMBIA";
+            } else {
+                name += " - EXTERIOR";
+            }
+            if (!filter.IN_CORE.equals("")) {
+                name += " - PROCES " + filter.IN_CORE;
+            }
+
             int len = listaData.size();
             Integer vi = 0;
-            String fileName = "TICKETS - " + Functions.getFechaActual() + ".txt";
+            String fileName = name;
             File file = new File(rutaFile + "\\" + fileName + ".txt");
 
             if (file.exists()) {
@@ -522,12 +600,12 @@ public class OutputsController extends BaseController {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
             String cadena;
 
-            cadena = "DocNum|CFUENTE|SAGENT|SDATE|SPNR|SCARDN|SAUTHOC|SCARCOD|SCURRENCY|SVFOP|KEYCRUCE|BANDOC|INVOICE";
+            cadena = "DOCNUM | CFUENTE | SAGENT | SDATE | SPNR | SCARDN | SAUTHOC | SCARCOD | SCURRENCY | SVFOP | KEYCRUCE | BANDOC | INVOICE | CORE PROC";
             writer.println("" + cadena);
 
             for (vi = 0; vi < len; vi++) {
                 cadena = "";
-                cadena += "" + listaData.get(vi).TRAMA.replaceAll(";", "|");//
+                cadena += "" + listaData.get(vi).TRAMA.replaceAll(";", "|") + "|" + listaData.get(vi).COREP.trim();//
 
                 cadena = cadena.replaceAll("null", "");
                 writer.println("" + cadena);

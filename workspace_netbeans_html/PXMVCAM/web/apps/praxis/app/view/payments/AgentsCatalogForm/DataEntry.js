@@ -110,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:left;',
                                             enforceMaxLength: true,
-                                            maxLength: 40,
+//                                            maxLength: 40,
                                             width: 180,
                                             labelWidth: 20
                                         },

@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
                                     width: '100%',
-                                    height: 470,
+                                    height: 520,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -58,13 +58,18 @@ Ext.define('Ext.Praxis.view.payments.RegistrationOfAccountingForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Nbr.', dataIndex: 'RN', width: 50},
-                                            {text: 'Id', dataIndex: 'A4545IDCON', width: 80},
-                                            {text: 'Procesing <br>Date', dataIndex: 'A4545PSTGD', width: 80},
-                                            {text: 'Generation <br>Date', dataIndex: 'A4545PSTGD', width: 80},
-                                            {text: 'Mode', dataIndex: 'A4545MODO_0', width: 180},
-                                            {text: 'Reference', dataIndex: 'A4545REFD', width: 180},
-                                            {text: 'Qty.<br>Record', dataIndex: 'A4545ITEMS', width: 120}                                    
+                                            {text: 'Nbr.', dataIndex: 'RN', width: 40},
+                                            {text: 'Airline', dataIndex: 'CCUST_0', width: 80},
+                                            {text: 'Id', dataIndex: 'HEADER', width: 170},
+                                            {text: 'Bandoc', dataIndex: 'BANDOC', width: 80},
+                                            {text: 'Procesing <br>Date', dataIndex: 'PSTGD', width: 80},
+                                            {text: 'Generation <br>Date', dataIndex: 'DCONT', width: 80},
+                                            {text: 'Mode', dataIndex: 'MODO_0', width: 120},
+                                            {text: 'Processor', dataIndex: 'CODPRO', width: 80},
+                                            {text: 'Currency', dataIndex: 'SCURRENCY', width: 90},
+                                            {text: 'Amount', dataIndex: 'NETO', width: 90},
+                                            {text: 'Processed', dataIndex: 'STCON_0', width: 80},
+                                            {text: 'Qty.<br>Record', dataIndex: 'ITEMS', width: 70}                                    
                                         ]
                                     }
                                 }

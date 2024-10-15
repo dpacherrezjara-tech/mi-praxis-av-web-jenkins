@@ -24,6 +24,7 @@ public class MPF106 {
     public String NEGOC = "";
     public String descNEGOC = "";
     public String TERMI = "";
+    public String MERCHAND = "";
     public String CONTAC = "";
     public String EMAILS = "";
     public String NPHONE = "";
@@ -33,6 +34,7 @@ public class MPF106 {
     public String EMAILS5 = "";
     public String TERMP = "";
     public String SAGENT = "";
+    public String DESCSAGENT = "";
     public String NEW_SAGENT = "";
     public String BANDOC = "";
     public String AMOUNT = "";

@@ -21,7 +21,12 @@ public class A2359 {
     public String TRFSTAT = "";
     public String CONTROL = "";
     public int QTYDOC = 0;
+    public int tot_QTYDOC = 0;
     public String strTitulo = "";
+    public String CODE = "";
+    public String BANK = "";
+    public String NAME = "";
+    public String ADATE = "";
 
     //Variables del Sistema
     public String USCR = "";

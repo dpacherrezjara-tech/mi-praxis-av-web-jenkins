@@ -53,6 +53,9 @@ public class A2295 {
     public String SPNR = "";
     public String USERF = "";
     public String CERROR = "";
+    public String ACCNUMA = "";
+    public String COSTCEN = "";
+    public String TRANL = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
     public String SCURRENCY1 = "";
@@ -91,6 +94,14 @@ public class A2295 {
     public String STATKT = "";
     public String STATT = "";
     public String strTitulo = "";
+    public String A720FBUSO1 = "";
+    public String A720FVLO1 = "";
+    public String A720RUTA0 = "";
+    public String A720RUTA1 = "";
+    public String A1721FRCA = "";
+    public String ROUTETYPE = "";
+    public String TYPEADJ = "";
+    public String TYPETRAVEL = "";
     
     public double SVFOPOT = 0;
     public double SVFOPNETR = 0;

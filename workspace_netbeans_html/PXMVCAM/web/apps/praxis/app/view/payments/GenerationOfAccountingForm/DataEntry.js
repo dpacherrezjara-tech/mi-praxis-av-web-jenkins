@@ -56,7 +56,42 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     layout: 'hbox',
                                     border: false,
                                     margin: '5 5 1 1',
-                                    //width: 150,
+                                    items: [
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-CCUST',
+                                            fieldLabel: 'Airline', labelAlign: 'right', labelStyle: 'font-weight: bold;',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['code', 'name'],
+                                                data: [
+                                                    ["133", "LACSA"],
+                                                    ["134", "AVIANCA"],
+                                                    ["202", "TACA"],
+                                                    ["547", "AEROGAL"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            autoSelect: false,
+                                            forceSelection: true,
+                                            caseSensitive: false,
+                                            editable: true,
+                                            typeAhead: true,
+                                            valueField: 'code', displayField: 'name',
+                                            labelWidth: 80,
+                                            padding: '6 0',
+                                            width: 200,
+                                            value: "134",
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '5 5 1 1',
                                     items: [
                                         {
                                             xtype: 'label',
@@ -65,8 +100,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             text: 'Mode:', style: 'font-weight: bold; display: inline-block; text-align: right',
                                             width: 80,
                                             padding: '6 0',
-                                            labelAlign: 'right',
-                                            //margin: '2 2 2 10',                                         
+                                            labelAlign: 'right'                                     
                                         },
                                         {
                                             xtype: 'radiofield',
@@ -97,7 +131,6 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     layout: 'hbox',
                                     border: false,
                                     margin: '5 5 1 1',
-                                    //width: 150,
                                     items: [
                                         {
                                             xtype: 'combo',
@@ -107,7 +140,6 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                                 fields: ['code', 'name'],
                                                 data: [
                                                     ["X", "Normal"],
-                                                    ["T", "All"],
                                                     ["J", "Adjustment"],
                                                     ["D", "Debit"],
                                                     ["F", "FP"]
@@ -139,33 +171,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             store: new Ext.data.SimpleStore({
                                                 fields: ['code', 'name'],
                                                 data: [
-                                                    ["  ", "All"],
-                                                    ["AX ", "American Express"],
-                                                    ["CT ", "Cardnet"],
-                                                    ["BP ", "Banco Pichincha"],
-                                                    ["BG ", "Banco Guayaquil"],
-                                                    ["PF ", "Banco Pacificar"],
-                                                    ["ET ", "Expressnet"],
-                                                    ["DC ", "Banco Diners"],
-                                                    ["SK ", "Scotiabank"],
-                                                    ["WP ", "Worldpay"],
-                                                    ["WPP", "Worldpay Pazien"],
-                                                    ["BM ", "Banco Maduro"],
-                                                    ["LK ", "Linkser"],
-                                                    ["IP ", "Izipay"],
-                                                    ["CE ", "Cielo"],
-                                                    ["DS ", "Discover"],
-                                                    ["NB ", "Niubiz"],
-                                                    ["FD ", "First Data"],
-                                                    ["VN ", "Visanet"],
-                                                    ["TB ", "Transback"],
-                                                    ["EV ", "Elavon"],
-                                                    ["SD ", "Santander"],
-                                                    ["BD ", "Bancard"],
-                                                    ["PB ", "Banco Produbanco"],
-                                                    ["CM ", "Credomatic"],
-                                                    ["PM ", "Prisma"],
-                                                    ["IG ", "Ingenico"]
+                                                    ["   ", "All"]
                                                 ]
                                             }),
                                             queryMode: 'local',
@@ -178,15 +184,11 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                             valueField: 'code', displayField: 'name',
                                             labelWidth: 80,
                                             width: 220,
-                                            //height: 26,
-                                            value: "  ",
+                                            value: "   ",
                                             listConfig: {maxHeight: 111},
                                             enableKeyEvents: true,
                                             padding: '6 0',
-                                            hidden: true,
-                                            listeners: {
-                                                //change: 'cmbfiltro_clickHandler'
-                                            }
+                                            hidden: true
                                         }
                                     ]
 
@@ -201,7 +203,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                             items: [
                                 {
                                     xtype: 'datefield',
-                                    id: prototype.id + '-PSTGD1',
+                                    id: prototype.id + '-PSTGD',
                                     fieldLabel: 'Date', labelAlign: 'right', labelStyle: 'font-weight: bold;', 
                                     labelWidth: 80,
                                     width: 200, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
@@ -218,31 +220,7 @@ Ext.define('Ext.Praxis.view.payments.GenerationOfAccountingForm.DataEntry', {
                                     listeners: {
                                         keypress: function (obj, e) {
                                             if (e.getKey() === e.ENTER) {
-                                                Ext.getCmp(prototype.id + '-PSTGD2').focus();
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    id: prototype.id + '-PSTGD2',
-                                    fieldLabel: 'To', labelAlign: 'right', labelStyle: 'font-weight: bold;', labelWidth: 50,
-                                    width: 200, fieldStyle: 'font-weight: bold;font-size:13px;text-align:center',
-                                    format: 'Ymd',
-                                    invalidText: 'Ingrese fecha valida en formato Ymd',
-                                    minValue: new Date(1990, 00, 01),
-                                    maxValue: new Date(),
-                                    value: new Date(),
-                                    maskRe: /[0-9/]/,
-                                    editable: true,
-                                    hidden: false,
-                                    enableKeyEvents: true,
-                                    enforceMaxLength: true,
-                                    maxLength: 12,
-                                    listeners: {
-                                        keypress: function (obj, e) {
-                                            if (e.getKey() === e.ENTER) {
-                                                Ext.getCmp(prototype.id + '-btn-save').focus();
+                                                Ext.getCmp(prototype.id + '-PSTGD').focus();
                                             }
                                         }
                                     }

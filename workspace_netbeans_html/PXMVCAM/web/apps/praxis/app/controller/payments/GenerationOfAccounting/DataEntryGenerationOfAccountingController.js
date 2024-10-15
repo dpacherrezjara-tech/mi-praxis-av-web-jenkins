@@ -7,13 +7,13 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         this.bean = this.p.rec;
     },
     afterRender: function () {
-//        console.log(this.view.params.action);
-        // Solo cuando sea Form: Download
+        this.loadProcessors();
+        //this.getCustomer();
+        // Download
         if (this.view.params.action === 'D') {
             var panel = Ext.getCmp(prototype.id01 + '-form-radiofields');
             panel.removeAll();
             for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
-//                console.log('i>>' + i);
                 var radioField = Ext.create({
                     xtype: 'radiofield',
                     id: prototype.id01 + '-op' + i,
@@ -25,8 +25,39 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                 panel.add(radioField);
             }
         }
+        
+        // Reversar
+        if (this.view.params.action === 'R') {
+            Ext.getCmp(prototype.id + '-dataEntry').setTitle('Reverting');
+        }
     },
     //</editor-fold>
+    loadProcessors: function() {
+        var processors = new Array();
+//        var paises = new Array();
+        var store;
+        Ext.Ajax.request({
+            url: prototype.url + '/loadProcessors',
+            method: 'POST',
+            timeout: 60000,
+            autoLoad: true,
+            success: function(response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                var data = res.data;
+
+                data.forEach(function callback(record, index, array) {
+                    processors.push([record.A051KEY2, record.A051DESCR1]);
+                });
+                store = Ext.create('Ext.data.ArrayStore', {
+                    storeId: 'processors', autoLoad: true, data: processors, fields: ['code', 'name']
+                });
+                Ext.getCmp(prototype.id + '-cmb02').bindStore(store);
+            },
+            failure: function(response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {
@@ -50,8 +81,8 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     llenarData: function (beanTemp) {
         
-        beanTemp.VP_FECHA_INI = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-        beanTemp.VP_FECHA_FIN = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
+        beanTemp.VP_CCUST = Ext.getCmp(prototype.id + '-CCUST').getValue();
+        beanTemp.VP_FECHA = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD').getValue(), 'Ymd');
         beanTemp.VP_TIPO = "";
         
         // Modo
@@ -59,7 +90,7 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         // Adicional
         var vl_additional = "X";
         // Procesador
-        var vl_processor = "XX";
+        var vl_processor = "   ";
         
         var vl_op01 = Ext.getCmp(prototype.id + '-op01').getValue();
         var vl_op02 = Ext.getCmp(prototype.id + '-op02').getValue();
@@ -72,41 +103,9 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
           if(vl_op02) vl_mode = 'E';
           
           if(vl_cmb01) vl_additional = vl_cmb01;
-          if(vl_cmb02 && vl_mode === 'E') vl_processor = vl_cmb02;
+          if(vl_cmb02) vl_processor = vl_cmb02;
           
           beanTemp.VP_TIPO = vl_mode + vl_additional + vl_processor;
-        
-//        beanTemp.VP_PSTGD1 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD1').getValue(), 'Ymd');
-//        beanTemp.VP_PSTGD2 = Ext.util.Format.date(Ext.getCmp(prototype.id + '-PSTGD2').getValue(), 'Ymd');
-//        beanTemp.VP_TIPO = "";
-//        
-//        var vl_pasaje = "X";
-//        var vl_carga = "X";
-//        var vl_correo = "X";
-//        var vl_ajuste = "X";
-//        var vl_debito = "X";
-//        var vl_exterior = "X";
-//        var vl_pf = "X";
-//        
-//        var vl_ck01 = Ext.getCmp(prototype.id + '-ck01').getValue();
-//        var vl_ck02 = Ext.getCmp(prototype.id + '-ck02').getValue();
-//        var vl_ck03 = Ext.getCmp(prototype.id + '-ck03').getValue();
-//        var vl_ck04 = Ext.getCmp(prototype.id + '-ck04').getValue();
-//        var vl_ck05 = Ext.getCmp(prototype.id + '-ck05').getValue();
-//        var vl_ck06 = Ext.getCmp(prototype.id + '-ck06').getValue();
-//        var vl_ck07 = Ext.getCmp(prototype.id + '-ck07').getValue();
-//                
-//        if(vl_ck01) vl_pasaje = 'P';
-//        if(vl_ck02) vl_carga = 'A';
-//        if(vl_ck03) vl_correo = 'C'; 
-//        if(vl_ck04) vl_ajuste = 'J';
-//        if(vl_ck05) vl_debito = 'D'; 
-//        if(vl_ck06) vl_exterior = 'E';
-//        if(vl_ck07) vl_pf = 'F'; 
-//        
-//        beanTemp.VP_TIPO = vl_pasaje + vl_carga + vl_correo + vl_ajuste + vl_debito + vl_exterior + vl_pf; 
-       
-        
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {
@@ -123,7 +122,10 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
                     if (msjResult === '') {
-                        this.procesarArchivos(beanTemp);
+                        if (this.view.params.action === 'I')
+                            this.procesarArchivos(beanTemp);
+                        if (this.view.params.action === 'R')
+                            this.reversarContabilidad(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -147,7 +149,47 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
         Ext.Ajax.request({
             url: prototype.url + '/procesarArchivos',
             method: 'POST',
-            timeout: 60000000,
+            timeout: 60000,
+            params: {
+                beanString: beanString
+            },
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response) {
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+
+                var objRtn = res.objRtn;
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...', '');
+                global.Msg({
+                    msg: objRtn.dbException.MESSAGE,
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () { 
+                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        elem.innerHTML = objRtn.dbException.MESSAGE;                        
+                    }
+                });
+            },
+            error: function(){
+                // will fire when timeout is reached
+                global.Msg({
+                    msg: "Server Timeout",
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () { 
+                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        elem.innerHTML = "Server Timeout";                       
+                    }
+                });
+            }
+        });
+    },
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Revertir archivos">
+    reversarContabilidad: function (beanTemp) {
+        var beanString = JSON.stringify(beanTemp);
+        Ext.Ajax.request({
+            url: prototype.url + '/reversar',
+            method: 'POST',
+            timeout: 60000,
             params: {
                 beanString: beanString
                         // option: beanTemp.option
@@ -170,21 +212,30 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
                         //me.onCancelClick();                           
                     }
                 });
+            },
+            error: function(){
+                // will fire when timeout is reached
+                global.Msg({
+                    msg: "Server Timeout",
+                    icon: objRtn.dbException.SQLCODE,
+                    fn: function () { 
+                        var elem = document.getElementById('GenerationOfAccountingFormMsg');
+                        elem.innerHTML = "Server Timeout";                       
+                    }
+                });
             }
         });
     },
     //</editor-fold>
-
     validacionInsert: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("PSTGD1") === '' ||
-                this.getValue("PSTGD2") === '') {
+        if (this.getValue("PSTGD") === '' ) {
             msjResult = "You must enter the required field.";
         }
         return msjResult;
     },
     onDownloadFilesClick: function () {
-//        console.log('onDownloadFilesClick');
+
         var NARCH = 0;
         for (var i = 1; i <= parseInt(this.bean.A4556NARCH); i++) {
             if (Ext.getCmp(prototype.id01 + '-op' + i).getValue()) {
@@ -199,11 +250,15 @@ Ext.define('Ext.Praxis.controller.payments.GenerationOfAccounting.DataEntryGener
     },
     getDownloadFileTxt01: function (rec, in_NARCH) {
 
-        var str_msg = 'Download File ' + rec.A4556TFILE_0 + ' ' + in_NARCH + '?';
+        var str_msg = 'Download File ' + rec.A4556TFILE_0 + ' ' + rec.A4556CPROC.trim() + ' ' + in_NARCH + '?';
         var bean = {};
         bean.IN_TIPO = rec.A4556TFILE;
+        bean.IN_PROCESA = rec.A4556CPROC;
         bean.IN_LEXT = in_NARCH;
-        bean.FNAME = '134' + rec.A4556TFILE_0 + in_NARCH;
+        if (rec.A4556CPROC.trim() !== '')
+            bean.FNAME = rec.A4556FFILE + '_' + rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + rec.A4556CPROC.trim() + '_' + in_NARCH;
+        else
+            bean.FNAME = rec.A4556FFILE + '_' + rec.A4556CCUST + '_' + rec.A4556TFILE_0 + '_' + in_NARCH;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',

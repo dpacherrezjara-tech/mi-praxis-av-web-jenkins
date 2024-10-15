@@ -132,8 +132,10 @@ public class LoadDebitsConciliationDAO {
         String mensajePost = "";
         CallableStatement cstmt = null;
         CallableStatement cstmt2 = null;
+        CallableStatement cstmt3 = null;
         Connection cnx = null;
         Connection cnx2 = null;
+        Connection cnx3 = null;
         
         Map<String, Integer> contadorClaves = new HashMap<>();
         for (A2290Filter registro : lstPayments) {
@@ -186,6 +188,7 @@ public class LoadDebitsConciliationDAO {
                 }else{
                     item.SEQ = "";
                 }
+                item.SEQ = "";
                 try {
                     cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
                     cstmt2.setString(2, item.IN_BANDOC.trim());
@@ -231,22 +234,41 @@ public class LoadDebitsConciliationDAO {
                     }
                 }
             }
-
+            
+            String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQPGENCORMPF060()}";
+            try{
+                cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt3 = cnx3.prepareCall(SQLCLL03);
+                cstmt3.execute();
+                cstmt3.close();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            
+           
         } catch (Exception e) {
             System.out.println("Error en registro" + cont);
             mensaje = "Error" + e.getMessage();
 
         } finally {
-            if (rst != null) {
+            
+            if (cstmt != null) {
                 try {
-                    rst.close();
+                    cstmt.close();
                 } catch (SQLException e) {
 
                 }
             }
-            if (cstmt != null) {
+            if (cstmt2 != null) {
                 try {
-                    cstmt.close();
+                    cstmt2.close();
+                } catch (SQLException e) {
+
+                }
+            }
+            if (cstmt3 != null) {
+                try {
+                    cstmt3.close();
                 } catch (SQLException e) {
 
                 }
