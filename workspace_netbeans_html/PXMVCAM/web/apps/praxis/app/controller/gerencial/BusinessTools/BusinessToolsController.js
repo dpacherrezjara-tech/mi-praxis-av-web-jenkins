@@ -1000,7 +1000,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
         var column1 = Ext.create('Ext.grid.column.Column', {text: 'RN', width: 50, align: 'center', dataIndex: 'RN'});
         vgridData.headerCt.insert(0, column1);
         vgridData.getView().refresh();
-
+        
         
 
         for (var i = 0; i < numColumns; i++) {
@@ -1047,6 +1047,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
         
         var tabla = Ext.getCmp(prototype.id + '-cmbTabla').getValue();
         var tabla2 = Ext.getCmp(prototype.id + '-cmbTabla2').getValue();
+        var cont_col = numColumns;
         if(tabla === 'A1692' && tabla2 === 'A720' && Ext.getCmp(prototype.id + '-cmbFunctions').getValue()==='1'){
             
 //            var gridView_d = Ext.getCmp(prototype.id + '-gridDanamic');
@@ -1057,7 +1058,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                             return value;
                         }
             });
-            vgridData.headerCt.insert(numColumns+1, column_1ast);
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_1ast);
             vgridData.getView().refresh();
 
             var column_1ast2 = Ext.create('Ext.grid.column.Column', {text: 'FVLO Sale', width: 100, align: 'center', dataIndex: 'A720FVLO'
@@ -1066,7 +1068,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                             return value;
                         }
             });
-            vgridData.headerCt.insert(numColumns+2, column_1ast2);
+            
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_1ast2);
             vgridData.getView().refresh();
             
             var column_1ast3 = Ext.create('Ext.grid.column.Column', {text: 'NVLO Sale', width: 100, align: 'center', dataIndex: 'A720NVLO'
@@ -1075,7 +1079,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                             return value;
                         }
             });
-            vgridData.headerCt.insert(numColumns+3, column_1ast3);
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_1ast3);
             vgridData.getView().refresh();
             
             var column_1ast4 = Ext.create('Ext.grid.column.Column', {text: 'Orig Sale', width: 100, align: 'center', dataIndex: 'A720RUTA_0'
@@ -1084,7 +1089,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                             return value;
                         }
             });
-            vgridData.headerCt.insert(numColumns+4, column_1ast4);
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_1ast4);
             vgridData.getView().refresh();
             
             var column_1ast5 = Ext.create('Ext.grid.column.Column', {text: 'Dest Sale', width: 100, align: 'center', dataIndex: 'A720RUTA_1'
@@ -1093,7 +1099,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                             return value;
                         }
             });
-            vgridData.headerCt.insert(numColumns+5, column_1ast5);
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_1ast5);
             vgridData.getView().refresh();
             
             var column_1ast6 = Ext.create('Ext.grid.column.Column', {text: 'VALUE', width: 100, align: 'center', dataIndex: 'A720VALOR'
@@ -1102,11 +1109,36 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                             return value;
                         }
             });
-            vgridData.headerCt.insert(numColumns+6, column_1ast6);
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_1ast6);
             vgridData.getView().refresh();
         }
         
         
+        var check = Ext.getCmp(prototype.id + '-chkSelGB').checked;
+        
+        if(check){
+            
+//            var column_count = Ext.create('Ext.grid.column.Column', {text: 'Count', width: 70, align: 'center', dataIndex: 'QTY'
+//            ,renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                            metaData.style = 'text-align:right;background:#d5f4d5;';
+//                            return value;
+//                        }
+//            });
+            var column_count = Ext.create('Ext.grid.column.Column', {text: 'Count', dataIndex: 'QTY', align: 'right'
+                    ,summaryRenderer: function(value, summaryData, dataIndex, metaData, record) {
+                        var data_store = Ext.getCmp(prototype.id + '-gridDanamic').getStore().getData().items[0].data;
+
+                        return '<b>' + Ext.util.Format.number(data_store['totQTY'], '0,000') + '<b>';
+
+                    }
+            });
+            
+            cont_col= numColumns+1;
+            vgridData.headerCt.insert(cont_col, column_count);
+            vgridData.getView().refresh();
+            
+        }
     },
     retornaColumna: function(v_cabecera,v_columna,v_align,v_fields) {
         
