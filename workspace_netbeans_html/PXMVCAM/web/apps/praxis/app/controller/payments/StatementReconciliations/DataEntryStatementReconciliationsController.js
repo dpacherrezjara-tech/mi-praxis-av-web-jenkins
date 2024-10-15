@@ -26,7 +26,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.lstCountry = this.p.lstCountry;
-        controllerParent = this.p.controllerIns;
+        controllerParent = this.p.controllerParent;
         panelActual = this.p.panelActual;
         paramsGrid = this.p.paramsGrid;
         this.obtainData();
@@ -936,7 +936,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                                     this.up('window').close();
                                     Ext.getCmp(prototype.id + '-dataEntry').close();
                                     
-                                    controllerParent.winDataEntry( 'U', me.recGlobal);
                                     
                                     
                                 }
@@ -955,8 +954,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     gridRefresh: function () {
-        console.log(controllerParent.panelActual, 'panel de parent control')
-        switch(controllerParent.panelActual){
+        console.log(panelActual, 'panel de parent control')
+        switch(panelActual){
             case '-boxDetDetails':
                     controllerParent.setGridDataDetBANDOC();
                     console.log('entra a')
