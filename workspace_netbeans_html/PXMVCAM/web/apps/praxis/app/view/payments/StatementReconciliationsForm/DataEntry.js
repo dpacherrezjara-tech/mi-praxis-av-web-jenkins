@@ -1843,6 +1843,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                     }
                 },
                 {
+                    text: 'Reverse Match',
+                    id: prototype.id + '-btn-reverse',
+                    hidden: true,
+                    iconCls: 'prx-icon-delete',
+                    listeners: {
+                        click: 'onReverseClick'
+                    }
+                },
+                {
                     text: 'Delete',
                     id: prototype.id + '-btn-delete',
                     iconCls: 'prx-icon-delete',

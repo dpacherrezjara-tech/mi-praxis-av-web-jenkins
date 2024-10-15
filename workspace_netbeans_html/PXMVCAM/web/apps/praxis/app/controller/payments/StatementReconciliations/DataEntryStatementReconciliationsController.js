@@ -3,6 +3,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     alias: 'controller.DataEntryStatementReconciliationsController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDE: '',
+    controllerParent: '',
+    panelActual: '',
+    paramsGrid: '',
     actionCode: '',
     bean: {},
     beanResult: {},
@@ -23,6 +26,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.lstCountry = this.p.lstCountry;
+        controllerParent = this.p.controllerIns;
+        panelActual = this.p.panelActual;
+        paramsGrid = this.p.paramsGrid;
         this.obtainData();
 
     },
@@ -143,6 +149,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     getData: function () {
         console.log('getData');
+        console.log('meDE.bean', meDE.bean);
         meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
         meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
         meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
@@ -768,6 +775,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             });
         }
     },
+    onReverseClick: function (btn) {
+        
+
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to Reverse?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+//            animateTarget: btn,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+
+                    this.reverseOption();
+                }
+            }
+        }); 
+    },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -789,10 +815,154 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     onCancelClick: function (btn) {
         
         this.view.close();
+        
     },
     // </editor-fold>
-
+    
     //<editor-fold defaultstate="collapsed" desc="executeOption">
+    reverseOption: function (){
+        let datos = {}
+        datos.IN_BANDOC = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue().trim()
+        datos.IN_DATECI = Ext.getCmp(prototype.id + '-de-txtDATECI').getValue().trim()
+        datos.IN_TRANCI = Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue().trim()
+        console.log(datos,'reverseOption')
+        Ext.Ajax.request({
+            url: prototype.url + '/reverseOption',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(datos)},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    let objResult = res.result;
+                    Ext.create('Ext.window.Window', {
+                        title: objResult.MESSAGE,
+                        width: 500,
+                        height: 380,
+                        modal: true,  // Hace que la ventana sea modal
+                        closable: true,
+                        layout: 'fit',
+                        items: [
+                            {
+                                xtype: 'panel',
+            //                    bodyPadding: 10,
+                                tpl: new Ext.XTemplate( `
+                                    <style>
+                                        .styled-table {
+                                            width: 100%;
+                                            border-collapse: collapse;
+                                            margin: 0px 0;
+                                            font-size: 12px;
+                                            font-family: Arial, sans-serif;
+                                            text-align: left;
+                                        }
+                                        .styled-table thead {
+                                            background-color: #7f98a8;
+                                            color: white;
+                                        }
+                                        .styled-table th, .styled-table td {
+                                            padding: 12px 15px;
+                                            border: 1px solid #ddd;
+                                        }
+                                        .styled-table tbody tr:nth-child(even) {
+                                            background-color: #f2f2f2;
+                                        }
+                                        .styled-table tbody tr:hover {
+                                            background-color: #e0e0e0;
+                                        }
+                                        .styled-table tbody th {
+                                            background-color: #f9f9f9;
+                                            font-weight: bold;
+                                        }
+                                    </style>
+                                    <table class="styled-table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Quantity</th>
+                                                <th>Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>Acc. Statements</th> 
+                                                <td>{QTYP102}</td> 
+                                                <td>{QTYPROC102}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Settlements Phase I</th> 
+                                                <td>{QTYP060}</td> 
+                                                <td>{QTYPROC060}</td> 
+                                            </tr>
+                                            <tr>
+                                                <th>Settlements Phase II</th> 
+                                                <td>{QTYP101}</td> 
+                                                <td>{QTYPROC101}</td> 
+                                            </tr>
+                                            <tr>
+                                                <th>Tickets</th> 
+                                                <td>{QTYP100}</td> 
+                                                <td>{QTYPROC100}</td> 
+                                            </tr>
+                                            <tr>
+                                                <th>Refund Trans.</th> 
+                                                <td>{QTYP075}</td> 
+                                                <td>{QTYPROC075}</td> 
+                                            </tr>
+                                            <tr>
+                                                <th>Chargueback Trans.</th> 
+                                                <td>{QTYP076}</td> 
+                                                <td>{QTYPROC076}</td> 
+                                            </tr>
+                                            <tr>
+                                                <th>Acredit. Trans.</th> 
+                                                <td>{QTYP077}</td> 
+                                                <td>{QTYPROC077}</td> 
+                                            </tr>
+                                        </tbody>
+                                    </table>`
+                                ),
+                                data: objResult
+                            }
+                        ],
+                        buttons: [
+                            {
+                                text: 'Cerrar',
+                                handler: function() {
+                                    meDE.gridRefresh()
+                                    this.up('window').close();
+                                    Ext.getCmp(prototype.id + '-dataEntry').close();
+                                    
+                                    controllerParent.winDataEntry( 'U', me.recGlobal);
+                                    
+                                    
+                                }
+                            }
+                        ]
+                    }).show();
+                    
+                    
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+    },
+    gridRefresh: function () {
+        console.log(controllerParent.panelActual, 'panel de parent control')
+        switch(controllerParent.panelActual){
+            case '-boxDetDetails':
+                    controllerParent.setGridDataDetBANDOC();
+                    console.log('entra a')
+                break;
+        }
+    },
     preexecuteOption: function () {
         //Modificacion
 

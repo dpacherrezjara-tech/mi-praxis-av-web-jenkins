@@ -19,6 +19,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     beanDayLiqByS: {},
     beanDetailLiqByS: {},
     paginActual: '',
+    recGlobal: '',  
     drillDown: [],
     lstCountry: [],
     gridActual: '',
@@ -1397,6 +1398,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     },
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
+        me.recGlobal = grid.getStore().getAt(rowIndex);
         if (rec.data.SCOUNTRY === 'CO' && rec.data.SCURRENCY === 'COP') {
             this.winDataEntry('U', rec);
         } else {
@@ -1413,7 +1415,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             params: {
                 action: action,
                 rec: rec,
-                lstCountry: me.lstCountry
+                lstCountry: me.lstCountry,
+                controllerParent: me,
+                panelActual : me.panelActual,
+                paramsGrid : me.paramsDetail
             }
         }).show();
     },

@@ -111,6 +111,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX269SQP05115(filter, user);
     }
     
+    public A2290Filter SQPREVERSA_MPF102_F1(A2290Filter filter, UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.SQPREVERSA_MPF102_F1(filter, user);
+    }
+    
     public String loadPX269SQP05115Head(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05115Head(filter, user);
     }
