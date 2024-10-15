@@ -98,10 +98,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     editable: true, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(anioActual, mesActual, 1),
-                                    listeners: {
-                                        'specialkey': 'onEnterKeyPress'
-                                    }
+                                    value: new Date(new Date().setMonth(new Date().getMonth() - 6))
                                 },
                                 {
                                     xtype: 'datefield',
@@ -111,7 +108,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     editable: true, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(anioActual, mesActual, 1)
+                                    value: new Date()
                                 },
                                 {
                                     xtype: 'datefield',

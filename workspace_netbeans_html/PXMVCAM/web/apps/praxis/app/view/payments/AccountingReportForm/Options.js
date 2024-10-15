@@ -25,6 +25,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnProcess',
+                            iconCls: 'prx-icon-image-process',
+                            tooltip: 'Process',
+                            listeners: {
+                                click: 'onProcessClick'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter',

@@ -44,6 +44,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
+    onProcessClick: function(){
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAccountingDataEntry', {
+            id: prototype.id + '-ProcessAccountingDataEntry-1'
+        });
+        dataEntry.show();
+    },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
         this.loadGrid();
