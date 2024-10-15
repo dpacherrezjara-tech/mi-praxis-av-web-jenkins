@@ -2819,6 +2819,88 @@ public class StatementReconciliationsDAO {
 
         return strMsj;
     }
+    
+    public A2290Filter SQPREVERSA_MPF102_F1(A2290Filter filter, UserView user) throws SQLException, Exception {
+
+        String strMsj = "Operation was successful.";
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPREVERSA_MPF102_F1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.IN_BANDOC.trim());
+            cstmt01.setString(3, filter.IN_DATECI.trim());
+            cstmt01.setString(4, filter.IN_TRANCI);
+            cstmt01.setString(5, user.getUserInfo().USR);
+            cstmt01.setString(6, Functions.getFechaActual());
+            cstmt01.setString(7, Functions.getHoraActual());
+            
+            cstmt01.registerOutParameter(8, Types.VARCHAR);
+            cstmt01.registerOutParameter(9, Types.INTEGER);
+            cstmt01.registerOutParameter(10, Types.INTEGER);
+            cstmt01.registerOutParameter(11, Types.INTEGER);
+            cstmt01.registerOutParameter(12, Types.INTEGER);
+            cstmt01.registerOutParameter(13, Types.INTEGER);
+            cstmt01.registerOutParameter(14, Types.INTEGER);
+            cstmt01.registerOutParameter(15, Types.INTEGER);
+            cstmt01.registerOutParameter(16, Types.INTEGER);
+            cstmt01.registerOutParameter(17, Types.INTEGER);
+            cstmt01.registerOutParameter(18, Types.INTEGER);
+            cstmt01.registerOutParameter(19, Types.INTEGER);
+            cstmt01.registerOutParameter(20, Types.INTEGER);
+            cstmt01.registerOutParameter(21, Types.INTEGER);
+            cstmt01.registerOutParameter(22, Types.INTEGER);
+            cstmt01.execute();
+            objRtn.MESSAGE =  cstmt01.getString(8);
+            objRtn.QTYPROC102 =  cstmt01.getInt(9);
+            objRtn.QTYPROC060 =  cstmt01.getInt(10);
+            objRtn.QTYPROC101 =  cstmt01.getInt(11);
+            objRtn.QTYPROC100 =  cstmt01.getInt(12);
+            objRtn.QTYPROC075 =  cstmt01.getInt(13);
+            objRtn.QTYPROC076 =  cstmt01.getInt(14);
+            objRtn.QTYPROC077 =  cstmt01.getInt(15);
+            objRtn.QTYP102 =  cstmt01.getInt(16);
+            objRtn.QTYP060 =  cstmt01.getInt(17);
+            objRtn.QTYP101 =  cstmt01.getInt(18);
+            objRtn.QTYP100 =  cstmt01.getInt(19);
+            objRtn.QTYP075 =  cstmt01.getInt(20);
+            objRtn.QTYP076 =  cstmt01.getInt(21);
+            objRtn.QTYP077 =  cstmt01.getInt(22);
+
+
+            
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+//        objRtn.MESSAGE = strMsj;
+        return objRtn;
+    }
+
 
     public String loadPX269SQP05115Head(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
@@ -3038,7 +3120,7 @@ public class StatementReconciliationsDAO {
     public String loadPX287MPS100(List<MPF101> lstLIQ) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "An Error Ocurred.";
+        String strMsj = "Execute...";
         CallableStatement cstmt = null;
         Connection cnx = null;
 

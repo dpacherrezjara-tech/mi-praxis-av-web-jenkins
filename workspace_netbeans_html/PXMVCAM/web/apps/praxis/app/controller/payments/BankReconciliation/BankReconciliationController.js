@@ -486,7 +486,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["", "All"],
+                
                 ["1", "PASAJES"],
                 ["2", "CARGO"],
                 ["3", "CORREO"],
@@ -678,21 +678,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         if (Ext.getCmp(prototype.id + '-panelTW').isVisible()) {
             this.searchTW();
         } else {
-            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== ''
+            if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== ''
                     || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== ''
-                    || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbSource').getValue() !== ''
+                    || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbStatus')) !== '' || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbSource')) !== ''
                     || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''
-                    || Ext.getCmp(prototype.id + '-cmbCOREP').getValue() !== '' || Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || this.isVerifyMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC')) ) {
+                    || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP')) !== '' || Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' ) {
 
 
                 this.beanDetDay.TYPEDATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() === 'PAYDATE' ? 'P' : 'S';
                 this.beanDetDay.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
                 this.beanDetDay.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
                 this.beanDetDay.IN_TDOC = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC'));
-                this.beanDetDay.IN_STVAL = win.getValue('cmbStatus');
-                this.beanDetDay.IN_FTE = win.getValue('cmbSource');
-                this.beanDetDay.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-                this.beanDetDay.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
+                this.beanDetDay.IN_STVAL = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbStatus'));
+                this.beanDetDay.IN_FTE = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbSource'));
+                this.beanDetDay.IN_COREP = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP'))
                 this.beanDetDay.IN_BANDOC = win.getValue('txtBANDOC');
 
                 me.panelActual = '-panelGridDataDetalle';
@@ -731,7 +730,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 //                }
                 //            }
                 //            if (Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '') {
-                this.beanDetDay.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim();
+                this.beanDetDay.IN_NEGOC = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC'));
                 //            }
                 //            if (Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim() !== '') {
                 this.beanDetDay.IN_COMENT = Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue().trim();
@@ -1622,7 +1621,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                             Ext.getCmp(prototype.id + '-ColumnDateDetalle').setText('Sales<br>Date');
                         }
 
-                        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbNEGOC').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
+                        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || me.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
                             title = " ";
                         } else {
                             title = " Sales Date : " + bean.SDATE + " - Country : " + bean.IN_COUNTRY;

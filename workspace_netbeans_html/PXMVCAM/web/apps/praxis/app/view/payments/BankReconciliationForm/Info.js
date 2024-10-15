@@ -4554,7 +4554,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1507,
+                            width: 1587,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -4564,7 +4564,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetCardNbrByS',
-                                    width: 1507,
+                                    width: 1587,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -4691,6 +4691,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             return value;
                                                         }
 
+                                                    },
+                                                    {
+                                                        text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, align: 'center', 
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
                                                     },
                                                 ]
                                             },
