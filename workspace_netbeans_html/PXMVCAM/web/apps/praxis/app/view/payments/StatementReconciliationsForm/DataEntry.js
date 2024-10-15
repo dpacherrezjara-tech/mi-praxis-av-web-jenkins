@@ -1845,7 +1845,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                 {
                     text: 'Reverse Match',
                     id: prototype.id + '-btn-reverse',
-                    hidden: true,
+                    hidden: false,
                     iconCls: 'prx-icon-delete',
                     listeners: {
                         click: 'onReverseClick'
