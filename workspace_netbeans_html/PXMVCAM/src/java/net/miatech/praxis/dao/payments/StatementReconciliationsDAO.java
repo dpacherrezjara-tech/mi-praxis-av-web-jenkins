@@ -3038,7 +3038,7 @@ public class StatementReconciliationsDAO {
     public String loadPX287MPS100(List<MPF101> lstLIQ) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "An Error Ocurred.";
+        String strMsj = "Execute...";
         CallableStatement cstmt = null;
         Connection cnx = null;
 
