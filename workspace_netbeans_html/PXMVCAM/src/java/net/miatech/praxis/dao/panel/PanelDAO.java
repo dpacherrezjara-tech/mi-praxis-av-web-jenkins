@@ -216,6 +216,45 @@ public class PanelDAO {
         return filter;
     }
     
+    public PX076S01INF053Filter setSQP05412( PX076S01INF053Filter filter ) throws SQLException , Exception {        
+        //MANT. TABLA INF053: INSERT, UPDATE O DELETE.        
+        CallableStatement cstmt = null;        
+        String SQLCLL01 = "{CALL SQP05412(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();  
+            cstmt = cnx.prepareCall(SQLCLL01);
+            // OUT REGISTER
+            cstmt.registerOutParameter(15, Types.VARCHAR);
+            cstmt.registerOutParameter(16, Types.VARCHAR);             
+            
+            cstmt.setString(1, filter.VP_ACTION );
+            cstmt.setString(2, filter.VP_CCUST );
+            cstmt.setString(3, filter.VP_USR );
+            cstmt.setString(4, filter.VP_USRCOPY );
+            cstmt.setString(5, filter.VP_APLICA);
+            cstmt.setString(6, filter.VP_NPROG);
+            cstmt.setString(7, filter.VP_MODULE);
+            cstmt.setString(8, filter.VP_PERMA);            
+            cstmt.setString(9, filter.VP_PERML);
+            cstmt.setString(10, filter.VP_PERMC);
+            cstmt.setString(11, filter.VP_PERMM);
+            cstmt.setString(12, filter.VP_PERME);
+            cstmt.setString(13, filter.VP_PERMX);
+            cstmt.setString(14, filter.VP_STAT);
+            cstmt.execute();
+            filter.dbException.SQLCODE = cstmt.getString(15);
+            filter.dbException.MESSAGE = cstmt.getString(16);                        
+        } finally {
+            if (cstmt != null) {                
+                try { cstmt.close(); } catch(SQLException e) { logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage() ,e); }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return filter;
+    }
+    
     public PX075S02INF001Filter  setPX075S02INF001( PX075S02INF001Filter filter ) throws SQLException , Exception {    
         CallableStatement cstmt = null;        
         String SQLCLL01 = "{CALL PX075S02INF001(?,?,?,?,?,?,?,?)}";

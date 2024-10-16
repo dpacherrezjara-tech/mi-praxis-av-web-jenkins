@@ -13,8 +13,10 @@ public class PX076S01INF053Filter {
     public String VP_ACTION = "";
     public String VP_CCUST = "";
     public String VP_USR = "";
+    public String VP_USRCOPY = "";
     public String VP_APLICA = "";
     public String VP_NPROG = "";
+    public String VP_MODULE = "";
     
     public String VP_PERMA = "";
     public String VP_PERML = "";
