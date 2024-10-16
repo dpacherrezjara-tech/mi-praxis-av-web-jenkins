@@ -208,6 +208,8 @@ public class PerProController extends BaseController {
             cell11.setCellValue("DTCR");
             Cell cell12 = row.createCell(12);
             cell12.setCellValue("USUP");
+            Cell cell13 = row.createCell(13);
+            cell13.setCellValue("DTUP");
 
             ++vj;
             while (iter.hasNext()) {
@@ -226,6 +228,7 @@ public class PerProController extends BaseController {
                 Cell cel20 = row.createCell(10);
                 Cell cel21 = row.createCell(11);
                 Cell cel22 = row.createCell(12);
+                Cell cel23 = row.createCell(13);
 
                 cell0.setCellValue(lstData.get(vi).USR);
                 cell1.setCellValue(lstData.get(vi).NPROG);
@@ -240,6 +243,7 @@ public class PerProController extends BaseController {
                 cel20.setCellValue(lstData.get(vi).USCR);
                 cel21.setCellValue(lstData.get(vi).DTCR);
                 cel22.setCellValue(lstData.get(vi).USUP);
+                cel23.setCellValue(lstData.get(vi).DTUP);
 
                 iter.next();
                 ++vi;

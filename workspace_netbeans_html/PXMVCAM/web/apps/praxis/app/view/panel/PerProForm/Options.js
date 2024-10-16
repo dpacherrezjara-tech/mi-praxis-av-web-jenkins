@@ -23,6 +23,7 @@ Ext.define('Ext.Praxis.view.panel.PerProForm.Options', {
                             id: prototype.id + '-btn-pag-first',
                             iconCls: 'prx-icon-pagination-first',
                             tooltip: 'First Page',
+                            hidden: true,
                             listeners: {
                                 click: 'pagFirst'
                             }
@@ -32,6 +33,7 @@ Ext.define('Ext.Praxis.view.panel.PerProForm.Options', {
                             id: prototype.id + '-btn-pag-previous',
                             iconCls: 'prx-icon-pagination-previous',
                             tooltip: 'Previous Page',
+                            hidden: true,
                             listeners: {
                                 click: 'pagPrevious'
                             }
@@ -42,6 +44,7 @@ Ext.define('Ext.Praxis.view.panel.PerProForm.Options', {
                             id: prototype.id + '-btn-pag-next',
                             iconCls: 'prx-icon-pagination-next',
                             tooltip: 'Next Page',
+                            hidden: true,
                             listeners: {
                                 click: 'pagNext'
                             }
@@ -52,6 +55,7 @@ Ext.define('Ext.Praxis.view.panel.PerProForm.Options', {
                             id: prototype.id + '-btn-pag-last',
                             iconCls: 'prx-icon-pagination-last',
                             tooltip: 'Last Page',
+                            hidden: true,
                             listeners: {
                                 click: 'pagLast'
                             }
