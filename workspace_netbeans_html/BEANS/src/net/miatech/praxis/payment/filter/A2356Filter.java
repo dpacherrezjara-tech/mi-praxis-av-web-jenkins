@@ -59,6 +59,9 @@ public class A2356Filter extends A2356 {
     public String IN_FECFILTRO = "";
     public String IN_SCURRENCY = "";
     public String IN_SCOUNTRY = "";
+    public String IN_SAGENT = "";
+    public String IN_PERCENTAGE = "";
+    public String IN_CANAL = "";
     public String IN_CARDN1 = "";
     public String IN_CARDN2 = "";
     public String IN_SAUTHOC = "";
