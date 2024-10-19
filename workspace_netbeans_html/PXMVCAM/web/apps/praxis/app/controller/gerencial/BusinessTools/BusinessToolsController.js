@@ -1471,19 +1471,27 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
         monthFrom.setValue('');
     },
     btnExcel_click: function(obj, e) {
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: 'Download Excel ?',
-            buttons: Ext.MessageBox.OKCANCEL,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function(btn) {
-                if (btn === 'ok') {
-                    this.exportExcel();
+        
+        
+        var data = me.searchParams;
+        if(data.RN > 70){
+            global.Msg({msg: '70 columns is the maximum allowed to export in Excel.'});
+        }else{
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function(btn) {
+                    if (btn === 'ok') {
+                        this.exportExcel();
+                    }
                 }
-            }
-        });
+            });
+        }
+        
     },
     exportExcel: function() {
         
