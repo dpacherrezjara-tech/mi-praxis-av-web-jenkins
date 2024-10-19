@@ -495,6 +495,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
                                                     },
@@ -516,12 +517,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     {text: 'Agent', dataIndex: 'SAGENT', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
                                                     },
                                                     {text: 'Canal', dataIndex: 'CANAL', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
                                                     },
@@ -620,7 +623,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     let data = record.data;
                                                                     if (data.PERCPENDING >= 80) {
-                                                                        metaData.style = "text-align:right;background-color:#d78e8e;";
+                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
                                                                     } else {
                                                                         metaData.style = "text-align:right;background-color:#84ff7a;";
                                                                     }
@@ -631,7 +634,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 text: '% Pending', dataIndex: 'PERCPENDING', width: 80, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (value >= 80) {
-                                                                        metaData.style = "text-align:right;background-color:#d78e8e;";
+                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
                                                                     } else {
                                                                         metaData.style = "text-align:right;background-color:#84ff7a;";
                                                                     }

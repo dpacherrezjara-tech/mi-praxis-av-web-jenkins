@@ -231,6 +231,8 @@ public class BalanceAnalysisByAgeDAO {
                     bean.descSCOUNTRY = rst.getString("SCOUNTRYN").trim();
                     bean.SCURREVEN = rst.getString("SCURREVEN").trim();
                     bean.DIFFDAYS = rst.getString("DIFFDAYS").trim();
+                    bean.FECR = rst.getString("FECR").trim();
+                    bean.HOCR = rst.getString("HOCR").trim();
 
                     bean.SVFOPUSD = rst.getDouble("SVFOPUSD");
                     bean.SVFOPUSDP = rst.getDouble("SVFOPUSDP");

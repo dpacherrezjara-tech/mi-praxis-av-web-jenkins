@@ -371,6 +371,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             });
                         } else {
                             var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-txtFECR').setValue(data.FECR)
+                            Ext.getCmp(prototype.id + '-txtHOCR').setValue(data.HOCR)
+                            
                             console.log(data);
                         }
                         me.setWidthPie();
