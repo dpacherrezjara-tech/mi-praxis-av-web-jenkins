@@ -123,7 +123,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     id: prototype.id + '-cmbCODPRO',
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
-                                    width: 200,
+                                    width: 300,
                                     valueField: 'CODE',
                                     displayField: 'NAME',
                                     fieldLabel: 'Processor',

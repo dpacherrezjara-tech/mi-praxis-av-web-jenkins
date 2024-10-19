@@ -2,6 +2,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
     extend: 'Ext.app.ViewController',
     alias: 'controller.MainGridController',
     url: CONTEXTPATH + '/AccountingReport',
+    request: axios.create({
+        baseURL: CONTEXTPATH + '/AccountingReport',
+        timeout: 20000
+    }),
+    notifier: new AWN(),
     init: function (view) {
         if(view.backButton){
             Ext.getCmp(prototype.id + '-main-btnBack').show();
@@ -45,6 +50,114 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
             }
         });
         view.setStore(store);
+    },
+    onViewPostErrors: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT,
+            IN_TIPO : 'POS',
+            IN_STREV: '',
+            IN_CERROR: ''
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',{
+            id: prototype.id + '-ErrorsGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onViewPreErrors: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT,
+            IN_TIPO : 'PRE',
+            IN_STREV: '',
+            IN_CERROR: ''
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',{
+            id: prototype.id + '-ErrorsGrid-2',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onOpenLogger: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT
+        };
+        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.LoggerDataEntry',{
+            id: prototype.id + '-LoggerDataEntry-1',
+            searchParams: params
+        });
+        newWin.show();
+    },
+    disableReverse: function(view, rowIndex, colIndex, item, record){
+        let reverseAction = ['2','3', '5'];
+        return !reverseAction.includes(record.get('STCONT'));
+    },
+    onReverseAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {CCUST,CODPRO,TIPOCON,IDCONT} = record.data;
+        let params = {
+            IN_CCUST:CCUST,
+            IN_CODPRO:CODPRO,
+            IN_TIPOCON: TIPOCON,
+            IN_IDCONT:IDCONT
+        };
+        console.log('Reverse Params: ',params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to reverse?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.reverseAccounting(params);
+                        }
+                    }
+                });
+        
+    },
+    reverseAccounting: async function(params){
+        const me = this;
+        me.view.setLoading(true);
+        me.notifier.async(
+            me.request.post('reverseAccounting',params)
+            .then(res=>{
+                me.view.setLoading(false);
+                if(res.status === 201){
+                    me.view.getStore().load();
+                }else{
+                    throw new Error();
+                }
+            }),
+        'Successfully Reversed',
+        'Error on Reverse');
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

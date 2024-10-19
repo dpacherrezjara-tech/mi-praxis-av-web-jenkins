@@ -29,15 +29,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
-            {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
-            {text: 'Processor', dataIndex: 'DESC_PRO', width: 80},
-            {text: 'Accounting<br>Date', dataIndex: 'FCONT', width: 80},
-            {text: 'Accounting<br>Hour', dataIndex: 'HCONT', width: 160},
-            {text: '', dataIndex: 'DESC_PRO', flex: 1},
-            {text: 'Merchant ID', dataIndex: 'MERCHAND', width: 130},
-            {text: 'Settlement ID', dataIndex: 'LIQUIDACIO', width: 210},
+            {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
+            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
             {
-                text: 'Accounting',
+                text: 'Accounting Information',
                 defaults: {
                     menuDisabled: true,
                     sortable: true,
@@ -47,31 +42,86 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         return value;
                     }
                 }, columns: [
-                    {text: 'Date', dataIndex: 'FCONT', width: 120},
+                    {text: 'Date', dataIndex: 'FCONT', width: 90},
                     {text: 'Hour', dataIndex: 'HCONT', width: 80},
                     {text: 'Type', dataIndex: 'TIPOCON', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA";
                             const opts = {
-                                'DEB':'Debits',
-                                'REG':'Regular'
+                                'DEB': 'Debits',
+                                'REG': 'Regular',
+                                'ADJ': 'Adjustment'
                             };
                             return opts[value];
                         }
                     },
-                    {text: 'ID', dataIndex: 'IDCONT', width: 150},
-                    {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 100},
-                    {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 100},
-                    {text: 'Status', dataIndex: 'STCONT', width: 100,
+                    {text: 'ID', dataIndex: 'IDCONT', width: 210},
+                    {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
+                    {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
+                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 100,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            const opts = {
-                                '0':'Processing',
-                                '1':'Pre-Accounting Errors',
-                                '2':'Post-Accounting Errors',
-                                '3':'Validated',
-                                '4':'Downloaded'
-                            };
-                            return opts[value];
+                            metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
+                            return value;
+                        },
+                        listeners: {
+                            click: 'onViewPreErrors'
                         }
+                    },
+                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 100,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
+                            return value;
+                        },
+                        listeners: {
+                            click: 'onViewPostErrors'
+                        }
+                    },
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 180},
+                    {text: 'Status', dataIndex: 'STCONT', width: 210,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            //metaData.style = "background-color:#838187";
+                            const opts = {
+                                '0': ()=>{
+                                    metaData.style = "background-color:#838187";
+                                    return 'Processing';
+                                }, 
+                                '1': ()=>{
+                                    metaData.style = "background-color:#f7ec35";
+                                    return 'Pre-Accounting Errors';
+                                }, 
+                                '2': ()=>{
+                                    metaData.style = "background-color:#f7ec35";
+                                    return 'Post-Accounting Errors';
+                                }, 
+                                '3': ()=>{
+                                    metaData.style = "background-color:#91fc63";
+                                    return 'Validated';
+                                }, 
+                                '4': ()=>{
+                                    metaData.style = "background-color:#f71a1a;color:#ffffff";
+                                    return 'Reversed';
+                                },
+                                '5': ()=>{
+                                    metaData.style = "background-color:#7f69af";
+                                    return 'Downloaded/Sended';
+                                }
+                            };
+                            return opts[value]();
+                        }
+                    },
+                    {
+                        sortable: false,
+                        xtype: 'actioncolumn',
+                        width: 50,
+                        text: 'Log',
+                        align: 'center',
+                        items: [
+                            {
+                                iconCls: 'prx-icon-image-log',
+                                tooltip: 'Open Log',
+                                handler: 'onOpenLogger'
+                            }
+                        ]
                     }
                 ]
             },
@@ -87,6 +137,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                 }, columns: [
                     {text: 'User', dataIndex: 'USCR', width: 100},
                     {text: 'Datetime', dataIndex: 'TSCR', width: 130}
+                ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Rev.',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-image-trash',
+                        tooltip: 'Reverse',
+                        handler: 'onReverseAccounting',
+                        isDisabled: 'disableReverse'
+                    }
                 ]
             }
             //</editor-fold>

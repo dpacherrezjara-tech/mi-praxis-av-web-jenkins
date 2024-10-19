@@ -9,7 +9,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
     controller: 'ProcessAccountingDataEntryController',
     title: 'Process Accounting - Form',
     header: true,
-    width: 1700,
+    width: 600,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                 }
             },
             items: [
-                //<editor-fold defaultstate="collapsed" desc="General Information">
+                //<editor-fold defaultstate="collapsed" desc="Parameters">
                 {
                     title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Parameters</span>',
                     items: [
@@ -78,18 +78,47 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                             ['133', 'LR - LACSA']
                                         ]
                                     }),
-                                    labelWidth: 60,
-                                    width: 190,
+                                    labelWidth: 85,
+                                    width: 200,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
                                     value: '134'
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    name: 'IN_FCONT',
+                                    fieldLabel: 'Accounting Date',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 120,
+                                    width: 220,
+                                    value: new Date()
                                 }
                             ]
                         },
                         {
                             items:[
+                                {
+                                    xtype: 'combobox',
+                                    name: 'IN_TDATE',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['PRDA', 'Processing Date']
+                                        ]
+                                    }),
+                                    fieldLabel: 'Date Type',
+                                    labelWidth: 85,
+                                    width: 200,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    readOnly:true,
+                                    value: 'PRDA'
+                                },
                                 {
                                     xtype: 'datefield',
                                     name: 'IN_PRDAF',
@@ -106,18 +135,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     fieldLabel: 'To',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 50,
-                                    width: 150,
-                                    value: new Date()
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    name: 'IN_FCONT',
-                                    fieldLabel: 'Accounting Date',
-                                    format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 100,
-                                    width: 200,
+                                    labelWidth: 35,
+                                    width: 135,
                                     value: new Date()
                                 }
                             ]
@@ -137,8 +156,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                             ['ADJ','Adjustment']
                                         ]
                                     }),
-                                    labelWidth: 90,
-                                    width: 180,
+                                    labelWidth: 85,
+                                    width: 200,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
@@ -147,10 +166,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                 },
                                 {
                                     xtype: 'combo',
-                                    id: prototype.id + '-cmbCODPRO',
+                                    id: prototype.idDE + '-cmbCODPRO',
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
-                                    width: 200,
+                                    width: 300,
                                     valueField: 'CODE',
                                     displayField: 'NAME',
                                     fieldLabel: 'Processor',
@@ -191,30 +210,11 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
             },
             items: [
                 {
-                    text: 'Update',
-                    id: prototype.idDE + '-btn-update',
-                    iconCls: 'prx-icon-update',
-                    hidden: true,
+                    text: 'Process',
+                    id: prototype.idDE + '-btn-process',
+                    iconCls: 'prx-icon-image-process',
                     listeners: {
-                        click: 'onUpdateConciliation'
-                    }
-                },
-                {
-                    text: 'Reverse Match',
-                    hidden: true,
-                    id: prototype.idDE + '-btn-reverse',
-                    iconCls: 'prx-icon-delete',
-                    listeners: {
-                        click: 'onReverseConciliation'
-                    }
-                },
-                {
-                    text: 'Download Excel',
-                    hidden: true,
-                    id: prototype.idDE + '-btn-excel',
-                    iconCls: 'prx-icon-excel',
-                    listeners: {
-                        click: 'onDownloadConciliation'
+                        click: 'onProcessClick'
                     }
                 },
                 {

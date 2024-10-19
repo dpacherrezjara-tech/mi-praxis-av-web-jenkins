@@ -3,31 +3,39 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
     alias: 'controller.AccountingReportController',
     url: CONTEXTPATH + '/AccountingReport',
     procesadores: [],
+    request: axios.create({
+        baseURL: CONTEXTPATH + '/AccountingReport',
+        timeout: 20000
+      }),
+    miscRequest: axios.create({
+        baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
+        timeout: 20000
+      }),
     init: function (view) {
     },
     afterRender: async function () {
-        
+        await this.loadFilters();
+        this.loadGrid();
     },
-//    loadFilters: async function () {
-//        const me = this;
-//        const filters = Ext.getCmp(prototype.id + '-contentFilter');
-//        filters.mask('Loading...');
-//        const res = await fetch(`${me.url}/loadFilters`);
-//        if (res.ok) {
-//            const data = await res.json();
-//            const cmbProcesadores = Ext.getCmp(prototype.id + '-cmbCODPRO');
-//            me.procesadores = data.procesadores;
-//            me.setComboStore({cmp: cmbProcesadores, data: me.procesadores,
-//                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
-//            cmbProcesadores.on('select', function (cmb, record) {
-//                Ext.getCmp(prototype.id + '-txtSEQPRO').setValue(record.data.A4451SEQ || '');
-//                me.onClickSearchBtn();
-//            });
-//            console.log(data);
-//        }
-//        filters.unmask();
-//
-//    },
+    loadFilters: async function () {
+        const me = this;
+        me.view.mask('Loading...');
+        try {
+            const res = await me.miscRequest.get('/loadPhase2Filter');
+            const data = res.data;
+            me.procesadores = data.response;
+            //<editor-fold defaultstate="collapsed" desc="Filters Browser">
+            const cmbFilterCODPRO = Ext.getCmp(prototype.id + '-cmbCODPRO');
+            global.setComboStore(cmbFilterCODPRO, me.procesadores, 'CODE', 'NAME', '');
+            //</editor-fold>
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('Filters not loaded');
+        }finally{
+            me.view.unmask();
+        }
+
+    },
     loadGrid: async function () {
         const me = this;
         let params = me.formatParams();
@@ -45,8 +53,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         return formFilters.getValues();
     },
     onProcessClick: function(){
+        const me = this;
         const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAccountingDataEntry', {
-            id: prototype.id + '-ProcessAccountingDataEntry-1'
+            id: prototype.id + '-ProcessAccountingDataEntry-1',
+            procesadores: me.procesadores 
         });
         dataEntry.show();
     },
