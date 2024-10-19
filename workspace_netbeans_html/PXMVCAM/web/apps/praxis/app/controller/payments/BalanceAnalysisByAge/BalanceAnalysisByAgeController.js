@@ -103,7 +103,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         comboToYear.setValue(obj.getValue());
         console.log(storeComboDataYear, 'comboToYear')
         console.log(comboToYear, 'comboToYear')
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -112,10 +112,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
-        if( comboToYear.getValue() < comboFromYear.getValue()  ){
-           comboFromYear.setValue(comboToYear.getValue()); 
+        if (comboToYear.getValue() < comboFromYear.getValue()) {
+            comboFromYear.setValue(comboToYear.getValue());
         }
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -135,7 +135,6 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             }
         }
     },
-
 
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
@@ -198,8 +197,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     setFormatParameter: function () {
         me.bean = {};
-        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() ;
-        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ;
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
@@ -230,30 +229,30 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     btnSearch_click: function (obj, e) {
 
-        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData') 
-        let panelMain = Ext.getCmp(prototype.id + '-boxMainData') 
-        if(panelReportDay.isVisible()){
+        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
+        let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
+        if (panelReportDay.isVisible()) {
             this.setFormatParameter2();
             this.setGridReportDay();
-        }else{
+        } else {
             this.setFormatParameter();
             this.setGridData();
         }
     },
-    
+
     isVacio: function (elemento) {
-        if(elemento.getValue() === ''){
+        if (elemento.getValue() === '') {
             return true;
-        }else{
+        } else {
             return false;
         }
     },
-    
+
     onReportDayPending: function () {
-        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData') 
-        let panelMain = Ext.getCmp(prototype.id + '-boxMainData') 
-        if(!panelReportDay.isVisible()){
-            
+        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
+        let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
+        if (!panelReportDay.isVisible()) {
+
             this.setGridReportDay()
             panelReportDay.show()
             panelMain.hide()
@@ -302,8 +301,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             global.clear();
             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
             let tittleDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() === Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ? Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() : Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + ' - ' + Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
-            Ext.getCmp(prototype.id + '-lblTittleGrid').setText( tittleDate + ' | ' + tittleCountry )
-            
+            Ext.getCmp(prototype.id + '-lblTittleGrid').setText(tittleDate + ' | ' + tittleCountry)
+
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
@@ -332,6 +331,40 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        // ------------------ GRAFICOS -------------------------
+
+                        var item = {};
+                        var item2 = {};
+                        var totals = [];
+                        var charts = [];
+
+                        item2.Perc2 = obj.data.items[0].data.totSVFOPUSD;
+                        item2.VENDOR = "Total";
+                        totals.push(item2);
+
+                        item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
+                        item.VENDOR = "Paid";
+                        totals.push(item);
+
+                        var storeData1er = Ext.create('Ext.data.Store', {
+                            data: totals,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-displayPolar').bindStore(storeData1er);
+
+                        for (var i = 0; i < 10; i++) {
+                            var AMOUNT = Ext.util.Format.number(obj.data.items[i].data.SVFOPUSD, '0,000');
+                            var SAGENT = obj.data.items[i].data.SAGENT;
+                            charts.push({strDescription: SAGENT, AMOUNT: AMOUNT});
+                        }
+                        
+                        var storeData1ercharts = Ext.create('Ext.data.Store', {
+                            data: charts,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-displayGraf').bindStore(storeData1ercharts);
+
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -347,8 +380,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             global.clear();
             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
             let tittleDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() === Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ? Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() : Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + ' - ' + Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
-            Ext.getCmp(prototype.id + '-lblTittleGrid2').setText( tittleDate + ' - ' + tittleCountry )
-            
+            Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(tittleDate + ' - ' + tittleCountry)
+
             Ext.getCmp(prototype.id + '-gridPendingData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }

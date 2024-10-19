@@ -319,8 +319,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
         meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
+        if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
+        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+            meDE.bean.data.IN_STVAL = '5';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
@@ -359,8 +361,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScanEX.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
         this.beanScanEX.IN_FUNDSTRGK = meDE.beanResult.FUNDSTRGK;
 
-        if (this.beanScanEX.IN_STVAL === 'Match' || this.beanScanEX.IN_STVAL === 'Match Manual') {
+        if (this.beanScanEX.IN_STVAL === 'Match' ) {
             this.beanScanEX.IN_STVAL = '1';
+        } else if ( this.beanScanEX.IN_STVAL === 'Match Manual' ){
+            this.beanScanEX.IN_STVAL = '5';
         } else {
             this.beanScanEX.IN_STVAL = 'P';
         }
@@ -412,8 +416,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
         meDE.bean.data.IN_FUNDSTRGK = meDE.beanResult.FUNDSTRGK;
 
-        if (meDE.bean.data.IN_STVAL === 'Match' || meDE.bean.data.IN_STVAL === 'Match Manual') {
+        if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
+        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+            meDE.bean.data.IN_STVAL = '5';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
         }
@@ -1114,8 +1120,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScanEX.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
         this.beanScanEX.IN_RED = meDE.bean.data.RED;
         this.beanScanEX.IN_STVAL = meDE.bean.data.STVAL;
-        if (this.beanScanEX.IN_STVAL === 'Match' || this.beanScanEX.IN_STVAL === 'Match Manual') {
+        
+        if (this.beanScanEX.IN_STVAL === 'Match' ) {
             this.beanScanEX.IN_STVAL = '1';
+        } else if ( this.beanScanEX.IN_STVAL === 'Match Manual' ){
+            this.beanScanEX.IN_STVAL = '5';
         } else {
             this.beanScanEX.IN_STVAL = 'P';
         }
