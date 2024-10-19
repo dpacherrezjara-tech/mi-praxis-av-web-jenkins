@@ -208,7 +208,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                        {xtype: 'tbspacer', width: 20},
                         {
                             xtype: 'label',
-                            text: 'Source:',
+                            text: 'Canal:',
                             padding: '4 10 0 20',
                             width: 70,
                             style: {
