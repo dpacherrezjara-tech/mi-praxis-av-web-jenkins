@@ -82,27 +82,27 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             //metaData.style = "background-color:#838187";
                             const opts = {
                                 '0': ()=>{
-                                    metaData.style = "background-color:#838187";
+                                    metaData.style = "background-color:#838187;font-weight:bold";
                                     return 'Processing';
                                 }, 
                                 '1': ()=>{
-                                    metaData.style = "background-color:#f7ec35";
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
                                     return 'Pre-Accounting Errors';
                                 }, 
                                 '2': ()=>{
-                                    metaData.style = "background-color:#f7ec35";
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
                                     return 'Post-Accounting Errors';
                                 }, 
                                 '3': ()=>{
-                                    metaData.style = "background-color:#91fc63";
+                                    metaData.style = "background-color:#91fc63;font-weight:bold";
                                     return 'Validated';
                                 }, 
                                 '4': ()=>{
-                                    metaData.style = "background-color:#f71a1a;color:#ffffff";
+                                    metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
                                     return 'Reversed';
                                 },
                                 '5': ()=>{
-                                    metaData.style = "background-color:#7f69af";
+                                    metaData.style = "background-color:#7f69af;font-weight:bold";
                                     return 'Downloaded/Sended';
                                 }
                             };

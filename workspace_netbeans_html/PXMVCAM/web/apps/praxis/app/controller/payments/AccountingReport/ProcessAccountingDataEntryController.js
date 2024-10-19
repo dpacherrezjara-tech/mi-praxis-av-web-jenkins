@@ -47,11 +47,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDat
             if(res.status === 201){
                 me.notifier.success('Execution was Successfully');
             }else{
-                throw new Error('Failed to load');
+                me.notifier.alert('Error on Process');
             }
         } catch (e) {
             console.error(e);
-            me.notifier.alert('Error on Process');
         } finally {
             me.view.unmask();
         }

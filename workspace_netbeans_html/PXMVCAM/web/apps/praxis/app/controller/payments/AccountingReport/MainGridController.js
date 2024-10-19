@@ -149,6 +149,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         me.notifier.async(
             me.request.post('reverseAccounting',params)
             .then(res=>{
+                //console.log(res);
                 me.view.setLoading(false);
                 if(res.status === 201){
                     me.view.getStore().load();
