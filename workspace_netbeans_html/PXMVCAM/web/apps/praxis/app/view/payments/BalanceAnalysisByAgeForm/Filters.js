@@ -208,7 +208,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                        {xtype: 'tbspacer', width: 20},
                         {
                             xtype: 'label',
-                            text: 'Source:',
+                            text: 'Canal:',
                             padding: '4 10 0 20',
                             width: 70,
                             style: {
@@ -239,6 +239,46 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             triggerAction: 'all',
                             listeners: {
                             }
+                        },
+                        {xtype: 'tbspacer', width: 200},
+                        {
+                            xtype: 'label',
+                            text: 'Process:',
+                            padding: '4 10 0 20',
+                            width: 70,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 20},
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtFECR',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 8,
+                            width: 85,
+                            enableKeyEvents: true,
+                            readOnly: true
+//                            listeners: {
+//                                keypress: 'BuscarSAGENT_keyDownHandler'
+//                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtHOCR',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 6,
+                            width: 85,
+                            enableKeyEvents: true,
+                            readOnly: true
+//                            listeners: {
+//                                keypress: 'BuscarSAGENT_keyDownHandler'
+//                            }
                         },
                     ]
                 },
