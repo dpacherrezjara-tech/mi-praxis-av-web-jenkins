@@ -344,7 +344,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         totals.push(item2);
 
                         item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
-                       var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000');
+                       var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
                         item.VENDOR = Paid;
                         totals.push(item);
 
