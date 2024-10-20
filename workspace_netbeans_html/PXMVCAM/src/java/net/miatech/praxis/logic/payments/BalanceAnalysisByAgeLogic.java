@@ -33,6 +33,10 @@ public class BalanceAnalysisByAgeLogic {
         return banksCatalogDAO.loadSQP05120_RD(filter);
     }
     
+    public List<A2356Filter> loadSQP05120_RD2(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RD2(filter);
+    }
+    
     public A2356Filter loadSQP02856(A2356Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP02856(filter);
     }

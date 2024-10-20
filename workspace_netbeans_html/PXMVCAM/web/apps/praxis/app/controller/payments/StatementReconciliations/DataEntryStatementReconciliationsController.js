@@ -604,8 +604,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScan.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
         this.beanScan.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
         
-        if (this.beanScan.IN_STVAL === 'Match' || this.beanScan.IN_STVAL === 'Match Manual') {
+        if (this.beanScan.IN_STVAL === 'Match' ) {
             this.beanScan.IN_STVAL = '1';
+        } else if ( this.beanScan.IN_STVAL === 'Match Manual' ){
+            this.beanScan.IN_STVAL = '5';
         } else {
             this.beanScan.IN_STVAL = 'P';
         }
