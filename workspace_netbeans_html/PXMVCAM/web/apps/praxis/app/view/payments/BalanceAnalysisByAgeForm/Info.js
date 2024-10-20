@@ -447,7 +447,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             height: 'auto',
 //                            width: 1222,
                             hidden: true,
-                            margin: '10 0 0 0',
+                            margin: '10 0 10 0',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -558,7 +558,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             {
                                                                 text: 'Curr', dataIndex: 'SCURREVEN', width: 40,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#a1cbf6;";
+                                                                    metaData.style = "text-align:center;background-color:#a1cbf6;";
                                                                     return value;
                                                                 },
                                                             },
@@ -658,11 +658,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 {
                                                     xtype: 'polar',
                                                     id: prototype.id + '-displayPolar',
-                                                    width: 500,
+                                                    width: 520,
                                                     border: true,
                                                     margin: '0 0 0 5',
-                                                    innerPadding: 40,
-                                                    height: 250,
+                                                    innerPadding: 20,
+                                                    height: 260,
                                                     background: '#E0F8F7',
                                                     captions: {
                                                         title: {
@@ -681,10 +681,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             stacked: false,
                                                             label: {
                                                                 field: 'VENDOR',
-                                                                calloutLine: false,
+                                                                calloutLine: true,
                                                                 renderer: function (value, b, callout) {
                                                                     callout.calloutWidth = 1;
-                                                                    return value.substring(value.indexOf(',') + 1);
+                                                                    return value;
                                                                 }
                                                             },
                                                             highlight: true,
@@ -699,7 +699,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     }else{
                                                                         label = 'Paid';
                                                                     }
-                                                                    toolTip.setHtml(label + ' , ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
                                                                 }
                                                             }
                                                         }]
@@ -707,11 +707,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 {
                                                     xtype: 'cartesian',
                                                     id: prototype.id + '-displayGraf',
-                                                    width: 500,
+                                                    width: 520,
                                                     border: false,
-                                                    height: 250,
+                                                    height: 260,
                                                     background: '#E0F8F7',
-                                                     margin: '0 0 0 5',
+                                                     margin: '5 0 0 5',
                                                     captions: {
                                                         title: {
                                                             alignTo: 'chart'
@@ -744,7 +744,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             stacked: false,
                                                             xField: 'strDescription',
                                                             yField: ['AMOUNT'],
-                                                            colors: ['#2ca7d8'],
+                                                            colors: ['#d82c2c'],
                                                             highlight: true,
                                                             style: {
                                                                 inGroupGapWidth: -7,
