@@ -173,17 +173,17 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT2(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT2(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(8, Types.INTEGER);
-            cstmt.registerOutParameter(9, Types.INTEGER);
-            cstmt.registerOutParameter(10, Types.INTEGER);
-            cstmt.registerOutParameter(11, Types.INTEGER);
+//            cstmt.registerOutParameter(8, Types.INTEGER);
+//            cstmt.registerOutParameter(9, Types.INTEGER);
+//            cstmt.registerOutParameter(10, Types.INTEGER);
+//            cstmt.registerOutParameter(11, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -193,17 +193,17 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(6, filter.IN_PERCENTAGE);
             cstmt.setString(7, filter.IN_CANAL);
 
-            cstmt.setInt(8, filter.page.PAGNUM);
-            cstmt.setInt(9, filter.page.PAGROW);
-            cstmt.setInt(10, filter.page.TOTPAG);
-            cstmt.setInt(11, filter.page.TOTROW);
+//            cstmt.setInt(8, filter.page.PAGNUM);
+//            cstmt.setInt(9, filter.page.PAGROW);
+//            cstmt.setInt(10, filter.page.TOTPAG);
+//            cstmt.setInt(11, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(8);
-            filter.page.PAGROW = cstmt.getInt(9);
-            filter.page.TOTPAG = cstmt.getInt(10);
-            filter.page.TOTROW = cstmt.getInt(11);
+//            filter.page.PAGNUM = cstmt.getInt(8);
+//            filter.page.PAGROW = cstmt.getInt(9);
+//            filter.page.TOTPAG = cstmt.getInt(10);
+//            filter.page.TOTROW = cstmt.getInt(11);
 
             rst = cstmt.getResultSet();
 
@@ -245,10 +245,10 @@ public class BalanceAnalysisByAgeDAO {
                     bean.totQTYTKTP = totPEND;
                     bean.totSVFOPUSDP = totPENDAMOUNT;
 
-                    bean.page.PAGNUM = filter.page.PAGNUM;
-                    bean.page.PAGROW = filter.page.PAGROW;
-                    bean.page.TOTPAG = filter.page.TOTPAG;
-                    bean.page.TOTROW = filter.page.TOTROW;
+//                    bean.page.PAGNUM = filter.page.PAGNUM;
+//                    bean.page.PAGROW = filter.page.PAGROW;
+//                    bean.page.TOTPAG = filter.page.TOTPAG;
+//                    bean.page.TOTROW = filter.page.TOTROW;
                     lstData.add(bean);
                 }
                 rst.close();
@@ -286,17 +286,17 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(8, Types.INTEGER);
-            cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -305,18 +305,20 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(5, filter.IN_SAGENT);
             cstmt.setString(6, filter.IN_PERCENTAGE);
             cstmt.setString(7, filter.IN_CANAL);
+            cstmt.setString(8, filter.IN_ORDER);
+            cstmt.setString(9, filter.IN_TYPEPERC);
 
-            cstmt.setInt(8, filter.page.PAGNUM);
-            cstmt.setInt(9, filter.page.PAGROW);
-            cstmt.setInt(10, filter.page.TOTPAG);
-            cstmt.setInt(11, filter.page.TOTROW);
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(8);
-            filter.page.PAGROW = cstmt.getInt(9);
-            filter.page.TOTPAG = cstmt.getInt(10);
-            filter.page.TOTROW = cstmt.getInt(11);
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
 
             rst = cstmt.getResultSet();
 
