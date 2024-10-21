@@ -415,13 +415,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
         if(column.text.includes('Pending')){
             me.bean.IN_TYPEPERC = 'S'
-        }else{
+        }else if(column.text.includes('Paid')){
             me.bean.IN_TYPEPERC = 'P'
+        } else if( column.text.includes('Amount') ){
+            me.bean.IN_TYPEPERC = 'A'
         }
         if(Ext.getCmp(prototype.id + '-hidePENDING').isVisible()){
             me.bean.IN_ORDER = 'ASC'
-            
-           
             Ext.getCmp(prototype.id + '-hidePENDING').hide()
         }else{
             me.bean.IN_ORDER = 'DESC'
