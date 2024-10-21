@@ -103,7 +103,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         comboToYear.setValue(obj.getValue());
         console.log(storeComboDataYear, 'comboToYear')
         console.log(comboToYear, 'comboToYear')
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -112,10 +112,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
-        if( comboToYear.getValue() < comboFromYear.getValue()  ){
-           comboFromYear.setValue(comboToYear.getValue()); 
+        if (comboToYear.getValue() < comboFromYear.getValue()) {
+            comboFromYear.setValue(comboToYear.getValue());
         }
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -135,7 +135,6 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             }
         }
     },
-
 
     //<editor-fold defaultstate="collapsed" desc="setStoreData">
     setStoreData: function () {
@@ -198,8 +197,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     setFormatParameter: function () {
         me.bean = {};
-        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() ;
-        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ;
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
@@ -219,6 +218,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+       
 
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
@@ -230,30 +230,30 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     btnSearch_click: function (obj, e) {
 
-        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData') 
-        let panelMain = Ext.getCmp(prototype.id + '-boxMainData') 
-        if(panelReportDay.isVisible()){
+        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
+        let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
+        if (panelReportDay.isVisible()) {
             this.setFormatParameter2();
             this.setGridReportDay();
-        }else{
+        } else {
             this.setFormatParameter();
             this.setGridData();
         }
     },
-    
+
     isVacio: function (elemento) {
-        if(elemento.getValue() === ''){
+        if (elemento.getValue() === '') {
             return true;
-        }else{
+        } else {
             return false;
         }
     },
-    
+
     onReportDayPending: function () {
-        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData') 
-        let panelMain = Ext.getCmp(prototype.id + '-boxMainData') 
-        if(!panelReportDay.isVisible()){
-            
+        let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
+        let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
+        if (!panelReportDay.isVisible()) {
+
             this.setGridReportDay()
             panelReportDay.show()
             panelMain.hide()
@@ -297,13 +297,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         }
                         me.setWidthPie();
                     }
-                }
+                },remoteSort: true
             });
             global.clear();
             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
             let tittleDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() === Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ? Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() : Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + ' - ' + Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
-            Ext.getCmp(prototype.id + '-lblTittleGrid').setText( tittleDate + ' | ' + tittleCountry )
-            
+            Ext.getCmp(prototype.id + '-lblTittleGrid').setText(tittleDate + ' | ' + tittleCountry)
+
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
@@ -322,36 +322,124 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     url: prototype.url + '/searchRD'
                 }, listeners: {
                     beforeload: function (obj) {
-//                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+
                         obj.proxy.extraParams = searchParams;
                     },
-                    load: function (obj) {
-//                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                    load: function (obj, obj2, success, response, obj5) {
                         var pag = Ext.getCmp(prototype.id + '-paggin2');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        // ------------------ GRAFICOS -------------------------
+
+                        var item = {};
+                        var item2 = {};
+                        var totals = [];
+                        var charts = [];
+
+                        item2.Perc2 = obj.data.items[0].data.totSVFOPUSD;
+                        var Total = "Total:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000');
+                        item2.VENDOR = Total;
+                        totals.push(item2);
+
+                        item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
+                       var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
+                        item.VENDOR = Paid;
+                        totals.push(item);
+
+                        var storeData1er = Ext.create('Ext.data.Store', {
+                            data: totals,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-displayPolar').bindStore(storeData1er);
+
+                        var res = Ext.JSON.decode(response._response.responseText);
+                        
+                        
+                        if ( res.data2.length > 0 ){
+                            for (let i = 0; i < res.data2.length; i++) {
+                                console.log(i);
+                                console.log(res, 'holaaa');
+                                let AMOUNT = res.data2[i].SVFOPUSD;
+                                let SAGENT = res.data2[i].SAGENT;
+                                let SDATE = res.data2[i].SDATE;
+                                charts.push({strDescription: SAGENT + "\n" +SDATE , AMOUNT: AMOUNT});
+                            }
+                        }else{
+                                charts.push({strDescription: 'Not found'  , AMOUNT: 1});
+                        }
+                        
+                        
+
+                        var storeData1ercharts = Ext.create('Ext.data.Store', {
+                            data: charts,
+                            autoLoad: true
+                        });
+                        
+                        Ext.getCmp(prototype.id + '-displayGraf').bindStore(storeData1ercharts);
+                        
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
                             });
                         } else {
                             var data = obj.data.items[0].data;
-                            console.log(data);
+                            Ext.getCmp(prototype.id + '-txtFECR').setValue(data.FECR)
+                            Ext.getCmp(prototype.id + '-txtHOCR').setValue(data.HOCR)
+                            
+                            console.log(data,'hola mundo');
+                            console.log(obj.data.items,'obj. data');
                         }
-                        me.setWidthPie();
+                         me.setWidthPie();
                     }
                 }
             });
             global.clear();
             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
             let tittleDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() === Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ? Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() : Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + ' - ' + Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
-            Ext.getCmp(prototype.id + '-lblTittleGrid2').setText( tittleDate + ' - ' + tittleCountry )
-            
+            Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(tittleDate + ' - ' + tittleCountry)
+
             Ext.getCmp(prototype.id + '-gridPendingData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }
+    },
+    clickColumn: function (ct, column, e, t, eOpts) {
+        me.bean = {};
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
+        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
+        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+        if(column.text.includes('Pending')){
+            me.bean.IN_TYPEPERC = 'S'
+        }else{
+            me.bean.IN_TYPEPERC = 'P'
+        }
+        if(Ext.getCmp(prototype.id + '-hidePENDING').isVisible()){
+            me.bean.IN_ORDER = 'ASC'
+            
+           
+            Ext.getCmp(prototype.id + '-hidePENDING').hide()
+        }else{
+            me.bean.IN_ORDER = 'DESC'
+            Ext.getCmp(prototype.id + '-hidePENDING').show()
+        }
+        
+        
+
+        console.log(me.bean, 'me.bean')
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+        
+        this.setGridReportDay();
+            
+        
     },
     validateFields: function () {
         var msj = '';
