@@ -280,6 +280,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                                keypress: 'BuscarSAGENT_keyDownHandler'
 //                            }
                         },
+                        {xtype: 'tbspacer', width: 1, id: prototype.id + '-hidePENDING',},
                     ]
                 },
             ]

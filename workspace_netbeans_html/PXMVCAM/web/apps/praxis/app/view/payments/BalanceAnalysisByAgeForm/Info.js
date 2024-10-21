@@ -482,6 +482,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             id: prototype.id + '-gridPendingData',
                                             width: 1222,
                                             columnLines: true,
+                                            
                                             features: [{
                                                     ftype: 'summary'
                                                 }],
@@ -629,6 +630,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     }
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
                                                             },
                                                             {
                                                                 text: '% Pending', dataIndex: 'PERCPENDING', width: 80, align: 'center', menuDisabled: true,
@@ -640,6 +644,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     }
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
                                                             },
                                                         ]
                                                     },
