@@ -218,6 +218,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+       
 
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
@@ -296,7 +297,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         }
                         me.setWidthPie();
                     }
-                }
+                },remoteSort: true
             });
             global.clear();
             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
@@ -355,15 +356,22 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         Ext.getCmp(prototype.id + '-displayPolar').bindStore(storeData1er);
 
                         var res = Ext.JSON.decode(response._response.responseText);
-
-
-                        for (var i = 0; i < 5; i++) {
-                            console.log(i);
-                            var AMOUNT = res.data2[i].SVFOPUSD;
-                            var SAGENT = res.data2[i].SAGENT;
-                            var SDATE = res.data2[i].SDATE;
-                            charts.push({strDescription: SAGENT + "\n" +SDATE , AMOUNT: AMOUNT});
+                        
+                        
+                        if ( res.data2.length > 0 ){
+                            for (let i = 0; i < res.data2.length; i++) {
+                                console.log(i);
+                                console.log(res, 'holaaa');
+                                let AMOUNT = res.data2[i].SVFOPUSD;
+                                let SAGENT = res.data2[i].SAGENT;
+                                let SDATE = res.data2[i].SDATE;
+                                charts.push({strDescription: SAGENT + "\n" +SDATE , AMOUNT: AMOUNT});
+                            }
+                        }else{
+                                charts.push({strDescription: 'Not found'  , AMOUNT: 1});
                         }
+                        
+                        
 
                         var storeData1ercharts = Ext.create('Ext.data.Store', {
                             data: charts,
@@ -381,7 +389,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             Ext.getCmp(prototype.id + '-txtFECR').setValue(data.FECR)
                             Ext.getCmp(prototype.id + '-txtHOCR').setValue(data.HOCR)
                             
-                            console.log(data);
+                            console.log(data,'hola mundo');
+                            console.log(obj.data.items,'obj. data');
                         }
                          me.setWidthPie();
                     }
@@ -395,6 +404,42 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-gridPendingData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }
+    },
+    clickColumn: function (ct, column, e, t, eOpts) {
+        me.bean = {};
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
+        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
+        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+        if(column.text.includes('Pending')){
+            me.bean.IN_TYPEPERC = 'S'
+        }else{
+            me.bean.IN_TYPEPERC = 'P'
+        }
+        if(Ext.getCmp(prototype.id + '-hidePENDING').isVisible()){
+            me.bean.IN_ORDER = 'ASC'
+            
+           
+            Ext.getCmp(prototype.id + '-hidePENDING').hide()
+        }else{
+            me.bean.IN_ORDER = 'DESC'
+            Ext.getCmp(prototype.id + '-hidePENDING').show()
+        }
+        
+        
+
+        console.log(me.bean, 'me.bean')
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+        
+        this.setGridReportDay();
+            
+        
     },
     validateFields: function () {
         var msj = '';
