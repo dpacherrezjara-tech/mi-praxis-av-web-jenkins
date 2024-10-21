@@ -480,7 +480,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridPendingData',
-                                            width: 1222,
+                                            width: 1182,
                                             columnLines: true,
                                             
                                             features: [{
@@ -537,7 +537,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                     },
                                                     {
-                                                        text: 'Total',
+                                                        text: 'Total USD',
                                                         defaults: {
                                                             menuDisabled: true,
                                                             sortable: false,
@@ -556,13 +556,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     return '<b>' + Ext.util.Format.number(data.totQTYTKT, '0,000') + '<b>';
                                                                 }
                                                             },
-                                                            {
-                                                                text: 'Curr', dataIndex: 'SCURREVEN', width: 40,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:center;background-color:#a1cbf6;";
-                                                                    return value;
-                                                                },
-                                                            },
+                                                            
                                                             {
                                                                 text: 'Amount', dataIndex: 'SVFOPUSD', width: 90, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -578,7 +572,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         ]
                                                     },
                                                     {
-                                                        text: 'Paid',
+                                                        text: 'Paid USD',
                                                         defaults: {
                                                             menuDisabled: true,
                                                             sortable: false,
@@ -607,6 +601,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     var data = Ext.getCmp(prototype.id + '-gridPendingData').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                                     return '<b>' + Ext.util.Format.number(data.totSVFOPUSDP, '0,000') + '<b>';
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
                                                                 }
                                                             },
                                                         ]
