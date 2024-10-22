@@ -204,7 +204,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
 
-        console.log(me.bean, 'me.bean')
+        console.log(me.bean, 'me.bean primer parameter')
         var beanString = JSON.stringify(me.bean);
         searchParams2 = {
             beanString: beanString,
@@ -222,7 +222,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
        
 
-        console.log(me.bean, 'me.bean')
+        console.log(me.bean, 'me.bean segundo parameter')
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
@@ -255,7 +255,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
         let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
         if (!panelReportDay.isVisible()) {
-
+            this.setFormatParameter2();
             this.setGridReportDay()
             panelReportDay.show()
             panelMain.hide()
@@ -263,6 +263,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             panelReportDay.hide()
             me.panelActual = '-boxMainData';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
+            this.setFormatParameter();
             this.setGridData()
             panelMain.show()
         }
@@ -280,7 +281,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 }, listeners: {
                     beforeload: function (obj) {
 //                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                        obj.proxy.extraParams = searchParams;
+                        obj.proxy.extraParams = searchParams2;
                     },
                     load: function (obj) {
 //                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -340,7 +341,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         var item2 = {};
                         var totals = [];
                         var charts = [];
-
+                        console.log(obj.data.items, 'obj.data.items')
                         item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
                         var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000');
                         item2.VENDOR = pending;
@@ -539,7 +540,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     exportExcel: function () {
 
         switch (me.panelActual) {
-            case  '-boxMainData':
+            case  '-boxPendingData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
