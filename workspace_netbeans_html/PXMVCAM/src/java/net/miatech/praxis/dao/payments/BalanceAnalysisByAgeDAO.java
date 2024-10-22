@@ -282,21 +282,21 @@ public class BalanceAnalysisByAgeDAO {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
         A2356Filter bean;
-        double totTOTAL = 0, totNETO = 0, totPEND = 0, totPENDAMOUNT = 0;
+        double totTOTAL = 0, totNETO = 0, totPEND = 0, totPENDAMOUNT = 0, totPENDINGAMOUNT = 0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -307,18 +307,19 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(7, filter.IN_CANAL);
             cstmt.setString(8, filter.IN_ORDER);
             cstmt.setString(9, filter.IN_TYPEPERC);
+            cstmt.setString(10, filter.IN_CUTDAYS);
 
-            cstmt.setInt(10, filter.page.PAGNUM);
-            cstmt.setInt(11, filter.page.PAGROW);
-            cstmt.setInt(12, filter.page.TOTPAG);
-            cstmt.setInt(13, filter.page.TOTROW);
+            cstmt.setInt(11, filter.page.PAGNUM);
+            cstmt.setInt(12, filter.page.PAGROW);
+            cstmt.setInt(13, filter.page.TOTPAG);
+            cstmt.setInt(14, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(10);
-            filter.page.PAGROW = cstmt.getInt(11);
-            filter.page.TOTPAG = cstmt.getInt(12);
-            filter.page.TOTROW = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(11);
+            filter.page.PAGROW = cstmt.getInt(12);
+            filter.page.TOTPAG = cstmt.getInt(13);
+            filter.page.TOTROW = cstmt.getInt(14);
 
             rst = cstmt.getResultSet();
 
@@ -327,6 +328,7 @@ public class BalanceAnalysisByAgeDAO {
                 totNETO = rst.getDouble("TOTSVFOPUSD");
                 totPEND = rst.getDouble("TOTQTYTKTP");
                 totPENDAMOUNT = rst.getDouble("TOTSVFOPUSDP");
+                totPENDINGAMOUNT = rst.getDouble("TOTSVFOPUSDPENDING");
             }
             rst.close();
 
@@ -351,6 +353,7 @@ public class BalanceAnalysisByAgeDAO {
 
                     bean.SVFOPUSD = rst.getDouble("SVFOPUSD");
                     bean.SVFOPUSDP = rst.getDouble("SVFOPUSDP");
+                    bean.SVFOPUSDPENDING = rst.getDouble("SVFOPUSDPENDING");
                     bean.PERCPAID = rst.getDouble("PERCPAID");
                     bean.PERCPENDING = rst.getDouble("PERCPENDING");
 
@@ -361,6 +364,7 @@ public class BalanceAnalysisByAgeDAO {
                     bean.totSVFOPUSD = totNETO;
                     bean.totQTYTKTP = totPEND;
                     bean.totSVFOPUSDP = totPENDAMOUNT;
+                    bean.totSVFOPUSDPENDING = totPENDINGAMOUNT;
 
                     bean.page.PAGNUM = filter.page.PAGNUM;
                     bean.page.PAGROW = filter.page.PAGROW;
