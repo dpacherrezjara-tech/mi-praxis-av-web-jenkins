@@ -240,7 +240,32 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             listeners: {
                             }
                         },
-                        {xtype: 'tbspacer', width: 200},
+                        {xtype: 'tbspacer', width: 20},
+                        {
+                            xtype: 'label',
+//                            style: 'font-weight:bold;color:#0B333C;',
+                            padding: '4 10 0 20',
+                            text: 'Cut.Days:',
+                            width: 70,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCUTDAYS',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 4,
+                            width: 85,
+                            enableKeyEvents: true,
+//                            listeners: {
+//                                keypress: 'BuscarSAGENT_keyDownHandler'
+//                            }
+                        },
+                        {xtype: 'tbspacer', width: 15},
                         {
                             xtype: 'label',
                             text: 'Process:',
@@ -280,6 +305,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                                keypress: 'BuscarSAGENT_keyDownHandler'
 //                            }
                         },
+                        
                         {xtype: 'tbspacer', width: 1, id: prototype.id + '-hidePENDING',},
                     ]
                 },

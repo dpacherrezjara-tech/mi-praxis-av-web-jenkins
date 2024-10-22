@@ -14,6 +14,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     me: '',
     dup: '',
     searchParams: {},
+    searchParams2: {},
     paramsDetail: {},
     paramsObtainData: {},
     paramsTKT: {},
@@ -203,9 +204,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
 
-        console.log(me.bean, 'me.bean')
+        console.log(me.bean, 'me.bean primer parameter')
         var beanString = JSON.stringify(me.bean);
-        searchParams = {
+        searchParams2 = {
             beanString: beanString,
             bean: me.bean
         };
@@ -218,9 +219,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+        me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
        
 
-        console.log(me.bean, 'me.bean')
+        console.log(me.bean, 'me.bean segundo parameter')
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
@@ -253,7 +255,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
         let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
         if (!panelReportDay.isVisible()) {
-
+            this.setFormatParameter2();
             this.setGridReportDay()
             panelReportDay.show()
             panelMain.hide()
@@ -261,6 +263,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             panelReportDay.hide()
             me.panelActual = '-boxMainData';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
+            this.setFormatParameter();
             this.setGridData()
             panelMain.show()
         }
@@ -278,7 +281,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 }, listeners: {
                     beforeload: function (obj) {
 //                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                        obj.proxy.extraParams = searchParams;
+                        obj.proxy.extraParams = searchParams2;
                     },
                     load: function (obj) {
 //                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
@@ -338,14 +341,14 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         var item2 = {};
                         var totals = [];
                         var charts = [];
-
-                        item2.Perc2 = obj.data.items[0].data.totSVFOPUSD;
-                        var Total = "Total:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000');
-                        item2.VENDOR = Total;
+                        console.log(obj.data.items, 'obj.data.items')
+                        item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
+                        var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000');
+                        item2.VENDOR = pending;
                         totals.push(item2);
 
                         item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
-                       var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
+                        var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
                         item.VENDOR = Paid;
                         totals.push(item);
 
@@ -413,13 +416,34 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
         me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
-        if(column.text.includes('Pending')){
-            me.bean.IN_TYPEPERC = 'S'
-        }else if(column.text.includes('Paid')){
-            me.bean.IN_TYPEPERC = 'P'
-        } else if( column.text.includes('Amount') ){
-            me.bean.IN_TYPEPERC = 'A'
-        }
+        me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
+        console.log(column.text, 'column.text')
+        console.log(column.dataIndex, 'column.text')
+//        if(column.text.includes('Pending')){
+//            me.bean.IN_TYPEPERC = 'S'
+//        }else if(column.text.includes('Paid')){
+//            me.bean.IN_TYPEPERC = 'P'
+//        } else if( column.text.includes('Amount') ){
+//            me.bean.IN_TYPEPERC = 'A'
+//        }else if( column.text.includes('Amount<br>Pending') ){
+//            me.bean.IN_TYPEPERC = 'N'
+//        }
+        
+        switch (column.dataIndex) {
+                case 'PERCPENDING':
+                    me.bean.IN_TYPEPERC = 'S'
+                    break;
+                case 'PERCPAID':
+                    me.bean.IN_TYPEPERC = 'P'
+                    break;
+                case 'SVFOPUSDP':
+                    me.bean.IN_TYPEPERC = 'A'
+                    break;
+                case 'SVFOPUSDPENDING':
+                    me.bean.IN_TYPEPERC = 'N'
+                    break;
+                
+            }
         if(Ext.getCmp(prototype.id + '-hidePENDING').isVisible()){
             me.bean.IN_ORDER = 'ASC'
             Ext.getCmp(prototype.id + '-hidePENDING').hide()
@@ -516,7 +540,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     exportExcel: function () {
 
         switch (me.panelActual) {
-            case  '-boxMainData':
+            case  '-boxPendingData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
