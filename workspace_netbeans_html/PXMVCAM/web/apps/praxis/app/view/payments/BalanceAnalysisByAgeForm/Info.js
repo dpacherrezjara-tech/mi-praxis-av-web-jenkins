@@ -482,7 +482,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             id: prototype.id + '-gridPendingData',
                                             width: 1182,
                                             columnLines: true,
-                                            
+
                                             features: [{
                                                     ftype: 'summary'
                                                 }],
@@ -500,7 +500,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             return value;
                                                         },
                                                     },
-                                                    {text: 'Days old', dataIndex: 'DIFFDAYS', width: 70,
+                                                    {text: 'Days<br>old', dataIndex: 'DIFFDAYS', width: 45,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             return value;
@@ -545,7 +545,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                         columns: [
                                                             {
-                                                                text: 'QtyTkt', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
+                                                                text: 'QtyTkt', dataIndex: 'QTYTKT', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#a1cbf6;";
                                                                     return Ext.util.Format.number(value, '0,000');
@@ -556,9 +556,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     return '<b>' + Ext.util.Format.number(data.totQTYTKT, '0,000') + '<b>';
                                                                 }
                                                             },
-                                                            
+
                                                             {
-                                                                text: 'Amount', dataIndex: 'SVFOPUSD', width: 90, align: 'center', menuDisabled: true,
+                                                                text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#a1cbf6;";
                                                                     return Ext.util.Format.number(value, '0,000');
@@ -580,7 +580,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                         columns: [
                                                             {
-                                                                text: 'QtyTkt', dataIndex: 'QTYTKTP', width: 80, align: 'center', menuDisabled: true,
+                                                                text: 'QtyTkt', dataIndex: 'QTYTKTP', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                                     return Ext.util.Format.number(value, '0,000');
@@ -592,7 +592,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Amount', dataIndex: 'SVFOPUSDP', width: 90, align: 'center', menuDisabled: true,
+                                                                text: 'Amount', dataIndex: 'SVFOPUSDP', width: 80, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                                     return Ext.util.Format.number(value, '0,000');
@@ -609,6 +609,32 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         ]
                                                     },
                                                     {
+                                                        text: 'Pending USD',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOPUSDPENDING', width: 90, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridPendingData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totSVFOPUSDPENDING, '0,000') + '<b>';
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+
+                                                    {
                                                         text: 'Percentage %',
                                                         defaults: {
                                                             menuDisabled: true,
@@ -617,7 +643,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                         columns: [
                                                             {
-                                                                text: '% Paid', dataIndex: 'PERCPAID', width: 80, align: 'center', menuDisabled: true,
+                                                                text: '% Paid', dataIndex: 'PERCPAID', width: 60, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     let data = record.data;
                                                                     if (data.PERCPENDING >= 80) {
@@ -632,7 +658,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: '% Pending', dataIndex: 'PERCPENDING', width: 80, align: 'center', menuDisabled: true,
+                                                                text: '% Pending', dataIndex: 'PERCPENDING', width: 75, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (value >= 80) {
                                                                         metaData.style = "text-align:right;background-color:#fe5342;";
@@ -665,7 +691,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     width: 520,
                                                     border: true,
                                                     margin: '0 0 0 5',
-                                                    innerPadding: 20,
+                                                    innerPadding: 30,
                                                     height: 260,
                                                     background: '#E0F8F7',
                                                     captions: {
@@ -698,9 +724,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 renderer: function (toolTip, record, ctx) {
                                                                     var label = '';
                                                                     label = record.get('VENDOR');
-                                                                    if (label === 'Total') {
-                                                                        label = 'Total';
-                                                                    }else{
+                                                                    if (label === 'Pending') {
+                                                                        label = 'Pending';
+                                                                    } else {
                                                                         label = 'Paid';
                                                                     }
                                                                     toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
@@ -715,7 +741,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     border: false,
                                                     height: 260,
                                                     background: '#E0F8F7',
-                                                     margin: '5 0 0 5',
+                                                    margin: '5 0 0 5',
                                                     captions: {
                                                         title: {
                                                             alignTo: 'chart'
