@@ -69,6 +69,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Client',
                                     name: 'IN_CCUST',
+                                    id:prototype.idDE + '-cmbCcust',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
@@ -84,7 +85,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '134'
+                                    value: '134',
+                                    listeners:{
+                                        change:'onChangeCcust'
+                                    }
                                 },
                                 {
                                     xtype: 'datefield',
@@ -148,6 +152,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Acc. Type',
                                     name: 'IN_TIPOCON',
+                                    id:prototype.idDE + '-cmbTIPOCON',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
@@ -162,7 +167,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: 'REG'
+                                    value: 'REG',
+                                    listeners:{
+                                        change:'onChangeTipocon'
+                                    }
                                 },
                                 {
                                     xtype: 'combo',
@@ -170,8 +178,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 300,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
+                                    valueField: 'A4451KEY2',
+                                    displayField: 'A4451DESC1',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,

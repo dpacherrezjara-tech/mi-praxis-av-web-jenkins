@@ -52,6 +52,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Client',
+                                    id:prototype.id + '-cmbCcust',
                                     name: 'IN_CCUST',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
@@ -68,17 +69,20 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '134'
+                                    value: '134',
+                                    listeners:{
+                                        change:'onChangeCcust'
+                                    }
                                 },
                                 {
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Acc. Type',
+                                    id: prototype.id + '-cmbTIPOCON',
                                     name: 'IN_TIPOCON',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['', 'All'],
                                             ['REG', 'Regular'],
                                             ['DEB', 'Debits'],
                                             ['ADJ','Adjustment']
@@ -90,7 +94,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: ''
+                                    value: 'REG',
+                                    listeners:{
+                                        change:'onChangeTipocon'
+                                    }
                                 },
                                 {
                                     xtype: 'datefield',
@@ -124,8 +131,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 300,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
+                                    valueField: 'A4451KEY2',
+                                    displayField: 'A4451DESC1',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,

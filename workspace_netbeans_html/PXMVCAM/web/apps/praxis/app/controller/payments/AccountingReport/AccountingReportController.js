@@ -6,35 +6,47 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
         timeout: 20000
-      }),
+    }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
         timeout: 20000
-      }),
+    }),
     init: function (view) {
     },
     afterRender: async function () {
         await this.loadFilters();
-        this.loadGrid();
     },
     loadFilters: async function () {
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await me.miscRequest.get('/loadPhase2Filter');
+            const res = await me.miscRequest.get('/loadAccountingProcs');
+
             const data = res.data;
             me.procesadores = data.response;
-            //<editor-fold defaultstate="collapsed" desc="Filters Browser">
-            const cmbFilterCODPRO = Ext.getCmp(prototype.id + '-cmbCODPRO');
-            global.setComboStore(cmbFilterCODPRO, me.procesadores, 'CODE', 'NAME', '');
-            //</editor-fold>
+            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
+            ccust.fireEvent('change', {});
         } catch (e) {
             console.error(e);
             me.notifier.alert('Filters not loaded');
-        }finally{
+        } finally {
             me.view.unmask();
+            me.loadGrid();
         }
 
+    },
+    onChangeTipocon: function () {
+        const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
+        ccust.fireEvent('change', {});
+    },
+    onChangeCcust: function () {
+        const me = this;
+        const cmbCccust = Ext.getCmp(prototype.id + '-cmbCcust');
+        const tipocon = Ext.getCmp(prototype.id + '-cmbTIPOCON');
+        const cmbProc = Ext.getCmp(prototype.id + '-cmbCODPRO');
+        let data = me.procesadores.filter(x =>
+                x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
+        global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
     },
     loadGrid: async function () {
         const me = this;
@@ -52,11 +64,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
-    onProcessClick: function(){
+    onProcessClick: function () {
         const me = this;
         const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAccountingDataEntry', {
             id: prototype.id + '-ProcessAccountingDataEntry-1',
-            procesadores: me.procesadores 
+            procesadores: me.procesadores
         });
         dataEntry.show();
     },

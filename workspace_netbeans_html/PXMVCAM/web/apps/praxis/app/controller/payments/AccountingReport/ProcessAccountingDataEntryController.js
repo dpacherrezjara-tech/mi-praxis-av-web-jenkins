@@ -12,14 +12,31 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDat
     },
     loadFilters: function(){
         const me = this;
-        let procesadores = Object.assign([],me.view.procesadores) ;
-        procesadores.unshift({CODE:'EXT',NAME:'ALL EXTERIOR'});
-        //console.log(procesadores);
+        me.procesadores = Object.assign([],me.view.procesadores) ;
+        const ccust = Ext.getCmp(prototype.idDE + '-cmbCcust');
+        ccust.fireEvent('change', {});
+    },
+    onChangeTipocon: function () {
+        const ccust = Ext.getCmp(prototype.idDE + '-cmbCcust');
+        ccust.fireEvent('change', {});
+    },
+    onChangeCcust: function () {
+        const me = this;
+        const cmbCccust = Ext.getCmp(prototype.idDE + '-cmbCcust');
+        const tipocon = Ext.getCmp(prototype.idDE + '-cmbTIPOCON');
+        const cmbProc = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
+        let data = me.procesadores.filter(x =>
+                x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
         let store = new Ext.data.Store({
-            data: procesadores
+            data: data
         });
-        Ext.getCmp(prototype.idDE + '-cmbCODPRO').setStore(store);
-        Ext.getCmp(prototype.idDE + '-cmbCODPRO').setValue('EXT');
+        cmbProc.setStore(store);
+        if(cmbCccust.value==='134'){
+            cmbProc.setValue('CO');
+        }else{
+            cmbProc.setValue(data.at(0).A4451KEY2);
+        }
+        //global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
     },
     onProcessClick: function(btn){
         let params  = this.formatParameters();
