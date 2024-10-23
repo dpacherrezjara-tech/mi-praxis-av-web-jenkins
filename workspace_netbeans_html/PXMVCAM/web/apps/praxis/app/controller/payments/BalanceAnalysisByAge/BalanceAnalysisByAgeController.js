@@ -342,15 +342,20 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         var totals = [];
                         var charts = [];
                         console.log(obj.data.items, 'obj.data.items')
-                        item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
-                        var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000');
-                        item2.VENDOR = pending;
-                        totals.push(item2);
+                        if(obj.data.items.length > 0){
+                            item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
+                            var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000');
+                            item2.VENDOR = pending;
+                            totals.push(item2);
 
-                        item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
-                        var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
-                        item.VENDOR = Paid;
-                        totals.push(item);
+                            item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
+                            var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
+                            item.VENDOR = Paid;
+                            totals.push(item);
+                        }else{
+                            totals.push({})
+                        }
+                        
 
                         var storeData1er = Ext.create('Ext.data.Store', {
                             data: totals,
