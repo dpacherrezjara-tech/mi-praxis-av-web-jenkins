@@ -22,4 +22,6 @@ public class MPF135 {
             USCR,PGMUP;
     private Timestamp TSUP;
     private Integer QTYERR;
+    
+    private String DESC_PRO;
 }
