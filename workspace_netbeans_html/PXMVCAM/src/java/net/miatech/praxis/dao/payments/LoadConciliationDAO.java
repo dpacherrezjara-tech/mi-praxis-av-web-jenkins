@@ -1407,12 +1407,15 @@ public class LoadConciliationDAO {
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
                     beanTkt.SERIE = rst.getString("SERIE").trim();
+                    beanTkt.FTE = rst.getString("CFUENTE").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.DATABASE = rst.getString("DATABASE").trim();
                     if (rst.getString("TDOC").trim().equals("A")) {
                         beanTkt.strPEM = "ADJUST.";
-                    } else {
+                    } else if (rst.getString("TDOC").trim().equals("R")){
+                        beanTkt.strPEM = "REFUND";
+                    }else {
                         beanTkt.strPEM = "SALES";
                     }
                     beanTkt.SEQ = rst.getString("SEQ").trim();
@@ -1469,19 +1472,23 @@ public class LoadConciliationDAO {
                     beanTkt.BDATEP = rst.getString("BDATEP").trim();
                     //TEF
                     beanTkt.TDATE = rst.getString("TDATE").trim();
+                    if(rst.getString("STVAL").trim().equals("1") || rst.getString("STVAL").trim().equals("5") ){
+                         beanTkt.lngDays = rst.getInt("DIFFDAYS");
+                    }else{
+                        try {
+                            if (!beanTkt.BDATEP.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.BDATEP);
 
-                    try {
-                        if (!beanTkt.BDATEP.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.BDATEP);
+                            } else if (!beanTkt.TDATE.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.TDATE);
 
-                        } else if (!beanTkt.TDATE.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.TDATE);
-
-                        } else if (!beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
+                            } else if (!beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
+                            }
+                        } catch (Exception e) {
                         }
-                    } catch (Exception e) {
                     }
+                    
 
                     beanTkt.lngQOBS = rst.getLong("QOB");
                     //Armando Título del Detalle
@@ -2634,7 +2641,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00658(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00658_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2705,7 +2712,14 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     beanTkt.strDescCountry = filter.strDescCountry.trim();
                     beanTkt.strDescCard = filter.strDescCard.trim();
-                    beanTkt.strPEM = "";
+                    
+                    if (rst.getString("TDOC").trim().equals("A")) {
+                        beanTkt.strPEM = "ADJUST.";
+                    } else if (rst.getString("TDOC").trim().equals("R")){
+                        beanTkt.strPEM = "REFUND";
+                    }else {
+                        beanTkt.strPEM = "SALES";
+                    }
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
@@ -2723,16 +2737,16 @@ public class LoadConciliationDAO {
                         beanTkt.CERROR = rst.getString("CERROR").trim();
                     }
                     //VUELTO A ACTIVAR A PEDIDO DE ENS 20171025
-                    beanTkt.FTE = rst.getString("FTE").trim();
-                    if (rst.getString("FTE").trim().equals("A")) {
-                        beanTkt.strSORIG = "ARC";
-                    } else if (rst.getString("FTE").trim().equals("B")) {
-                        beanTkt.strSORIG = "BSP";
-                    } else if (rst.getString("FTE").trim().equals("S")) {
-                        beanTkt.strSORIG = "ASR";
-                    } else if (rst.getString("FTE").trim().equals("M")) {
-                        beanTkt.strSORIG = "Manual";
-                    }
+                    beanTkt.FTE = rst.getString("CFUENTE").trim();
+//                    if (rst.getString("FTE").trim().equals("A")) {
+//                        beanTkt.strSORIG = "ARC";
+//                    } else if (rst.getString("FTE").trim().equals("B")) {
+//                        beanTkt.strSORIG = "BSP";
+//                    } else if (rst.getString("FTE").trim().equals("S")) {
+//                        beanTkt.strSORIG = "ASR";
+//                    } else if (rst.getString("FTE").trim().equals("M")) {
+//                        beanTkt.strSORIG = "Manual";
+//                    }
 
                     beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
@@ -2786,19 +2800,23 @@ public class LoadConciliationDAO {
 
                     beanTkt.dblTotSVFOP = dblTotSVFOP;
                     beanTkt.dblTotAVFOP = dblTotAVFOP;
+                    if(rst.getString("STVAL").trim().equals("1") || rst.getString("STVAL").trim().equals("5") ){
+                         beanTkt.lngDays = rst.getInt("DIFFDAYS");
+                    }else {
+                        try {
+                            if (!beanTkt.BDATEP.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.BDATEP);
 
-                    try {
-                        if (!beanTkt.BDATEP.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.BDATEP);
+                            } else if (!beanTkt.TDATE.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.TDATE);
 
-                        } else if (!beanTkt.TDATE.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.TDATE);
-
-                        } else if (!beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
-                        }
-                    } catch (Exception e) {
+                            } else if (!beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
+                            }
+                        } catch (Exception e) {
+                        } 
                     }
+                    
 
                     
                     beanTkt.strTitulo = filter.strTitulo.trim() + " - Day : " + filter.IN_SDATE.trim();
@@ -5358,6 +5376,7 @@ public class LoadConciliationDAO {
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("", tipFecha + " without Reconcili.");
+        hmDescEstados.put("2", tipFecha + " without Reconcili.");
         hmDescEstados.put("3", "Reconcili without " + tipFecha);
         hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
@@ -5367,7 +5386,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00715(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00715_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5443,7 +5462,13 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     //beanTkt.strDescCard = filter.strDescCard.trim();
                     //beanTkt.strDescCountry = filter.strDescCountry.trim();
-                    beanTkt.strPEM = "";
+                     if (rst.getString("TDOC").trim().equals("A")) {
+                        beanTkt.strPEM = "ADJUST.";
+                    } else if (rst.getString("TDOC").trim().equals("R")){
+                        beanTkt.strPEM = "REFUND";
+                    }else {
+                        beanTkt.strPEM = "SALES";
+                    }
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
@@ -5462,16 +5487,16 @@ public class LoadConciliationDAO {
                     } else {
                         beanTkt.CERROR = rst.getString("CERROR").trim();
                     }
-                    beanTkt.FTE = rst.getString("FTE").trim();
-                    if (rst.getString("FTE").trim().equals("A")) {
-                        beanTkt.strSORIG = "ARC";
-                    } else if (rst.getString("FTE").trim().equals("B")) {
-                        beanTkt.strSORIG = "BSP";
-                    } else if (rst.getString("FTE").trim().equals("S")) {
-                        beanTkt.strSORIG = "ASR";
-                    } else if (rst.getString("FTE").trim().equals("M")) {
-                        beanTkt.strSORIG = "Manual";
-                    }
+                    beanTkt.FTE = rst.getString("CFUENTE").trim();
+//                    if (rst.getString("FTE").trim().equals("A")) {
+//                        beanTkt.strSORIG = "ARC";
+//                    } else if (rst.getString("FTE").trim().equals("B")) {
+//                        beanTkt.strSORIG = "BSP";
+//                    } else if (rst.getString("FTE").trim().equals("S")) {
+//                        beanTkt.strSORIG = "ASR";
+//                    } else if (rst.getString("FTE").trim().equals("M")) {
+//                        beanTkt.strSORIG = "Manual";
+//                    }
 
                     beanTkt.SFLOAD = rst.getString("SFLOAD").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
@@ -5513,19 +5538,23 @@ public class LoadConciliationDAO {
                     beanTkt.BDATEP = rst.getString("BDATEP").trim();
                     //TEF
                     beanTkt.TDATE = rst.getString("TDATE").trim();
+                    if(rst.getString("STVAL").trim().equals("1") || rst.getString("STVAL").trim().equals("5") ){
+                         beanTkt.lngDays = rst.getInt("DIFFDAYS");
+                    }else{
+                        try {
+                            if (!beanTkt.BDATEP.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.BDATEP);
 
-                    try {
-                        if (!beanTkt.BDATEP.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.BDATEP);
+                            } else if (!beanTkt.TDATE.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.TDATE);
 
-                        } else if (!beanTkt.TDATE.trim().equals("") && !beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDias(beanTkt.SDATE, beanTkt.TDATE);
-
-                        } else if (!beanTkt.SDATE.trim().equals("")) {
-                            beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
+                            } else if (!beanTkt.SDATE.trim().equals("")) {
+                                beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
+                            }
+                        } catch (Exception e) {
                         }
-                    } catch (Exception e) {
                     }
+                    
 
                     beanTkt.lngQOBS = rst.getLong("QOB");
                     //Armando Título del Detalle
@@ -5796,7 +5825,7 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     //beanTkt.strDescCard = filter.strDescCard.trim();
                     //beanTkt.strDescCountry = filter.strDescCountry.trim();
-                    beanTkt.strPEM = "";
+                    beanTkt.strPEM = "Refund";
                     beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.TKT = rst.getString("TKT").trim();
@@ -6057,7 +6086,7 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     //beanTkt.strDescCard = filter.strDescCard.trim();
                     //beanTkt.strDescCountry = filter.strDescCountry.trim();
-                    beanTkt.strPEM = "";
+                    beanTkt.strPEM = "Chargeback";
 //                    beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
 //                    beanTkt.TKT = rst.getString("TKT").trim();
@@ -6320,7 +6349,7 @@ public class LoadConciliationDAO {
                     beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
                     //beanTkt.strDescCard = filter.strDescCard.trim();
                     //beanTkt.strDescCountry = filter.strDescCountry.trim();
-                    beanTkt.strPEM = "";
+                    beanTkt.strPEM = "Acredit";
 //                    beanTkt.strTicket = rst.getString("CCIA").trim() + " " + rst.getString("TKT").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
 //                    beanTkt.TKT = rst.getString("TKT").trim();
