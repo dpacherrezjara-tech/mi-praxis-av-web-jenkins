@@ -22,7 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         const me = this;
         let store = Ext.create('Ext.data.Store', {
             loadMask: true,
-            //pageSize: 20,
+            pageSize: 20,
             proxy: {
                 type: 'ajax',
                 //enablePaging: true,
