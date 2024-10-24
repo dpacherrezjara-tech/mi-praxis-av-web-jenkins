@@ -104,6 +104,18 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                                 '5': ()=>{
                                     metaData.style = "background-color:#7f69af;font-weight:bold";
                                     return 'Downloaded/Sended';
+                                },
+                                '6': ()=>{
+                                    metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
+                                    return 'Program Down';
+                                }, 
+                                '7': ()=>{
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
+                                    return 'Executor Error';
+                                }, 
+                                '8': ()=>{
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
+                                    return 'No Data';
                                 }
                             };
                             return opts[value]();
