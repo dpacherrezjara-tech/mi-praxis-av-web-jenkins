@@ -17,7 +17,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
     columnLines: true,
     selModel: {
         type: 'checkboxmodel',
-        mode: 'MULTI'  // Permite la selección múltiple
+        mode: 'MULTI', // Permite la selección múltiple
+        listeners: {
+            beforeselect: 'validateReversed'
+        }
     },
     columns: {
         defaults: {
@@ -40,7 +43,25 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
             {text: 'Error<br>Code', dataIndex: 'CERROR', width: 50},
             {text: 'Error<br>Description', dataIndex: 'DESCERR', width: 300},
             {text: 'Error<br>Records', dataIndex: 'QTYERR', width: 120},
-            {text: 'Status<br>Reversed', dataIndex: 'STREV', width: 100},
+            {text: 'Status<br>Reversed', dataIndex: 'STREV', width: 80,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    const opts = {
+                        '0': () => {
+                            metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
+                            return 'Pending';
+                        },
+                        '1': () => {
+                            metaData.style = "background-color:#7dee50;font-weight:bold";
+                            return 'Reversed';
+                        },
+                        '2': () => {
+                            metaData.style = "background-color:#dbf12d;font-weight:bold";
+                            return 'Stand By';
+                        }
+                    };
+                    return opts[value]();
+                }
+            },
             {
                 text: 'Update Information',
                 defaults: {
@@ -54,6 +75,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
                     {text: 'User', dataIndex: 'USUP', width: 100},
                     {text: 'Datetime', dataIndex: 'TSUP', width: 130}
                 ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Rev.',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-image-trash',
+                        tooltip: 'Reverse',
+                        handler: 'reverseSingleBandoc',
+                        isDisabled: 'disableReverse'
+                    }
+                ]
             }
             //</editor-fold>
         ]
@@ -66,6 +102,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
             scale: 'medium'
         },
         items: [
+            {
+                xtype: 'button',
+                iconCls: 'prx-icon-delete',
+                scale: 'small',
+                tooltip: 'Reverse Masive',
+                listeners: {
+                    click: 'reverseMassiveBandoc'
+                }
+            },
             {
                 xtype: 'button',
                 iconCls: 'prx-icon-excel',

@@ -1,11 +1,13 @@
 package net.miatech.praxis.controllers.payments;
 
+import java.util.List;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
+import net.miatech.praxis.payment.dto.SPACR008Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +64,17 @@ public class AccountingReportController {
         return ResponseUtils.create();
     }
     
-    @RequestMapping(value = "reverseAccounting",method = RequestMethod.POST)
-    public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
-        System.out.println("***** AccountingReport - reverseAccounting *****");
-        logic.loadSPACR005Filter(params);
+    @RequestMapping(value = "reverseSingleBandoc",method = RequestMethod.POST)
+    public ResponseEntity<?> reverseAccounting(@RequestBody SPACR008Filter params) throws Exception {
+        System.out.println("***** AccountingReport - reverseSingleBandoc *****");
+        logic.loadSPACR008Filter(params);
+        return ResponseUtils.create();
+    }
+    
+    @RequestMapping(value = "reverseMassiveBandoc",method = RequestMethod.POST)
+    public ResponseEntity<?> reverseAccounting(@RequestBody List<SPACR008Filter> lst) throws Exception {
+        System.out.println("***** AccountingReport - reverseMassiveBandoc *****");
+        logic.loadSPACR008FilterMasive(lst);
         return ResponseUtils.create();
     }
 }

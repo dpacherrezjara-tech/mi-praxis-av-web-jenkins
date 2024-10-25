@@ -6,6 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
         baseURL: CONTEXTPATH + '/AccountingReport',
         timeout: 20000
     }),
+    notifier:new AWN(),
     init: function (view) {
         if (view.backButton) {
             Ext.getCmp(prototype.id + '-errors-btnBack').show();
@@ -38,6 +39,111 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
             me.view.setLoading(false);
         }
         //me.view.unmask();
+    },
+    disableReverse: function(view, rowIndex, colIndex, item, record){
+        let reverseAction = ['0'];
+        return !reverseAction.includes(record.get('STREV'));
+    },
+    validateReversed:function(selModel, record, index) {
+        if(record.data.STREV === '0'){
+            return true;
+        }else{
+            return false;
+        }
+    },
+    reverseSingleBandoc: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {CCUST,CODPRO,TIPOCON,IDCONT,BANDOC,VALDATE} = record.data;
+        let params = {
+            IN_CCUST:CCUST,
+            IN_CODPRO:CODPRO,
+            IN_TIPOCON: TIPOCON,
+            IN_IDCONT:IDCONT,
+            IN_BANDOC: BANDOC,
+            IN_VALDATE: VALDATE
+        };
+        console.log('Reverse Params: ',params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to reverse?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.reverseSingleAccounting(params);
+                        }
+                    }
+                });
+        
+    },
+    reverseMassiveBandoc: function (){
+        let selectionModel = this.view.getSelectionModel();
+        let selectedRecords = selectionModel.getSelection();
+        if (selectedRecords.length === 0) {
+            this.notifier.warning('No data Selected');
+            return;
+        }
+        let params = selectedRecords.map(obj=>({
+                IN_CCUST:obj.data.CCUST,
+                IN_CODPRO:obj.data.CODPRO,
+                IN_TIPOCON: obj.data.TIPOCON,
+                IN_IDCONT:obj.data.IDCONT,
+                IN_BANDOC: obj.data.BANDOC,
+                IN_VALDATE: obj.data.VALDATE
+            }));
+        console.log('Reverse Params: ',params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to reverse?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.reverseMultiAccounting(params);
+                        }
+                    }
+                });
+    },
+    reverseSingleAccounting: async function(params){
+        const me = this;
+        me.view.setLoading(true);
+        try {
+            const res = await me.request.post('reverseSingleBandoc',params);
+            if(res.status === 201){
+                me.notifier.success('Bandoc Reversed');
+            }else{
+                me.notifier.alert('Error on Reverse');
+            }
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('System Error');
+        }finally {
+            me.view.setLoading(false);
+        }
+
+    },
+    reverseMultiAccounting: async function(params){
+        const me = this;
+        me.view.setLoading(true);
+        try {
+            const res = await me.request.post('reverseMassiveBandoc',params);
+            if(res.status === 201){
+                me.notifier.success('Bandocs Reversed');
+            }else{
+                me.notifier.alert('Error on Reverse');
+            }
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('System Error');
+        }finally {
+            me.view.setLoading(false);
+        }
+
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

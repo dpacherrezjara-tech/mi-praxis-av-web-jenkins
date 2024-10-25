@@ -2,12 +2,15 @@ package net.miatech.praxis.dao.payments;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
+import net.miatech.praxis.payment.dto.SPACR008Filter;
 import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF135;
 import net.miatech.praxis.payment.entities.X3183;
@@ -78,6 +81,24 @@ public class AccountingReportDAO implements AccountingReportLogic{
     public void loadSPACR005Filter(SPACR005Filter filter) throws Exception {
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         jdbcUtils.executeSQP(LIBRARY, "SPACR005",params);
+    }
+
+    @Override
+    public void loadSPACR008Filter(SPACR008Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        jdbcUtils.executeSQP(LIBRARY, "SPACR008",params);
+    }
+
+    @Override
+    public void loadSPACR008FilterMasive(List<SPACR008Filter> lst) throws Exception {
+        lst.forEach((SPACR008Filter obj)->{
+            SqlParameterSource params = new BeanPropertySqlParameterSource(obj);
+            try {
+                jdbcUtils.executeSQP(LIBRARY, "SPACR008",params);
+            } catch (Exception ex) {
+                System.out.println("Error: " + params);
+            }
+        });
     }
     
 }
