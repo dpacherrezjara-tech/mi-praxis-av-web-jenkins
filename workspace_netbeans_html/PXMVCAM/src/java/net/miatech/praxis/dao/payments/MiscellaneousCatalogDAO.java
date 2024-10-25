@@ -7,6 +7,7 @@ import net.miatech.praxis.logic.payments.MiscellaneousCatalogLogic;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.payment.dto.SPMC003Filter;
+import net.miatech.praxis.payment.dto.SPMC005Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.A4451PK;
@@ -68,6 +69,15 @@ public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic {
                 new BeanPropertyRowMapper(A4451PK.class));
         return SPMC003Filter.builder()
                 .response((List<A4451PK>) obj.get("result"))
+                .build();
+    }
+
+    @Override
+    public SPMC005Filter loadSPMC005Filter() throws Exception {
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC005",
+                new BeanPropertyRowMapper(A4451.class));
+        return SPMC005Filter.builder()
+                .response((List<A4451>) obj.get("result"))
                 .build();
     }
 }
