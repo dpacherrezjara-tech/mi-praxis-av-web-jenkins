@@ -56,10 +56,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         }
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
-                    {text: 'Records', dataIndex: 'TOTRECS', width: 100},
+                    {text: 'Records', dataIndex: 'TOTRECS', width: 80},
                     {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
                     {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
-                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 100,
+                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 90,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -68,7 +68,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPreErrors'
                         }
                     },
-                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 100,
+                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 90,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -77,7 +77,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPostErrors'
                         }
                     },
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 180},
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 160},
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";

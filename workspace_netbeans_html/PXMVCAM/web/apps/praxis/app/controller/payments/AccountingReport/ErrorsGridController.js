@@ -41,15 +41,23 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
         //me.view.unmask();
     },
     disableReverse: function(view, rowIndex, colIndex, item, record){
-        let reverseAction = ['0'];
-        return !reverseAction.includes(record.get('STREV'));
+        console.log(record);
+        if(record.data.STREV !== '0'){
+            return true;
+        }
+        if(record.data.TIPOERR === 'PRE'){
+            return true;
+        }
+        return false;
     },
     validateReversed:function(selModel, record, index) {
-        if(record.data.STREV === '0'){
-            return true;
-        }else{
+        if(record.data.STREV !== '0'){
             return false;
         }
+        if(record.data.TIPOERR === 'PRE'){
+            return true;
+        }
+        return true;
     },
     reverseSingleBandoc: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const {CCUST,CODPRO,TIPOCON,IDCONT,BANDOC,VALDATE} = record.data;
