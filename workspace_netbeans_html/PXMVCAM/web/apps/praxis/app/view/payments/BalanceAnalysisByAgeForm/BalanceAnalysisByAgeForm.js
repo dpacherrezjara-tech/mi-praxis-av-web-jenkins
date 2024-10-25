@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.BalanceAnalysisByA
     requires: [
         'Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Options',
         'Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters',
+        'Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1',
         'Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info',
         'Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisByAgeController'
     ],
@@ -61,6 +62,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.BalanceAnalysisByA
                                         {
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter'
+                                        },
+                                        {
+                                            xtype: prototype.id + '-filters2',
+                                            id: prototype.id + '-contentFilter2'
                                         },
                                         {
                                             xtype: 'panel',

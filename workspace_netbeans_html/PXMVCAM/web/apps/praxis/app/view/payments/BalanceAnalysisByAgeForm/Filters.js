@@ -266,23 +266,23 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                            }
                         },
                         {xtype: 'tbspacer', width: 20},
-                        {
-                            xtype: 'radiogroup',
-//                            fieldLabel: 'Sumary',
-                            padding: '0 0 0 0',
-                            columns: 1,
-                            hidden: true,
-                            vertical: true,
-                            value: '1',
-                            items: [
-                                
-                                { boxLabel: '<b>Sumary</b>',  name: 'opcion', inputValue: '1', checked: true },
-                                { boxLabel: '<b>Detail</b>', name: 'opcion', inputValue: '2' },
-                            ],
-                            listeners: {
-                                change: 'rgChangeReport'
-                            }
-                        },
+//                        {
+//                            xtype: 'radiogroup',
+////                            fieldLabel: 'Sumary',
+//                            padding: '0 0 0 0',
+//                            columns: 1,
+////                            hidden: true,
+//                            vertical: true,
+//                            value: '1',
+//                            items: [
+//                                
+//                                { boxLabel: '<b>Sumary</b>',  name: 'opcion', inputValue: '1', checked: true },
+//                                { boxLabel: '<b>Detail</b>', name: 'opcion', inputValue: '2' },
+//                            ],
+//                            listeners: {
+//                                change: 'rgChangeReport'
+//                            }
+//                        },
 //                        {xtype: 'tbspacer', width: 15},
                         {
                             xtype: 'label',
