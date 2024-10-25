@@ -12,5 +12,5 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SPACR008Filter {
-    private String IN_CCUST,IN_CODPRO,IN_TIPOCON,IN_BANDOC,IN_VALDATE;
+    private String IN_CCUST,IN_CODPRO,IN_TIPOCON,IN_BANDOC,IN_VALDATE,IN_IDCONT;
 }

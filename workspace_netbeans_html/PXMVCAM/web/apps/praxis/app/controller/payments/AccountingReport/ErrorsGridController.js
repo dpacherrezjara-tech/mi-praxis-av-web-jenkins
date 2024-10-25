@@ -123,7 +123,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
             console.error(e);
             me.notifier.alert('System Error');
         }finally {
-            me.view.setLoading(false);
+            me.getData();
         }
 
     },
@@ -141,7 +141,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
             console.error(e);
             me.notifier.alert('System Error');
         }finally {
-            me.view.setLoading(false);
+            me.getData();
         }
 
     },
