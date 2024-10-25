@@ -4,6 +4,7 @@ import net.miatech.praxis.logic.payments.MiscellaneousCatalogLogic;
 import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.payment.dto.SPMC003Filter;
+import net.miatech.praxis.payment.dto.SPMC005Filter;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -48,6 +49,14 @@ public class MiscellaneousCatalogController {
     public ResponseEntity<?> loadPhase2Filter() throws Exception{
         System.out.println("***** MiscellaneousCatalog - loadPhase2Filter *****");
         SPMC003Filter filter = logic.loadSPMC003Filter();
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadAccountingProcs")
+    public ResponseEntity<?> loadAccountingProcs() throws Exception{
+        System.out.println("***** MiscellaneousCatalog - loadAccountingProcs *****");
+        SPMC005Filter filter = logic.loadSPMC005Filter();
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
