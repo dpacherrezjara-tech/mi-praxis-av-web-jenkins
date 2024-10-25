@@ -61,6 +61,22 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin3',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin4',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
                     ]
                 }
@@ -92,7 +108,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Options', {
                             id: prototype.id + '-btn-TW',
                             tooltip: 'Work assignment',
                             icon: 'resources/img/botones/grid.png',
-//                            hidden: true,
+                            hidden: true,
                             listeners: {
                                 click: 'onReportDayPending'
                             }
