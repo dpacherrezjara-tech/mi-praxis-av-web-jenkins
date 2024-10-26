@@ -35,7 +35,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                             xtype: 'radiogroup',
 //                            fieldLabel: 'Sumary',
                             padding: '0 10 0 50',
-                            columns: 3,
+                            columns: 4,
 //                            width: '120',
                             
 //                            hidden: true,
@@ -45,12 +45,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                                 
                                 { boxLabel: '<b> Agents</b>',  name: 'opcion', inputValue: '1', checked: true,padding: '0 10 0 50'},
                                 { boxLabel: '<b> Days</b>', name: 'opcion', inputValue: '2', padding: '0 10 0 50'  },
+                                { boxLabel: '<b> Canal</b>', name: 'opcion', inputValue: '3', padding: '0 10 0 50'  },
+                                { boxLabel: '<b> Avianca Group</b>', name: 'opcion', inputValue: '4', padding: '0 10 0 50'  },
                             ],
                             listeners: {
                                 change: 'rgChangeReport'
                             }
                         },
-                        {xtype: 'tbspacer', width: 900},
+                        {xtype: 'tbspacer', width: 600},
                         {
                             xtype: 'label',
                             text: 'TOP AMOUNTS',
@@ -67,7 +69,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['code', 'name'],
                                 data: [
-                                    ["5", "TOP 5"], ["10", "TOP 10"], ["15", "TOP 15"], ["20", "TOP 20"],["25", "TOP 25"]
+                                    ["5", "TOP 5"], ["10", "TOP 10"], ["15", "TOP 15"]
                                 ]
                             }),
                             queryMode: 'local',
