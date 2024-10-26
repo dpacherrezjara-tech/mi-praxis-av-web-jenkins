@@ -95,6 +95,7 @@ public class A2356 {
         public String USUP  = "";
         public String FEUP  = "";
         public String HOUP  = "";
+        public String MESSAGE  = "";
        
     
 }
