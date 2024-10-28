@@ -33,8 +33,37 @@ public class BalanceAnalysisByAgeLogic {
         return banksCatalogDAO.loadSQP05120_RD(filter);
     }
     
+    
     public List<A2356Filter> loadSQP05120_RD2(A2356Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP05120_RD2(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_RM(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RM(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_RM2(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RM2(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_RC(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RC(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_RC2(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RC2(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_RP(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RP(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_RP2(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_RP2(filter);
+    }
+    
+    public A2356Filter loadSQP05120_AD() throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_AD();
     }
     
     public A2356Filter loadSQP02856(A2356Filter filter) throws SQLException, Exception {

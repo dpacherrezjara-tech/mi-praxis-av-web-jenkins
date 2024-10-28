@@ -65,6 +65,7 @@ public class A2356 {
         public double NETO  = 0;  
         public double SVFOPUSD  = 0;  
         public double SVFOPUSDP  = 0;  
+        public double SVFOPUSDPENDING  = 0;  
         public double SVFOPUS10  = 0;  
         public double SVFOPUS30  = 0;  
         public double SVFOPUS60  = 0;  
@@ -79,6 +80,7 @@ public class A2356 {
         public double totQTYTKTP  = 0;  
         public double totSVFOPUSD  = 0;  
         public double totSVFOPUSDP  = 0;  
+        public double totSVFOPUSDPENDING  = 0;  
         public double QTYTKT  = 0;  
         public double QTYTKTP  = 0;  
         public int QTYTKT10  = 0;  
@@ -93,6 +95,7 @@ public class A2356 {
         public String USUP  = "";
         public String FEUP  = "";
         public String HOUP  = "";
+        public String MESSAGE  = "";
        
     
 }

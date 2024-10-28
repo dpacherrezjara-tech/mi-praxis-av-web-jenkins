@@ -62,6 +62,10 @@ public class A2356Filter extends A2356 {
     public String IN_SAGENT = "";
     public String IN_PERCENTAGE = "";
     public String IN_CANAL = "";
+    public String IN_ORDER = "";
+    public String IN_TYPEPERC = "";
+    public String IN_CUTDAYS = "";
+    public String IN_TOP = "";
     public String IN_CARDN1 = "";
     public String IN_CARDN2 = "";
     public String IN_SAUTHOC = "";
