@@ -4,7 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
+        timeout: 200000
     }),
     notifier:new AWN(),
     init: function (view) {
