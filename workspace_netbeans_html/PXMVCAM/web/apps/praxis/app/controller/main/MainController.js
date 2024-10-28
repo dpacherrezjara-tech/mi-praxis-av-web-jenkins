@@ -33,7 +33,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
         console.log('isDashboard: '+isDashboard);
 
         if (!isDashboard) {
-            this.toggleView(false);
+            //this.toggleView(false);
         } else {
             $('#menuCommands').show();
             this.active = true;
