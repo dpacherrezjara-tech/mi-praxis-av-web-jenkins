@@ -118,6 +118,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         let reverseAction = ['2','3', '5','7'];
         return !reverseAction.includes(record.get('STCONT'));
     },
+    disableDownload: function(view, rowIndex, colIndex, item, record){
+        let reverseAction = ['2', '3', '5'];
+        return !reverseAction.includes(record.get('STCONT'));
+    },
     onReverseAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const {CCUST,CODPRO,TIPOCON,IDCONT} = record.data;
         let params = {
@@ -159,6 +163,45 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
             }),
         'Successfully Reversed',
         'Error on Reverse');
+    },
+    onDownloadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT:IDCONT
+        };
+        console.log('Download Params: ',params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download this Accounting?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.downloadAccounting(params);
+                        }
+                    }
+                });
+        
+    },
+    downloadAccounting: async function(params){
+        const me = this;
+        me.view.setLoading(true);
+        me.notifier.async(
+            me.request.post('downloadAccounting',params)
+            .then(res=>{
+                //console.log(res);
+                me.view.setLoading(false);
+                if(res.status === 201){
+                    me.view.getStore().load();
+                }else{
+                    throw new Error();
+                }
+            }),
+        'Successfully Downloaded',
+        'Error on Download');
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

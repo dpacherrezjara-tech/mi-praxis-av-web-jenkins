@@ -57,19 +57,17 @@ public class AccountingDAO {
 
     public SQP05233Filter setSQP05233Filter(SQP05233Filter filter) throws SQLException, Exception {
         CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05233(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP05233(?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-            cstmt.registerOutParameter(5, Types.VARCHAR);
-            cstmt.setString(1, filter.VP_CCUST);
-            cstmt.setString(2, filter.VP_FECHA);
-            cstmt.setString(3, filter.VP_TIPO);
+            cstmt.registerOutParameter(2, Types.VARCHAR);
+            cstmt.registerOutParameter(3, Types.VARCHAR);
+            cstmt.setString(1, filter.IN_IDCONT);
             cstmt.execute();
-            filter.dbException.SQLCODE = cstmt.getString(4);
-            filter.dbException.MESSAGE = cstmt.getString(5);
+            filter.dbException.SQLCODE = cstmt.getString(2);
+            filter.dbException.MESSAGE = cstmt.getString(3);
 
         } finally {
             if (cstmt != null) {
@@ -440,7 +438,7 @@ public class AccountingDAO {
         return lista;
     }
     
-    public void updatePending() throws SQLException, Exception {
+    public void test() throws SQLException, Exception {
         
         CallableStatement cstmt = null;
 
@@ -450,22 +448,20 @@ public class AccountingDAO {
         
         try {
             
-            BufferedReader br = new BufferedReader(new FileReader("D:\\UserFilesMiatech\\gnovoa\\Mis documentos\\Colombia_Reprocesar.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("D:\\UserFilesMiatech\\gnovoa\\Mis documentos\\Debitos_Reprocesar.csv"));
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(";");
                 
-                String bandoc = values[0];
-                String refd = values[1];
-                String dcont = values[2];
-                String neto =  values[3];
+                String refd = values[0];
+                String codpro = values[1];
    
                 
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt = cnx.prepareCall(SQLCLL01);
-                cstmt.setString(1, bandoc);
-                cstmt.setString(2, refd);
+                cstmt.setString(1, refd);
+                cstmt.setString(2, codpro);
                 cstmt.execute();
                 
                 i++;

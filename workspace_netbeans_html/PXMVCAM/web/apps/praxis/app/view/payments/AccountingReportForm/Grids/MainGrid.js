@@ -59,7 +59,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                     {text: 'Records', dataIndex: 'TOTRECS', width: 80},
                     {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
                     {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
-                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 90,
+                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -68,7 +68,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPreErrors'
                         }
                     },
-                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 90,
+                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -164,6 +164,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         tooltip: 'Reverse',
                         handler: 'onReverseAccounting',
                         isDisabled: 'disableReverse'
+                    }
+                ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Dl.',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-download',
+                        tooltip: 'Download',
+                        handler: 'onDownloadAccounting',
+                        isDisabled: 'disableDownload'
                     }
                 ]
             }

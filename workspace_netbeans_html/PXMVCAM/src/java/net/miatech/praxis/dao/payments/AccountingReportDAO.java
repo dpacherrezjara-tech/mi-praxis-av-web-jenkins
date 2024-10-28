@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
+import net.miatech.praxis.payment.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
@@ -14,6 +15,7 @@ import net.miatech.praxis.payment.dto.SPACR008Filter;
 import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF135;
 import net.miatech.praxis.payment.entities.X3183;
+import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.JdbcUtils;
 import net.miatech.praxis.utils.MailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,20 @@ public class AccountingReportDAO implements AccountingReportLogic{
                 params, new BeanPropertyRowMapper(MPF134.class));
         filter.setResponse((List<MPF134>) obj.get("result"));
         filter.setPageOut(obj);
+        
+        return filter;
+    }
+    
+    @Override
+    public SQP05233Filter loadSQP05233Filter(SQP05233Filter filter) throws Exception {
+        filter.setPage();
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SQP05233",
+                params, new BeanPropertyRowMapper(A4545.class));
+        filter.setResponse((List<A4545>) obj.get("result"));
+        //filter.setPageOut(obj);
+        filter.dbException.SQLCODE = obj.get("OU_SQLCODE").toString();
+        filter.dbException.MESSAGE = obj.get("OU_MESSAGE").toString();
         return filter;
     }
 

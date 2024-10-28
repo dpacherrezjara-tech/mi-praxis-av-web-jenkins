@@ -513,14 +513,14 @@ public class AccountingController extends BaseController {
     }
 
     
-    @RequestMapping(value = "/updatePending")
+    @RequestMapping(value = "/test")
     public
     void updatePending(ModelMap map, HttpServletRequest request) {
         try {
 
             logic = new AccountingLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
-            logic.updatePending();
+            logic.test();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

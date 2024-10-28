@@ -8,6 +8,7 @@ import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
 import net.miatech.praxis.payment.dto.SPACR008Filter;
+import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,13 @@ public class AccountingReportController {
         System.out.println("***** AccountingReport - loadLogCont *****");
         SPACR007Filter filter = logic.loadSPACR007Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "downloadAccounting",method = RequestMethod.POST)
+    public ResponseEntity<?> downloadAccounting(@RequestBody SQP05233Filter filter) throws Exception {
+        System.out.println("***** AccountingReport - downloadAccounting *****");
+        logic.loadSQP05233Filter(filter);
         return ResponseUtils.ok(filter);
     }
     
