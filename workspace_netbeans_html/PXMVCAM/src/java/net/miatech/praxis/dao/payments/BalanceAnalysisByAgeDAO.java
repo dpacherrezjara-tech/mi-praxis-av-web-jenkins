@@ -411,7 +411,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_MONTH_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_MONTH_V3(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1139,8 +1139,9 @@ public class BalanceAnalysisByAgeDAO {
 
             cstmt01.execute();
             objRtn.MESSAGE =  cstmt01.getString(1);
+            objRtn.strFormatDate = Functions.getMonthConvert(cstmt01.getString(2).substring(0, 6)) + '-' + cstmt01.getString(2).substring(6);
             objRtn.FECR =  cstmt01.getString(2);
-            objRtn.HOCR =  cstmt01.getString(3);
+            objRtn.HOCR =  cstmt01.getString(3).substring(0,2) + ':' + cstmt01.getString(3).substring(2,4) + ':' + cstmt01.getString(3).substring(4);
 
 
             

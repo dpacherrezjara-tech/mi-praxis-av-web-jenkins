@@ -266,6 +266,54 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                            }
                         },
                         {xtype: 'tbspacer', width: 20},
+                        {
+                            xtype: 'label',
+                            text: 'Process: ',
+                            padding: '4 0 0 0',
+                            width: 60,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtFECR',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+//                            maskRe: /[0-9]/,
+                            maxLength: 20,
+                            width: 85,
+                            enableKeyEvents: true,
+                            readOnly: true
+//                            listeners: {
+//                                keypress: 'BuscarSAGENT_keyDownHandler'
+//                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'label',
+                            text: '-',
+                            padding: '4 0 0 0',
+                            width: 15,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtHOCR',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+//                            maskRe: /[0-9]/,
+                            maxLength: 15,
+                            width: 85,
+                            enableKeyEvents: true,
+                            readOnly: true
+//                            listeners: {
+//                                keypress: 'BuscarSAGENT_keyDownHandler'
+//                            }
+                        },
 //                        {
 //                            xtype: 'radiogroup',
 ////                            fieldLabel: 'Sumary',
@@ -284,45 +332,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
 //                            }
 //                        },
 //                        {xtype: 'tbspacer', width: 15},
-                        {
-                            xtype: 'label',
-                            text: 'Process:',
-                            padding: '4 10 0 20',
-                            width: 70,
-                            style: {
-                                fontWeight: 'bold'
-                            }
-                        },
-                        {xtype: 'tbspacer', width: 20},
-                        {
-                            xtype: 'textfield',
-                            id: prototype.id + '-txtFECR',
-                            fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,
-                            maskRe: /[0-9]/,
-                            maxLength: 8,
-                            width: 85,
-                            enableKeyEvents: true,
-                            readOnly: true
-//                            listeners: {
-//                                keypress: 'BuscarSAGENT_keyDownHandler'
-//                            }
-                        },
-                        {xtype: 'tbspacer', width: 10},
-                        {
-                            xtype: 'textfield',
-                            id: prototype.id + '-txtHOCR',
-                            fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,
-                            maskRe: /[0-9]/,
-                            maxLength: 6,
-                            width: 85,
-                            enableKeyEvents: true,
-                            readOnly: true
-//                            listeners: {
-//                                keypress: 'BuscarSAGENT_keyDownHandler'
-//                            }
-                        },
+                        
                         
                         {xtype: 'tbspacer', width: 1, id: prototype.id + '-hidePENDING',},
                     ]
