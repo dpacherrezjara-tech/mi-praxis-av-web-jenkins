@@ -47,7 +47,7 @@
                 color: #F0F0F0;
                 font-family: Arial;
                 position: absolute;
-                left: 45.5%;
+                left: 47%;
                 font-size: 16pt;
             }
         </style>
@@ -76,7 +76,7 @@
                                             <div id="theader_iata"></div>
                                             <div id="theader_miatech"></div>
                                         </div>
-                                        <center><h3 class="instancia">       AVIANCA</h3></center>
+                                        <center><h3 class="instancia">AVIANCA</h3></center>
                                         <div id="theader_body">
                                             <div id="theader_revenue"></div>
                                         </div>
