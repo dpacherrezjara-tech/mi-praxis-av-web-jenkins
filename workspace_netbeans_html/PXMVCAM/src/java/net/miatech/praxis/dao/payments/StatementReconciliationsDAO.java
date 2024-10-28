@@ -3126,7 +3126,7 @@ public class StatementReconciliationsDAO {
 
         try {
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".MPS100(?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL PRAXISMP.MPS100(?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL02);

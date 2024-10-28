@@ -173,7 +173,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 console.log(res.result, 'res.result')
                 console.log(res.result.MESSAGE, 'res.result.MESSAGE')
                 if (res.result.MESSAGE.includes('YES')) {
-                    Ext.getCmp(prototype.id + '-txtFECR').setValue(res.result.FECR)
+                    Ext.getCmp(prototype.id + '-txtFECR').setValue(res.result.strFormatDate)
                     Ext.getCmp(prototype.id + '-txtHOCR').setValue(res.result.HOCR)
                 } else {
                     Ext.getCmp(prototype.id + '-txtFECR').setValue('')
@@ -594,7 +594,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     autoLoad: true
                 });
                 Ext.getCmp(prototype.id + id).bindStore(storeData1er);
-                Ext.getCmp(prototype.id + idLabel).setText(strCCUST[ccust] + ' - Total: $/' + Ext.util.Format.number(value.data.SVFOPUSD, '0,000'))
+                Ext.getCmp(prototype.id + idLabel).setText(strCCUST[ccust] + ' - Total USD: $/' + Ext.util.Format.number(value.data.SVFOPUSD, '0,000'))
             }
             
         }
@@ -640,7 +640,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
                             item.VENDOR = Paid;
                             totals.push(item);
-                            Ext.getCmp(prototype.id + '-lblTittlePaid4').setText('Total Amount: $/' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
+                            Ext.getCmp(prototype.id + '-lblTittlePaid4').setText('Total Amount USD: $/' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
 
 
                         } else {
@@ -801,7 +801,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
                             let tittleDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() === Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ? Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() : Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + ' - ' + Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
                             Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(tittleDate + ' - ' + tittleCountry)
-                            Ext.getCmp(prototype.id + '-lblTittlePaid').setText('Total Amount: $/' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
+                            Ext.getCmp(prototype.id + '-lblTittlePaid').setText('Total Amount USD: $/' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
 //                            }
 
                         }
@@ -853,6 +853,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 break;
             case 'SVFOPUSDPENDING':
                 me.bean.IN_TYPEPERC = 'N'
+                break;
+            case 'SVFOPUSD':
+                me.bean.IN_TYPEPERC = 'M'
                 break;
 
         }
