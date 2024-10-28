@@ -57,6 +57,13 @@ public class AccountingReportController {
         return ResponseUtils.ok(filter);
     }
     
+     @RequestMapping(value = "reverseAccounting",method = RequestMethod.POST)
+    public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
+        System.out.println("***** AccountingReport - reverseAccounting *****");
+        logic.loadSPACR005Filter(params);
+        return ResponseUtils.create();
+    }
+    
     @RequestMapping(value = "processAccounting",method = RequestMethod.POST)
     public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params) throws Exception {
         System.out.println("***** AccountingReport - processAccounting *****");
