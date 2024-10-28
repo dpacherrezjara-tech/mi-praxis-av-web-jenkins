@@ -58,11 +58,19 @@ public class AccountingReportController {
         return ResponseUtils.ok(filter);
     }
     
+
     @RequestMapping(value = "downloadAccounting",method = RequestMethod.POST)
     public ResponseEntity<?> downloadAccounting(@RequestBody SQP05233Filter filter) throws Exception {
         System.out.println("***** AccountingReport - downloadAccounting *****");
         logic.loadSQP05233Filter(filter);
         return ResponseUtils.ok(filter);
+	}
+
+     @RequestMapping(value = "reverseAccounting",method = RequestMethod.POST)
+    public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
+        System.out.println("***** AccountingReport - reverseAccounting *****");
+        logic.loadSPACR005Filter(params);
+        return ResponseUtils.create();
     }
     
     @RequestMapping(value = "processAccounting",method = RequestMethod.POST)
