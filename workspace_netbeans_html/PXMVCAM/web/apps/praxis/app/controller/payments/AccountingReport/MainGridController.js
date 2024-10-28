@@ -115,7 +115,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         newWin.show();
     },
     disableReverse: function(view, rowIndex, colIndex, item, record){
-        let reverseAction = ['2','3', '5'];
+        let reverseAction = ['2','3', '5','7'];
         return !reverseAction.includes(record.get('STCONT'));
     },
     onReverseAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
