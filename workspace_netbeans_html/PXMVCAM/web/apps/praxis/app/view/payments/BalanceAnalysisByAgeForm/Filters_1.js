@@ -88,6 +88,16 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                             listeners: {
                             }
                         },
+//                        {
+//                            xtype: 'label',
+//                            text: 'Process:',
+//                            padding: '4 10 0 20',
+//                            width: 70,
+//                            style: {
+//                                fontWeight: 'bold'
+//                            }
+//                        },
+                        
                   
 
                     ]
