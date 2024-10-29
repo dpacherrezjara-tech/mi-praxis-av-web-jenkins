@@ -368,7 +368,24 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryDebits', {
                                             readOnly: true,
                                             width: 100,
                                         },
-                                        {xtype: 'tbspacer', width: 390},
+                                        {xtype: 'tbspacer', width: 150},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Acc. Number',
+                                            textAlign: 'center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtACCNUMA',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            readOnly: true,
+                                            width: 80,
+                                        },
+                                        {xtype: 'tbspacer', width: 60},
                                     ]
                                 },
                                 {

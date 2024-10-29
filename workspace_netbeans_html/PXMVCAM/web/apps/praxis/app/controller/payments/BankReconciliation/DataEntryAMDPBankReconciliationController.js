@@ -512,6 +512,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtSTVALHide', this.bean.STVAL);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
+        this.setValue('de-txtACCNUMA', this.bean.ACCNUMA);
 
         this.setValue('de-txtQTYDOC', this.bean.QTYDOC);
         if (this.bean.QTYDOC > 1) {

@@ -619,6 +619,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         this.setValue('de-txtFCONT', this.bean.FCONT);
 //        this.setValue('de-txtIDCON', this.bean.IDCON);
         this.setValue('de-txtIDCON', this.bean.BANDOC);
+        this.setValue('de-txtACCNUMA', this.bean.ACCNUMA);
         this.setValue('de-txtCERRORHST', this.bean.CERRORHST);
         this.setValue('de-txtCERROIN', this.bean.CERROIN);
         this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
