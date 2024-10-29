@@ -2021,6 +2021,7 @@ public class BankReconciliationDAO {
                 objRtn.DES_CERROR = rs01.getString("DES_CERROR").trim();
                 objRtn.CERROIN = rs01.getString("CERROIN").trim();
                 objRtn.DES_CERROIN = rs01.getString("DES_CERROIN").trim();
+                objRtn.ACCNUMA = rs01.getString("ACCNUMA").trim();
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
                 objRtn.QTYDOC = rs01.getInt("QTYDOC");
                
