@@ -341,7 +341,7 @@ public class LoadSalesConciliationDAO {
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".UpdateRecords(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".UpdateRecords_V1(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
