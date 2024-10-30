@@ -1662,49 +1662,49 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     onFileLoadToTemp: function () {
 
-    console.log('onFileLoadToTemp');
+//    console.log('onFileLoadToTemp');
 
-//        var me = this;
-//        let beanValidation = {}
-//
-//        beanValidation.IN_ACCNUMBER = '***********';
-////        var fileField = Ext.getCmp(prototype.id + '-file');
-////        var file = fileField.fileInputEl.dom.files[0];
-//
-//        var file = Ext.getCmp(prototype.id + '-file').getValue();
-//        let beanString = JSON.stringify(beanValidation);
-//        if (!file) {
-//            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
-//                if (btn === 'ok' || btn === 'cancel')
-//                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
-//            });
-//            return;
-//        }
-//
-//        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
-//
-//        // Realizar una solicitud AJAX para cargar el archivo
-//        form.submit({
-//            url: prototype.url + '/setUploadLiquivsEC',
-//            waitMsg: 'Uploading your sure to upload the file...',
-////            method: 'POST',
-////            rawData: formData,
-//            params: {fileName: file, beanString: beanString},
-////            // Configurar el tipo de contenido adecuado y el encabezado
-////            headers: {
-////                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
-////            },
-//            success: function (f, o) {
-//
-//                var res = Ext.decode(o.response.responseText);
-//                var msjResult = res.msjResult;
-//                global.Msg({msg: msjResult});
-//
+        var me = this;
+        let beanValidation = {}
+
+        beanValidation.IN_ACCNUMBER = '***********';
+//        var fileField = Ext.getCmp(prototype.id + '-file');
+//        var file = fileField.fileInputEl.dom.files[0];
+
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        let beanString = JSON.stringify(beanValidation);
+        if (!file) {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+
+        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
+
+        // Realizar una solicitud AJAX para cargar el archivo
+        form.submit({
+            url: prototype.url + '/setUploadLiquivsEC',
+            waitMsg: 'Uploading your sure to upload the file...',
+//            method: 'POST',
+//            rawData: formData,
+            params: {fileName: file, beanString: beanString},
+//            // Configurar el tipo de contenido adecuado y el encabezado
+//            headers: {
+//                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
 //            },
-//            failure: function (response) {
-//                console.log('server-side failure with status code ' + response.status);
-//            }
-//        });
+            success: function (f, o) {
+
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult;
+                global.Msg({msg: msjResult});
+
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
 
     },
     
