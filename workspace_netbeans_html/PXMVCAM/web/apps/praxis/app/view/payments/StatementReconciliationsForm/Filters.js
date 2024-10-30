@@ -263,7 +263,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     displayField: 'IN_CODE_IN_NAME',
                     emptyText: 'All',
                     fieldStyle: 'text-align: left;',
-                    width: 295,
+                    width: 275,
                     labelWidth: 85,
                     labelAlign: 'left'
                 }
@@ -299,7 +299,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 {
                     xtype: 'label',
                     text: 'Doc Sap Bank:',
-                    padding: '3 0 0 30',
+                    padding: '3 0 0 20',
                     width: 120,
                 },
                 {
@@ -369,7 +369,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 {
                     xtype: 'label',
                     text: 'Status:',
-                    padding: '3 30 0 30',
+                    padding: '3 30 0 20',
                     hidden: false,
                     width: 80,
                     autoEl: {
@@ -420,10 +420,38 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 },
 //                 {xtype: 'tbspacer', width: 20},
                 {
+                    xtype:'combo',
+                    padding: '0 0 0 20',
+                    hidden : true,
+                    id: prototype.id+'-cmbExt',
+                    store: new Ext.data.SimpleStore({
+                        fields: ['value', 'description'],
+                        data: [
+                            ["E", "Ext"], ["C", "Col"]
+                        ]
+                    }),
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: false,
+                    width: 50,
+                    value: "E",
+                    hidden: false,
+                    typeAhead: true,
+                    valueField: 'value', displayField: 'description',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    listeners:{
+                    }
+                },
+                {
                     xtype: 'form',
                     id: prototype.id + '-formLIQvsEC',
                     border: false,
-                    padding: '0 0 0 25',
+                    padding: '0 0 0 0',
                     bodyStyle: 'background-color: #E3EAF9;',
 //                                  layout: 'vbox',
                     items: [{

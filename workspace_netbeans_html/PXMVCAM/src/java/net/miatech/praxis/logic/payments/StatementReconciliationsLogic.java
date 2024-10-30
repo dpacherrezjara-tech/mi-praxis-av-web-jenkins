@@ -122,4 +122,20 @@ public class StatementReconciliationsLogic {
     public String loadPX287MPS100(List<MPF101> lst) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287MPS100(lst);
     }
+    
+    public List<MPF101> CONFIEC(String BANDOC) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONFIEC(BANDOC);
+    }
+    
+    public List<MPF101> CONFILIQ(String Query) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONFILIQ(Query);
+    }
+    
+    public boolean CONCILIA1(String QUERY ,String ban,String dateci,String tranci,int qty,String netos) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA1( QUERY , ban, dateci, tranci, qty, netos);
+    }
+    
+    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci);
+    }
 }

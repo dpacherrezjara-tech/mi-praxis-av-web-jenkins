@@ -1214,7 +1214,7 @@ public class InputsDAO {
         
         strTitulo = "Processing Date : " + filter.FECR + " File Name: " + filter.INPNAME;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958DET(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02958DETA(?,?,?,?,?,?,?,?,?)}";
 
         try {
 
