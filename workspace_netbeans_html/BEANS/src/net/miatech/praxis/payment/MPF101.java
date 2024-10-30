@@ -30,6 +30,10 @@ public class MPF101 {
     public String  SDATEXP  ="";  
     public String  CODEBANK ="";  
     public String  BANDOC   ="";  
+    public String  DATECI   ="";  
+    public String  TRANCI   =""; 
+    public String  NETOS   ="";  
+    public int  QTY   =0;  
     public String  SEQ   ="";  
     public String  STCON    ="";  
     public String  FCONT    ="";  

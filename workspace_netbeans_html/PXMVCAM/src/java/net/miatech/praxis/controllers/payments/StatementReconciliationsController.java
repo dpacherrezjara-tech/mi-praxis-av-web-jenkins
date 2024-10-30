@@ -16,9 +16,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -3599,7 +3601,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
-    
+
     @RequestMapping(value = "/searchBean_DETAIL")
     public @ResponseBody
     String searchBean_DETAIL(ModelMap map, HttpServletRequest request) {
@@ -3671,34 +3673,34 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    @RequestMapping(value = "reverseOption",  method = RequestMethod.POST)
+    @RequestMapping(value = "reverseOption", method = RequestMethod.POST)
     public @ResponseBody
     String reverseOption(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- StatementReconciliations : reverseOption-------------");
-        
+
         Gson gson = new Gson();
         A2290Filter filter = new A2290Filter();
         A2290Filter result = new A2290Filter();
         String beanString;
         try {
-        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        beanString = request.getParameter("beanString");
-        filter = gson.fromJson(beanString, A2290Filter.class);
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
 
-        logic = new StatementReconciliationsLogic();
-        logic.setSession(this.serverSession.getServerSession());
-        UserView user = this.serverSession.getServerSession().getUserView();
-        
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            UserView user = this.serverSession.getServerSession().getUserView();
+
             result = logic.SQPREVERSA_MPF102_F1(filter, user);
             map.put("result", result);
             map.put("success", true);
         } catch (Exception ex) {
-            
+
             map.put("success", false);
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "executeOptionHead")
     public @ResponseBody
     String executeOptionHead(ModelMap map, HttpServletRequest request) {
@@ -3894,6 +3896,154 @@ public class StatementReconciliationsController extends BaseController {
             e.printStackTrace();
         }
         return message;
+    }
+
+    @RequestMapping(value = "setUploadLiquivsECColombia", method = RequestMethod.POST)
+    public @ResponseBody
+    String setUploadLiquivsECColombia(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+
+        byte[] bytes = null;
+        String message = "";
+        String filename = "";
+
+        try {
+
+            byte[] dataFile = excelfile.getBytes();
+            filename = request.getParameter("filename");
+
+            message = uploadFileConciliaECColombia(dataFile);
+
+            map.put("success", true);
+            map.put("msjResult", message);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msjResult", message);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private String uploadFileConciliaECColombia(byte[] bytes) throws Exception {
+
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        logic = new StatementReconciliationsLogic();
+        List<MPF101> lstData = new ArrayList<>();
+        String regs = "", regsEC = "";
+        String message = "";
+        int i = 0, cont = 0;
+        boolean isOk = false;
+        String BANDOC = "";
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "Revision." + strSesion + ".xlsx";
+            
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String strArchivo = "C:\\Dumps\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            List<MPF101> listaDataEECC = new ArrayList<MPF101>(0);
+            List<MPF101> listaDataLIQUI = new ArrayList<MPF101>(0);
+
+            //CODEBANK,ADATE,SDATE,MERCHAND,SAGENT,RED
+            int COUNT = 0;
+            Set<String> uniqueCODEBANK = new HashSet<>();
+            Set<String> uniqueADATE = new HashSet<>();
+            Set<String> uniqueSDATE = new HashSet<>();
+            Set<String> uniqueMERCHAND = new HashSet<>();
+            Set<String> uniqueSAGENT = new HashSet<>();
+            Set<String> uniqueRED = new HashSet<>();
+
+            DataFormatter dataFormatter = new DataFormatter(Locale.US);
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            try {
+                MPF101 obj = new MPF101();
+
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+
+                    if (row.getRowNum() >= 1) {
+
+                        uniqueADATE.add(dataFormatter.formatCellValue(row.getCell(0)).trim());
+                        uniqueCODEBANK.add(dataFormatter.formatCellValue(row.getCell(1)).trim());
+                        BANDOC = dataFormatter.formatCellValue(row.getCell(2)).trim();
+                        uniqueSDATE.add(dataFormatter.formatCellValue(row.getCell(3)).trim());
+                        uniqueSAGENT.add(dataFormatter.formatCellValue(row.getCell(4)).trim());
+                        uniqueMERCHAND.add(dataFormatter.formatCellValue(row.getCell(5)).trim());
+                        uniqueRED.add(dataFormatter.formatCellValue(row.getCell(6)).trim());
+                        COUNT++;
+                    }
+                }
+
+                String codebank = buildInClause("CODEBANK", uniqueCODEBANK);
+                String adate = buildInClause("ADATE", uniqueADATE);
+                String sdate = buildInClause("SDATE", uniqueSDATE);
+                String merchand = buildInClause("MERCHAND", uniqueMERCHAND);
+                String sagent = buildInClause("SAGENT", uniqueSAGENT);
+                String red = buildInClause("RED", uniqueRED);
+
+                String QUERY = codebank + " AND " + adate + " AND " + sdate + " AND " + merchand + " AND " + sagent + " AND " + red;
+                System.out.println(QUERY);
+
+                listaDataEECC = logic.CONFIEC(BANDOC);
+                listaDataLIQUI = logic.CONFILIQ(QUERY);
+
+                if (listaDataEECC.get(0).NETOS.equals(listaDataLIQUI.get(0).NETOS) && COUNT == listaDataLIQUI.get(0).QTY) {
+                    //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
+                    String ban = listaDataEECC.get(0).BANDOC;
+                    String dateci = listaDataEECC.get(0).DATECI;
+                    String tranci = listaDataEECC.get(0).TRANCI;
+                    int qty = listaDataLIQUI.get(0).QTY;
+                    String netos = listaDataLIQUI.get(0).NETOS;
+
+                    boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
+                    boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci);
+                    
+                    if(conci1 && conci2){
+                        message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
+                    }else{
+                        message = "Error in conciliation";
+                    }
+
+                }else{
+                    message = "The total amount or the number of settlements will not apply";
+                }
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                e.printStackTrace();
+            }
+            //Eliminar temporal           
+            archivo.delete();
+        } catch (Exception e) {
+            message = e.getMessage();
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    private static String buildInClause(String fieldName, Set<String> values) {
+        if (values.isEmpty()) {
+            return "";
+        }
+        StringBuilder clause = new StringBuilder(fieldName + " IN (");
+        for (String value : values) {
+            clause.append("'").append(value).append("', ");
+        }
+        clause.setLength(clause.length() - 2);
+        clause.append(")");
+
+        return clause.toString();
     }
 
 }

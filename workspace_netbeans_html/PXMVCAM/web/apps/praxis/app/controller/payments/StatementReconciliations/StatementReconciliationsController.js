@@ -1557,28 +1557,43 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     onLoadClick_conciliaEC: function () {
 
-//        var valorcmbGrp = Ext.getCmp(prototype.id + '-cmbTypeGroup').getValue();
-//
-//        if (valorcmbGrp === '') {
-//            global.Msg({msg: 'Please select Load Type'});
-//        } else {
-        var msjPregunta = '', msjError = '';
-        msjPregunta = 'Sure to load file?';
+        var valorExt = Ext.getCmp(prototype.id + '-cmbExt').getValue();
+        
+        if(valorExt === 'E'){
+            var msjPregunta = '', msjError = '';
+            msjPregunta = 'Sure to load file?';
 
-        if (msjError === '') {
-            Ext.MessageBox.show({
-                title: 'Icon Support',
-                msg: msjPregunta,
-                buttons: Ext.MessageBox.OKCANCEL,
-                icon: Ext.MessageBox.WARNING,
-                fn: function (btn) {
-                    if (btn === 'ok') {
-                        me.onFileLoadToTemp();
+            if (msjError === '') {
+                Ext.MessageBox.show({
+                    title: 'Icon Support',
+                    msg: msjPregunta,
+                    buttons: Ext.MessageBox.OKCANCEL,
+                    icon: Ext.MessageBox.WARNING,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            me.onFileLoadToTemp();
+                        }
                     }
-                }
-            });
+                });
+            }
+        }else if(valorExt === 'C'){
+            var msjPregunta = '', msjError = '';
+            msjPregunta = 'Sure to load file?';
+
+            if (msjError === '') {
+                Ext.MessageBox.show({
+                    title: 'Icon Support',
+                    msg: msjPregunta,
+                    buttons: Ext.MessageBox.OKCANCEL,
+                    icon: Ext.MessageBox.WARNING,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            me.onFileLoadColombia();
+                        }
+                    }
+                });
+            }
         }
-//        }
     },
     onFileLoadToTemp_bk: function () {
 
@@ -1647,49 +1662,97 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     onFileLoadToTemp: function () {
 
+    console.log('onFileLoadToTemp');
 
-
-        var me = this;
-        let beanValidation = {}
-
-        beanValidation.IN_ACCNUMBER = '***********';
-//        var fileField = Ext.getCmp(prototype.id + '-file');
-//        var file = fileField.fileInputEl.dom.files[0];
-
-        var file = Ext.getCmp(prototype.id + '-file').getValue();
-        let beanString = JSON.stringify(beanValidation);
-        if (!file) {
-            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
-                if (btn === 'ok' || btn === 'cancel')
-                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
-            });
-            return;
-        }
-
-        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
-
-        // Realizar una solicitud AJAX para cargar el archivo
-        form.submit({
-            url: prototype.url + '/setUploadLiquivsEC',
-            waitMsg: 'Uploading your sure to upload the file...',
-//            method: 'POST',
-//            rawData: formData,
-            params: {fileName: file, beanString: beanString},
-//            // Configurar el tipo de contenido adecuado y el encabezado
-//            headers: {
-//                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
+//        var me = this;
+//        let beanValidation = {}
+//
+//        beanValidation.IN_ACCNUMBER = '***********';
+////        var fileField = Ext.getCmp(prototype.id + '-file');
+////        var file = fileField.fileInputEl.dom.files[0];
+//
+//        var file = Ext.getCmp(prototype.id + '-file').getValue();
+//        let beanString = JSON.stringify(beanValidation);
+//        if (!file) {
+//            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+//                if (btn === 'ok' || btn === 'cancel')
+//                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+//            });
+//            return;
+//        }
+//
+//        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
+//
+//        // Realizar una solicitud AJAX para cargar el archivo
+//        form.submit({
+//            url: prototype.url + '/setUploadLiquivsEC',
+//            waitMsg: 'Uploading your sure to upload the file...',
+////            method: 'POST',
+////            rawData: formData,
+//            params: {fileName: file, beanString: beanString},
+////            // Configurar el tipo de contenido adecuado y el encabezado
+////            headers: {
+////                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
+////            },
+//            success: function (f, o) {
+//
+//                var res = Ext.decode(o.response.responseText);
+//                var msjResult = res.msjResult;
+//                global.Msg({msg: msjResult});
+//
 //            },
-            success: function (f, o) {
+//            failure: function (response) {
+//                console.log('server-side failure with status code ' + response.status);
+//            }
+//        });
 
-                var res = Ext.decode(o.response.responseText);
-                var msjResult = res.msjResult;
-                global.Msg({msg: msjResult});
+    },
+    
+    onFileLoadColombia: function () {
 
-            },
-            failure: function (response) {
-                console.log('server-side failure with status code ' + response.status);
-            }
-        });
+    console.log('onFileLoadColombia');
+
+//        var me = this;
+//        let beanValidation = {}
+//
+//        beanValidation.IN_ACCNUMBER = '***********';
+////        var fileField = Ext.getCmp(prototype.id + '-file');
+////        var file = fileField.fileInputEl.dom.files[0];
+//
+//        var file = Ext.getCmp(prototype.id + '-file').getValue();
+//        let beanString = JSON.stringify(beanValidation);
+//        if (!file) {
+//            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+//                if (btn === 'ok' || btn === 'cancel')
+//                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+//            });
+//            return;
+//        }
+//
+//        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
+//
+//        // Realizar una solicitud AJAX para cargar el archivo
+//        form.submit({
+//            url: prototype.url + '/setUploadLiquivsECColombia',
+//            waitMsg: 'Uploading your sure to upload the file...',
+////            method: 'POST',
+////            rawData: formData,
+//            params: {fileName: file, beanString: beanString},
+////            // Configurar el tipo de contenido adecuado y el encabezado
+////            headers: {
+////                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
+////            },
+//            success: function (f, o) {
+//
+//                var res = Ext.decode(o.response.responseText);
+//                var msjResult = res.msjResult;
+//                global.Msg({msg: msjResult});
+//
+//            },
+//            failure: function (response) {
+//                console.log('server-side failure with status code ' + response.status);
+//            }
+//        });
 
     },
     btnFilter_click: function (obj) {
