@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1632,
+                            width: 1672,
                             margin: '10 0 0 0',
                             layout: {
                                 type: 'vbox',
@@ -65,7 +65,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1632,
+                                    width: 1672,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -85,6 +85,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                    let descScountry = data.descSCOUNTRY != undefined
                                                     metaData.tdAttr = 'data-qtip="' + data.descSCOUNTRY + '"';
                                                     return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = 'text-align:center; margin-right:3px ';
+                                                    return '<b>' + 'Total' + '<b>';
                                                 },
                                             },
                                             {text: 'Agent', dataIndex: 'SAGENT', width: 70,
@@ -114,6 +118,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             metaData.style = "text-align:right;background-color:#a1cbf6;";
                                                             return Ext.util.Format.number(value, '0,000');
                                                         },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totTOTAL, '0,000') + '<b>';
+                                                        },
                                                     },
                                                     {
                                                         text: 'Curr', dataIndex: 'SCURREVEN', width: 40,
@@ -123,10 +132,15 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                     },
                                                     {
-                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 100, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#a1cbf6;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETO, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
@@ -145,12 +159,22 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             return Ext.util.Format.number(value, '0,000');
                                                         },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQTYTKT10, '0,000') + '<b>';
+                                                        },
                                                     },
                                                     {
                                                         text: 'Amount', dataIndex: 'SVFOPUS10', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totSVFOPUSD10, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
@@ -169,12 +193,22 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             return Ext.util.Format.number(value, '0,000');
                                                         },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQTYTKT30, '0,000') + '<b>';
+                                                        },
                                                     },
                                                     {
                                                         text: 'Amount', dataIndex: 'SVFOPUS30', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totSVFOPUSD30, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
@@ -190,15 +224,25 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     {
                                                         text: 'Qty', dataIndex: 'QTYTKT60', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#fffc90;";
                                                             return Ext.util.Format.number(value, '0,000');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQTYTKT60, '0,000') + '<b>';
                                                         },
                                                     },
                                                     {
                                                         text: 'Amount', dataIndex: 'SVFOPUS60', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#fffc90;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totSVFOPUSD60, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
@@ -214,15 +258,25 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     {
                                                         text: 'Qty', dataIndex: 'QTYTKT90', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#fffc90;";
                                                             return Ext.util.Format.number(value, '0,000');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQTYTKT90, '0,000') + '<b>';
                                                         },
                                                     },
                                                     {
                                                         text: 'Amount', dataIndex: 'SVFOPUS90', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#fffc90;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totSVFOPUSD90, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
@@ -238,15 +292,25 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     {
                                                         text: 'Qty', dataIndex: 'QTYTKT120', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#ff745b;";
                                                             return Ext.util.Format.number(value, '0,000');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQTYTKT120, '0,000') + '<b>';
                                                         },
                                                     },
                                                     {
-                                                        text: 'Amount', dataIndex: 'SVFOPUS120', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Amount', dataIndex: 'SVFOPUS120', width: 100, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#ff745b;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totSVFOPUSD120, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
@@ -262,178 +326,30 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     {
                                                         text: 'Qty', dataIndex: 'QTYTKT999', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#ff745b;";
                                                             return Ext.util.Format.number(value, '0,000');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQTYTKT999, '0,000') + '<b>';
                                                         },
                                                     },
                                                     {
                                                         text: 'Amount', dataIndex: 'SVFOPUS999', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.style = "text-align:right;background-color:#ff745b;";
                                                             return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totSVFOPUSD999, '0,000') + '<b>';
                                                         },
                                                     },
                                                 ]
                                             },
-//                                            {
-//                                                text: 'JUL-2024',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: false,
-//                                                    align: 'center'
-//                                                },
-//                                                columns: [
-//                                                    {
-//                                                        text: 'Qty', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                ]
-//                                            },
-//                                            {
-//                                                text: 'AUG-2024',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: false,
-//                                                    align: 'center'
-//                                                },
-//                                                columns: [
-//                                                    {
-//                                                        text: 'Qty', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                ]
-//                                            },
-//                                            {
-//                                                text: 'SEP-2024',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: false,
-//                                                    align: 'center'
-//                                                },
-//                                                columns: [
-//                                                    {
-//                                                        text: 'Qty', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                ]
-//                                            },
-//                                            {
-//                                                text: 'OCT-2024',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: false,
-//                                                    align: 'center'
-//                                                },
-//                                                columns: [
-//                                                    {
-//                                                        text: 'Qty', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                ]
-//                                            },
-//                                            {
-//                                                text: 'NOV-2024',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: false,
-//                                                    align: 'center'
-//                                                },
-//                                                columns: [
-//                                                    {
-//                                                        text: 'Qty', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                ]
-//                                            },
-//                                            {
-//                                                text: 'DEC-2024',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: false,
-//                                                    align: 'center'
-//                                                },
-//                                                columns: [
-//                                                    {
-//                                                        text: 'Qty', dataIndex: 'QTYTKT', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: 'Amount', dataIndex: 'SVFOPUSD', width: 80, align: 'center', menuDisabled: true,
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-//                                                            return Ext.util.Format.number(value, '0,000');
-//                                                        },
-//                                                    },
-//                                                ]
-//                                            },
 
-//                                            {
-//                                                sortable: false,
-//                                                xtype: 'actioncolumn',
-//                                                width: 40,
-//                                                text: 'Edit',
-//                                                align: 'center',
-//                                                items: [
-//                                                    {
-//                                                        iconCls: 'prx-icon-edit',
-//                                                        tooltip: 'Edit',
-//                                                        handler: 'onEditClick'
-//                                                    }
-//                                                ]
-//                                            }
                                         ]
                                     }
                                 }
@@ -521,10 +437,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                     },
                                                     {text: 'Agent', dataIndex: 'SAGENT', width: 70,
+                                                        listeners: {
+                                                            click: 'clickColumnFilters'
+                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return value;
+                                                            return '<a href="#payments-balance-analysis-by-age-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                         },
                                                     },
                                                     {text: 'Canal', dataIndex: 'CANAL', width: 70,
@@ -887,15 +806,20 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 },
                                                 items: [
                                                     {text: 'Agent', dataIndex: 'SAGENT', width: 70,
+                                                        listeners: {
+                                                            click: 'clickColumnFilters'
+                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return value;
+                                                            return '<a href="#payments-balance-analysis-by-age-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                            
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = 'text-align:center; margin-right:3px ';
                                                             return '<b>' + 'Total' + '<b>';
                                                         },
+                                                        
                                                     },
                                                     {text: 'Canal', dataIndex: 'CANAL', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -2242,7 +2166,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     id: prototype.id + '-displayGraf4',
                                                     width: 520,
                                                     border: false,
-                                                    hidden: true,
+                                                    hidden: false,
 //                                                    height: 550,
                                                     background: '#E0F8F7',
                                                     margin: '5 0 0 5',
@@ -2254,6 +2178,359 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         title: {
                                                             alignTo: 'chart',
                                                             text: 'AVIANCA GROUP',
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    legend: {
+                                                        docked: 'bottom',
+                                                        background: '#E3EAEF'
+
+                                                    },
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'bottom',
+                                                            fields: ['PENDING', 'PAID'],
+                                                            grid: true,
+                                                            title: '',
+                                                            renderer: function (obj, value) {
+                                                                return Ext.util.Format.number(value);
+                                                            },
+
+                                                        },
+                                                        {
+                                                            type: 'category3d',
+                                                            position: 'left',
+                                                            grid: true,
+                                                            fields: 'strDescription',
+                                                            title: {
+                                                                translationX: -30
+                                                            },
+                                                            label: {
+                                                                textAlign: 'left'
+                                                            },
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            //xField: ['AMOUNT'],
+                                                            xField: 'strDescription',
+                                                            yField: ['PENDING', 'PAID' ],
+                                                            colors: ['#d82c2c', '#5dd92d'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 900
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                },
+                                            ]
+                                        },
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxSumaryCountryData',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+                            height: 'auto',
+//                            width: 1222,
+//                            width: 1080,
+                            hidden: true,
+                            margin: '10 0 10 0',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblTittleGrid6',
+                                    labelAlign: 'center',
+                                    border: true,
+                                    align: 'center',
+                                    margin: '5 0 5 0',
+                                    style: {
+                                        fontSize: '18px',
+                                        fontWeight: 'bold',
+                                        color: '#231223',
+                                        fontFamily: '"Open Sans", sans-serif',
+                                        textAlign: 'center'
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    border: false,
+                                    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                    items: [
+
+                                        {
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridSumaryCountryData',
+                                            width: 810,
+                                            columnLines: true,
+                                            features: [{
+                                                    ftype: 'summary'
+                                                }],
+                                            columns: {
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {text: 'Code', dataIndex: 'SCOUNTRY', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = 'text-align:center; margin-right:3px ';
+                                                            return '<b>' + 'Total' + '<b>';
+                                                        },
+                                                    },
+                                                    {text: 'Name', dataIndex: 'descSCOUNTRY', width: 150,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                    },
+                                                    {
+                                                        text: 'Total USD',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Tkt', dataIndex: 'QTYTKT', width: 90, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#a1cbf6;";
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryCountryData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTYTKT, '0,000') + '<b>';
+                                                                },
+                                                                
+                                                            },
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOPUSD', width: 90, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#a1cbf6;";
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryCountryData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totSVFOPUSD, '0,000') + '<b>';
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Paid USD',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Tkt', dataIndex: 'QTYTKTP', width: 90, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryCountryData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTYTKTP, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOPUSDP', width: 90, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryCountryData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totSVFOPUSDP, '0,000') + '<b>';
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Pending USD',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Amount', dataIndex: 'SVFOPUSDPENDING', width: 90, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryCountryData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totSVFOPUSDPENDING, '0,000') + '<b>';
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Percentage %',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: '% Paid', dataIndex: 'PERCPAID', width: 60, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    let data = record.data;
+//                                                                    if (data.PERCPENDING >= 80) {
+//                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
+//                                                                    } else {
+                                                                        metaData.style = "text-align:right;background-color:#84ff7a;";
+//                                                                    }
+                                                                    return Ext.util.Format.number(value, '0.00%');
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '% Pending', dataIndex: 'PERCPENDING', width: 75, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (value >= 80) {
+                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;background-color:#84ff7a;";
+                                                                    }
+                                                                    return Ext.util.Format.number(value, '0.00%');
+                                                                },
+                                                                listeners: {
+                                                                    headerclick: 'clickColumn'
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            layout: {
+                                                type: 'vbox',
+                                                pack: 'center'
+                                            },
+                                            border: false,
+                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                            items: [
+                                                {
+                                                    xtype: 'polar',
+                                                    id: prototype.id + '-displayPolar5',
+                                                    width: 520,
+                                                    border: true,
+                                                    hidden: true,
+                                                    margin: '0 0 0 5',
+                                                    innerPadding: 30,
+                                                    height: 260,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            text: 'Total Amount USD',
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['rotate', 'itemhighlight'],
+                                                    series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            colors: ['#2ca7d8', '#5dd92d'],
+                                                            stacked: false,
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                calloutLine: true,
+                                                                renderer: function (value, b, callout) {
+                                                                    callout.calloutWidth = 1;
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            highlight: true,
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    var label = '';
+                                                                    label = record.get('VENDOR');
+                                                                    if (label === 'Pending') {
+                                                                        label = 'Pending';
+                                                                    } else {
+                                                                        label = 'Paid';
+                                                                    }
+                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                },
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-displayGraf5',
+                                                    width: 520,
+                                                    border: false,
+
+                                                    height: 550,
+                                                    background: '#E0F8F7',
+                                                    margin: '5 0 0 5',
+                                                    flipXY: true,
+//                                                    width: 260,
+//                                                    height: 520,
+
+                                                    captions: {
+                                                        title: {
+                                                            alignTo: 'chart',
+                                                            text: 'Country',
                                                         }
                                                     },
                                                     animation: {
