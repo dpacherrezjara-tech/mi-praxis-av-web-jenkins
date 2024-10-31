@@ -2477,27 +2477,31 @@ public class BankReconciliationController extends BaseController {
                 Cell CH1_17 = row1.createCell(17);
                 Cell CH1_18 = row1.createCell(18);
                 Cell CH1_19 = row1.createCell(19);
+                Cell CH1_20 = row1.createCell(20);
+                Cell CH1_21 = row1.createCell(21);
 
-                CH1_0.setCellValue("CODEBANK");
-                CH1_1.setCellValue("SCARCOD");
-                CH1_2.setCellValue("SCARDN");
-                CH1_3.setCellValue("SAUTHOC");
-                CH1_4.setCellValue("SCURRENCY");
-                CH1_5.setCellValue("SVFOP");
-                CH1_6.setCellValue("MERCHNC");
-                CH1_7.setCellValue("SPNR");
-                CH1_8.setCellValue("SAGENT");
-                CH1_9.setCellValue("NEGOC");
-                CH1_10.setCellValue("TDOC");
-                CH1_11.setCellValue("PAYDATE");
-                CH1_12.setCellValue("ACCNUMBER");
-                CH1_13.setCellValue("TERMI");
-                CH1_14.setCellValue("BANDOC");
-                CH1_15.setCellValue("STCON");
-                CH1_16.setCellValue("FCONT");
-                CH1_17.setCellValue("QTYDOC");
-                CH1_18.setCellValue("QTYTKT");
-                CH1_19.setCellValue("PEND_DAYS");
+                CH1_0.setCellValue("STATUS");
+                CH1_1.setCellValue("PROCESS");
+                CH1_2.setCellValue("TDOC");
+                CH1_3.setCellValue("SAGENT");
+                CH1_4.setCellValue("NEGOC");
+                CH1_5.setCellValue("SDATE");
+                CH1_6.setCellValue("SCARCOD");
+                CH1_7.setCellValue("SCARDN");
+                CH1_8.setCellValue("SAUTHOC");
+                CH1_9.setCellValue("CODEBANK");
+                CH1_10.setCellValue("SMERCH");
+                CH1_11.setCellValue("SCURRENCY");
+                CH1_12.setCellValue("SVFOP");
+                CH1_13.setCellValue("PAYDATE");
+                CH1_14.setCellValue("ACCNUMBER");
+                CH1_15.setCellValue("TERMI");
+                CH1_16.setCellValue("BANDOC");
+                CH1_17.setCellValue("STCON");
+                CH1_18.setCellValue("FCONT");
+                CH1_19.setCellValue("QTYDOC");
+                CH1_20.setCellValue("QTYTKT");
+                CH1_21.setCellValue("PEND_DAYS");
 
                 CH1_0.setCellStyle(headerStyle);
                 CH1_1.setCellStyle(headerStyle);
@@ -2519,6 +2523,8 @@ public class BankReconciliationController extends BaseController {
                 CH1_17.setCellStyle(headerStyle);
                 CH1_18.setCellStyle(headerStyle);
                 CH1_19.setCellStyle(headerStyle);
+                CH1_20.setCellStyle(headerStyle);
+                CH1_21.setCellStyle(headerStyle);
 
                 //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -2541,6 +2547,8 @@ public class BankReconciliationController extends BaseController {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 20));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 21, 21));
                 ++vj;
                 //============================================
                 while (iter.hasNext()) {
@@ -2565,27 +2573,31 @@ public class BankReconciliationController extends BaseController {
                     Cell rcell17 = row1.createCell(17);
                     Cell rcell18 = row1.createCell(18);
                     Cell rcell19 = row1.createCell(19);
+                    Cell rcell20 = row1.createCell(20);
+                    Cell rcell21 = row1.createCell(21);
 
-                    rcell0.setCellValue(listaData.get(vi).CODEBANK);
-                    rcell1.setCellValue(listaData.get(vi).SCARCOD);
-                    rcell2.setCellValue(listaData.get(vi).SCARDN);
-                    rcell3.setCellValue(listaData.get(vi).SAUTHOC);
-                    rcell4.setCellValue(listaData.get(vi).SCURRENCY);
-                    rcell5.setCellValue(listaData.get(vi).SVFOP);
-                    rcell6.setCellValue(listaData.get(vi).MERCHNC);
-                    rcell7.setCellValue(listaData.get(vi).SPNR);
-                    rcell8.setCellValue(listaData.get(vi).SAGENT);
-                    rcell9.setCellValue(listaData.get(vi).NEGOC);
-                    rcell10.setCellValue(listaData.get(vi).TDOC);
-                    rcell11.setCellValue(listaData.get(vi).PAYDATE);
-                    rcell12.setCellValue(listaData.get(vi).ACCNUMBER);
-                    rcell13.setCellValue(listaData.get(vi).TERMI);
-                    rcell14.setCellValue(listaData.get(vi).BANDOC);
-                    rcell15.setCellValue(listaData.get(vi).STCON);
-                    rcell16.setCellValue(listaData.get(vi).FCONT);
-                    rcell17.setCellValue(listaData.get(vi).lngQTYDOC);
-                    rcell18.setCellValue(listaData.get(vi).lngQTYTKT);
-                    rcell19.setCellValue(listaData.get(vi).PENDINGDAYS);
+                    rcell0.setCellValue(listaData.get(vi).strDescStatus);
+                    rcell1.setCellValue(listaData.get(vi).COREP);
+                    rcell2.setCellValue(listaData.get(vi).descTDOC);
+                    rcell3.setCellValue(listaData.get(vi).SAGENT);
+                    rcell4.setCellValue(listaData.get(vi).NEGOC);
+                    rcell5.setCellValue(listaData.get(vi).SDATE);
+                    rcell6.setCellValue(listaData.get(vi).SCARCOD);
+                    rcell7.setCellValue(listaData.get(vi).SCARDN);
+                    rcell8.setCellValue(listaData.get(vi).SAUTHOC);
+                    rcell9.setCellValue(listaData.get(vi).CODEBANK);
+                    rcell10.setCellValue(listaData.get(vi).MERCHN);
+                    rcell11.setCellValue(listaData.get(vi).SCURRENCY);
+                    rcell12.setCellValue(listaData.get(vi).SVFOP);
+                    rcell13.setCellValue(listaData.get(vi).PAYDATE);
+                    rcell14.setCellValue(listaData.get(vi).ACCNUMBER);
+                    rcell15.setCellValue(listaData.get(vi).TERMI);
+                    rcell16.setCellValue(listaData.get(vi).BANDOC);
+                    rcell17.setCellValue(listaData.get(vi).STCON);
+                    rcell18.setCellValue(listaData.get(vi).FCONT);
+                    rcell19.setCellValue(listaData.get(vi).lngQTYDOC);
+                    rcell20.setCellValue(listaData.get(vi).lngQTYTKT);
+                    rcell21 .setCellValue(listaData.get(vi).PENDINGDAYS);
 
                     rcell0.setCellStyle(bodyStyle);
                     rcell1.setCellStyle(bodyStyle);
@@ -2607,6 +2619,8 @@ public class BankReconciliationController extends BaseController {
                     rcell17.setCellStyle(bodyStyle);
                     rcell18.setCellStyle(bodyStyle);
                     rcell19.setCellStyle(bodyStyle);
+                    rcell20.setCellStyle(bodyStyle);
+                    rcell21.setCellStyle(bodyStyle);
 
                     iter.next();
                     ++vi;
@@ -2633,6 +2647,8 @@ public class BankReconciliationController extends BaseController {
                 sheet.autoSizeColumn(17, true);
                 sheet.autoSizeColumn(18, true);
                 sheet.autoSizeColumn(19, true);
+                sheet.autoSizeColumn(20, true);
+                sheet.autoSizeColumn(21, true);
 
                 //============================================
                 response.setContentType("application/vnd.openxml");
@@ -2657,22 +2673,24 @@ public class BankReconciliationController extends BaseController {
 
                 PrintWriter writer = new PrintWriter(fileA, "UTF-8");
                 String cadena;
-                cadena = "CODEBANK|SCARCOD|SCARDN|SAUTHOC|SCURRENCY|SVFOP|MERCHNC|SPNR|SAGENT|NEGOC|TDOC|PAYDATE|ACCNUMBER|TERMI|BANDOC|STCON|FCONT|QTYDOC|QTYTKT|PEND_DAYS";
+                cadena = "STATUS|PROCESS|TDOC|SAGENT|NEGOC|SDATE|SCARCOD|SCARDN|SAUTHOC|CODEBANK|SMERCH|SCURRENCY|SVFOP|PAYDATE|ACCNUMBER|TERMI|BANDOC|STCON|FCONT|QTYDOC|QTYTKT|PEND_DAYS";
                 writer.println("" + cadena);
 
                 for (vi = 0; vi < len; vi++) {
                     cadena = "";
-                    cadena += "" + listaData.get(vi).CODEBANK + "|";
+                    cadena += "" + listaData.get(vi).strDescStatus + "|";
+                    cadena += "" + listaData.get(vi).COREP + "|";
+                    cadena += "" + listaData.get(vi).descTDOC + "|";
+                    cadena += "" + listaData.get(vi).SAGENT + "|";
+                    cadena += "" + listaData.get(vi).NEGOC + "|";
+                    cadena += "" + listaData.get(vi).SDATE + "|";
                     cadena += "" + listaData.get(vi).SCARCOD + "|";
                     cadena += "" + listaData.get(vi).SCARDN + "|";
                     cadena += "" + listaData.get(vi).SAUTHOC + "|";
+                    cadena += "" + listaData.get(vi).CODEBANK + "|";
+                    cadena += "" + listaData.get(vi).MERCHN + "|";
                     cadena += "" + listaData.get(vi).SCURRENCY + "|";
                     cadena += "" + listaData.get(vi).SVFOP + "|";
-                    cadena += "" + listaData.get(vi).MERCHNC + "|";
-                    cadena += "" + listaData.get(vi).SPNR + "|";
-                    cadena += "" + listaData.get(vi).SAGENT + "|";
-                    cadena += "" + listaData.get(vi).NEGOC + "|";
-                    cadena += "" + listaData.get(vi).TDOC + "|";
                     cadena += "" + listaData.get(vi).PAYDATE + "|";
                     cadena += "" + listaData.get(vi).ACCNUMBER + "|";
                     cadena += "" + listaData.get(vi).TERMI + "|";
