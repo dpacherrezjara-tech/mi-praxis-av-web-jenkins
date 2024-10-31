@@ -274,6 +274,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelSumaryMonth = Ext.getCmp(prototype.id + '-boxSumaryMonthData')
         let panelSumaryCanal = Ext.getCmp(prototype.id + '-boxSumaryCanalData')
         let panelSumaryCompany = Ext.getCmp(prototype.id + '-boxSumaryCompanyData')
+        let panelSumaryCountry = Ext.getCmp(prototype.id + '-boxSumaryCountryData')
         if (panelReportDay.isVisible()) {
             me.typeBean = 'S' //Search
             this.setFormatParameter2();
@@ -290,7 +291,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (panelSumaryCompany.isVisible()) {
             this.setFormatParameter2();
             this.setGridSumaryCompany();
-        }
+        } else if (panelSumaryCountry.isVisible()) {
+            this.setFormatParameter2();
+            this.setGridSumaryCountry();
+        } 
     },
 
     isVacio: function (elemento) {
@@ -680,9 +684,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                         if (res.data2.length > 0) {
                             for (let i = res.data2.length - 1; i >= 0; i--) {
-                                let AMOUNT = res.data2[i].SVFOPUSDPENDING;
+                                let PENDING = res.data2[i].SVFOPUSDPENDING;
+                                let PAID = res.data2[i].SVFOPUSDP;
                                 let CCUST = res.data2[i].CCUST;
-                                charts.push({strDescription: strCCUST[CCUST], AMOUNT: AMOUNT});
+                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID});
                             }
 
 //                            for (let i = 0 ;i < res.data2.length; i++) {
@@ -692,7 +697,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //                                charts.push({strDescription: SAGENT + '-' + CANAL , AMOUNT: AMOUNT});
 //                            }
                         } else {
-                            charts.push({strDescription: 'Not found', AMOUNT: 1});
+                            charts.push({strDescription: 'Not found', AMOUNT: 1,AMOUNT2: 1 });
                         }
 
 
@@ -720,6 +725,104 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
             Ext.getCmp(prototype.id + '-gridSumaryCompanyData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
+        }
+    },
+    setGridSumaryCountry: function () {
+        win.lblUser_toolTip("Estructura: MPF118");
+        me.panelActual = '-boxSumaryCountryData';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchRS'
+                }, listeners: {
+                    beforeload: function (obj) {
+
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj, obj2, success, response, obj5) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin6');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        // ------------------ GRAFICOS -------------------------
+
+                        var item = {};
+                        var item2 = {};
+                        var totals = [];
+                        var charts = [];
+                        console.log(obj.data.items, 'obj.data.items')
+                        if (obj.data.items.length > 0) {
+                            item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
+                            var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000');
+                            item2.VENDOR = pending;
+                            totals.push(item2);
+
+                            item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
+                            var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000');
+                            item.VENDOR = Paid;
+                            totals.push(item);
+                        } else {
+                            totals.push({})
+                        }
+
+
+                        var storeData1er = Ext.create('Ext.data.Store', {
+                            data: totals,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-displayPolar5').bindStore(storeData1er);
+
+                        var res = Ext.JSON.decode(response._response.responseText);
+
+
+                        if (res.data2.length > 0) {
+                            for (let i = res.data2.length - 1; i >= 0; i--) {
+                                let AMOUNT = res.data2[i].SVFOPUSDPENDING;
+                                let SCOUNTRY = res.data2[i].SCOUNTRY;
+                                charts.push({strDescription: SCOUNTRY, AMOUNT: AMOUNT});
+                            }
+
+//                            for (let i = 0 ;i < res.data2.length; i++) {
+//                                let AMOUNT = res.data2[i].SVFOPUSDPENDING;
+//                                let SAGENT = res.data2[i].SAGENT;
+//                                let CANAL = res.data2[i].CANAL;
+//                                charts.push({strDescription: SAGENT + '-' + CANAL , AMOUNT: AMOUNT});
+//                            }
+                        } else {
+                            charts.push({strDescription: 'Not found', AMOUNT: 1});
+                        }
+
+
+
+                        var storeData1ercharts = Ext.create('Ext.data.Store', {
+                            data: charts,
+                            autoLoad: true
+                        });
+
+                        Ext.getCmp(prototype.id + '-displayGraf5').bindStore(storeData1ercharts);
+
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+
+                        }
+                        me.setWidthPie();
+                    }
+                }
+            });
+            global.clear();
+
+            Ext.getCmp(prototype.id + '-gridSumaryCountryData').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin6').bindStore(storeGridDatas);
         }
     },
     setGridReportDay: function () {
@@ -899,6 +1002,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             this.setGridSumaryCanal();
         } else if (me.panelActual == '-boxSumaryCompanyData') {
             this.setGridSumaryCompany();
+        } else if (me.panelActual == '-boxSumaryCountryData') {
+            this.setGridSumaryCountry();
         }
 
 
@@ -931,7 +1036,21 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-btn-TW').hide()
             Ext.getCmp(prototype.id + '-cmbTOP').hide()
             Ext.getCmp(prototype.id + '-lblTOP').hide()
+        } else if (newValue.opcion == '5') {
+            this.setFormatParameter2();
+            this.setGridSumaryCountry()
+            Ext.getCmp(prototype.id + '-btn-TW').hide()
+            Ext.getCmp(prototype.id + '-cmbTOP').show()
+            Ext.getCmp(prototype.id + '-lblTOP').show()
         }
+        
+    },
+    clickColumnFilters: function (obj, metaData, rowNum, columnNum, obj2, rowData){
+        
+        
+        Ext.getCmp(prototype.id + '-txtAGENCY').setValue(rowData.data.SAGENT);
+        
+        me.btnSearch_click();
     },
     validateFields: function () {
         var msj = '';
@@ -981,6 +1100,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+        
 
     },
     btnExcel_click: function (obj, e) {
@@ -1048,6 +1168,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 break;
             case  '-boxSumaryCompanyData':
                 me.pagginActual = '-paggin5';
+                break;
+            case  '-boxSumaryCountryData':
+                me.pagginActual = '-paggin6';
                 break;
         }
     },

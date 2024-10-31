@@ -55,11 +55,11 @@ public class BalanceAnalysisByAgeDAO {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
         A2356Filter bean;
-        double totTOTAL = 0, totNETO = 0;
+        double totTOTAL = 0, totNETO = 0,totQTYTKT10 = 0,totQTYTKT30 = 0, totQTYTKT60 = 0, totQTYTKT90 = 0, totQTYTKT120 = 0, totQTYTKT999 = 0, totSVFOPUSD10 = 0, totSVFOPUSD30 = 0, totSVFOPUSD60 = 0, totSVFOPUSD90 = 0, totSVFOPUSD120 = 0, totSVFOPUSD999 = 0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF117_REPORT(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF117_REPORT_V1(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -93,6 +93,18 @@ public class BalanceAnalysisByAgeDAO {
             while (rst.next()) {
                 totTOTAL = rst.getDouble("TOTQTYTKT");
                 totNETO = rst.getDouble("TOTSVFOPUSD");
+                totQTYTKT10 = rst.getDouble("TOTQTYTKT10");
+                totQTYTKT30 = rst.getDouble("TOTQTYTKT30");
+                totQTYTKT60 = rst.getDouble("TOTQTYTKT60");
+                totQTYTKT90 = rst.getDouble("TOTQTYTKT90");
+                totQTYTKT120 = rst.getDouble("TOTQTYTKT120");
+                totQTYTKT999 = rst.getDouble("TOTQTYTKT999");
+                totSVFOPUSD10 = rst.getDouble("TOTSVFOPUSD10");
+                totSVFOPUSD30 = rst.getDouble("TOTSVFOPUSD30");
+                totSVFOPUSD60 = rst.getDouble("TOTSVFOPUSD60");
+                totSVFOPUSD90 = rst.getDouble("TOTSVFOPUSD90");
+                totSVFOPUSD120 = rst.getDouble("TOTSVFOPUSD120");
+                totSVFOPUSD999 = rst.getDouble("TOTSVFOPUSD999");
             }
             rst.close();
 
@@ -131,6 +143,18 @@ public class BalanceAnalysisByAgeDAO {
 
                     bean.totTOTAL = totTOTAL;
                     bean.totNETO = totNETO;
+                    bean.totSVFOPUSD10 = totSVFOPUSD10;
+                    bean.totSVFOPUSD30 = totSVFOPUSD30;
+                    bean.totSVFOPUSD60 = totSVFOPUSD60;
+                    bean.totSVFOPUSD90 = totSVFOPUSD90;
+                    bean.totSVFOPUSD120 = totSVFOPUSD120;
+                    bean.totSVFOPUSD999 = totSVFOPUSD999;
+                    bean.totQTYTKT10 = totQTYTKT10;
+                    bean.totQTYTKT30 = totQTYTKT30;
+                    bean.totQTYTKT60 = totQTYTKT60;
+                    bean.totQTYTKT90 = totQTYTKT90;
+                    bean.totQTYTKT120 = totQTYTKT120;
+                    bean.totQTYTKT999 = totQTYTKT999;
 
                     bean.page.PAGNUM = filter.page.PAGNUM;
                     bean.page.PAGROW = filter.page.PAGROW;
@@ -1067,6 +1091,246 @@ public class BalanceAnalysisByAgeDAO {
 //                    bean.SAGENT = rst.getString("SAGENT").trim();
 //                    bean.descSAGENT = rst.getString("SAGENTN").trim();
 //                    bean.CANAL = rst.getString("CFUENTE").trim();
+//                    bean.SCURREVEN = rst.getString("SCURREVEN").trim();
+//                    bean.DIFFDAYS = rst.getString("DIFFDAYS").trim();
+//                    bean.FECR = rst.getString("FECR").trim();
+//                    bean.HOCR = rst.getString("HOCR").trim();
+
+                    bean.SVFOPUSD = rst.getDouble("SVFOPUSD");
+                    bean.SVFOPUSDP = rst.getDouble("SVFOPUSDP");
+                    bean.SVFOPUSDPENDING = rst.getDouble("SVFOPUSDPENDING");
+                    bean.PERCPAID = rst.getDouble("PERCPAID");
+                    bean.PERCPENDING = rst.getDouble("PERCPENDING");
+
+                    bean.QTYTKT = rst.getDouble("QTYTKT");
+                    bean.QTYTKTP = rst.getDouble("QTYTKTP");
+
+                    bean.totQTYTKT = totTOTAL;
+                    bean.totSVFOPUSD = totNETO;
+                    bean.totQTYTKTP = totPEND;
+                    bean.totSVFOPUSDP = totPENDAMOUNT;
+                    bean.totSVFOPUSDPENDING = totPENDINGAMOUNT;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    public List<A2356Filter> loadSQP05120_RS(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        double totTOTAL = 0, totNETO = 0, totPEND = 0, totPENDAMOUNT = 0, totPENDINGAMOUNT = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_SCOUNTRY_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+            cstmt.setString(5, filter.IN_SAGENT);
+            cstmt.setString(6, filter.IN_PERCENTAGE);
+            cstmt.setString(7, filter.IN_CANAL);
+            cstmt.setString(8, filter.IN_ORDER);
+            cstmt.setString(9, filter.IN_TYPEPERC);
+            cstmt.setString(10, filter.IN_CUTDAYS);
+
+            cstmt.setInt(11, filter.page.PAGNUM);
+            cstmt.setInt(12, filter.page.PAGROW);
+            cstmt.setInt(13, filter.page.TOTPAG);
+            cstmt.setInt(14, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(11);
+            filter.page.PAGROW = cstmt.getInt(12);
+            filter.page.TOTPAG = cstmt.getInt(13);
+            filter.page.TOTROW = cstmt.getInt(14);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totTOTAL = rst.getDouble("TOTQTYTKT");
+                totNETO = rst.getDouble("TOTSVFOPUSD");
+                totPEND = rst.getDouble("TOTQTYTKTP");
+                totPENDAMOUNT = rst.getDouble("TOTSVFOPUSDP");
+                totPENDINGAMOUNT = rst.getDouble("TOTSVFOPUSDPENDING");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+//                    bean.RN = rst.getInt("RN");
+//                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("SDATE").trim());
+                    bean.CCUST = rst.getString("CCUST").trim();
+//                    bean.SDATE = rst.getString("SDATE").trim();
+//                    bean.SAGENT = rst.getString("SAGENT").trim();
+//                    bean.descSAGENT = rst.getString("SAGENTN").trim();
+                    bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    bean.descSCOUNTRY = rst.getString("SCOUNTRYN").trim();
+//                    bean.SCURREVEN = rst.getString("SCURREVEN").trim();
+//                    bean.DIFFDAYS = rst.getString("DIFFDAYS").trim();
+//                    bean.FECR = rst.getString("FECR").trim();
+//                    bean.HOCR = rst.getString("HOCR").trim();
+
+                    bean.SVFOPUSD = rst.getDouble("SVFOPUSD");
+                    bean.SVFOPUSDP = rst.getDouble("SVFOPUSDP");
+                    bean.SVFOPUSDPENDING = rst.getDouble("SVFOPUSDPENDING");
+                    bean.PERCPAID = rst.getDouble("PERCPAID");
+                    bean.PERCPENDING = rst.getDouble("PERCPENDING");
+
+                    bean.QTYTKT = rst.getDouble("QTYTKT");
+                    bean.QTYTKTP = rst.getDouble("QTYTKTP");
+
+                    bean.totQTYTKT = totTOTAL;
+                    bean.totSVFOPUSD = totNETO;
+                    bean.totQTYTKTP = totPEND;
+                    bean.totSVFOPUSDP = totPENDAMOUNT;
+                    bean.totSVFOPUSDPENDING = totPENDINGAMOUNT;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    public List<A2356Filter> loadSQP05120_RS2(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        double totTOTAL = 0, totNETO = 0, totPEND = 0, totPENDAMOUNT = 0, totPENDINGAMOUNT = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_SCOUNTRY_2_V1(?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+//            cstmt.registerOutParameter(8, Types.INTEGER);
+//            cstmt.registerOutParameter(9, Types.INTEGER);
+//            cstmt.registerOutParameter(10, Types.INTEGER);
+//            cstmt.registerOutParameter(11, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+            cstmt.setString(5, filter.IN_SAGENT);
+            cstmt.setString(6, filter.IN_PERCENTAGE);
+            cstmt.setString(7, filter.IN_CANAL);
+            cstmt.setString(8, filter.IN_ORDER);
+            cstmt.setString(9, filter.IN_TYPEPERC);
+            cstmt.setString(10, filter.IN_CUTDAYS);
+            cstmt.setString(11, filter.IN_TOP);
+
+//            cstmt.setInt(8, filter.page.PAGNUM);
+//            cstmt.setInt(9, filter.page.PAGROW);
+//            cstmt.setInt(10, filter.page.TOTPAG);
+//            cstmt.setInt(11, filter.page.TOTROW);
+
+            cstmt.execute();
+
+//            filter.page.PAGNUM = cstmt.getInt(8);
+//            filter.page.PAGROW = cstmt.getInt(9);
+//            filter.page.TOTPAG = cstmt.getInt(10);
+//            filter.page.TOTROW = cstmt.getInt(11);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totTOTAL = rst.getDouble("TOTQTYTKT");
+                totNETO = rst.getDouble("TOTSVFOPUSD");
+                totPEND = rst.getDouble("TOTQTYTKTP");
+                totPENDAMOUNT = rst.getDouble("TOTSVFOPUSDP");
+                totPENDINGAMOUNT = rst.getDouble("TOTSVFOPUSDPENDING");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+//                    bean.RN = rst.getInt("RN");
+//                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("SDATE").trim());
+                    bean.CCUST = rst.getString("CCUST").trim();
+//                    bean.SDATE = rst.getString("SDATE").trim();
+//                    bean.SAGENT = rst.getString("SAGENT").trim();
+//                    bean.descSAGENT = rst.getString("SAGENTN").trim();
+                    bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
 //                    bean.SCURREVEN = rst.getString("SCURREVEN").trim();
 //                    bean.DIFFDAYS = rst.getString("DIFFDAYS").trim();
 //                    bean.FECR = rst.getString("FECR").trim();
