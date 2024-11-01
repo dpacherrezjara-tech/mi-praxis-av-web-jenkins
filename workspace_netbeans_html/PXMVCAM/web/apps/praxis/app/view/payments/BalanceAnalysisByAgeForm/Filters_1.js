@@ -35,7 +35,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                             xtype: 'radiogroup',
 //                            fieldLabel: 'Sumary',
                             padding: '0 10 0 50',
-                            columns: 4,
+                            columns: 5,
 //                            width: '120',
                             
 //                            hidden: true,
@@ -46,7 +46,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                                 { boxLabel: '<b> Agents</b>',  name: 'opcion', inputValue: '1', checked: true,padding: '0 10 0 50'},
                                 { boxLabel: '<b> Days</b>', name: 'opcion', inputValue: '2', padding: '0 10 0 50'  },
                                 { boxLabel: '<b> Canal</b>', name: 'opcion', inputValue: '3', padding: '0 10 0 50'  },
+                                { boxLabel: '<b> Country</b>', name: 'opcion', inputValue: '5', padding: '0 10 0 50'  },
                                 { boxLabel: '<b> Avianca Group</b>', name: 'opcion', inputValue: '4', padding: '0 10 0 50'  },
+                                
                             ],
                             listeners: {
                                 change: 'rgChangeReport'
