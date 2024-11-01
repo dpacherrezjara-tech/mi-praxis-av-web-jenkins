@@ -349,7 +349,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     },
                                                 ]
                                             },
-
                                         ]
                                     }
                                 }
@@ -574,7 +573,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                                    if (data.PERCPENDING >= 80) {
 //                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
 //                                                                    } else {
-                                                                        metaData.style = "text-align:right;background-color:#84ff7a;";
+                                                                    metaData.style = "text-align:right;background-color:#84ff7a;";
 //                                                                    }
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
@@ -813,13 +812,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return '<a href="#payments-balance-analysis-by-age-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                            
+
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = 'text-align:center; margin-right:3px ';
                                                             return '<b>' + 'Total' + '<b>';
                                                         },
-                                                        
+
                                                     },
                                                     {text: 'Canal', dataIndex: 'CANAL', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -875,7 +874,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     let data = record.data;
                                                                     console.log(data.totSVFOPUSD, 'total en el info')
-                                                                    value = data.totSVFOPUSD == 0 ? 0 : (value/data.totSVFOPUSD)*100;
+                                                                    value = data.totSVFOPUSD == 0 ? 0 : (value / data.totSVFOPUSD) * 100;
                                                                     metaData.style = "text-align:right;background-color:#a1cbf6;";
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
@@ -959,7 +958,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                                    if (data.PERCPENDING >= 80) {
 //                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
 //                                                                    } else {
-                                                                        metaData.style = "text-align:right;background-color:#84ff7a;";
+                                                                    metaData.style = "text-align:right;background-color:#84ff7a;";
 //                                                                    }
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
@@ -1209,7 +1208,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                                     return '<b>' + Ext.util.Format.number(data.totQTYTKT, '0,000') + '<b>';
                                                                 },
-                                                                
+
                                                             },
                                                             {
                                                                 text: 'Amount', dataIndex: 'SVFOPUSD', width: 90, align: 'center', menuDisabled: true,
@@ -1305,7 +1304,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                                    if (data.PERCPENDING >= 80) {
 //                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
 //                                                                    } else {
-                                                                        metaData.style = "text-align:right;background-color:#84ff7a;";
+                                                                    metaData.style = "text-align:right;background-color:#84ff7a;";
 //                                                                    }
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
@@ -1502,7 +1501,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 },
                                 {
                                     xtype: 'panel',
-                                   
+
                                     layout: {
                                         type: 'hbox',
                                         pack: 'center'
@@ -1682,7 +1681,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                                            if (data.PERCPENDING >= 80) {
 //                                                                                metaData.style = "text-align:right;background-color:#fe5342;";
 //                                                                            } else {
-                                                                                metaData.style = "text-align:right;background-color:#84ff7a;";
+                                                                            metaData.style = "text-align:right;background-color:#84ff7a;";
 //                                                                            }
                                                                             return Ext.util.Format.number(value, '0.00%');
                                                                         },
@@ -1710,23 +1709,90 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     }
                                                 },
                                                 {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-displayGraf4',
+                                                    width: 752,
+                                                    border: false,
+                                                    hidden: false,
+                                                    background: '#E0F8F7',
+                                                    margin: '5 0 0 0',
+                                                    height: 400,
+                                                    captions: {
+                                                        title: {
+                                                            alignTo: 'chart',
+                                                            text: 'AVIANCA GROUP',
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    legend: {
+                                                        docked: 'bottom',
+                                                        background: '#E3EAEF'
+
+                                                    },
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['TOTAL','PENDING', 'PAID'],
+                                                            grid: true,
+                                                            title: '',
+                                                            renderer: function (obj, value) {
+                                                                return Ext.util.Format.number(value);
+                                                            },
+
+                                                        },
+                                                        {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            grid: true,
+                                                            fields: 'strDescription',
+                                                            title: {
+                                                                translationX: -30
+                                                            },
+                                                            label: {
+                                                                textAlign: 'left'
+                                                            },
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            xField: 'strDescription',
+                                                            yField: ['TOTAL','PENDING', 'PAID'],
+                                                            colors: ['#859dfe','#d82c2c', '#5dd92d' ],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 900
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                },
+                                                {
                                                     xtype: 'panel',
                                                     layout: {
                                                         type: 'hbox',
                                                         pack: 'center'
                                                     },
-//                                                    hidden: true,
+                                                    hidden: true,
                                                     border: false,
                                                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                                     items: [
-
                                                         {
                                                             xtype: 'panel',
                                                             layout: {
                                                                 type: 'vbox',
                                                                 pack: 'center'
                                                             },
-                                                            //                                                    hidden: true,
+                                                            hidden: true,
                                                             border: false,
                                                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                                             items: [
@@ -1803,14 +1869,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 },
                                                             ]
                                                         },
-
                                                         {
                                                             xtype: 'panel',
                                                             layout: {
                                                                 type: 'vbox',
                                                                 pack: 'center'
                                                             },
-                                                            //                                                    hidden: true,
+                                                            hidden: true,
                                                             border: false,
                                                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                                             items: [
@@ -1887,6 +1952,128 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 },
                                                             ]
                                                         },
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-displayGraf4_1',
+                                                            width: 370,
+                                                            border: false,
+                                                            height: 180,
+                                                            background: '#E0F8F7',
+                                                            margin: '5 0 0 5',
+                                                            captions: {
+                                                                title: {
+                                                                    alignTo: 'chart'
+                                                                }
+                                                            },
+                                                            animation: {
+                                                                duration: 200
+                                                            },
+                                                            interactions: ['itemhighlight'],
+                                                            axes: [{
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['PENDING', 'PAID'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value);
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    grid: true,
+                                                                    title: {
+                                                                        translationX: -30
+                                                                    }
+                                                                }],
+                                                            series: [{
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    xField: 'strDescription',
+                                                                    yField: ['PENDING', 'PAID'],
+                                                                    colors: ['#d82c2c', '#5dd92d'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 900
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            
+                                                                            if( ctx.field === 'PAID'){
+                                                                                toolTip.setHtml('Paid' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }else{
+                                                                                toolTip.setHtml('Pending' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }
+                                                                            
+                                                                        }
+                                                                    }
+                                                                }]
+                                                        },
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-displayGraf4_2',
+                                                            width: 370,
+                                                            border: false,
+                                                            height: 180,
+                                                            background: '#E0F8F7',
+                                                            margin: '5 0 0 5',
+                                                            captions: {
+                                                                title: {
+                                                                    alignTo: 'chart'
+                                                                }
+                                                            },
+                                                            animation: {
+                                                                duration: 200
+                                                            },
+                                                            interactions: ['itemhighlight'],
+                                                            axes: [{
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['PENDING', 'PAID'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value);
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    grid: true,
+                                                                    title: {
+                                                                        translationX: -30
+                                                                    }
+                                                                }],
+                                                            series: [{
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    xField: 'strDescription',
+                                                                    yField: ['PENDING', 'PAID'],
+                                                                    colors: ['#d82c2c', '#5dd92d'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 900
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            if( ctx.field === 'PAID'){
+                                                                                toolTip.setHtml('Paid' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }else{
+                                                                                toolTip.setHtml('Pending' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }]
+                                                        },
                                                     ]
                                                 },
                                                 {
@@ -1895,18 +2082,17 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         type: 'hbox',
                                                         pack: 'center'
                                                     },
-//                                                    hidden: true,
+                                                    hidden: true,
                                                     border: false,
                                                     bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                                     items: [
-
                                                         {
                                                             xtype: 'panel',
                                                             layout: {
                                                                 type: 'vbox',
                                                                 pack: 'center'
                                                             },
-                                                            //                                                    hidden: true,
+                                                            hidden: true,
                                                             border: false,
                                                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                                             items: [
@@ -1983,14 +2169,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 },
                                                             ]
                                                         },
-
                                                         {
                                                             xtype: 'panel',
                                                             layout: {
                                                                 type: 'vbox',
                                                                 pack: 'center'
                                                             },
-                                                            //                                                    hidden: true,
+                                                            hidden: true,
                                                             border: false,
                                                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                                                             items: [
@@ -2040,9 +2225,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                             colors: ['#d82c2c', '#5dd92d'],
                                                                             stacked: false,
                                                                             label: {
-                                                                                
+
                                                                                 field: 'VENDOR',
-                                                                                calloutLine: true,                                                                           
+                                                                                calloutLine: true,
                                                                                 rotateAroundCenter: true,
                                                                                 renderer: function (value, b, callout) {
                                                                                     callout.calloutWidth = 1;
@@ -2067,6 +2252,126 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         }]
                                                                 },
                                                             ]
+                                                        },
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-displayGraf4_3',
+                                                            width: 370,
+                                                            border: false,
+                                                            height: 180,
+                                                            background: '#E0F8F7',
+                                                            margin: '5 0 0 5',
+                                                            captions: {
+                                                                title: {
+                                                                    alignTo: 'chart'
+                                                                }
+                                                            },
+                                                            animation: {
+                                                                duration: 200
+                                                            },
+                                                            interactions: ['itemhighlight'],
+                                                            axes: [{
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['PENDING', 'PAID'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value);
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    grid: true,
+                                                                    title: {
+                                                                        translationX: -30
+                                                                    }
+                                                                }],
+                                                            series: [{
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    xField: 'strDescription',
+                                                                    yField: ['PENDING', 'PAID'],
+                                                                    colors: ['#d82c2c', '#5dd92d'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 900
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            if( ctx.field === 'PAID'){
+                                                                                toolTip.setHtml('Paid' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }else{
+                                                                                toolTip.setHtml('Pending' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }]
+                                                        },
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-displayGraf4_4',
+                                                            width: 370,
+                                                            border: false,
+                                                            height: 180,
+                                                            background: '#E0F8F7',
+                                                            margin: '5 0 0 5',
+                                                            captions: {
+                                                                title: {
+                                                                    alignTo: 'chart'
+                                                                }
+                                                            },
+                                                            animation: {
+                                                                duration: 200
+                                                            },
+                                                            interactions: ['itemhighlight'],
+                                                            axes: [{
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['PENDING', 'PAID'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value);
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    grid: true,
+                                                                    title: {
+                                                                        translationX: -30
+                                                                    }
+                                                                }],
+                                                            series: [{
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    xField: 'strDescription',
+                                                                    yField: ['PENDING', 'PAID'],
+                                                                    colors: ['#d82c2c', '#5dd92d'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 900
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            if( ctx.field === 'PAID'){
+                                                                                toolTip.setHtml('Paid' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }else{
+                                                                                toolTip.setHtml('Pending' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }]
                                                         },
                                                     ]
                                                 },
@@ -2127,12 +2432,12 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             colors: ['#d82c2c', '#5dd92d'],
                                                             stacked: false,
                                                             label: {
-                                                                
+
                                                                 field: 'VENDOR',
                                                                 calloutLine: true,
                                                                 style: {
                                                                     fontWeight: 'bold',
-                                                                    
+
                                                                 },
                                                                 renderer: function (value, b, callout, label) {
                                                                     callout.calloutWidth = 1;
@@ -2161,79 +2466,79 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             }
                                                         }]
                                                 },
-                                                {
-                                                    xtype: 'cartesian',
-                                                    id: prototype.id + '-displayGraf4',
-                                                    width: 520,
-                                                    border: false,
-                                                    hidden: false,
-//                                                    height: 550,
-                                                    background: '#E0F8F7',
-                                                    margin: '5 0 0 5',
-                                                    flipXY: true,
-                                                    height: 260,
-//                                                    height: 520,
-
-                                                    captions: {
-                                                        title: {
-                                                            alignTo: 'chart',
-                                                            text: 'AVIANCA GROUP',
-                                                        }
-                                                    },
-                                                    animation: {
-                                                        duration: 200
-                                                    },
-                                                    interactions: ['itemhighlight'],
-                                                    legend: {
-                                                        docked: 'bottom',
-                                                        background: '#E3EAEF'
-
-                                                    },
-                                                    axes: [{
-                                                            type: 'numeric3d',
-                                                            position: 'bottom',
-                                                            fields: ['PENDING', 'PAID'],
-                                                            grid: true,
-                                                            title: '',
-                                                            renderer: function (obj, value) {
-                                                                return Ext.util.Format.number(value);
-                                                            },
-
-                                                        },
-                                                        {
-                                                            type: 'category3d',
-                                                            position: 'left',
-                                                            grid: true,
-                                                            fields: 'strDescription',
-                                                            title: {
-                                                                translationX: -30
-                                                            },
-                                                            label: {
-                                                                textAlign: 'left'
-                                                            },
-                                                        }],
-                                                    series: [{
-                                                            type: 'bar3d',
-                                                            stacked: false,
-                                                            //xField: ['AMOUNT'],
-                                                            xField: 'strDescription',
-                                                            yField: ['PENDING', 'PAID' ],
-                                                            colors: ['#d82c2c', '#5dd92d'],
-                                                            highlight: true,
-                                                            style: {
-                                                                inGroupGapWidth: -7,
-                                                                minGapWidth: 2,
-                                                                maxBarWidth: 900
-                                                            },
-                                                            tooltip: {
-                                                                trackMouse: true,
-                                                                height: 28,
-                                                                renderer: function (toolTip, record, ctx) {
-                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
-                                                                }
-                                                            }
-                                                        }]
-                                                },
+//                                                {
+//                                                    xtype: 'cartesian',
+//                                                    id: prototype.id + '-displayGraf4',
+//                                                    width: 520,
+//                                                    border: false,
+//                                                    hidden: false,
+////                                                    height: 550,
+//                                                    background: '#E0F8F7',
+//                                                    margin: '5 0 0 5',
+//                                                    flipXY: true,
+//                                                    height: 260,
+////                                                    height: 520,
+//
+//                                                    captions: {
+//                                                        title: {
+//                                                            alignTo: 'chart',
+//                                                            text: 'AVIANCA GROUP',
+//                                                        }
+//                                                    },
+//                                                    animation: {
+//                                                        duration: 200
+//                                                    },
+//                                                    interactions: ['itemhighlight'],
+//                                                    legend: {
+//                                                        docked: 'bottom',
+//                                                        background: '#E3EAEF'
+//
+//                                                    },
+//                                                    axes: [{
+//                                                            type: 'numeric3d',
+//                                                            position: 'bottom',
+//                                                            fields: ['PENDING', 'PAID'],
+//                                                            grid: true,
+//                                                            title: '',
+//                                                            renderer: function (obj, value) {
+//                                                                return Ext.util.Format.number(value);
+//                                                            },
+//
+//                                                        },
+//                                                        {
+//                                                            type: 'category3d',
+//                                                            position: 'left',
+//                                                            grid: true,
+//                                                            fields: 'strDescription',
+//                                                            title: {
+//                                                                translationX: -30
+//                                                            },
+//                                                            label: {
+//                                                                textAlign: 'left'
+//                                                            },
+//                                                        }],
+//                                                    series: [{
+//                                                            type: 'bar3d',
+//                                                            stacked: false,
+//                                                            //xField: ['AMOUNT'],
+//                                                            xField: 'strDescription',
+//                                                            yField: ['PENDING', 'PAID'],
+//                                                            colors: ['#d82c2c', '#5dd92d'],
+//                                                            highlight: true,
+//                                                            style: {
+//                                                                inGroupGapWidth: -7,
+//                                                                minGapWidth: 2,
+//                                                                maxBarWidth: 900
+//                                                            },
+//                                                            tooltip: {
+//                                                                trackMouse: true,
+//                                                                height: 28,
+//                                                                renderer: function (toolTip, record, ctx) {
+//                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+//                                                                }
+//                                                            }
+//                                                        }]
+//                                                },
                                             ]
                                         },
                                     ]
@@ -2297,7 +2602,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 items: [
                                                     {text: 'Code', dataIndex: 'SCOUNTRY', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:left;";
+                                                            metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
@@ -2308,7 +2613,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     },
                                                     {text: 'Name', dataIndex: 'descSCOUNTRY', width: 150,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
+                                                            metaData.style = "text-align:left;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
@@ -2332,7 +2637,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                                     return '<b>' + Ext.util.Format.number(data.totQTYTKT, '0,000') + '<b>';
                                                                 },
-                                                                
+
                                                             },
                                                             {
                                                                 text: 'Amount', dataIndex: 'SVFOPUSD', width: 90, align: 'center', menuDisabled: true,
@@ -2428,7 +2733,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                                    if (data.PERCPENDING >= 80) {
 //                                                                        metaData.style = "text-align:right;background-color:#fe5342;";
 //                                                                    } else {
-                                                                        metaData.style = "text-align:right;background-color:#84ff7a;";
+                                                                    metaData.style = "text-align:right;background-color:#84ff7a;";
 //                                                                    }
                                                                     return Ext.util.Format.number(value, '0.00%');
                                                                 },
