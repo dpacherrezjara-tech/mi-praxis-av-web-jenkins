@@ -613,6 +613,52 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + idLabel).show()
         }
     },
+    setBarByCompany: function (array, ccust, id) {
+        console.log(array,'array')
+        if (array.length === 0){
+            console.log('NO HAY INFO PARA BAR')
+            return false;
+        }
+        let strCCUST = {
+            134: 'AVIANCA',
+            133: 'LACSA',
+            202: 'TACA',
+            547: 'AEROGAL',
+        }
+        let item = {};
+        let item2 = {};
+        let totals = [];
+        let charts = [];
+        let isOnList = false;
+        for (const row of array) {
+            console.log(row.data.CCUST, 'row.data.CCUST')
+            if( row.data.CCUST  === ccust ){
+                isOnList = true;
+                let PENDING = row.data.SVFOPUSDPENDING;
+                let PAID = row.data.SVFOPUSDP;
+                let CCUST = row.data.CCUST;
+                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID});
+            }
+
+        }
+        console.log(charts, 'charts')
+        
+        var storeData1ercharts = Ext.create('Ext.data.Store', {
+            data: charts,
+            autoLoad: true
+        });
+
+        Ext.getCmp(prototype.id + id).bindStore(storeData1ercharts);
+        
+        if(!isOnList){
+            Ext.getCmp(prototype.id + id).hide()
+           
+        }else{
+            Ext.getCmp(prototype.id + id).show()
+            
+        }
+
+    },
     setGridSumaryCompany: function () {
         win.lblUser_toolTip("Estructura: MPF118");
         me.panelActual = '-boxSumaryCompanyData';
@@ -683,25 +729,30 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         }
 
                         if (res.data2.length > 0) {
-                            for (let i = res.data2.length - 1; i >= 0; i--) {
-                                let PENDING = res.data2[i].SVFOPUSDPENDING;
-                                let PAID = res.data2[i].SVFOPUSDP;
-                                let CCUST = res.data2[i].CCUST;
-                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID});
-                            }
-
-//                            for (let i = 0 ;i < res.data2.length; i++) {
-//                                let AMOUNT = res.data2[i].SVFOPUSDPENDING;
-//                                let SAGENT = res.data2[i].SAGENT;
-//                                let CANAL = res.data2[i].CANAL;
-//                                charts.push({strDescription: SAGENT + '-' + CANAL , AMOUNT: AMOUNT});
+//                            for (let i = res.data2.length - 1; i >= 0; i--) {
+//                                let PENDING = res.data2[i].SVFOPUSDPENDING;
+//                                let PAID = res.data2[i].SVFOPUSDP;
+//                                let CCUST = res.data2[i].CCUST;
+//                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID});
 //                            }
+
+                            for (let i = 0 ;i < res.data2.length; i++) {
+                                let PAID = res.data2[i].SVFOPUSDP;
+                                let PENDING = res.data2[i].SVFOPUSDPENDING;
+                                let TOTAL = res.data2[i].SVFOPUSD;
+                                let CCUST = res.data2[i].CCUST;
+                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID, TOTAL: TOTAL});
+                            }
                         } else {
-                            charts.push({strDescription: 'Not found', AMOUNT: 1,AMOUNT2: 1 });
+                            charts.push({strDescription: 'Not found', PENDING: 1, PAID: 1, TOTAL: 1 });
                         }
 
-
-
+                        
+                        me.setBarByCompany(obj.data.items, '134', '-displayGraf4_1')
+                        me.setBarByCompany(obj.data.items, '202', '-displayGraf4_2')
+                        me.setBarByCompany(obj.data.items, '133', '-displayGraf4_3')
+                        me.setBarByCompany(obj.data.items, '547', '-displayGraf4_4')
+                        
                         var storeData1ercharts = Ext.create('Ext.data.Store', {
                             data: charts,
                             autoLoad: true
