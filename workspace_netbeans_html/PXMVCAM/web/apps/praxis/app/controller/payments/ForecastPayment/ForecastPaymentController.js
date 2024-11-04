@@ -194,6 +194,7 @@ Ext.define('Ext.Praxis.controller.payments.ForecastPayment.ForecastPaymentContro
         me.bean.IN_SPNR = Ext.getCmp(prototype.id + '-txtSPNR').getValue().trim();
         me.bean.IN_SCARDN1 = Ext.getCmp(prototype.id + '-txtCard1').getValue().trim();
         me.bean.IN_SCARDN2 = Ext.getCmp(prototype.id + '-txtCard2').getValue().trim();
+        me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue().trim();
 
 
         var beanString = JSON.stringify(me.bean);

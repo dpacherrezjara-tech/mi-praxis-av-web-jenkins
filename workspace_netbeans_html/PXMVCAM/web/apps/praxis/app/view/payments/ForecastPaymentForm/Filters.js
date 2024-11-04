@@ -22,7 +22,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
 //                hiddenLabel: false,
 //                labelAlign: 'right',
 //                hidden: false,
-                  border: false
+                border: false
             },
             items: [
                 {
@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                     },
                     items: [
                         {xtype: 'tbspacer', width: 150},
-                        
+
                         {
                             xtype: 'combo',
                             fieldLabel: 'Search By:',
@@ -179,8 +179,8 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                         },
                         {xtype: 'tbspacer', width: 30},
                         {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbCountry',
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbCountry',
                             queryMode: 'local',
                             allowBlank: false,
                             fieldLabel: 'Country',
@@ -198,13 +198,13 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                             labelStyle: 'font-weight: bold;',
-                            listeners:{
+                            listeners: {
                             }
                         },
                         {xtype: 'tbspacer', width: 2},
-                         {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbSPAYMENT',
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbSPAYMENT',
                             queryMode: 'local',
                             allowBlank: false,
                             fieldLabel: 'Payment Methods:',
@@ -222,7 +222,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                             labelStyle: 'font-weight: bold;',
-                            listeners:{
+                            listeners: {
                             }
                         },
                         {xtype: 'tbspacer', width: 35},
@@ -238,7 +238,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                             labelWidth: 40,
                             width: 140,
                             enableKeyEvents: true,
-                            
+
                             listeners: {
                                 keypress: 'eventKey'
                             },
@@ -247,6 +247,8 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                         {xtype: 'tbspacer', width: 45},
                     ]
                 },
+//                {xtype: 'tbspacer', width: 30},
+
                 {
                     xtype: 'panel',
                     width: '100%',
@@ -257,39 +259,74 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                         margin: '4 0'
                     },
                     items: [
-                        {xtype: 'tbspacer', width: 175},                       
+                        {xtype: 'tbspacer', width: 175},
                         {
                             xtype: 'textfield',
                             labelStyle: 'font-weight: bold;',
                             fieldLabel: 'Ticket:',
-                            id: prototype.id+'-txtTKT',     
+                            id: prototype.id + '-txtTKT',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
 //                            maxLength: 13,
                             maxLength: 14,
                             labelWidth: 40,
                             width: 185,
-                            enableKeyEvents: true,                          
-                            listeners:{
+                            enableKeyEvents: true,
+                            listeners: {
                                 change: 'onValidarChange',
                                 keypress: 'eventKey'
                             }
                         },
-                        {xtype: 'tbspacer', width: 25},                        
+                        {xtype: 'tbspacer', width: 25},
+                        {
+                            xtype: 'label',
+                            text: 'Doc. Type',
+                            style: 'font-weight: bold;',
+                            padding: '3 0 0 0',
+                            width: 60,
+
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbTDOC',
+
+                            triggerAction: 'all',
+                            enableKeyEvents: true,
+                            readOnly: false,
+                            editable: true,
+                            valueField: 'value',
+                            displayField: 'description',
+                            fieldStyle: 'text-align: left;',
+                            width: 90,
+                            hidden: false,
+                            value: 'S',
+                            store: {
+                                fields: ['value', 'description'],
+                                data: [
+
+                                    {value: 'S', description: 'SALES'},
+                                    {value: 'D', description: 'ADM'},
+                                    {value: 'R', description: 'REFUND'},
+                                    {value: 'C', description: 'ACM'},
+                                ]
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 20},
                         {
                             xtype: 'textfield',
-                            id: prototype.id+'-txtCard1',
+                            id: prototype.id + '-txtCard1',
                             labelStyle: 'font-weight: bold;',
-                            fieldLabel:'CC Number:',
+                            fieldLabel: 'CC Number:',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
-                            maxLength: 14,
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 6,
                             labelWidth: 80,
-                            width: 210,
+                            width: 160,
                             enableKeyEvents: true,
-                            listeners:{
+                            listeners: {
                                 keypress: 'eventKey',
                             }
                         },
@@ -302,53 +339,53 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Filters', {
                         },
                         {
                             xtype: 'textfield',
-                            id: prototype.id+'-txtCard2',
+                            id: prototype.id + '-txtCard2',
                             labelStyle: 'font-weight: bold;',
-                            fieldLabel:'*****(*):',
+                            fieldLabel: '*****(*):',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
-                            maxLength: 14,
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 4,
                             labelWidth: 70,
-                            width: 200,
+                            width: 140,
                             enableKeyEvents: true,
-                            listeners:{
+                            listeners: {
                                 keypress: 'eventKey'
                             }
                         },
                         {xtype: 'tbspacer', width: 20},
-                        
+
                         {
                             xtype: 'textfield',
-                            id: prototype.id+'-txtSAUTHOC', 
+                            id: prototype.id + '-txtSAUTHOC',
                             labelStyle: 'font-weight: bold;',
-                            fieldLabel:'Authorization:',
+                            fieldLabel: 'Authorization:',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[a-zA-Z0-9]/,      
-                            maxLength: 14,
+                            enforceMaxLength: true,
+                            maskRe: /[a-zA-Z0-9]/,
+                            maxLength: 6,
                             labelWidth: 90,
-                            width: 200,
+                            width: 170,
                             enableKeyEvents: true,
-                            listeners:{
+                            listeners: {
                                 keypress: 'eventKey'
                             }
                         },
                         {xtype: 'tbspacer', width: 20},
-                        
+
                         {
                             xtype: 'textfield',
-                            id: prototype.id+'-txtSPNR',     
+                            id: prototype.id + '-txtSPNR',
                             fieldStyle: 'text-align:center',
                             labelStyle: 'font-weight: bold;',
-                            fieldLabel:'PNR:',
-                            enforceMaxLength: true,     
+                            fieldLabel: 'PNR:',
+                            enforceMaxLength: true,
                             maskRe: /[0-9a-zA-Z]/,
-                            maxLength: 14,
+                            maxLength: 6,
                             labelWidth: 30,
-                            width: 148,
+                            width: 108,
                             enableKeyEvents: true,
-                            listeners:{
+                            listeners: {
                                 keypress: 'eventKey'
                             }
                         },
