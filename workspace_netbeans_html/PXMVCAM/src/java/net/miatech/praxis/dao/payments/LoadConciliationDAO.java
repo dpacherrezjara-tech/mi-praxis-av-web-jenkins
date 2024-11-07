@@ -1448,6 +1448,7 @@ public class LoadConciliationDAO {
                     beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
                     beanTkt.strDescCard = rst.getString("NAMECARS").trim();
                     beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
 
                     beanTkt.SPNR = rst.getString("SPNR").trim();
                     if (beanTkt.SFLOAD.trim().equals("M")) {
@@ -2726,6 +2727,7 @@ public class LoadConciliationDAO {
                     beanTkt.SERIE = rst.getString("SERIE").trim();
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.SEQ = rst.getString("SEQ").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     } else {
@@ -3283,6 +3285,7 @@ public class LoadConciliationDAO {
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
                     beanTkt.SERIE = rst.getString("SERIE").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
 
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.SEQ = rst.getString("SEQ").trim();
@@ -5386,7 +5389,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00715_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00715_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5513,6 +5516,7 @@ public class LoadConciliationDAO {
                     beanTkt.strDescCard = rst.getString("NAMECARS").trim();
                     //beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
                     beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
 
                     beanTkt.SPNR = rst.getString("SPNR").trim();
 
@@ -5536,7 +5540,7 @@ public class LoadConciliationDAO {
                     beanTkt.dblTotSVFOP = dblTotSVFOP;
                     beanTkt.dblTotAVFOP = dblTotAVFOP;
                     beanTkt.BDATEP = rst.getString("BDATEP").trim();
-                    //TEF
+                    
                     beanTkt.TDATE = rst.getString("TDATE").trim();
                     if(rst.getString("STVAL").trim().equals("1") || rst.getString("STVAL").trim().equals("5") ){
                          beanTkt.lngDays = rst.getInt("DIFFDAYS");

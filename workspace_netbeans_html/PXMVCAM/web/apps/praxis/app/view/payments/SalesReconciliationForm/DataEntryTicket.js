@@ -593,7 +593,24 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
                                     padding: '0px 80px 0px 0px',
                                     html: '<strong style="color:#121E31; text-decoration: underline; ">Adjustment Information</strong>'
                                 },
-                                {xtype: 'tbspacer', width: 500}
+                                {
+                                    xtype: 'label',
+                                    text: 'ADM Numb',
+                                    style: 'font-weight:bold;color:#121E31;',
+                                    width: 80,
+                                    margin: '0 0 0 454',
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtADMNUM',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    maxLength: 10,
+//                                    margin: '0 0 0 3',
+                                    readOnly: true,
+                                    width: 68
+                                },
+                                
                             ]
                         },
                         {

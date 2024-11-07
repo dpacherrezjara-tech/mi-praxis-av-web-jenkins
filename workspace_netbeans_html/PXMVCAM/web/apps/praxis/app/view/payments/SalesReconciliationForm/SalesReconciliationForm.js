@@ -76,6 +76,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.SalesReconciliation
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,
+                                                    width: 1900,
                                                     defaults: {
                                                         border: false
                                                     },

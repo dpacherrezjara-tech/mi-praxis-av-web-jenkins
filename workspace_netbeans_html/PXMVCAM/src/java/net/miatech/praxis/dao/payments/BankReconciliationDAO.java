@@ -5967,6 +5967,7 @@ public class BankReconciliationDAO {
                 beanTkt.SCARDN = rst.getString("SCARDN").trim();
                 beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                beanTkt.A720SCOUNTRY = rst.getString("SCOUNTRY").trim();
                 beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
 
