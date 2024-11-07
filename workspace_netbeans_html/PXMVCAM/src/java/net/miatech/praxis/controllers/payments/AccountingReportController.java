@@ -75,7 +75,7 @@ public class AccountingReportController extends BaseController {
         
         String idCont = filter.getIN_IDCONT().trim();
         String fileName;
-        String zipName = "CARGUE_TC_" + idCont ;
+        String zipName = "TC_" + idCont ;
         
         String A4545SEQ = "";
         String A4545MODO = "";
