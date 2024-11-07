@@ -333,7 +333,7 @@ public class ExportUtils {
                 String csv = csvJoiner.toString();
                 byte[] csvBytes = csv.getBytes(StandardCharsets.UTF_8);
                 
-                ZipEntry entry = new ZipEntry(filenames.get(i) + "_" + (i+1) + ".txt");
+                ZipEntry entry = new ZipEntry(filenames.get(i) + ".txt");
                 zos.putNextEntry(entry);
                 zos.write(csvBytes);
                 zos.closeEntry();

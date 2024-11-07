@@ -68,11 +68,14 @@ public class AccountingReportController extends BaseController {
     @RequestMapping(value = "downloadAccounting",method = RequestMethod.POST)
     public ResponseEntity<?> downloadAccounting(@RequestBody SQP05233Filter filter, HttpServletResponse response) throws Exception {
         System.out.println("***** AccountingReport - downloadAccounting *****");
-        String fileName = "CARGUE_TC_" + filter.getIN_IDCONT().trim();
-        List<String> fileNames = new ArrayList<>();
         
-        List<String> lines = new ArrayList<>();
+        List<String> fileNames = new ArrayList<>();
+        List<String> file = new ArrayList<>();
         List<List<String>> files = new ArrayList<>();
+        
+        String idCont = filter.getIN_IDCONT().trim();
+        String fileName;
+        String zipName = "CARGUE_TC_" + idCont ;
         
         String A4545SEQ = "";
         String A4545MODO = "";
@@ -87,9 +90,10 @@ public class AccountingReportController extends BaseController {
             filter = logic.loadSQP05233Filter(filter);
             List<A4545> result = filter.getResponse();
             
+            file.add(fileHeader);
             
-            int j = 0;
-            for (int i=0; i<result.size(); i++,j++) {
+            int k = 0;
+            for (int i=0,j=0; i<result.size(); i++,j++) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
                 sb.append(result.get(i).getA4545HEADE()).append("\t") ;                 // HEADER_TXT
@@ -164,24 +168,33 @@ public class AccountingReportController extends BaseController {
                 sb.append(result.get(i).getA4545ANUMB()).append("\t") ;                 // ALLOC_NMBR
                 sb.append(result.get(i).getA4545PLACE()) ;                              // BUS_PLACE
                 
-                lines.add(sb.toString());
-                
                 if ( j > 0 &&                                                           // No el primer registro
                     !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
                     (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
                     
-                    fileNames.add(fileName + result.get(i).getA4545MODO());
+                    fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
                     
-                    files.add(lines) ;
-                    lines = new ArrayList<>();
-                    lines.add(fileHeader);
+                    fileNames.add( fileName );                   
+                    files.add(file) ;
+                    
+                    file = new ArrayList<>();
+                    file.add(fileHeader);
+                    
                     j = 0;
+                    k = !result.get(i).getA4545MODO().equals(A4545MODO)? 0 : (k+1);
                 }
+                
+                file.add(sb.toString());
+                
                 A4545SEQ = result.get(i).getA4545SEQ().toString();
                 A4545MODO = result.get(i).getA4545MODO();
             }
             
-            files.add(lines) ;
+            fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
+            
+            fileNames.add(fileName);
+            files.add(file) ;
+            
                
         } catch (Exception e) {
             System.out.println("" + e.getMessage());
@@ -189,8 +202,45 @@ public class AccountingReportController extends BaseController {
             throw new SpringException(e);
         }
         
-        return exportUtils.createZip(files, fileNames, fileName);
-	}
+        return exportUtils.createZip(files, fileNames, zipName);
+    }
+    
+    String getModoDesc(String codModo) {
+        
+        String descModo = "";
+        
+        switch (codModo) {
+            case "P":
+               descModo = "Pasaje Colombia";
+                break;
+            case "A":
+                descModo = "Carga Colombia";
+                break;
+            case "C":
+                descModo = "Correo Colombia";
+                break;
+            case "E":
+                descModo = "Pasaje Exterior";
+                break;
+            case "G":
+                descModo = "Carga Exterior";
+                break;
+            case "D":
+                descModo = "Debitos Colombia";
+                break;
+            case "B":
+                descModo = "Debitos Exterior";
+                break;
+            case "J":
+                descModo = "Ajustes Colombia";
+                break;
+            case "K":
+                descModo = "Ajustes Exterior";
+                break;
+        }
+        
+        return descModo ;
+    }
 
      @RequestMapping(value = "reverseAccounting",method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
