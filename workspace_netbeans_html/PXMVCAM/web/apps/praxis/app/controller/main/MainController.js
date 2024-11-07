@@ -263,7 +263,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
         var me = this;
         me.menuContentCollapse();
         var panel = Ext.getCmp(id_main + '-region-content-north');
-        Ext.getCmp(id_main + '-region-content-west').hide();
+        Ext.getCmp(id_main + '-region-content-west').show();
         Ext.getCmp(id_main + '-content-background').show();
         Ext.getCmp(id_main + '-contenedor').hide();
         Ext.getCmp(id_main + '-contenedor').removeAll();
