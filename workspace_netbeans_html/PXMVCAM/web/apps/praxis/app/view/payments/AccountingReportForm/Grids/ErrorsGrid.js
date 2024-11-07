@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1450,
+    width: prototype.width,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
@@ -37,11 +37,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
             {text: 'Accounting ID', dataIndex: 'IDCONT', width: 180},
-            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 200},
             {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
             {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
             {text: 'Error<br>Code', dataIndex: 'CERROR', width: 50},
-            {text: 'Error<br>Description', dataIndex: 'DESCERR', width: 300},
+            {text: 'Error<br>Description', dataIndex: 'DESCERR', flex: 1,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "text-align:left;";
+                    return value;
+                }
+            },
             {text: 'Error<br>Records', dataIndex: 'QTYERR', width: 120},
             {text: 'Status<br>Reversed', dataIndex: 'STREV', width: 80,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {

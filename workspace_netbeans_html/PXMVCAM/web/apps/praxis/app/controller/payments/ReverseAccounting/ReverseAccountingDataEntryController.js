@@ -5,11 +5,11 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDa
     procesadores: [],
     request: axios.create({
         baseURL: CONTEXTPATH + '/ReverseAccounting',
-        timeout: 200000
+        timeout: 0
     }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
-        timeout: 200000
+        timeout: 0
     }),
     notifier:new AWN(),
     init: function (view) {

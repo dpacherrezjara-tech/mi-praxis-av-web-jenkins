@@ -4,7 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDat
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
+        timeout: 0
       }),
     notifier: new AWN(),
     afterRender: function () {
