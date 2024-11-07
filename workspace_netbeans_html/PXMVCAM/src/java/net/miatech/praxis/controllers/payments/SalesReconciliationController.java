@@ -1899,6 +1899,7 @@ public class SalesReconciliationController extends BaseController {
                 Cell CH1_14 = row1.createCell(14);
                 Cell CH1_15 = row1.createCell(15);
                 Cell CH1_16 = row1.createCell(16);
+                Cell CH1_17 = row1.createCell(17);
 
                 CH1_0.setCellValue("Ticket");
                 CH1_1.setCellValue("Type");
@@ -1914,9 +1915,10 @@ public class SalesReconciliationController extends BaseController {
                 CH1_11.setCellValue("Amount");
                 CH1_12.setCellValue("PNR");
                 CH1_13.setCellValue("Agent");
-                CH1_14.setCellValue("Tran. Code");
-                CH1_15.setCellValue("Days");
-                CH1_16.setCellValue("Status");
+                CH1_14.setCellValue("ADM Number");
+                CH1_15.setCellValue("Tran. Code");
+                CH1_16.setCellValue("Days");
+                CH1_17.setCellValue("Status");
 
                 CH1_0.setCellStyle(headerStyle);
                 CH1_1.setCellStyle(headerStyle);
@@ -1935,6 +1937,7 @@ public class SalesReconciliationController extends BaseController {
                 CH1_14.setCellStyle(headerStyle);
                 CH1_15.setCellStyle(headerStyle);
                 CH1_16.setCellStyle(headerStyle);
+                CH1_17.setCellStyle(headerStyle);
 
 //            CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -1954,6 +1957,7 @@ public class SalesReconciliationController extends BaseController {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
                 ++vj;
                 //============================================
                 while (iter.hasNext()) {
@@ -1975,6 +1979,7 @@ public class SalesReconciliationController extends BaseController {
                     Cell rcell14 = row1.createCell(14);
                     Cell rcell15 = row1.createCell(15);
                     Cell rcell16 = row1.createCell(16);
+                    Cell rcell17 = row1.createCell(17);
 
                     rcell0.setCellValue(listaData.get(vi).strTicket);
                     rcell1.setCellValue(listaData.get(vi).strPEM);
@@ -1990,9 +1995,10 @@ public class SalesReconciliationController extends BaseController {
                     rcell11.setCellValue(listaData.get(vi).SVFOP);
                     rcell12.setCellValue(listaData.get(vi).SPNR);
                     rcell13.setCellValue(listaData.get(vi).SAGENT);
-                    rcell14.setCellValue(listaData.get(vi).TRNCU);
-                    rcell15.setCellValue(listaData.get(vi).lngDays);
-                    rcell16.setCellValue(listaData.get(vi).STVAL);
+                    rcell14.setCellValue(listaData.get(vi).ADMNUM);
+                    rcell15.setCellValue(listaData.get(vi).TRNCU);
+                    rcell16.setCellValue(listaData.get(vi).lngDays);
+                    rcell17.setCellValue(listaData.get(vi).STVAL);
 
                     iter.next();
                     ++vi;
@@ -2021,7 +2027,7 @@ public class SalesReconciliationController extends BaseController {
 
                 PrintWriter writer = new PrintWriter(fileA, "UTF-8");
                 String cadena;
-                cadena = "Ticket|Type|Deb. Type|Comment/Adj.Type|Src|Sales Date|Country|Cc. Code|Card Number|Author. Code|Curr.|Amount|PNR|Agent|Tran. Code|Days|Status";
+                cadena = "Ticket|Type|Deb. Type|Comment/Adj.Type|Src|Sales Date|Country|Cc. Code|Card Number|Author. Code|Curr.|Amount|PNR|Agent|ADM Number|Tran. Code|Days|Status";
                 writer.println("" + cadena);
 
                 for (vi = 0; vi < len; vi++) {
@@ -2040,6 +2046,7 @@ public class SalesReconciliationController extends BaseController {
                     cadena += "" + listaData.get(vi).SVFOP + "|";
                     cadena += "" + listaData.get(vi).SPNR + "|";
                     cadena += "" + listaData.get(vi).SAGENT + "|";
+                    cadena += "" + listaData.get(vi).ADMNUM + "|";
                     cadena += "" + listaData.get(vi).TRNCU + "|";
                     cadena += "" + listaData.get(vi).lngDays + "|";
                     cadena += "" + listaData.get(vi).STVAL;
