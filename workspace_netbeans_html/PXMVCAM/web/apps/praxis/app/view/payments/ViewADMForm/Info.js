@@ -579,7 +579,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1302,
+                            width: 1372,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -590,7 +590,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDet',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1302,
+                                    width: 1372,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -674,6 +674,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            
                                             {
                                                 text: 'Agent',
                                                 defaults: {
@@ -694,6 +695,16 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Country',
@@ -836,7 +847,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1302,
+                            width: 1372,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -847,7 +858,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetailByF',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1302,
+                                    width: 1372,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -951,6 +962,16 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Country',
@@ -1093,7 +1114,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1302,
+                            width: 1372,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1104,7 +1125,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetailByEyes',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1302,
+                                    width: 1372,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -1208,6 +1229,16 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Country',
@@ -1351,7 +1382,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1302,
+                            width: 1372,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1362,7 +1393,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetailByEyesCountry',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1302,
+                                    width: 1372,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -1466,6 +1497,16 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                         }
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
                                             },
                                             {
                                                 text: 'Country',

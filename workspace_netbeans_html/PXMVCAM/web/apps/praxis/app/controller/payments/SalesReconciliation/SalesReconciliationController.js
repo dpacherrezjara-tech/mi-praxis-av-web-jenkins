@@ -1241,10 +1241,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 break;
             case prototype.id + '-boxDetTktS':
                 console.log(me.f_boxDetTktS, 'me.f_boxDetTktS')
-                if (me.f_boxDetTktS === '1') {
-
-                    global.getFileExcelPost('searchDetTICKET', JSON.stringify(me.beanboxDetTktS1), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
-                } else if (me.f_boxDetTktS === '2') {
+                 if (me.f_boxDetTktS === '2') {
                     global.getFileExcelPost('searchDetTktByStval', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
                 } else if (me.f_boxDetTktS === '3') {
                     console.log(Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.TDOC, 'valor de grilla')
@@ -1279,9 +1276,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     global.getFile(prototype.url + '/getXLSXDetalle?beanString=' + encodeURI(JSON.stringify(me.beanboxDetTktS3)));
 //                    global.getFileExcelPost('searchDetTARJETA', JSON.stringify(me.beanboxDetTktS3), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
-                } else if (me.f_boxDetTktS === '4') {
-                    global.getFileExcelPost('searchDetMERCHAT', JSON.stringify(me.beanboxDetTktS4), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
-                }
+                } 
                 break;
             case prototype.id + '-boxDetTktMatch':
                 console.log('entra en el match')
@@ -1722,6 +1717,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchDetTicket">
+    
     searchDetTicket: function (beanDet) {
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
@@ -1880,88 +1876,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchDetTICKET">
-    searchDetTICKET: function (beanDetailTkt) {
-        me.f_boxDetTktS = '1';
-        me.beanboxDetTktS1 = beanDetailTkt;
-        Ext.Ajax.request({
-            url: prototype.url + '/searchDetTICKET',
-            method: 'POST',
-            timeout: 60000000,
-            params: {beanString: JSON.stringify(me.beanboxDetTktS1)},
-            beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                win.lblUser_toolTip("Estructura: MPF100");
-
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
-                    var gridDetTktSAC = res.lstDetTkyByStval;
-                    if (gridDetTktSAC.length > 0) {
-                        var obj = {};
-                        for (var l = 0; l < gridDetTktSAC.length; l++) {
-                            obj = gridDetTktSAC[l];
-                            if (obj.IN_STVAL === "4") {
-                                if (obj.strPEM === "ACCB") {
-                                    break;
-                                }
-                            } else {
-                                break;
-                            }
-                        }
-                        if (obj !== null) {
-                            if (obj.IN_STVAL === '1') {
-                                window.alert("1");
-                                me.selectedChild('vskMain', 'boxDetTktMatch');
-                                if (win.getValue('txtTicket') === '') {
-                                    win.setTitle('gridDetTktMatch', '');
-                                }
-                                win.setTitle('gridDetTktMatch', 'Status : ' + obj.STVAL);
-                                Ext.getCmp(prototype.id + '-gridDetTktMatch').bindStore(
-                                        Ext.create("Ext.Praxis.store.payments.GridData", {data: gridDetTktSAC})
-                                        );
-                                Ext.getCmp(prototype.id + '-cmbError').hide();
-                            } else {
-                                me.selectedChild('vskMain', 'boxDetTktS');
-                                win.setText('lblTitDetTktByStval', obj.strTitulo);
-                                if (obj.IN_TDOC === 'R') {
-                                    win.setText('hcDetTktS', 'Refund');
-                                } else {
-                                    win.setText('hcDetTktS', 'Sales');
-                                }
-                                Ext.getCmp(prototype.id + '-gridDetTktByStval').bindStore(
-                                        Ext.create("Ext.Praxis.store.payments.GridData", {data: gridDetTktSAC})
-                                        );
-                                Ext.getCmp(prototype.id + '-cmbError').show();
-                            }
-                        }
-                        // Colocando los Errores ==============================================
-                        var lstError = res.lstError;
-                        var errors = new Array();
-                        errors.push(['', 'All']);
-                        lstError.forEach(function callback(currentValue, index, array) {
-                            errors.push([currentValue.CERROR, currentValue.strDescripcion]);
-                        });
-                        var store = Ext.create('Ext.data.ArrayStore', {
-                            storeId: 'errors', autoLoad: true, data: errors, fields: ['code', 'name']
-                        });
-                        Ext.getCmp(prototype.id + '-cmbError').bindStore(store);
-                        win.setValue('cmbError', '');
-                        // ====================================================================
-                    } else {
-                        win.setTitle('gridDetTktMatch', '');
-                        win.setText('lblTitDetTktByStval', '');
-                        global.Msg({msg: 'Data not found'});
-                    }
-                } else
-//                    global.Msg({msg: res.sesion});
-                    global.clear();
-            },
-            failure: function (response, opts) {
-                Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                console.log('server-side failure with status code ' + response.status);
-            }
-        });
-    },
+    
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchWarnTkts">
     searchWarnTkts: function (bean) {
@@ -2938,63 +2853,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1525)
         }
     },
-    searchDetMERCHAT: function (beanDetailMer) {
-        me.f_boxDetTktS = '4';
-        me.beanboxDetTktS4 = beanDetailMer;
-        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-            proxy: {
-                url: prototype.url + '/searchDetMERCHAT'
-            },
-            listeners: {
-                beforeload: function (obj) {
-                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDetailMer)};
-                },
-                load: function (obj, obj2, success, response, obj5) {
-                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                    me.selectedChild('vskMain', 'boxDetTktS');
-                    win.lblUser_toolTip("Estructura: MPF100");
-
-                    var res = Ext.JSON.decode(response._response.responseText);
-                    console.log(res);
-                    if (res.success) {
-                        var gridDetDaySAC = res.lstDetTkyByStval;
-                        if (gridDetDaySAC.length > 0) {
-                            var obj = gridDetDaySAC[0];
-                            win.setText('lblTitDetTktByStval', obj.strTitulo);
-
-                            if (obj.IN_TDOC === 'R') {
-                                win.setText('hcDetTktS', 'Refund');
-                            } else {
-                                win.setText('hcDetTktS', 'Sales');
-                            }
-                            Ext.getCmp(prototype.id + '-cmbError').show();
-                        } else {
-                            global.Msg({msg: 'Data not found'});
-                        }
-
-                        // Colocando los Errores ==============================================
-                        var lstError = res.lstError;
-                        var errors = new Array();
-                        errors.push(['', 'All']);
-                        lstError.forEach(function callback(currentValue, index, array) {
-                            errors.push([currentValue.CERROR, currentValue.strDescripcion]);
-                        });
-                        var store = Ext.create('Ext.data.ArrayStore', {
-                            storeId: 'errors', autoLoad: true, data: errors, fields: ['code', 'name']
-                        });
-                        Ext.getCmp(prototype.id + '-cmbError').bindStore(store);
-                        win.setValue('cmbError', '');
-
-                    } else
-//                        global.Msg({msg: res.sesion});
-                        global.clear();
-                }
-            }
-        });
-        Ext.getCmp(prototype.id + '-gridDetTktByStval').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin10').bindStore(storeGridDatas);
-    },
+    
 //    exportExcel: function (_path) {
 //        Ext.Msg.show({
 //            title: '.:PRAXIS:.',

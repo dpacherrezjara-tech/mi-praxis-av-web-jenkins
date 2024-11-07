@@ -262,6 +262,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtDATECTRANC", this.bean.DATECTRANC.trim());
         win.setValue("2-txtDATCO", this.bean.DATCO.trim());
         win.setValue("2-txtBANDOC", this.bean.BANDOC.trim());
+        win.setValue("txtADMNUM", this.bean.ADMNUM.trim());
         //SETTLEMENTS
         win.setValue('2-txtSCARDNL', this.bean.SCARDNL.trim());
         win.setValue("2-txtSAUTHOCL", this.bean.SAUTHOCL.trim());
