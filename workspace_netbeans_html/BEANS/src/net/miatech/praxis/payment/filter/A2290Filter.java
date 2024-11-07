@@ -436,6 +436,7 @@ public class A2290Filter extends A2290 {
     public int QTYREC = 0;
     public int QTYUPL = 0;
     public int QTYNOTUPL = 0;
+    public int QTYRECORDS = 0;
     public int IN_CONT = 0;
 
     public String strIN_FTE = "";

@@ -44,18 +44,22 @@ public class A2295 {
     public String ADATE = "";
     public String SDATE = "";
     public String SAGENT = "";
+    public String INVOICE = "";
     public String SAGENTN = "";
     public String STCON = "";
     public String FCONT = "";
     public String STVAL = "";
     public String FCONCEP = "";
     public String SVFOP = "";
+    public String SVFOPACUM = "";
     public String SPNR = "";
     public String USERF = "";
     public String CERROR = "";
     public String ACCNUMA = "";
     public String COSTCEN = "";
     public String TRANL = "";
+    public String DATEC = "";
+    public String TRANC = "";
     public String PROCESA = "";
     public String SCURRENCY = "";
     public String SCURRENCY1 = "";
@@ -142,6 +146,8 @@ public class A2295 {
     public String NATURE = "";
     public String CONCEPT = "";
     public int QTYTRNX = 0;
+    public int QTYRECORDS = 0;
+    public int QTYUP = 0;
     public String REMESA = "";
     public String REMEDATE = "";
     public String REMETIPO = "";
@@ -191,6 +197,7 @@ public class A2295 {
     public String ERROR = "";
     public String DSEND = "";
     public String DIFFD = "";
+    public String ADMNUM = "";
     
     
     public String USCR = "";

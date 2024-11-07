@@ -583,6 +583,7 @@ public class ViewADMDAO {
                     beanTkt.ERROR = rst.getString("ERROR").trim();
                     beanTkt.DSEND = rst.getString("DSEND").trim();
                     beanTkt.DIFFD = rst.getString("DIFFDAYS").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.strDescStatus = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     }
@@ -713,6 +714,7 @@ public class ViewADMDAO {
                     beanTkt.ERROR = rst.getString("ERROR").trim();
                     beanTkt.DSEND = rst.getString("DSEND").trim();
                     beanTkt.DIFFD = rst.getString("DIFFDAYS").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.strDescStatus = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     }
@@ -846,6 +848,7 @@ public class ViewADMDAO {
                     beanTkt.ERROR = rst.getString("ERROR").trim();
                     beanTkt.DSEND = rst.getString("DSEND").trim();
                     beanTkt.DIFFD = rst.getString("DIFFDAYS").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.strDescStatus = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     }
@@ -1264,6 +1267,7 @@ public class ViewADMDAO {
                     beanTkt.ERROR = rst.getString("ERROR").trim();
                     beanTkt.DSEND = rst.getString("DSEND").trim();
                     beanTkt.DIFFD = rst.getString("DIFFDAYS").trim();
+                    beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
                         beanTkt.strDescStatus = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     }
