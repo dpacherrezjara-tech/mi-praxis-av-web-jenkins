@@ -252,7 +252,7 @@ public class AccountingController extends BaseController {
 
             PrintWriter writer = new PrintWriter(file, "UTF-8");
             String cadena;
-
+            
             int len = lst.size();
             for (int vi = 0; vi < len; vi++) {
                 cadena = "";

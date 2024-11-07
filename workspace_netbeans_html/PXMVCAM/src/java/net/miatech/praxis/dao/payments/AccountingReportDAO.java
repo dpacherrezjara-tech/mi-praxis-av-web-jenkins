@@ -2,10 +2,8 @@ package net.miatech.praxis.dao.payments;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
-import net.miatech.praxis.payment.A4545;
+import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
@@ -58,8 +56,7 @@ public class AccountingReportDAO implements AccountingReportLogic{
     public SQP05233Filter loadSQP05233Filter(SQP05233Filter filter) throws Exception {
         filter.setPage();
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
-        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SQP05233",
-                params, new BeanPropertyRowMapper(A4545.class));
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SQP05233", params, new BeanPropertyRowMapper(A4545.class));
         filter.setResponse((List<A4545>) obj.get("result"));
         //filter.setPageOut(obj);
         filter.dbException.SQLCODE = obj.get("OU_SQLCODE").toString();

@@ -10,7 +10,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.miatech.beans.DBException;
-import net.miatech.praxis.payment.A4545;
+import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.utils.CustomPageImpl;
 
 /**

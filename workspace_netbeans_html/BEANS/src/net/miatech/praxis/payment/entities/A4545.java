@@ -53,4 +53,5 @@ public class A4545 {
     
     //OTROS CAMPOS
     private String DESC_PRO;
+    private Integer RN;
 }

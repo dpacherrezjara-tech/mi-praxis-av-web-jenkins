@@ -5,52 +5,19 @@
  */
 package net.miatech.praxis.payment;
 
+import lombok.Data;
+
 /**
  *
  * @author vhidalgo
  */
+@Data
 public class A4545 {
 
-    public String A4545CCUST = "";
-    public String A4545IDCON = "";
-    public String A4545BANCO = "";
-    public String A4545DOCBA = "";
-    public String A4545USER = "";
-    public Integer A4545SEQ = 0;
-    public String A4545HEADE = "";
-    public String A4545COMPC = "";
-    public String A4545DOCD = "";
-    public String A4545PSTGD = "";
-    public String A4545TRASD = "";
-    public String A4545DOCT = "";
-    public String A4545MODO = "";
-    public String A4545REFD = "";
-    public String A4545PKEY = "";
-    public Integer A4545ITEM = 0;
-    public String A4545CUENT = "";
-    public String A4545TEXTD = "";
-    public String A4545REFK = "";
-    public String A4545REFK2 = "";
-    public String A4545REFB = "";
-    public String A4545CCOST = "";
-    public String A4545PROFI = "";
-    public String A4545CUSTO = "";
-    public String A4545CUR = "";
-    public Double A4545ACTIV = 0.0;
-    public Double A4545PASIV = 0.0;
-    public String A4545MPAGO = "";
-    public String A4545REPAG = "";
-    public String A4545ANUMB = "";
-    public String A4545PLACE = "";
-    public String A4545AGENT = "";
-    public String A4545PAIS = "";
-    public String A4545FVTA = "";
-    public String A4545TCAR = "";
-    public String A4545DCONT = "";
-    public String A4545COREP = "";
-    public String A4545PRDA = "";
-    public String A4545CPRO = "";
-    public String A4545REGIS = "";
-    public String A4545FREGI = "";
-    public String A4545HREGI = "";
+    public String A4545CCUST, A4545IDCON, A4545BANCO, A4545DOCBA, A4545USER, A4545HEADE, A4545COMPC, A4545DOCD, A4545PSTGD, A4545TRASD, A4545DOCT,
+            A4545MODO, A4545REFD, A4545PKEY, A4545CUENT, A4545TEXTD, A4545REFK, A4545REFK2, A4545REFB, A4545CCOST, A4545PROFI, A4545CUSTO, A4545CUR,
+            A4545MPAGO, A4545REPAG, A4545ANUMB, A4545PLACE, A4545AGENT, A4545PAIS, A4545FVTA, A4545TCAR, A4545DCONT, A4545COREP, A4545PRDA, A4545CPRO,
+            A4545REGIS, A4545FREGI, A4545HREGI;
+    public Integer A4545SEQ, A4545ITEM;
+    public Double A4545ACTIV, A4545PASIV;
 }

@@ -4,7 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
+        timeout: 0
     }),
     notifier: new AWN(),
     init: function (view) {
@@ -166,6 +166,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
     },
     onDownloadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const {IDCONT} = record.data;
+        const me = this;
         let params = {
             IN_IDCONT:IDCONT
         };
@@ -180,7 +181,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            this.downloadAccounting(params);
+                            global.downloadFile(me.request, 'downloadAccounting',params,'zip') ;
                         }
                     }
                 });
