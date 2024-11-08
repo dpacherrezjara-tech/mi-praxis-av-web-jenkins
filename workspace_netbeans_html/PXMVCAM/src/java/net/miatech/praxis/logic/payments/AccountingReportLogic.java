@@ -7,6 +7,7 @@ import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
 import net.miatech.praxis.payment.dto.SPACR008Filter;
+import net.miatech.praxis.payment.dto.SPACR011Filter;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 
 /**
@@ -22,5 +23,6 @@ public interface AccountingReportLogic {
     SPACR007Filter loadSPACR007Filter(SPACR007Filter filter) throws Exception;
     void loadSPACR008Filter(SPACR008Filter filter) throws Exception;
     void loadSPACR008FilterMasive(List<SPACR008Filter> lst) throws Exception;
+    SPACR011Filter loadSPACR011Filter(SPACR011Filter filter) throws Exception;
     
 }

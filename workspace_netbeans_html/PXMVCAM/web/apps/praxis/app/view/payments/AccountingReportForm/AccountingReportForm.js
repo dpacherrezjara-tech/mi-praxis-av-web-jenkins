@@ -1,6 +1,6 @@
 prototype.id = 'AccountingReportForm';
 prototype.url = CONTEXTPATH + '/AccountingReport';
-prototype.width = 1850;
+prototype.width = 1900;
 prototype.height = 630;
 fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
 
@@ -12,7 +12,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
         'Ext.Praxis.view.payments.AccountingReportForm.Options',
         'Ext.Praxis.view.payments.AccountingReportForm.Filters',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid'
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid'
     ],
     controller: 'AccountingReportController',
     layout: {

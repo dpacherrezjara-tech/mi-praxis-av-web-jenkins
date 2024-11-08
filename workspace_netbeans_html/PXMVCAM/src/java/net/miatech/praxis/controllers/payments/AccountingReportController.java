@@ -13,6 +13,7 @@ import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
 import net.miatech.praxis.payment.dto.SPACR008Filter;
+import net.miatech.praxis.payment.dto.SPACR011Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
@@ -44,6 +45,14 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> loadMain(SPACR002Filter params) throws Exception {
         System.out.println("***** AccountingReport - loadMain *****");
         SPACR002Filter filter = logic.loadSPACR002Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadSettlements")
+    public ResponseEntity<?> loadSettlements(SPACR011Filter params) throws Exception {
+        System.out.println("***** AccountingReport - loadSettlements *****");
+        SPACR011Filter filter = logic.loadSPACR011Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
@@ -198,7 +207,6 @@ public class AccountingReportController extends BaseController {
                
         } catch (Exception e) {
             System.out.println("" + e.getMessage());
-            e.printStackTrace();
             throw new SpringException(e);
         }
         

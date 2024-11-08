@@ -56,7 +56,22 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         }
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
-                    {text: 'Records', dataIndex: 'TOTRECS', width: 80},
+                    {text: 'Bandocs', dataIndex: 'TOTRECS', width: 80},
+                    {text: 'Settl.', width: 80,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#7bc569;";
+                            const {TOTREG,TOTDEB,TOTADJ,TIPOCON} = record.data;
+                            const opts = {
+                              'REG':  TOTREG,
+                              'DEB': TOTDEB,
+                              'ADJ': TOTADJ
+                            };
+                            return opts[TIPOCON];
+                        },
+                        listeners: {
+                            click: 'onLoadSettlements'
+                        }
+                    },
                     {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
                     {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
                     {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,

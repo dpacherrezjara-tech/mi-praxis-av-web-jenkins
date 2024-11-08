@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
             pageSize: 20,
             proxy: {
                 type: 'ajax',
-                //enablePaging: true,
+                enablePaging: true,
                 url: `${me.url}/loadMain`,
                 extraParams: view.searchParams,
                 timeout: 600000,
@@ -95,6 +95,32 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         mainPanel.items.items.at(-1).hide();
         const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',{
             id: prototype.id + '-ErrorsGrid-2',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onLoadSettlements : function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,TIPOCON,IDCONT,FCONT} = record.data;
+        let params = {
+            IN_CCUST: CCUST,
+            IN_TIPOCON : TIPOCON,
+            IN_IDCONT: IDCONT,
+            IN_FCONT: FCONT
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid',{
+            id: prototype.id + '-SettlementGrid-2',
             searchParams: params,
             backButton: ()=> {
                 mainPanel.items.items.at(-1).destroy();
