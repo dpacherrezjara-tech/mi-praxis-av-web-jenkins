@@ -7146,6 +7146,80 @@ public class LoadConciliationDAO {
         return strMsj;
     }
     
+    public String loadPX263loadADM(List<MPF100Filter> filter) throws SQLException, Exception {
+
+        String message = "";
+        int count = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00656ADM(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            for (int i = 0; i < filter.size(); i++) {
+
+                try {
+                    MPF100Filter filterC = filter.get(i);
+
+                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt.setString(2, filterC.ID.trim());
+                    cstmt.setString(3, filterC.CCIA.trim());
+                    cstmt.setString(4, filterC.FORMASERIE.trim());
+                    cstmt.setString(5, filterC.COUPON.trim());
+                    cstmt.setString(6, filterC.FARECLAS.trim());
+                    cstmt.setString(7, filterC.EMISSION.trim());
+                    cstmt.setString(8, filterC.IATA.trim());
+                    cstmt.setString(9, filterC.ORIGIN.trim());
+                    cstmt.setString(10, filterC.DESTINATION.trim());
+                    cstmt.setString(11, filterC.FAREAMOUNT.trim());
+                    cstmt.setString(12, filterC.PENALTY.trim());
+                    cstmt.setString(13, filterC.COMMISSION.trim());
+                    cstmt.setString(14, filterC.ADM.trim());
+                    cstmt.setString(15, session.getUserView().getCustomerInfo().USR);
+                    cstmt.setString(16, Functions.getFechaActual());
+                    cstmt.setString(17, Functions.getHoraActual());
+
+                    cstmt.execute();
+
+                    count++;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getMessage();
+                }
+            }
+            
+            message = "Load completed: " + count + " records updated.";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+    
     public static void pasarGarbageCollector() {
         System.gc();
         System.runFinalization();

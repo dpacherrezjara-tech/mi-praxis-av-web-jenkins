@@ -1046,6 +1046,56 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                         },
                     ]
                 },
+                {
+                    xtype: 'panel',
+                    width: '100%',
+                    layout: 'hbox',
+                    padding: '0 0 0 300',
+                    bodyStyle: 'background: transparent;"',
+                    id: prototype.id + '-contFourFilter',
+                    defaults: {
+                        margin: '4 0'
+                    },
+                    items: [
+                        {
+                            xtype: 'form',
+                            id: prototype.id + '-formLoad',
+                            border: false,
+                            padding: '0 0 0 0',
+                            bodyStyle: 'background-color: #E3EAF9;',
+                            items: [{
+
+                                    xtype: 'filefield',
+                                    id: prototype.id + '-file',
+                                    name: 'excelfile',
+                                    allowBlank: true,
+                                    accept: '.xlsx, .xls',
+                                    labelWidth: 85,
+                                    width: 280,
+                                    buttonAlign: 'left',
+                                    buttonText: 'Select excel...',
+                                    regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                                    regexText: 'Only XLS and XLSX formats are accepted',
+                                    buttonConfig: {
+                                        text: '<strong>Select</strong>',
+                                        width: 80,
+                                        style: 'margin-right: 10px;'
+                                    },
+                                }]
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn_Load',
+                            margin: '1 0 0 5',
+                            html: '<strong style="color:white;">Load</strong>',
+                            style: 'background:#24678D;color:white;font-weight:bold;',
+                            border: false,
+                            listeners: {
+                                click: 'onLoadClick'
+                            }
+                        },
+                    ]
+                },
             ]
         }
     ]

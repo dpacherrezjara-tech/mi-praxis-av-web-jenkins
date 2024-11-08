@@ -202,4 +202,8 @@ public class LoadConciliationLogic {
     public String marcarTicketsEnviados(MPF100Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.marcarTicketsEnviados(filter);
     }
+    
+    public String loadPX263loadADM(List<MPF100Filter> filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263loadADM(filter);
+    }
 }
