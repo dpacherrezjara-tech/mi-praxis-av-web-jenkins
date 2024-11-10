@@ -53,12 +53,14 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocsGridControlle
     },
     onLoadAccountingInfo: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const me = this;
-        const {CCUST,IDCONT,FCONT,BANDOC,REFER} = record.data;
+        const {CCUST,IDCONT,FCONT,BANDOC,REFER,CODPRO,VALDATE} = record.data;
         let params = {
             IN_CCUST: CCUST,
             IN_IDCONT: IDCONT,
             IN_FCONT: FCONT,
+            IN_CODPRO : CODPRO,
             IN_BANDOC: BANDOC,
+            IN_VALDATE: VALDATE,
             IN_REFER: REFER
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');

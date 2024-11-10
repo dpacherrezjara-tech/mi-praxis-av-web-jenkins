@@ -11,6 +11,6 @@ import net.miatech.praxis.payment.entities.A4545;
  */
 @Data
 public class SPACR013Filter {
-    private String IN_CCUST,IN_IDCONT,IN_FCONT,IN_BANDOC,IN_REFER;
+    private String IN_CCUST,IN_IDCONT,IN_FCONT,IN_CODPRO,IN_BANDOC,IN_VALDATE,IN_REFER;
     List<A4545> response = new ArrayList<>();
 }

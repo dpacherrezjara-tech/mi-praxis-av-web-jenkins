@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1650,
+    width: 1750,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
@@ -68,6 +68,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
+                    {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 100},
                     {text: 'Reference', dataIndex: 'REFER', width: 160}
                 ]
             },
