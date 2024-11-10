@@ -100,7 +100,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPostErrors'
                         }
                     },
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 230},
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 300},
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";

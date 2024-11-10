@@ -147,6 +147,60 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Status',
+                                    name: 'IN_STCONT',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['0', 'Processing'],
+                                            ['1', 'Pre-Accounting Errors'],
+                                            ['2', 'Post-Accounting Errors'],
+                                            ['3', 'Validated'],
+                                            ['4', 'Reversed'],
+                                            ['5', 'Downloaded/Sended'],
+                                            ['6', 'Program Down'],
+                                            ['7', 'Executor Error'],
+                                            ['8', 'No Data']
+                                        ]
+                                    }),
+                                    labelWidth: 60,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Accounting ID',
+                                    labelWidth: 90,
+                                    width: 280,
+                                    name: 'IN_IDCONT',
+                                    maxLength: 25,
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress',
+                                        change: function (field, newValue) {
+                                            field.setValue(newValue.toUpperCase());
+                                        }
+                                    }
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'File Name',
+                                    labelWidth: 90,
+                                    width: 280,
+                                    name: 'IN_FILENAM',
+                                    maxLength: 160,
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
                                 }
                             ]
                         }

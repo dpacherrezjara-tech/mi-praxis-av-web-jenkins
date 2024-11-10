@@ -14,6 +14,6 @@ import net.miatech.utils.CustomPageImpl;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SPACR002Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_FCONTF,IN_FCONTT,IN_CODPRO,IN_TIPOCON;
+    private String IN_CCUST,IN_FCONTF,IN_FCONTT,IN_CODPRO,IN_TIPOCON,IN_STCONT,IN_IDCONT,IN_FILENAM;
     List<MPF134> response = new ArrayList<>();
 }
