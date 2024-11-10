@@ -14,6 +14,8 @@ import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
 import net.miatech.praxis.payment.dto.SPACR008Filter;
 import net.miatech.praxis.payment.dto.SPACR011Filter;
+import net.miatech.praxis.payment.dto.SPACR012Filter;
+import net.miatech.praxis.payment.dto.SPACR013Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
@@ -53,6 +55,22 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> loadSettlements(SPACR011Filter params) throws Exception {
         System.out.println("***** AccountingReport - loadSettlements *****");
         SPACR011Filter filter = logic.loadSPACR011Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadBandocsSap")
+    public ResponseEntity<?> loadBandocsSap(SPACR012Filter params) throws Exception {
+        System.out.println("***** AccountingReport - loadBandocsSap *****");
+        SPACR012Filter filter = logic.loadSPACR012Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadAccountingInfo")
+    public ResponseEntity<?> loadAccountingInfo(SPACR013Filter params) throws Exception {
+        System.out.println("***** AccountingReport - loadAccountingInfo *****");
+        SPACR013Filter filter = logic.loadSPACR013Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }

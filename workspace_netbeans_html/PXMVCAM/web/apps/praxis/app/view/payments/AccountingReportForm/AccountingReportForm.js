@@ -13,7 +13,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
         'Ext.Praxis.view.payments.AccountingReportForm.Filters',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid'
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.AccountingGrid'
     ],
     controller: 'AccountingReportController',
     layout: {

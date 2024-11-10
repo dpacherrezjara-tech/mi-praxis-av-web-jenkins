@@ -11,9 +11,12 @@ import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
 import net.miatech.praxis.payment.dto.SPACR008Filter;
 import net.miatech.praxis.payment.dto.SPACR011Filter;
+import net.miatech.praxis.payment.dto.SPACR012Filter;
+import net.miatech.praxis.payment.dto.SPACR013Filter;
 import net.miatech.praxis.payment.entities.MPF101;
 import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF135;
+import net.miatech.praxis.payment.entities.MPF140;
 import net.miatech.praxis.payment.entities.X3183;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.JdbcUtils;
@@ -125,6 +128,27 @@ public class AccountingReportDAO implements AccountingReportLogic{
         filter.setResponse((List<MPF101>) obj.get("result"));
         filter.setPageOut(obj);
         
+        return filter;
+    }
+
+    @Override
+    public SPACR012Filter loadSPACR012Filter(SPACR012Filter filter) throws Exception {
+        filter.setPage();
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR012",
+                params, new BeanPropertyRowMapper(MPF140.class));
+        filter.setResponse((List<MPF140>) obj.get("result"));
+        filter.setPageOut(obj);
+        
+        return filter;
+    }
+
+    @Override
+    public SPACR013Filter loadSPACR013Filter(SPACR013Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR013",
+                params, new BeanPropertyRowMapper(A4545.class));
+        filter.setResponse((List<A4545>) obj.get("result"));
         return filter;
     }
     

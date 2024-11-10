@@ -31,7 +31,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.LoggerDataE
             title: 'Process Log',
             id: prototype.idDE2 + '-gridLogger',
             width: '100%',
-            maxHeight:600,
+            maxHeight:450,
             columns: {
                 defaults: {
                     align: 'center',

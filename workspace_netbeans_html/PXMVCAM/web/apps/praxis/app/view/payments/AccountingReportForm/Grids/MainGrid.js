@@ -30,7 +30,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
-            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 180},
             {
                 text: 'Accounting Information',
                 defaults: {
@@ -56,10 +56,18 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         }
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
-                    {text: 'Bandocs', dataIndex: 'TOTRECS', width: 80},
+                    {text: 'Bandocs', dataIndex: 'TOTRECS', width: 80,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
+                            return value;
+                        },
+                        listeners:{
+                            click:'onLoadBandocsSap'
+                        }
+                    },
                     {text: 'Settl.', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#7bc569;";
+                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
                             const {TOTREG,TOTDEB,TOTADJ,TIPOCON} = record.data;
                             const opts = {
                               'REG':  TOTREG,
@@ -92,7 +100,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPostErrors'
                         }
                     },
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 160},
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 230},
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
