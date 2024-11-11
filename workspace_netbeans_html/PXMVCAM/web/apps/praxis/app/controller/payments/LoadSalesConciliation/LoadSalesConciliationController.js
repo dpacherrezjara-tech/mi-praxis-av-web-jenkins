@@ -21,6 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
     searchParams: {},
     paramsDetail: {},
     dataObtain: {},
+    paramsObtainData: {},
     init: function (view) {
         me = this;
         prototype.id = 'LoadSalesConciliationForm';
@@ -30,9 +31,9 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.control({
 //            //   -------------------Eventos Genericos --------------------
-//            '#LoadSalesConciliationForm-xpanel': {
-//                afterrender: this.xpanel_afterrender            
-//            },
+            '#LoadSalesConciliationForm-xpanel': {
+                afterrender: this.xpanel_afterrender            
+            },
             '#LoadSalesConciliationForm-btnSearch': {
                 click: this.btnSearch_click
             },
@@ -71,7 +72,9 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
 //
         });
     },
-
+    xpanel_afterrender: function (obj, e) {
+        this.setStoreData();
+    },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -79,6 +82,65 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
     },
     onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
+    },
+    setStoreData: function (){
+        var month = this.fecha.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        var mes = Ext.String.leftPad(this.fecha.getMonth() + 1, 2, '0');
+        
+        Ext.getCmp(prototype.id + '-cmbYear').bindStore(win.getStoreYear(false));
+//        Ext.getCmp(prototype.id + '-cmbMonth').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbYear').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbMonth').setValue(mes);
+        
+        
+        this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.USERPERMIS = 2;
+        this.paramsObtainData.NPROG = sessionStorage.getItem('nprog');
+        console.log(this.paramsObtainData, 'this.paramsObtainData')
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                beanString: JSON.stringify(this.paramsObtainData)
+            },
+            success: function (response, options) {
+                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res, 'resresres')
+                me.lstCountry = res.lstCountry;
+                var storeData3 = Ext.create('Ext.data.Store', {
+                    data: me.lstCountry,
+                    autoLoad: true
+                });
+                if(res.userPermis.PERMM === 'Y'){
+                    Ext.getCmp(prototype.id + '-btnQuery').show();
+                }else{
+                    Ext.getCmp(prototype.id + '-btnQuery').hide();
+                }
+                Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                Ext.getCmp(prototype.id + '-cmbCountry').setValue('CO');
+                global.clear();
+
+            }
+        });
+    },
+    onMonthlyReconciliation: function (){
+        
+        if( Ext.getCmp(prototype.id + '-panelGridData2').isVisible() ){
+            me.panelActual = '-panelGridData'; 
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+        }else{
+            me.panelActual = '-panelGridData2'; 
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+        }
+    },
+    obtainData: function (){
+        
     },
     
     onFileLoad: function () {
@@ -258,6 +320,66 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         
         
     }, 
+    onReconciliationMonth:  function () {
+        let beanReconciliation = {}
+        beanReconciliation.IN_SDATE = Ext.getCmp(prototype.id + '-cmbYear').getValue() + Ext.getCmp(prototype.id + '-cmbMonth').getValue()
+        beanReconciliation.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() 
+        if(beanReconciliation.IN_SDATE.length !== 6){
+            global.Msg({msg: "Complete date"});
+            return false;
+        }
+        if(beanReconciliation.IN_SCOUNTRY === ''){
+            global.Msg({msg: "Complete country"});
+            return false;
+        }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Monthly reconciliation?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'yes') {
+                    let beanString = JSON.stringify(beanReconciliation);
+                   
+                    Ext.Ajax.request({
+                    url: prototype.url + '/monthReconciliation',
+                    method: 'POST',
+                    timeout: 60000000,
+                    beforerequest: Ext.getCmp(prototype.id + '-panelGridData2').mask('Loading...'),
+                    params: {beanString: beanString},
+
+                    success: function (response) {
+                        var res = Ext.decode(response.responseText);
+                        console.log(res);
+                        if (res.success) {
+
+                            let objResult = res.result;
+                            Ext.getCmp(prototype.id + '-panelGridData2').unmask()
+                            console.log(objResult, 'objResult')
+                            Ext.getCmp(prototype.id + '-de-txtQTYREC2').setValue(objResult.QTYRECORDS)
+                            Ext.getCmp(prototype.id + '-de-txtQTYUPL2').setValue(objResult.QTYRECORDS)
+                            Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL2').setValue(0)
+                            Ext.getCmp(prototype.id + '-de-txtUSCR2').setValue(objResult.USCR)
+                            Ext.getCmp(prototype.id + '-de-txtPRDA2').setValue(objResult.FECR)
+                            Ext.getCmp(prototype.id + '-de-txtTRANL2').setValue(objResult.TRANL)
+                            Ext.getCmp(prototype.id + '-btn-reconciliation').setDisabled(true)
+                                
+
+                        } else {
+                            global.Msg({msg: "Error Processed "});
+                        }
+                    },
+                    failure: function (response) {
+                        Ext.getCmp(prototype.id + '-panelGridData2').unmask()
+                        console.log('server-side failure with status code ' + response.status);
+                    }
+                });
+                }
+            }
+        });
+    },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-de-txtQTYREC').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYUPL').setValue('')
@@ -268,11 +390,20 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         Ext.getCmp(prototype.id + '-de-txtQTY').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue('')
+        
+        Ext.getCmp(prototype.id + '-de-txtQTYREC2').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtQTYUPL2').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL2').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtUSCR2').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtPRDA2').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtTRANL2').setValue('')
+                            
         Ext.getCmp(prototype.id + '-btn-process').setDisabled(false)
         Ext.getCmp(prototype.id + '-btn-process').hide()
         Ext.getCmp(prototype.id + '-chkCONTAB').hide()
         Ext.getCmp(prototype.id + '-lblCONTAB').hide()
         Ext.getCmp(prototype.id + '-btn-upload').setDisabled(false)
+        Ext.getCmp(prototype.id + '-btn-reconciliation').setDisabled(false)
         Ext.getCmp(prototype.id + '-file').setDisabled(false)
         Ext.getCmp(prototype.id + '-file').reset();
 

@@ -1064,14 +1064,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 } else {
                     this.beanDetailTar.IN_SCAR = 'N';
                 }
-                
+
                 let proces = Ext.getCmp(prototype.id + '-TEST');
                 if (!proces.isVisible()) {
                     this.beanDetailTar.IN_EXT = 'N';
                 } else {
                     this.beanDetailTar.IN_EXT = 'Y';
                 }
-                
+
                 let consultPath = ''
                 switch (win.getValue('cmbTDOC')) {
                     case 'S':
@@ -1106,7 +1106,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 } else {
                     this.beanDetailAcc.IN_SCAR = 'N';
                 }
-                
+
                 let proces = Ext.getCmp(prototype.id + '-TEST');
                 if (!proces.isVisible()) {
                     this.beanDetailAcc.IN_EXT = 'N';
@@ -1149,7 +1149,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 } else {
                     this.bean.IN_SCAR = 'N';
                 }
-                
+
                 let proces = Ext.getCmp(prototype.id + '-TEST');
                 if (!proces.isVisible()) {
                     this.bean.IN_EXT = 'N';
@@ -1241,7 +1241,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 break;
             case prototype.id + '-boxDetTktS':
                 console.log(me.f_boxDetTktS, 'me.f_boxDetTktS')
-                 if (me.f_boxDetTktS === '2') {
+                if (me.f_boxDetTktS === '2') {
                     global.getFileExcelPost('searchDetTktByStval', JSON.stringify(me.beanboxDetTktS2), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
                 } else if (me.f_boxDetTktS === '3') {
                     console.log(Ext.getCmp(prototype.id + '-gridDetTktByStval').getStore().data.items[0].data.TDOC, 'valor de grilla')
@@ -1276,7 +1276,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
                     global.getFile(prototype.url + '/getXLSXDetalle?beanString=' + encodeURI(JSON.stringify(me.beanboxDetTktS3)));
 //                    global.getFileExcelPost('searchDetTARJETA', JSON.stringify(me.beanboxDetTktS3), Ext.getCmp(prototype.id + '-gridDetTktByStval').config.columns.items);
-                } 
+                }
                 break;
             case prototype.id + '-boxDetTktMatch':
                 console.log('entra en el match')
@@ -1717,7 +1717,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchDetTicket">
-    
+
     searchDetTicket: function (beanDet) {
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
@@ -1876,7 +1876,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchDetTICKET">
-    
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="searchWarnTkts">
     searchWarnTkts: function (bean) {
@@ -2853,7 +2853,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1525)
         }
     },
-    
+
 //    exportExcel: function (_path) {
 //        Ext.Msg.show({
 //            title: '.:PRAXIS:.',
@@ -3335,6 +3335,63 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             }
         });
 
-    }
+    },
+
+    onLoadClick: function () {
+
+        var msjPregunta = '', msjError = '';
+        msjPregunta = 'Sure to load file?';
+
+        if (msjError === '') {
+            Ext.MessageBox.show({
+                title: 'Icon Support',
+                msg: msjPregunta,
+                buttons: Ext.MessageBox.OKCANCEL,
+                icon: Ext.MessageBox.WARNING,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        me.onFileLoad();
+                    }
+                }
+            });
+        }
+    },
+    onFileLoad: function () {
+
+        console.log('onFileLoad');
+
+        var me = this;
+        let beanValidation = {};
+
+        beanValidation.IN_ACCNUMBER = '***********';
+
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        let beanString = JSON.stringify(beanValidation);
+        if (!file) {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+
+        var form = Ext.getCmp(prototype.id + '-formLoad').getForm();
+
+        form.submit({
+            url: prototype.url + '/setUploadADM',
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+
+            success: function (f, o) {
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult;
+                global.Msg({msg: msjResult});
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+
+    },
 
 });
