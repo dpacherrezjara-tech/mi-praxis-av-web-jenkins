@@ -41,11 +41,6 @@
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/A2290.java</file>
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/filter/A2290Filter.java</file>
         </group>
-        <group name="Avianca Web">
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/persistence/daoimpl/UserDaoImpl.java</file>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/provider/ConnectionIBMDB2Server.java</file>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/filter/A2290Filter.java</file>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/A2790.java</file>
-        </group>
+        <group name="Avianca Web"/>
     </open-files>
 </project-private>
