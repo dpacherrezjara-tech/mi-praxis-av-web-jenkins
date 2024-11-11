@@ -47,6 +47,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         console.log('obtainData');
         this.dataObtain.CARD = 2;
         this.dataObtain.BANK = 2;
+        this.dataObtain.USERPERMIS = 2;
+        this.dataObtain.NPROG = sessionStorage.getItem('nprog');
 
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -60,6 +62,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
                             Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');
+                    if(res.userPermis.PERMM === 'Y'){
+                        Ext.getCmp(prototype.id + '-btn-reverse').show();
+                    }else{
+                        Ext.getCmp(prototype.id + '-btn-reverse').hide();
+                    }
                 } else
                     global.Msg({msg: res.sesion});
             }
