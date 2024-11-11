@@ -190,6 +190,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.dataObtain.BANK = 2;
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.COREP = 2;
+        this.dataObtain.USERPERMIS = 2;
+        this.dataObtain.NPROG = sessionStorage.getItem('nprog');
 
 
         Ext.Ajax.request({
