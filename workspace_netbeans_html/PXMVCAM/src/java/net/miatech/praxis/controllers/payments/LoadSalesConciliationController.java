@@ -476,6 +476,34 @@ public class LoadSalesConciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+            
+    @RequestMapping(value = "monthReconciliation",  method = RequestMethod.POST)
+    public @ResponseBody
+    String monthReconciliation(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- LoadSalesConciliation : monthReconciliation-------------");
+        
+        Gson gson = new Gson();
+        A2290Filter filter = new A2290Filter();
+        A2290Filter result = new A2290Filter();
+        String beanString;
+        try {
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2290Filter.class);
+
+        logic = new LoadSalesConciliationLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        UserView user = this.serverSession.getServerSession().getUserView();
+        
+            result = logic.SQPMPF114_PREV(filter, user);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
+    }
 
     public static String FechaInator(String FechaEntrada) {
         String fechaFormateada = "";

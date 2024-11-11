@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.SalesConciliati
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1750,
+                                        width: 1900,
                                         align: 'center'
                                     },
                                     items: [
@@ -67,7 +67,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.SalesConciliati
                                         {
                                             xtype: 'panel',
                                             height: 600,
-                                            width: 1750,
+                                            width: 1900,
                                             layout: 'fit',
                                             items: [
                                                 {

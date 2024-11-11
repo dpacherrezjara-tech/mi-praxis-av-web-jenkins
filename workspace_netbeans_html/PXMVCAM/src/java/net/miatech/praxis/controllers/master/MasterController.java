@@ -119,6 +119,10 @@ public class MasterController extends BaseController {
                 List<CPF031Filter> lstProcessor = masterDAO.lstProcessor();
                 map.put("lstProcessor", lstProcessor);
             }
+            if (data.USERPERMIS != 0) {
+                PX041S01INF001Filter userPermis = masterDAO.loadPX0000INF053(data.NPROG);
+                map.put("userPermis", userPermis);
+            }
             
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);

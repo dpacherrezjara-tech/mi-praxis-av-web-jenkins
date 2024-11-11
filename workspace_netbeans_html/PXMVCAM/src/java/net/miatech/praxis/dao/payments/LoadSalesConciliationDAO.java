@@ -418,7 +418,7 @@ public class LoadSalesConciliationDAO {
         int coorrelativol = 1;
         boolean isAdj = false;
         for(int j = 0; j < lstdata.size(); j++){
-            if( lstdata.get(j).FCONCEP.trim().equals("")){
+            if( lstdata.get(j).FCONCEP.trim().equals("A")){
                 isAdj = true;
             }
         }
@@ -550,7 +550,63 @@ public class LoadSalesConciliationDAO {
         return rspt;
     }
      
-     public String formatAmount(String amount) {
+    public A2290Filter SQPMPF114_PREV(A2290Filter filter, UserView user) throws SQLException, Exception {
+
+        String strMsj = "Operation was successful.";
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_PREV(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.IN_SDATE.trim());
+            cstmt01.setString(3, filter.IN_SCOUNTRY.trim());
+            cstmt01.setString(4, user.getUserInfo().USR);
+            cstmt01.setString(5, Functions.getFechaActual());
+            cstmt01.setString(6, Functions.getHoraActual());
+            cstmt01.registerOutParameter(7, Types.INTEGER);
+            cstmt01.registerOutParameter(8, Types.INTEGER);
+            cstmt01.execute();
+            objRtn.QTYRECORDS =  cstmt01.getInt(7);
+            objRtn.TRANL =  cstmt01.getInt(8);
+            objRtn.USCR =  user.getUserInfo().USR;  
+            objRtn.FECR =  Functions.getFechaActual();  
+            objRtn.HOCR =  Functions.getHoraActual();
+            
+            
+
+            
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return objRtn;
+    }
+     
+    public String formatAmount(String amount) {
 
         if (amount.substring(amount.length() - 3).contains(",")) {
             amount = amount.replace(".", "").replace(",", ".");

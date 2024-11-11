@@ -108,15 +108,15 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Options', {
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'
                         },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id+'-btnQuery',
-//                            icon: 'resources/img/botones/query.png',
-//                            tooltip: 'Query',
-//                            listeners: {
-//                                click: 'btnQuery_click'
-//                            }
-//                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id+'-btnQuery',
+                            icon: 'resources/img/botones/query.png',
+                            tooltip: 'Monthly Reconciliation',
+                            listeners: {
+                                click: 'onMonthlyReconciliation'
+                            }
+                        },
 //                        {
 //                            xtype: 'button',
 //                            id: prototype.id + '-btnBack',

@@ -156,6 +156,7 @@ public class A2295 {
     public String SCARCOD = "";
     public String AUTHNBR = "";
     public String SQCRFILE = "";
+    public String MESSAGE = "";
     
     public long lngTotQSETT = 0;
     public long lngTotQTKT = 0;

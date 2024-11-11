@@ -7,8 +7,10 @@ package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
 import java.util.List;
+import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.SalesConciliationManualDAO;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2295Filter;
 
 /**
@@ -48,5 +50,9 @@ public class SalesConciliationManualLogic {
     
     public List<A2295Filter> loadPX290MPS077_DET_BYS(A2295Filter filter) throws SQLException, Exception {
         return SalesConciliationManualDAO.loadPX290MPS077_DET_BYS(filter);
+    }
+    
+    public A2295Filter SQPMPF114_MANUAL_MONTH(A2295Filter filter, UserView user) throws SQLException, Exception {
+        return SalesConciliationManualDAO.SQPMPF114_MANUAL_MONTH(filter, user);
     }
 }
