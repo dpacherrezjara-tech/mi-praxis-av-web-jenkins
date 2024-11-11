@@ -26,6 +26,19 @@ public class MPF100Filter extends MPF100 {
     public String origSCURRENCY = "";
     public double origSVFOP = 0;
     //===============================
+    //Insumo ADM
+    public String ID = "";
+    public String FORMASERIE = "";
+    public String COUPON = "";
+    public String FARECLAS = "";
+    public String EMISSION = "";
+    public String IATA = "";
+    public String ORIGIN = "";
+    public String DESTINATION = "";
+    public String FAREAMOUNT = "";
+    public String PENALTY = "";
+    public String COMMISSION = "";
+    public String ADM = "";
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
     public String strFecFiltro = "";

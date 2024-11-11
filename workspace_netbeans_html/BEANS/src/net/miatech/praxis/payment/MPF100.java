@@ -21,6 +21,8 @@ public class MPF100 {
     public String TRNCU = "";
     public String NUMREF = "";
     public String TICKET = "";
+    
+    
     //Datos de la Venta
     public String SDATEL = "";
     public String SFLOAD = "";

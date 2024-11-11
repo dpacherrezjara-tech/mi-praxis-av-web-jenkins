@@ -34,6 +34,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,12 +43,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 // </editor-fold>
 /**
@@ -3870,6 +3875,97 @@ public class SalesReconciliationController extends BaseController {
         }
 
         return Mensaje;
+    }
+
+    @RequestMapping(value = "setUploadADM", method = RequestMethod.POST)
+    public @ResponseBody
+    String setUploadADM(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+
+        byte[] bytes = null;
+        String message = "";
+        String filename = "";
+
+        try {
+
+            byte[] dataFile = excelfile.getBytes();
+            filename = request.getParameter("filename");
+
+            message = uploadFileADM(dataFile);
+
+            map.put("success", true);
+            map.put("msjResult", message);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msjResult", message);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private String uploadFileADM(byte[] bytes) throws Exception {
+
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String message = "";
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "Revision." + strSesion + ".xlsx";
+
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String strArchivo = "C:\\Dumps\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter dataFormatter = new DataFormatter(Locale.US);
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            List<MPF100Filter> listData = new ArrayList<>(0);
+
+            try {
+
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+
+                    if (row.getRowNum() >= 1) {
+                        MPF100Filter obj = new MPF100Filter();
+
+                        obj.ID = dataFormatter.formatCellValue(row.getCell(0));
+                        obj.CCIA = dataFormatter.formatCellValue(row.getCell(1));
+                        obj.FORMASERIE = dataFormatter.formatCellValue(row.getCell(2));
+                        obj.COUPON = dataFormatter.formatCellValue(row.getCell(3));
+                        obj.FARECLAS = dataFormatter.formatCellValue(row.getCell(4));
+                        obj.EMISSION = dataFormatter.formatCellValue(row.getCell(5));
+                        obj.IATA = dataFormatter.formatCellValue(row.getCell(6));
+                        obj.ORIGIN = dataFormatter.formatCellValue(row.getCell(7));
+                        obj.DESTINATION = dataFormatter.formatCellValue(row.getCell(8));
+                        obj.FAREAMOUNT = dataFormatter.formatCellValue(row.getCell(9));
+                        obj.PENALTY = dataFormatter.formatCellValue(row.getCell(10));
+                        obj.COMMISSION = dataFormatter.formatCellValue(row.getCell(11));
+                        obj.ADM = dataFormatter.formatCellValue(row.getCell(12));
+                        listData.add(obj);
+                    }
+                }
+
+                message = logic.loadPX263loadADM(listData);
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                e.printStackTrace();
+            }
+            //Eliminar temporal           
+            archivo.delete();
+        } catch (Exception e) {
+            message = e.getMessage();
+            e.printStackTrace();
+        }
+        return message;
     }
 
 }
