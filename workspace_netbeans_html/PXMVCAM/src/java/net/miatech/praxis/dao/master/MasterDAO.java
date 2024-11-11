@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.A1691Filter;
 import net.miatech.beans.A2826Filter;
+import net.miatech.beans.PX041S01INF001Filter;
 import net.miatech.beans.spring.UserView;
+
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A006;
 import net.miatech.libmiatec.A1007;
@@ -1836,5 +1838,64 @@ public class MasterDAO {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    
+    
+    public PX041S01INF001Filter loadPX0000INF053( String nprog  ) throws SQLException, Exception {
+
+        List<PX041S01INF001Filter> lstRtn = new ArrayList<>();
+        PX041S01INF001Filter objRtn =new PX041S01INF001Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        
+        UserView user = this.session.getUserView();
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_USERPERMIS_MASTER_INFO53(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, user.getUserInfo().USR);
+            cstmt01.setString(3,  nprog);
+
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn = new PX041S01INF001Filter();
+                objRtn.PERMA = rs01.getString("PERMA").trim();
+                objRtn.PERML = rs01.getString("PERML").trim();
+                objRtn.PERMC = rs01.getString("PERMC").trim();
+                objRtn.PERMM = rs01.getString("PERMM").trim();
+                objRtn.PERME = rs01.getString("PERME").trim();
+                objRtn.PERMX = rs01.getString("PERMX").trim();
+
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return objRtn;
     }
 }
