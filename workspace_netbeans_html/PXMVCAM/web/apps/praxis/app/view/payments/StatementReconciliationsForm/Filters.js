@@ -315,9 +315,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         keypress: 'eventKey_BANDOC'
                     }
                 },
-                
-                
-                
             ]
         },
         {
@@ -542,7 +539,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     {
                         xtype: 'label',
                         text: ' ',
-                        margin: '13 0 0 10',
+                        margin: '0 0 0 0',
                         id: prototype.id + '-TEST',
                         hidden: true,
                         width: 1
