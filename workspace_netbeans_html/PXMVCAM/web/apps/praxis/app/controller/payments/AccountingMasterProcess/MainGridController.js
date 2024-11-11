@@ -67,7 +67,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',{
             id: prototype.id + '-ErrorsGrid-1',
             searchParams: params,
             backButton: ()=> {
@@ -93,7 +93,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',{
             id: prototype.id + '-ErrorsGrid-2',
             searchParams: params,
             backButton: ()=> {
@@ -119,7 +119,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid',{
             id: prototype.id + '-SettlementGrid-2',
             searchParams: params,
             backButton: ()=> {
@@ -144,7 +144,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',{
             id: prototype.id + '-BandocsGrid-1',
             searchParams: params,
             backButton: ()=> {
@@ -159,7 +159,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         let params = {
             IN_IDCONT: IDCONT
         };
-        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.LoggerDataEntry',{
+        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.LoggerDataEntry',{
             id: prototype.id + '-LoggerDataEntry-1',
             searchParams: params
         });

@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         let params = me.formatParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid', {
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
             id: prototype.id + '-MainGrid-1',
             searchParams: params
         });
@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
     },
     onProcessClick: function () {
         const me = this;
-        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.ProcessAccountingDataEntry', {
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAccountingDataEntry', {
             id: prototype.id + '-ProcessAccountingDataEntry-1',
             procesadores: me.procesadores
         });
