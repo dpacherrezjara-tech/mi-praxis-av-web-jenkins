@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Options', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,

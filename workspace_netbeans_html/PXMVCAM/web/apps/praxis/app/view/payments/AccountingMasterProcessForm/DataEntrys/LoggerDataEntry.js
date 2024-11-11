@@ -1,10 +1,10 @@
 prototype.idDE2 = prototype.id + '-LoggerDataEntry';
 
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.LoggerDataEntry', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.LoggerDataEntry', {
     extend: 'Ext.window.Window',
     alias: 'widget.LoggerDataEntry',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.LoggerDataEntryController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.LoggerDataEntryController'
     ],
     controller: 'LoggerDataEntryController',
     title: 'Logger - Form',

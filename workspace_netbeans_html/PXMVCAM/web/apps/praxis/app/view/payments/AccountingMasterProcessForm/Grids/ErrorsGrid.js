@@ -1,8 +1,8 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.' + prototype.id + '-ErrorsGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridController'
     ],
     controller: 'ErrorsGridController',
     maxHeight: prototype.height,

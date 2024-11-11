@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.ErrorsGridController',
     url: CONTEXTPATH + '/AccountingReport',

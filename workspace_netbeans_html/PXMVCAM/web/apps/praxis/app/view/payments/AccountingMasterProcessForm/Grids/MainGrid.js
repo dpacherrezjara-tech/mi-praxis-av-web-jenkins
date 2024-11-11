@@ -1,8 +1,8 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.' + prototype.id + '-MainGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.MainGridController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridController'
     ],
     controller: 'MainGridController',
     maxHeight: prototype.height,

@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMasterProcessController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AccountingReportController',
+    alias: 'controller.AccountingMasterProcessController',
     url: CONTEXTPATH + '/AccountingReport',
     procesadores: [],
     request: axios.create({

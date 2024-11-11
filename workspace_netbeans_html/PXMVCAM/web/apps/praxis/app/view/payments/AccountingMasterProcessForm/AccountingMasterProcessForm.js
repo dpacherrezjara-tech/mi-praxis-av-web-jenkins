@@ -1,23 +1,23 @@
-prototype.id = 'AccountingReportForm';
+prototype.id = 'AccountingMasterProcessForm';
 prototype.url = CONTEXTPATH + '/AccountingReport';
 prototype.width = 1900;
 prototype.height = 630;
 fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
 
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingMasterProcessForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.AccountingReportForm',
+    alias: 'widget.AccountingMasterProcessForm',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.AccountingReportController',
-        'Ext.Praxis.view.payments.AccountingReportForm.Options',
-        'Ext.Praxis.view.payments.AccountingReportForm.Filters',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.AccountingGrid'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMasterProcessController',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Options',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid'
     ],
-    controller: 'AccountingReportController',
+    controller: 'AccountingMasterProcessController',
     layout: {
         type: 'fit'
     },

@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.SettlementGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.SettlementGridController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.SettlementGridController',
     url: CONTEXTPATH + '/AccountingReport',

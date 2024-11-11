@@ -1,8 +1,8 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.' + prototype.id + '-BandocsGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.BandocsGridController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridController'
     ],
     controller: 'BandocsGridController',
     maxHeight: prototype.height,

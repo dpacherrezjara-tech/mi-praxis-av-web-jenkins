@@ -1,26 +1,20 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.LoggerDataEntryController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AccountingGridController',
+    alias: 'controller.LoggerDataEntryController',
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
         timeout: 0
       }),
-    init: function (view) {
-        if(view.backButton){
-            Ext.getCmp(prototype.id + '-acco-btnBack').show();
-            Ext.getCmp(prototype.id + '-acco-btnBack').on('click',view.backButton);
-        }
-    },
     afterRender: function () {
-        this.loadGrid();
+        this.loadLogger();
     },
-    loadGrid: async function(){
+    loadLogger: async function(){
         const me = this;
-        const grid = me.view;
+        const grid = Ext.getCmp(prototype.idDE2 + '-gridLogger');
         try {
             grid.setLoading(true);
-            const res = await me.request.get('loadAccountingInfo',{
+            const res = await me.request.get('loadLogCont',{
                 params: me.view.searchParams
             });
             const {response} = res.data;
@@ -32,7 +26,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingGridContro
             console.error(e);
         } finally {
             grid.setLoading(false);
+            me.view.center();
         }
 
+    },
+    onCancelClick: function () {
+        this.view.close();
     }
 });

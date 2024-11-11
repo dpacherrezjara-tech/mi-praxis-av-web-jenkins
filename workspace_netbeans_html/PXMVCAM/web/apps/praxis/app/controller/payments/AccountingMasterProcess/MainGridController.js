@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.MainGridController',
     url: CONTEXTPATH + '/AccountingReport',

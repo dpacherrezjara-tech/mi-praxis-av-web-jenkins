@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                 align: 'center'
             },
             items: [
-                //<editor-fold defaultstate="collapsed" desc="Browser">
+                //<editor-fold defaultstate="collapsed" desc="Executor">
                 {
                     xtype: 'form',
                     border: false,
@@ -207,6 +207,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                     ]
                 }
                 //</editor-fold>
+
             ]
         }
     ]

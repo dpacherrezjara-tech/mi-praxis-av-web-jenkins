@@ -1,8 +1,8 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.' + prototype.id + '-SettlementGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.SettlementGridController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.SettlementGridController'
     ],
     controller: 'SettlementGridController',
     maxHeight: prototype.height,

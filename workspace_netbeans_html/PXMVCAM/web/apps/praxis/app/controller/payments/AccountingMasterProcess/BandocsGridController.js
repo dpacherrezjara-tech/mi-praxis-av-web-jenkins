@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocsGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.BandocsGridController',
     url: CONTEXTPATH + '/AccountingReport',

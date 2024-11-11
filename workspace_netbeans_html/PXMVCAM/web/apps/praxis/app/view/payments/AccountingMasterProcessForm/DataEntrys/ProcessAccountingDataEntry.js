@@ -1,10 +1,10 @@
 prototype.idDE = prototype.id + '-ProcessAccountingDataEntry';
 
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAccountingDataEntry', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.ProcessAccountingDataEntry', {
     extend: 'Ext.window.Window',
     alias: 'widget.ProcessAccountingDataEntry',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDataEntryController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccountingDataEntryController'
     ],
     controller: 'ProcessAccountingDataEntryController',
     title: 'Process Accounting - Form',

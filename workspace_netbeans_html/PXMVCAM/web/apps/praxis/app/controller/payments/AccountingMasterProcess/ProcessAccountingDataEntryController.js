@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDataEntryController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccountingDataEntryController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.ProcessAccountingDataEntryController',
     url: CONTEXTPATH + '/AccountingReport',
