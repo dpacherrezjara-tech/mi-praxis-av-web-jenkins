@@ -65,7 +65,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.AccountingGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',{
             id: prototype.id + '-AccountingGrid-1',
             searchParams: params,
             backButton: ()=> {
