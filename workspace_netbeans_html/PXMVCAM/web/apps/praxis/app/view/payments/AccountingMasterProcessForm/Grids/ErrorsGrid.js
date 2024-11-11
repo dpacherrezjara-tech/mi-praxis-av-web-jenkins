@@ -36,6 +36,22 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGri
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 40,
+                text: 'Info',
+                locked: true,
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-detail',
+                        tooltip: 'Open Detail',
+                        handler: 'onLoadAccountingInfo',
+                        isDisabled: 'disableAccountingInfo'
+                    }
+                ]
+            },
             {text: 'Accounting ID', dataIndex: 'IDCONT', width: 180},
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 200},
             {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
