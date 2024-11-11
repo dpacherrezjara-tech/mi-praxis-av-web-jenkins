@@ -64,6 +64,7 @@ public class AccountingReportDAO implements AccountingReportLogic{
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SQP05233", params, new BeanPropertyRowMapper(A4545.class));
         filter.setResponse((List<A4545>) obj.get("result"));
         //filter.setPageOut(obj);
+        filter.OU_FILENAM = obj.get("OU_FILENAM").toString();
         filter.dbException.SQLCODE = obj.get("OU_SQLCODE").toString();
         filter.dbException.MESSAGE = obj.get("OU_MESSAGE").toString();
         return filter;

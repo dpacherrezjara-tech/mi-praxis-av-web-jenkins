@@ -99,9 +99,10 @@ public class AccountingReportController extends BaseController {
         List<String> file = new ArrayList<>();
         List<List<String>> files = new ArrayList<>();
         
-        String idCont = filter.getIN_IDCONT().trim();
+        String fileNameTemp = "CARGUE_TC_" + filter.getIN_FCONT() + "_" + filter.getIN_CCUST()+ "_";
         String fileName;
-        String zipName = "TC_" + idCont ;
+        //String zipName = "TC_" + idCont ;
+        String zipName = "";
         
         String A4545SEQ = "";
         String A4545MODO = "";
@@ -115,6 +116,7 @@ public class AccountingReportController extends BaseController {
         
             filter = logic.loadSQP05233Filter(filter);
             List<A4545> result = filter.getResponse();
+            zipName = filter.OU_FILENAM.trim();
             
             file.add(fileHeader);
             
@@ -198,7 +200,8 @@ public class AccountingReportController extends BaseController {
                     !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
                     (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
                     
-                    fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
+                    //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
+                    fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + filter.getIN_CODPRO() + "_" + (k+1);
                     
                     fileNames.add( fileName );                   
                     files.add(file) ;
@@ -216,7 +219,8 @@ public class AccountingReportController extends BaseController {
                 A4545MODO = result.get(i).getA4545MODO();
             }
             
-            fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
+            //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
+            fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + filter.getIN_CODPRO().trim() + "_" + (k+1);
             
             fileNames.add(fileName);
             files.add(file) ;

@@ -20,8 +20,13 @@ import net.miatech.utils.CustomPageImpl;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SQP05233Filter extends CustomPageImpl {
-
-    public String IN_IDCONT; 
+    
+    public String IN_CCUST;
+    public String IN_CODPRO;
+    public String IN_TIPOCON;
+    public String IN_FCONT;
+    public String IN_IDCONT;
+    public String OU_FILENAM = "";
     List<A4545> response = new ArrayList<>();
     public DBException dbException = new DBException();
     

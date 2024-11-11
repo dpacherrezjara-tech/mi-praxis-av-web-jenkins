@@ -155,7 +155,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         mainPanel.add(newPanel);
     },
     onOpenLogger: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {IDCONT} = record.data;
+        const { IDCONT } = record.data;
         let params = {
             IN_IDCONT: IDCONT
         };
@@ -216,9 +216,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.MainGridController',
         'Error on Reverse');
     },
     onDownloadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {IDCONT} = record.data;
+        const {CCUST, CODPRO, FCONT, TIPOCON, IDCONT } = record.data;
         const me = this;
         let params = {
+            IN_CCUST: CCUST,
+            IN_CODPRO: CODPRO,
+            IN_FCONT: FCONT,
+            IN_TIPOCON: TIPOCON,
             IN_IDCONT:IDCONT
         };
         console.log('Download Params: ',params);
