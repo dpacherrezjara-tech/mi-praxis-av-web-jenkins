@@ -21,4 +21,6 @@ public class DataObtain {
     public byte CURRENCY = 0;
     public byte UAUDITS = 0;
     public byte COREP = 0;
+    public byte USERPERMIS = 0;
+    public String NPROG = ""; 
 }

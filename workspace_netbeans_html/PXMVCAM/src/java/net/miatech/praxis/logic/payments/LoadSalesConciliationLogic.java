@@ -46,4 +46,7 @@ public class LoadSalesConciliationLogic {
         return loadSalesConciliationDAO.SQPMPS076(lstData,user );
     }
 
+    public A2290Filter SQPMPF114_PREV(A2290Filter filter, UserView user) throws SQLException, Exception {
+        return loadSalesConciliationDAO.SQPMPF114_PREV(filter, user);
+    }
 }

@@ -13,6 +13,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import net.miatech.beans.spring.UserView;
 
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.payment.filter.A2295Filter;
@@ -384,7 +385,7 @@ public class SalesConciliationManualDAO {
 
 //        double SVFOPOT = 0, SVFOPNETR = 0 ;
 //        double SVFOPCA = 0, SVFOPCC = 0 ;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS077(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";//" + session.getMainLibrary() + "
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS077_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";//" + session.getMainLibrary() + "
 
         Connection cnx = null;
         try {
@@ -434,12 +435,17 @@ public class SalesConciliationManualDAO {
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
                 objRtn.SAUTHOC = rs01.getString("SAUTHOC").trim();
                 objRtn.SVFOP = rs01.getString("SVFOP").trim();
+                objRtn.SVFOPACUM = rs01.getString("SVFOPACUM").trim();
                 objRtn.SEQ = rs01.getString("SEQ").trim();
                 objRtn.USERF = rs01.getString("USERF").trim();
                 objRtn.CERROR = rs01.getString("ERROR").trim();
                 objRtn.ACCNUMA = rs01.getString("ACCNUMA").trim();
                 objRtn.COSTCEN = rs01.getString("COSTCEN").trim();
                 objRtn.TRANL = rs01.getString("TRANL").trim();
+                objRtn.DATEC = rs01.getString("DATEC").trim();
+                objRtn.TRANC = rs01.getString("TRANC").trim();
+                objRtn.SAGENT = rs01.getString("SAGENT").trim();
+                objRtn.INVOICE = rs01.getString("INVOICE").trim();
 
                 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;
@@ -830,4 +836,58 @@ public class SalesConciliationManualDAO {
         return list;
     }
     
+    public A2295Filter SQPMPF114_MANUAL_MONTH(A2295Filter filter, UserView user) throws SQLException, Exception {
+
+        String strMsj = "Operation was successful.";
+        A2295Filter objRtn = new A2295Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_SAGENT_SDATE(?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.IN_PRDA.trim());
+            cstmt01.setString(3, filter.IN_TRANL.trim());
+            cstmt01.setString(4, user.getUserInfo().USR);
+            cstmt01.setString(5, Functions.getFechaActual());
+            cstmt01.setString(6, Functions.getHoraActual());
+            cstmt01.registerOutParameter(7, Types.INTEGER);
+            cstmt01.registerOutParameter(8, Types.INTEGER);
+            cstmt01.registerOutParameter(9, Types.VARCHAR);
+            cstmt01.execute();
+            objRtn.QTYRECORDS =  cstmt01.getInt(7);
+            objRtn.QTYUP =  cstmt01.getInt(8);
+            objRtn.MESSAGE =  cstmt01.getString(9);
+            objRtn.USCR =  user.getUserInfo().USR;  
+            objRtn.FECR =  Functions.getFechaActual();  
+            objRtn.HOCR =  Functions.getHoraActual();
+            
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return objRtn;
+    }
 }

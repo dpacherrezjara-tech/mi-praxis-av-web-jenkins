@@ -47,7 +47,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                 anchor: '100%'
                             },
                             items: [
-                               
+
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -75,10 +75,10 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                     layout: 'vbox',
                                     border: false,
                                     bodyStyle: 'background:#E5ECEF;',
-        //                            margin: '5 2 5 30',
+                                    //                            margin: '5 2 5 30',
                                     defaults: {
                                         anchor: '100%',
-        //                                width: 650
+                                        //                                width: 650
                                     },
                                     items: [
 
@@ -87,10 +87,10 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             layout: 'hbox',
                                             border: false,
                                             bodyStyle: 'background:#E5ECEF;',
-        //                                    margin: '0 2 4 30',
+                                            //                                    margin: '0 2 4 30',
                                             defaults: {
                                                 anchor: '100%',
-        //                                        width: 1050
+                                                //                                        width: 1050
                                             },
                                             items: [
                                                 {xtype: 'tbspacer', width: 27},
@@ -99,7 +99,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                     id: prototype.id + '-form-01',
                                                     border: false,
                                                     bodyStyle: 'background-color: #E3EAF9;',
-        //                                            padding: '0 0 5 7',
+                                                    //                                            padding: '0 0 5 7',
                                                     items: [{
                                                             xtype: 'filefield',
                                                             id: prototype.id + '-file',
@@ -110,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                             labelWidth: 85,
                                                             width: 400,
                                                             style: 'font-weight:bold;',
-                                                            buttonAlign: 'left', 
+                                                            buttonAlign: 'left',
                                                             buttonText: 'Select excel...',
                                                             regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
                                                             regexText: 'Only XLS and XLSX formats are accepted',
@@ -144,6 +144,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                     padding: '0px 0px 0px 0px',
 
                                                 },
+
                                                 {xtype: 'tbspacer', width: 500}
 
                                             ]
@@ -153,10 +154,10 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             layout: 'hbox',
                                             border: false,
                                             bodyStyle: 'background:#E5ECEF;',
-                //                                    margin: '0 2 2 30',
+                                            //                                    margin: '0 2 2 30',
                                             defaults: {
                                                 anchor: '100%',
-                //                                        width: 1080
+                                                //                                        width: 1080
                                             },
                                             items: [
                                                 {xtype: 'tbspacer', width: 27},
@@ -181,7 +182,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                     html: '<strong style="color:black;">Process</strong>',
                                                     style: 'background:#70E3EC;color:white;font-weight:bold;',
                                                     border: true,
-                                                    hidden:true,
+                                                    hidden: true,
                                                     listeners: {
                                                         click: 'onProcess'
                                                     }
@@ -221,7 +222,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                     margin: '5 0 10 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -264,7 +265,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {xtype: 'tbspacer', width: 20},
                                         {
@@ -286,7 +287,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
 
                                         {xtype: 'tbspacer', width: 409}
@@ -300,7 +301,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                     margin: '5 0 20 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -343,7 +344,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {xtype: 'tbspacer', width: 20},
                                         {
@@ -365,7 +366,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
 
                                         {xtype: 'tbspacer', width: 409}
@@ -401,7 +402,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                     margin: '5 0 50 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -444,7 +445,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {xtype: 'tbspacer', width: 20},
                                         {
@@ -466,12 +467,328 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
 
                                         {xtype: 'tbspacer', width: 409}
                                     ]
                                 },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridData2',
+                            bodyStyle: 'background: transparent;"',
+                            layout: 'vbox',
+                            width: 750,
+                            height: 338,
+                            defaults: {
+                                anchor: '100%'
+                            },
+                            items: [
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background: transparent;"',
+                                    margin: '20 2 2 20',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Monthly Reconciliation',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
+                                            width: 160,
+                                            height: 25
+                                        },
+                                        {xtype: 'tbspacer', width: 534}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background: transparent;"',
+                                    margin: '20 2 2 20',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbYear',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'Year',
+                                            width: 120,
+                                            labelWidth: 45,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code',
+                                            displayField: 'name',
+//                            listConfig: {maxHeight: 111, minWidth: 70},
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            listeners: {
+                                                change: 'cbxDateFromYear_changeHandler'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbMonth',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'Month',
+                                            width: 120,
+                                            labelWidth: 45,
+                                            labelAlign: 'right',
+                                            
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            displayField: 'display',
+                                            valueField: 'month',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true,
+                                            store: Ext.create('Ext.data.Store', {
+                                                fields: ['month', 'display'],
+                                                data: [
+                                                    {month: '01', display: 'Jan'},
+                                                    {month: '02', display: 'Feb'},
+                                                    {month: '03', display: 'Mar'},
+                                                    {month: '04', display: 'Apr'},
+                                                    {month: '05', display: 'May'},
+                                                    {month: '06', display: 'Jun'},
+                                                    {month: '07', display: 'Jul'},
+                                                    {month: '08', display: 'Aug'},
+                                                    {month: '09', display: 'Sep'},
+                                                    {month: '10', display: 'Oct'},
+                                                    {month: '11', display: 'Nov'},
+                                                    {month: '12', display: 'Dec'}
+                                                ]
+                                            }),
+                                            
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbCountry',
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            fieldLabel: 'Country',
+                                            labelWidth: 50,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            width: 300,
+                                            typeAhead: true,
+                                            valueField: 'A006PAIS',
+                                            displayField: 'A006NOMBRE',
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                        },
+                                        {xtype: 'tbspacer', width: 534}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background: transparent;"',
+                                    margin: '20 2 2 20',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btn-reconciliation',
+                                            margin: '0 0 0 0',
+                                            width: 150,
+                                            html: '<strong style="color:black;">Process</strong>',
+                                            style: 'background:#fef763;color:white;font-weight:bold;',
+                                            border: true,
+                                            listeners: {
+                                                click: 'onReconciliationMonth'
+                                            }
+                                        },
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    margin: '30 0 10 0',
+                                    defaults: {
+                                        anchor: '100%',
+                                        //                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 27},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Read records',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtQTYREC2',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '10',
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            width: 100
+                                        }
+                                        ,
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Load records ',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtQTYUPL2',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '8',
+                                            width: 100,
+                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            //                                    maskRe: /[a-zA-Z]/
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Not Loaded',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtQTYNOTUPL2',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '8',
+                                            width: 100,
+                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            //                                    maskRe: /[a-zA-Z]/
+                                        },
+
+                                        {xtype: 'tbspacer', width: 409}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    margin: '20 0 20 0',
+                                    defaults: {
+                                        anchor: '100%',
+                                        //                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 27},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Upload user',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtUSCR2',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '10',
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            width: 100
+                                        }
+                                        ,
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Loading Date',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtPRDA2',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '8',
+                                            width: 100,
+//                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            //                                    maskRe: /[a-zA-Z]/
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Report numb',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtTRANL2',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '8',
+                                            width: 100,
+                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+                                            //                                    maskRe: /[a-zA-Z]/
+                                        },
+
+                                        {xtype: 'tbspacer', width: 409}
+                                    ]
+                                },
+                                
                             ]
                         }
                     ],
@@ -489,7 +806,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
             ]
         }
     ],
-    
+
 }
 );
 

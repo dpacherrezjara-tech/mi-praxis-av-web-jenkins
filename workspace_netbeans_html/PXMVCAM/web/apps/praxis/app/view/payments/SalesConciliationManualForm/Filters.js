@@ -22,7 +22,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
 //                hiddenLabel: false,
 //                labelAlign: 'right',
 //                hidden: false,
-                  border: false
+                border: false
             },
             items: [
                 {
@@ -35,8 +35,8 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                         margin: '4 0'
                     },
                     items: [
-                        {xtype: 'tbspacer', width: 150},
-                        
+                        {xtype: 'tbspacer', width: 300},
+
                         {
                             xtype: 'combo',
                             fieldLabel: 'Search By:',
@@ -182,24 +182,24 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             xtype: 'textfield',
                             labelStyle: 'font-weight: bold;',
                             fieldLabel: 'Ticket:',
-                            id: prototype.id+'-txtTKT',     
+                            id: prototype.id + '-txtTKT',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
 //                            maxLength: 13,
                             maxLength: 14,
                             labelWidth: 40,
                             width: 185,
-                            enableKeyEvents: true,                          
-                            listeners:{
+                            enableKeyEvents: true,
+                            listeners: {
                                 change: 'onValidarChange',
                                 keypress: 'eventKey'
                             }
                         },
                         {xtype: 'tbspacer', width: 30},
                         {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbFCONCEP',
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbFCONCEP',
                             queryMode: 'local',
                             allowBlank: false,
                             fieldLabel: 'Concep:',
@@ -217,9 +217,24 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                             labelStyle: 'font-weight: bold;',
-                            listeners:{
+                            listeners: {
+                                change: 'onChangeConcep'
                             }
-                        }
+                        },
+                        {xtype: 'tbspacer', width: 30},
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn-process',
+//                            margin: '6 5 5 0',
+                            width: 80,
+                            html: '<strong style="color:black;">Process</strong>',
+                            style: 'background:#70E3EC;color:white;font-weight:bold;',
+                            border: true,
+                            hidden: true,
+                            listeners: {
+                                click: 'onConciliation'
+                            }
+                        },
 //                        {xtype: 'tbspacer', width: 30},
 //                        {
 //                            xtype:'combo',
@@ -299,12 +314,12 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                     defaults: {
                         margin: '4 0'
                     },
-                    items: [                
-                        
-                        {xtype: 'tbspacer', width: 150},                       
+                    items: [
+
+                        {xtype: 'tbspacer', width: 300},
                         {
-                            xtype:'combo',
-                            id: prototype.id+'-cmbSTVAL',
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbSTVAL',
                             queryMode: 'local',
                             allowBlank: false,
                             fieldLabel: 'Status:',
@@ -322,7 +337,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                             labelStyle: 'font-weight: bold;',
-                            listeners:{
+                            listeners: {
                             }
                         },
                         {xtype: 'tbspacer', width: 30},
@@ -330,40 +345,40 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             xtype: 'textfield',
                             labelStyle: 'font-weight: bold;',
                             fieldLabel: 'Report Numb:',
-                            id: prototype.id+'-txtTRANL',     
+                            id: prototype.id + '-txtTRANL',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
 //                            maxLength: 13,
                             maxLength: 8,
                             labelWidth: 100,
                             width: 230,
-                            enableKeyEvents: true,                          
-                            listeners:{
+                            enableKeyEvents: true,
+                            listeners: {
                                 change: 'onValidarChange',
                                 keypress: 'eventKey'
                             }
                         },
                         {xtype: 'tbspacer', width: 30},
-                        
+
                         {
                             xtype: 'textfield',
                             labelStyle: 'font-weight: bold;',
                             fieldLabel: 'Sequence:',
-                            id: prototype.id+'-txtSEQ',     
+                            id: prototype.id + '-txtSEQ',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[0-9]/,      
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
 //                            maxLength: 13,
                             maxLength: 4,
                             labelWidth: 80,
                             width: 225,
-                            enableKeyEvents: true,                          
-                            listeners:{
+                            enableKeyEvents: true,
+                            listeners: {
                                 change: 'onValidarChange',
                                 keypress: 'eventKey'
                             }
-                        } ,   
+                        },
                         {xtype: 'tbspacer', width: 30},
                         {
                             xtype: 'label',
@@ -411,29 +426,28 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             listeners: {
                                 keypress: 'eventKey'
                             }
-                        }, 
+                        },
                         {xtype: 'tbspacer', width: 30},
-                        
+
                         {
                             xtype: 'textfield',
                             labelStyle: 'font-weight: bold;',
                             fieldLabel: 'Cod. Author:',
-                            id: prototype.id+'-txtSAUTHOC',     
+                            id: prototype.id + '-txtSAUTHOC',
                             fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,     
-                            maskRe: /[a-zA-Z0-9]/,     
+                            enforceMaxLength: true,
+                            maskRe: /[a-zA-Z0-9]/,
 //                            maxLength: 13,
                             maxLength: 6,
                             labelWidth: 80,
                             width: 177,
-                            enableKeyEvents: true,                          
-                            listeners:{
+                            enableKeyEvents: true,
+                            listeners: {
                                 change: 'onValidarChange',
                                 keypress: 'eventKey'
                             }
-                        } ,   
-                       
-                    ]   
+                        },
+                    ]
 
                 }
             ]

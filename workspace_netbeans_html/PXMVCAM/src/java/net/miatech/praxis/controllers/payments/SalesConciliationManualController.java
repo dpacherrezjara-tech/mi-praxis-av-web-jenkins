@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
@@ -422,6 +423,34 @@ public class SalesConciliationManualController extends BaseController {
             throw new SpringException(e);
         }
         return lst; //RETORNA LA LISTA
+    }
+    
+    @RequestMapping(value = "updateConciliation",  method = RequestMethod.POST)
+    public @ResponseBody
+    String monthReconciliation(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- LoadSalesConciliation : monthReconciliation-------------");
+        
+        Gson gson = new Gson();
+        A2295Filter filter = new A2295Filter();
+        A2295Filter result = new A2295Filter();
+        String beanString;
+        try {
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2295Filter.class);
+
+        logic = new SalesConciliationManualLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        UserView user = this.serverSession.getServerSession().getUserView();
+        
+            result = logic.SQPMPF114_MANUAL_MONTH(filter, user);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
     }
     
 // EXEL DEL DETALLE 1  Año,MES    
@@ -1252,8 +1281,14 @@ public class SalesConciliationManualController extends BaseController {
             Cell CH1_9 = row1.createCell(9);
             Cell CH1_10 = row1.createCell(10);
             Cell CH1_11 = row1.createCell(11);
-
-
+            Cell CH1_12 = row1.createCell(12);
+            Cell CH1_13 = row1.createCell(13);
+            Cell CH1_14 = row1.createCell(14);
+            Cell CH1_15 = row1.createCell(15);
+            Cell CH1_16 = row1.createCell(16);
+            Cell CH1_17 = row1.createCell(17);
+            Cell CH1_18 = row1.createCell(18);
+            Cell CH1_19 = row1.createCell(19);
 
 
             CH1_0.setCellValue("Date");
@@ -1261,15 +1296,21 @@ public class SalesConciliationManualController extends BaseController {
             CH1_2.setCellValue("Concep");
             CH1_3.setCellValue("Ticket");
             CH1_4.setCellValue("Sales Date");
-            CH1_5.setCellValue("Card Number");
-            CH1_6.setCellValue("Sauthoc");
-            CH1_7.setCellValue("Currency");
-            CH1_8.setCellValue("Amount");
-            CH1_9.setCellValue("Seq.");
-            CH1_10.setCellValue("User");
-            CH1_11.setCellValue("Comment");
-
-
+            CH1_5.setCellValue("Agent");
+            CH1_6.setCellValue("Card Number");
+            CH1_7.setCellValue("Sauthoc");
+            CH1_8.setCellValue("Invoice");
+            CH1_9.setCellValue("Currency");
+            CH1_10.setCellValue("Amount");
+            CH1_11.setCellValue("Total");
+            CH1_12.setCellValue("Cuenta");
+            CH1_13.setCellValue("Cost Cen.");
+            CH1_14.setCellValue("Conci. Date");
+            CH1_15.setCellValue("Trans. Conci");
+            CH1_16.setCellValue("Seq.");
+            CH1_17.setCellValue("Rep. Numb");
+            CH1_18.setCellValue("User");
+            CH1_19.setCellValue("Comment");
 
 
             CH1_0.setCellStyle(headerStyle);
@@ -1284,6 +1325,14 @@ public class SalesConciliationManualController extends BaseController {
             CH1_9.setCellStyle(headerStyle);
             CH1_10.setCellStyle(headerStyle);
             CH1_11.setCellStyle(headerStyle);
+            CH1_12.setCellStyle(headerStyle);
+            CH1_13.setCellStyle(headerStyle);
+            CH1_14.setCellStyle(headerStyle);
+            CH1_15.setCellStyle(headerStyle);
+            CH1_16.setCellStyle(headerStyle);
+            CH1_17.setCellStyle(headerStyle);
+            CH1_18.setCellStyle(headerStyle);
+            CH1_19.setCellStyle(headerStyle);
 
 
 
@@ -1301,6 +1350,14 @@ public class SalesConciliationManualController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
 
 
 
@@ -1369,6 +1426,14 @@ public class SalesConciliationManualController extends BaseController {
                 Cell rcell9 = row1.createCell(9);
                 Cell rcell10 = row1.createCell(10);
                 Cell rcell11 = row1.createCell(11);
+                Cell rcell12 = row1.createCell(12);
+                Cell rcell13 = row1.createCell(13);
+                Cell rcell14 = row1.createCell(14);
+                Cell rcell15 = row1.createCell(15);
+                Cell rcell16 = row1.createCell(16);
+                Cell rcell17 = row1.createCell(17);
+                Cell rcell18 = row1.createCell(18);
+                Cell rcell19 = row1.createCell(19);
 
 
 
@@ -1406,13 +1471,21 @@ public class SalesConciliationManualController extends BaseController {
 
                 rcell3.setCellValue(listaData.get(vi).TKT);
                 rcell4.setCellValue(listaData.get(vi).SDATE);
-                rcell5.setCellValue(listaData.get(vi).SCARDN);
-                rcell6.setCellValue(listaData.get(vi).SAUTHOC);
-                rcell7.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell8.setCellValue(listaData.get(vi).SVFOP);
-                rcell9.setCellValue(listaData.get(vi).SEQ);
-                rcell10.setCellValue(listaData.get(vi).USERF);
-                rcell11.setCellValue(listaData.get(vi).CERROR);
+                rcell5.setCellValue(listaData.get(vi).SAGENT);
+                rcell6.setCellValue(listaData.get(vi).SCARDN);
+                rcell7.setCellValue(listaData.get(vi).SAUTHOC);
+                rcell8.setCellValue(listaData.get(vi).INVOICE);
+                rcell9.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell10.setCellValue(listaData.get(vi).SVFOP);
+                rcell11.setCellValue(listaData.get(vi).SVFOPACUM);
+                rcell12.setCellValue(listaData.get(vi).ACCNUMA);
+                rcell13.setCellValue(listaData.get(vi).COSTCEN);
+                rcell14.setCellValue(listaData.get(vi).DATEC);
+                rcell15.setCellValue(listaData.get(vi).TRANC);
+                rcell16.setCellValue(listaData.get(vi).SEQ);
+                rcell17.setCellValue(listaData.get(vi).TRANL);
+                rcell18.setCellValue(listaData.get(vi).USERF);
+                rcell19.setCellValue(listaData.get(vi).CERROR);
 
 
 
@@ -1433,6 +1506,14 @@ public class SalesConciliationManualController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
+            sheet.autoSizeColumn(12, true);
+            sheet.autoSizeColumn(13, true);
+            sheet.autoSizeColumn(14, true);
+            sheet.autoSizeColumn(15, true);
+            sheet.autoSizeColumn(16, true);
+            sheet.autoSizeColumn(17, true);
+            sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
 
 
 
