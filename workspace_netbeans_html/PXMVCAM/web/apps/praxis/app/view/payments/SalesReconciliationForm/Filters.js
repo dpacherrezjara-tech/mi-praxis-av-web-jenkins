@@ -1051,7 +1051,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                     width: '100%',
                     layout: 'hbox',
                     padding: '0 0 0 300',
-                    hidden:true,
+                    hidden:false,
                     bodyStyle: 'background: transparent;"',
                     id: prototype.id + '-contFourFilter',
                     defaults: {
