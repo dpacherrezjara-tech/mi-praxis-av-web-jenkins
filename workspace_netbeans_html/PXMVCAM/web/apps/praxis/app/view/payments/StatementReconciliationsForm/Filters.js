@@ -243,11 +243,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         fields: ['code', 'name'],
                         data: [
                             {code: '', name: 'All'},
-                            {code: 'B', name: 'Vacio'},
+                            {code: 'B', name: 'Pending'},
                             {code: '1', name: 'Pasajes'},
                             {code: '2', name: 'Cargo'},
-                            {code: '3', name: 'Correo'},
-                            {code: 'S', name: 'Standby'}
+                            {code: '3', name: 'Correo'}
+//                            {code: 'S', name: 'Standby'}
                         ]
                     }
                 },

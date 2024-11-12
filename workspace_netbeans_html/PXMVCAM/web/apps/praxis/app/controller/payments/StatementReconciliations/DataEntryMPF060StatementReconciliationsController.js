@@ -100,6 +100,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryMPF
         this.setValue('de-txtSCARCODE', this.beanResult.SCARCOD);
         this.setValue('de-txtSCARDN', this.beanResult.SCARDN);
         this.setValue('de-txtSAUTHOC', this.beanResult.SAUTHOC);
+        
+        this.setValue('de-txtDATEC', this.beanResult.DATEC);
+        this.setValue('de-txtTRANC', this.beanResult.TRANC);
 
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
