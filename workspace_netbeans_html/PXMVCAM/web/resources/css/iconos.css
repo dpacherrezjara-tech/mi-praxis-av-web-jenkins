@@ -31,6 +31,9 @@
 .prx-icon-eye {
   background-image: url("../img/botones/16x16/eye_icon_16x16.png");
 }
+.prx-icon-update-bash {
+  background-image: url("../img/icon/16x16/icon_update_bash.png");
+}
 .prx-icon-save {
   background-image: url("../img/botones/24x24/1337982029_3floppy_unmount.png");
 }

@@ -846,6 +846,64 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "searchDataDetMPF060")
+    public @ResponseBody
+    String searchDataDetMPF060(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchDataDetMPF060-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = this.getListDataDetMPF060(request, false);
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListDataDetMPF060(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter;
+        Gson gson = new Gson();
+        String beanString;
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX287SQP00842MPF060(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -3447,6 +3505,39 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+    
+    @RequestMapping(value = "/searchBeanMPF060")
+    public @ResponseBody
+    String searchBeanMPF060(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBeanMPF060-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            A2290Filter lst;
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX287SQP00844MPF060_DE(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
 
     @RequestMapping(value = "/searchBean_HEADER")
     public @ResponseBody
@@ -3735,6 +3826,46 @@ public class StatementReconciliationsController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "MaintenanceMPF060")
+    public @ResponseBody
+    String MaintenanceMPF060(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- statement reconciliations : MaintenanceMPF060-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+            option = request.getParameter("option");
+            filter.SDATE = request.getParameter("SDATE");
+            filter.SCOUNTRY = request.getParameter("SCOUNTRY");
+            filter.TDOC = request.getParameter("TDOC");
+            filter.CODEBANK = request.getParameter("CODEBANK");
+            filter.SCARCOD = request.getParameter("SCARCOD");
+            filter.SCARDN = request.getParameter("SCARDN");
+            filter.SAUTHOC = request.getParameter("SAUTHOC");
+            filter.SEQ = request.getParameter("SEQ");
+            filter.NEGOC = request.getParameter("NEGOC");
+            
+           
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX269SQP05115MPF060_UPDATE(filter, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "setUploadLiquivsEC", method = RequestMethod.POST)
     public @ResponseBody
@@ -4005,9 +4136,11 @@ public class StatementReconciliationsController extends BaseController {
                     String tranci = listaDataEECC.get(0).TRANCI;
                     int qty = listaDataLIQUI.get(0).QTY;
                     String netos = listaDataLIQUI.get(0).NETOS;
+                    String valdate = listaDataEECC.get(0).VALDATE;
+                    String prda = listaDataEECC.get(0).PRDA;
 
                     boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                    boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci);
+                    boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda);
                     
                     if(conci1 && conci2){
                         message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";

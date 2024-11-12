@@ -82,9 +82,17 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00842(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00842(filter);
     }
+    
+    public List<A2290Filter> loadPX287SQP00842MPF060(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00842MPF060(filter);
+    }
 
     public A2290Filter loadPX287SQP00844(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
+    }
+    
+    public A2290Filter loadPX287SQP00844MPF060_DE(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287SQP00844MPF060_DE(filter);
     }
 
     public List<A2290Filter> loadPX269SQP05114Header(A2290Filter filter) throws SQLException, Exception {
@@ -119,6 +127,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX269SQP05115Head(filter, user);
     }
     
+    public String loadPX269SQP05115MPF060_UPDATE(A2290Filter filter, String option) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX269SQP05115MPF060_UPDATE(filter, option);
+    }
+    
     public String loadPX287MPS100(List<MPF101> lst) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287MPS100(lst);
     }
@@ -135,7 +147,8 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.CONCILIA1( QUERY , ban, dateci, tranci, qty, netos);
     }
     
-    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci) throws SQLException, Exception {
-        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci);
+    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci, valdate, prda);
     }
+    
 }

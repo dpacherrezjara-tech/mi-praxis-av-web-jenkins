@@ -729,6 +729,7 @@ public class A2290Filter extends A2290 {
     public String IN_strNETO = "";
     public String IN_MERCHAND = "";
     public String IN_SCARCOD = "";
+    public String IN_SCARDN = "";
     public String IN_ACCNUMBER = "";
     public String DATECI = "";
     public String TRANCI = "";
