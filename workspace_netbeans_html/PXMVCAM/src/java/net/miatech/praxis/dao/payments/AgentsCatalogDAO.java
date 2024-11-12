@@ -107,6 +107,10 @@ public class AgentsCatalogDAO {
                 bean.EMAILS3 = rst.getString("EMAILS3").trim();
                 bean.EMAILS4 = rst.getString("EMAILS4").trim();
                 bean.EMAILS5 = rst.getString("EMAILS5").trim();
+                
+                bean.SBENCEN = rst.getString("SBENCEN").trim();
+                bean.SOCIETY = rst.getString("SOCIETY").trim();
+                bean.CIACOME = rst.getString("CIACOME").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -210,7 +214,7 @@ public class AgentsCatalogDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04942_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -234,10 +238,15 @@ public class AgentsCatalogDAO {
             cstmt.setString(15, filter.EMAILS5.trim());
             cstmt.setString(16, filter.NPHONE.trim());
             cstmt.setString(17, filter.NEW_CAGENCY.trim());
+            
+            cstmt.setString(18, filter.CIACOME.trim());
+            cstmt.setString(19, filter.SBENCEN.trim());
+            cstmt.setString(20, filter.SOCIETY.trim());
 
-            cstmt.setString(18, session.getUserView().getUserInfo().USR);
-            cstmt.setString(19, Functions.getFechaActual());
-            cstmt.setString(20, Functions.getHoraActual());
+            cstmt.setString(21, session.getUserView().getUserInfo().USR);
+            cstmt.setString(22, Functions.getFechaActual());
+            cstmt.setString(23, Functions.getHoraActual());
+            
             cstmt.execute();
 
         } catch (Exception e) {
@@ -305,6 +314,10 @@ public class AgentsCatalogDAO {
                 objRtn.FEUP = rs01.getString("FEUP");
                 objRtn.HOUP = rs01.getString("HOUP");
                 objRtn.PGMUP = rs01.getString("PGMUP");
+                
+                objRtn.SBENCEN = rs01.getString("SBENCEN");
+                objRtn.SOCIETY = rs01.getString("SOCIETY");
+                objRtn.CIACOME = rs01.getString("CIACOME");
 
                 //lstRtn.add(objRtn);
             }

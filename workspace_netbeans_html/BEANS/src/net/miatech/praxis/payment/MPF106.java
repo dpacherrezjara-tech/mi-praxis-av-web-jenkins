@@ -48,4 +48,7 @@ public class MPF106 {
     public String FEUP = "";
     public String HOUP = "";
     public String PGMUP = "";    
+    public String SBENCEN = "";    
+    public String SOCIETY = "";    
+    public String CIACOME = "";    
 }
