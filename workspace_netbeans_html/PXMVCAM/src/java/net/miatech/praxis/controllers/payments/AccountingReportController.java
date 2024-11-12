@@ -133,7 +133,7 @@ public class AccountingReportController extends BaseController {
             for (int i=0,j=0; i<result.size(); i++,j++) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
-                sb.append(result.get(i).getA4545HEADE()).append("\t") ;                  // HEADER_TXT
+                sb.append(result.get(i).getA4545USER()).append("\t") ;                  // HEADER_TXT
                 sb.append(result.get(i).getA4545COMPC()).append("\t") ;                 // COMP_CODE
                 sb.append(result.get(i).getA4545DOCD()).append("\t") ;                  // DOC_DATE
                 sb.append(result.get(i).getA4545PSTGD()).append("\t") ;                 // PSTNG_DATE
