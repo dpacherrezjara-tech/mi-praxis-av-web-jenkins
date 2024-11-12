@@ -332,6 +332,259 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                         },
                         {
                             xtype: 'panel',
+                            id: prototype.id + '-panelGridDataDetailMPF060',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+                            height: 'auto',
+                            width: 1487,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailMPF060',
+                                    width: 1487,
+                                    columnLines: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Bank', dataIndex: 'CODEBANK', width: 60, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                    var data = record.data;
+                                                    metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Process', dataIndex: 'COREP', width: 60, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                    var data = record.data;
+                                                    metaData.tdAttr = 'data-qtip="' + data.strDescripcionCOREP + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Credit Card',
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SCARCOD', width: 45, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Number', dataIndex: 'SCARDN', width: 140, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Author.',
+                                                        columns: [
+                                                            {
+                                                                text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: 'Curr.', dataIndex: 'SCURRENCY', width: 50, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataDetailMPF060').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.totSVFOP, '0,000.00') + '<b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Comision', dataIndex: 'COMISION', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                },
+                                            },
+                                            {
+                                                text: 'Comistota', dataIndex: 'COMISTOTA', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                },
+                                            },
+                                            {
+                                                text: 'Sales',
+                                                columns: [
+                                                    {
+                                                        text: 'Merchant', dataIndex: 'MERCHN', width: 120, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            return value;
+                                                        }
+
+                                                    },
+                                                    {
+                                                        text: 'PNR', dataIndex: 'SPNR', width: 80, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+
+                                                    },
+                                                    {
+                                                        text: 'Agent', dataIndex: 'SAGENT', width: 70, align: 'center', menuDisabled: true,
+                                                        listeners: {
+                                                            click: 'onViewDet'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            if (data.SCARCOD == 'AX' && data.SCOUNTRY == 'MX') {
+                                                                return '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                            } else {
+                                                                return value;
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Business', dataIndex: 'NEGOC', width: 70, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: 'Bank Information',
+                                                columns: [
+                                                    {
+                                                        text: 'Pay. Date', dataIndex: 'PAYDATE', width: 90, align: 'center',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 90, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Termi', dataIndex: 'TERMI', width: 80, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'ID SAP', dataIndex: 'BANDOC', width: 80, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Pen.<br>Day', dataIndex: 'PENDINGDAYS', width: 40, align: 'center',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            if (data.FSTVAL === '3' && data.PENDINGDAYS >= 4) {
+                                                                metaData.style += "background-color:#fcec82;";
+                                                            }
+                                                            if (['1', '4', '5'].includes(data.FSTVAL)) {
+                                                                metaData.style += "background-color:#ddf0d3;";
+                                                                value = ''
+                                                            }
+                                                            return value;
+                                                        }
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 40,
+                                                text: 'Edit',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'Edit',
+                                                        handler: 'onDataEntryMPF060'
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
                             id: prototype.id + '-panelGridDetProceLIQ',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
@@ -897,7 +1150,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
 
                                                     if (record.data.STVAL === 'Match' || record.data.STVAL === 'Match Manual') {
 //                                                        metaData.style = "text-align:center;color:#057ECB";
-                                                        
+
 //                                                        value = '<a href="#payments-statement-reconciliations-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                     } else {
                                                         metaData.style = "text-align:center;";
@@ -1079,7 +1332,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
 
-                                                    return record.data.STVAL == 'Match' ?  value  : value;
+                                                    return record.data.STVAL == 'Match' ? value : value;
                                                 },
                                             },
                                             {
@@ -1250,7 +1503,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                    metaData.style = record.data.STVAL == 'Match' ? "text-align:center;color:#057ECB" : "text-align:center;";
 
-                                                    return record.data.STVAL == 'Match' ? value  : value;
+                                                    return record.data.STVAL == 'Match' ? value : value;
                                                 },
                                             },
                                             {
@@ -2532,6 +2785,20 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                                                     },
                                                 ]
                                             },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 40,
+                                                text: 'Edit',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-update-bash',
+                                                        tooltip: 'Edit',
+                                                        handler: 'onDataEntryMPF060'
+                                                    }
+                                                ]
+                                            }
                                         ]
                                     }
                                 }
