@@ -147,7 +147,8 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.CONCILIA1( QUERY , ban, dateci, tranci, qty, netos);
     }
     
-    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci) throws SQLException, Exception {
-        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci);
+    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci, valdate, prda);
     }
+    
 }

@@ -3418,7 +3418,7 @@ public class StatementReconciliationsDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269SQP05115MPF060_UPDATE(A2290Filter filter, String option) throws SQLException, Exception {
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2280.
         String strMsj = "Operation was successful.";
@@ -3542,6 +3542,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.DATECI = rst.getString("DATECI").trim();
                 beanTkt.TRANCI = rst.getString("TRANCI").trim();
                 beanTkt.NETOS = rst.getString("NETO").trim();
+                beanTkt.VALDATE = rst.getString("VALDATE").trim();
+                beanTkt.PRDA = rst.getString("PRDA").trim();
                 listBeanTkt.add(beanTkt);
             }
             rst.close();
@@ -3624,10 +3626,10 @@ public class StatementReconciliationsDAO {
         return val;
     }
 
-    public boolean CONCILIA2(String inQuery, String inBandoc, String inDateci, String inTranci) throws SQLException, Exception {
+    public boolean CONCILIA2(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda) throws SQLException, Exception {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
-                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, STVAL = '1', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
+                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '1', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
                 + "WHERE STVAL = '3' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -3637,9 +3639,11 @@ public class StatementReconciliationsDAO {
             preparedStatement.setString(1, inBandoc);
             preparedStatement.setString(2, inDateci);
             preparedStatement.setString(3, inTranci);
-            preparedStatement.setString(4, session.getUserView().getCustomerInfo().USR);
-            preparedStatement.setString(5, Functions.getFechaActual());
-            preparedStatement.setString(6, Functions.getHoraActual());
+            preparedStatement.setString(4, inValdate);
+            preparedStatement.setString(5, inPrda);
+            preparedStatement.setString(6, session.getUserView().getCustomerInfo().USR);
+            preparedStatement.setString(7, Functions.getFechaActual());
+            preparedStatement.setString(8, Functions.getHoraActual());
 
             // Ejecuta el UPDATE
             int rowsUpdated = preparedStatement.executeUpdate();

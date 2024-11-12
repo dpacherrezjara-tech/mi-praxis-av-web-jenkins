@@ -4136,9 +4136,11 @@ public class StatementReconciliationsController extends BaseController {
                     String tranci = listaDataEECC.get(0).TRANCI;
                     int qty = listaDataLIQUI.get(0).QTY;
                     String netos = listaDataLIQUI.get(0).NETOS;
+                    String valdate = listaDataEECC.get(0).VALDATE;
+                    String prda = listaDataEECC.get(0).PRDA;
 
                     boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                    boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci);
+                    boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda);
                     
                     if(conci1 && conci2){
                         message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
