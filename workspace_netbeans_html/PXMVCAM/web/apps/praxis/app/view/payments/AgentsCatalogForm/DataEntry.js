@@ -7,7 +7,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
     controller: 'DataEntryAgentsCatalogController',
     title: 'Agent - Data Entry Form',
     header: true,
-    height: 400,
+    height: 450,
     width: 820,
     resizable: false,
     layout: 'fit',
@@ -101,7 +101,17 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                             xtype: 'label',
                                             text: 'Name',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 100
+                                            width: 40
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: '(*)',
+                                            style: 'font-weight:bold;color:red;',
+                                            width: 62,
+                                            autoEl: {
+                                                tag: 'label',
+                                                'data-qtip': 'Mandatory Field'
+                                            }
                                         },
                                         {xtype: 'tbspacer', width: 2},
                                         {
@@ -444,6 +454,112 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.DataEntry', {
                                         {xtype: 'tbspacer', width: 40},
                                     ]
                                 },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '1 2 1 10',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Profit center',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 82
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: '(*)',
+                                            style: 'font-weight:bold;color:red;',
+                                            width: 20,
+                                            autoEl: {
+                                                tag: 'label',
+                                                'data-qtip': 'Mandatory Field'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtSBENCEN',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            width: 70,
+                                            maxLength: 8,
+                                            enforceMaxLength: true,
+                                            autoEl: {
+                                                tag: 'label',
+                                                'data-qtip': 'Mandatory Field'
+                                            }
+                                        },
+                                       {xtype: 'tbspacer', width: 135},
+                                       {
+                                            xtype: 'label',
+                                            text: 'Society',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 50
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: '(*)',
+                                            style: 'font-weight:bold;color:red;',
+                                            width: 20,
+                                            autoEl: {
+                                                tag: 'label',
+                                                'data-qtip': 'Mandatory Field'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 32},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-textSOCIETY',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            enforceMaxLength: true,
+                                            maxLength: 4,
+                                            width: 40,
+                                            autoEl: {
+                                                tag: 'label',
+                                                'data-qtip': 'Mandatory Field'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '1 2 1 10',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    defaults: {
+                                        anchor: '100%',
+                                        width: 1080
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Trading company',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-textCIACOME',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            enforceMaxLength: true,
+                                            maxLength: 4,
+                                            width: 40
+                                        },
+                                    ]
+                                }
                             ]
                         },
                     ]

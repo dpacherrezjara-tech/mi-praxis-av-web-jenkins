@@ -19,11 +19,11 @@ public class MPF106Filter extends MPF106 {
     public String IN_TERMP = "";
     public String IN_SAGENT = "";
     public String OPTION = "";
-    public String SOCIETY = "";
-    public String SBENCEN = "";
+//    public String SOCIETY = "";
+//    public String SBENCEN = "";
     public String NAMEA = "";
     public String CAGENCY = "";
-    public String CIACOME = "";
+//    public String CIACOME = "";
 
     public Pagination page = new Pagination();
 }
