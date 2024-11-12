@@ -1,8 +1,8 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.' + prototype.id + '-MainGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.MainGridController'
+        'Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridController'
     ],
     controller: 'MainGridController',
     maxHeight: prototype.height,
@@ -30,7 +30,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
-            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 180},
             {
                 text: 'Accounting Information',
                 defaults: {
@@ -56,10 +56,33 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         }
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
-                    {text: 'Records', dataIndex: 'TOTRECS', width: 100},
+                    {text: 'Bandocs', dataIndex: 'TOTRECS', width: 80,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
+                            return value;
+                        },
+                        listeners:{
+                            click:'onLoadBandocsSap'
+                        }
+                    },
+                    {text: 'Settl.', width: 80,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
+                            const {TOTREG,TOTDEB,TOTADJ,TIPOCON} = record.data;
+                            const opts = {
+                              'REG':  TOTREG,
+                              'DEB': TOTDEB,
+                              'ADJ': TOTADJ
+                            };
+                            return opts[TIPOCON];
+                        },
+                        listeners: {
+                            click: 'onLoadSettlements'
+                        }
+                    },
                     {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
                     {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
-                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 100,
+                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -68,7 +91,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPreErrors'
                         }
                     },
-                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 100,
+                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -77,7 +100,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                             click: 'onViewPostErrors'
                         }
                     },
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 180},
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 300},
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
@@ -166,6 +189,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                         isDisabled: 'disableReverse'
                     }
                 ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Dl.',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-download',
+                        tooltip: 'Download',
+                        handler: 'onDownloadAccounting',
+                        isDisabled: 'disableDownload'
+                    }
+                ]
             }
             //</editor-fold>
         ]
@@ -184,7 +222,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.MainGrid', {
                 scale: 'small',
                 tooltip: 'Export to Excel',
                 listeners: {
-                    click: 'downloadExcel'
+                    click: 'onDownloadExcel'
                 }
             },
             {

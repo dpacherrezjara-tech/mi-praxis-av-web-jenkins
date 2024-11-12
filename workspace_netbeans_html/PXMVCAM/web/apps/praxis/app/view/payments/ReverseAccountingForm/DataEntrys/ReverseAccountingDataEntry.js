@@ -1,15 +1,15 @@
-prototype.idDE = prototype.id + '-ProcessAccountingDataEntry';
+prototype.idDE = prototype.id + '-ReverseAccountingDataEntry';
 
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAccountingDataEntry', {
+Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.DataEntrys.ReverseAccountingDataEntry', {
     extend: 'Ext.window.Window',
-    alias: 'widget.ProcessAccountingDataEntry',
+    alias: 'widget.ReverseAccountingDataEntry',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDataEntryController'
+        'Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDataEntryController'
     ],
-    controller: 'ProcessAccountingDataEntryController',
-    title: 'Process Accounting - Form',
+    controller: 'ReverseAccountingDataEntryController',
+    title: 'Reverse Accounting - Form',
     header: true,
-    width: 600,
+    width: 1150,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Client',
                                     name: 'IN_CCUST',
-                                    id:prototype.idDE + '-cmbCcust',
+                                    id: prototype.idDE + '-cmbCcust',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
@@ -79,105 +79,20 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                             ['133', 'LR - LACSA']
                                         ]
                                     }),
-                                    labelWidth: 85,
-                                    width: 200,
+                                    labelWidth: 60,
+                                    width: 180,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '134',
-                                    listeners:{
-                                        change:'onChangeCcust'
-                                    }
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    name: 'IN_FCONT',
-                                    fieldLabel: 'Accounting Date',
-                                    format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 120,
-                                    width: 220,
-                                    value: new Date()
-                                }
-                            ]
-                        },
-                        {
-                            items:[
-                                {
-                                    xtype: 'combobox',
-                                    name: 'IN_TDATE',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['PRDA', 'Processing Date']
-                                        ]
-                                    }),
-                                    fieldLabel: 'Date Type',
-                                    labelWidth: 85,
-                                    width: 200,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    readOnly:true,
-                                    value: 'PRDA'
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    name: 'IN_PRDAF',
-                                    fieldLabel: 'From',
-                                    format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 50,
-                                    width: 150,
-                                    value: new Date(new Date().setMonth(new Date().getMonth() - 6))
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    name: 'IN_PRDAT',
-                                    fieldLabel: 'To',
-                                    format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 35,
-                                    width: 135,
-                                    value: new Date()
-                                }
-                            ]
-                        },
-                        {
-                            items:[
-                                {
-                                    xtype: 'combobox',
-                                    labelStyle: 'font-weight:bold;',
-                                    fieldLabel: 'Acc. Type',
-                                    name: 'IN_TIPOCON',
-                                    id:prototype.idDE + '-cmbTIPOCON',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['REG', 'Regular'],
-                                            ['DEB', 'Debits'],
-                                            ['ADJ','Adjustment']
-                                        ]
-                                    }),
-                                    labelWidth: 85,
-                                    width: 200,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: 'REG',
-                                    listeners:{
-                                        change:'onChangeTipocon'
-                                    }
+                                    value: '134'
                                 },
                                 {
                                     xtype: 'combo',
                                     id: prototype.idDE + '-cmbCODPRO',
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
-                                    width: 300,
+                                    width: 250,
                                     valueField: 'A4451KEY2',
                                     displayField: 'A4451DESC1',
                                     fieldLabel: 'Processor',
@@ -192,6 +107,53 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    name: 'IN_VALDATE',
+                                    fieldLabel: 'Value date',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 75,
+                                    width: 165,
+                                    value: new Date(),
+                                    listeners: {
+                                        'specialkey': 'onEnterKeyPress'
+                                    }
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Bandoc',
+                                    labelWidth: 60,
+                                    width: 190,
+                                    name: 'IN_BANDOC',
+                                    minLength: 8,
+                                    maxLength: 10, // Límite máximo de caracteres
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Reference',
+                                    labelWidth: 80,
+                                    width: 230,
+                                    name: 'IN_REFER',
+                                    minLength: 15,
+                                    maxLength: 20, // Límite máximo de caracteres
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
+                                },
+                                {
+                                    xtype: 'button',
+                                    iconCls: 'prx-icon-search',
+                                    tooltip: 'Search Bandoc',
+                                    listeners: {
+                                        click: 'onSearchBandoc'
+                                    }
                                 }
                             ]
                         }
@@ -199,6 +161,45 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                 }
                 //</editor-fold>
             ]
+        },
+        {
+            xtype: 'grid',
+            hidden: true,
+            id: prototype.idDE + '-scanBandoc',
+            maxHeight: 800,
+            //minHeight: 200,
+            height: 'auto',
+            width: '100%',
+            viewConfig: {
+                stripeRows: true,
+                enableTextSelection: true,
+                markDirty: false
+            },
+            columnLines: true,
+            selModel: {
+                type: 'checkboxmodel',
+                mode: 'MULTI'
+            },
+            columns: {
+                defaults: {
+                    align: 'center',
+                    menuDisabled: true,
+                    sortable: true
+                },
+                items: [
+                    {
+                        text: 'RN',
+                        locked: true,
+                        xtype: 'rownumberer', // Columna de número de fila
+                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                    },
+                    {text: 'Client<br>Code', dataIndex: 'A4545CCUST', width: 50},
+                    {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+                    {text: 'Bandoc', dataIndex: 'A4545DOCBA', width: 180},
+                    {text: 'Value<br>Date', dataIndex: 'A4545DOCD', width: 80},
+                    {text: 'Accounting ID', dataIndex: 'A4545USER', width: 230}
+                ]
+            }
         }
     ],
     dockedItems: [
@@ -222,7 +223,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.ProcessAcco
                     id: prototype.idDE + '-btn-process',
                     iconCls: 'prx-icon-image-process',
                     listeners: {
-                        click: 'onProcessClick'
+                        click: 'onSearchBandoc'
                     }
                 },
                 {

@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.ErrorsGridController',
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
+        timeout: 0
     }),
     notifier:new AWN(),
     init: function (view) {
@@ -41,15 +41,51 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController
         //me.view.unmask();
     },
     disableReverse: function(view, rowIndex, colIndex, item, record){
+        console.log(record);
+        if(record.data.STREV !== '0'){
+            return true;
+        }
+        if(record.data.TIPOERR === 'PRE'){
+            return true;
+        }
+        return false;
+    },
+    validateReversed:function(selModel, record, index) {
+        if(record.data.STREV !== '0'){
+            return false;
+        }
+        if(record.data.TIPOERR === 'PRE'){
+            return true;
+        }
+        return true;
+    },
+    disableAccountingInfo: function(view, rowIndex, colIndex, item, record){
         let reverseAction = ['0'];
         return !reverseAction.includes(record.get('STREV'));
     },
-    validateReversed:function(selModel, record, index) {
-        if(record.data.STREV === '0'){
-            return true;
-        }else{
-            return false;
-        }
+    onLoadAccountingInfo: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        const {IDCONT,BANDOC,CODPRO,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: IDCONT.toString().slice(0,3),
+            IN_IDCONT: IDCONT,
+            IN_FCONT: '',
+            IN_CODPRO : CODPRO,
+            IN_BANDOC: BANDOC,
+            IN_VALDATE: VALDATE,
+            IN_REFER: ''
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',{
+            id: prototype.id + '-AccountingGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
     },
     reverseSingleBandoc: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const {CCUST,CODPRO,TIPOCON,IDCONT,BANDOC,VALDATE} = record.data;

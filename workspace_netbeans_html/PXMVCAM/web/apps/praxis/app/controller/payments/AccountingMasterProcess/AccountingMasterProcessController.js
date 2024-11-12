@@ -1,21 +1,20 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMasterProcessController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AccountingReportController',
+    alias: 'controller.AccountingMasterProcessController',
     url: CONTEXTPATH + '/AccountingReport',
     procesadores: [],
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 0
+        timeout: 20000
     }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
-        timeout: 0
+        timeout: 20000
     }),
     init: function (view) {
     },
     afterRender: async function () {
-        //await this.loadFilters();
-        this.loadBandocs();
+        await this.loadFilters();
     },
     loadFilters: async function () {
         const me = this;
@@ -36,13 +35,26 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         }
 
     },
-    loadBandocs: async function () {
+    onChangeTipocon: function () {
+        const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
+        ccust.fireEvent('change', {});
+    },
+    onChangeCcust: function () {
+        const me = this;
+        const cmbCccust = Ext.getCmp(prototype.id + '-cmbCcust');
+        const tipocon = Ext.getCmp(prototype.id + '-cmbTIPOCON');
+        const cmbProc = Ext.getCmp(prototype.id + '-cmbCODPRO');
+        let data = me.procesadores.filter(x =>
+                x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
+        global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
+    },
+    loadGrid: async function () {
         const me = this;
         let params = me.formatParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
-            id: prototype.id + '-BandocsGrid-1',
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid', {
+            id: prototype.id + '-MainGrid-1',
             searchParams: params
         });
         mainPanel.add(panelDetail);
@@ -52,9 +64,17 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
+    onProcessClick: function () {
+        const me = this;
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.ProcessAccountingDataEntry', {
+            id: prototype.id + '-ProcessAccountingDataEntry-1',
+            procesadores: me.procesadores
+        });
+        dataEntry.show();
+    },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
-        this.loadBandocs();
+        this.loadGrid();
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');

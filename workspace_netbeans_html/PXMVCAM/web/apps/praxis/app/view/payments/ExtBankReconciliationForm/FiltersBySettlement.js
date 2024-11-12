@@ -345,7 +345,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     labelWidth: 80,
                                     width: 200,
                                     name: 'IN_MERCHANT',
-                                    maxLength: 4, // Límite máximo de caracteres
+                                    maxLength: 15, // Límite máximo de caracteres
                                     maskRe: /[0-9]/, // Expresión regular para permitir solo números
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {

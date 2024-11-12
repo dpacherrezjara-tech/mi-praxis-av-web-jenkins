@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.ProcessAccountingDataEntryController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccountingDataEntryController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.ProcessAccountingDataEntryController',
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
+        timeout: 0
       }),
     notifier: new AWN(),
     afterRender: function () {
