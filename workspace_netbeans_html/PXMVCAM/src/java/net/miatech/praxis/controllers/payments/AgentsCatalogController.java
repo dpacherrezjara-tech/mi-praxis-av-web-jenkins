@@ -303,6 +303,7 @@ public class AgentsCatalogController extends BaseController {
             Cell CH1_12 = row.createCell(12);
             Cell CH1_13 = row.createCell(13);
             Cell CH1_14 = row.createCell(14);
+            Cell CH1_15 = row.createCell(15);
 
             CH1_00.setCellValue("Nbr");
             CH1_01.setCellValue("Country");
@@ -310,15 +311,16 @@ public class AgentsCatalogController extends BaseController {
             CH1_03.setCellValue("Name");
             CH1_04.setCellValue("Channel");
             CH1_05.setCellValue("City");
-            CH1_06.setCellValue("Bussines");
-            CH1_07.setCellValue("Terminal");
-            CH1_08.setCellValue("Contact");
-            CH1_09.setCellValue("Email");
-            CH1_10.setCellValue("Email-2");
-            CH1_11.setCellValue("Email-3");
-            CH1_12.setCellValue("Email-4");
-            CH1_13.setCellValue("Email-5");
-            CH1_14.setCellValue("Phone");
+            CH1_06.setCellValue("Society");
+            CH1_07.setCellValue("Bussines");
+            CH1_08.setCellValue("Terminal");
+            CH1_09.setCellValue("Contact");
+            CH1_10.setCellValue("Email");
+            CH1_11.setCellValue("Email-2");
+            CH1_12.setCellValue("Email-3");
+            CH1_13.setCellValue("Email-4");
+            CH1_14.setCellValue("Email-5");
+            CH1_15.setCellValue("Phone");
 
             CH1_00.setCellStyle(headerStyle);
             CH1_01.setCellStyle(headerStyle);
@@ -335,6 +337,7 @@ public class AgentsCatalogController extends BaseController {
             CH1_12.setCellStyle(headerStyle);
             CH1_13.setCellStyle(headerStyle);
             CH1_14.setCellStyle(headerStyle);
+            CH1_15.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -373,6 +376,7 @@ public class AgentsCatalogController extends BaseController {
                 Cell rcell12 = row.createCell(12);
                 Cell rcell13 = row.createCell(13);
                 Cell rcell14 = row.createCell(14);
+                Cell rcell15 = row.createCell(15);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).COUNTRY);
@@ -380,15 +384,16 @@ public class AgentsCatalogController extends BaseController {
                 rcell3.setCellValue(listaData.get(vi).NAMEA);
                 rcell4.setCellValue(listaData.get(vi).CANAL);
                 rcell5.setCellValue(listaData.get(vi).CITY);
-                rcell6.setCellValue(listaData.get(vi).descNEGOC);
-                rcell7.setCellValue(listaData.get(vi).TERMI);
-                rcell8.setCellValue(listaData.get(vi).CONTAC);
-                rcell9.setCellValue(listaData.get(vi).EMAILS);
-                rcell10.setCellValue(listaData.get(vi).EMAILS2);
-                rcell11.setCellValue(listaData.get(vi).EMAILS3);
-                rcell12.setCellValue(listaData.get(vi).EMAILS4);
-                rcell13.setCellValue(listaData.get(vi).EMAILS5);
-                rcell14.setCellValue(listaData.get(vi).NPHONE);
+                rcell6.setCellValue(listaData.get(vi).SOCIETY);
+                rcell7.setCellValue(listaData.get(vi).descNEGOC);
+                rcell8.setCellValue(listaData.get(vi).TERMI);
+                rcell9.setCellValue(listaData.get(vi).CONTAC);
+                rcell10.setCellValue(listaData.get(vi).EMAILS);
+                rcell11.setCellValue(listaData.get(vi).EMAILS2);
+                rcell12.setCellValue(listaData.get(vi).EMAILS3);
+                rcell13.setCellValue(listaData.get(vi).EMAILS4);
+                rcell14.setCellValue(listaData.get(vi).EMAILS5);
+                rcell15.setCellValue(listaData.get(vi).NPHONE);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -408,6 +413,7 @@ public class AgentsCatalogController extends BaseController {
             sheet.autoSizeColumn(12, true);
             sheet.autoSizeColumn(13, true);
             sheet.autoSizeColumn(14, true);
+            sheet.autoSizeColumn(15, true);
 
             /**
              * fileNameDownload = Nombre de descarga
