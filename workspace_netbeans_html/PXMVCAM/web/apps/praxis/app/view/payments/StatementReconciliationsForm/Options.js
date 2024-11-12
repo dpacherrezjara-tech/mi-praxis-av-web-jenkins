@@ -181,6 +181,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin18',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
 
                     ]
@@ -250,6 +258,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             id: prototype.id + '-btnBack',
                             iconCls: 'prx-icon-back',
                             tooltip: 'Back'
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnDataEntry',
+//                            iconCls: 'prx-icon-image-update',
+                            icon: 'resources/img/icon/16x16/icon_update_bash.png',
+                            tooltip: 'update',
+                            listeners: {
+                                click: 'onDataEntryMPF060'
+                            }
                         }
                     ]
                 }

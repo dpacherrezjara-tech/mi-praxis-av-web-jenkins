@@ -11,6 +11,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     beanLiquidaDate: {},
     beanLiquidaByS: {},
     beanDetails: {},
+    beanDetailMPF060: {},
     beanDetBankByS: {},
     beanDetCross: {},
     beanPendings: {},
@@ -266,9 +267,77 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         };
     },
 
+    searchMPF060: function () {
+        this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataDetailMPF060';
+        global.selectedChild(this.childs, prototype.id + me.panelActual);
+
+        this.beanDetailMPF060.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+        this.beanDetailMPF060.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        this.beanDetailMPF060.strDayFrom = Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
+        this.beanDetailMPF060.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
+        this.beanDetailMPF060.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        this.beanDetailMPF060.strDayTo = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+        this.beanDetailMPF060.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        this.beanDetailMPF060.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
+        this.beanDetailMPF060.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
+        this.beanDetailMPF060.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
+        this.beanDetailMPF060.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        this.beanDetailMPF060.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+        this.beanDetailMPF060.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue()
+        let proces = Ext.getCmp(prototype.id + '-TEST');
+        if (!proces.isVisible()) {
+            this.beanDetailMPF060.IN_EXT = 'N';
+        } else {
+            this.beanDetailMPF060.IN_EXT = 'Y';
+        }
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetailMPF060);
+        this.setGridDataDetMPF060();
+    },
+   setGridDataDetMPF060: function () {
+        win.lblUser_toolTip("Estructura: MPF060");
+        me.setWidthPie();
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDataDetMPF060'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin18');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-gridDataDetailMPF060').setTitle('<center style="font-size:12px;">' + data.strTitulo + '</center>');
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataDetailMPF060').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin18').bindStore(storeGridDatas);
+        }
+    },
     btnSearch_click: function (obj, e) {
         this.setFormatParameter();
-        if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
+        if ( Ext.getCmp(prototype.id + '-cmbNEGOC').getValue() !== '' ){
+            this.searchMPF060()
+        } else if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
                 || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '') {
             this.btnSearch_BANDOC();
         } else {
@@ -276,6 +345,32 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
 
 
+    },
+    
+    onDataEntryMPF060: function (grid, rowIndex, colIndex){
+        
+        var rec = grid.getStore().getAt(rowIndex);
+        me.recGlobal = grid.getStore().getAt(rowIndex);
+        this.winDataEntryMPF060('U', rec);
+        
+        
+        
+    },
+    winDataEntryMPF060: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF060', {
+            id: prototype.id + '-dataEntryMPF060',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: me.lstCountry,
+                controllerParent: me,
+                panelActual : me.panelActual,
+                paramsGrid : me.paramsDetail
+            }
+        }).show();
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF102");
@@ -1822,6 +1917,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             case '-panelGridDetLiqDetail':
                 me.pagginActual = '-paggin17';
                 break;
+            case '-panelGridDataDetailMPF060':
+                me.pagginActual = '-paggin18';
+                break;
+            
         }
     },
     afterRenderYear: function (obj) {
