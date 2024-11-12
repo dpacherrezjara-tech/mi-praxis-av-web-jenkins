@@ -15,18 +15,14 @@ import net.miatech.praxis.payment.dto.SPACR008Filter;
 import net.miatech.praxis.payment.dto.SPACR011Filter;
 import net.miatech.praxis.payment.dto.SPACR012Filter;
 import net.miatech.praxis.payment.dto.SPACR013Filter;
+import net.miatech.praxis.payment.dto.SPACR014Filter;
+import net.miatech.praxis.payment.dto.SPACR015Filter;
+import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.utils.CustomExcelCell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +46,7 @@ public class AccountingReportController extends BaseController {
     @Autowired
     private ExportUtils exportUtils;
     
+    //<editor-fold defaultstate="collapsed" desc="Master Process">
     @RequestMapping(value = "loadMain")
     public ResponseEntity<?> loadMain(SPACR002Filter params) throws Exception {
         System.out.println("***** AccountingReport - loadMain *****");
@@ -307,6 +304,9 @@ public class AccountingReportController extends BaseController {
         return ResponseUtils.create();
     }
     
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Exceles">
     @RequestMapping(value = "downloadExcelMain", method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelMain(@RequestBody SPACR002Filter params) throws Exception {
         System.out.println("***** AccountingMasterProcess - downloadExcelMain *****");
@@ -319,30 +319,6 @@ public class AccountingReportController extends BaseController {
             + params.getIN_FCONTF()+ "_" + params.getIN_FCONTT() + "_" + params.getIN_TIPOCON()
             + "_" + params.getIN_CODPRO();
         
-        SXSSFWorkbook workbook = new SXSSFWorkbook();
-        //<editor-fold defaultstate="collapsed" desc="Estilos">
-        XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
-        Font headerFont = workbook.createFont();
-
-        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        headerFont.setColor(IndexedColors.BLACK.getIndex());
-        headerStyle.setBorderRight(CellStyle.BORDER_THIN);
-        headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-        headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
-        headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-        headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
-        headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-        headerStyle.setBorderTop(CellStyle.BORDER_THIN);
-        headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-        headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
-        headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
-        headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        headerStyle.setWrapText(true);
-        headerStyle.setFont(headerFont);
-        //</editor-fold>
-
-        Sheet sheet = workbook.createSheet("AccountingMasterProcess");
         List<List<CustomExcelCell>> data = new ArrayList<>();
         List<CustomExcelCell> header = new ArrayList<>();
         header.add(new CustomExcelCell("Client\nCode"));
@@ -397,5 +373,32 @@ public class AccountingReportController extends BaseController {
         
         return exportUtils.createCustomExcel(data, title);
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Accounting Report">
+    @RequestMapping(value = "loadBandocsBrowser")
+    public ResponseEntity<?> loadBandocsBrowser(SPACR014Filter params) throws Exception{
+        System.out.println("***** AccountingReport - loadBandocsBrowser *****");
+        SPACR014Filter filter = logic.loadSPACR014Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
     
+    @RequestMapping(value = "loadSettlBrowser")
+    public ResponseEntity<?> loadSettlBrowser(SPACR015Filter params) throws Exception{
+        System.out.println("***** AccountingReport - loadSettlBrowser *****");
+        SPACR015Filter filter = logic.loadSPACR015Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadTaxesBrowser")
+    public ResponseEntity<?> loadTaxesBrowser(SPACR016Filter params) throws Exception{
+        System.out.println("***** AccountingReport - loadTaxesBrowser *****");
+        SPACR016Filter filter = logic.loadSPACR016Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+//</editor-fold>
+
 }
