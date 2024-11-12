@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.LoggerDataEntryController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.LoggerDataEntryController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.LoggerDataEntryController',
     url: CONTEXTPATH + '/AccountingReport',
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
+        timeout: 0
       }),
     afterRender: function () {
         this.loadLogger();
@@ -26,6 +26,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.LoggerDataEntryContr
             console.error(e);
         } finally {
             grid.setLoading(false);
+            me.view.center();
         }
 
     },

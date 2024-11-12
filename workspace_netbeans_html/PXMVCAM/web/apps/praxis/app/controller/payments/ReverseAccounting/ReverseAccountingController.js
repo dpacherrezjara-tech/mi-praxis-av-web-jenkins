@@ -1,60 +1,60 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportController', {
+Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AccountingReportController',
-    url: CONTEXTPATH + '/AccountingReport',
+    alias: 'controller.ReverseAccountingController',
+    url: CONTEXTPATH + '/ReverseAccounting',
     procesadores: [],
     request: axios.create({
-        baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 0
+        baseURL: CONTEXTPATH + '/ReverseAccounting',
+        timeout: 200000
     }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
-        timeout: 0
+        timeout: 200000
     }),
     init: function (view) {
     },
     afterRender: async function () {
-        //await this.loadFilters();
-        this.loadBandocs();
-    },
-    loadFilters: async function () {
-        const me = this;
-        me.view.mask('Loading...');
-        try {
-            const res = await me.miscRequest.get('/loadAccountingProcs');
-
-            const data = res.data;
-            me.procesadores = data.response;
-            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-            ccust.fireEvent('change', {});
-        } catch (e) {
-            console.error(e);
-            me.notifier.alert('Filters not loaded');
-        } finally {
-            me.view.unmask();
-            me.loadGrid();
-        }
 
     },
-    loadBandocs: async function () {
-        const me = this;
-        let params = me.formatParams();
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
-            id: prototype.id + '-BandocsGrid-1',
-            searchParams: params
-        });
-        mainPanel.add(panelDetail);
-    },
+//    loadFilters: async function () {
+//        const me = this;
+//        me.view.mask('Loading...');
+//        try {
+//            const res = await me.miscRequest.get('/loadAccountingProcs');
+//
+//            const data = res.data;
+//            me.procesadores = data.response;
+//            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
+//            ccust.fireEvent('change', {});
+//        } catch (e) {
+//            console.error(e);
+//            me.notifier.alert('Filters not loaded');
+//        } finally {
+//            me.view.unmask();
+//            me.loadGrid();
+//        }
+//
+//    },
+
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
+    loadGrid: async function () {
+        const me = this;
+        let params = me.formatParams();
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.removeAll();
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid', {
+            id: prototype.id + '-MainGrid-1',
+            searchParams: params
+        });
+        mainPanel.add(panelDetail);
+    },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
-        this.loadBandocs();
+        this.loadGrid();
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
@@ -63,6 +63,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         } else {
             filters.show();
         }
+    },
+    onProcessClick: function () {
+        const procWin = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.DataEntrys.ReverseAccountingDataEntry', {
+            id: prototype.id + '-ReverseAccountingDataEntry-1'
+        });
+        procWin.show();
     },
     onClearOptionsBtn: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();

@@ -5,17 +5,30 @@
  */
 package net.miatech.praxis.payment.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.miatech.beans.DBException;
+import net.miatech.praxis.payment.entities.A4545;
+import net.miatech.utils.CustomPageImpl;
 
 /**
  *
  * @author vhidalgo
  */
-public class SQP05233Filter {
-
-    public String VP_CCUST = "";
-    public String VP_FECHA = "";
-    public String VP_TIPO = "";  //-- P=Pasajes A=Carga C=Correo, J=Ajuste, D=Debito, E=Exterior, F=FP
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class SQP05233Filter extends CustomPageImpl {
+    
+    public String IN_CCUST;
+    public String IN_CODPRO;
+    public String IN_TIPOCON;
+    public String IN_FCONT;
+    public String IN_IDCONT;
+    public String OU_FILENAM = "";
+    List<A4545> response = new ArrayList<>();
     public DBException dbException = new DBException();
+    
 
 }

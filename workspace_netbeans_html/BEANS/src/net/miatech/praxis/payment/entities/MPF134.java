@@ -11,7 +11,7 @@ import lombok.Data;
 public class MPF134 {
     private String CCUST,CODPRO,FCONT,HCONT,IDCONT,STCONT,PRDAF,PRDAT,USCR,PGMCR,TIPOCON,DESC_PRO,FILENAM;
     
-    private Integer QTYROWS,QTYERRS,TOTRECS;
+    private Integer QTYROWS,QTYERRS,TOTRECS,TOTREG,TOTDEB,TOTADJ;
     
     private Timestamp TSCR;
 }

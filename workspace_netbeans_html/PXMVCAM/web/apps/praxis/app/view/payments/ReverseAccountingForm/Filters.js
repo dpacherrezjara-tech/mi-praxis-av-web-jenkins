@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
+Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Client',
-                                    id: prototype.id + '-cmbCcust',
+                                    id:prototype.id + '-cmbCcust',
                                     name: 'IN_CCUST',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
@@ -72,8 +72,28 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     value: '134'
                                 },
                                 {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Search By',
+                                    name: 'IN_TDATE',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['VALDATE', 'Value Date'],
+                                            ['TSRV', 'Reverse Date']
+                                        ]
+                                    }),
+                                    labelWidth: 80,
+                                    width: 200,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: 'TSRV'
+                                },
+                                {
                                     xtype: 'datefield',
-                                    name: 'IN_VALDATEF',
+                                    name: 'IN_PRDAF',
                                     fieldLabel: 'From',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
@@ -86,7 +106,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    name: 'IN_VALDATET',
+                                    name: 'IN_PRDAT',
                                     fieldLabel: 'To',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
@@ -98,6 +118,29 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     }
                                 },
                                 {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Acc. Type',
+                                    id: prototype.id + '-cmbTIPOCON',
+                                    name: 'IN_TIPOCON',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['REG', 'Regular'],
+                                            ['DEB', 'Debits'],
+                                            ['ADJ','Adjustment']
+                                        ]
+                                    }),
+                                    labelWidth: 90,
+                                    width: 200,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
+                                },
+                                {
                                     xtype: 'combo',
                                     id: prototype.id + '-cmbCODPRO',
                                     name: 'IN_CODPRO',
@@ -107,48 +150,40 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     displayField: 'A4451DESC1',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
-                                    editable: true,
+                                    editable: false,
                                     allowBlank: true,
                                     caseSensitive: false,
                                     autoSelect: true,
                                     labelAlign: 'right',
                                     typeAhead: true,
-                                    forceSelection: true,
-                                    selectOnFocus: true,
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
                                 },
                                 {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Bank Doc.',
-                                    labelWidth: 80,
-                                    width: 180,
-                                    name: 'IN_BANDOC',
-                                    maxLength: 10,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress',
-                                        change: function (field, newValue) {
-                                            field.setValue(newValue.toUpperCase());
-                                        }
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Reference',
-                                    labelWidth: 80,
-                                    width: 230,
-                                    name: 'IN_REFER',
-                                    maxLength: 30,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress',
-                                        change: function (field, newValue) {
-                                            field.setValue(newValue.toUpperCase());
-                                        }
-                                    }
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Origin',
+                                    name: 'IN_REVORI',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['B', 'Bandoc'],
+                                            ['X', 'Excel'],
+                                            ['C', 'Accounting'],
+                                            ['S', 'Stand By'],
+                                            ['L', 'Stand By Rev']
+                                        ]
+                                    }),
+                                    labelWidth: 60,
+                                    width: 190,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
                                 }
                             ]
                         },
@@ -167,35 +202,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                             },
                             items:[
                                 {
-                                    xtype: 'combobox',
-                                    labelStyle: 'font-weight:bold;',
-                                    fieldLabel: 'Acc. Type',
-                                    id: prototype.id + '-cmbTIPOCON',
-                                    name: 'IN_TIPOCON',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['REG', 'Regular'],
-                                            ['DEB', 'Debits'],
-                                            ['ADJ', 'Adjustment']
-                                        ]
-                                    }),
-                                    labelWidth: 90,
-                                    width: 180,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: ''
-                                },
-                                {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Acc. Date',
+                                    fieldLabel: 'ID Acc.',
                                     labelWidth: 80,
-                                    width: 180,
-                                    name: 'IN_FCONT',
-                                    maxLength: 8,
+                                    width: 280,
+                                    name: 'IN_IDCONT',
+                                    maxLength: 25, // Límite máximo de caracteres
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
@@ -203,46 +215,45 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Accounting ID',
-                                    labelWidth: 90,
-                                    width: 280,
-                                    name: 'IN_IDCONT',
-                                    maxLength: 25,
+                                    fieldLabel: 'Bank Doc.',
+                                    labelWidth: 80,
+                                    width: 180,
+                                    name: 'IN_BANDOC',
+                                    maxLength: 10, // Límite máximo de caracteres
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
-                                        specialkey: 'onEnterKeyPress',
-                                        change: function (field, newValue) {
-                                            field.setValue(newValue.toUpperCase());
-                                        }
+                                        specialkey: 'onEnterKeyPress'
                                     }
                                 },
                                 {
-                                    xtype: 'combobox',
-                                    fieldLabel: 'Status',
-                                    name: 'IN_STATUS',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['N', 'No Accounted'],
-                                            ['A', 'Accounted'],
-                                            ['P', 'Pending']
-                                        ]
-                                    }),
-                                    labelWidth: 60,
-                                    width: 190,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: ''
+                                    xtype: 'textfield',
+                                    fieldLabel: 'User Rev.',
+                                    labelWidth: 80,
+                                    width: 180,
+                                    name: 'IN_USRV',
+                                    maxLength: 10, // Límite máximo de caracteres
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'BPO Message',
+                                    labelWidth: 100,
+                                    width: 380,
+                                    name: 'IN_BPOMSG',
+                                    maxLength: 160, // Límite máximo de caracteres
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
                                 }
                             ]
                         }
                     ]
                 }
                 //</editor-fold>
-
             ]
         }
     ]

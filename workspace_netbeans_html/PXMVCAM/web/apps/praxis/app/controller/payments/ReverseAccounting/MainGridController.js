@@ -1,79 +1,65 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportController', {
+Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.MainGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AccountingReportController',
-    url: CONTEXTPATH + '/AccountingReport',
-    procesadores: [],
+    alias: 'controller.MainGridController',
+    url: CONTEXTPATH + '/ReverseAccounting',
     request: axios.create({
-        baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 0
+        baseURL: CONTEXTPATH + '/ReverseAccounting',
+        timeout: 20000
     }),
-    miscRequest: axios.create({
-        baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
-        timeout: 0
-    }),
+    notifier: new AWN(),
     init: function (view) {
-    },
-    afterRender: async function () {
-        //await this.loadFilters();
-        this.loadBandocs();
-    },
-    loadFilters: async function () {
-        const me = this;
-        me.view.mask('Loading...');
-        try {
-            const res = await me.miscRequest.get('/loadAccountingProcs');
-
-            const data = res.data;
-            me.procesadores = data.response;
-            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-            ccust.fireEvent('change', {});
-        } catch (e) {
-            console.error(e);
-            me.notifier.alert('Filters not loaded');
-        } finally {
-            me.view.unmask();
-            me.loadGrid();
+        if(view.backButton){
+            Ext.getCmp(prototype.id + '-main-btnBack').show();
+            Ext.getCmp(prototype.id + '-main-btnBack').on('click',view.backButton);
         }
-
     },
-    loadBandocs: async function () {
+    afterRender: async function (obj, e) {
         const me = this;
-        let params = me.formatParams();
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
-            id: prototype.id + '-BandocsGrid-1',
-            searchParams: params
+        const view = me.view;
+        this.getData(view);
+    },
+    getData: function (view) {
+        const me = this;
+        let store = Ext.create('Ext.data.Store', {
+            loadMask: true,
+            pageSize: 20,
+            proxy: {
+                type: 'ajax',
+                enablePaging: true,
+                url: `${me.url}/loadMain`,
+                extraParams: view.searchParams,
+                timeout: 600000,
+                reader: {
+                    type: 'json',
+                    rootProperty: 'response',
+                    totalProperty: 'total'
+                }
+            },
+            autoLoad: true,
+            listeners: {
+                load: function (store, records, successful, operation) {
+                    if (!successful) {
+                        global.Msg({msg: 'Data not Found'});
+                    } else {
+                        console.log(records);
+                        if (records.length === 0) {
+                            global.Msg({msg: 'Data not Found'});
+                        }
+                    }
+                }
+            }
         });
-        mainPanel.add(panelDetail);
+        view.setStore(store);
     },
-    formatParams: function () {
-        const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
-        console.log('Search Params: ', formFilters.getValues());
-        return formFilters.getValues();
-    },
-    //<editor-fold defaultstate="collapsed" desc="Handlers">
-    onClickSearchBtn: function () {
-        this.loadBandocs();
-    },
-    onDisplayFilterBtn: function () {
-        const filters = Ext.getCmp(prototype.id + '-contentFilter');
-        if (filters.isVisible()) {
-            filters.hide();
-        } else {
-            filters.show();
+    disableReverse:function(view, rowIndex, colIndex, item, record){
+        if(record.data.STREV !== '0'){
+            return true;
         }
-    },
-    onClearOptionsBtn: function () {
-        const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
-        formFilters.reset();
-    },
-    onEnterKeyPress: function (field, e) {
-        if (e.getKey() === e.ENTER) {
-            this.onClickSearchBtn();
+        if(record.data.TIPOERR === 'PRE'){
+            return true;
         }
+        return false;
     },
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);

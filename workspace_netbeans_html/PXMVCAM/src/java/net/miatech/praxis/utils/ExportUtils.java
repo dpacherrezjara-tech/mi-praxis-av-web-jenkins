@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import net.miatech.utils.CustomExcelCell;
@@ -314,5 +316,37 @@ public class ExportUtils {
         headers.add("Content-Disposition", "attachment; filename=" + filename + ".csv");
         headers.add("Content-Type", "text/csv");
         return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
+    }
+    
+    public ResponseEntity<byte[]> createZip(List<List<String>> files, List<String> filenames, String zipname) throws Exception{
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        
+        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+            
+            for (int i=0; i<files.size(); i++) {  
+                StringJoiner csvJoiner = new StringJoiner("\n");
+                
+                files.get(i).forEach(line->{
+                    csvJoiner.add(line);
+                });
+                
+                String csv = csvJoiner.toString();
+                byte[] csvBytes = csv.getBytes(StandardCharsets.UTF_8);
+                
+                ZipEntry entry = new ZipEntry(filenames.get(i) + ".txt");
+                zos.putNextEntry(entry);
+                zos.write(csvBytes);
+                zos.closeEntry();
+                
+            }
+            
+            zos.finish();
+        }
+     
+        //respuesta http
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", zipname + ".zip");
+        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
 }

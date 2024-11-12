@@ -55,189 +55,187 @@ public class AccountingDAO {
         session = ss;
     }
 
-    public SQP05233Filter setSQP05233Filter(SQP05233Filter filter) throws SQLException, Exception {
-        CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05233(?,?,?,?,?)}";
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-            cstmt.registerOutParameter(5, Types.VARCHAR);
-            cstmt.setString(1, filter.VP_CCUST);
-            cstmt.setString(2, filter.VP_FECHA);
-            cstmt.setString(3, filter.VP_TIPO);
-            cstmt.execute();
-            filter.dbException.SQLCODE = cstmt.getString(4);
-            filter.dbException.MESSAGE = cstmt.getString(5);
-
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-        return filter;
-    }
+//    public SQP05233Filter setSQP05233Filter(SQP05233Filter filter) throws SQLException, Exception {
+//        CallableStatement cstmt = null;
+//        String SQLCLL01 = "{CALL PRAXISMP.SQP05233(?,?,?)}";
+//        Connection cnx = null;
+//        try {
+//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            cstmt = cnx.prepareCall(SQLCLL01);
+//            cstmt.registerOutParameter(2, Types.VARCHAR);
+//            cstmt.registerOutParameter(3, Types.VARCHAR);
+//            cstmt.setString(1, filter.IN_IDCONT);
+//            cstmt.execute();
+//            filter.dbException.SQLCODE = cstmt.getString(2);
+//            filter.dbException.MESSAGE = cstmt.getString(3);
+//
+//        } finally {
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+//            pasarGarbageCollector();
+//        }
+//        return filter;
+//    }
     
-    public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
-        CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05343(?,?,?,?,?,?,?,?)}";
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(7, Types.VARCHAR);
-            cstmt.registerOutParameter(8, Types.VARCHAR);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            //cstmt.setString(1, "134");
-            cstmt.setString(2, filter.VP_FECHA_INI);
-            cstmt.setString(3, filter.VP_FECHA_FIN);
-            cstmt.setString(4, filter.VP_FECHA_CIE);
-            cstmt.setString(5, filter.VP_USER);
-            cstmt.setString(6, filter.VP_TIPO);
-            cstmt.execute();
-            filter.dbException.SQLCODE = cstmt.getString(7);
-            filter.dbException.MESSAGE = cstmt.getString(8);
-
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-        return filter;
-    }
+//    public SQP05343Filter setSQP05343Filter(SQP05343Filter filter) throws SQLException, Exception {
+//        CallableStatement cstmt = null;
+//        String SQLCLL01 = "{CALL PRAXISMP.SQP05343(?,?,?,?,?,?,?,?)}";
+//        Connection cnx = null;
+//        try {
+//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            cstmt = cnx.prepareCall(SQLCLL01);
+//            cstmt.registerOutParameter(7, Types.VARCHAR);
+//            cstmt.registerOutParameter(8, Types.VARCHAR);
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+//            //cstmt.setString(1, "134");
+//            cstmt.setString(2, filter.VP_FECHA_INI);
+//            cstmt.setString(3, filter.VP_FECHA_FIN);
+//            cstmt.setString(4, filter.VP_FECHA_CIE);
+//            cstmt.setString(5, filter.VP_USER);
+//            cstmt.setString(6, filter.VP_TIPO);
+//            cstmt.execute();
+//            filter.dbException.SQLCODE = cstmt.getString(7);
+//            filter.dbException.MESSAGE = cstmt.getString(8);
+//
+//        } finally {
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+//            pasarGarbageCollector();
+//        }
+//        return filter;
+//    }
     
-    public SQP05343Filter setSQP05393Filter(SQP05343Filter filter) throws SQLException, Exception {
-        CallableStatement cstmt = null;
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05393(?,?,?,?,?,?)}";
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(5, Types.VARCHAR);
-            cstmt.registerOutParameter(6, Types.VARCHAR);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            //cstmt.setString(1, "134");
-            cstmt.setString(2, filter.VP_FECHA_INI);
-            cstmt.setString(3, filter.VP_FECHA_FIN);
-            cstmt.setString(4, filter.VP_TIPO);
-            cstmt.execute();
-            filter.dbException.SQLCODE = cstmt.getString(5);
-            filter.dbException.MESSAGE = cstmt.getString(6);
+//    public SQP05343Filter setSQP05393Filter(SQP05343Filter filter) throws SQLException, Exception {
+//        CallableStatement cstmt = null;
+//        String SQLCLL01 = "{CALL PRAXISMP.SQP05393(?,?,?,?,?,?)}";
+//        Connection cnx = null;
+//        try {
+//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            cstmt = cnx.prepareCall(SQLCLL01);
+//            cstmt.registerOutParameter(5, Types.VARCHAR);
+//            cstmt.registerOutParameter(6, Types.VARCHAR);
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+//            //cstmt.setString(1, "134");
+//            cstmt.setString(2, filter.VP_FECHA_INI);
+//            cstmt.setString(3, filter.VP_FECHA_FIN);
+//            cstmt.setString(4, filter.VP_TIPO);
+//            cstmt.execute();
+//            filter.dbException.SQLCODE = cstmt.getString(5);
+//            filter.dbException.MESSAGE = cstmt.getString(6);
+//
+//        } finally {
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+//            pasarGarbageCollector();
+//        }
+//        return filter;
+//    }
 
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-        return filter;
-    }
-
-    public List<SQP05253Filter> getSQP05253Filter(SQP05253Filter filter) throws SQLException, Exception {
-
-        List<SQP05253Filter> lstData = new ArrayList<SQP05253Filter>(0);
-        SQP05253Filter bean;
-
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05253(?,?,?,?,?,?,?,?)}";
-
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.registerOutParameter(5, Types.INTEGER);
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            //cstmt.setString(1, "134");
-            cstmt.setString(2, filter.VP_OPCION);
-            cstmt.setString(3, filter.VP_FDATE1);
-            cstmt.setString(4, filter.VP_FDATE2);
-
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
-
-            cstmt.execute();
-
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
-
-            rst = cstmt.getResultSet();
-
-            while (rst.next()) {
-
-                bean = new SQP05253Filter();
-                bean.RN = rst.getInt("RN");
-                bean.A4556CCUST = rst.getString("A4556CCUST").trim();
-                bean.A4556PSTGD = rst.getString("A4556PSTGD").trim();
-                bean.A4556CPROC = rst.getString("A4556CPROC").trim();
-                bean.A4556FFILE = rst.getString("A4556FFILE").trim();
-                bean.A4556TFILE = rst.getString("A4556TFILE").trim();
-                bean.A4556TFILE_0 = rst.getString("A4556TFILE_0").trim();                
-                bean.A4556TREGI = rst.getString("A4556TREGI").trim();
-                bean.A4556NARCH = rst.getString("A4556NARCH").trim();
-                bean.A4556ESTAD = rst.getString("A4556ESTAD").trim();
-                bean.A4556USR   = rst.getString("A4556USR").trim();
-                bean.A4556FECR  = rst.getString("A4556FECR").trim();
-                bean.A4556HORA  = rst.getString("A4556HORA").trim();
-                bean.page.PAGNUM = filter.page.PAGNUM;
-                bean.page.PAGROW = filter.page.PAGROW;
-                bean.page.TOTPAG = filter.page.TOTPAG;
-                bean.page.TOTROW = filter.page.TOTROW;
-                lstData.add(bean);
-            }
-            rst.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rst != null) {
-                try {
-                    rst.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return lstData;
-    }
+//    public List<SQP05253Filter> getSQP05253Filter(SQP05253Filter filter) throws SQLException, Exception {
+//
+//        List<SQP05253Filter> lstData = new ArrayList<SQP05253Filter>(0);
+//        SQP05253Filter bean;
+//
+//        CallableStatement cstmt = null;
+//        ResultSet rst = null;
+//
+//        String SQLCLL01 = "{CALL PRAXISMP.SQP05253(?,?,?,?,?,?,?,?)}";
+//
+//        Connection cnx = null;
+//        try {
+//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            cstmt = cnx.prepareCall(SQLCLL01);
+//
+//            cstmt.registerOutParameter(5, Types.INTEGER);
+//            cstmt.registerOutParameter(6, Types.INTEGER);
+//            cstmt.registerOutParameter(7, Types.INTEGER);
+//            cstmt.registerOutParameter(8, Types.INTEGER);
+//
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+//            //cstmt.setString(1, "134");
+//            cstmt.setString(2, filter.VP_OPCION);
+//            cstmt.setString(3, filter.VP_FDATE1);
+//            cstmt.setString(4, filter.VP_FDATE2);
+//
+//            cstmt.setInt(5, filter.page.PAGNUM);
+//            cstmt.setInt(6, filter.page.PAGROW);
+//            cstmt.setInt(7, filter.page.TOTPAG);
+//            cstmt.setInt(8, filter.page.TOTROW);
+//
+//            cstmt.execute();
+//
+//            filter.page.PAGNUM = cstmt.getInt(5);
+//            filter.page.PAGROW = cstmt.getInt(6);
+//            filter.page.TOTPAG = cstmt.getInt(7);
+//            filter.page.TOTROW = cstmt.getInt(8);
+//
+//            rst = cstmt.getResultSet();
+//
+//            while (rst.next()) {
+//
+//                bean = new SQP05253Filter();
+//                bean.RN = rst.getInt("RN");
+//                bean.A4556CCUST = rst.getString("A4556CCUST").trim();
+//                bean.A4556PSTGD = rst.getString("A4556PSTGD").trim();
+//                bean.A4556CPROC = rst.getString("A4556CPROC").trim();
+//                bean.A4556FFILE = rst.getString("A4556FFILE").trim();
+//                bean.A4556TFILE = rst.getString("A4556TFILE").trim();
+//                bean.A4556TFILE_0 = rst.getString("A4556TFILE_0").trim();                
+//                bean.A4556TREGI = rst.getString("A4556TREGI").trim();
+//                bean.A4556NARCH = rst.getString("A4556NARCH").trim();
+//                bean.A4556ESTAD = rst.getString("A4556ESTAD").trim();
+//                bean.A4556USR   = rst.getString("A4556USR").trim();
+//                bean.A4556FECR  = rst.getString("A4556FECR").trim();
+//                bean.A4556HORA  = rst.getString("A4556HORA").trim();
+//                bean.page.PAGNUM = filter.page.PAGNUM;
+//                bean.page.PAGROW = filter.page.PAGROW;
+//                bean.page.TOTPAG = filter.page.TOTPAG;
+//                bean.page.TOTROW = filter.page.TOTROW;
+//                lstData.add(bean);
+//            }
+//            rst.close();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (rst != null) {
+//                try {
+//                    rst.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+//            pasarGarbageCollector();
+//        }
+//
+//        return lstData;
+//    }
     
     public List<SQP05352Filter> getSQP05352Filter(SQP05352Filter filter) throws SQLException, Exception {
 
@@ -333,114 +331,114 @@ public class AccountingDAO {
         return lstData;
     }
 
-    public List<SQP05252Filter> getSQP05252Filter(SQP05252Filter filter) throws SQLException, Exception {
-
-        List<SQP05252Filter> lstData = new ArrayList<SQP05252Filter>(0);
-        SQP05252Filter bean;
-
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-
-        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?,?,?)}";
-
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            //cstmt.setString(1, "134");
-            cstmt.setString(2, filter.IN_TIPO);
-            cstmt.setString(3, filter.IN_PROCESA);
-            cstmt.setInt(4, filter.IN_LEXT);
-            cstmt.execute();
-            rst = cstmt.getResultSet();
-            while (rst.next()) {
-                bean = new SQP05252Filter();
-                bean.DETA = rst.getString("DETA").trim();
-                lstData.add(bean);
-            }
-            rst.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rst != null) {
-                try {
-                    rst.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return lstData;
-    }
+//    public List<SQP05252Filter> getSQP05252Filter(SQP05252Filter filter) throws SQLException, Exception {
+//
+//        List<SQP05252Filter> lstData = new ArrayList<SQP05252Filter>(0);
+//        SQP05252Filter bean;
+//
+//        CallableStatement cstmt = null;
+//        ResultSet rst = null;
+//
+//        String SQLCLL01 = "{CALL PRAXISMP.SQP05252(?,?,?,?)}";
+//
+//        Connection cnx = null;
+//        try {
+//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            cstmt = cnx.prepareCall(SQLCLL01);
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+//            //cstmt.setString(1, "134");
+//            cstmt.setString(2, filter.IN_TIPO);
+//            cstmt.setString(3, filter.IN_PROCESA);
+//            cstmt.setInt(4, filter.IN_LEXT);
+//            cstmt.execute();
+//            rst = cstmt.getResultSet();
+//            while (rst.next()) {
+//                bean = new SQP05252Filter();
+//                bean.DETA = rst.getString("DETA").trim();
+//                lstData.add(bean);
+//            }
+//            rst.close();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (rst != null) {
+//                try {
+//                    rst.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+//            pasarGarbageCollector();
+//        }
+//
+//        return lstData;
+//    }
     
-    public List<A051> loadProcessors() throws SQLException, Exception {
-
-        List<A051> lista = new ArrayList<>();
-        A051 record;
-        int i = 1;
-        record = new A051();
-        
-        record.NO = i;
-        record.A051KEY1 = "PR";
-        record.A051KEY2 = "   ";
-        record.A051DESCR1 = "All";
-        lista.add(record);
-        
-        i++;
-        
-        Statement stmt = null;
-
-        String sql = "SELECT A051KEY1, A051KEY2, A051DESCR1 FROM PRAXIS.A051 WHERE A051KEY1 = 'PR' AND A051KEY2 != '' ORDER BY A051DESCR1";
-
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            stmt = cnx.createStatement();
-            rst = stmt.executeQuery(sql);
-            
-            while (rst.next()) {
-                record = new A051();
-                record.NO = i;
-                record.A051KEY1 = rst.getString("A051KEY1").trim();
-                record.A051KEY2 = rst.getString("A051KEY2").substring(0,3);
-                record.A051DESCR1 = rst.getString("A051DESCR1").trim();
-                lista.add(record);
-                i++;
-            }
-            
-        } finally {
-            if (rst != null) {
-                try {
-                    rst.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-        }
-
-        return lista;
-    }
+//    public List<A051> loadProcessors() throws SQLException, Exception {
+//
+//        List<A051> lista = new ArrayList<>();
+//        A051 record;
+//        int i = 1;
+//        record = new A051();
+//        
+//        record.NO = i;
+//        record.A051KEY1 = "PR";
+//        record.A051KEY2 = "   ";
+//        record.A051DESCR1 = "All";
+//        lista.add(record);
+//        
+//        i++;
+//        
+//        Statement stmt = null;
+//
+//        String sql = "SELECT A051KEY1, A051KEY2, A051DESCR1 FROM PRAXIS.A051 WHERE A051KEY1 = 'PR' AND A051KEY2 != '' ORDER BY A051DESCR1";
+//
+//        Connection cnx = null;
+//        try {
+//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            stmt = cnx.createStatement();
+//            rst = stmt.executeQuery(sql);
+//            
+//            while (rst.next()) {
+//                record = new A051();
+//                record.NO = i;
+//                record.A051KEY1 = rst.getString("A051KEY1").trim();
+//                record.A051KEY2 = rst.getString("A051KEY2").substring(0,3);
+//                record.A051DESCR1 = rst.getString("A051DESCR1").trim();
+//                lista.add(record);
+//                i++;
+//            }
+//            
+//        } finally {
+//            if (rst != null) {
+//                try {
+//                    rst.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//            if (stmt != null) {
+//                try {
+//                    stmt.close();
+//                } catch (SQLException e) {
+//                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+//                }
+//            }
+//        }
+//
+//        return lista;
+//    }
     
-    public void updatePending() throws SQLException, Exception {
+    public void test() throws SQLException, Exception {
         
         CallableStatement cstmt = null;
 
@@ -450,22 +448,20 @@ public class AccountingDAO {
         
         try {
             
-            BufferedReader br = new BufferedReader(new FileReader("D:\\UserFilesMiatech\\gnovoa\\Mis documentos\\Colombia_Reprocesar.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("D:\\UserFilesMiatech\\gnovoa\\Mis documentos\\Debitos_Reprocesar.csv"));
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(";");
                 
-                String bandoc = values[0];
-                String refd = values[1];
-                String dcont = values[2];
-                String neto =  values[3];
+                String refd = values[0];
+                String codpro = values[1];
    
                 
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt = cnx.prepareCall(SQLCLL01);
-                cstmt.setString(1, bandoc);
-                cstmt.setString(2, refd);
+                cstmt.setString(1, refd);
+                cstmt.setString(2, codpro);
                 cstmt.execute();
                 
                 i++;

@@ -1,21 +1,20 @@
-prototype.id = 'AccountingReportForm';
-prototype.url = CONTEXTPATH + '/AccountingReport';
-prototype.width = 1900;
+prototype.id = 'ReverseAccountingForm';
+prototype.url = CONTEXTPATH + '/ReverseAccounting';
+prototype.width = 1850;
 prototype.height = 630;
 fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
 
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm', {
+Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.ReverseAccountingForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.AccountingReportForm',
+    alias: 'widget.ReverseAccountingForm',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.AccountingReportController',
-        'Ext.Praxis.view.payments.AccountingReportForm.Options',
-        'Ext.Praxis.view.payments.AccountingReportForm.Filters',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid'
+        'Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingController',
+        'Ext.Praxis.view.payments.ReverseAccountingForm.Options',
+        'Ext.Praxis.view.payments.ReverseAccountingForm.Filters',
+        'Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid',
+//        'Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid'
     ],
-    controller: 'AccountingReportController',
+    controller: 'ReverseAccountingController',
     layout: {
         type: 'fit'
     },

@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Options', {
+Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
@@ -26,7 +26,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Options', {
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnProcess',
-                            hidden:true,
                             iconCls: 'prx-icon-image-process',
                             tooltip: 'Process',
                             listeners: {
