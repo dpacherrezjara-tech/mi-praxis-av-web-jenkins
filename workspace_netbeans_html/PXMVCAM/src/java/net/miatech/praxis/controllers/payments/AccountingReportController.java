@@ -19,6 +19,14 @@ import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
+import net.miatech.utils.CustomExcelCell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +99,7 @@ public class AccountingReportController extends BaseController {
     }
     
 
-    @RequestMapping(value = "downloadAccounting",method = RequestMethod.POST)
+    @RequestMapping(value = "downloadAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> downloadAccounting(@RequestBody SQP05233Filter filter, HttpServletResponse response) throws Exception {
         System.out.println("***** AccountingReport - downloadAccounting *****");
         
@@ -105,6 +113,7 @@ public class AccountingReportController extends BaseController {
         String zipName = "";
         
         String A4545SEQ = "";
+        String CODPRO = filter.getIN_CODPRO().trim();
         String A4545MODO = "";
         String fileHeader = "SEQUENCE\tHEADER_TXT\tCOMP_CODE\tDOC_DATE\tPSTNG_DATE\tTRANS_DATE\tDOC_TYPE\tREF_DOC_NO\tZZ_AUTH_CODE\tPOSTING_KEY\tITEMNO_ACC\t" +
             "GL_ACCOUNT\tITEM_TEXT\tREF_KEY_1\tREF_KEY_2\tREF_KEY_3\tBUS_AREA\tCOSTCENTER\tPROFIT_CTR\tCUSTOMER\tNAME\tCITY\tCOUNTRY\tCURRENCY\t" +
@@ -124,7 +133,7 @@ public class AccountingReportController extends BaseController {
             for (int i=0,j=0; i<result.size(); i++,j++) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
-                sb.append(result.get(i).getA4545HEADE()).append("\t") ;                 // HEADER_TXT
+                sb.append(result.get(i).getA4545USER()).append("\t") ;                  // HEADER_TXT
                 sb.append(result.get(i).getA4545COMPC()).append("\t") ;                 // COMP_CODE
                 sb.append(result.get(i).getA4545DOCD()).append("\t") ;                  // DOC_DATE
                 sb.append(result.get(i).getA4545PSTGD()).append("\t") ;                 // PSTNG_DATE
@@ -200,8 +209,7 @@ public class AccountingReportController extends BaseController {
                     !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
                     (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
                     
-                    //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
-                    fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + filter.getIN_CODPRO() + "_" + (k+1);
+                    fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
                     
                     fileNames.add( fileName );                   
                     files.add(file) ;
@@ -220,7 +228,7 @@ public class AccountingReportController extends BaseController {
             }
             
             //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
-            fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + filter.getIN_CODPRO().trim() + "_" + (k+1);
+            fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
             
             fileNames.add(fileName);
             files.add(file) ;
@@ -240,62 +248,151 @@ public class AccountingReportController extends BaseController {
         
         switch (codModo) {
             case "P":
-               descModo = "Pasaje Colombia";
+               descModo = "Pasaje_Colombia";
                 break;
             case "A":
-                descModo = "Carga Colombia";
+                descModo = "Carga_Colombia";
                 break;
             case "C":
-                descModo = "Correo Colombia";
+                descModo = "Correo_Colombia";
                 break;
             case "E":
-                descModo = "Pasaje Exterior";
+                descModo = "Pasaje_Exterior";
                 break;
             case "G":
-                descModo = "Carga Exterior";
+                descModo = "Carga_Exterior";
                 break;
             case "D":
-                descModo = "Debitos Colombia";
+                descModo = "Debitos_Colombia";
                 break;
             case "B":
-                descModo = "Debitos Exterior";
+                descModo = "Debitos_Exterior";
                 break;
             case "J":
-                descModo = "Ajustes Colombia";
+                descModo = "Ajustes_Colombia";
                 break;
             case "K":
-                descModo = "Ajustes Exterior";
+                descModo = "Ajustes_Exterior";
                 break;
         }
         
         return descModo ;
     }
 
-     @RequestMapping(value = "reverseAccounting",method = RequestMethod.POST)
+     @RequestMapping(value = "reverseAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
         System.out.println("***** AccountingReport - reverseAccounting *****");
         logic.loadSPACR005Filter(params);
         return ResponseUtils.create();
     }
     
-    @RequestMapping(value = "processAccounting",method = RequestMethod.POST)
+    @RequestMapping(value = "processAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params) throws Exception {
         System.out.println("***** AccountingReport - processAccounting *****");
         logic.loadSPACR001Filter(params);
         return ResponseUtils.create();
     }
     
-    @RequestMapping(value = "reverseSingleBandoc",method = RequestMethod.POST)
+    @RequestMapping(value = "reverseSingleBandoc", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody SPACR008Filter params) throws Exception {
         System.out.println("***** AccountingReport - reverseSingleBandoc *****");
         logic.loadSPACR008Filter(params);
         return ResponseUtils.create();
     }
     
-    @RequestMapping(value = "reverseMassiveBandoc",method = RequestMethod.POST)
+    @RequestMapping(value = "reverseMassiveBandoc", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody List<SPACR008Filter> lst) throws Exception {
         System.out.println("***** AccountingReport - reverseMassiveBandoc *****");
         logic.loadSPACR008FilterMasive(lst);
         return ResponseUtils.create();
     }
+    
+    @RequestMapping(value = "downloadExcelMain", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadExcelMain(@RequestBody SPACR002Filter params) throws Exception {
+        System.out.println("***** AccountingMasterProcess - downloadExcelMain *****");
+        SPACR002Filter filter = logic.loadSPACR002Filter(params);
+        
+        String title = "AccountingMasterProcess - TC_" 
+            + params.getIN_FCONTF()+ "_" + params.getIN_FCONTT() + "_" + params.getIN_TIPOCON()
+            + "_" + params.getIN_CODPRO();
+        
+        SXSSFWorkbook workbook = new SXSSFWorkbook();
+        //<editor-fold defaultstate="collapsed" desc="Estilos">
+        XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+
+        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        headerFont.setColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+        headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+        headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+        headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        headerStyle.setWrapText(true);
+        headerStyle.setFont(headerFont);
+        //</editor-fold>
+
+        Sheet sheet = workbook.createSheet("AccountingMasterProcess");
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Date"));
+        header.add(new CustomExcelCell("Hour"));
+        header.add(new CustomExcelCell("Type"));
+        header.add(new CustomExcelCell("ID"));
+        header.add(new CustomExcelCell("Bandocs"));
+        header.add(new CustomExcelCell("Settl."));
+        header.add(new CustomExcelCell("Initial\nDate"));
+        header.add(new CustomExcelCell("Final\nDate"));
+        header.add(new CustomExcelCell("Pre Acc.\nErrors"));
+        header.add(new CustomExcelCell("Post Acc.\nErrors"));
+        header.add(new CustomExcelCell("File Name"));
+        header.add(new CustomExcelCell("Status"));
+        header.add(new CustomExcelCell("User"));
+        header.add(new CustomExcelCell("Datetime"));
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getFCONT()));
+            row.add(new CustomExcelCell(obj.getHCONT()));
+            row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(obj.getIDCONT()));
+            row.add(new CustomExcelCell(obj.getTOTRECS()));
+            
+            switch(params.getIN_TIPOCON()){
+                case "REG":
+                    row.add(new CustomExcelCell(obj.getTOTREG()));
+                    break;
+                case "DEB":
+                    row.add(new CustomExcelCell(obj.getTOTDEB()));
+                    break;
+                case "ADJ":
+                    row.add(new CustomExcelCell(obj.getTOTADJ()));
+                    break;
+            }
+            
+            row.add(new CustomExcelCell(obj.getPRDAF()));
+            row.add(new CustomExcelCell(obj.getPRDAT()));
+            row.add(new CustomExcelCell(obj.getQTYROWS()));
+            row.add(new CustomExcelCell(obj.getQTYERRS()));
+            row.add(new CustomExcelCell(obj.getFILENAM()));
+            row.add(new CustomExcelCell(obj.getSTCONT()));
+            row.add(new CustomExcelCell(obj.getUSCR()));
+            row.add(new CustomExcelCell(obj.getTSCR().toString()));
+            data.add(row);
+        });
+        
+        return exportUtils.createCustomExcel(data,title);
+    }
+    
 }

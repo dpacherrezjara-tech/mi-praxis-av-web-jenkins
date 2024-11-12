@@ -259,6 +259,24 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         'Successfully Downloaded',
         'Error on Download');
     },
+    downloadExcel: function () {
+        const me = this;
+        let params = me.view.searchParams;
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download Excel?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            global.downloadFile(me.request,'/downloadExcelMain',params);
+                        }
+                    }
+                });
+    },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);
