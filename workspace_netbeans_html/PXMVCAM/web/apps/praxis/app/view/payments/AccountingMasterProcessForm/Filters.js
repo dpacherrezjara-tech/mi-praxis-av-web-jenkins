@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
+Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                 align: 'center'
             },
             items: [
-                //<editor-fold defaultstate="collapsed" desc="Browser">
+                //<editor-fold defaultstate="collapsed" desc="Executor">
                 {
                     xtype: 'form',
                     border: false,
@@ -69,11 +69,39 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '134'
+                                    value: '134',
+                                    listeners: {
+                                        change: 'onChangeCcust'
+                                    }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Acc. Type',
+                                    id: prototype.id + '-cmbTIPOCON',
+                                    name: 'IN_TIPOCON',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['REG', 'Regular'],
+                                            ['DEB', 'Debits'],
+                                            ['ADJ', 'Adjustment']
+                                        ]
+                                    }),
+                                    labelWidth: 90,
+                                    width: 180,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: 'REG',
+                                    listeners: {
+                                        change: 'onChangeTipocon'
+                                    }
                                 },
                                 {
                                     xtype: 'datefield',
-                                    name: 'IN_VALDATEF',
+                                    name: 'IN_FCONTF',
                                     fieldLabel: 'From',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
@@ -86,7 +114,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    name: 'IN_VALDATET',
+                                    name: 'IN_FCONTT',
                                     fieldLabel: 'To',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
@@ -121,85 +149,31 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
                                 },
                                 {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Bank Doc.',
-                                    labelWidth: 80,
-                                    width: 180,
-                                    name: 'IN_BANDOC',
-                                    maxLength: 10,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress',
-                                        change: function (field, newValue) {
-                                            field.setValue(newValue.toUpperCase());
-                                        }
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Reference',
-                                    labelWidth: 80,
-                                    width: 230,
-                                    name: 'IN_REFER',
-                                    maxLength: 30,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress',
-                                        change: function (field, newValue) {
-                                            field.setValue(newValue.toUpperCase());
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            bodyStyle: 'background: transparent',
-                            defaults: {
-                                fieldStyle: 'text-align: center;',
-                                padding: '5 1 5 1',
-                                anchor: '100%',
-                                hiddenLabel: false,
-                                labelAlign: 'right',
-                                hidden: false
-                            },
-                            items:[
-                                {
                                     xtype: 'combobox',
-                                    labelStyle: 'font-weight:bold;',
-                                    fieldLabel: 'Acc. Type',
-                                    id: prototype.id + '-cmbTIPOCON',
-                                    name: 'IN_TIPOCON',
+                                    fieldLabel: 'Status',
+                                    name: 'IN_STCONT',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
                                             ['', 'All'],
-                                            ['REG', 'Regular'],
-                                            ['DEB', 'Debits'],
-                                            ['ADJ', 'Adjustment']
+                                            ['0', 'Processing'],
+                                            ['1', 'Pre-Accounting Errors'],
+                                            ['2', 'Post-Accounting Errors'],
+                                            ['3', 'Validated'],
+                                            ['4', 'Reversed'],
+                                            ['5', 'Downloaded/Sended'],
+                                            ['6', 'Program Down'],
+                                            ['7', 'Executor Error'],
+                                            ['8', 'No Data']
                                         ]
                                     }),
-                                    labelWidth: 90,
-                                    width: 180,
+                                    labelWidth: 60,
+                                    width: 210,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
                                     value: ''
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Acc. Date',
-                                    labelWidth: 80,
-                                    width: 180,
-                                    name: 'IN_FCONT',
-                                    maxLength: 8,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress'
-                                    }
                                 },
                                 {
                                     xtype: 'textfield',
@@ -217,25 +191,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
                                     }
                                 },
                                 {
-                                    xtype: 'combobox',
-                                    fieldLabel: 'Status',
-                                    name: 'IN_STATUS',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['N', 'No Accounted'],
-                                            ['A', 'Accounted'],
-                                            ['P', 'Pending']
-                                        ]
-                                    }),
-                                    labelWidth: 60,
-                                    width: 190,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: ''
+                                    xtype: 'textfield',
+                                    fieldLabel: 'File Name',
+                                    labelWidth: 90,
+                                    width: 280,
+                                    name: 'IN_FILENAM',
+                                    maxLength: 160,
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
                                 }
                             ]
                         }

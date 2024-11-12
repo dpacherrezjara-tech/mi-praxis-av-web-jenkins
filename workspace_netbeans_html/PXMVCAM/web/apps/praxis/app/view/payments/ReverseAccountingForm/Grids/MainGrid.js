@@ -1,27 +1,20 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
+Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-ErrorsGrid',
+    alias: 'widget.' + prototype.id + '-MainGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.ErrorsGridController'
+        'Ext.Praxis.controller.payments.ReverseAccounting.MainGridController'
     ],
-    controller: 'ErrorsGridController',
+    controller: 'MainGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1450,
+    width: prototype.width,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
         markDirty: false
     },
     columnLines: true,
-    selModel: {
-        type: 'checkboxmodel',
-        mode: 'MULTI', // Permite la selección múltiple
-        listeners: {
-            beforeselect: 'validateReversed'
-        }
-    },
     columns: {
         defaults: {
             align: 'center',
@@ -36,30 +29,32 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
-            {text: 'Accounting ID', dataIndex: 'IDCONT', width: 180},
-            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
-            {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
-            {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
-            {text: 'Error<br>Code', dataIndex: 'CERROR', width: 50},
-            {text: 'Error<br>Description', dataIndex: 'DESCERR', width: 300},
-            {text: 'Error<br>Records', dataIndex: 'QTYERR', width: 120},
-            {text: 'Status<br>Reversed', dataIndex: 'STREV', width: 80,
+            {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 200},
+            {text: 'Type', dataIndex: 'TIPOCON', width: 70,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
-                        '0': () => {
-                            metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
-                            return 'Pending';
-                        },
-                        '1': () => {
-                            metaData.style = "background-color:#7dee50;font-weight:bold";
-                            return 'Reversed';
-                        },
-                        '2': () => {
-                            metaData.style = "background-color:#dbf12d;font-weight:bold";
-                            return 'Stand By';
-                        }
+                        'REG': 'Regular',
+                        'DEB': 'Debit',
+                        'ADJ': 'Adjustment'
                     };
-                    return opts[value]();
+                    return opts[value];
+                }
+            },
+            {text: 'Accounting ID', dataIndex: 'IDCONT', width: 200},
+            {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120},
+            {text: 'Value Date', dataIndex: 'VALDATE', width: 100},
+            {text: 'BPO Message', dataIndex: 'BPOMSG', flex: 1},
+            {text: 'Reverse<br>Origin', dataIndex: 'REVORI', width: 100,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    const opts = {
+                        'X': 'Excel',
+                        'C': 'Accounting',
+                        'B': 'Bandoc',
+                        'S': 'Stand By',
+                        'L': 'Stand By Rev'
+                    };
+                    return opts[value];
                 }
             },
             {
@@ -72,8 +67,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
                         return value;
                     }
                 }, columns: [
-                    {text: 'User', dataIndex: 'USUP', width: 100},
-                    {text: 'Datetime', dataIndex: 'TSUP', width: 130}
+                    {text: 'User', dataIndex: 'USRV', width: 100},
+                    {text: 'Datetime', dataIndex: 'TSRV', width: 160}
                 ]
             },
             {
@@ -86,7 +81,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
                     {
                         iconCls: 'prx-icon-image-trash',
                         tooltip: 'Reverse',
-                        handler: 'reverseSingleBandoc',
+                        handler: 'onReverseAccounting',
                         isDisabled: 'disableReverse'
                     }
                 ]
@@ -104,15 +99,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
         items: [
             {
                 xtype: 'button',
-                iconCls: 'prx-icon-delete',
-                scale: 'small',
-                tooltip: 'Reverse Masive',
-                listeners: {
-                    click: 'reverseMassiveBandoc'
-                }
-            },
-            {
-                xtype: 'button',
                 iconCls: 'prx-icon-excel',
                 scale: 'small',
                 tooltip: 'Export to Excel',
@@ -123,13 +109,17 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid', {
             {
                 xtype: 'button',
                 scale: 'small',
-                id: prototype.id + '-errors-btnBack',
+                id: prototype.id + '-main-btnBack',
                 iconCls: 'prx-icon-back',
                 width: 25,
                 hidden: true,
                 tooltip: 'Back'
             }
         ]
+    },
+    bbar: {
+        xtype: 'pagingtoolbar',
+        displayInfo: true
     }
 });
 

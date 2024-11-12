@@ -1,60 +1,68 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportController', {
+Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDataEntryController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AccountingReportController',
-    url: CONTEXTPATH + '/AccountingReport',
+    alias: 'controller.ReverseAccountingDataEntryController',
+    url: CONTEXTPATH + '/ReverseAccounting',
     procesadores: [],
     request: axios.create({
-        baseURL: CONTEXTPATH + '/AccountingReport',
+        baseURL: CONTEXTPATH + '/ReverseAccounting',
         timeout: 0
     }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
         timeout: 0
     }),
+    notifier:new AWN(),
     init: function (view) {
     },
     afterRender: async function () {
-        //await this.loadFilters();
-        this.loadBandocs();
+        this.loadFilters();
     },
-    loadFilters: async function () {
-        const me = this;
-        me.view.mask('Loading...');
+    loadFilters:async function(){
         try {
-            const res = await me.miscRequest.get('/loadAccountingProcs');
-
-            const data = res.data;
-            me.procesadores = data.response;
-            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-            ccust.fireEvent('change', {});
+            const res = await this.miscRequest.get('loadMdpFilters');
+            console.log(res.data);
         } catch (e) {
-            console.error(e);
-            me.notifier.alert('Filters not loaded');
-        } finally {
-            me.view.unmask();
-            me.loadGrid();
+            
         }
-
-    },
-    loadBandocs: async function () {
-        const me = this;
-        let params = me.formatParams();
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
-            id: prototype.id + '-BandocsGrid-1',
-            searchParams: params
-        });
-        mainPanel.add(panelDetail);
+  
     },
     formatParams: function () {
-        const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
+        const formFilters = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
+    onSearchBandoc: async function () {
+        let params = this.formatParams();
+        if(params.IN_BANDOC === '' && params.IN_REFER===''){
+            this.notifier.alert('Bandoc o Reference Vacios');
+            return;
+        }
+        const grid = Ext.getCmp(prototype.idDE + '-scanBandoc');
+        grid.setLoading(true);
+        try {
+            
+            const res = await this.request.get('loadBandocs',{
+                params:params
+            });
+            if(res.status ===200){
+                console.log(res.data);
+                grid.show();
+                const {response} = res.data;
+                let store = new Ext.data.Store({
+                    data: response
+                });
+                grid.setStore(store);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            grid.setLoading(false);
+        }
+
+    },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
-        this.loadBandocs();
+        this.loadGrid();
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
