@@ -310,7 +310,10 @@ public class AccountingReportController extends BaseController {
     @RequestMapping(value = "downloadExcelMain", method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelMain(@RequestBody SPACR002Filter params) throws Exception {
         System.out.println("***** AccountingMasterProcess - downloadExcelMain *****");
+        params.setExcel(true);
         SPACR002Filter filter = logic.loadSPACR002Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
         
         String title = "AccountingMasterProcess - TC_" 
             + params.getIN_FCONTF()+ "_" + params.getIN_FCONTT() + "_" + params.getIN_TIPOCON()
@@ -392,7 +395,7 @@ public class AccountingReportController extends BaseController {
             data.add(row);
         });
         
-        return exportUtils.createCustomExcel(data,title);
+        return exportUtils.createCustomExcel(data, title);
     }
     
 }

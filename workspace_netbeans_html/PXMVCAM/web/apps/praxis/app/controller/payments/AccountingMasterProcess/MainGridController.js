@@ -242,26 +242,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
                 });
         
     },
-    downloadAccounting: async function(params){
-        const me = this;
-        me.view.setLoading(true);
-        me.notifier.async(
-            me.request.post('downloadAccounting',params)
-            .then(res=>{
-                //console.log(res);
-                me.view.setLoading(false);
-                if(res.status === 201){
-                    me.view.getStore().load();
-                }else{
-                    throw new Error();
-                }
-            }),
-        'Successfully Downloaded',
-        'Error on Download');
-    },
-    downloadExcel: function () {
+    onDownloadExcel: function () {
         const me = this;
         let params = me.view.searchParams;
+        console.log('Download Params: ', params);
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -272,7 +256,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            global.downloadFile(me.request,'/downloadExcelMain',params);
+                            global.downloadFile(me.request,'downloadExcelMain',params,'xlsx');
                         }
                     }
                 });
