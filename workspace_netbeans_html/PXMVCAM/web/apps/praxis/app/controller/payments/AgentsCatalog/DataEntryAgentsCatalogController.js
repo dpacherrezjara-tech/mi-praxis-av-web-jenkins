@@ -70,6 +70,10 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         this.setValue('txtUSUP', this.beanResult.USUP);
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
+        
+        this.setValue('textCIACOME', this.beanResult.CIACOME.trim());
+        this.setValue('txtSBENCEN', this.beanResult.SBENCEN.trim());
+        this.setValue('textSOCIETY', this.beanResult.SOCIETY.trim());
     },
     obtainData: function () {
         Ext.getCmp(prototype.id + '-de-cmbCOUNTRY').bindStore(
@@ -162,7 +166,6 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
-        console.log(beanTemp, 'beanTemp');
         beanTemp.NEW_CAGENCY = this.getValue("de-txtCAGENCY");
         beanTemp.CANAL = this.getValue("de-txtCANAL");
         beanTemp.COUNTRY = this.getValue("de-cmbCOUNTRY");
@@ -186,7 +189,12 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         beanTemp.USUP = this.getValue("txtUSUP").trim();
         beanTemp.FEUP = this.getValue("txtFEUP").trim();
         beanTemp.HOUP = this.getValue("txtHOUP").trim();
-        console.log(beanTemp);
+        
+        beanTemp.SBENCEN = this.getValue("txtSBENCEN").trim();
+        beanTemp.SOCIETY = this.getValue("textSOCIETY").trim();
+        beanTemp.CIACOME = this.getValue("textCIACOME").trim();
+        
+        console.log(beanTemp, 'beanTemp');
     },
     getData: function () {
         var beanString = JSON.stringify(meDE.bean.data);
@@ -255,25 +263,23 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
         });
     },
     onUpdateClick: function (btn) {
-        Ext.Msg.show(
-                {
-                    title: '.:PRAXIS:.',
-                    msg: 'Are you sure to update ?',
-                    buttons: Ext.MessageBox.YESNO,
-                    scope: this,
-                    animateTarget: btn,
-                    icon: Ext.MessageBox.QUESTION,
-                    modal: true,
-                    fn: function (btn) {
-                        if (btn === 'yes') {
-                            var beanTemp = {};
-                            this.llenarData(beanTemp);
-                            beanTemp.option = 'U';
-                            beanTemp.beanString = JSON.stringify(beanTemp);
-                            this.MaintenanceMPF106(beanTemp);
-                        }
-                    }
-                });
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to update ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    this.llenarData(beanTemp);
+                    beanTemp.option = 'U';
+                    beanTemp.beanString = JSON.stringify(beanTemp);
+                    this.MaintenanceMPF106(beanTemp);
+                }
+            }
+        });
     },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
@@ -300,7 +306,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
     MaintenanceMPF106: function (beanTemp) {
-//        console.log(beanTemp);
+        console.log(beanTemp);
         Ext.Ajax.request({
             url: prototype.url + '/MaintenanceMPF106',
             method: 'POST',
@@ -326,8 +332,20 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.DataEntryAgentsCatalogC
 
     validacionInsert: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("de-txtCAGENCY") === '' || this.getValue("de-cmbCOUNTRY") === '' || this.getValue("de-txtNAMEA") === '') {
+        if (this.getValue("de-txtCAGENCY") === '' || this.getValue("de-cmbCOUNTRY") === '' || this.getValue("de-txtNAMEA") === ''
+                || this.getValue("txtSBENCEN") === '' || this.getValue("textSOCIETY") === '') {
             msjResult = "You must enter the required field.";
+            return msjResult;
+        }
+        
+        if (parseInt(this.getValue("txtSBENCEN").length) !== 8) {
+            msjResult = "The Profit Center must be at least 8 characters.";
+            return msjResult;
+        }
+        
+        if (parseInt(this.getValue("textSOCIETY").length) !== 4) {
+            msjResult = "Society must be at least 4 characters.";
+            return msjResult;
         }
         return msjResult;
     },

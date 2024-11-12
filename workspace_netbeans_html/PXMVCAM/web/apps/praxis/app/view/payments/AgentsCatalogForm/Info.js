@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
+ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
                                     height: 486,
-                                    width: 1735,
+                                    width: 1612,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -70,14 +70,15 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Info', {
                                             {text: 'Name', dataIndex: 'DESCSAGENT', width: 200, align: 'left'},
                                             {text: 'Channel', dataIndex: 'CANAL', width: 70},
                                             {text: 'City', dataIndex: 'CITY', width: 70},
+                                            {text: 'Society', dataIndex: 'SOCIETY', width: 60},
                                             {text: 'Bussines', dataIndex: 'descNEGOC', width: 90},
                                             {text: 'Terminal', dataIndex: 'TERMI', width: 80},
-                                            {text: 'Contact', dataIndex: 'CONTAC', width: 150},
-                                            {text: 'Email-1', dataIndex: 'EMAILS', width: 150, align: 'left'},
-                                            {text: 'Email-2', dataIndex: 'EMAILS2', width: 150, align: 'left'},
-                                            {text: 'Email-3', dataIndex: 'EMAILS3', width: 150, align: 'left'},
-                                            {text: 'Email-4', dataIndex: 'EMAILS4', width: 150, align: 'left'},
-                                            {text: 'Email-5', dataIndex: 'EMAILS5', width: 150, align: 'left'},
+                                            {text: 'Contact', dataIndex: 'CONTAC', width: 120},
+                                            {text: 'Email-1', dataIndex: 'EMAILS', width: 120, align: 'center'},
+                                            {text: 'Email-2', dataIndex: 'EMAILS2', width: 120, align: 'center'},
+                                            {text: 'Email-3', dataIndex: 'EMAILS3', width: 120, align: 'center'},
+                                            {text: 'Email-4', dataIndex: 'EMAILS4', width: 120, align: 'center'},
+                                            {text: 'Email-5', dataIndex: 'EMAILS5', width: 120, align: 'center'},
                                             {text: 'Phone', dataIndex: 'NPHONE', width: 80},
                                             {
                                                 sortable: false,

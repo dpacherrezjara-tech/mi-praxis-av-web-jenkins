@@ -739,6 +739,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 this.beanDetDay.IN_AGENCY = Ext.getCmp(prototype.id + '-txtAGENCY').getValue().trim();
                 //            }
                 this.beanDetDay.IN_COUNTRY = win.getValue('cmbCountry');
+                this.beanDetDay.IN_strSVFOP = win.getValue('txtAMOUNT').replace(/,/g, '');
                 me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                 console.log(me.paramsDetail.beanString);
                 this.setGridDataDetalle();
