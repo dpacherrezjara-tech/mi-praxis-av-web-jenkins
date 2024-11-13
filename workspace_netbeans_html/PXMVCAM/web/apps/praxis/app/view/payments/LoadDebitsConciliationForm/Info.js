@@ -419,6 +419,28 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             readOnly: false,
                                             width: 100
                                         },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Value Date',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtVALDATE',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '8',
+                                            width: 100,
+                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+        //                                    maskRe: /[a-zA-Z]/
+                                        },
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtDATECI',
