@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.miatech.praxis.payment.entities.MPF102;
 import net.miatech.utils.CustomPageImpl;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  *
@@ -13,6 +15,8 @@ import net.miatech.utils.CustomPageImpl;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SPACR014Filter extends CustomPageImpl{
     private String IN_CCUST,IN_VALDATEF,IN_VALDATET,IN_CODPRO,IN_BANDOC,IN_REFER,IN_TIPOCON,IN_IDCONT,IN_FCONT,IN_STATUS;
     List<MPF102> response = new ArrayList<>();

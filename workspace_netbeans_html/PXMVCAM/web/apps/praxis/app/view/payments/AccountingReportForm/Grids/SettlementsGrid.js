@@ -130,15 +130,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid'
             scale: 'medium'
         },
         items: [
-            {
-                xtype: 'button',
-                iconCls: 'prx-icon-excel',
-                scale: 'small',
-                tooltip: 'Export to Excel',
-                listeners: {
-                    click: 'downloadExcel'
-                }
-            },
+//            {
+//                xtype: 'button',
+//                iconCls: 'prx-icon-excel',
+//                scale: 'small',
+//                tooltip: 'Export to Excel',
+//                listeners: {
+//                    click: 'downloadExcel'
+//                }
+//            },
             {
                 xtype: 'button',
                 scale: 'small',
