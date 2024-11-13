@@ -14,25 +14,24 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
     init: function (view) {
     },
     afterRender: async function () {
-        //await this.loadFilters();
-        this.loadBandocs();
+        await this.loadFilters();
+        //this.loadBandocs();
     },
     loadFilters: async function () {
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await me.miscRequest.get('/loadAccountingProcs');
-
+            const res = await me.miscRequest.get('/loadPhase2Filter');
             const data = res.data;
             me.procesadores = data.response;
-            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-            ccust.fireEvent('change', {});
+            const cmbCODPRO = Ext.getCmp(prototype.id + '-cmbCODPRO');
+            global.setComboStore(cmbCODPRO,me.procesadores,'CODE','NAME','');
         } catch (e) {
             console.error(e);
             me.notifier.alert('Filters not loaded');
         } finally {
             me.view.unmask();
-            me.loadGrid();
+            me.loadBandocs();
         }
 
     },

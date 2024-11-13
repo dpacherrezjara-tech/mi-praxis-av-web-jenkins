@@ -27,5 +27,5 @@ public class MPF102 {
     //DATOS ADICIONALES
     private String DESC_PRO,DESC_BANK,DESC_SPRO,FECSAP,STSAP,IDACC,FECACC,TIPOCON;
     
-    private Integer QTYLIQ,QTYGAS;
+    private Integer QTYLIQ1,QTYLIQ2,QTYGAS;
 }

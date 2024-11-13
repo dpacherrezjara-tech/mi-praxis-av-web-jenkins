@@ -34,6 +34,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             {text: 'Doc.<br>Type', dataIndex: 'TDOC', width: 60},
             {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120},
             {text: 'Country', dataIndex: 'SCOUNTRY', width: 60},
+            {text: 'Core', dataIndex: 'COREP', width: 60},
             {text: 'Status<br>Phase 1', dataIndex: 'STVAL', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "background-color:#50dd56;font-weight:bold;";
@@ -68,8 +69,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             {text: 'Reconciled<br>Amount', dataIndex: 'NETOC', width: 120},
             {text: 'Rev<br>Currency', dataIndex: 'LOCRENCY2', width: 70},
             {text: 'Rev<br>Amount', dataIndex: 'LOCAMOUNT2', width: 120},
-            {text: 'Qty<br>Settl. F1', dataIndex: 'QTYTRAN1', width: 60},
-            {text: 'Qty<br>Settl. F2', dataIndex: 'QTYLIQ', width: 60,
+            {text: 'Qty<br>Settl. F1', dataIndex: 'QTYLIQ1', width: 60},
+            {text: 'Qty<br>Settl. F2', dataIndex: 'QTYLIQ2', width: 60,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
                     return value;
