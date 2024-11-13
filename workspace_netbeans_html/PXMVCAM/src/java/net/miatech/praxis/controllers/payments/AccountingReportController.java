@@ -2,6 +2,7 @@ package net.miatech.praxis.controllers.payments;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
@@ -130,7 +131,7 @@ public class AccountingReportController extends BaseController {
             for (int i=0,j=0; i<result.size(); i++,j++) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
-                sb.append(result.get(i).getA4545USER()).append("\t") ;                  // HEADER_TXT
+                sb.append(result.get(i).getA4545HEADE()).append("\t") ;                 // HEADER_TXT
                 sb.append(result.get(i).getA4545COMPC()).append("\t") ;                 // COMP_CODE
                 sb.append(result.get(i).getA4545DOCD()).append("\t") ;                  // DOC_DATE
                 sb.append(result.get(i).getA4545PSTGD()).append("\t") ;                 // PSTNG_DATE
@@ -238,43 +239,6 @@ public class AccountingReportController extends BaseController {
         
         return exportUtils.createZip(files, fileNames, zipName);
     }
-    
-    String getModoDesc(String codModo) {
-        
-        String descModo = "";
-        
-        switch (codModo) {
-            case "P":
-               descModo = "Pasaje_Colombia";
-                break;
-            case "A":
-                descModo = "Carga_Colombia";
-                break;
-            case "C":
-                descModo = "Correo_Colombia";
-                break;
-            case "E":
-                descModo = "Pasaje_Exterior";
-                break;
-            case "G":
-                descModo = "Carga_Exterior";
-                break;
-            case "D":
-                descModo = "Debitos_Colombia";
-                break;
-            case "B":
-                descModo = "Debitos_Exterior";
-                break;
-            case "J":
-                descModo = "Ajustes_Colombia";
-                break;
-            case "K":
-                descModo = "Ajustes_Exterior";
-                break;
-        }
-        
-        return descModo ;
-    }
 
      @RequestMapping(value = "reverseAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
@@ -373,6 +337,93 @@ public class AccountingReportController extends BaseController {
         
         return exportUtils.createCustomExcel(data, title);
     }
+    
+    @RequestMapping(value = "downloadBandocsBrowser", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadBandocsBrowser(@RequestBody SPACR014Filter params) throws Exception {
+        System.out.println("***** AccountingMasterProcess - downloadBandocsBrowser *****");
+        params.setExcel(true);
+        SPACR014Filter filter = logic.loadSPACR014Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        
+        String title = "AccountingReport-" 
+            + params.getIN_CCUST()+ "_" + params.getIN_VALDATEF()+ "-" + params.getIN_VALDATET()
+            + "_" + UUID.randomUUID().toString().substring(0,6);
+        
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Doc. Type"));
+        header.add(new CustomExcelCell("Bank Doc"));
+        header.add(new CustomExcelCell("Country"));
+        header.add(new CustomExcelCell("Core"));
+        header.add(new CustomExcelCell("Status\nPhase 1"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Processing\nDate"));
+        header.add(new CustomExcelCell("Payment\nDate"));
+        header.add(new CustomExcelCell("Account"));
+        header.add(new CustomExcelCell("Profit"));
+        header.add(new CustomExcelCell("Company"));
+        header.add(new CustomExcelCell("Society"));
+        header.add(new CustomExcelCell("Commercial"));
+        header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("Key 1"));
+        header.add(new CustomExcelCell("Key 3"));
+        header.add(new CustomExcelCell("Text"));
+        header.add(new CustomExcelCell("Currency"));
+        header.add(new CustomExcelCell("Bank Amount"));
+        header.add(new CustomExcelCell("Reconciled\nAmount"));
+        header.add(new CustomExcelCell("Rev\nCurrency"));
+        header.add(new CustomExcelCell("Rev\nAmount"));
+        header.add(new CustomExcelCell("Qty\nSettl. F1"));
+        header.add(new CustomExcelCell("Qty\nSettl. F2"));
+        header.add(new CustomExcelCell("Qty\nTax"));
+        header.add(new CustomExcelCell("Accounting\nDate"));
+        header.add(new CustomExcelCell("Accounting\nType"));
+        header.add(new CustomExcelCell("Accounting\nID"));
+        header.add(new CustomExcelCell("SAP Date"));
+        header.add(new CustomExcelCell("SAP Status"));
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getVALDATE()));
+            row.add(new CustomExcelCell(obj.getTDOC()));
+            row.add(new CustomExcelCell(obj.getBANDOC()));
+            row.add(new CustomExcelCell(obj.getSCOUNTRY()));
+            row.add(new CustomExcelCell(obj.getCOREP()));
+            row.add(new CustomExcelCell(formatStval(obj.getSTVAL())));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getPRDA()));
+            row.add(new CustomExcelCell(obj.getADATE()));
+            row.add(new CustomExcelCell(obj.getACCOUNT()));
+            row.add(new CustomExcelCell(obj.getBENCENC()));
+            row.add(new CustomExcelCell(obj.getACCCOMP()));
+            row.add(new CustomExcelCell(obj.getSOCIETY()));
+            row.add(new CustomExcelCell(obj.getCIACOME()));
+            row.add(new CustomExcelCell(obj.getREFER()));
+            row.add(new CustomExcelCell(obj.getCLAVE1()));
+            row.add(new CustomExcelCell(obj.getCLAVE3()));
+            row.add(new CustomExcelCell(obj.getTEXTO()));
+            row.add(new CustomExcelCell(obj.getSCURRENCY()));
+            row.add(new CustomExcelCell(obj.getNETO()));
+            row.add(new CustomExcelCell(obj.getNETOC()));
+            row.add(new CustomExcelCell(obj.getLOCRENCY2()));
+            row.add(new CustomExcelCell(obj.getLOCAMOUNT2()));
+            row.add(new CustomExcelCell(obj.getQTYLIQ1()));
+            row.add(new CustomExcelCell(obj.getQTYLIQ2()));
+            row.add(new CustomExcelCell(obj.getQTYGAS()));
+            row.add(new CustomExcelCell(obj.getFECACC()));
+            row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(obj.getIDACC()));
+            row.add(new CustomExcelCell(obj.getFECSAP()));
+            row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
+            data.add(row);
+        });
+        
+        return exportUtils.createCustomExcel(data, title);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">
@@ -398,6 +449,78 @@ public class AccountingReportController extends BaseController {
         SPACR016Filter filter = logic.loadSPACR016Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Data Bindings">
+    String getModoDesc(String codModo) {
+        
+        String descModo = "";
+        
+        switch (codModo) {
+            case "P":
+               descModo = "Pasaje_Colombia";
+                break;
+            case "A":
+                descModo = "Carga_Colombia";
+                break;
+            case "C":
+                descModo = "Correo_Colombia";
+                break;
+            case "E":
+                descModo = "Pasaje_Exterior";
+                break;
+            case "G":
+                descModo = "Carga_Exterior";
+                break;
+            case "D":
+                descModo = "Debitos_Colombia";
+                break;
+            case "B":
+                descModo = "Debitos_Exterior";
+                break;
+            case "J":
+                descModo = "Ajustes_Colombia";
+                break;
+            case "K":
+                descModo = "Ajustes_Exterior";
+                break;
+        }
+        
+        return descModo ;
+    }
+    
+    String formatStval(String stval){
+        String res = "";
+        switch (stval) {
+            case "1":
+               res = "Match";
+                break;
+            case "3":
+                res = "Bank w/o Settl.";
+                break;
+            case "4":
+                res = "Match Diff.";
+                break;
+            case "5":
+                res = "Match Manual";
+                break;
+        }
+        
+        return res ;
+    }
+    
+    String formatStsap(String stsap){
+        String res = "";
+        switch (stsap) {
+            case "P":
+               res = "Pending";
+                break;
+            case "L":
+                res = "Loaded";
+                break;
+        }
+        return res ;
     }
 //</editor-fold>
 
