@@ -6,7 +6,6 @@
         <group name="PRAXIS_AEROMEXICO">
             <file>file:/D:/workspace_netbeans/BEANS/src/net/miatech/dao/UserDAO.java</file>
         </group>
-        <group/>
         <group name="MIATECH_AIRFRANCE">
             <file>file:/D:/workspace_netbeans/BEANS/src/net/miatech/utils/ExcelWrite.java</file>
         </group>
@@ -40,6 +39,9 @@
         <group name="AVIANCA MPD">
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/A2290.java</file>
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/filter/A2290Filter.java</file>
+        </group>
+        <group>
+            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/BEANS/src/net/miatech/praxis/payment/dto/SPACR002Filter.java</file>
         </group>
     </open-files>
 </project-private>
