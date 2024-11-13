@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
     controller: 'DataEntryMPF060StatementReconciliationsController',
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
-    height: 350,
-    width: 1080,
+    height: 330,
+    width: 1040,
     resizable: false,
     layout: {
         type: 'hbox',
@@ -22,18 +22,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
     items: [
         {
             xtype: 'form',
-            style: {
-                border: '1px solid #6c757d'
-            },
             defaults: {
-                style: 'margin: 3px;',
                 textDecoration: 'underline',
                 border: false
             },
             items: [
                 {
                     xtype: 'form',
-                    height: 400,
+                    height: 300,
                     defaults: {
                         textDecoration: 'underline',
                         border: false
@@ -52,13 +48,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                     layout: 'vbox',
                                     border: false,
                                     bodyStyle: 'background:white;',
-                                    margin: '0 0 3 10',
+                                    margin: '4 0 3 5',
                                     width: 1300,
                                     defaults: {
                                         anchor: '100%'
                                     },
                                     items: [
-
                                         {
                                             xtype: 'label',
                                             text: 'General Information',
@@ -73,8 +68,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            bodyStyle: 'background:#efe5e5;',
-                                            margin: '0 2 0 20',
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            style: 'border-top-left-radius: 5px; border-top-right-radius: 5px;',
+                                            margin: '0 2 0 10',
+                                            width: 1000,
                                             defaults: {
                                                 anchor: '100%',
                                                 width: 1120
@@ -85,7 +82,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Processing Date',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -101,7 +99,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Merchant ID',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    width: 90,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -112,14 +111,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 70,
                                                 },
-                                                {xtype: 'tbspacer', width: 30},
+                                                {xtype: 'tbspacer', width: 20},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Agent',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 40
+                                                    width: 40,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 80},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtSAGENT',
@@ -128,14 +128,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 70,
                                                 },
-                                                {xtype: 'tbspacer', width: 50},
+                                                {xtype: 'tbspacer', width: 60},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Terminal',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
+                                                    width: 60,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 20},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtTERMI',
@@ -150,15 +151,18 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            bodyStyle: 'background:#efe5e5;',
-                                            margin: '0 2 0 20',
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            margin: '0 2 0 10',
+                                            style: 'border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;',
+                                            width: 1000,
                                             items: [
                                                 {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Bank Code',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -169,13 +173,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 50
                                                 },
-                                                
+
                                                 {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Processor',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 90
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -190,9 +195,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Country',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 50
+                                                    width: 50,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 70},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtCOUNTRY',
@@ -201,13 +207,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 100
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Business',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 70
+                                                    width: 70,
+                                                    margin: '3 0 0 0'
                                                 },
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'combo',
                                                     id: prototype.id + '-de-txtNEGOC',
@@ -255,8 +263,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                             layout: 'hbox',
                                             id: prototype.id + '-mainDetail',
                                             border: false,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#efe5e5;',
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            margin: '0 2 0 10',
+                                            width: 1000,
                                             items: [
                                                 {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
@@ -277,7 +286,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 70
                                                 },
-
                                                 {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'label',
@@ -349,8 +357,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            bodyStyle: 'background:#efe5e5;',
-                                            margin: '0 2 0 20',
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            margin: '0 2 0 10',
+                                            style: 'border-top-left-radius: 5px; border-top-right-radius: 5px;',
+                                            width: 1000,
                                             items: [
                                                 {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
@@ -360,7 +370,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     textAlign: 'center',
                                                     paddingLeft: 3,
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -376,7 +387,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Doc. Type',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    width: 90,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -387,13 +399,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 50
                                                 },
-                                                {xtype: 'tbspacer', width: 50},
+                                                {xtype: 'tbspacer', width: 40},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Doc SAP Bank',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 120
+                                                    width: 120,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -411,7 +424,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Conci Date',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    width: 80,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -426,7 +440,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Trans Number',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -442,15 +457,18 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#efe5e5;',
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            style: 'border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;',
+                                            margin: '0 2 0 10',
+                                            width: 1000,
                                             items: [
                                                 {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Payment Date',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -466,7 +484,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Card Code',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    width: 90,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -477,12 +496,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     readOnly: true,
                                                     width: 30
                                                 },
-                                                {xtype: 'tbspacer', width: 70},
+                                                {xtype: 'tbspacer', width: 60},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Card Account Nbr.',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 120
+                                                    width: 120,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -497,7 +517,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Auth. Code',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    width: 80,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -512,7 +533,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     xtype: 'label',
                                                     text: 'Sequence',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {
                                                     xtype: 'textfield',
@@ -523,64 +545,54 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                     width: 40
                                                 },
                                             ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        // <editor-fold defaultstate="collapsed" desc="ControlData">
-                        {
-                            xtype: 'tbspacer', higth: 10
-                        },
-
-                        {
-                            xtype: 'panel',
-                            layout: 'vbox',
-                            border: false,
-                            margin: '15 0 0 240',
-
-                            items: [
-
-                                {
-                                    xtype: 'panel',
-                                    layout: 'vbox',
-                                    border: false,
-                                    margin: '0 2 0 0',
-                                    items: [
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Control Data',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                                            bodyStyle: 'background:#E5ECEF;',
+                                            fontSize: '11',
+                                            width: 280,
+                                            margin: '10 2 10 8'
+                                        },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
+                                            id: prototype.id + '-mainDetail',
                                             border: false,
-                                            margin: '4 2 2 2',
-                                            defaults: {
-                                                labelAlign: 'left'
-                                            },
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            margin: '0 2 0 10',
+                                            style: 'border-top-left-radius: 5px; border-top-right-radius: 5px;',
+                                            width: 1000,
                                             items: [
+                                                {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Creator User ',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     width: 80,
-                                                    height: 20
+                                                    height: 20,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtUSCR',
+                                                    fieldStyle: 'text-align:center',
                                                     readOnly: true,
                                                     width: 60,
                                                     listeners: {
                                                         change: 'onUpperValue'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 40},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Creation Date',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 90
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtFECR',
@@ -590,14 +602,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                         change: 'onUpperValue'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Creation Time',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 90
+                                                    width: 90,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtHOCR',
@@ -611,35 +624,39 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                         },
                                         {
                                             xtype: 'panel',
-                                            border: false,
                                             layout: 'hbox',
-                                            margin: '4 2 2 2',
-                                            defaults: {
-                                                labelAlign: 'left'
-                                            },
+                                            border: false,
+                                            bodyStyle: 'background:#f0f0f0;',
+                                            margin: '0 2 0 10',
+                                            style: 'border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;',
+                                            width: 1000,
                                             items: [
+                                                {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
                                                     xtype: 'label',
                                                     text: 'User Update',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
+                                                    width: 80,
+                                                    margin: '3 0 0 0'
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtUSUP',
                                                     readOnly: true,
                                                     width: 60,
+                                                    fieldStyle: 'text-align:center',
                                                     listeners: {
                                                         change: 'onUpperValue'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 40},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Update Date',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 90
+                                                    width: 90,
+                                                    margin: '3 0 0 0'
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
@@ -651,13 +668,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                                         change: 'onUpperValue'
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
+                                                {xtype: 'tbspacer', width: 30},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Update Time',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    width: 100,
+                                                    margin: '3 0 0 0'
                                                 },
+                                                {xtype: 'tbspacer', width: 20},
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtHOUP',
@@ -672,21 +691,18 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
                                     ]
                                 }
                             ]
-                        },
-                                // </editor-fold>
+                        }
                     ]
                 }
             ]
-        },
-        {id: prototype.id + '-spacerPanel', xtype: 'tbspacer', width: 5, hidden: true},
+        }
     ],
     dockedItems: [
-
         {
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
-            margin: '0 0 0 8',
+            margin: '0 0 4 8',
             layout: {
                 pack: 'center'
             },
@@ -725,5 +741,4 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryMPF06
             ]
         }
     ]
-}
-);
+});
