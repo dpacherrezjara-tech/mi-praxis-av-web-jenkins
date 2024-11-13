@@ -358,6 +358,7 @@ public class LoadDebitsConciliationController extends BaseController {
                         obj.IN_SOCIETY = filter.IN_SOCIETY;
                         obj.IN_DATECI = filter.IN_DATECI;
                         obj.IN_TRANCI = filter.IN_TRANCI;
+                        obj.IN_VALDATE = filter.IN_VALDATE;
                         lstData.add(obj);
                     }
                 }
