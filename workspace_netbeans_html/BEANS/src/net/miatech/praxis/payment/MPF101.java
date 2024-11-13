@@ -21,6 +21,7 @@ public class MPF101 {
     public String  MERCHNC  ="";  
     public String  SPNR     ="";  
     public String  PRDA     ="";  
+    public String  VALDATE  ="";  
     public String  PAYDATE  ="";  
     public String  TIPOTAR  ="";  
     public String  SCARCOD  ="";  
