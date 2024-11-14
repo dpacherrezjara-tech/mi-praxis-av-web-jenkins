@@ -1087,7 +1087,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                         {
                             xtype: 'button',
                             id: prototype.id + '-btn_Load',
-                            margin: '1 0 0 5',
+                            margin: '5 0 0 5',
                             html: '<strong style="color:white;">Load</strong>',
                             style: 'background:#24678D;color:white;font-weight:bold;',
                             border: false,

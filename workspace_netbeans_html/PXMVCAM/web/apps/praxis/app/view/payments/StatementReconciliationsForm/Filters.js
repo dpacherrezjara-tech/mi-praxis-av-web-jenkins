@@ -374,7 +374,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     enableKeyEvents: true,
                     triggerAction: 'all'
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
                 {
                     xtype: 'form',
                     id: prototype.id + '-formLIQvsEC',

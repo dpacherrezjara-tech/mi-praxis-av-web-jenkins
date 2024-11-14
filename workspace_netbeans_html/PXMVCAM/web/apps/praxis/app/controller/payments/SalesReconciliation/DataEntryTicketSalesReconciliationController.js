@@ -35,7 +35,17 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
     },
     limpiarData: function () {
     },
-    
+    llenarData: function () {
+        console.log('llenarData');
+        var bean = {};
+        bean.TKT = this.bean.CCIA + this.bean.FORMA + this.bean.SERIE
+        bean.TDOC = this.bean.TDOC
+        bean.SCARDNCOR = this.bean.SCARDNCOR
+        bean.SAUTHOC = this.getValue("2-txtSAUTHOC");
+        bean.CERROR = this.getValue("2-txtError");
+        console.log(bean,'bean')
+        return bean;
+    },
     //<editor-fold defaultstate="collapsed" desc="button">
     onPrevClick: function() {
     },
@@ -44,8 +54,54 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
     onCancelClick: function(btn){
         this.view.close();
     },
+    onUpdateClick: function(btn){
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to Update?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    beanTemp = this.llenarData();
+                    
+//                        var msjResult = this.validacionInsert(beanTemp);
+                    beanTemp.option = 'U';
+                    this.MaintenanceMPF100(beanTemp);
+
+                    
+                }
+            }
+        });
+    },
     //</editor-fold>
-    
+    MaintenanceMPF100: function(beanTemp) {
+//        var beanString = JSON.stringify(beanTemp);
+        console.log(beanTemp);
+        Ext.Ajax.request({
+            url: prototype.url + '/MaintenanceMPF100',
+            method: 'POST',
+            timeout: 60000000,
+            params: beanTemp,
+//            params: {beanString: beanString},
+            beforerequest: Ext.getCmp('DataEntryTicketSalesReconciliationForm').mask('Loading...'),
+            success: function(response, opts) {
+                Ext.getCmp(prototype.id + '-DataEntryTicketSalesReconciliationForm').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje});
+                    Ext.getCmp('DataEntryTicketSalesReconciliationForm').unmask();
+                    Ext.getCmp(prototype.id + '-DataEntryTicketSalesReconciliationForm').close();
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                } else
+                    global.Msg({msg: ''});
+            }
+        });
+    },
     //<editor-fold defaultstate="collapsed" desc="mostrarData">
     mostrarData: function() {
         console.log(this.bean, 'this.bean')
@@ -364,5 +420,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
     //</editor-fold>
     onUpperValue: function(field, newValue, oldValue){
         field.setValue(newValue.toUpperCase());
-    }
+    },
+    getValue: function (id) {
+        return Ext.getCmp(prototype.id + '-' + id).getValue();
+    },
 });
