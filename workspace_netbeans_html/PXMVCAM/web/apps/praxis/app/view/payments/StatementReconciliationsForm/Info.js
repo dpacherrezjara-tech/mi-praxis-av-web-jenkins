@@ -3,7 +3,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
     align: 'center',
-    bodyStyle: 'background-color: #E3EAEF;',
+    bodyStyle: 'background-color: #E3EAEF;border: none;',
     defaults: {
         bodyStyle: 'background: transparent;',
         border: false
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 1500,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -337,7 +337,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 1487,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -590,7 +590,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 1093,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -752,10 +752,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetBank',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 822,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -916,10 +916,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetDay',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 702,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -1072,10 +1072,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetLiquida',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 1073,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -1272,10 +1272,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetLiquidaByS',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 993,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -1443,10 +1443,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetDetails',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 1073,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -1616,7 +1616,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 573,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -1715,7 +1715,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 1093,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -1881,7 +1881,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 833,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2003,10 +2003,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetProce',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 1042,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2222,7 +2222,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
 //                            width: 550,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2314,7 +2314,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
 //                            width: 550,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2406,7 +2406,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 715,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2558,7 +2558,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 1447,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -2811,7 +2811,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             border: false,
                             height: 'auto',
                             width: 1447,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -3047,10 +3047,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridDataTACA',
                             bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
+                            border: false,
                             height: 'auto',
                             width: 1144,
-                            margin: '0 0 0 0 ',
+                            margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -3311,63 +3311,61 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Info', {
                             width: 700,
                             hidden: true,
                             height: 25,
-                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                            bodyStyle: 'background-color: #E1E6EC; border-radius: 5px;',
+                            margin: '15px 0 0px 0px',
                             items: [
-                                {
-                                    xtype: 'panel',
-                                    width: 700,
-                                    height: 25,
-                                    layout: {
-                                        type: 'hbox',
-                                        pack: 'center'
-                                    },
-                                    defaults: {
-                                        xtype: 'label'
-                                    },
-                                    items: [
-                                        {
-                                            text: 'Page',
-                                            width: 50
+                                    {
+                                        xtype: 'panel',
+                                        width: 450,
+                                        height: 25,
+                                        bodyStyle: 'background-color: #6A8BAA; border: 1px solid #81BEF7',
+                                        layout: {
+                                            type: 'hbox',
+                                            pack: 'center'
                                         },
-                                        {
-                                            id: prototype.id + '-lbl-currentPage',
-                                            text: '1',
-                                            width: 50
+                                        defaults: {
+                                            xtype: 'label'
                                         },
-                                        {
-                                            text: 'Of',
-                                            width: 50
-                                        },
-                                        {
-                                            id: prototype.id + '-lbl-pageCount',
-                                            text: '0',
-                                            width: 50
-                                        },
-                                        {xtype: 'tbspacer', width: 100},
-                                        {
-                                            text: 'Total found',
-                                            width: 80
-                                        },
-                                        {
-                                            id: prototype.id + '-lbl-total',
-                                            text: '0',
-                                            width: 50
-                                        }
+                                        items: [
+                                            {
+                                                text: 'Page',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {
+                                                id: prototype.id + '-lbl-currentPage',
+                                                text: '1',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {
+                                                text: 'OF',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {
+                                                id: prototype.id + '-lbl-pageCount',
+                                                text: '0',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {xtype: 'tbspacer', width: 50},
+                                            {
+                                                text: 'Total Found',
+                                                width: 80,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {
+                                                id: prototype.id + '-lbl-total',
+                                                text: '0',
+                                                width: 40,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            }
                                     ]
                                 }
                             ]
                         }
                     ]
-                },
-                {
-                    region: 'south',
-                    layout: 'border',
-                    height: 0,
-                    defaults: {
-                        style: 'margin: 1px;',
-                        bodyStyle: 'background: transparent;',
-                        border: false
-                    }
                 }
             ]
         }
