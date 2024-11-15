@@ -127,6 +127,20 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
+    pendingBuss_changeHandler: function(e) {
+        let statusCheck = e.checked;
+        if (statusCheck) {
+            Ext.getCmp(prototype.id + '-cmbNEGOC').show();
+            Ext.getCmp(prototype.id + '-cmbNEGOC').setValue('B');
+            this.searchMPF060();
+            
+        } else {
+            Ext.getCmp(prototype.id + '-cmbNEGOC').hide();
+            Ext.getCmp(prototype.id + '-cmbNEGOC').setValue('');
+            this.setFormatParameter();
+            this.setGridData();
+        }
+    },
     obtainData: function () {
 
         var storeComboDataYear = win.getStoreYear(false);

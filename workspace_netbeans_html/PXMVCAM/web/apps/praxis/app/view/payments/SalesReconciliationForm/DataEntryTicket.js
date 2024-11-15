@@ -1427,6 +1427,15 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryTicket', {
             },
             items: [
                 {
+                    text: 'Update',
+                    id: prototype.id + '-btn-update',
+                    iconCls: 'prx-icon-update',
+                    hidden: true,
+                    listeners: {
+                        click: 'onUpdateClick'
+                    }
+                },
+                {
                     text: 'Cancel',
                     id: prototype.id + '-2-btnCancel',
                     iconCls: 'prx-icon-cancel',
