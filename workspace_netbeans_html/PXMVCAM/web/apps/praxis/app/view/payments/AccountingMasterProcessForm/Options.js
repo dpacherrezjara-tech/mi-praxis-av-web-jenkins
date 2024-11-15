@@ -34,6 +34,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnSap',
+                            iconCls: 'prx-icon-image-file',
+                            tooltip: 'Update SAP',
+                            listeners: {
+                                click: 'onSapClick'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter',

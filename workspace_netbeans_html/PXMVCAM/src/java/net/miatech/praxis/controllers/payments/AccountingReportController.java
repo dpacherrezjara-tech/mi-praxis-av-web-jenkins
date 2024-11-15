@@ -1,5 +1,9 @@
 package net.miatech.praxis.controllers.payments;
 
+import com.monitorjbl.xlsx.StreamingReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -7,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
+import net.miatech.praxis.payment.dto.ExcelBandocDto;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
@@ -19,18 +24,25 @@ import net.miatech.praxis.payment.dto.SPACR013Filter;
 import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
+import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.utils.CustomExcelCell;
+import net.miatech.utils.Functions;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -155,7 +167,7 @@ public class AccountingReportController extends BaseController {
                 sb.append(result.get(i).getA4545CUR().trim()).append("\t") ;            // CURRENCY
                 
                 if (result.get(i).getA4545CUR().equals("COP")) {
-                    Integer AMT_DOCCUR = result.get(i).getA4545ACTIV().intValue();
+                    Long AMT_DOCCUR = result.get(i).getA4545ACTIV().longValue();
                     sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
                 }
                 else 
@@ -523,4 +535,53 @@ public class AccountingReportController extends BaseController {
     }
 //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="SAP mark and Revert">
+    @RequestMapping(value = "uploadBandocsExcel",method = RequestMethod.POST)
+    public ResponseEntity<?> uploadBandocsExcel(
+            @RequestParam String IN_CCUST,
+            @RequestParam String IN_IDCONT,
+            @RequestParam MultipartFile file) throws Exception{
+        
+        String filename = "BandocExcel" + UUID.randomUUID().toString();
+        String proceso = UUID.randomUUID().toString().replace("-", "");
+        String fechap = Functions.getFechaActual();
+        
+        SPACR017Filter params = SPACR017Filter.builder()
+                .IN_CCUST(IN_CCUST)
+                .IN_IDCONT(IN_IDCONT)
+                .IN_CUUID(proceso)
+                .IN_FUUID(fechap)
+                .build();
+        File tempFile = File.createTempFile(filename, ".xlsx");
+        file.transferTo(tempFile);
+        List<ExcelBandocDto> revertList = new ArrayList<>();
+        try (InputStream is = new FileInputStream(tempFile);
+             Workbook workbook = StreamingReader.builder()
+                     .rowCacheSize(100) // Número de filas en el caché
+                     .bufferSize(4096)  // Tamaño del buffer
+                     .open(is)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            
+            sheet.forEach(x ->{
+                if (x.getRowNum() != 0) {
+                    ExcelBandocDto dto = ExcelBandocDto.builder()
+                            .BANDOC(x.getCell(0)!=null?x.getCell(0).getStringCellValue():null)
+                            .VALDATE(x.getCell(1)!=null?x.getCell(1).getStringCellValue():null)
+                            .REFER(x.getCell(2)!=null?x.getCell(2).getStringCellValue():null)
+                            .CUUID(proceso)
+                            .FUUID(fechap)
+                            .build();
+                    System.out.println(dto);
+                    revertList.add(dto);
+                }
+            });
+        } catch (Exception e) {
+            System.out.println("Error excel: " + e.getMessage());
+        }
+        ModelMap map = new ModelMap();
+        map.put("success", true);
+        map.put("data", params);
+        return ResponseUtils.ok(map);
+    }
+//</editor-fold>
 }

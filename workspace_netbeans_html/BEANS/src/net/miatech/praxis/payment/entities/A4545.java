@@ -1,5 +1,6 @@
 package net.miatech.praxis.payment.entities;
 
+import java.math.BigDecimal;
 import lombok.Data;
 
 /**
@@ -48,7 +49,7 @@ public class A4545 {
                 A4545HREGI; 
                         
     private Integer A4545SEQ,A4545ITEM;
-    private Double A4545ACTIV ,
+    private BigDecimal A4545ACTIV ,
                 A4545PASIV; 
     
     //OTROS CAMPOS
