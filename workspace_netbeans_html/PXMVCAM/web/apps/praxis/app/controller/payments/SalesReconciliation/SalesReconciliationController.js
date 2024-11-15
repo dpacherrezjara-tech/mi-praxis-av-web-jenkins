@@ -1392,7 +1392,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             timeout: 60000000,
             params: {
                 beanString: JSON.stringify({
-                    COUNTRY: 2, CARD: 2
+                    COUNTRY: 2, CARD: 2, USERPERMIS : 2, NPROG: sessionStorage.getItem('nprog')
                 })
             },
             success: function (response, options) {
@@ -1407,6 +1407,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                             );
                     win.setValue('cmbCountry', '');
                     win.setValue('cmbCardType', '');
+                    if(res.userPermis.PERMM === 'Y'){
+                        Ext.getCmp(prototype.id + '-contFourFilter').show();
+                    }else{
+                        Ext.getCmp(prototype.id + '-contFourFilter').hide();
+                    }
                     me.btnSearch_click();
                 } else
 //                    global.Msg({msg: res.sesion});
@@ -3385,7 +3390,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             success: function (f, o) {
                 var res = Ext.decode(o.response.responseText);
                 var msjResult = res.msjResult;
-                global.Msg({msg: msjResult});
+                var msjResult2 = res.msjResult2;
+                global.Msg({msg: '<b>Updated ADMs<b><br><br> ' + msjResult + '<br><br>' + '<b>Ungenerated ADMs<b><br><br> ' + msjResult2});
             },
             failure: function (response) {
                 console.log('server-side failure with status code ' + response.status);

@@ -31,10 +31,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-//                    defaults: {
-//                        border: false,
-//                        autoScroll: true
-//                    },
                     items: [
                         {
                             xtype: 'panel',
@@ -50,7 +46,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                         type: 'vbox',
                                         align: 'center'
                                     },
-                                    border: true,
+                                    border: false,
                                     autoScroll: true,
                                     defaults: {
                                         width: 1650,
@@ -68,8 +64,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                         ,
                                         {
                                             xtype: 'panel',
-                                            height: 630,
+                                            height: 650,
                                             width: 1650,
+                                            bodyStyle: 'background-color: #E3EAEF;border: none;',
                                             layout: 'fit',
                                             items: [
                                                 {
@@ -78,7 +75,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                                     width: 1650,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true,
+                                                    border: false,
                                                     defaults: {
                                                         border: false
                                                     },
