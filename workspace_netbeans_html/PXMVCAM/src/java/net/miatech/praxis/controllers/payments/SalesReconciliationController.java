@@ -1547,6 +1547,42 @@ public class SalesReconciliationController extends BaseController {
         }
         return (dw_excel) ? null : (new Gson().toJson(map));
     }
+    
+    @RequestMapping(value = "MaintenanceMPF100")
+    public @ResponseBody
+    String MaintenanceMPF060(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- statement reconciliations : MaintenanceMPF100-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+            option = request.getParameter("option");
+            filter.TKT = request.getParameter("TKT");
+            filter.TDOC = request.getParameter("TDOC");
+            filter.SCARDNCOR = request.getParameter("SCARDNCOR");
+            filter.SAUTHOC = request.getParameter("SAUTHOC");
+            filter.CERROR = request.getParameter("CERROR");
+            
+           
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX263SQP01976MPF100_UPDATE(filter, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
@@ -3883,6 +3919,7 @@ public class SalesReconciliationController extends BaseController {
 
         byte[] bytes = null;
         String message = "";
+        String message2 = "";
         String filename = "";
 
         try {
@@ -3891,12 +3928,15 @@ public class SalesReconciliationController extends BaseController {
             filename = request.getParameter("filename");
 
             message = uploadFileADM(dataFile);
+            message2 = uploadFileWithoutADM(dataFile);
 
             map.put("success", true);
             map.put("msjResult", message);
+            map.put("msjResult2", message2);
         } catch (Exception e) {
             map.put("success", false);
             map.put("msjResult", message);
+            map.put("msjResult2", message2);
         }
         return new Gson().toJson(map);
     }
@@ -3949,11 +3989,77 @@ public class SalesReconciliationController extends BaseController {
                         obj.PENALTY = dataFormatter.formatCellValue(row.getCell(10));
                         obj.COMMISSION = dataFormatter.formatCellValue(row.getCell(11));
                         obj.ADM = dataFormatter.formatCellValue(row.getCell(12));
+                        if( obj.FORMASERIE.equals("") ){
+                            continue;
+                        }
                         listData.add(obj);
                     }
                 }
 
                 message = logic.loadPX263loadADM(listData);
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                e.printStackTrace();
+            }
+            //Eliminar temporal           
+            archivo.delete();
+        } catch (Exception e) {
+            message = e.getMessage();
+            e.printStackTrace();
+        }
+        return message;
+    }
+    
+    private String uploadFileWithoutADM(byte[] bytes) throws Exception {
+
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String message = "";
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "Revision." + strSesion + ".xlsx";
+
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String strArchivo = "C:\\Dumps\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter dataFormatter = new DataFormatter(Locale.US);
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(2);
+            Iterator<Row> rowIterator = sheet.iterator();
+            List<MPF100Filter> listData = new ArrayList<>(0);
+
+            try {
+
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+
+                    if (row.getRowNum() >= 1) {
+                        MPF100Filter obj = new MPF100Filter();
+
+                        obj.ID = dataFormatter.formatCellValue(row.getCell(0));
+                        obj.CCIA = dataFormatter.formatCellValue(row.getCell(1));
+                        obj.FORMASERIE = dataFormatter.formatCellValue(row.getCell(2));
+                        obj.COUPON = dataFormatter.formatCellValue(row.getCell(3));
+                        obj.CERROR = dataFormatter.formatCellValue(row.getCell(13));
+                        if( obj.FORMASERIE.equals("") ){
+                            continue;
+                        }
+                        
+                        listData.add(obj);
+                    }
+                }
+
+                message = logic.loadPX263loadWithoutADM(listData);
 
             } catch (Exception e) {
                 message = e.getMessage();

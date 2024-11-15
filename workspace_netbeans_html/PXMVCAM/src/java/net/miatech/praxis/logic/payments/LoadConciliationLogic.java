@@ -72,6 +72,10 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263SQP01976(filter);
     }
     
+    public String loadPX263SQP01976MPF100_UPDATE(A2290Filter filter, String option) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263SQP01976MPF100_UPDATE(filter, option);
+    }
+    
     public List<A2290Filter> loadPX263SQP00655(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263SQP00655(filter);
     }
@@ -205,5 +209,9 @@ public class LoadConciliationLogic {
     
     public String loadPX263loadADM(List<MPF100Filter> filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263loadADM(filter);
+    }
+    
+    public String loadPX263loadWithoutADM(List<MPF100Filter> filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263loadWithoutADM(filter);
     }
 }

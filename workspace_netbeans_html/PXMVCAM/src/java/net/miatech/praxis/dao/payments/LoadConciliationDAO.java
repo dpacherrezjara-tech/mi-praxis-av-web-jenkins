@@ -2621,6 +2621,50 @@ public class LoadConciliationDAO {
         return hmResultado;
     }
 
+    public String loadPX263SQP01976MPF100_UPDATE(A2290Filter filter, String option) throws SQLException, Exception {
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2280.
+        String strMsj = "Operation was successful.";
+
+        CallableStatement cstmt = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05115MPF100_UPDATE_CERROR(?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, option);
+            cstmt.setString(2, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(3, filter.TKT.trim());
+            cstmt.setString(4, filter.TDOC.trim());
+            cstmt.setString(5, filter.SCARDNCOR.trim());
+            cstmt.setString(6, filter.SAUTHOC.trim());
+            cstmt.setString(7, filter.CERROR.trim());
+            cstmt.setString(8, session.getUserView().getUserInfo().USR);
+            cstmt.setString(9, Functions.getFechaActual());
+            cstmt.setString(10, Functions.getHoraActual());
+            cstmt.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+
+    }
+    
     public List<A2290Filter> loadPX263SQP00658(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -3318,6 +3362,7 @@ public class LoadConciliationDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("SVFOP");
                     beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
                     beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), rst.getString("SCARDN").trim());
                     beanTkt.SDATEXP = Functions.FormatFecha(rst.getString("SDATEXP").trim(), "MMyy", "yyyyMM");
                     beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
@@ -7150,11 +7195,14 @@ public class LoadConciliationDAO {
 
         String message = "";
         int count = 0;
+        int countUpdate = 0;
+        int countTotal = 0;
+        
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00656ADM(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00656ADM(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -7183,10 +7231,11 @@ public class LoadConciliationDAO {
                     cstmt.setString(15, session.getUserView().getCustomerInfo().USR);
                     cstmt.setString(16, Functions.getFechaActual());
                     cstmt.setString(17, Functions.getHoraActual());
+                    cstmt.registerOutParameter(18, Types.INTEGER);
 
                     cstmt.execute();
-
-                    count++;
+                    countUpdate =  countUpdate + cstmt.getInt(18);
+                    count = count + 1;
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -7194,7 +7243,74 @@ public class LoadConciliationDAO {
                 }
             }
             
-            message = "Load completed: " + count + " records updated.";
+            message = "Total records: " + count + "  ------- Updated records: " + countUpdate;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+    
+    public String loadPX263loadWithoutADM(List<MPF100Filter> filter) throws SQLException, Exception {
+
+        String message = "";
+        int count = 0;
+        int countUpdate = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00656WITHOUTADM(?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            for (int i = 0; i < filter.size(); i++) {
+
+                try {
+                    MPF100Filter filterC = filter.get(i);
+
+                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt.setString(2, filterC.ID.trim());
+                    cstmt.setString(3, filterC.CCIA.trim());
+                    cstmt.setString(4, filterC.FORMASERIE.trim());
+                    cstmt.setString(5, filterC.COUPON.trim());
+                    cstmt.setString(6, filterC.CERROR.trim());
+                    cstmt.setString(7, session.getUserView().getCustomerInfo().USR);
+                    cstmt.setString(8, Functions.getFechaActual());
+                    cstmt.setString(9, Functions.getHoraActual());
+                    cstmt.registerOutParameter(10, Types.INTEGER);
+                    cstmt.execute();
+                    countUpdate =  countUpdate + cstmt.getInt(10);
+                    count = count + 1;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getMessage();
+                }
+            }
+            
+            message = "Total records: " + count + "  ------- Updated records: " + countUpdate;
             
         } catch (Exception e) {
             e.printStackTrace();

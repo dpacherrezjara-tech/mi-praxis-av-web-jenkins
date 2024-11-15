@@ -2837,7 +2837,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Status', dataIndex: 'STVAL', width: 140,
+                                                                text: 'Status', dataIndex: 'STVAL', width: 133,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
@@ -3017,7 +3017,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
-                                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 68,
+                                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 75,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
@@ -4691,7 +4691,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 },
                                                                 columns: [
                                                                     {
-                                                                        text: 'Status', dataIndex: 'STVAL', width: 120,
+                                                                        text: 'Status', dataIndex: 'STVAL', width: 113,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
@@ -4940,7 +4940,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
-                                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 68,
+                                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 75,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
@@ -5496,7 +5496,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
-                                                                text: 'Status', dataIndex: 'STVAL', width: 130,
+                                                                text: 'Status', dataIndex: 'STVAL', width: 123,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
@@ -5618,7 +5618,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 ]
                                                             },
                                                             {
-                                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 68,
+                                                                text: 'Adm<br>Numb', dataIndex: 'ADMNUM', width: 75,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     var data = record.data;
                                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
