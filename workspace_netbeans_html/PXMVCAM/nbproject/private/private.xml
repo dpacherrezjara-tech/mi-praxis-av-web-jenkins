@@ -100,6 +100,36 @@
             <file>file:/D:/RepositorioGit/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/sales/EMDDetailDAO.java</file>
             <file>file:/D:/RepositorioGit/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/sales/TaxDetailDAO.java</file>
         </group>
+        <group>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/ConciliationASRForm/ConciliationASRForm.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/ConciliationBSPForm/DataEntry.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/compensation/CompensationController.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/sales/FareMasterFileController.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/SalesReport/DataEntryTktController.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/FareMasterFile/FareMasterFileController.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/sales/ConciliationASRDAO.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/LoadControlARCForm/Info.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/ConciliationARCForm/DataEntry.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/widgets/ProrrateController.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/LoadControlARC/LoadControlARCController.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/ConciliationASR/ConciliationASRController.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/ConciliationBSP/DataEntryConciliationBSPController.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/ConciliationASRForm/DataEntry.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/widgets/ProrateDAO.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/logic/sales/ConciliationASRLogic.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/SalesReportForm/DataEntryTkt.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/sales/SalesReportControoller.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/sales/ConciliationASRForm/Info.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/logic/widgets/ProrateLogic.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/eecta/AplPaymentController.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/sales/FareMasterFileDAO.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/widgets/prorrate.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/sales/ConciliationASRController.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/ConciliationASR/DataEntryConciliationASRController.js</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/program/ProMasterTicketController.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/logic/sales/FareMasterFileLogic.java</file>
+            <file>file:/D:/repository/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/sales/ConciliationARC/DataEntryConciliationARCController.js</file>
+        </group>
         <group name="PRAXIS AM HTML"/>
         <group name="PRAXIS AM GIT">
             <file>file:/D:/RepositorioGit/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/logic/sales/FareBasisLogic.java</file>
@@ -183,12 +213,6 @@
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/payments/LoadConciliationDAO.java</file>
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/payments/SalesReconciliation/DataEntryTicketSalesReconciliationController.js</file>
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/logic/payments/LoadConciliationLogic.java</file>
-        </group>
-        <group>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/payments/AccountingMasterProcessForm/Grids/MainGrid.js</file>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/payments/AccountingMasterProcess/MainGridController.js</file>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/payments/AccountingReportController.java</file>
-            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/payments/AccountingMasterProcessForm/Grids/AccountingGrid.js</file>
         </group>
     </open-files>
 </project-private>

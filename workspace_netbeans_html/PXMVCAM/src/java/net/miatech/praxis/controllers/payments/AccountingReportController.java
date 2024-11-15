@@ -95,6 +95,7 @@ public class AccountingReportController extends BaseController {
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
+    
 
     @RequestMapping(value = "downloadAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> downloadAccounting(@RequestBody SQP05233Filter filter, HttpServletResponse response) throws Exception {
@@ -130,43 +131,43 @@ public class AccountingReportController extends BaseController {
             for (int i=0,j=0; i<result.size(); i++,j++) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
-                sb.append(result.get(i).getA4545HEADE().trim()).append("\t") ;          // HEADER_TXT
-                sb.append(result.get(i).getA4545COMPC().trim()).append("\t") ;          // COMP_CODE
-                sb.append(result.get(i).getA4545DOCD().trim()).append("\t") ;           // DOC_DATE
-                sb.append(result.get(i).getA4545PSTGD().trim()).append("\t") ;          // PSTNG_DATE
-                sb.append(result.get(i).getA4545TRASD().trim()).append("\t") ;          // TRANS_DATE
-                sb.append(result.get(i).getA4545DOCT().trim()).append("\t") ;           // DOC_TYPE
-                sb.append(result.get(i).getA4545REFD().trim()).append("\t") ;           // REF_DOC_NO
+                sb.append(result.get(i).getA4545HEADE()).append("\t") ;                 // HEADER_TXT
+                sb.append(result.get(i).getA4545COMPC()).append("\t") ;                 // COMP_CODE
+                sb.append(result.get(i).getA4545DOCD()).append("\t") ;                  // DOC_DATE
+                sb.append(result.get(i).getA4545PSTGD()).append("\t") ;                 // PSTNG_DATE
+                sb.append(result.get(i).getA4545TRASD()).append("\t") ;                 // TRANS_DATE
+                sb.append(result.get(i).getA4545DOCT()).append("\t") ;                  // DOC_TYPE
+                sb.append(result.get(i).getA4545REFD()).append("\t") ;                  // REF_DOC_NO
                 sb.append("").append("\t") ;                                            // ZZ_AUTH_CODE
-                sb.append(result.get(i).getA4545PKEY().trim()).append("\t") ;           // POSTING_KEY
-                sb.append(result.get(i).getA4545ITEM()).append("\t") ;                  // ITEMNO_ACC
-                sb.append(result.get(i).getA4545CUENT().trim()).append("\t") ;          // GL_ACCOUNT
-                sb.append(result.get(i).getA4545TEXTD().trim()).append("\t") ;          // ITEM_TEXT
-                sb.append(result.get(i).getA4545REFK().trim()).append("\t") ;           // REF_KEY_1
-                sb.append(result.get(i).getA4545REFK2().trim()).append("\t") ;          // REF_KEY_2
-                sb.append(result.get(i).getA4545REFB().trim()).append("\t") ;           // REF_KEY_3
+                sb.append(result.get(i).getA4545PKEY()).append("\t") ;                  // POSTING_KEY
+                sb.append(result.get(i).getA4545ITEM().toString()).append("\t") ;       // ITEMNO_ACC
+                sb.append(result.get(i).getA4545CUENT()).append("\t") ;                 // GL_ACCOUNT
+                sb.append(result.get(i).getA4545TEXTD()).append("\t") ;                 // ITEM_TEXT
+                sb.append(result.get(i).getA4545REFK()).append("\t") ;                  // REF_KEY_1
+                sb.append(result.get(i).getA4545REFK2()).append("\t") ;                 // REF_KEY_2
+                sb.append(result.get(i).getA4545REFB()).append("\t") ;                  // REF_KEY_3
                 sb.append("").append("\t") ;                                            // BUS_AREA
-                sb.append(result.get(i).getA4545CCOST().trim()).append("\t") ;          // COSTCENTER
-                sb.append(result.get(i).getA4545PROFI().trim()).append("\t") ;          // PROFIT_CTR
-                sb.append(result.get(i).getA4545CUSTO().trim()).append("\t") ;          // CUSTOMER
+                sb.append(result.get(i).getA4545CCOST()).append("\t") ;                 // COSTCENTER
+                sb.append(result.get(i).getA4545PROFI()).append("\t") ;                 // PROFIT_CTR
+                sb.append(result.get(i).getA4545CUSTO()).append("\t") ;                 // CUSTOMER
                 sb.append("").append("\t") ;                                            // NAME
                 sb.append("").append("\t") ;                                            // CITY
                 sb.append("").append("\t") ;                                            // COUNTRY
-                sb.append(result.get(i).getA4545CUR().trim()).append("\t") ;            // CURRENCY
+                sb.append(result.get(i).getA4545CUR()).append("\t") ;                   // CURRENCY
                 
                 if (result.get(i).getA4545CUR().equals("COP")) {
                     Integer AMT_DOCCUR = result.get(i).getA4545ACTIV().intValue();
-                    sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
+                    sb.append(AMT_DOCCUR.toString()).append("\t");                      // AMT_DOCCUR
                 }
                 else 
-                    sb.append(result.get(i).getA4545ACTIV()).append("\t");              // AMT_DOCCUR
+                    sb.append(result.get(i).getA4545ACTIV().toString()).append("\t");   // AMT_DOCCUR
                 
                 sb.append("").append("\t") ;                                            // AMT_BASE
                 sb.append("").append("\t") ;                                            // TAX_AMT
                 sb.append("").append("\t") ;                                            // ZZ_LEGAL_INV
                 sb.append("").append("\t") ;                                            // ZZ_LEGACY_INV
                 sb.append("").append("\t") ;                                            // ZZ_ACM_ADM_NO
-                sb.append(result.get(i).getA4545MPAGO().trim()).append("\t") ;          // PYMT_METH
+                sb.append(result.get(i).getA4545MPAGO()).append("\t") ;                 // PYMT_METH
                 
                 sb.append("").append("\t") ;                                            // WTH_TYPE1
                 sb.append("").append("\t") ;                                            // WTH_CODE1
@@ -198,9 +199,9 @@ public class AccountingReportController extends BaseController {
                 sb.append("").append("\t") ;                                            // WTH_BASE6
                 sb.append("").append("\t") ;                                            // WTH_AMT6
                 
-                sb.append(result.get(i).getA4545REPAG().trim()).append("\t") ;          // PAYMT_REF
-                sb.append(result.get(i).getA4545ANUMB().trim()).append("\t") ;          // ALLOC_NMBR
-                sb.append(result.get(i).getA4545PLACE().trim()) ;                       // BUS_PLACE
+                sb.append(result.get(i).getA4545REPAG()).append("\t") ;                 // PAYMT_REF
+                sb.append(result.get(i).getA4545ANUMB()).append("\t") ;                 // ALLOC_NMBR
+                sb.append(result.get(i).getA4545PLACE()) ;                              // BUS_PLACE
                 
                 if ( j > 0 &&                                                           // No el primer registro
                     !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
