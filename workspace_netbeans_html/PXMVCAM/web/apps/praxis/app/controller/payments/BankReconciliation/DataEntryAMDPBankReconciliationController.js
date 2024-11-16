@@ -594,6 +594,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         this.setValue('de-txtdescFREGLA', this.bean.descFREGLA);
         this.setValue('de-txtDATEC', this.bean.DATEC);
+        this.setValue('de-txtDATECI', this.bean.DATECI);
+        this.setValue('de-txtTRANCI', this.bean.TRANCI);
         this.setValue('de-txtVOID', this.bean.VOID);
         this.setValue('de-txtFADM', this.bean.FADM);
         this.setValue('de-txtFREVERSA', this.bean.FREVERSA);

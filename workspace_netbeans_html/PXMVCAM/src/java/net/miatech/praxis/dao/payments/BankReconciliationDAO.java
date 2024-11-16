@@ -2033,6 +2033,8 @@ public class BankReconciliationDAO {
                 objRtn.BANDOC = rs01.getString("BANDOC");
                 objRtn.DATEC = rs01.getString("DATEC").trim();
                 objRtn.TRANC = rs01.getString("TRANC").trim();
+                objRtn.DATECI = rs01.getString("DATECI").trim();
+                objRtn.TRANCI = rs01.getString("TRANCI").trim();
 
                 objRtn.IVA = rs01.getDouble("IVA");
                 objRtn.PROPINA = rs01.getDouble("PROPINA");
