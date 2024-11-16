@@ -540,18 +540,14 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> uploadBandocsExcel(
             @RequestParam String IN_CCUST,
             @RequestParam String IN_IDCONT,
+            @RequestParam String IN_TIPOCON,
             @RequestParam MultipartFile file) throws Exception{
         
         String filename = "BandocExcel" + UUID.randomUUID().toString();
         String proceso = UUID.randomUUID().toString().replace("-", "");
         String fechap = Functions.getFechaActual();
         
-        SPACR017Filter params = SPACR017Filter.builder()
-                .IN_CCUST(IN_CCUST)
-                .IN_IDCONT(IN_IDCONT)
-                .IN_CUUID(proceso)
-                .IN_FUUID(fechap)
-                .build();
+        
         File tempFile = File.createTempFile(filename, ".xlsx");
         file.transferTo(tempFile);
         List<ExcelBandocDto> revertList = new ArrayList<>();
@@ -578,9 +574,18 @@ public class AccountingReportController extends BaseController {
         } catch (Exception e) {
             System.out.println("Error excel: " + e.getMessage());
         }
+        SPACR017Filter params = SPACR017Filter.builder()
+                .IN_CCUST(IN_CCUST)
+                .IN_TIPOCON(IN_TIPOCON)
+                .IN_IDCONT(IN_IDCONT)
+                .IN_CUUID(proceso)
+                .IN_FUUID(fechap)
+                .request(revertList)
+                .build();
+        SPACR017Filter filter = logic.loadSPACR017Filter(params);
         ModelMap map = new ModelMap();
         map.put("success", true);
-        map.put("data", params);
+        map.put("data", filter.getResponse());
         return ResponseUtils.ok(map);
     }
 //</editor-fold>

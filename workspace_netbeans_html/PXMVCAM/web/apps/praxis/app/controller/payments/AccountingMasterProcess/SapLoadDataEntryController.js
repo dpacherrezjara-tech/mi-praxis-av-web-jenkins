@@ -16,7 +16,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.SapLoadDataEn
             form.submit({
                 url: me.url + '/uploadBandocsExcel',
                 waitMsg: 'Subiendo archivo...',
+                timeout: 9999, // Tiempo en segundos
                 success: function (form, action) {
+                    const responseBody = action.response.responseText;
+                    console.log('Respuesta del servidor:', responseBody);
                     Ext.Msg.alert('Éxito', 'El archivo se ha subido correctamente.');
                 },
                 failure: function (form, action) {

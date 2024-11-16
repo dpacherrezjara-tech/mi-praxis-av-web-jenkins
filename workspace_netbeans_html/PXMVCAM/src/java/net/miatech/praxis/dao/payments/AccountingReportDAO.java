@@ -3,6 +3,7 @@ package net.miatech.praxis.dao.payments;
 import java.util.List;
 import java.util.Map;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
+import net.miatech.praxis.payment.dto.ExcelBandocDto;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -16,6 +17,7 @@ import net.miatech.praxis.payment.dto.SPACR013Filter;
 import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
+import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.entities.MPF091;
 import net.miatech.praxis.payment.entities.MPF101;
 import net.miatech.praxis.payment.entities.MPF102;
@@ -23,6 +25,7 @@ import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF135;
 import net.miatech.praxis.payment.entities.MPF140;
 import net.miatech.praxis.payment.entities.X3183;
+import net.miatech.praxis.payment.entities.X3184;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.JdbcUtils;
 import net.miatech.praxis.utils.MailUtils;
@@ -158,6 +161,29 @@ public class AccountingReportDAO implements AccountingReportLogic {
         filter.setResponse((List<A4545>) obj.get("result"));
         return filter;
     }
+
+    @Override
+    public SPACR017Filter loadSPACR017Filter(SPACR017Filter filter) throws Exception {
+        if(!filter.getRequest().isEmpty()){
+            //<editor-fold defaultstate="collapsed" desc="SQL">
+            final String sql = "INSERT INTO PRAXISMP.X3184 (BANDOC,REFER,VALDATE,CUUID,FUUID)"
+                    + "VALUES"
+                    + "(:BANDOC,:REFER,:VALDATE,:CUUID,:FUUID)";
+            BeanPropertySqlParameterSource[] insertParams = new BeanPropertySqlParameterSource[filter.getRequest().size()];
+            for (int i = 0; i < filter.getRequest().size(); i++) {
+                insertParams[i] = new BeanPropertySqlParameterSource(filter.getRequest().get(i));
+            }
+            //</editor-fold>
+            jdbcUtils.executeNamedParam(sql, insertParams);
+        }
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR017",params,
+                new BeanPropertyRowMapper(X3184.class));
+        filter.setResponse((List<X3184>) obj.get("result"));
+        return filter;
+    }
+    
+    
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">

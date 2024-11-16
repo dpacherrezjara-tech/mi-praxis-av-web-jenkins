@@ -96,8 +96,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.SapL
                                         fields: ['code', 'name'],
                                         data: [
                                             ['REG', 'Regular'],
-                                            ['DEB', 'Debits'],
-                                            ['ADJ', 'Adjustment']
+                                            ['DEB', 'Debits']
                                         ]
                                     }),
                                     labelWidth: 120,
