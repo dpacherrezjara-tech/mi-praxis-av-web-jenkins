@@ -71,7 +71,7 @@ public class DataRequestedByBankDAO {
 
         long QTKT = 0, QLINK = 0, QCARD = 0, QNOT = 0, QNMATCH = 0;
         double AUTAMOUNT = 0, VFOP = 0, ANOT = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01885_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01885(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         System.out.println("Ejecutando ----> " + SQLCLL01);
         System.out.println(filter.page.PAGNUM);
         System.out.println(filter.page.PAGROW);
@@ -263,7 +263,7 @@ public class DataRequestedByBankDAO {
 
         long QTYTRNX = 0, QNOMATCH = 0;
         double AUTAMOUNT = 0, OPEAMOUNT = 0, IVA = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01895(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01895_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -446,7 +446,7 @@ public class DataRequestedByBankDAO {
 
         long QTKT = 0, TOTCUP = 0;
         double AUTAMOUNT = 0, VFOP = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01884(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01884_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -1139,7 +1139,7 @@ public class DataRequestedByBankDAO {
 
         long QTYTRNX = 0;
         double AUTAMOUNT = 0, OPEAMOUNT = 0, IVA = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01896(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01896_1(?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2344,7 +2344,7 @@ public class DataRequestedByBankDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01945(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01945_1(?,?,?,?,?,?,?)}";
 
         try {
             //Para aquellos Merchant que tienen nombre de Banco
@@ -2447,7 +2447,7 @@ public class DataRequestedByBankDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01979(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01979_1(?,?,?,?,?,?)}";
 
         try {
             //Para aquellos Merchant que tienen nombre de Banco
