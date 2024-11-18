@@ -702,15 +702,76 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     ]
                                 },
                                 {
-                                    xtype: 'label',
-                                    text: 'Conciliate',
-                                    style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
-                                    bodyStyle: 'background:#E5ECEF;',
-                                    fontSize: '11',
-                                    width: 380,
-                                    height: 20,
-                                    margin: '4 2 4 8'
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+//                                    margin: '0 2 0 20',
+//                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'vbox',
+                                            border: false,
+//                                            margin: '0 2 0 20',
+//                                            bodyStyle: 'background:#E5ECEF;',
+                                            height: 20,
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Conciliate',
+                                                    style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                                                    bodyStyle: 'background:#E5ECEF;',
+                                                    fontSize: '11',
+                                                    width: 380,
+//                                                    height: 20,
+                                                    margin: '4 2 4 8'
+                                                },
+                                            ]
+                                        },
+
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'vbox',
+                                            border: false,
+//                                            margin: '0 2 0 20',
+                                            height: 20,
+                                            width: 240,
+                                            margin: '0 0 0 152',
+                                            bodyStyle: 'background:#f4fff9;',
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    text: 'Phase I',
+                                                    width: 120,
+                                                    margin: '4 0 0 95',
+//                                                    bodyStyle: 'background:#f8fcc5;',
+
+                                                },
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'vbox',
+                                            border: false,
+//                                            margin: '0 2 0 20',
+                                            height: 20,
+                                            width: 255,
+                                            bodyStyle: 'background:#dfffec;',
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    text: 'Phase II',
+                                                    margin: '4 0 0 100',
+                                                    bodyStyle: 'background:#dfffec;',
+                                                    width: 120
+                                                },
+                                            ]
+                                        },
+                                    ]
                                 },
+
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -718,7 +779,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     margin: '0 2 0 20',
                                     bodyStyle: 'background:#efe5e5;',
                                     items: [
-                                        {xtype: 'tbspacer', width: 7, height: 24},
+                                        {xtype: 'tbspacer', width: 7},
                                         {
                                             xtype: 'label',
                                             style: 'font-weight:bold;color:#0B333C;',
@@ -752,12 +813,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
                                             text: 'Rule',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -768,28 +829,65 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 100,
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        {xtype: 'tbspacer', width: 45},
                                         {
-                                            xtype: 'label',
-                                            text: 'Concili. Date',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 90
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            bodyStyle: 'background:#f4fff9;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Date',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80,
+                                                    margin: '0 0 0 0',
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtDATECI',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 25},
+                                            ]
                                         },
-                                        {xtype: 'tbspacer', width: 10},
                                         {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtDATEC',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            bodyStyle: 'background:#dfffec;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 25},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Date',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 90
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtDATEC',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 30},
+                                            ]
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        {xtype: 'tbspacer', width: 32},
+
                                         {
                                             xtype: 'label',
                                             text: 'Society Sett.',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 90
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -800,9 +898,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 60}
+                                        {xtype: 'tbspacer', width: 10}
                                     ]
                                 },
                                 {
@@ -812,23 +910,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                     margin: '0 2 0 20',
                                     bodyStyle: 'background:#efe5e5;',
                                     items: [
-                                        {xtype: 'tbspacer', width: 7, height: 24},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Transaction Conc.',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtTRANC',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100,
-                                        },
-                                        {xtype: 'tbspacer', width: 100},
+                                        {xtype: 'tbspacer', width: 7, },
                                         {
                                             xtype: 'label',
                                             text: 'Qty Tkts',
@@ -841,45 +923,104 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             id: prototype.id + '-de-txtQTYTKT',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
+                                            margin: '2 0 0 0',
                                             readOnly: true,
                                             width: 100,
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
                                             text: 'Qty Settl.',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 90
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtQTYDOC',
                                             fieldStyle: 'text-align:center',
+                                            margin: '2 0 0 0',
                                             fieldCls: 'detalle-qtydoc-textfield',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100,
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        {xtype: 'tbspacer', width: 45},
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            bodyStyle: 'background:#f4fff9;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Transaction',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtTRANCI',
+                                                    margin: '2 0 0 0',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 25},
+                                            ]
+                                        },
+
+                                        {
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            bodyStyle: 'background:#dfffec;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 25},
+
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Transaction',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 90
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtTRANC',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    margin: '2 0 0 0',
+                                                    readOnly: true,
+                                                    width: 100,
+                                                },
+                                                {xtype: 'tbspacer', width: 30},
+                                                
+                                            ]
+                                        },
+                                        {xtype: 'tbspacer', width: 32},
                                         {
                                             xtype: 'label',
                                             text: 'Society Sale',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 90
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtSOCIETY',
                                             fieldCls: 'detalle-society-textfield',
+                                            margin: '2 0 0 0',
                                             style: 'font-weight:bold;color:#d5f4d5',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 60},
+                                        {xtype: 'tbspacer', width: 10},
                                     ]
                                 },
                                 {
@@ -1639,9 +1780,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     filterPickList: true,
                                                     width: 220,
                                                     editable: false,
-                                                    multiSelect: true,  
-                                                    forceSelection: true ,
-
+                                                    multiSelect: true,
+                                                    forceSelection: true,
 
                                                 },
                                                 {xtype: 'tbspacer', width: 20},
@@ -1834,6 +1974,51 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                 },
                                             ]
                                         },
+//                                        {
+//                                            xtype: 'panel',
+//                                            layout: 'hbox',
+//                                            border: false,
+//                                            width: 1205,
+//                                            margin: '0 0 0 20',
+////                                            bodyStyle: 'background: transparent',
+////                                            width: 1225,
+////                                            bodyStyle: 'background:#e0e0e0;',
+//                                            bodyStyle: 'background:#e0e0e0; border-radius: 10px 10px 0 0;',
+//                                            items: [
+//                                                {
+//                                                    xtype: 'label',
+//                                                    text: 'Date',
+//                                                    style: 'font-weight:bold;color:#0B333C;',
+//                                                    width: 80,
+//                                                    margin: '0 0 0 780',
+//                                                },
+//                                                {xtype: 'tbspacer', width: 5},
+//                                                {
+//                                                    xtype: 'textfield',
+//                                                    id: prototype.id + '-de-txtDATECI',
+//                                                    fieldStyle: 'text-align:center',
+//                                                    enforceMaxLength: true,
+//                                                    readOnly: true,
+//                                                    width: 100
+//                                                },
+//                                                {xtype: 'tbspacer', width: 5},
+//                                                {
+//                                                    xtype: 'label',
+//                                                    text: 'Transaction',
+//                                                    style: 'font-weight:bold;color:#0B333C;',
+//                                                    width: 80
+//                                                },
+//                                                {xtype: 'tbspacer', width: 5},
+//                                                {
+//                                                    xtype: 'textfield',
+//                                                    id: prototype.id + '-de-txtTRANCI',
+//                                                    fieldStyle: 'text-align:center',
+//                                                    enforceMaxLength: true,
+//                                                    readOnly: true,
+//                                                    width: 100
+//                                                },
+//                                            ]
+//                                        },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
@@ -1850,10 +2035,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     border: false,
                                                     //                                            height: 182, //820
                                                     //                                            anchor: '100%',
-                                                    margin: '5 0 1 20',
+                                                    margin: '0 0 1 20',
                                                     autoScroll: true,
                                                     bodyStyle: 'background: transparent',
                                                     items: [
+
                                                         {
                                                             xtype: 'panel',
                                                             //                                                    id: prototype.id + '-SalesAnalysis_tab',
