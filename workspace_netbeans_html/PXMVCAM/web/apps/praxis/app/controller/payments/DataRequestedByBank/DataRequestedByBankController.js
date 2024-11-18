@@ -957,17 +957,17 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         me.lstSendBank = [];
         me.lstSendIata = [];
         this.setFormatParameter();
-        var option = Ext.getCmp(prototype.id + '-rbgType').getValue();
-        switch (option.rb) {
-            case 'ACLARACIONES':
-                console.log('Clarifications');
-                this.search();
-                break;
-            case 'AVISOS':
-                console.log('Bank Notice');
-                this.searchAvisos();
-                break;
-        }
+//        var option = Ext.getCmp(prototype.id + '-rbgType').getValue();
+//        switch (option.rb) {
+//            case 'ACLARACIONES':
+//                console.log('Clarifications');
+//                this.search();
+//                break;
+//            case 'AVISOS':
+//                console.log('Bank Notice');
+//                this.searchAvisos();
+//                break;
+//        }
     },
     search: function () {
         win.lblUser_toolTip("Estructura: A2331");
@@ -2603,22 +2603,22 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         console.log(me.panelActual);
         switch (me.panelActual) {
             case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxMainAvisos':
-                global.getFile(prototype.url + '/getXLSXDos?beanString=' + searchParams.beanString);
+                global.getFile(prototype.url + '/getXLSXDos?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxCardData':
-                global.getFile(prototype.url + '/getXLSXTres?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXTres?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             case  '-boxNoMatchData':
-                global.getFile(prototype.url + '/getXLSXCuatro?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXCuatro?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             case  '-boxUsosData':
-                global.getFile(prototype.url + '/getXLSXCinco?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXCinco?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             case  '-boxDetAvisos':
-                global.getFile(prototype.url + '/getXLSXSeis?beanString=' + me.paramsDetail.beanString);
+                global.getFile(prototype.url + '/getXLSXSeis?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
         }
     },
