@@ -2193,7 +2193,7 @@ public class BankReconciliationDAO {
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -2218,10 +2218,12 @@ public class BankReconciliationDAO {
                 cstmt2.setString(13, filterC.COREP.trim());
                 cstmt2.setString(14, filterC.CODPRO.trim());
                 cstmt2.setString(15, filterC.CCUSTPRO.trim());
-                cstmt2.setString(16, user.getUserInfo().USR);
-                cstmt2.setString(17, Functions.getFechaActual());
-                cstmt2.setString(18, Functions.getHoraActual());
-                cstmt2.setString(19, filter.strComment.toUpperCase());
+                cstmt2.setString(16, filterC.DATECI.trim());
+                cstmt2.setString(17, filterC.TRANCI.trim());
+                cstmt2.setString(18, user.getUserInfo().USR);
+                cstmt2.setString(19, Functions.getFechaActual());
+                cstmt2.setString(20, Functions.getHoraActual());
+                cstmt2.setString(21, filter.strComment.toUpperCase());
 
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2230,7 +2232,7 @@ public class BankReconciliationDAO {
             A2290Filter filterA = filters.get(filters.size() - 1);
 
             if (filterA.ATDOC.equals("A")) {
-                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP00834INSERTMPF100(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP00834INSERTMPF100_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt3 = cnx3.prepareCall(SQLCLL03);

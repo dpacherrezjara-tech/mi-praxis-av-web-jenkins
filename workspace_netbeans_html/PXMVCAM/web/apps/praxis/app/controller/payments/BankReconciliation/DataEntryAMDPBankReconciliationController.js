@@ -1071,6 +1071,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 FREGLA: Ext.getCmp(prototype.id + '-de-txtIN_FREGLA').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(),
+                DATECI: Ext.getCmp(prototype.id + '-de-txtDATECI').getValue(),
+                TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
                 COREP: meDe.bean.COREP,
                 CODPRO: meDe.bean.CODPRO,
                 CCUSTPRO: meDe.bean.CCUSTPRO

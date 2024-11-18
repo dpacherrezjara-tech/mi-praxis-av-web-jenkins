@@ -2639,7 +2639,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         } else {
             Ext.Msg.show({
                 title: '.:PRAXIS:.',
-                msg: 'Download Excel ?',
+                msg: 'Download Excel ?..',
                 buttons: Ext.MessageBox.OKCANCEL,
                 scope: this,
                 icon: Ext.MessageBox.QUESTION,
