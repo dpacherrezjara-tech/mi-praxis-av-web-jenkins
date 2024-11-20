@@ -14,6 +14,7 @@ import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
+import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 
 /**
@@ -34,6 +35,7 @@ public interface AccountingReportLogic {
     SPACR012Filter loadSPACR012Filter(SPACR012Filter filter) throws Exception;
     SPACR013Filter loadSPACR013Filter(SPACR013Filter filter) throws Exception;
     SPACR017Filter loadSPACR017Filter(SPACR017Filter filter) throws Exception;
+    SPMC007Filter loadSPMC007Filter(SPMC007Filter filter) throws Exception;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">
