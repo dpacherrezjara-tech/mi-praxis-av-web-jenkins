@@ -25,6 +25,7 @@ import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
+import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
@@ -259,10 +260,22 @@ public class AccountingReportController extends BaseController {
     }
     
     @RequestMapping(value = "processAccounting", method = RequestMethod.POST)
-    public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params) throws Exception {
+    public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params,ModelMap map) throws Exception {
         System.out.println("***** AccountingReport - processAccounting *****");
-        logic.loadSPACR001Filter(params);
-        return ResponseUtils.create();
+        SPMC007Filter filter = SPMC007Filter.builder()
+                .IN_KEY3("CONTABLEAV")
+                .IN_CORRL(params.getIN_TIPOCON())
+                .build();
+        filter = logic.loadSPMC007Filter(filter);
+        if (filter.getSTAT().equals("X")) {
+            map.put("STATUS", false);
+            map.put("MSG", "Another process is Running.");
+        }else{
+            logic.loadSPACR001Filter(params);
+            map.put("STATUS", true);
+            map.put("MSG", "Process Running.");
+        }
+        return ResponseUtils.ok(map);
     }
     
     @RequestMapping(value = "reverseSingleBandoc", method = RequestMethod.POST)

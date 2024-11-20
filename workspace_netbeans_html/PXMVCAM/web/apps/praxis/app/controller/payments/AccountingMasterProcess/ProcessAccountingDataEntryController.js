@@ -61,10 +61,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
         const me = this;
         try {
             const res = await me.request.post('processAccounting',params);
-            if(res.status === 201){
-                me.notifier.success('Execution was Successfully');
+            const {STATUS,MSG} = res.data;
+            if(STATUS){
+                me.notifier.success(MSG);
             }else{
-                me.notifier.alert('Error on Process');
+                me.notifier.alert(MSG);
             }
         } catch (e) {
             console.error(e);
