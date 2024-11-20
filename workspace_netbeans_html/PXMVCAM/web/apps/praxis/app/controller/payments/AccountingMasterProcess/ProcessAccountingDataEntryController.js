@@ -59,6 +59,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
     },
     loadAccounting: async function(params){
         const me = this;
+        me.view.setLoading(true);
         try {
             const res = await me.request.post('processAccounting',params);
             const {STATUS,MSG} = res.data;
@@ -70,7 +71,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
         } catch (e) {
             console.error(e);
         } finally {
-            me.view.unmask();
+            me.view.setLoading(false);
         }
         
     },

@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.controllers.BaseController;
@@ -260,13 +262,14 @@ public class AccountingReportController extends BaseController {
     }
     
     @RequestMapping(value = "processAccounting", method = RequestMethod.POST)
-    public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params,ModelMap map) throws Exception {
+    public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params) throws Exception {
         System.out.println("***** AccountingReport - processAccounting *****");
         SPMC007Filter filter = SPMC007Filter.builder()
                 .IN_KEY3("CONTABLEAV")
                 .IN_CORRL(params.getIN_TIPOCON())
                 .build();
         filter = logic.loadSPMC007Filter(filter);
+        Map<String,Object> map = new HashMap<>();
         if (filter.getSTAT().equals("X")) {
             map.put("STATUS", false);
             map.put("MSG", "Another process is Running.");
