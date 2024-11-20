@@ -38,6 +38,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -122,7 +125,7 @@ public class AccountingReportController extends BaseController {
         String fileNameTemp = "CARGUE_TC_" + filter.getIN_FCONT() + "_" + filter.getIN_CCUST()+ "_";
         String fileName;
         //String zipName = "TC_" + idCont ;
-        String zipName = "";
+        String zipName = "CARGUE_DEPOSITOS_TC";
         
         String A4545SEQ = "";
         String CODPRO = filter.getIN_CODPRO().trim();
@@ -136,114 +139,117 @@ public class AccountingReportController extends BaseController {
         try {
         
             filter = logic.loadSQP05233Filter(filter);
-            List<A4545> result = filter.getResponse();
-            zipName = filter.OU_FILENAM.trim();
-            
-            file.add(fileHeader);
-            
-            int k = 0;
-            for (int i=0,j=0; i<result.size(); i++,j++) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
-                sb.append(result.get(i).getA4545HEADE().trim()).append("\t") ;          // HEADER_TXT
-                sb.append(result.get(i).getA4545COMPC().trim()).append("\t") ;          // COMP_CODE
-                sb.append(result.get(i).getA4545DOCD().trim()).append("\t") ;           // DOC_DATE
-                sb.append(result.get(i).getA4545PSTGD().trim()).append("\t") ;          // PSTNG_DATE
-                sb.append(result.get(i).getA4545TRASD().trim()).append("\t") ;          // TRANS_DATE
-                sb.append(result.get(i).getA4545DOCT().trim()).append("\t") ;           // DOC_TYPE
-                sb.append(result.get(i).getA4545REFD().trim()).append("\t") ;           // REF_DOC_NO
-                sb.append("").append("\t") ;                                            // ZZ_AUTH_CODE
-                sb.append(result.get(i).getA4545PKEY().trim()).append("\t") ;           // POSTING_KEY
-                sb.append(result.get(i).getA4545ITEM()).append("\t") ;                  // ITEMNO_ACC
-                sb.append(result.get(i).getA4545CUENT().trim()).append("\t") ;          // GL_ACCOUNT
-                sb.append(result.get(i).getA4545TEXTD().trim()).append("\t") ;          // ITEM_TEXT
-                sb.append(result.get(i).getA4545REFK().trim()).append("\t") ;           // REF_KEY_1
-                sb.append(result.get(i).getA4545REFK2().trim()).append("\t") ;          // REF_KEY_2
-                sb.append(result.get(i).getA4545REFB().trim()).append("\t") ;           // REF_KEY_3
-                sb.append("").append("\t") ;                                            // BUS_AREA
-                sb.append(result.get(i).getA4545CCOST().trim()).append("\t") ;          // COSTCENTER
-                sb.append(result.get(i).getA4545PROFI().trim()).append("\t") ;          // PROFIT_CTR
-                sb.append(result.get(i).getA4545CUSTO().trim()).append("\t") ;          // CUSTOMER
-                sb.append("").append("\t") ;                                            // NAME
-                sb.append("").append("\t") ;                                            // CITY
-                sb.append("").append("\t") ;                                            // COUNTRY
-                sb.append(result.get(i).getA4545CUR().trim()).append("\t") ;            // CURRENCY
+            if (filter.getResponse() != null) {
                 
-                if (result.get(i).getA4545CUR().equals("COP")) {
-                    Long AMT_DOCCUR = result.get(i).getA4545ACTIV().longValue();
-                    sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
+                List<A4545> result = filter.getResponse();
+                zipName = filter.OU_FILENAM.trim();
+
+                file.add(fileHeader);
+
+                int k = 0;
+                for (int i=0,j=0; i<result.size(); i++,j++) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
+                    sb.append(result.get(i).getA4545HEADE().trim()).append("\t") ;          // HEADER_TXT
+                    sb.append(result.get(i).getA4545COMPC().trim()).append("\t") ;          // COMP_CODE
+                    sb.append(result.get(i).getA4545DOCD().trim()).append("\t") ;           // DOC_DATE
+                    sb.append(result.get(i).getA4545PSTGD().trim()).append("\t") ;          // PSTNG_DATE
+                    sb.append(result.get(i).getA4545TRASD().trim()).append("\t") ;          // TRANS_DATE
+                    sb.append(result.get(i).getA4545DOCT().trim()).append("\t") ;           // DOC_TYPE
+                    sb.append(result.get(i).getA4545REFD().trim()).append("\t") ;           // REF_DOC_NO
+                    sb.append("").append("\t") ;                                            // ZZ_AUTH_CODE
+                    sb.append(result.get(i).getA4545PKEY().trim()).append("\t") ;           // POSTING_KEY
+                    sb.append(result.get(i).getA4545ITEM()).append("\t") ;                  // ITEMNO_ACC
+                    sb.append(result.get(i).getA4545CUENT().trim()).append("\t") ;          // GL_ACCOUNT
+                    sb.append(result.get(i).getA4545TEXTD().trim()).append("\t") ;          // ITEM_TEXT
+                    sb.append(result.get(i).getA4545REFK().trim()).append("\t") ;           // REF_KEY_1
+                    sb.append(result.get(i).getA4545REFK2().trim()).append("\t") ;          // REF_KEY_2
+                    sb.append(result.get(i).getA4545REFB().trim()).append("\t") ;           // REF_KEY_3
+                    sb.append("").append("\t") ;                                            // BUS_AREA
+                    sb.append(result.get(i).getA4545CCOST().trim()).append("\t") ;          // COSTCENTER
+                    sb.append(result.get(i).getA4545PROFI().trim()).append("\t") ;          // PROFIT_CTR
+                    sb.append(result.get(i).getA4545CUSTO().trim()).append("\t") ;          // CUSTOMER
+                    sb.append("").append("\t") ;                                            // NAME
+                    sb.append("").append("\t") ;                                            // CITY
+                    sb.append("").append("\t") ;                                            // COUNTRY
+                    sb.append(result.get(i).getA4545CUR().trim()).append("\t") ;            // CURRENCY
+
+                    if (result.get(i).getA4545CUR().equals("COP")) {
+                        Long AMT_DOCCUR = result.get(i).getA4545ACTIV().longValue();
+                        sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
+                    }
+                    else 
+                        sb.append(result.get(i).getA4545ACTIV()).append("\t");              // AMT_DOCCUR
+
+                    sb.append("").append("\t") ;                                            // AMT_BASE
+                    sb.append("").append("\t") ;                                            // TAX_AMT
+                    sb.append("").append("\t") ;                                            // ZZ_LEGAL_INV
+                    sb.append("").append("\t") ;                                            // ZZ_LEGACY_INV
+                    sb.append("").append("\t") ;                                            // ZZ_ACM_ADM_NO
+                    sb.append(result.get(i).getA4545MPAGO().trim()).append("\t") ;          // PYMT_METH
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE1
+                    sb.append("").append("\t") ;                                            // WTH_CODE1
+                    sb.append("").append("\t") ;                                            // WTH_BASE1
+                    sb.append("").append("\t") ;                                            // WTH_AMT1
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE2
+                    sb.append("").append("\t") ;                                            // WTH_CODE2
+                    sb.append("").append("\t") ;                                            // WTH_BASE2
+                    sb.append("").append("\t") ;                                            // WTH_AMT2
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE3
+                    sb.append("").append("\t") ;                                            // WTH_CODE3
+                    sb.append("").append("\t") ;                                            // WTH_BASE3
+                    sb.append("").append("\t") ;                                            // WTH_AMT3
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE4
+                    sb.append("").append("\t") ;                                            // WTH_CODE4
+                    sb.append("").append("\t") ;                                            // WTH_BASE4
+                    sb.append("").append("\t") ;                                            // WTH_AMT4
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE5
+                    sb.append("").append("\t") ;                                            // WTH_CODE5
+                    sb.append("").append("\t") ;                                            // WTH_BASE5
+                    sb.append("").append("\t") ;                                            // WTH_AMT5
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE6
+                    sb.append("").append("\t") ;                                            // WTH_CODE6
+                    sb.append("").append("\t") ;                                            // WTH_BASE6
+                    sb.append("").append("\t") ;                                            // WTH_AMT6
+
+                    sb.append(result.get(i).getA4545REPAG().trim()).append("\t") ;          // PAYMT_REF
+                    sb.append(result.get(i).getA4545ANUMB().trim()).append("\t") ;          // ALLOC_NMBR
+                    sb.append(result.get(i).getA4545PLACE().trim()) ;                       // BUS_PLACE
+
+                    if ( j > 0 &&                                                           // No el primer registro
+                        !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
+                        (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
+
+                        fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
+
+                        fileNames.add( fileName );                   
+                        files.add(file) ;
+
+                        file = new ArrayList<>();
+                        file.add(fileHeader);
+
+                        j = 0;
+                        k = !result.get(i).getA4545MODO().equals(A4545MODO)? 0 : (k+1);
+                    }
+
+                    file.add(sb.toString());
+
+                    A4545SEQ = result.get(i).getA4545SEQ().toString();
+                    A4545MODO = result.get(i).getA4545MODO();
                 }
-                else 
-                    sb.append(result.get(i).getA4545ACTIV()).append("\t");              // AMT_DOCCUR
-                
-                sb.append("").append("\t") ;                                            // AMT_BASE
-                sb.append("").append("\t") ;                                            // TAX_AMT
-                sb.append("").append("\t") ;                                            // ZZ_LEGAL_INV
-                sb.append("").append("\t") ;                                            // ZZ_LEGACY_INV
-                sb.append("").append("\t") ;                                            // ZZ_ACM_ADM_NO
-                sb.append(result.get(i).getA4545MPAGO().trim()).append("\t") ;          // PYMT_METH
-                
-                sb.append("").append("\t") ;                                            // WTH_TYPE1
-                sb.append("").append("\t") ;                                            // WTH_CODE1
-                sb.append("").append("\t") ;                                            // WTH_BASE1
-                sb.append("").append("\t") ;                                            // WTH_AMT1
-                
-                sb.append("").append("\t") ;                                            // WTH_TYPE2
-                sb.append("").append("\t") ;                                            // WTH_CODE2
-                sb.append("").append("\t") ;                                            // WTH_BASE2
-                sb.append("").append("\t") ;                                            // WTH_AMT2
-                
-                sb.append("").append("\t") ;                                            // WTH_TYPE3
-                sb.append("").append("\t") ;                                            // WTH_CODE3
-                sb.append("").append("\t") ;                                            // WTH_BASE3
-                sb.append("").append("\t") ;                                            // WTH_AMT3
-                
-                sb.append("").append("\t") ;                                            // WTH_TYPE4
-                sb.append("").append("\t") ;                                            // WTH_CODE4
-                sb.append("").append("\t") ;                                            // WTH_BASE4
-                sb.append("").append("\t") ;                                            // WTH_AMT4
-                
-                sb.append("").append("\t") ;                                            // WTH_TYPE5
-                sb.append("").append("\t") ;                                            // WTH_CODE5
-                sb.append("").append("\t") ;                                            // WTH_BASE5
-                sb.append("").append("\t") ;                                            // WTH_AMT5
-                
-                sb.append("").append("\t") ;                                            // WTH_TYPE6
-                sb.append("").append("\t") ;                                            // WTH_CODE6
-                sb.append("").append("\t") ;                                            // WTH_BASE6
-                sb.append("").append("\t") ;                                            // WTH_AMT6
-                
-                sb.append(result.get(i).getA4545REPAG().trim()).append("\t") ;          // PAYMT_REF
-                sb.append(result.get(i).getA4545ANUMB().trim()).append("\t") ;          // ALLOC_NMBR
-                sb.append(result.get(i).getA4545PLACE().trim()) ;                       // BUS_PLACE
-                
-                if ( j > 0 &&                                                           // No el primer registro
-                    !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
-                    (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
-                    
-                    fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
-                    
-                    fileNames.add( fileName );                   
-                    files.add(file) ;
-                    
-                    file = new ArrayList<>();
-                    file.add(fileHeader);
-                    
-                    j = 0;
-                    k = !result.get(i).getA4545MODO().equals(A4545MODO)? 0 : (k+1);
-                }
-                
-                file.add(sb.toString());
-                
-                A4545SEQ = result.get(i).getA4545SEQ().toString();
-                A4545MODO = result.get(i).getA4545MODO();
+
+                //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
+                fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
+
+                fileNames.add(fileName);
+                files.add(file) ;
             }
-            
-            //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
-            fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
-            
-            fileNames.add(fileName);
-            files.add(file) ;
             
                
         } catch (Exception e) {
