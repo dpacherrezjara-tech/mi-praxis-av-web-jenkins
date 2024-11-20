@@ -1,8 +1,13 @@
 package net.miatech.praxis.dao.payments;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.servlet.ServletContext;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
+import net.miatech.praxis.payment.dto.ExcelBandocDto;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -16,6 +21,10 @@ import net.miatech.praxis.payment.dto.SPACR013Filter;
 import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
+import net.miatech.praxis.payment.dto.SPACR017Filter;
+import net.miatech.praxis.payment.dto.SPMC006Filter;
+import net.miatech.praxis.payment.dto.SPMC007Filter;
+import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.MPF091;
 import net.miatech.praxis.payment.entities.MPF101;
 import net.miatech.praxis.payment.entities.MPF102;
@@ -23,9 +32,12 @@ import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF135;
 import net.miatech.praxis.payment.entities.MPF140;
 import net.miatech.praxis.payment.entities.X3183;
+import net.miatech.praxis.payment.entities.X3184;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.JdbcUtils;
 import net.miatech.praxis.utils.MailUtils;
+import net.miatech.utils.Functions;
+import net.miatech.utils.MailImagePath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -47,6 +59,9 @@ public class AccountingReportDAO implements AccountingReportLogic {
 
     @Autowired
     private MailUtils mailUtils;
+    
+    @Autowired
+    private ServletContext servletContext;
 
     private static final String LIBRARY = "PRAXISMP";
 
@@ -80,9 +95,92 @@ public class AccountingReportDAO implements AccountingReportLogic {
     @Override
     public void loadSPACR001Filter(SPACR001Filter filter) throws Exception {
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
-        jdbcUtils.executeSQP(LIBRARY, "SPACR001",
-                params, new BeanPropertyRowMapper(MPF134.class));
+        Map<String,Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR001",params);
+        Integer bandocs = (Integer) obj.get("OUT_ROWS");
+        SPMC006Filter paramsMisc = SPMC006Filter.builder().IN_CORRL("000").build();
+        SqlParameterSource filterMisc = new BeanPropertySqlParameterSource(paramsMisc);
+        Map<String, Object> objCorreos = jdbcUtils.executeSQP(LIBRARY, "SPMC006",
+                filterMisc,new BeanPropertyRowMapper(A4451.class));
+        
+        List<A4451> resultCorreos = (List<A4451>) objCorreos.get("result");
+        
+        List<String> receptores = resultCorreos.stream()
+                .filter(c->c.getA4451SEQ().equals("TO"))
+                .map(A4451::getA4451DESC1).map(String::trim)
+                .collect(Collectors.toList());
+        List<String> CC = resultCorreos.stream()
+                .filter(c->c.getA4451SEQ().equals("CC"))
+                .map(A4451::getA4451DESC1).map(String::trim)
+                .collect(Collectors.toList());
+        
+        String asunto = "Contabilidad " + formatTipocon(filter.getIN_TIPOCON()) + " " 
+                + filter.getIN_CCUST() + " - " + filter.getIN_CODPRO();
+        StringBuilder msg = new StringBuilder();
+        msg.append("<html>");
+        msg.append("<body>");
+        msg.append("<p>Estimados,</p>");
+        msg.append("<p>El proceso de Contabilidad ")
+                .append(formatTipocon(filter.getIN_TIPOCON()))
+                .append(" termino exitosamente con los siguientes resultados:</p>");
+        msg.append("<table border=\"3\" style=\"width: 100%; border-collapse: collapse; border-style: solid; position: relative; height: 60px;\">" +
+                "<tbody>" +
+                "<tr style=\"height: 30px;\">" +
+                "<td style=\"width: 37.678%; height: 30px; text-align: center; background-color: red; "
+                + "font-weight: bold;\">Procesador</td>" +
+                "<td style=\"width: 33.0081%; height: 30px; text-align: center; background-color: red; "
+                + "font-weight: bold;\">Documentos</td>"
+                + "</tr><tr style=\"height: 56px;\">");
+        msg.append("<td style=\"width: 37.678%; height: 33px; text-align: center;\">")
+                .append(filter.getIN_CCUST()).append("-")
+                .append(filter.getIN_CODPRO()).append("</td>");
+        msg.append("<td style=\"width: 33.0081%; height: 33px; text-align: center;\">")
+                .append(bandocs).append("</td>");
+        msg.append("</tr></tbody></table></div><div style=\"margin-top: 30px;\">");
+        msg.append("<p>Saludos<br><b style=\"color:#295897;\">PAYMENTS CONTROL<br>Miatech International</b></p>")
+                .append("<img src=\"cid:miatech1\" width=\"20%\" height=\"20%\" />")
+                .append("<img src=\"cid:avianca1\" width=\"20%\" height=\"20%\"/>");
+        msg.append("</div>");
+        msg.append("</body>");
+        msg.append("</html>");
+        List<MailImagePath> imgPaths = new ArrayList<>();
+        String current = servletContext.getRealPath("/");
+        String dir = current + "resources\\img\\menu\\av\\";
+        imgPaths.add(new MailImagePath(dir + "avianca_logo.png","avianca1"));
+        imgPaths.add(new MailImagePath(dir + "logo_miatech3.png","miatech1"));
+        try {
+            mailUtils.sendMailWithImg(asunto, receptores, CC, msg.toString(), imgPaths,null);
+        } catch (Exception e) {
+            System.out.println("Email Error: " + e.getMessage());
+        }
+        
+        System.out.println("Correo Enviado Exitosamente!");
     }
+    
+    String formatTipocon(String tipocon){
+        String res = "";
+        switch (tipocon) {
+            case "REG":
+                res = "Regular";
+                break;
+            case "DEB":
+                res = "Debitos";
+                break;
+            case "ADJ":
+                res = "Ajustes";
+                break;
+        }
+        return res;
+    }
+
+    @Override
+    public SPMC007Filter loadSPMC007Filter(SPMC007Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String,Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC007",params);
+        filter.setSTAT((String) obj.get("OUT_STAT"));
+        return filter;
+    }
+    
+    
 
     @Override
     public SPACR006Filter loadSPACR006Filter(SPACR006Filter filter) throws Exception {
@@ -156,6 +254,27 @@ public class AccountingReportDAO implements AccountingReportLogic {
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR013",
                 params, new BeanPropertyRowMapper(A4545.class));
         filter.setResponse((List<A4545>) obj.get("result"));
+        return filter;
+    }
+
+    @Override
+    public SPACR017Filter loadSPACR017Filter(SPACR017Filter filter) throws Exception {
+        if(!filter.getRequest().isEmpty()){
+            //<editor-fold defaultstate="collapsed" desc="SQL">
+            final String sql = "INSERT INTO PRAXISMP.X3184 (BANDOC,REFER,VALDATE,CUUID,FUUID)"
+                    + "VALUES"
+                    + "(:BANDOC,:REFER,:VALDATE,:CUUID,:FUUID)";
+            BeanPropertySqlParameterSource[] insertParams = new BeanPropertySqlParameterSource[filter.getRequest().size()];
+            for (int i = 0; i < filter.getRequest().size(); i++) {
+                insertParams[i] = new BeanPropertySqlParameterSource(filter.getRequest().get(i));
+            }
+            //</editor-fold>
+            jdbcUtils.executeNamedParam(sql, insertParams);
+        }
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR017",params,
+                new BeanPropertyRowMapper(X3184.class));
+        filter.setResponse((List<X3184>) obj.get("result"));
         return filter;
     }
     //</editor-fold>

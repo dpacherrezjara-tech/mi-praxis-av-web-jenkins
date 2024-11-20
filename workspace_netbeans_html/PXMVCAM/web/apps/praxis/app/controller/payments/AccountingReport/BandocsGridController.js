@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocsGridControlle
             pageSize: 20,
             proxy: {
                 type: 'ajax',
-                enablePaging: true,
+                enablePaging: true, 
                 url: `${me.url}/loadBandocsBrowser`,
                 extraParams: view.searchParams,
                 timeout: 600000,

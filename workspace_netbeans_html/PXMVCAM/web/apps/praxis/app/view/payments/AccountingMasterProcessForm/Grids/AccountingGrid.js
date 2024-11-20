@@ -58,14 +58,14 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             },
             {text: 'Account', dataIndex: 'A4545CUENT', width: 100},
             {text: 'Currency', dataIndex: 'A4545CUR', width: 80},
-            {text: 'Active', dataIndex: 'A4545ACTIV', width: 120,
+            {text: 'Value', dataIndex: 'A4545ACTIV', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "background-color:#dcdf3a;text-align:right;";
                     value = Ext.util.Format.number(value, '0,000.00');
                     return value;
                 }
             },
-            {text: 'Pasive', dataIndex: 'A4545PASIV', width: 120,
+            {text: 'Balance', dataIndex: 'A4545PASIV', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "background-color:#dcdf3a;text-align:right;";
                     value = Ext.util.Format.number(value, '0,000.00');

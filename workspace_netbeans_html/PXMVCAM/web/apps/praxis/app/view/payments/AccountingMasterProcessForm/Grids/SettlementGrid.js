@@ -83,20 +83,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Settlemen
                             value = Ext.util.Format.number(value, '0,000.00');
                             return value;
                         }
-                    },
-                    {text: 'Fare', dataIndex: 'FAREC', width: 120,
-                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#b7f989;text-align:right;";
-                            value = Ext.util.Format.number(value, '0,000.00');
-                            return value;
-                        }
-                    },
-                    {text: 'Fare Diff', dataIndex: 'FAREDIFFC', width: 120,
-                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#b7f989;text-align:right;";
-                            value = Ext.util.Format.number(value, '0,000.00');
-                            return value;
-                        }
                     }
                 ]
             },
@@ -142,7 +128,14 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Settlemen
                     {text: 'DATEC', dataIndex: 'DATEC', width: 100},
                     {text: 'TRANC', dataIndex: 'TRANC', width: 100}
                 ]
-            }
+            },
+            {text: 'Acc. Status', dataIndex: 'STCON', width: 80},
+            {text: 'Acc. Date', dataIndex: 'FCONT', width: 100},
+            {text: 'Regular ID', dataIndex: 'IDCONT', width: 350},
+            {text: 'Debit Date', dataIndex: 'FDEBIT', width: 100},
+            {text: 'Debit ID', dataIndex: 'IDCDEB', width: 350},
+            {text: 'Adj Date', dataIndex: 'FAJUST', width: 100},
+            {text: 'Adjustment ID', dataIndex: 'IDCADJ', width: 350}
 
             //</editor-fold>
         ]

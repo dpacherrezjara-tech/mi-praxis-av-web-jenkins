@@ -78,6 +78,10 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
                 }
             }
         ]
+    },
+    bbar: {
+        xtype: 'pagingtoolbar',
+        displayInfo: true
     }
 });
 

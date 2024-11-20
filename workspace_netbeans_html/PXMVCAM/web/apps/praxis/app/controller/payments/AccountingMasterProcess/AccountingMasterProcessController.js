@@ -72,6 +72,14 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         });
         dataEntry.show();
     },
+    onSapClick:function(){
+        const me = this;
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.SapLoadDataEntry', {
+            id: prototype.id + '-SapLoadDataEntry-1',
+            procesadores: me.procesadores
+        });
+        dataEntry.show();
+    },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
         this.loadGrid();
