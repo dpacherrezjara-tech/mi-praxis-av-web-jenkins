@@ -216,6 +216,7 @@
         </group>
         <group name="Avianca Web">
             <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/configs/CFGI0001.properties</file>
+            <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/program/ProMasterTicketController.java</file>
         </group>
     </open-files>
 </project-private>
