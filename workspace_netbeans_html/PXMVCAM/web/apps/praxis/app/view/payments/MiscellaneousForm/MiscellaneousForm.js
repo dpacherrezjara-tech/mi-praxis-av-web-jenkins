@@ -12,78 +12,73 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.MiscellaneousForm', {
         'Ext.Praxis.controller.payments.Miscellaneous.MiscellaneousController'
     ],
     controller: 'MiscellaneousController',
-    layout: {
-        type: 'fit'
-    },
-    padding: '0 0 0 0',
+    layout: {type: 'fit'},
     border: false,
     defaults: {
         border: false
     },
-    items: [
+     items: [
         {
             id: prototype.id + '-xpanel',
             border: false,
-            autoScroll: false,
+            bodyCls: 'colorFondo',
             layout: 'fit',
             items: [
                 {
-                    id: prototype.id + '-form',
+                    id: prototype.id +'-form',
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-//                    defaults: {
-//                        border: false,
-//                        autoScroll: true
-//                    },
+                    defaults: {
+                        border: false,
+                        autoScroll: true
+                    },
                     items: [
                         {
                             xtype: 'panel',
-                            region: 'center',
+                            id: prototype.id + '-panelPrincipal',
+                            hidden: false,
                             width: 980,
                             layout: 'border',
-                            
                             items: [
                                 {
                                     region: 'center',
-                                    id: prototype.id + '-centerC',
+                                    id: prototype.id +'-centerC',
                                     layout: {
                                         type: 'vbox',
                                         align: 'center'
                                     },
-                                    border: true,
+                                    border: false,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1400,
+                                        width: 1650,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options'
-                                        }
-                                        ,
+                                            xtype:prototype.id + '-options'
+                                        },
                                         {
-                                            xtype: prototype.id + '-filters',
-                                            id: prototype.id + '-contentFilter'
-                                        }
-                                        ,
+                                            xtype:prototype.id+ '-filters',
+                                            id: prototype.id+'-contentFilter'
+                                        },
                                         {
                                             xtype: 'panel',
-                                            height: 600,
-                                            width: 1400,
+                                            height: 650,
+                                            width: 1650,
+                                            bodyStyle: 'background-color: #E3EAEF;border: none;',
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
+                                                    width: 1650,
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1400,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true,
+                                                    border: false,
                                                     defaults: {
                                                         border: false
                                                     },
-                                                    bodyStyle: 'background-color: white;',
                                                     items: [
                                                         {
                                                             region: 'center',
@@ -93,11 +88,10 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.MiscellaneousForm', {
                                                     ]
                                                 }
                                             ]
-                                        }
-                                   ]
+                                        }   
+                                    ]
                                 }
                             ]
-                            
                         }
                     ]
                 }
