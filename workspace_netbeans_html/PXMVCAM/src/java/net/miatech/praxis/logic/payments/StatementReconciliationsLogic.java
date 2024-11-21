@@ -123,6 +123,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.SQPREVERSA_MPF102_F1(filter, user);
     }
     
+    public A2290Filter SQPMPP082_MPF132(UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.SQPMPP082_MPF132(user);
+    }
+    
     public String loadPX269SQP05115Head(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05115Head(filter, user);
     }
