@@ -264,9 +264,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             id: prototype.id + '-btnDataEntry',
 //                            iconCls: 'prx-icon-image-update',
                             icon: 'resources/img/icon/16x16/icon_update_bash.png',
-                            tooltip: 'update',
+                            tooltip: 'Refresh',
                             listeners: {
-                                click: 'onDataEntryMPF060'
+                                click: 'onCallSummaryMPF132'
                             }
                         }
                     ]

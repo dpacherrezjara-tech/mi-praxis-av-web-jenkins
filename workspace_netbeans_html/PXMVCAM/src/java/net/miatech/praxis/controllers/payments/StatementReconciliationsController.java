@@ -3792,6 +3792,33 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "onCallProgramBySummary", method = RequestMethod.POST)
+    public @ResponseBody
+    String onCallProgramBySummary(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : onCallProgramBySummary-------------");
+
+        Gson gson = new Gson();
+        A2290Filter filter = new A2290Filter();
+        A2290Filter result = new A2290Filter();
+        String beanString;
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            UserView user = this.serverSession.getServerSession().getUserView();
+
+            result = logic.SQPMPP082_MPF132(user);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "executeOptionHead")
     public @ResponseBody
     String executeOptionHead(ModelMap map, HttpServletRequest request) {
