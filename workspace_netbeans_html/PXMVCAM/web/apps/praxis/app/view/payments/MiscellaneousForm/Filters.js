@@ -2,48 +2,23 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.'+prototype.id+'-filters',
     border: true,
-    bodyStyle: 'background-color: #E3EAF9;',
-    padding: '2px 0px 1px 0px',
+    bodyStyle: 'background-color: #E1E6EC;',
     layout: 'column',
     items: [
         {
             xtype: 'form',
             border: false,
             bodyStyle: 'background: transparent',
-            padding: '2px 5px 1px 5px',
+            margin: '15px 0 15px 15px',
             layout: 'column',
-            defaults:  {
-                labelStyle: 'font-weight:bold;',
+            defaults: {
                 fieldStyle: 'text-align: center;',
-                padding: '5px 1px 5px 1px',
                 anchor: '100%',
                 hiddenLabel: false,
                 labelAlign: 'right',
-                xtype: 'textfield',
-//                hidden: true,
-                selectOnFocus: true,
-                enableKeyEvents: true,
-                enforceMaxLength: true
+                hidden: false
             },
             items: [
-                {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbCodes',
-                    fieldLabel: 'Codes',
-                    triggerAction: 'all',
-                    enableKeyEvents: true,
-                    readOnly: false,
-                    editable: true,
-                    valueField: 'CODE',
-                    displayField: 'NAME',
-                    fieldStyle: 'text-align: left;',
-                    labelWidth: 150,
-                    width: 400,
-                    hidden: true,
-                    listeners:{
-                         change: 'btnSearch_click'
-                     }
-                },
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbTable',
@@ -55,14 +30,13 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Filters', {
                     valueField: 'CODE',
                     displayField: 'NAME',
                     fieldStyle: 'text-align: left;',
-                    labelWidth: 150,
-                    width: 400,
+                    labelWidth: 60,
+                    width: 130,
                     hidden: false,
                     listeners:{
                          change: 'btnSearch_click'
                      }
                 },
-                
             ]
         }
     ]

@@ -2,16 +2,15 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
-    align: 'center',
-    bodyStyle: 'background-color: #E3EAEF;',
+    bodyStyle: 'background-color: #E3EAEF;border: none;',
     defaults: {
         bodyStyle: 'background: transparent;',
-        border: false
+        border: false,
     },
-    style: 'margin: 1px;',
     items: [
         {
             region: 'center',
+            margin: '20px 0 0 0',
             layout: {
                 type: 'vbox',
                 align: 'center'
@@ -19,8 +18,8 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1200,
-                height: 700,
+                width: 1500,
+                height: 'auto',
                 align: 'center'
             },
             items: [
@@ -28,8 +27,7 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                     xtype: 'panel',
                     id: prototype.id + '-panelMain',
                     bodyStyle: 'background-color: #E3EAEF;',
-                    padding: '1',
-                    margin: '1',
+                    border: false,
                     layout: {
                         type: 'vbox',
                         align: 'center'
@@ -39,12 +37,13 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                         //-----------------------------------------------------------------
                         {
                             xtype: 'panel',
+                            border: false,
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             padding: '1',
-                            border: true,
+                            border: false,
                             height: 860,
-                            width: 772,
+                            width: 775,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -53,10 +52,10 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataAirport',
-                                    height: 556,
-                                    width: 772,
+                                    width: 790,
                                     hidden: false,
                                     columnLines: true,
+                                    height: 520,
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -105,14 +104,14 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                                                     align: 'center'
                                                 },
                                                 columns: [
-                                                    {text: 'From', dataIndex: 'DATINI', width: 70, hidden: false},
+                                                    {text: 'From', dataIndex: 'DATINI', width: 70, hidden: false, style:'padding:5px'},
                                                     {text: 'To', dataIndex: 'DATFIN', width: 70, hidden: false},
                                                 ]
                                             },
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
-                                                width: 40,
+                                                width: 42,
                                                 text: 'Edit',
                                                 align: 'center',
                                                 items: [
@@ -126,76 +125,73 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.Info', {
                                         ]
                                     }
                                 },
-                                {xtype: 'tbspacer', width: 7, height: 10},
                                 {
-                                    xtype: 'panel',
-                                    id: prototype.id + '-pie',
-                                    layout: {
-                                        type: 'hbox',
-                                        pack: 'center'
-                                    },
-                                    border: true,
-                                    width: 720,
-                                    height: 25,
-                                    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-                                    items: [
-                                        {
-                                            xtype: 'panel',
-                                            width: 720,
-                                            height: 25,
-                                            layout: {
-                                                type: 'hbox',
-                                                pack: 'center'
+                            xtype: 'panel',
+                            id: prototype.id + '-pie',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: false,
+                            width: 700,
+                            height: 25,
+                            bodyStyle: 'background-color: #E1E6EC; border-radius: 5px;',
+                            margin: '15px 0 0px 0px',
+                            items: [
+                                    {
+                                        xtype: 'panel',
+                                        width: 450,
+                                        height: 25,
+                                        bodyStyle: 'background-color: #6A8BAA; border: 1px solid #81BEF7; border-radius: 5px',
+                                        layout: {
+                                            type: 'hbox',
+                                            pack: 'center'
+                                        },
+                                        defaults: {
+                                            xtype: 'label'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Page',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
                                             },
-                                            defaults: {
-                                                xtype: 'label',
+                                            {
+                                                id: prototype.id + '-lbl-currentPage',
+                                                text: '1',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
                                             },
-                                            items: [
-                                                {
-                                                    text: 'Page',
-                                                    width: 50
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-currentPage',
-                                                    text: '1',
-                                                    width: 50
-                                                },
-                                                {
-                                                    text: 'Of',
-                                                    width: 50
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-pageCount',
-                                                    text: '0',
-                                                    width: 50
-                                                },
-                                                {xtype: 'tbspacer', width: 100},
-                                                {
-                                                    text: 'Total found',
-                                                    width: 80
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-total',
-                                                    text: '0',
-                                                    width: 50
-                                                }
-                                            ]
-                                        }
+                                            {
+                                                text: 'OF',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {
+                                                id: prototype.id + '-lbl-pageCount',
+                                                text: '0',
+                                                width: 50,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {xtype: 'tbspacer', width: 50},
+                                            {
+                                                text: 'Total Found',
+                                                width: 80,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            },
+                                            {
+                                                id: prototype.id + '-lbl-total',
+                                                text: '0',
+                                                width: 40,
+                                                style: 'margin-top: 3px;color:white;font-weight:bold'
+                                            }
                                     ]
                                 }
                             ]
                         }
+                            ]
+                        }
                     ]
-                },
-                {
-                    region: 'south',
-                    layout: 'border',
-                    height: 0,
-                    defaults: {
-                        style: 'margin: 1px;',
-                        bodyStyle: 'background: transparent;',
-                        border: false
-                    }
                 }
             ]
         }
