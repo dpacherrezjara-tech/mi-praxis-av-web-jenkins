@@ -12,6 +12,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
     items: [
         {
             region: 'center',
+            margin: '15px 0 0 0',
             layout: {
                 type: 'vbox',
                 align: 'center'

@@ -58,7 +58,7 @@ public class MiscellaneousPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04518(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04518_V2(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
