@@ -1,5 +1,7 @@
 package net.miatech.praxis.controllers.payments;
 
+import com.google.gson.Gson;
+import com.mashape.unirest.http.Unirest;
 import com.monitorjbl.xlsx.StreamingReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +34,7 @@ import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
+import net.miatech.praxis.utils.SpringWS;
 import net.miatech.utils.CustomExcelCell;
 import net.miatech.utils.Functions;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -64,6 +67,9 @@ public class AccountingReportController extends BaseController {
     
     @Autowired
     private ExportUtils exportUtils;
+    
+    @Autowired
+    private SpringWS ws;
     
     //<editor-fold defaultstate="collapsed" desc="Master Process">
     @RequestMapping(value = "loadMain")
@@ -280,7 +286,8 @@ public class AccountingReportController extends BaseController {
             map.put("STATUS", false);
             map.put("MSG", "Another process is Running.");
         }else{
-            logic.loadSPACR001Filter(params);
+            //logic.loadSPACR001Filter(params);
+            ws.postAsync(new Gson().toJson(params), "Accounting/processAccounting");
             map.put("STATUS", true);
             map.put("MSG", "Process Running.");
         }
