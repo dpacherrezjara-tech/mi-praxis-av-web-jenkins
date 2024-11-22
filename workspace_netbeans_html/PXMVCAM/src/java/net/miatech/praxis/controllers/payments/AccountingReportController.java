@@ -1,7 +1,6 @@
 package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
-import com.mashape.unirest.http.Unirest;
 import com.monitorjbl.xlsx.StreamingReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +28,7 @@ import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
+import net.miatech.praxis.payment.dto.SPACR018Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
@@ -41,9 +41,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -490,6 +487,14 @@ public class AccountingReportController extends BaseController {
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
+    
+    @RequestMapping(value = "loadSummaryAccounting")
+    public ResponseEntity<?> loadSummaryAccounting(SPACR018Filter params) throws Exception{
+        System.out.println("***** AccountingReport - loadSummaryAccounting *****");
+        SPACR018Filter filter = logic.loadSPACR018Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Data Bindings">
@@ -592,7 +597,7 @@ public class AccountingReportController extends BaseController {
                     ExcelBandocDto dto = ExcelBandocDto.builder()
                             .BANDOC(x.getCell(0)!=null?x.getCell(0).getStringCellValue():null)
                             .VALDATE(x.getCell(1)!=null?x.getCell(1).getStringCellValue():null)
-                            .REFER(x.getCell(2)!=null?x.getCell(2).getStringCellValue():null)
+                            .REFER(x.getCell(2)!=null?x.getCell(2).getStringCellValue():"")
                             .CUUID(proceso)
                             .FUUID(fechap)
                             .build();
