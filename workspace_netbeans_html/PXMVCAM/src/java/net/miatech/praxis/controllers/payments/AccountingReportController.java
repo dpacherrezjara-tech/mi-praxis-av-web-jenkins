@@ -307,7 +307,7 @@ public class AccountingReportController extends BaseController {
     
     //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Exceles">
+    //<editor-fold defaultstate="collapsed" desc="Excel">
     @RequestMapping(value = "downloadExcelMain", method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelMain(@RequestBody SPACR002Filter params) throws Exception {
         System.out.println("***** AccountingMasterProcess - downloadExcelMain *****");
@@ -456,6 +456,138 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getIDACC()));
             row.add(new CustomExcelCell(obj.getFECSAP()));
             row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
+            data.add(row);
+        });
+        
+        return exportUtils.createCustomExcel(data, title);
+    }
+    
+    @RequestMapping(value = "downloadBandocsSAP", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadBandocsSAP(@RequestBody SPACR012Filter params) throws Exception {
+        System.out.println("***** AccountingMasterProcess - downloadBandocsSAP *****");
+        params.setExcel(true);
+        SPACR012Filter filter = logic.loadSPACR012Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        
+        String title = "AccountingReport-" 
+            + params.getIN_CCUST()+ "_" + params.getIN_FCONT()+ "-" + params.getIN_IDCONT().trim()
+            + "_" + UUID.randomUUID().toString().substring(0,6);
+        
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Processing\nDate"));
+        header.add(new CustomExcelCell("Type"));
+        header.add(new CustomExcelCell("Accounting\nID"));
+        header.add(new CustomExcelCell("Bank Doc"));
+        header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("SAP Date"));
+        header.add(new CustomExcelCell("SAP Status"));
+        header.add(new CustomExcelCell("User\nCreate"));
+        header.add(new CustomExcelCell("Datetime\nCreate"));
+        header.add(new CustomExcelCell("User\nUpdate"));
+        header.add(new CustomExcelCell("Datetime\nUpdate"));
+
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getCODPRO()));
+            row.add(new CustomExcelCell(obj.getFCONT()));
+            row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(obj.getIDCONT()));
+            row.add(new CustomExcelCell(obj.getBANDOC()));
+            row.add(new CustomExcelCell(obj.getVALDATE()));
+            row.add(new CustomExcelCell(obj.getREFER()));
+            row.add(new CustomExcelCell(obj.getFECSAP()));
+            row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
+            row.add(new CustomExcelCell(obj.getUSCR()));
+            row.add(new CustomExcelCell(obj.getTSCR()));
+            row.add(new CustomExcelCell(obj.getUSUP()));
+            row.add(new CustomExcelCell(obj.getTSUP()));
+            data.add(row);
+        });
+        
+        return exportUtils.createCustomExcel(data, title);
+    }
+    
+    @RequestMapping(value = "downloadAccountingInfo", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadAccountingGrid(@RequestBody SPACR013Filter params) throws Exception {
+        System.out.println("***** AccountingMasterProcess - downloadAccountingInfo *****");
+        params.setExcel(true);
+        SPACR013Filter filter = logic.loadSPACR013Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        
+        String title = "AccountingReport-" 
+            + params.getIN_CCUST()+ "_" + params.getIN_IDCONT().trim() + params.getIN_BANDOC()
+            + "_" + UUID.randomUUID().toString().substring(0,6);
+        
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Society"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Bank Doc"));
+        header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Record\nType"));
+        header.add(new CustomExcelCell("Profit"));
+        header.add(new CustomExcelCell("Primary Key"));
+        header.add(new CustomExcelCell("Account"));
+        header.add(new CustomExcelCell("Currency"));
+        header.add(new CustomExcelCell("Value"));
+        header.add(new CustomExcelCell("Balance"));
+        header.add(new CustomExcelCell("Item"));
+        header.add(new CustomExcelCell("Large Text"));
+        header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("Bank\nCode"));
+        header.add(new CustomExcelCell("Bank\nName"));
+        header.add(new CustomExcelCell("Country"));
+        header.add(new CustomExcelCell("Place"));
+        header.add(new CustomExcelCell("Agent"));
+        header.add(new CustomExcelCell("Cost\nCenter"));
+        header.add(new CustomExcelCell("Key 1"));
+        header.add(new CustomExcelCell("Key 2"));
+        header.add(new CustomExcelCell("Payment"));
+        header.add(new CustomExcelCell("Acc. Number"));
+        header.add(new CustomExcelCell("Accounting\nDate"));
+        header.add(new CustomExcelCell("Accounting\nID"));
+
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            
+            row.add(new CustomExcelCell(obj.getA4545CCUST()));
+            row.add(new CustomExcelCell(obj.getA4545COMPC()));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getA4545DOCBA()));
+            row.add(new CustomExcelCell(obj.getA4545DOCD()));
+            row.add(new CustomExcelCell(obj.getA4545HREGI()));
+            row.add(new CustomExcelCell(obj.getA4545PROFI()));
+            row.add(new CustomExcelCell(obj.getA4545PKEY()));
+            row.add(new CustomExcelCell(obj.getA4545CUENT()));
+            row.add(new CustomExcelCell(obj.getA4545CUR()));
+            row.add(new CustomExcelCell(obj.getA4545ACTIV()));
+            row.add(new CustomExcelCell(obj.getA4545PASIV()));
+            row.add(new CustomExcelCell(obj.getA4545ITEM()));
+            row.add(new CustomExcelCell(obj.getA4545TEXTD()));
+            row.add(new CustomExcelCell(obj.getA4545REPAG()));
+            row.add(new CustomExcelCell(obj.getA4545BANCO()));
+            row.add(new CustomExcelCell(obj.getA4545REFB()));
+            row.add(new CustomExcelCell(obj.getA4545PAIS()));
+            row.add(new CustomExcelCell(obj.getA4545PLACE()));
+            row.add(new CustomExcelCell(obj.getA4545AGENT()));
+            row.add(new CustomExcelCell(obj.getA4545CCOST()));
+            row.add(new CustomExcelCell(obj.getA4545REFK()));
+            row.add(new CustomExcelCell(obj.getA4545REFK2()));
+            row.add(new CustomExcelCell(obj.getA4545MPAGO()));
+            row.add(new CustomExcelCell(obj.getA4545ANUMB()));
+            row.add(new CustomExcelCell(obj.getA4545PSTGD()));
+            row.add(new CustomExcelCell(obj.getA4545USER()));
+
             data.add(row);
         });
         
