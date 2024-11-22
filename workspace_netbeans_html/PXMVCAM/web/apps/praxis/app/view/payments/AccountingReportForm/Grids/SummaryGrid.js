@@ -8,12 +8,17 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1450,
+    width: prototype.width,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
         markDirty: false
     },
+    features: [
+        {
+            ftype: 'summary' // Agrega la característica de resumen al grid
+        }
+    ],
     columnLines: true,
     columns: {
         defaults: {
@@ -45,12 +50,24 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
                 }
             },
             {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
-            {text: 'Documents', dataIndex: 'QTY', width: 120},
+            {text: 'Documents', dataIndex: 'QTY', width: 120,
+                summaryType: 'sum',
+                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                    metaData.style = 'text-align:center; margin-right:3px;font-weight:bold;';
+                    return '<b>' + value + '<b>';
+                }
+            },
             {text: 'Total', dataIndex: 'TOTAL', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "text-align:right;";
                     value = Ext.util.Format.number(value, '0,000.00');
                     return value;
+                },
+                summaryType: 'sum',
+                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                    metaData.style = 'text-align:right; margin-right:3px;';
+                    value = Ext.util.Format.number(value, '0,000.00');
+                    return '<b>' + value + '<b>';
                 }
             },
             {text: 'Currency', dataIndex: 'LOCRENCY2', width: 120},
@@ -66,12 +83,47 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
                     }
                 },
                 columns: [
-                    {text: 'Documents', dataIndex: 'T_ACCOUNTED', width: 120},
-                    {text: 'Value', dataIndex: 'V_ACCOUNTED', width: 120,
+                    {text: 'Documents<br>Accounted', dataIndex: 'T_ACCOUNTED', width: 120,
+                        summaryType: 'sum',
+                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                            metaData.style = 'text-align:center; margin-right:3px;';
+                            return '<b>' + value + '<b>';
+                        }
+                    },
+                    {text: 'Value<br>Accounted', dataIndex: 'V_ACCOUNTED', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#89e45f;text-align:right;";
                             value = Ext.util.Format.number(value, '0,000.00');
                             return value;
+                        },
+                        summaryType: 'sum',
+                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                            metaData.style = 'text-align:right; margin-right:3px;';
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return '<b>' + value + '<b>';
+                        }
+                    },
+                    {text: 'Documents<br>No Accounted', dataIndex: 'T_NACCOUNTED', width: 120,
+                        summaryType: 'sum',
+                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                            metaData.style = 'text-align:center; margin-right:3px;';
+                            return '<b>' + value + '<b>';
+                        }
+                    },
+                    {text: 'Value<br>No Accounted', dataIndex: 'V_NACCOUNTED', width: 120,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#89e45f;text-align:right;";
+                            if (value !== 0) {
+                                metaData.style += 'color:red;font-weight:bold';
+                            }
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return value;
+                        },
+                        summaryType: 'sum',
+                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                            metaData.style = 'text-align:right; margin-right:3px;color:red;';
+                            value = Ext.util.Format.number(value, '0,000.00');
+                            return '<b>' + value + '<b>';
                         }
                     }
                 ]
@@ -99,7 +151,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
                 ]
             },
             {
-                text: 'Pending',
+                text: 'Pending BPO',
                 defaults: {
                     menuDisabled: true,
                     sortable: true,
