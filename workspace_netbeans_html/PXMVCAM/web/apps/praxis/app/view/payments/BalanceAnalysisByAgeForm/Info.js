@@ -717,7 +717,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     series: [{
                                                             type: 'bar3d',
                                                             stacked: false,
-                                                            title: ['Sales', 'Conciliation', 'Pending'],
+                                                            title: ['Sales', 'Paid', 'Pending'],
                                                             xField: 'strFormatDate',
                                                             yField: ['QSALES', 'QMATCH', 'QPEND'],
                                                             
