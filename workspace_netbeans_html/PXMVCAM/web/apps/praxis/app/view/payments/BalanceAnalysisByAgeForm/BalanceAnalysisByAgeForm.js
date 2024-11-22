@@ -65,11 +65,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.BalanceAnalysisByA
                                         },
                                         {
                                             xtype: prototype.id + '-filters2',
-                                            id: prototype.id + '-contentFilter2'
+                                            id: prototype.id + '-contentFilter2',hidden: true
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 650,
+                                            height: 1100,
                                             width: 1800,
                                             layout: 'fit',
                                             items: [
