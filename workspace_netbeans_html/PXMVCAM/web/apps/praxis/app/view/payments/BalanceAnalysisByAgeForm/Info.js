@@ -47,6 +47,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 align: 'center'
                             },
                             items: [
+                                
                                 {
                                     xtype: 'panel',
                                     bodyStyle: 'background-color: #E3EAEF;',
@@ -57,6 +58,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         align: 'center'
                                     },
                                     items: [
+                                        
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridData',
@@ -337,6 +339,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             id: prototype.id + '-lblTittleSalesTotal',
                                                             labelAlign: 'center',
                                                             border: true,
+                                                            hidden: true,
                                                             align: 'center',
                                                             margin: '5 0 5 135',
                                                             style: {
@@ -355,7 +358,77 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             id: prototype.id + '-displayPolarST',
                                                             width: 520,
                                                             border: true,
+                                                            hidden: true,
                                                             margin: '0 0 0 5',
+                                                            innerPadding: 10,
+                                                            height: 200,
+                                                            background: '#E0F8F7',
+                                                            captions: {
+                                                                title: {
+//                                                                    text: 'Total Amount USD',
+                                                                    alignTo: 'chart'
+                                                                }
+                                                            },
+                                                            animation: {
+                                                                duration: 200
+                                                            },
+                                                            interactions: ['rotate', 'itemhighlight'],
+                                                            series: [{
+                                                                    type: 'pie3d',
+                                                                    angleField: 'Perc2',
+                                                                    colors: ['#ea0000', '#5dd92d'],
+                                                                    stacked: false,
+                                                                    label: {
+                                                                        field: 'VENDOR',
+                                                                        calloutLine: true,
+                                                                        renderer: function (value, b, callout) {
+                                                                            callout.calloutWidth = 1;
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    highlight: true,
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = '';
+                                                                            label = record.get('VENDOR');
+                                                                            if (label === 'Pending') {
+                                                                                label = 'Pending';
+                                                                            } else {
+                                                                                label = 'Paid';
+                                                                            }
+                                                                            toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }]
+                                                        },
+                                                        {
+                                                            xtype: 'label',
+                                                            id: prototype.id + '-lblTittleSalesTotal_T',
+                                                            labelAlign: 'center',
+                                                            border: true,
+                                                            hidden: false,
+                                                            align: 'center',
+                                                            margin: '5 0 5 135',
+                                                            style: {
+                                                                fontSize: '15px',
+                                                                fontWeight: 'bold',
+                                                                color: '#231223',
+                                                                fontFamily: '"Open Sans", sans-serif',
+                                                                textAlign: 'center',
+                                                                border: '2px solid #000000', // Borde del marco
+                                                                padding: '10px', // Espacio interno
+                                                                borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
+                                                            }
+                                                        },
+                                                        {
+                                                            xtype: 'polar',
+                                                            id: prototype.id + '-displayPolarST_T',
+                                                            width: 520,
+                                                            border: true,
+                                                            margin: '0 0 0 5',
+                                                            hidden: false,
                                                             innerPadding: 10,
                                                             height: 200,
                                                             background: '#E0F8F7',
@@ -404,6 +477,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             id: prototype.id + '-lblTittleSalesTotal2',
                                                             labelAlign: 'center',
                                                             border: true,
+                                                            hidden: true,
                                                             align: 'center',
                                                             margin: '5 0 5 135',
                                                             style: {
@@ -422,7 +496,77 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             id: prototype.id + '-displayPolarST2',
                                                             width: 520,
                                                             border: true,
+                                                            hidden: true,
                                                             margin: '0 0 0 5',
+                                                            innerPadding: 10,
+                                                            height: 200,
+                                                            background: '#E0F8F7',
+                                                            captions: {
+                                                                title: {
+//                                                                    text: 'Total Amount USD',
+                                                                    alignTo: 'chart'
+                                                                }
+                                                            },
+                                                            animation: {
+                                                                duration: 200
+                                                            },
+                                                            interactions: ['rotate', 'itemhighlight'],
+                                                            series: [{
+                                                                    type: 'pie3d',
+                                                                    angleField: 'Perc2',
+                                                                    colors: ['#5dd92d', '#ea0000'],
+                                                                    stacked: false,
+                                                                    label: {
+                                                                        field: 'VENDOR',
+                                                                        calloutLine: true,
+                                                                        renderer: function (value, b, callout) {
+                                                                            callout.calloutWidth = 1;
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    highlight: true,
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = '';
+                                                                            label = record.get('VENDOR');
+                                                                            if (label === 'Pending') {
+                                                                                label = 'Pending';
+                                                                            } else {
+                                                                                label = 'Paid';
+                                                                            }
+                                                                            toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }]
+                                                        },
+                                                        {
+                                                            xtype: 'label',
+                                                            id: prototype.id + '-lblTittleSalesTotal2_T',
+                                                            labelAlign: 'center',
+                                                            border: true,
+                                                            hidden: false,
+                                                            align: 'center',
+                                                            margin: '5 0 5 135',
+                                                            style: {
+                                                                fontSize: '15px',
+                                                                fontWeight: 'bold',
+                                                                color: '#231223',
+                                                                fontFamily: '"Open Sans", sans-serif',
+                                                                textAlign: 'center',
+                                                                border: '2px solid #000000', // Borde del marco
+                                                                padding: '10px', // Espacio interno
+                                                                borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
+                                                            }
+                                                        },
+                                                        {
+                                                            xtype: 'polar',
+                                                            id: prototype.id + '-displayPolarST2_T',
+                                                            width: 520,
+                                                            border: true,
+                                                            margin: '0 0 0 5',
+                                                            hidden: false,
                                                             innerPadding: 10,
                                                             height: 200,
                                                             background: '#E0F8F7',
@@ -472,7 +616,33 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         }
                                     ]
                                 },
-
+                                {
+                                    xtype: 'panel',
+                                    width: '100%',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 0 2 0',
+                                    bodyStyle: 'background: transparent;"',
+                                    defaults: {
+                                        margin: '4 0'
+                                    },
+                                    items: [
+                                        {xtype: 'tbspacer', width: 800},
+                                        {
+                                            xtype: 'radiogroup',
+                                            id: prototype.id + '-rbgFlagaa',
+                                            margin: '0 0 0 500',
+                                            items: [
+                                                {boxLabel: '<b style="color:#046AAA;">Tickets</b>', inputValue: 'Cpn', name: 'rbgFlag', checked: true},
+                                                {xtype: 'tbspacer', width: 20},
+                                                {boxLabel: '<b style="color:#046AAA;">Amounts</b>', inputValue: 'Amt', name: 'rbgFlag', width: 80}
+                                            ],
+                                            listeners: {
+                                                change: 'displayChart_ByMonth'
+                                            }
+                                        }
+                                    ]
+                                },
                                 //PANEL DE GRAFICOS
                                 {
                                     xtype: 'panel',
@@ -550,6 +720,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             title: ['Sales', 'Conciliation', 'Pending'],
                                                             xField: 'strFormatDate',
                                                             yField: ['QSALES', 'QMATCH', 'QPEND'],
+                                                            
                                                             colors: ['#0066ff', '#5dd92d', '#ea0000'],
                                                             highlight: true,
                                                             style: {
@@ -631,7 +802,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             title: ['Sales', 'Conciliation', 'Pending'],
                                                             xField: 'strFormatDate',
                                                             yField: ['ASALES', 'AMATCH', 'APEND'],
-                                                            colors: ['#c6f7cd', '#0066ff', '#CC0000'],
+                                                            colors: ['#0066ff', '#5dd92d', '#ea0000'],
                                                             highlight: true,
                                                             style: {
                                                                 inGroupGapWidth: -7,
