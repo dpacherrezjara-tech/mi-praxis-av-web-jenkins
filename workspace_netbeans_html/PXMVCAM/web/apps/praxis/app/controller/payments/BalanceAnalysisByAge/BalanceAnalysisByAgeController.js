@@ -353,14 +353,16 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             let item2 = {};
                             let totals = [];
                             let charts = [];
+                            let pendingPerc = (obj.data.items[0].data.totAPEND / obj.data.items[0].data.totASALES ) * 100;
+                            let paidPerc = (obj.data.items[0].data.totAMATCH / obj.data.items[0].data.totASALES ) * 100;
                             if (obj.data.items.length > 0) {
                                 item2.Perc2 = obj.data.items[0].data.totAPEND;
-                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPEND, '0,000');
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPEND, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item2.VENDOR = pending;
                                 totals.push(item2);
 
                                 item.Perc2 = obj.data.items[0].data.totAMATCH;
-                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totAMATCH, '0,000');
+                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totAMATCH, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item.VENDOR = Paid;
                                 totals.push(item);
                             } else {
@@ -380,14 +382,16 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             let item2_T = {};
                             let totals_T = [];
                             let charts_T = [];
+                            pendingPerc = (obj.data.items[0].data.totQPEND / obj.data.items[0].data.totQSALES ) * 100;
+                            paidPerc = (obj.data.items[0].data.totQMATCH / obj.data.items[0].data.totQSALES ) * 100;
                             if (obj.data.items.length > 0) {
                                 item2_T.Perc2 = obj.data.items[0].data.totQPEND;
-                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPEND, '0,000');
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPEND, '0,000')+ "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item2_T.VENDOR = pending;
                                 totals_T.push(item2_T);
 
                                 item_T.Perc2 = obj.data.items[0].data.totQMATCH;
-                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totQMATCH, '0,000');
+                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totQMATCH, '0,000')+ "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item_T.VENDOR = Paid;
                                 totals_T.push(item_T);
                             } else {
@@ -408,14 +412,17 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             let item4 = {};
                             let totals2 = [];
                             let charts2 = [];
+                            let totalContab = obj.data.items[0].data.totAPOLIC + obj.data.items[0].data.totAPOLIPE
+                            paidPerc = (obj.data.items[0].data.totAPOLIC / totalContab ) * 100;
+                            pendingPerc = (obj.data.items[0].data.totAPOLIPE / totalContab ) * 100;
                             if (obj.data.items.length > 0) {
                                 item4.Perc2 = obj.data.items[0].data.totAPOLIC;
-                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIC, '0,000');
+                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIC, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item4.VENDOR = pending;
                                 totals2.push(item4);
                                 
                                 item3.Perc2 = obj.data.items[0].data.totAPOLIPE;
-                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIPE, '0,000');
+                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIPE, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item3.VENDOR = Paid;
                                 totals2.push(item3);
                             } else {
@@ -427,7 +434,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 data: totals2,
                                 autoLoad: true
                             });
-                            let totalContab = obj.data.items[0].data.totAPOLIC + obj.data.items[0].data.totAPOLIPE
+                            
                             Ext.getCmp(prototype.id + '-displayPolarST2').bindStore(storeData1er);
                             Ext.getCmp(prototype.id + '-lblTittleSalesTotal2').setText('Total Accounting Amount USD: ' + Ext.util.Format.number(totalContab, '0,000') )
                             
@@ -436,14 +443,17 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             let item4_T = {};
                             let totals2_T = [];
                             let charts2_T = [];
+                            let totalContab_T = obj.data.items[0].data.totQPOLIC + obj.data.items[0].data.totQPOLIPE
+                            paidPerc = (obj.data.items[0].data.totQPOLIC / totalContab_T ) * 100;
+                            pendingPerc = (obj.data.items[0].data.totQPOLIPE / totalContab_T ) * 100;
                             if (obj.data.items.length > 0) {
                                 item4_T.Perc2 = obj.data.items[0].data.totQPOLIC;
-                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIC, '0,000');
+                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIC, '0,000')  + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item4_T.VENDOR = pending;
                                 totals2_T.push(item4_T);
 
                                 item3_T.Perc2 = obj.data.items[0].data.totQPOLIPE;
-                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIPE, '0,000');
+                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIPE, '0,000')  + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item3_T.VENDOR = Paid;
                                 totals2_T.push(item3_T);
                             } else {
@@ -455,9 +465,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 data: totals2_T,
                                 autoLoad: true
                             });
-                            let totalContab_T = obj.data.items[0].data.totQPOLIC + obj.data.items[0].data.totQPOLIPE
+                            
                             Ext.getCmp(prototype.id + '-displayPolarST2_T').bindStore(storeData1er);
-                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').setText('Total Accounting Ticket: ' + Ext.util.Format.number(totalContab, '0,000') )
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').setText('Total Accounting Ticket: ' + Ext.util.Format.number(totalContab_T, '0,000') )
                             
                         if (obj.data.length === 0) {
                             global.Msg({
