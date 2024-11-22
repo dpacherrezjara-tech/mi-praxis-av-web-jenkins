@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingGri
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            global.downloadFile(me.request,'downloadAccountingInfo',params,'xlsx');
+                            global.downloadFile(me.request,'downloadExcelAccountingInfo',params,'xlsx');
                         }
                     }
                 });

@@ -89,7 +89,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            global.downloadFile(me.request,'downloadBandocsSAP',params,'xlsx');
+                            global.downloadFile(me.request,'downloadExcelBandocsSAP',params,'xlsx');
                         }
                     }
                 });
