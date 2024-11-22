@@ -31,7 +31,44 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     bodyStyle: 'background: transparent;"',
                     items: [
                         {xtype: 'tbspacer', width: 25},
-
+                        {
+                            xtype: 'label',
+                            text: 'Select by:',
+                            padding: '4 0 0 0',
+                            width: 60,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbSelectBy',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 150,
+                            typeAhead: true,
+                            value: 'T',
+                            valueField: 'value',
+                            displayField: 'description',
+                            listeners: {
+                                change: 'onChangeSelectBy'
+                            },
+                            store: new Ext.data.SimpleStore({
+                                fields: ['value', 'description'],
+                                data: [
+                                    ["T", "Total by credit card"], ["P", "Pending by credit card"]
+                                ]
+                            }),
+                            listConfig: {maxHeight: 100},
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                        },
                         //<editor-fold defaultstate="collapsed" desc="cmbDate">
                         {
                             xtype: 'combo',
@@ -115,17 +152,19 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             maxLength: 3,
                             enforceMaxLength: true
                         },
-
+                         {xtype: 'tbspacer', width: 20},
                         //</editor-fold>
+                        
                         {
                             xtype: 'label',
                             text: 'Country:',
-                            padding: '4 10 0 20',
-                            width: 80,
+                            padding: '4 0 0 0',
+                            width: 60,
                             style: {
                                 fontWeight: 'bold'
                             }
                         },
+                       
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbCountry',
@@ -144,13 +183,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                         },
-                        {xtype: 'tbspacer', width: 20},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
 //                            style: 'font-weight:bold;color:#0B333C;',
-                            padding: '4 10 0 20',
+                            padding: '4 0 0 0',
                             text: 'Agent:',
-                            width: 55,
+                            width: 40,
                             style: {
                                 fontWeight: 'bold'
                             }
@@ -190,7 +229,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 100,
+                            width: 50,
                             typeAhead: true,
                             valueField: 'value',
                             value: "",
@@ -231,7 +270,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 100,
+                            width: 70,
                             value: "",
                             typeAhead: true,
                             valueField: 'code', displayField: 'name',
@@ -259,7 +298,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             enforceMaxLength: true,
                             maskRe: /[0-9]/,
                             maxLength: 4,
-                            width: 85,
+                            width: 60,
                             enableKeyEvents: true,
 //                            listeners: {
 //                                keypress: 'BuscarSAGENT_keyDownHandler'

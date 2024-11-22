@@ -29,7 +29,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         prototype.url = CONTEXTPATH + '/BalanceAnalysisByAge';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-boxSumaryMonthData';
+        me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
@@ -275,6 +275,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelSumaryCanal = Ext.getCmp(prototype.id + '-boxSumaryCanalData')
         let panelSumaryCompany = Ext.getCmp(prototype.id + '-boxSumaryCompanyData')
         let panelSumaryCountry = Ext.getCmp(prototype.id + '-boxSumaryCountryData')
+        let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
         if (panelReportDay.isVisible()) {
             me.typeBean = 'S' //Search
             this.setFormatParameter2();
@@ -294,17 +295,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (panelSumaryCountry.isVisible()) {
             this.setFormatParameter2();
             this.setGridSumaryCountry();
-        } 
+        } else if ( panelGridData.isVisible() ){
+            this.setFormatParameter2();
+            this.setGridDataTotal();
+        }
     },
-
-    isVacio: function (elemento) {
+    isEmpty: function (elemento) {
         if (elemento.getValue() === '') {
             return true;
         } else {
             return false;
         }
     },
-
     onReportDayPending: function () {
         let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
         let panelMain = Ext.getCmp(prototype.id + '-boxMainData')
@@ -322,7 +324,138 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             panelMain.show()
         }
     },
+    setGridDataTotal: function () {
+        win.lblUser_toolTip("Estructura: MPF118");
+        me.panelActual = '-panelGridData';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSalesTotal'
+                }, listeners: {
+                    beforeload: function (obj) {
 
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj, obj2, success, response, obj5) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin7');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                            //VENTA
+                            
+                            let item = {};
+                            let item2 = {};
+                            let totals = [];
+                            let charts = [];
+                            if (obj.data.items.length > 0) {
+                                item2.Perc2 = obj.data.items[0].data.totAMATCH;
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAMATCH, '0,000');
+                                item2.VENDOR = pending;
+                                totals.push(item2);
+
+                                item.Perc2 = obj.data.items[0].data.totAPEND;
+                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPEND, '0,000');
+                                item.VENDOR = Paid;
+                                totals.push(item);
+                            } else {
+                                totals.push({})
+                            }
+
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+                            Ext.getCmp(prototype.id + '-displayPolarST').bindStore(storeData1er);
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal').setText('Total Sales Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totASALES, '0,000') )
+                        
+                            //// CONTABILIDAD
+                            
+                            let item3 = {};
+                            let item4 = {};
+                            let totals2 = [];
+                            let charts2 = [];
+                            if (obj.data.items.length > 0) {
+                                item2.Perc2 = obj.data.items[0].data.totAPOLIC;
+                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIC, '0,000');
+                                item2.VENDOR = pending;
+                                totals.push(item2);
+
+                                item.Perc2 = obj.data.items[0].data.totAPOLIPE;
+                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIPE, '0,000');
+                                item.VENDOR = Paid;
+                                totals.push(item);
+                            } else {
+                                totals.push({})
+                            }
+
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+                            let totalContab = obj.data.items[0].data.totAPOLIC + obj.data.items[0].data.totAPOLIPE
+                            Ext.getCmp(prototype.id + '-displayPolarST2').bindStore(storeData1er);
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2').setText('Total Accounting Amount USD: ' + Ext.util.Format.number(totalContab, '0,000') )
+                            
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            
+//                            if(me.typeBean == 'D'){
+//                                console.log('drilldown')
+//                                Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(obj.data.items[0].data.strFormatDate + ' | ' + obj.data.items[0].data.SAGENT + ' | ' + obj.data.items[0].data.CANAL)
+//                            }else {
+//                            }
+
+                        }
+                        me.setWidthPie();
+                    }
+                }
+            });
+            global.clear();
+
+
+            Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-graficosAños').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-displayPolar2').bindStore(storeGridDatas);
+        }
+    },
+    displayChart_ByMonth: function (a, b, c, d) {
+
+        var rbg_Type_tc = Ext.getCmp(prototype.id + '-rbgFlagaa').getValue().rbgFlag;
+        switch (rbg_Type_tc) {
+            case 'Cpn':
+                Ext.getCmp(prototype.id + '-graficosAños').show();
+                Ext.getCmp(prototype.id + '-graficosAñosAmount').hide();
+                break;
+            case 'Amt':
+                Ext.getCmp(prototype.id + '-graficosAños').hide();
+                Ext.getCmp(prototype.id + '-graficosAñosAmount').show();
+                break;
+        }
+    },
+    onChangeSelectBy: function (combo, newValue, oldValue){
+        this.setFormatParameter2();
+        if ( newValue === 'T' ){
+            this.setGridDataTotal();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide()
+        }else{
+            this.setGridSumaryMonth();
+            Ext.getCmp(prototype.id + '-contentFilter2').show()
+        }
+    },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF117");
         var msj = this.validateFields();
@@ -1048,7 +1181,6 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (me.panelActual == '-boxPendingData') {
             me.typeBean = 'S' // SEARCH
             this.setGridReportDay();
-
         } else if (me.panelActual == '-boxSumaryCanalData') {
             this.setGridSumaryCanal();
         } else if (me.panelActual == '-boxSumaryCompanyData') {
@@ -1222,6 +1354,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 break;
             case  '-boxSumaryCountryData':
                 me.pagginActual = '-paggin6';
+                break;
+            case  '-panelGridData':
+                me.pagginActual = '-paggin7';
                 break;
         }
     },
