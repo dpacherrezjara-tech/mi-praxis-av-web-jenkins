@@ -85,7 +85,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     },
     xpanel_afterrender: function (obj, e) {
         this.setStoreData();
-//        this.getDataAudit();
+        this.getDataAudit();
         this.obtainData();
     },
     eventKey: function (e, eOpts) {
