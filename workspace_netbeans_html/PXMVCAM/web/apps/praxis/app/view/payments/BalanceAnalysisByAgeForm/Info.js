@@ -60,10 +60,17 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     items: [
                                         
                                         {
-                                            xtype: 'grid',
+                                            xtype: 'treepanel',
                                             id: prototype.id + '-gridData',
-                                            width: 1172,
+                                            width: 1315 ,
+//                                            height: 337 ,
+                                            reserveScrollbar: true,
+                                            useArrows: true,
+                                            rootVisible: false,
+                                            multiSelect: true,
                                             columnLines: true,
+                                            rowLines: true,
+//                                            columnLines: true,
                                             features: [{
                                                     ftype: 'summary'
                                                 }],
@@ -84,7 +91,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                         columns: [
                                                             {
-                                                                text: 'Date', dataIndex: 'strFormatDate', width: 100,
+                                                                text: 'Date', dataIndex: 'strFormatDate', width: 150,xtype: 'treecolumn',
 //                                                        listeners: {
 //                                                            click: 'OnviewDetBank'
 //                                                        },
@@ -95,6 +102,21 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                        }
                                                             }
                                                         ]
+                                                    },
+                                                    {
+                                                        text: 'Av Group', dataIndex: 'CCUST', width: 90,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#c9daf5;";
+                                                            let strCCUST = {
+                                                                134: 'AVIANCA',
+                                                                133: 'LACSA',
+                                                                202: 'TACA',
+                                                                547: 'AEROGAL',
+                                                            }
+                                                           
+                                                            
+                                                            return  strCCUST[value];
+                                                        },
                                                     },
                                                     {
                                                         text: 'Sales',
@@ -145,7 +167,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     },
                                                     
                                                             {
-                                                                text: 'Paid',
+                                                                text: 'Payed',
                                                                 id: prototype.id + '-headMonthAcc',
                                                                 defaults: {
                                                                     menuDisabled: true,
@@ -341,7 +363,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             border: true,
                                                             hidden: true,
                                                             align: 'center',
-                                                            margin: '5 0 5 135',
+                                                            margin: '5 0 5 100',
                                                             style: {
                                                                 fontSize: '15px',
                                                                 fontWeight: 'bold',
@@ -356,7 +378,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {
                                                             xtype: 'polar',
                                                             id: prototype.id + '-displayPolarST',
-                                                            width: 520,
+                                                            width: 450,
                                                             border: true,
                                                             hidden: true,
                                                             margin: '0 0 0 5',
@@ -410,7 +432,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             border: true,
                                                             hidden: false,
                                                             align: 'center',
-                                                            margin: '5 0 5 135',
+                                                            margin: '5 0 5 100',
                                                             style: {
                                                                 fontSize: '15px',
                                                                 fontWeight: 'bold',
@@ -425,7 +447,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {
                                                             xtype: 'polar',
                                                             id: prototype.id + '-displayPolarST_T',
-                                                            width: 520,
+                                                            width: 450,
                                                             border: true,
                                                             margin: '0 0 0 5',
                                                             hidden: false,
@@ -479,7 +501,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             border: true,
                                                             hidden: true,
                                                             align: 'center',
-                                                            margin: '5 0 5 135',
+                                                            margin: '5 0 5 100',
                                                             style: {
                                                                 fontSize: '15px',
                                                                 fontWeight: 'bold',
@@ -494,7 +516,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {
                                                             xtype: 'polar',
                                                             id: prototype.id + '-displayPolarST2',
-                                                            width: 520,
+                                                            width: 450,
                                                             border: true,
                                                             hidden: true,
                                                             margin: '0 0 0 5',
@@ -548,7 +570,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             border: true,
                                                             hidden: false,
                                                             align: 'center',
-                                                            margin: '5 0 5 135',
+                                                            margin: '5 0 5 100',
                                                             style: {
                                                                 fontSize: '15px',
                                                                 fontWeight: 'bold',
@@ -563,7 +585,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {
                                                             xtype: 'polar',
                                                             id: prototype.id + '-displayPolarST2_T',
-                                                            width: 520,
+                                                            width: 450,
                                                             border: true,
                                                             margin: '0 0 0 5',
                                                             hidden: false,
@@ -674,7 +696,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     background: '#E0F8F7',
                                                     captions: {
                                                         title: {
-                                                            text: 'Total Tickets by Sales Date ',
+                                                            text: 'Totals Tickets by Sales Date ',
                                                             alignTo: 'chart'
                                                         }
                                                     },
@@ -756,7 +778,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     background: '#E0F8F7',
                                                     captions: {
                                                         title: {
-                                                            text: 'Total Amount by Sales Date \n\ USD',
+                                                            text: 'Totals Amount by Sales Date \n\ USD',
                                                             alignTo: 'chart'
                                                         }
                                                     },
