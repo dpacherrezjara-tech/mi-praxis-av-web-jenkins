@@ -47,7 +47,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 align: 'center'
                             },
                             items: [
-                                
+
                                 {
                                     xtype: 'panel',
                                     bodyStyle: 'background-color: #E3EAEF;',
@@ -58,40 +58,50 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         align: 'center'
                                     },
                                     items: [
-                                        
                                         {
-                                            xtype: 'treepanel',
-                                            id: prototype.id + '-gridData',
-                                            width: 1315 ,
+                                            xtype: 'panel',
+                                            layout: {
+                                                type: 'vbox',
+                                                pack: 'center'
+                                            },
+                                            border: false,
+//                                            margin: '0 0 0 25',
+                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                            items: [
+                                                {
+                                                    xtype: 'treepanel',
+                                                    id: prototype.id + '-gridData',
+                                                    width: 1315,
 //                                            height: 337 ,
-                                            reserveScrollbar: true,
-                                            useArrows: true,
-                                            rootVisible: false,
-                                            multiSelect: true,
-                                            columnLines: true,
-                                            rowLines: true,
+                                                    reserveScrollbar: true,
+                                                    useArrows: true,
+                                                    rootVisible: false,
+                                                    multiSelect: true,
+                                                    columnLines: true,
+                                                    rowLines: true,
+                                                    
 //                                            columnLines: true,
-                                            features: [{
-                                                    ftype: 'summary'
-                                                }],
-                                            columns: {
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                items: [
-                                                    {
-                                                        text: 'Sales',
-//                                                id: prototype.id + '-adgTitFecha',
+                                                    features: [{
+                                                            ftype: 'summary'
+                                                        }],
+                                                    columns: {
                                                         defaults: {
                                                             menuDisabled: true,
                                                             sortable: false,
                                                             align: 'center'
                                                         },
-                                                        columns: [
+                                                        items: [
                                                             {
-                                                                text: 'Date', dataIndex: 'strFormatDate', width: 150,xtype: 'treecolumn',
+                                                                text: 'Sales',
+//                                                id: prototype.id + '-adgTitFecha',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'strFormatDate', width: 150, xtype: 'treecolumn',
 //                                                        listeners: {
 //                                                            click: 'OnviewDetBank'
 //                                                        },
@@ -100,72 +110,78 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                            value = '<b>' + value + '</b>';
 //                                                            return '<a href="#payments-clarification-dashboard-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
 //                                                        }
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        text: 'Av Group', dataIndex: 'CCUST', width: 90,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background-color:#c9daf5;";
-                                                            let strCCUST = {
-                                                                134: 'AVIANCA',
-                                                                133: 'LACSA',
-                                                                202: 'TACA',
-                                                                547: 'AEROGAL',
-                                                            }
-                                                           
-                                                            
-                                                            return  strCCUST[value];
-                                                        },
-                                                    },
-                                                    {
-                                                        text: 'Sales',
-//                                                id: prototype.id + '-adgSalDate',
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: false,
-                                                            align: 'center'
-                                                        },
-                                                        columns: [
-                                                            {
-                                                                text: 'Tickets', dataIndex: 'QSALES', width: 90,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    return Ext.util.Format.number(data.totQSALES, '0,000');
-                                                                }
+                                                                    }
+                                                                ]
                                                             },
                                                             {
-                                                                text: 'Amount<br>USD', dataIndex: 'ASALES', width: 100,
+                                                                text: 'Av Group', dataIndex: 'CCUST', width: 90,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    return Ext.util.Format.number(data.totASALES, '0,000');
-                                                                }
-                                                            },
-                                                            {
-                                                                text: '%', dataIndex: 'perc1', width: 60,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                    let data = record.data;
+                                                                    metaData.style = "text-align:right;background-color:#c9daf5;";
+                                                                    console.log(record, 'record')
+                                                                    let strCCUST = {
+                                                                        134: 'AVIANCA',
+                                                                        133: 'LACSA',
+                                                                        202: 'TACA',
+                                                                        547: 'AEROGAL',
 
-                                                                    let perc1 = data.totASALES === 0 ? 0 : (data.ASALES / data.totASALES) * 100;
-                                                                    return Ext.util.Format.number(perc1, '0.00%');
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    
+                                                                    }
+                                                                    if(  Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue() !== '' ){
+                                                                        return strCCUST[record.data.children[0].CCUST]
+                                                                    }else{
+                                                                        return  strCCUST[value] ? strCCUST[value] : 'AV GROUP';
+                                                                    }
+                                                                    
+                                                                    
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+//                                                id: prototype.id + '-adgSalDate',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Tickets', dataIndex: 'QSALES', width: 90,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return  value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                            return Ext.util.Format.number(data.totQSALES, '0,000');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount<br>USD', dataIndex: 'ASALES', width: 100,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return  value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                            return Ext.util.Format.number(data.totASALES, '0,000');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: '%', dataIndex: 'perc1', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                            let data = record.data;
+
+//                                                                    let perc1 = data.totASALES === 0 ? 0 : (data.ASALES / data.totASALES) * 100;
+                                                                            return Ext.util.Format.number(value, '0.00%');
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+
                                                             {
                                                                 text: 'Payed',
                                                                 id: prototype.id + '-headMonthAcc',
@@ -203,98 +219,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     }
                                                                 ]
                                                             },
-                                                        
-                                                    
-                                                    {
-                                                        text: 'Pending',
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: false,
-                                                            align: 'center'
-                                                        },
-                                                        columns: [
-                                                            {
-                                                                text: 'Tickets', dataIndex: 'QPEND', width: 90,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#ee7070;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    return Ext.util.Format.number(data.totQPEND, '0,000');
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Amount<br>USD', dataIndex: 'APEND', width: 100,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#ee7070;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    return Ext.util.Format.number(data.totAPEND, '0,000');
-                                                                }
-                                                            },
-                                                            {
-                                                                text: '%', dataIndex: 'perc3', width: 60,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#ee7070;";
-                                                                    let data = record.data;
-                                                                    let perc3 = data.ASALES === 0 ? 0 : (data.APEND / data.ASALES) * 100;
-                                                                    return  Ext.util.Format.number(perc3, '0,000.00');
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        text: 'Accounted',
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: false,
-                                                            align: 'center'
-                                                        },
-                                                        columns: [
-                                                            {
-                                                                text: 'Processed',
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: false,
-                                                                    align: 'center'
-                                                                },
-                                                                columns: [
-                                                                    {
-                                                                        text: 'Tickets', dataIndex: 'QPOLIC', width: 90,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#c9daf5;";
-                                                                            value = Ext.util.Format.number(value, '0,000');
-                                                                            return  value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                            return Ext.util.Format.number(data.totQPOLIC, '0,000');
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Amount<br>USD', dataIndex: 'APOLIC', width: 100,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#c9daf5;";
-                                                                            value = Ext.util.Format.number(value, '0,000');
-                                                                            return  value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                            return Ext.util.Format.number(data.totAPOLIC, '0,000');
-                                                                        }
 
-                                                                    },
-                                                                ]
-                                                            },
                                                             {
                                                                 text: 'Pending',
                                                                 defaults: {
@@ -304,7 +229,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 },
                                                                 columns: [
                                                                     {
-                                                                        text: 'Tickets', dataIndex: 'QPOLIPE', width: 90,
+                                                                        text: 'Tickets', dataIndex: 'QPEND', width: 90,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;background-color:#ee7070;";
                                                                             value = Ext.util.Format.number(value, '0,000');
@@ -313,11 +238,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;";
                                                                             var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                            return Ext.util.Format.number(data.totQPOLIPE, '0,000');
+                                                                            return Ext.util.Format.number(data.totQPEND, '0,000');
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Amount<br>USD', dataIndex: 'APOLIPE', width: 100,
+                                                                        text: 'Amount<br>USD', dataIndex: 'APEND', width: 100,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;background-color:#ee7070;";
                                                                             value = Ext.util.Format.number(value, '0,000');
@@ -326,17 +251,144 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;";
                                                                             var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                            return Ext.util.Format.number(data.totAPOLIPE, '0,000');
+                                                                            return Ext.util.Format.number(data.totAPEND, '0,000');
                                                                         }
                                                                     },
+                                                                    {
+                                                                        text: '%', dataIndex: 'perc3', width: 60,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background-color:#ee7070;";
+                                                                            let data = record.data;
+                                                                            let perc3 = data.ASALES === 0 ? 0 : (data.APEND / data.ASALES) * 100;
+                                                                            return  Ext.util.Format.number(perc3, '0,000.00');
+                                                                        }
+                                                                    }
                                                                 ]
-                                                            }
+                                                            },
+                                                            {
+                                                                text: 'Accounted',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Processed',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Tickets', dataIndex: 'QPOLIC', width: 90,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#c9daf5;";
+                                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                                    return  value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.totQPOLIC, '0,000');
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Amount<br>USD', dataIndex: 'APOLIC', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#c9daf5;";
+                                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                                    return  value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.totAPOLIC, '0,000');
+                                                                                }
+
+                                                                            },
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Pending',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Tickets', dataIndex: 'QPOLIPE', width: 90,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#ee7070;";
+                                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                                    return  value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.totQPOLIPE, '0,000');
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Amount<br>USD', dataIndex: 'APOLIPE', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#ee7070;";
+                                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                                    return  value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.totAPOLIPE, '0,000');
+                                                                                }
+                                                                            },
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            },
                                                         ]
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-SummaryCardData',
+                                                    width: 1315,
+                                                    align: 'left',
+                                                    margin: '0 0 0 0 ',
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        align: 'center'
                                                     },
-                                                ]
-                                            }
+                                                    defaults: {
+                                                        xtype: 'label',
+                                                        align: 'center',
+                                                        html: '' + '&nbsp',
+                                                        height: 25,
+                                                        padding: '5 5 5 0',
+                                                        style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:11px'
+                                                    },
+                                                    items: [
+
+                                                        {width: 330, id: prototype.id + '-totQSALES'},
+                                                        {width: 100, id: prototype.id + '-totASALES'},
+                                                        {width: 60, id: prototype.id + '-perc1'},
+                                                        {width: 90, id: prototype.id + '-totQMATCH'},
+                                                        {width: 100, id: prototype.id + '-totAMATCH'},
+                                                        {width: 90, id: prototype.id + '-totQPEND'},
+                                                        {width: 100, id: prototype.id + '-totAPEND'},
+                                                        {width: 60, id: prototype.id + '-perc3'},
+                                                        {width: 90, id: prototype.id + '-totQPOLIC'},
+                                                        {width: 100, id: prototype.id + '-totAPOLIC'},
+                                                        {width: 90, id: prototype.id + '-totQPOLIPE'},
+                                                        {width: 100, id: prototype.id + '-totAPOLIPE'},
+                                                        
+                                                    ]
+                                                }
+                                            ]
                                         },
-                                        
+
                                         {
                                             xtype: 'panel',
                                             layout: {
@@ -742,7 +794,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             title: ['Sales', 'Paid', 'Pending'],
                                                             xField: 'strFormatDate',
                                                             yField: ['QSALES', 'QMATCH', 'QPEND'],
-                                                            
+
                                                             colors: ['#0066ff', '#5dd92d', '#ea0000'],
                                                             highlight: true,
                                                             style: {

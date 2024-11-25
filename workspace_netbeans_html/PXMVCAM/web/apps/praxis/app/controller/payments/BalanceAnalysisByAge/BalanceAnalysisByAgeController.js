@@ -497,6 +497,21 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                                 lstData.push(value.data)
                             }
+                            
+                            let lstData2 = res.data2
+                            let totAMATCH = lstData2[0].totAMATCH
+                            let totAPEND = lstData2[0].totAPEND
+                            let totAPOLIC = lstData2[0].totAPOLIC
+                            let totAPOLIPE = lstData2[0].totAPOLIPE
+                            let totASALES = lstData2[0].totASALES
+                            
+                            let totQMATCH = lstData2[0].totQMATCH
+                            let totQPEND = lstData2[0].totQPEND
+                            let totQPOLIC = lstData2[0].totQPOLIC
+                            let totQPOLIPE = lstData2[0].totQPOLIPE
+                            let totQSALES = lstData2[0].totQSALES
+                           
+                            console.log(totASALES, 'totASALES')
                             console.log(lstData, 'lstData')
                             let a = [];
                             let dataRoot = {text: '.', expanded: false, children: []};
@@ -538,6 +553,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         strFormatDate: value.strFormatDate,
                                         QSALES: V_QSALES,
                                         ASALES: V_ASALES,
+                                        perc1: totASALES === 0 ? 0 : (V_ASALES / totASALES) * 100,
                                         QMATCH: V_QMATCH,
                                         AMATCH: V_AMATCH,
                                         QPEND: V_QPEND,
@@ -557,6 +573,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 CCUST: value01.CCUST,
                                                 QSALES: value01.QSALES,
                                                 ASALES: value01.ASALES,
+                                                perc1: totASALES === 0 ? 0 : (value01.ASALES / totASALES) * 100,
                                                 QMATCH: value01.QMATCH,
                                                 AMATCH: value01.AMATCH,
                                                 QPEND: value01.QPEND,
@@ -572,10 +589,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 }
                             });
 
-//                            Ext.getCmp(prototype.id + '-lngTotDocs').setText(Ext.util.Format.number(data.lngTotDocs, '0,000'));
-//                            Ext.getCmp(prototype.id + '-dblTotVFOP').setText(Ext.util.Format.number(data.dblTotVFOP, '0,000.00'));
-//                            Ext.getCmp(prototype.id + '-dblTotAUTAMOUNT').setText(Ext.util.Format.number(data.dblTotAUTAMOUNT, '0,000.00'));
-//                            Ext.getCmp(prototype.id + '-lngTotTOTCUP').setText(Ext.util.Format.number(data.lngTotTOTCUP, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQSALES').setText(Ext.util.Format.number(totQSALES, '0,000'));
+                            Ext.getCmp(prototype.id + '-totASALES').setText(Ext.util.Format.number(totASALES, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQMATCH').setText(Ext.util.Format.number(totQMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAMATCH').setText(Ext.util.Format.number(totAMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQPEND').setText(Ext.util.Format.number(totQPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAPEND').setText(Ext.util.Format.number(totAPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQPOLIC').setText(Ext.util.Format.number(totQPOLIC, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAPOLIC').setText(Ext.util.Format.number(totAPOLIC, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQPOLIPE').setText(Ext.util.Format.number(totQPOLIPE, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAPOLIPE').setText(Ext.util.Format.number(totAPOLIPE, '0,000'));
+                            
+                            
 
                             var storeTree = Ext.create('Ext.data.TreeStore', {
                                 root: dataRoot
