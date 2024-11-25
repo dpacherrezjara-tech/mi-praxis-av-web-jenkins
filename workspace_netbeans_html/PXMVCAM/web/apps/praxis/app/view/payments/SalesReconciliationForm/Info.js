@@ -5273,10 +5273,16 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         },
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "color:#057ECB;text-align:right;";
+                                                                            let valueRow = value;
                                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                             var data = record.data;
                                                                             metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
-                                                                            return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                            console.log(value,'valuevaluevaluevaluevalue')
+                                                                            if (valueRow == 0) {
+                                                                                return '<span style="color:#057ECB;text-decoration:underline;">' + value + '</span>';
+                                                                            } else {
+                                                                                return '<a href="#payments-sales-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                            }
                                                                         }
                                                                     }
                                                                 ]

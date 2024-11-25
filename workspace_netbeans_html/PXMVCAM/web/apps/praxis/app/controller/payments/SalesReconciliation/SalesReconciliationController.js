@@ -3411,17 +3411,23 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     
     
     onGridSett: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        
+        console.log(rowData.data.QTYDOC, 'rowData.data')
+        if (rowData.data.QTYDOC == 0) {
+            return;
+        }
+        
         console.log(prototype.id, 'prototype.id')
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDetalle20';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.beanDetSett = {}
-        console.log(rowData.data, 'rowData.data')
         this.beanDetSett.IN_DATEC = rowData.data.DATEC;
         this.beanDetSett.IN_TRANC = rowData.data.TRANC;
         me.paramsDetail.beanString = JSON.stringify(this.beanDetSett);
-        console.log(me.paramsDetail, 'me.paramsDetail')
         this.setGridDataDetalle();
+        
+        console.log(obj2, rowData, 'me.paramsDetail')
     },
     setGridDataDetalle: function (data) {
         win.lblUser_toolTip("Estructura: MPF101");
