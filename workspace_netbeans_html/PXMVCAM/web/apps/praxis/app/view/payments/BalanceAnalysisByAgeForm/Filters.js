@@ -62,7 +62,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['value', 'description'],
                                 data: [
-                                    ["T", "Total by credit card"], ["P", "Pending by credit card"]
+                                    ["T", "Totals by credit card"], ["P", "Pending by credit card"]
                                 ]
                             }),
                             listConfig: {maxHeight: 100},
@@ -376,6 +376,50 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                         {xtype: 'tbspacer', width: 1, id: prototype.id + '-hidePENDING',},
                     ]
                 },
+                {
+                    xtype: 'panel',
+                    width: '100%',
+                    layout: 'hbox',
+                    border: false,
+                    bodyStyle: 'background: transparent;"',
+                    items: [
+                        {xtype: 'tbspacer', width: 5},
+                        {
+                            xtype: 'label',
+                            text: 'Av Group:',
+                            padding: '4 10 0 20',
+                            width: 90,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbAviancaGroup',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['code', 'name'],
+                                data: [
+                                    ["", "All"],["134", "AVIANCA"],["202", "TACA"],["133", "LACSA"],["547", "AEROGAL"]
+                                ]
+                            }),
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 150,
+                            value: "",
+                            typeAhead: true,
+                            valueField: 'code', displayField: 'name',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            listeners: {
+                            }
+                        },
+                    ]
+                }
             ]
         }
     ]

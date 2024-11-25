@@ -257,6 +257,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
         me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
         me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
+        me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
 
 
         console.log(me.bean, 'me.bean segundo parameter')
@@ -295,7 +296,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (panelSumaryCountry.isVisible()) {
             this.setFormatParameter2();
             this.setGridSumaryCountry();
-        } else if ( panelGridData.isVisible() ){
+        } else if (panelGridData.isVisible()) {
             this.setFormatParameter2();
             this.setGridDataTotal();
         }
@@ -338,29 +339,53 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     url: prototype.url + '/searchSalesTotal'
                 }, listeners: {
                     beforeload: function (obj) {
-
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                         obj.proxy.extraParams = searchParams;
                     },
                     load: function (obj, obj2, success, response, obj5) {
+
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin7');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        var res = Ext.JSON.decode(response._response.responseText);
+                        console.log(res.data, 'res.dadadatratata')
+
+
+                        if (obj.data.length === 0) {
+                            Ext.getCmp(prototype.id + '-graficosAños').bindStore('Ext.data.Store', {data: [],autoLoad: true});
+                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore('Ext.data.Store', {data: [],autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST').bindStore(Ext.create('Ext.data.Store', {data: [],autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-displayPolarST_T').bindStore('Ext.data.Store', {data: [],autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST2').bindStore('Ext.data.Store', {data: [],autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST2_T').bindStore('Ext.data.Store', {data: [],autoLoad: true});
+                            Ext.getCmp(prototype.id + '-gridData').setStore(Ext.create('Ext.data.TreeStore', {root: {}}));
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            let storeDataBard = Ext.create('Ext.data.Store', {
+                                data: res.data2,
+                                autoLoad: true
+                            });
                             //VENTA
-                            
+
                             let item = {};
                             let item2 = {};
                             let totals = [];
                             let charts = [];
+                            let pendingPerc = (obj.data.items[0].data.totAPEND / obj.data.items[0].data.totASALES) * 100;
+                            let paidPerc = (obj.data.items[0].data.totAMATCH / obj.data.items[0].data.totASALES) * 100;
                             if (obj.data.items.length > 0) {
                                 item2.Perc2 = obj.data.items[0].data.totAPEND;
-                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPEND, '0,000');
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPEND, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item2.VENDOR = pending;
                                 totals.push(item2);
 
                                 item.Perc2 = obj.data.items[0].data.totAMATCH;
-                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totAMATCH, '0,000');
+                                var Paid = "Payed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAMATCH, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item.VENDOR = Paid;
                                 totals.push(item);
                             } else {
@@ -373,21 +398,23 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 autoLoad: true
                             });
                             Ext.getCmp(prototype.id + '-displayPolarST').bindStore(storeData1er);
-                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal').setText('Total Sales Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totASALES, '0,000') )
-                        
-                        
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal').setText('Totals Sales Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totASALES, '0,000'))
+
+
                             let item_T = {};
                             let item2_T = {};
                             let totals_T = [];
                             let charts_T = [];
+                            pendingPerc = (obj.data.items[0].data.totQPEND / obj.data.items[0].data.totQSALES) * 100;
+                            paidPerc = (obj.data.items[0].data.totQMATCH / obj.data.items[0].data.totQSALES) * 100;
                             if (obj.data.items.length > 0) {
                                 item2_T.Perc2 = obj.data.items[0].data.totQPEND;
-                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPEND, '0,000');
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPEND, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item2_T.VENDOR = pending;
                                 totals_T.push(item2_T);
 
                                 item_T.Perc2 = obj.data.items[0].data.totQMATCH;
-                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totQMATCH, '0,000');
+                                var Paid = "Payed:\n" + Ext.util.Format.number(obj.data.items[0].data.totQMATCH, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item_T.VENDOR = Paid;
                                 totals_T.push(item_T);
                             } else {
@@ -400,22 +427,25 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 autoLoad: true
                             });
                             Ext.getCmp(prototype.id + '-displayPolarST_T').bindStore(storeData1er);
-                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal_T').setText('Total Sales Ticket: ' + Ext.util.Format.number(obj.data.items[0].data.totQSALES, '0,000') )
-                        
-                          //// CONTABILIDAD
-                            
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal_T').setText('Totals Sales Ticket: ' + Ext.util.Format.number(obj.data.items[0].data.totQSALES, '0,000'))
+
+                            //// CONTABILIDAD
+
                             let item3 = {};
                             let item4 = {};
                             let totals2 = [];
                             let charts2 = [];
+                            let totalContab = obj.data.items[0].data.totAPOLIC + obj.data.items[0].data.totAPOLIPE
+                            paidPerc = (obj.data.items[0].data.totAPOLIC / totalContab) * 100;
+                            pendingPerc = (obj.data.items[0].data.totAPOLIPE / totalContab) * 100;
                             if (obj.data.items.length > 0) {
                                 item4.Perc2 = obj.data.items[0].data.totAPOLIC;
-                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIC, '0,000');
+                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIC, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item4.VENDOR = pending;
                                 totals2.push(item4);
-                                
+
                                 item3.Perc2 = obj.data.items[0].data.totAPOLIPE;
-                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIPE, '0,000');
+                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIPE, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item3.VENDOR = Paid;
                                 totals2.push(item3);
                             } else {
@@ -427,23 +457,26 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 data: totals2,
                                 autoLoad: true
                             });
-                            let totalContab = obj.data.items[0].data.totAPOLIC + obj.data.items[0].data.totAPOLIPE
+
                             Ext.getCmp(prototype.id + '-displayPolarST2').bindStore(storeData1er);
-                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2').setText('Total Accounting Amount USD: ' + Ext.util.Format.number(totalContab, '0,000') )
-                            
-                            
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2').setText('Totals Accounting Amount USD: ' + Ext.util.Format.number(totalContab, '0,000'))
+
+
                             let item3_T = {};
                             let item4_T = {};
                             let totals2_T = [];
                             let charts2_T = [];
+                            let totalContab_T = obj.data.items[0].data.totQPOLIC + obj.data.items[0].data.totQPOLIPE
+                            paidPerc = (obj.data.items[0].data.totQPOLIC / totalContab_T) * 100;
+                            pendingPerc = (obj.data.items[0].data.totQPOLIPE / totalContab_T) * 100;
                             if (obj.data.items.length > 0) {
                                 item4_T.Perc2 = obj.data.items[0].data.totQPOLIC;
-                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIC, '0,000');
+                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIC, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                                 item4_T.VENDOR = pending;
                                 totals2_T.push(item4_T);
 
                                 item3_T.Perc2 = obj.data.items[0].data.totQPOLIPE;
-                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIPE, '0,000');
+                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQPOLIPE, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                                 item3_T.VENDOR = Paid;
                                 totals2_T.push(item3_T);
                             } else {
@@ -455,23 +488,108 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 data: totals2_T,
                                 autoLoad: true
                             });
-                            let totalContab_T = obj.data.items[0].data.totQPOLIC + obj.data.items[0].data.totQPOLIPE
+
                             Ext.getCmp(prototype.id + '-displayPolarST2_T').bindStore(storeData1er);
-                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').setText('Total Accounting Ticket: ' + Ext.util.Format.number(totalContab, '0,000') )
-                            
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').setText('Totals Accounting Ticket: ' + Ext.util.Format.number(totalContab_T, '0,000'))
+                            console.log(obj.data.items, 'obj.data.items')
+                            let lstData = []
+                            for (let value of obj.data.items) {
+
+                                lstData.push(value.data)
+                            }
+                            console.log(lstData, 'lstData')
+                            let a = [];
+                            let dataRoot = {text: '.', expanded: false, children: []};
+
+                            Ext.Object.each(lstData, function (index, value) {
+                                if (a.indexOf(value.strFormatDate) < 0) {
+                                    let x = [];
+
+                                    let V_QSALES = 0;
+                                    let V_ASALES = 0;
+                                    let V_QMATCH = 0;
+                                    let V_AMATCH = 0;
+                                    let V_QPEND = 0;
+                                    let V_APEND = 0;
+                                    let V_APOLIC = 0;
+                                    let V_QPOLIC = 0;
+                                    let V_APOLIPE = 0;
+                                    let V_QPOLIPE = 0;
+
+
+                                    Ext.Object.each(lstData, function (index, valuex) {
+                                        if (value.strFormatDate === valuex.strFormatDate) {
+                                            V_QSALES += valuex.QSALES;
+                                            V_ASALES += valuex.ASALES;
+                                            V_QMATCH += valuex.QMATCH;
+                                            V_AMATCH += valuex.AMATCH;
+                                            V_QPEND += valuex.QPEND;
+                                            V_APEND += valuex.APEND;
+                                            V_APOLIC += valuex.APOLIC;
+                                            V_QPOLIC += valuex.QPOLIC;
+                                            V_APOLIPE += valuex.APOLIPE;
+                                            V_QPOLIPE += valuex.QPOLIPE;
+                                        }
+                                    });
+
+
+                                    a.push(value.strFormatDate);
+                                    dataRoot.children.push({
+                                        strFormatDate: value.strFormatDate,
+                                        QSALES: V_QSALES,
+                                        ASALES: V_ASALES,
+                                        QMATCH: V_QMATCH,
+                                        AMATCH: V_AMATCH,
+                                        QPEND: V_QPEND,
+                                        APEND: V_APEND,
+                                        APOLIC: V_APOLIC,
+                                        QPOLIC: V_QPOLIC,
+                                        APOLIPE: V_APOLIPE,
+                                        QPOLIPE: V_QPOLIPE,
+
+                                        expanded: false, children: []
+                                    });
+                                    let b = [];
+                                    Ext.Object.each(lstData, function (index, value01) {
+                                        if (value.strFormatDate === value01.strFormatDate) {
+                                            dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                strFormatDate: value01.strFormatDate,
+                                                CCUST: value01.CCUST,
+                                                QSALES: value01.QSALES,
+                                                ASALES: value01.ASALES,
+                                                QMATCH: value01.QMATCH,
+                                                AMATCH: value01.AMATCH,
+                                                QPEND: value01.QPEND,
+                                                APEND: value01.APEND,
+                                                APOLIC: value01.APOLIC,
+                                                QPOLIC: value01.QPOLIC,
+                                                APOLIPE: value01.APOLIPE,
+                                                QPOLIPE: value01.QPOLIPE,
+                                                leaf: true
+                                            });
+                                        }
+                                    });
+                                }
                             });
-                        } else {
-                            
-                            
+
+//                            Ext.getCmp(prototype.id + '-lngTotDocs').setText(Ext.util.Format.number(data.lngTotDocs, '0,000'));
+//                            Ext.getCmp(prototype.id + '-dblTotVFOP').setText(Ext.util.Format.number(data.dblTotVFOP, '0,000.00'));
+//                            Ext.getCmp(prototype.id + '-dblTotAUTAMOUNT').setText(Ext.util.Format.number(data.dblTotAUTAMOUNT, '0,000.00'));
+//                            Ext.getCmp(prototype.id + '-lngTotTOTCUP').setText(Ext.util.Format.number(data.lngTotTOTCUP, '0,000'));
+
+                            var storeTree = Ext.create('Ext.data.TreeStore', {
+                                root: dataRoot
+                            });
+
+                            Ext.getCmp(prototype.id + '-gridData').setStore(storeTree);
+
 //                            if(me.typeBean == 'D'){
 //                                console.log('drilldown')
 //                                Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(obj.data.items[0].data.strFormatDate + ' | ' + obj.data.items[0].data.SAGENT + ' | ' + obj.data.items[0].data.CANAL)
 //                            }else {
 //                            }
-
+                            Ext.getCmp(prototype.id + '-graficosAños').bindStore(storeDataBard);
+                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore(storeDataBard);
                         }
                         me.setWidthPie();
                     }
@@ -480,10 +598,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             global.clear();
 
 
-            Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-graficosAños').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
+
 //            Ext.getCmp(prototype.id + '-displayPolar2').bindStore(storeGridDatas);
         }
     },
@@ -494,45 +611,45 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             case 'Cpn':
                 Ext.getCmp(prototype.id + '-graficosAños').show();
                 Ext.getCmp(prototype.id + '-graficosAñosAmount').hide();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST_T').show();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal_T').show();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST2_T').show();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').show();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST').hide();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal').hide();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST2').hide();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal2').hide();
-                
-                
+
+
                 break;
             case 'Amt':
                 Ext.getCmp(prototype.id + '-graficosAños').hide();
                 Ext.getCmp(prototype.id + '-graficosAñosAmount').show();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST').show();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal').show();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST2').show();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal2').show();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST_T').hide();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal_T').hide();
-                
+
                 Ext.getCmp(prototype.id + '-displayPolarST2_T').hide();
                 Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').hide();
                 break;
         }
     },
-    onChangeSelectBy: function (combo, newValue, oldValue){
+    onChangeSelectBy: function (combo, newValue, oldValue) {
         this.setFormatParameter2();
-        if ( newValue === 'T' ){
+        if (newValue === 'T') {
             this.setGridDataTotal();
             Ext.getCmp(prototype.id + '-contentFilter2').hide()
-        }else{
+        } else {
             this.setGridSumaryMonth();
             Ext.getCmp(prototype.id + '-contentFilter2').show()
         }
@@ -568,7 +685,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             console.log(data);
                         }
                         me.setWidthPie();
-                        
+
                     }
                 }, remoteSort: true
             });
@@ -576,7 +693,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             let tittleCountry = Ext.getCmp(prototype.id + '-cmbCountry').getValue() === '' ? 'All Countries' : Ext.getCmp(prototype.id + '-cmbCountry').getRawValue();
             let tittleDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() === Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() ? Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() : Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + ' - ' + Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
             Ext.getCmp(prototype.id + '-lblTittleGrid').setText(tittleDate + ' | ' + tittleCountry)
-            
+
             Ext.getCmp(prototype.id + '-gridMainData').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
@@ -780,7 +897,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         }
     },
     setPaidByCompany: function (array, ccust, id, idLabel) {
-        if (array.length == 0){
+        if (array.length == 0) {
             console.log('NO HAY INFO PARA PAID')
             return false;
         }
@@ -796,40 +913,40 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let isOnList = false;
         for (const value of array) {
             if (value.data.CCUST === ccust) {
-                    isOnList = true;
-                    let pendingPerc = (value.data.SVFOPUSDPENDING / value.data.SVFOPUSD ) * 100;
-                    let paidPerc = (value.data.SVFOPUSDP / value.data.SVFOPUSD ) * 100;
-                    item2.Perc2 = value.data.SVFOPUSDPENDING;
-                    var pending = "Pending:\n" + Ext.util.Format.number(value.data.SVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%') ;
-                    item2.VENDOR = pending;
-                    totals.push(item2);
+                isOnList = true;
+                let pendingPerc = (value.data.SVFOPUSDPENDING / value.data.SVFOPUSD) * 100;
+                let paidPerc = (value.data.SVFOPUSDP / value.data.SVFOPUSD) * 100;
+                item2.Perc2 = value.data.SVFOPUSDPENDING;
+                var pending = "Pending:\n" + Ext.util.Format.number(value.data.SVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
+                item2.VENDOR = pending;
+                totals.push(item2);
 
-                    item.Perc2 = value.data.SVFOPUSDP;
-                    var Paid = "Paid:\n" + Ext.util.Format.number(value.data.SVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
-                    item.VENDOR = Paid;
-                    totals.push(item);
+                item.Perc2 = value.data.SVFOPUSDP;
+                var Paid = "Paid:\n" + Ext.util.Format.number(value.data.SVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
+                item.VENDOR = Paid;
+                totals.push(item);
 
-                    
+
                 var storeData1er = Ext.create('Ext.data.Store', {
                     data: totals,
                     autoLoad: true
                 });
-                
+
                 Ext.getCmp(prototype.id + id).bindStore(storeData1er);
-                Ext.getCmp(prototype.id + idLabel).setText(strCCUST[ccust] + ' - Total USD: ' + Ext.util.Format.number(value.data.SVFOPUSD, '0,000') )
+                Ext.getCmp(prototype.id + idLabel).setText(strCCUST[ccust] + ' - Total USD: ' + Ext.util.Format.number(value.data.SVFOPUSD, '0,000'))
             }
         }
-        if(!isOnList){
+        if (!isOnList) {
             Ext.getCmp(prototype.id + id).hide()
             Ext.getCmp(prototype.id + idLabel).hide()
-        }else{
+        } else {
             Ext.getCmp(prototype.id + id).show()
             Ext.getCmp(prototype.id + idLabel).show()
         }
     },
     setBarByCompany: function (array, ccust, id) {
-        console.log(array,'array')
-        if (array.length === 0){
+        console.log(array, 'array')
+        if (array.length === 0) {
             console.log('NO HAY INFO PARA BAR')
             return false;
         }
@@ -846,7 +963,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let isOnList = false;
         for (const row of array) {
             console.log(row.data.CCUST, 'row.data.CCUST')
-            if( row.data.CCUST  === ccust ){
+            if (row.data.CCUST === ccust) {
                 isOnList = true;
                 let PENDING = row.data.SVFOPUSDPENDING;
                 let PAID = row.data.SVFOPUSDP;
@@ -856,20 +973,20 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         }
         console.log(charts, 'charts')
-        
+
         var storeData1ercharts = Ext.create('Ext.data.Store', {
             data: charts,
             autoLoad: true
         });
 
         Ext.getCmp(prototype.id + id).bindStore(storeData1ercharts);
-        
-        if(!isOnList){
+
+        if (!isOnList) {
             Ext.getCmp(prototype.id + id).hide()
-           
-        }else{
+
+        } else {
             Ext.getCmp(prototype.id + id).show()
-            
+
         }
 
     },
@@ -903,12 +1020,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         var item2 = {};
                         var totals = [];
                         var charts = [];
-                        let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD ) * 100;
-                        let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD ) * 100;
+                        let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD) * 100;
+                        let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD) * 100;
                         console.log(obj.data.items, 'obj.data.items')
                         if (obj.data.items.length > 0) {
                             item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
-                            var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%') ;
+                            var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
                             item2.VENDOR = pending;
                             totals.push(item2);
 
@@ -916,14 +1033,14 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
                             item.VENDOR = Paid;
                             totals.push(item);
-                            Ext.getCmp(prototype.id + '-lblTittlePaid4').setText('Total Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000') )
+                            Ext.getCmp(prototype.id + '-lblTittlePaid4').setText('Total Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
 
 
                         } else {
                             totals.push({})
                         }
                         console.log('wadadafafafa')
-                        me.setPaidByCompany(obj.data.items, '134', '-displayPolar4_1','-lblTittlePaid4_1')
+                        me.setPaidByCompany(obj.data.items, '134', '-displayPolar4_1', '-lblTittlePaid4_1')
                         me.setPaidByCompany(obj.data.items, '202', '-displayPolar4_2', '-lblTittlePaid4_2')
                         me.setPaidByCompany(obj.data.items, '133', '-displayPolar4_3', '-lblTittlePaid4_3')
                         me.setPaidByCompany(obj.data.items, '547', '-displayPolar4_4', '-lblTittlePaid4_4')
@@ -950,7 +1067,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID});
 //                            }
 
-                            for (let i = 0 ;i < res.data2.length; i++) {
+                            for (let i = 0; i < res.data2.length; i++) {
                                 let PAID = res.data2[i].SVFOPUSDP;
                                 let PENDING = res.data2[i].SVFOPUSDPENDING;
                                 let TOTAL = res.data2[i].SVFOPUSD;
@@ -958,15 +1075,15 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID, TOTAL: TOTAL});
                             }
                         } else {
-                            charts.push({strDescription: 'Not found', PENDING: 1, PAID: 1, TOTAL: 1 });
+                            charts.push({strDescription: 'Not found', PENDING: 1, PAID: 1, TOTAL: 1});
                         }
 
-                        
+
                         me.setBarByCompany(obj.data.items, '134', '-displayGraf4_1')
                         me.setBarByCompany(obj.data.items, '202', '-displayGraf4_2')
                         me.setBarByCompany(obj.data.items, '133', '-displayGraf4_3')
                         me.setBarByCompany(obj.data.items, '547', '-displayGraf4_4')
-                        
+
                         var storeData1ercharts = Ext.create('Ext.data.Store', {
                             data: charts,
                             autoLoad: true
@@ -1120,8 +1237,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         var item2 = {};
                         var totals = [];
                         var charts = [];
-                        let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD ) * 100;
-                        let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD ) * 100;
+                        let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD) * 100;
+                        let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD) * 100;
                         console.log(obj.data.items, 'obj.data.items')
                         if (obj.data.items.length > 0) {
                             item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
@@ -1249,8 +1366,6 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-hidePENDING').show()
         }
 
-
-
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -1270,8 +1385,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             this.setGridSumaryCountry();
         }
 
-
-
+    },
+    rgChangeAviancaGroup: function (field, newValue, oldValue) {
+        console.log('cambio')
     },
     rgChangeReport: function (field, newValue, oldValue) {
         console.log(newValue, 'newValue')
@@ -1307,13 +1423,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-cmbTOP').show()
             Ext.getCmp(prototype.id + '-lblTOP').show()
         }
-        
+
     },
-    clickColumnFilters: function (obj, metaData, rowNum, columnNum, obj2, rowData){
-        
-        
+    clickColumnFilters: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+
+
         Ext.getCmp(prototype.id + '-txtAGENCY').setValue(rowData.data.SAGENT);
-        
+
         me.btnSearch_click();
     },
     validateFields: function () {
@@ -1364,7 +1480,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
-        
+
 
     },
     btnExcel_click: function (obj, e) {
