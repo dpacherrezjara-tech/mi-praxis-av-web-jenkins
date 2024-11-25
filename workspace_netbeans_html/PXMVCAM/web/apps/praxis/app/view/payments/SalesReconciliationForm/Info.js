@@ -308,7 +308,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                 text: 'Qty',
                                                                 columns: [
                                                                     {
-                                                                        text: 'Settl.', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true,
+                                                                        text: 'Settl.', dataIndex: 'QTYDOC', width: 50, align: 'center', menuDisabled: true,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
