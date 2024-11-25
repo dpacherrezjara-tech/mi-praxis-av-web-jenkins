@@ -214,4 +214,8 @@ public class LoadConciliationLogic {
     public String loadPX263loadWithoutADM(List<MPF100Filter> filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263loadWithoutADM(filter);
     }
+    
+    public List<A2290Filter> loadPX269SQP00698DetalleSettl(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX269SQP00698DetalleSettl(filter);
+    }
 }

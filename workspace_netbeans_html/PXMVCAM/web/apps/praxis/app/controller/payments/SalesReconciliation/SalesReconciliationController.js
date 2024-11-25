@@ -17,6 +17,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanDet2: {},
     beanDet3: {},
     beanDet4: {},
+    beanDetSett: {},
     DateControl: '',
     strSTVAL: '',
     NPROG: '',
@@ -27,9 +28,16 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanboxDetTktS3: {},
     beanboxDetTktS4: {},
     beanDetailAgent: {},
+    paginActual: '',
+    drillDown: [],
+    gridActual: '',
+    panelActual: '',
+    paramsDetail: {},
     init: function (view) {
         me = this;
-
+        this.childs = Ext.getCmp(prototype.id + '-vskMain').items.items;
+        me.panelActual = '-boxMainData';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
         prototypeProgram.view = 'payments-sales-reconciliation-form';
         prototypeProgram.nprog = 'PX00000263';
         prototypeProgram.title = 'Sales Reconciliation by Ticket';
@@ -2855,7 +2863,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
 
         } else {
             Ext.getCmp(prototype.id + '-columnTkt_DETALLE').show();
-            Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1525)
+            Ext.getCmp(prototype.id + '-gridDetTktByStval').setWidth(1570)
         }
     },
 
@@ -3197,7 +3205,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                     return Ext.getCmp(prototype.id + '-paggin17');
                 case prototype.id + '-panelGridDataDetalle_DEBITS':
                     return Ext.getCmp(prototype.id + '-paggin18');
-
+                case prototype.id + '-panelGridDataDetalle20':
+                    return Ext.getCmp(prototype.id + '-paggin20');
                 default:
                     return null;
             }
@@ -3399,5 +3408,61 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
 
     },
+    
+    
+    onGridSett: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        console.log(prototype.id, 'prototype.id')
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataDetalle20';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.beanDetSett = {}
+        console.log(rowData.data, 'rowData.data')
+        this.beanDetSett.IN_DATEC = rowData.data.DATEC;
+        this.beanDetSett.IN_TRANC = rowData.data.TRANC;
+        me.paramsDetail.beanString = JSON.stringify(this.beanDetSett);
+        console.log(me.paramsDetail, 'me.paramsDetail')
+        this.setGridDataDetalle();
+    },
+    setGridDataDetalle: function (data) {
+        win.lblUser_toolTip("Estructura: MPF101");
+        var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetalleSettl'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetail;
+                },
+                load: function (obj) {
+                    console.log(obj, 'obj')
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
 
+                        me.selectedChild('vskMain', 'panelGridDataDetalle20');
+                        var bean = obj.data.items[0].data;
+                        console.log(bean);
+                    }
+//                    me.setWidthPie();
+                }
+            }
+        });
+        global.clear();
+
+
+        Ext.getCmp(prototype.id + '-gridDataDetalle20').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
+    },
+    setWidthPie: function () {
+        var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
+        console.log(ancho);
+        if (ancho > 650) {
+            Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
+        } else {
+            Ext.getCmp(prototype.id + '-pie').setWidth(650);
+        }
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+    },
+    
 });
