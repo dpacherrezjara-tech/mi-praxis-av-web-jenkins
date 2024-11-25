@@ -306,7 +306,7 @@ public class BalanceAnalysisByAgeDAO {
         return lstData;
     }
      
-     public List<A2356Filter> loadSQP05120_ST(A2356Filter filter) throws SQLException, Exception {
+    public List<A2356Filter> loadSQP05120_ST(A2356Filter filter) throws SQLException, Exception {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
         A2356Filter bean;
@@ -316,35 +316,26 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF108_REPORT_ST(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF108_REPORT_ST(?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
+            
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
 
 
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            
 
             rst = cstmt.getResultSet();
 
@@ -376,6 +367,7 @@ public class BalanceAnalysisByAgeDAO {
                     bean.strFormatDate = Functions.getMonthConvert(rst.getString("SDATE").trim());
                     
 
+                    bean.CCUST = rst.getString("CCUST").trim();
                     bean.QSALES = rst.getInt("QSALES");
                     bean.QMATCH = rst.getInt("QMATCH");
                     bean.QPEND = rst.getInt("QPEND");
@@ -399,10 +391,122 @@ public class BalanceAnalysisByAgeDAO {
                     bean.totAPOLIPE = totAPOLIPE;
                    
 
-                    bean.page.PAGNUM = filter.page.PAGNUM;
-                    bean.page.PAGROW = filter.page.PAGROW;
-                    bean.page.TOTPAG = filter.page.TOTPAG;
-                    bean.page.TOTROW = filter.page.TOTROW;
+                    
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    public List<A2356Filter> loadSQP05120_ST_BARD(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+
+        int totQSALES = 0, totQMATCH = 0, totQPEND = 0, totQPOLIC = 0, totQPOLIPE = 0;
+        double totASALES = 0, totAMATCH = 0, totAPEND = 0, totAPOLIC = 0, totAPOLIPE = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF108_REPORT_ST_BARD(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+
+
+            
+
+            cstmt.execute();
+
+            
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totQSALES = rst.getInt("QSALES");
+                totQMATCH = rst.getInt("QMATCH");
+                totQPEND = rst.getInt("QPEND");
+                totQPOLIC = rst.getInt("QPOLIC");
+                totQPOLIPE = rst.getInt("QPOLIPE");
+                totASALES = rst.getDouble("ASALES");
+                totAMATCH = rst.getDouble("AMATCH");
+                totAPEND = rst.getDouble("APEND");
+                totAPOLIC = rst.getDouble("APOLIC");
+                totAPOLIPE = rst.getDouble("APOLIPE");
+                
+                
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+//                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.SDATE = rst.getString("SDATE").trim();
+                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("SDATE").trim());
+                    
+
+                    
+                    bean.QSALES = rst.getInt("QSALES");
+                    bean.QMATCH = rst.getInt("QMATCH");
+                    bean.QPEND = rst.getInt("QPEND");
+                    bean.QPOLIC = rst.getInt("QPOLIC");
+                    bean.QPOLIPE = rst.getInt("QPOLIPE");
+                    bean.ASALES = rst.getDouble("ASALES");
+                    bean.AMATCH = rst.getDouble("AMATCH");
+                    bean.APEND = rst.getDouble("APEND");
+                    bean.APOLIC = rst.getDouble("APOLIC");
+                    bean.APOLIPE = rst.getDouble("APOLIPE");
+
+                    bean.totQSALES = totQSALES;
+                    bean.totQMATCH = totQMATCH;
+                    bean.totQPEND = totQPEND;
+                    bean.totQPOLIC = totQPOLIC;
+                    bean.totQPOLIPE = totQPOLIPE;
+                    bean.totASALES = totASALES;
+                    bean.totAMATCH = totAMATCH;
+                    bean.totAPEND = totAPEND;
+                    bean.totAPOLIC = totAPOLIC;
+                    bean.totAPOLIPE = totAPOLIPE;
+                   
+
+                    
                     lstData.add(bean);
                 }
                 rst.close();
