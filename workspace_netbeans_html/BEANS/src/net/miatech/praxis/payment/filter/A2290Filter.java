@@ -214,6 +214,7 @@ public class A2290Filter extends A2290 {
     public double COMISION = 0;
     public double COMISIOC = 0;
     public double totCOMISION = 0;
+    public int QTYDOC= 0;
 
     public double IVA = 0;
     public double IVAC = 0;
@@ -465,7 +466,7 @@ public class A2290Filter extends A2290 {
     public String CODEBANK = "";
     public String CODEBANKA = "";
     public String IN_CODEBANK = "";
-    public int QTYDOC = 0;
+//    public int QTYDOC = 0;
     public int totQTYDOC = 0;
     //
     public long QBANKRFND = 0;
