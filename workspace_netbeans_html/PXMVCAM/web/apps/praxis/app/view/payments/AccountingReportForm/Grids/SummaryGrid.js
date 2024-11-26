@@ -34,7 +34,14 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
-            {text: 'Client', dataIndex: 'CCUST', width: 60},
+            {text: 'Client', dataIndex: 'CCUST', width: 60,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    if(!value){
+                        value = 'All';
+                    }
+                    return value;
+                }
+            },
             {text: 'Month', dataIndex: 'VALDATE', width: 100,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const year = value.substring(0, 4); // "2024"

@@ -73,7 +73,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersSummary', {
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '134'
+                                    value: ''
                                 },
                                 {
                                     xtype: 'monthfield',
