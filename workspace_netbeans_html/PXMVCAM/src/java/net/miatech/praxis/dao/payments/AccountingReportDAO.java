@@ -1,13 +1,12 @@
 package net.miatech.praxis.dao.payments;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
-import net.miatech.praxis.payment.dto.ExcelBandocDto;
+import net.miatech.praxis.payment.dto.EstadisticaContable;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -22,6 +21,7 @@ import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
+import net.miatech.praxis.payment.dto.SPACR018Filter;
 import net.miatech.praxis.payment.dto.SPMC006Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4451;
@@ -36,7 +36,6 @@ import net.miatech.praxis.payment.entities.X3184;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.JdbcUtils;
 import net.miatech.praxis.utils.MailUtils;
-import net.miatech.utils.Functions;
 import net.miatech.utils.MailImagePath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -315,5 +314,16 @@ public class AccountingReportDAO implements AccountingReportLogic {
 
         return filter;
     }
+    
+    @Override
+    public SPACR018Filter loadSPACR018Filter(SPACR018Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR018",
+                params, new BeanPropertyRowMapper(EstadisticaContable.class));
+        filter.setResponse((List<EstadisticaContable>) obj.get("result"));
+        return filter;
+    }
+    
     //</editor-fold>
+
 }

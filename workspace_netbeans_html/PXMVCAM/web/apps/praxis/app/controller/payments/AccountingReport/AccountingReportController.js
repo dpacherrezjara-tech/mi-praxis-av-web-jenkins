@@ -26,14 +26,39 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
             me.procesadores = data.response;
             const cmbCODPRO = Ext.getCmp(prototype.id + '-cmbCODPRO');
             global.setComboStore(cmbCODPRO,me.procesadores,'CODE','NAME','');
+            const cmbCODPRO2 = Ext.getCmp(prototype.id + '-cmbCODPRO2');
+            global.setComboStore(cmbCODPRO2,me.procesadores,'CODE','NAME','');
         } catch (e) {
             console.error(e);
             me.notifier.alert('Filters not loaded');
         } finally {
             me.view.unmask();
-            me.loadBandocs();
+            me.loadSummary();
         }
-
+    },
+    onChangeReport:function(cmb){
+        const summFilter = Ext.getCmp(prototype.id + '-fsummary');
+        const detFilter = Ext.getCmp(prototype.id + '-fdetail');
+        if(cmb.value === 'S'){
+            summFilter.show();
+            detFilter.hide();
+            this.loadSummary();
+        }else{
+            summFilter.hide();
+            detFilter.show();
+            this.loadBandocs();
+        }
+    },
+    loadSummary:function(){
+        const me = this;
+        let params = me.formatSummaryParams();
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.removeAll();
+        const panelSummary = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
+            id: prototype.id + '-SummaryGrid-1',
+            searchParams: params
+        });
+        mainPanel.add(panelSummary);
     },
     loadBandocs: async function () {
         const me = this;
@@ -51,9 +76,21 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
+    formatSummaryParams:function(){
+        const formFilters = Ext.getCmp(prototype.id + '-formFilters-2').getForm();
+        let params = formFilters.getValues();
+        params.IN_TIPO = 'M';
+        console.log('Search Params: ', params);
+        return params;
+    },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
-        this.loadBandocs();
+        const cmbType = Ext.getCmp(prototype.id + '-cmbType').value;
+        if(cmbType === 'S'){
+            this.loadSummary();
+        }else{
+            this.loadBandocs();
+        }
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
