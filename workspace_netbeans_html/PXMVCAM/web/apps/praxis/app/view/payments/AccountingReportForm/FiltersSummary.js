@@ -83,7 +83,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersSummary', {
                                     editable: false, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(new Date().getFullYear(), 0, 1),
+                                    value: new Date(),
                                     name: 'IN_VALDATEF'
                                 },
                                 {

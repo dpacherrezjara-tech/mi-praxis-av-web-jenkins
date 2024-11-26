@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-SummaryGrid',
+    alias: 'widget.' + prototype.id + '-SummaryMonthGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.SummaryGridController'
+        'Ext.Praxis.controller.payments.AccountingReport.SummaryMonthGridController'
     ],
-    controller: 'SummaryGridController',
+    controller: 'SummaryMonthGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
@@ -36,39 +36,23 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
             },
             {text: 'Client', dataIndex: 'CCUST', width: 60,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    if(!value){
+                    if (!value) {
                         value = 'All';
                     }
                     return value;
                 }
             },
-            {text: 'Month', dataIndex: 'VALDATE', width: 100,
+            {text: 'Days', dataIndex: 'VALDATE', width: 100,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    const year = value.substring(0, 4); // "2024"
-                    const month = parseInt(value.substring(4), 10); // 10
-
-                    // Crear un objeto Date usando año y mes
-                    const date = new Date(year, month - 1); // Meses en JS van de 0 a 11
-
-                    // Formatear la fecha como 'yyyy-MMM'
-                    const options = {year: "numeric", month: "short"}; // 'short' da el mes abreviado
-                    value = date.toLocaleDateString("en-US", options).replace(",", "");
                     return value;
                 }
             },
             {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
             {text: 'Documents', dataIndex: 'QTY', width: 120,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#6d97be;";
-                    return value;
-                },
                 summaryType: 'sum',
                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                     metaData.style = 'text-align:center; margin-right:3px;font-weight:bold;';
                     return '<b>' + value + '<b>';
-                },
-                listeners:{
-                    click:'onLoadTotal'
                 }
             },
             {text: 'Total', dataIndex: 'TOTAL', width: 120,
@@ -216,6 +200,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
 
                 ]
             }
+
             //</editor-fold>
         ]
     },
@@ -230,7 +215,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
             {
                 xtype: 'button',
                 scale: 'small',
-                id: prototype.id + '-summ-btnBack',
+                id: prototype.id + '-msumm-btnBack',
                 iconCls: 'prx-icon-back',
                 width: 25,
                 hidden: true,

@@ -12,6 +12,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
         'Ext.Praxis.view.payments.AccountingReportForm.Options',
         'Ext.Praxis.view.payments.AccountingReportForm.FiltersDetail',
         'Ext.Praxis.view.payments.AccountingReportForm.FiltersSummary',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid'

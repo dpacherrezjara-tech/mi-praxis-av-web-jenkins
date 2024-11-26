@@ -38,5 +38,33 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.SummaryGridControlle
             me.view.setLoading(false);
         }
         //me.view.unmask();
+    },
+    onLoadTotal: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATEF: VALDATE+'01',
+            IN_VALDATET: VALDATE+'31',
+            IN_CODPRO:PROCESSOR,
+            IN_TIPO:'D'
+        };
+        console.log('Days Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelSummary = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid', {
+            id: prototype.id + '-SummaryGrid-2',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelSummary);
     }
 });
