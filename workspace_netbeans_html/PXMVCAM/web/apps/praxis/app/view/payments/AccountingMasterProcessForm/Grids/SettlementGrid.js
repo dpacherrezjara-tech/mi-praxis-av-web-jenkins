@@ -154,7 +154,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Settlemen
                 scale: 'small',
                 tooltip: 'Export to Excel',
                 listeners: {
-                    click: 'downloadExcel'
+                    click: 'onDownloadExcel'
                 }
             },
             {

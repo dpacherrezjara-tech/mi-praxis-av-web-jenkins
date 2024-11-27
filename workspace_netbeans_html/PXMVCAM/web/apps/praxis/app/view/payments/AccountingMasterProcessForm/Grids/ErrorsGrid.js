@@ -138,7 +138,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGri
                 scale: 'small',
                 tooltip: 'Export to Excel',
                 listeners: {
-                    click: 'downloadExcel'
+                    click: 'onDownloadExcel'
                 }
             },
             {
