@@ -1,7 +1,7 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Filters', {
+Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersDetail', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.' + prototype.id + '-filters',
-    border: true,
+    alias: 'widget.' + prototype.id + '-filtersDetail',
+    border: false,
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
     layout: 'hbox',

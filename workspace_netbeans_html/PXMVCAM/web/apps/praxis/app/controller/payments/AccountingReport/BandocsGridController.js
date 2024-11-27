@@ -115,7 +115,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocsGridControlle
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            global.downloadFile(me.request,'downloadBandocsBrowser',params,'zip');
+                            global.downloadFile(me.request,'downloadExcelBandocsBrowser',params,'zip');
                         }
                     }
                 });
