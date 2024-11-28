@@ -29,6 +29,7 @@ import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.dto.SPACR018Filter;
+import net.miatech.praxis.payment.dto.SPACR019Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
@@ -471,8 +472,10 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Accounting\nDate"));
         header.add(new CustomExcelCell("Accounting\nType"));
         header.add(new CustomExcelCell("Accounting\nID"));
-        header.add(new CustomExcelCell("SAP Date"));
-        header.add(new CustomExcelCell("SAP Status"));
+        header.add(new CustomExcelCell("Sap\nDate"));
+        header.add(new CustomExcelCell("Sap\nStatus"));
+        header.add(new CustomExcelCell("Sap\nCorrl AV"));
+        header.add(new CustomExcelCell("Sap\nFile Name"));
         data.add(header);
         filter.getResponse().forEach(obj->{
             List<CustomExcelCell> row = new ArrayList<>();
@@ -507,6 +510,8 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getTIPOCON()));
             row.add(new CustomExcelCell(obj.getIDACC()));
             row.add(new CustomExcelCell(obj.getFECSAP()));
+            row.add(new CustomExcelCell(obj.getHEADER()));
+            row.add(new CustomExcelCell(obj.getFILENAM()));
             row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
             data.add(row);
         });
@@ -741,6 +746,96 @@ public class AccountingReportController extends BaseController {
         
         return exportUtils.createCustomExcel(data, title);
     }
+    
+    @RequestMapping(value = "downloadSummaryDetail", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadSummaryDetail(@RequestBody SPACR019Filter params) throws Exception {
+        System.out.println("***** AccountingMasterProcess - downloadSummaryDetail *****");
+        params.setExcel(true);
+        SPACR019Filter filter = logic.loadSPACR019Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        String title = "Accounting Report Summary Detail_" 
+            + UUID.randomUUID().toString().substring(0,8);
+        
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Client"));
+        header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Doc.\nType"));
+        header.add(new CustomExcelCell("Bank Doc."));
+        header.add(new CustomExcelCell("Country"));
+        header.add(new CustomExcelCell("Core"));
+        header.add(new CustomExcelCell("Status\nPhase 1"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Processing\nDate"));
+        header.add(new CustomExcelCell("Payment\nDate"));
+        header.add(new CustomExcelCell("Account"));
+        header.add(new CustomExcelCell("Profit\nCenter"));
+        header.add(new CustomExcelCell("Company"));
+        header.add(new CustomExcelCell("Society"));
+        header.add(new CustomExcelCell("Commercial"));
+        header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("Key 1"));
+        header.add(new CustomExcelCell("Key 3"));
+        header.add(new CustomExcelCell("Text"));
+        header.add(new CustomExcelCell("Currency"));
+        header.add(new CustomExcelCell("Bank\nAmount"));
+        header.add(new CustomExcelCell("Reconciled\nAmount"));
+        header.add(new CustomExcelCell("Rev\nCurrency"));
+        header.add(new CustomExcelCell("Rev\nAmount"));
+        header.add(new CustomExcelCell("Qty\nSettl. F1"));
+        header.add(new CustomExcelCell("Qty\nSettl. F2"));
+        header.add(new CustomExcelCell("Qty\nTax"));
+        header.add(new CustomExcelCell("Accounting\nDate"));
+        header.add(new CustomExcelCell("Accounting\nType"));
+        header.add(new CustomExcelCell("Accounting\nID"));
+        header.add(new CustomExcelCell("Sap\nDate"));
+        header.add(new CustomExcelCell("Sap\nStatus"));
+        header.add(new CustomExcelCell("Sap\nCorrl AV"));
+        header.add(new CustomExcelCell("Sap\nFile Name"));
+        data.add(header);
+        filter.getResponse().forEach(obj->{
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getVALDATE()));
+            row.add(new CustomExcelCell(obj.getTDOC()));
+            row.add(new CustomExcelCell(obj.getBANDOC()));
+            row.add(new CustomExcelCell(obj.getSCOUNTRY()));
+            row.add(new CustomExcelCell(obj.getCOREP()));
+            row.add(new CustomExcelCell(formatStval(obj.getSTVAL())));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getPRDA()));
+            row.add(new CustomExcelCell(obj.getADATE()));
+            row.add(new CustomExcelCell(obj.getACCOUNT()));
+            row.add(new CustomExcelCell(obj.getBENCENC()));
+            row.add(new CustomExcelCell(obj.getACCCOMP()));
+            row.add(new CustomExcelCell(obj.getSOCIETY()));
+            row.add(new CustomExcelCell(obj.getCIACOME()));
+            row.add(new CustomExcelCell(obj.getREFER()));
+            row.add(new CustomExcelCell(obj.getCLAVE1()));
+            row.add(new CustomExcelCell(obj.getCLAVE3()));
+            row.add(new CustomExcelCell(obj.getTEXTO()));
+            row.add(new CustomExcelCell(obj.getSCURRENCY()));
+            row.add(new CustomExcelCell(obj.getNETO()));
+            row.add(new CustomExcelCell(obj.getNETOC()));
+            row.add(new CustomExcelCell(obj.getLOCRENCY2()));
+            row.add(new CustomExcelCell(obj.getLOCAMOUNT2()));
+            row.add(new CustomExcelCell(obj.getQTYLIQ1()));
+            row.add(new CustomExcelCell(obj.getQTYLIQ2()));
+            row.add(new CustomExcelCell(obj.getQTYGAS()));
+            row.add(new CustomExcelCell(obj.getFECACC()));
+            row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(obj.getIDACC()));
+            row.add(new CustomExcelCell(obj.getFECSAP()));
+            row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
+            row.add(new CustomExcelCell(obj.getHEADER()));
+            row.add(new CustomExcelCell(obj.getFILENAM()));
+            
+            data.add(row);
+        });
+        
+        return exportUtils.createCustomExcel(data, title);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">
@@ -772,6 +867,14 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> loadSummaryAccounting(SPACR018Filter params) throws Exception{
         System.out.println("***** AccountingReport - loadSummaryAccounting *****");
         SPACR018Filter filter = logic.loadSPACR018Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadSummaryDetail")
+    public ResponseEntity<?> loadSummaryDetail(SPACR019Filter params) throws Exception{
+        System.out.println("***** AccountingReport - loadSummaryDetail *****");
+        SPACR019Filter filter = logic.loadSPACR019Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
