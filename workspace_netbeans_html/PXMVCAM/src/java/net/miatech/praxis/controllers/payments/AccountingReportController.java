@@ -29,6 +29,7 @@ import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.dto.SPACR018Filter;
+import net.miatech.praxis.payment.dto.SPACR019Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.filter.SQP05233Filter;
@@ -772,6 +773,14 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> loadSummaryAccounting(SPACR018Filter params) throws Exception{
         System.out.println("***** AccountingReport - loadSummaryAccounting *****");
         SPACR018Filter filter = logic.loadSPACR018Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadSummaryDetail")
+    public ResponseEntity<?> loadSummaryDetail(SPACR019Filter params) throws Exception{
+        System.out.println("***** AccountingReport - loadSummaryDetail *****");
+        SPACR019Filter filter = logic.loadSPACR019Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
