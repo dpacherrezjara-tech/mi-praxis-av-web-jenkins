@@ -71,7 +71,7 @@ public class DataRequestedByBankDAO {
 
         long QTKT = 0, QLINK = 0, QCARD = 0, QNOT = 0, QNMATCH = 0;
         double AUTAMOUNT = 0, VFOP = 0, ANOT = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01885(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01885_2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         System.out.println("Ejecutando ----> " + SQLCLL01);
         System.out.println(filter.page.PAGNUM);
         System.out.println(filter.page.PAGROW);
