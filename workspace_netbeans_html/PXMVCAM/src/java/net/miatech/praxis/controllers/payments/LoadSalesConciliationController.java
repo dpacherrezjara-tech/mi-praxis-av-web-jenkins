@@ -202,7 +202,7 @@ public class LoadSalesConciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 0) {
                         A2290Filter obj = new A2290Filter();
-                     
+                        
                         obj.SEQ = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim();
                         obj.USERF = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
                         obj.TYPETRAN = formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
@@ -245,6 +245,14 @@ public class LoadSalesConciliationController extends BaseController {
                         if(obj.SEQ.equals("") && obj.USERF.equals("") && obj.TYPETRAN.equals("") && obj.CCUST.equals("") 
                            && obj.AMOUNT.equals("") && obj.SCURRENCY.equals("") ){       
                             break;
+                        }
+                        if( obj.SEQ.contains("IF") || obj.SEQ.contains("(") || obj.SEQ.contains("(") ){
+                            respt.MESSAGE = "The file contains formula";
+                            return respt;
+                        }
+                        if( obj.AMOUNT.length() <= 3  ){
+                            respt.MESSAGE = "Amount without #,00 format";
+                            return respt;
                         }
                         qty++;
                         lstData.add(obj);
