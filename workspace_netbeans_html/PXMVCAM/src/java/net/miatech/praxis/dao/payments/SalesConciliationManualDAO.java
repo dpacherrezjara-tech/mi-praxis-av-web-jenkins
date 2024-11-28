@@ -842,7 +842,7 @@ public class SalesConciliationManualDAO {
         A2295Filter objRtn = new A2295Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_SAGENT_SDATE(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_SAGENT_SDATE_V1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
