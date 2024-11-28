@@ -171,7 +171,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGri
             {
                 xtype: 'button',
                 scale: 'small',
-                id: prototype.id + '-DTbandoc-btnBack',
+                id: prototype.id + '-dtsumm-btnBack',
                 iconCls: 'prx-icon-back',
                 width: 25,
                 hidden: true,

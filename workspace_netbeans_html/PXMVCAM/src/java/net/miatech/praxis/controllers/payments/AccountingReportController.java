@@ -826,6 +826,7 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getFECACC()));
             row.add(new CustomExcelCell(obj.getTIPOCON()));
             row.add(new CustomExcelCell(obj.getIDACC()));
+            row.add(new CustomExcelCell(obj.getFECSAP()));
             row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
             row.add(new CustomExcelCell(obj.getHEADER()));
             row.add(new CustomExcelCell(obj.getFILENAM()));
