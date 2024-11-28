@@ -122,29 +122,30 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                     sortable: true,
                     align: 'center',
                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        metaData.style = "background-color:#dd9b50;font-weight:bold;";
+                        metaData.style = "background-color:#786bb9;font-weight:bold;";
                         return value;
                     }
                 },
                 columns: [
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Status', dataIndex: 'STSAP', width: 120,
-                        /*
-                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                         //metaData.style = "background-color:#838187";
-                         const opts = {
-                         'P': ()=>{
-                         metaData.style = "background-color:#fffc33;font-weight:bold";
-                         return 'Pending';
-                         }, 
-                         'L': ()=>{
-                         metaData.style = "background-color:#7cf925;font-weight:bold";
-                         return 'Loaded';
-                         }
-                         };
-                         return opts[value]();
-                         }*/
-                    }
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#786bb9;font-weight:bold;";
+                            const opts = {
+                                'P': () => {
+                                    metaData.style = "background-color:#fffc33;font-weight:bold";
+                                    return 'Pending';
+                                },
+                                'L': () => {
+                                    metaData.style = "background-color:#7cf925;font-weight:bold";
+                                    return 'Loaded';
+                                }
+                            };
+                            return opts[value]() || '';
+                        }
+                    },
+                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 300}
                 ]
             }
             //</editor-fold>

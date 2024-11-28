@@ -82,7 +82,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryGrid', {
                     return '<b>' + value + '<b>';
                 }
             },
-            {text: 'Currency', dataIndex: 'LOCRENCY2', width: 120},
+            {text: 'Currency', dataIndex: 'LOCRENCY2', width: 80},
             {
                 text: 'Accounting',
                 defaults: {

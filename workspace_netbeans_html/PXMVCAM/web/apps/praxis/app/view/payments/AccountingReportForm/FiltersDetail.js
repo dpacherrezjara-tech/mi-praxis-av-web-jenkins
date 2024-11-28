@@ -224,9 +224,11 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersDetail', {
                                         fields: ['code', 'name'],
                                         data: [
                                             ['', 'All'],
+                                            ['S', 'Sended'],
+                                            ['C', 'Accounted'],
                                             ['N', 'No Accounted'],
-                                            ['A', 'Accounted'],
-                                            ['P', 'Pending']
+                                            ['M', 'Match'],
+                                            ['P', 'Pending BPO']
                                         ]
                                     }),
                                     labelWidth: 60,

@@ -44,11 +44,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid
             },
             {text: 'Days', dataIndex: 'VALDATE', width: 100,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#6d97be;";
+                    metaData.style = "font-weight:bolder;";
                     return value;
-                },
-                listeners:{
-                    click:'onLoadTotal'
                 }
             },
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 170},
@@ -79,7 +76,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid
                     return '<b>' + value + '<b>';
                 }
             },
-            {text: 'Currency', dataIndex: 'LOCRENCY2', width: 120},
+            {text: 'Currency', dataIndex: 'LOCRENCY2', width: 80},
             {
                 text: 'Accounting',
                 defaults: {
