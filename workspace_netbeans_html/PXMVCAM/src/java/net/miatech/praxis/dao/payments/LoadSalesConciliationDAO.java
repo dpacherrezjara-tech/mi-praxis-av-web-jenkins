@@ -423,7 +423,7 @@ public class LoadSalesConciliationDAO {
             }
         }
         
-        if( !user.getUserInfo().USR.substring(0,2).equals("AV") && isAdj && !user.getUserInfo().USR.equals("SAP58") ){
+        if( !user.getUserInfo().USR.substring(0,2).equals("AV") && isAdj && !user.getUserInfo().USR.equals("SAP58") && !user.getUserInfo().USR.equals("USRWEBAV") ){
             rspt.MESSAGE = "You are not allowed to make an adjustment";
             return rspt;
         }
@@ -556,7 +556,7 @@ public class LoadSalesConciliationDAO {
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_PREV(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_PREV_V1(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
