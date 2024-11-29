@@ -1099,6 +1099,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         this.beanDetCard.DATEN = rowData.data.DATEN;
         this.beanDetCard.IN_TCARD = rowData.data.IN_TCARD;
         this.beanDetCard.IN_MERCHNC = rowData.data.IN_MERCHNC;
+        this.beanDetCard.IN_MERCHNAM = rowData.data.MERCHNAM;
         this.beanDetCard.IN_CODEBANK = rowData.data.IN_CODEBANK;
         console.log(this.beanDetCard);
 
@@ -1512,7 +1513,8 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         this.beanDetAvisos.STVAL = rowData.data.STVAL;
         this.beanDetAvisos.IN_FECHA_FROM = rowData.data.IN_FECHA_FROM;
         this.beanDetAvisos.IN_FECHA_TO = rowData.data.IN_FECHA_TO;
-        this.beanDetAvisos.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanDetAvisos.MERCHN = rowData.data.MERCHN;
+        this.beanDetAvisos.MERCHNAM = rowData.data.MERCHNAM;
         this.beanDetAvisos.IN_CODEBANK = rowData.data.IN_CODEBANK;
         this.beanDetAvisos.strDescStatus = rowData.data.strDescStatus;
 //        console.log(this.beanDetAvisos);
