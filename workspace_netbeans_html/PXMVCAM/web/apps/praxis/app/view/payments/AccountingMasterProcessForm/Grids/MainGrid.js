@@ -204,6 +204,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                         isDisabled: 'disableDownload'
                     }
                 ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Up.',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-process-send',
+                        tooltip: 'Upload',
+                        handler: 'onUploadAccounting',
+                        isDisabled: 'disableUpload'
+                    }
+                ]
             }
             //</editor-fold>
         ]

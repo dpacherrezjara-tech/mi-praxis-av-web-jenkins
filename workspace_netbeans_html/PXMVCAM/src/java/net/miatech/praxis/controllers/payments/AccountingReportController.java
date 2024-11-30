@@ -6,14 +6,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
+import net.miatech.praxis.payment.dto.AccountingInterface;
 import net.miatech.praxis.payment.dto.ExcelBandocDto;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -69,6 +72,9 @@ public class AccountingReportController extends BaseController {
     @Autowired
     private SpringWS ws;
     
+    @Autowired
+    private CurrentSession cs;
+    
     //<editor-fold defaultstate="collapsed" desc="Master Process">
     @RequestMapping(value = "loadMain")
     public ResponseEntity<?> loadMain(SPACR002Filter params) throws Exception {
@@ -122,13 +128,11 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> downloadAccounting(@RequestBody SQP05233Filter filter, HttpServletResponse response) throws Exception {
         System.out.println("***** AccountingReport - downloadAccounting *****");
         
-        List<String> fileNames = new ArrayList<>();
-        List<String> file = new ArrayList<>();
-        List<List<String>> files = new ArrayList<>();
+        List<AccountingInterface> accountingInterfaces = new ArrayList<>();
+        AccountingInterface accountingInterface = new AccountingInterface();
         
-        String fileNameTemp = "CARGUE_TC_" + filter.getIN_FCONT() + "_" + filter.getIN_CCUST()+ "_";
+        String fileNameTemp = "CARGUE_TC_" + filter.getIN_FCONT() + Functions.getHoraActual() + "_" + filter.getIN_CCUST()+ "_";
         String fileName;
-        //String zipName = "TC_" + idCont ;
         String zipName = "CARGUE_DEPOSITOS_TC";
         
         String A4545SEQ = "";
@@ -147,8 +151,8 @@ public class AccountingReportController extends BaseController {
                 
                 List<A4545> result = filter.getResponse();
                 zipName = filter.OU_FILENAM.trim();
-
-                file.add(fileHeader);
+                
+                accountingInterface.getInterfase().add(fileHeader);
 
                 int k = 0;
                 for (int i=0,j=0; i<result.size(); i++,j++) {
@@ -231,28 +235,28 @@ public class AccountingReportController extends BaseController {
                         (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
 
                         fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
-
-                        fileNames.add( fileName );                   
-                        files.add(file) ;
-
-                        file = new ArrayList<>();
-                        file.add(fileHeader);
+                        
+                        accountingInterface.setFileName(fileName);
+                        accountingInterfaces.add(accountingInterface);
+                        
+                        accountingInterface = new AccountingInterface();
+                        accountingInterface.getInterfase().add(fileHeader);
 
                         j = 0;
                         k = !result.get(i).getA4545MODO().equals(A4545MODO)? 0 : (k+1);
                     }
-
-                    file.add(sb.toString());
+               
+                    accountingInterface.getInterfase().add(sb.toString());
 
                     A4545SEQ = result.get(i).getA4545SEQ().toString();
                     A4545MODO = result.get(i).getA4545MODO();
                 }
 
-                //fileName = idCont + " " + getModoDesc(A4545MODO) + "_" + (k+1);
                 fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
 
-                fileNames.add(fileName);
-                files.add(file) ;
+                
+                accountingInterface.setFileName(fileName);
+                accountingInterfaces.add(accountingInterface);
             }
             
                
@@ -261,7 +265,156 @@ public class AccountingReportController extends BaseController {
             throw new SpringException(e);
         }
         
-        return exportUtils.createZip(files, fileNames, zipName);
+        return exportUtils.createZip(accountingInterfaces, zipName);
+    }
+    
+        @RequestMapping(value = "uploadAccounting", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadAccounting(@RequestBody SQP05233Filter filter, HttpServletResponse response) throws Exception {
+        System.out.println("***** AccountingReport - uoloadAccounting *****");
+        
+        List<AccountingInterface> accountingInterfaces = new ArrayList<>();
+        AccountingInterface accountingInterface = new AccountingInterface();
+        
+        String fileNameTemp = "CARGUE_TC_" + filter.getIN_FCONT() + "_" + filter.getIN_CCUST()+ "_";
+        String fileName;
+        String zipName = "CARGUE_DEPOSITOS_TC";
+        
+        String A4545SEQ = "";
+        String CODPRO = filter.getIN_CODPRO().trim();
+        String A4545MODO = "";
+        String fileHeader = "SEQUENCE\tHEADER_TXT\tCOMP_CODE\tDOC_DATE\tPSTNG_DATE\tTRANS_DATE\tDOC_TYPE\tREF_DOC_NO\tZZ_AUTH_CODE\tPOSTING_KEY\tITEMNO_ACC\t" +
+            "GL_ACCOUNT\tITEM_TEXT\tREF_KEY_1\tREF_KEY_2\tREF_KEY_3\tBUS_AREA\tCOSTCENTER\tPROFIT_CTR\tCUSTOMER\tNAME\tCITY\tCOUNTRY\tCURRENCY\t" +
+            "AMT_DOCCUR\tAMT_BASE\tTAX_AMT\tZZ_LEGAL_INV\tZZ_LEGACY_INV\tZZ_ACM_ADM_NO\tPYMT_METH\tWTH_TYPE1\tWTH_CODE1\tWTH_BASE1\tWTH_AMT1\t" +
+            "WTH_TYPE2\tWTH_CODE2\tWTH_BASE2\tWTH_AMT2\tWTH_TYPE3\tWTH_CODE3\tWTH_BASE3\tWTH_AMT3\tWTH_TYPE4\tWTH_CODE4\tWTH_BASE4\tWTH_AMT4\t" + 
+            "WTH_TYPE5\tWTH_CODE5\tWTH_BASE5\tWTH_AMT5\tWTH_TYPE6\tWTH_CODE6\tWTH_BASE6\tWTH_AMT6\tPAYMT_REF\tALLOC_NMBR\tBUS_PLACE";
+        
+        try {
+        
+            filter = logic.loadSQP05233Filter(filter);
+            if (filter.getResponse() != null) {
+                
+                List<A4545> result = filter.getResponse();
+                zipName = filter.OU_FILENAM.trim();
+                
+                accountingInterface.getInterfase().add(fileHeader);
+
+                int k = 0;
+                for (int i=0,j=0; i<result.size(); i++,j++) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(result.get(i).getA4545SEQ()).append("\t") ;                   // SEQUENCE
+                    sb.append(result.get(i).getA4545HEADE().trim()).append("\t") ;          // HEADER_TXT
+                    sb.append(result.get(i).getA4545COMPC().trim()).append("\t") ;          // COMP_CODE
+                    sb.append(result.get(i).getA4545DOCD().trim()).append("\t") ;           // DOC_DATE
+                    sb.append(result.get(i).getA4545PSTGD().trim()).append("\t") ;          // PSTNG_DATE
+                    sb.append(result.get(i).getA4545TRASD().trim()).append("\t") ;          // TRANS_DATE
+                    sb.append(result.get(i).getA4545DOCT().trim()).append("\t") ;           // DOC_TYPE
+                    sb.append(result.get(i).getA4545REFD().trim()).append("\t") ;           // REF_DOC_NO
+                    sb.append("").append("\t") ;                                            // ZZ_AUTH_CODE
+                    sb.append(result.get(i).getA4545PKEY().trim()).append("\t") ;           // POSTING_KEY
+                    sb.append(result.get(i).getA4545ITEM()).append("\t") ;                  // ITEMNO_ACC
+                    sb.append(result.get(i).getA4545CUENT().trim()).append("\t") ;          // GL_ACCOUNT
+                    sb.append(result.get(i).getA4545TEXTD().trim()).append("\t") ;          // ITEM_TEXT
+                    sb.append(result.get(i).getA4545REFK().trim()).append("\t") ;           // REF_KEY_1
+                    sb.append(result.get(i).getA4545REFK2().trim()).append("\t") ;          // REF_KEY_2
+                    sb.append(result.get(i).getA4545REFB().trim()).append("\t") ;           // REF_KEY_3
+                    sb.append("").append("\t") ;                                            // BUS_AREA
+                    sb.append(result.get(i).getA4545CCOST().trim()).append("\t") ;          // COSTCENTER
+                    sb.append(result.get(i).getA4545PROFI().trim()).append("\t") ;          // PROFIT_CTR
+                    sb.append(result.get(i).getA4545CUSTO().trim()).append("\t") ;          // CUSTOMER
+                    sb.append("").append("\t") ;                                            // NAME
+                    sb.append("").append("\t") ;                                            // CITY
+                    sb.append("").append("\t") ;                                            // COUNTRY
+                    sb.append(result.get(i).getA4545CUR().trim()).append("\t") ;            // CURRENCY
+
+                    if (result.get(i).getA4545CUR().equals("COP")) {
+                        Long AMT_DOCCUR = result.get(i).getA4545ACTIV().longValue();
+                        sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
+                    }
+                    else 
+                        sb.append(result.get(i).getA4545ACTIV()).append("\t");              // AMT_DOCCUR
+
+                    sb.append("").append("\t") ;                                            // AMT_BASE
+                    sb.append("").append("\t") ;                                            // TAX_AMT
+                    sb.append("").append("\t") ;                                            // ZZ_LEGAL_INV
+                    sb.append("").append("\t") ;                                            // ZZ_LEGACY_INV
+                    sb.append("").append("\t") ;                                            // ZZ_ACM_ADM_NO
+                    sb.append(result.get(i).getA4545MPAGO().trim()).append("\t") ;          // PYMT_METH
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE1
+                    sb.append("").append("\t") ;                                            // WTH_CODE1
+                    sb.append("").append("\t") ;                                            // WTH_BASE1
+                    sb.append("").append("\t") ;                                            // WTH_AMT1
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE2
+                    sb.append("").append("\t") ;                                            // WTH_CODE2
+                    sb.append("").append("\t") ;                                            // WTH_BASE2
+                    sb.append("").append("\t") ;                                            // WTH_AMT2
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE3
+                    sb.append("").append("\t") ;                                            // WTH_CODE3
+                    sb.append("").append("\t") ;                                            // WTH_BASE3
+                    sb.append("").append("\t") ;                                            // WTH_AMT3
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE4
+                    sb.append("").append("\t") ;                                            // WTH_CODE4
+                    sb.append("").append("\t") ;                                            // WTH_BASE4
+                    sb.append("").append("\t") ;                                            // WTH_AMT4
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE5
+                    sb.append("").append("\t") ;                                            // WTH_CODE5
+                    sb.append("").append("\t") ;                                            // WTH_BASE5
+                    sb.append("").append("\t") ;                                            // WTH_AMT5
+
+                    sb.append("").append("\t") ;                                            // WTH_TYPE6
+                    sb.append("").append("\t") ;                                            // WTH_CODE6
+                    sb.append("").append("\t") ;                                            // WTH_BASE6
+                    sb.append("").append("\t") ;                                            // WTH_AMT6
+
+                    sb.append(result.get(i).getA4545REPAG().trim()).append("\t") ;          // PAYMT_REF
+                    sb.append(result.get(i).getA4545ANUMB().trim()).append("\t") ;          // ALLOC_NMBR
+                    sb.append(result.get(i).getA4545PLACE().trim()) ;                       // BUS_PLACE
+
+                    if ( j > 0 &&                                                           // No el primer registro
+                        !result.get(i).getA4545SEQ().toString().equals(A4545SEQ) &&         // Debe haber cambiado secuencia
+                        (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))){    // Debe tener mas de 9000 lineas o cambio de modo
+
+                        fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
+                        
+                        accountingInterface.setFileName(fileName);
+                        accountingInterfaces.add(accountingInterface);
+                        
+                        accountingInterface = new AccountingInterface();
+                        accountingInterface.getInterfase().add(fileHeader);
+
+                        j = 0;
+                        k = !result.get(i).getA4545MODO().equals(A4545MODO)? 0 : (k+1);
+                    }
+               
+                    accountingInterface.getInterfase().add(sb.toString());
+
+                    A4545SEQ = result.get(i).getA4545SEQ().toString();
+                    A4545MODO = result.get(i).getA4545MODO();
+                }
+
+                fileName = fileNameTemp + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k+1);
+
+                
+                accountingInterface.setFileName(fileName);
+                accountingInterfaces.add(accountingInterface);
+            }
+            
+               
+        } catch (Exception e) {
+            System.out.println("" + e.getMessage());
+            throw new SpringException(e);
+        }
+        
+        Map<String,Object> map = new HashMap<>();
+        map.put("USER", cs.getServerSession().getUserView().getCustomerInfo().USR);
+        ws.postAsync(new Gson().toJson(accountingInterfaces), "Accounting/uploadAccounting");
+        map.put("STATUS", true);
+        map.put("MSG", "Process Running.");
+        return ResponseUtils.ok(map);
     }
 
      @RequestMapping(value = "reverseAccounting", method = RequestMethod.POST)
