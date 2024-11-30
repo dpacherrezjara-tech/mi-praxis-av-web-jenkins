@@ -410,8 +410,10 @@ public class AccountingReportController extends BaseController {
         }
         
         Map<String,Object> map = new HashMap<>();
-        map.put("USER", cs.getServerSession().getUserView().getCustomerInfo().USR);
-        ws.postAsync(new Gson().toJson(accountingInterfaces), "Accounting/uploadAccounting");
+        map.put("userName", cs.getServerSession().getUserView().getCustomerInfo().USR);
+        map.put("idCont", filter.IN_IDCONT);
+        map.put("dto", accountingInterfaces);
+        ws.postAsync(new Gson().toJson(map), "Accounting/sendInterfaseToSFTP");
         map.put("STATUS", true);
         map.put("MSG", "Process Running.");
         return ResponseUtils.ok(map);
