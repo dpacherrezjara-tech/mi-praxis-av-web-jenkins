@@ -79,7 +79,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     multiSelect: true,
                                                     columnLines: true,
                                                     rowLines: true,
-                                                    
+
 //                                            columnLines: true,
                                                     features: [{
                                                             ftype: 'summary'
@@ -112,13 +112,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         547: 'AEROGAL',
 
                                                                     }
-                                                                    if(  Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue() !== '' ){
+                                                                    if (Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue() !== '') {
                                                                         return strCCUST[record.data.children[0].CCUST]
-                                                                    }else{
+                                                                    } else {
                                                                         return  strCCUST[value] ? strCCUST[value] : 'AV GROUP';
                                                                     }
-                                                                    
-                                                                    
+
+
                                                                 },
                                                             },
                                                             {
@@ -370,7 +370,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {width: 100, id: prototype.id + '-totAPOLIC'},
                                                         {width: 90, id: prototype.id + '-totQPOLIPE'},
                                                         {width: 100, id: prototype.id + '-totAPOLIPE'},
-                                                        
                                                     ]
                                                 }
                                             ]
@@ -3758,6 +3757,1405 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         },
                                     ]
                                 },
+                            ]
+                        },
+                        // <editor-fold defaultstate="collapsed" desc="boxMainDataCLAtot">
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxMainDataCLAtot',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+//                            height: 497,
+                            width: 1282,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox'
+//                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataCLAtot',
+                                    width: 1282,
+//                                    height: 468,
+                                    columnLines: true,
+//                                    features: [{
+//                                        ftype: 'summary'
+//                                    }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Reception',
+                                                id: prototype.id + '-adgTitFechatot',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Date', dataIndex: 'strFormatDate', width: 100}
+                                                ]
+                                            },
+                                            {
+                                                text: 'Clarifications',
+//                                                id: prototype.id + '-headMonthConc',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Received',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYCLAR', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTCLARU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Answered',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYCLARP', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '%', dataIndex: 'perAnsw', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '%' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Not Answered',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYCLARS', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '%', dataIndex: 'perNoAnsw', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '%' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Bank Notice',
+//                                                id: prototype.id + '-headMonthConc',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCHGBK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#a4c5f5;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTCHGBU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#a4c5f5;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Reverse ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCLARR', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTREVCU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Net ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '%', dataIndex: 'per', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '%' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelDataSummaryCLAtot',
+                                    width: 1282,
+                                    align: 'left',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'center',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;text-align:right;border: 0.3px #4A6371 solid;font-size:12px'
+                                    },
+                                    items: [
+                                        {width: 100},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARtot'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCLARtot'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARPtot'},
+                                        {width: 60, id: prototype.id + '-lblTotperAns'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARStot'},
+                                        {width: 60, id: prototype.id + '-lblTotperNoAns'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCHGBKtot'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCHGBUtot'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARRtot'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTREVCUtot'},
+                                        {width: 100, id: prototype.id + '-lngTotQTYBANKtot'},
+                                        {width: 100, id: prototype.id + '-dblTotAMTBANKtot'},
+                                        {width: 60, id: prototype.id + '-lblTotper'}
+                                    ]
+                                },
+                                //PANEL DE GRAFICOS
+                                {
+                                    xtype: 'panel',
+                                    hidden: false,
+                                    margin: '5 0 5 0',
+                                    border: false,
+                                    layout: {
+                                        type: 'hbox',
+                                        aling: 'center'
+                                    },
+                                    bodyStyle: 'background-color: transparent;',
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            padding: '5 0 0 5',
+                                            border: true,
+                                            layout: {
+                                                type: 'vbox'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'cartesian',
+                                                    // title: '<div style="text-align:center;color:#6E6E73;font-size:14px">Passenger by Market</div>',
+                                                    id: prototype.id + '-displayChart_ByClarification01',
+                                                    width: 800,
+                                                    border: false,
+                                                    height: 400,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            text: 'Total Amount \n\ USD ',
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    legend: {
+                                                        docked: 'bottom',
+                                                        background: '#E3EAEF'
+                                                    },
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['dblAMTCLARU', 'AMTCHGBU'],
+                                                            grid: true,
+                                                            title: '',
+                                                            //title: 'Millions of USD',
+                                                            renderer: function (obj, value) {
+                                                                if (value > 1) {
+                                                                    if ((value / 1000).toString().length > 3) {
+                                                                        return  ' ' + Ext.util.Format.number((value / 1000000), '0.0') + 'M';
+                                                                    } else {
+                                                                        return  ' ' + Ext.util.Format.number((value / 1000), '0') + 'K';
+                                                                    }
+                                                                } else {
+                                                                    return '';
+                                                                }
+                                                            }
+                                                        }, {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            //                                                            fields: 'strFormatDate',
+                                                            grid: true,
+                                                            title: {
+                                                                text: '',
+                                                                translationX: -30
+                                                            }
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            title: ['ChargedBack', 'Received'],
+                                                            xField: 'strFormatDate',
+                                                            yField: ['dblAMTCLARU', 'AMTCHGBU'],
+                                                            colors: ['#c6f7cd', '#0066ff'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 1000
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    var label = '';
+                                                                    if (ctx.field === 'dblAMTCLARU') {
+                                                                        label = 'ChargedBack';
+                                                                    } else if (ctx.field === 'AMTCHGBU') {
+                                                                        label = 'Received';
+                                                                    }
+                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                },
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAF9;',
+                                            padding: '5 10 0 0',
+                                            width: 531,
+//                                            height: 400,
+                                            border: false,
+                                            layout: {
+                                                type: 'vbox'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'polar',
+//                                                    title: '<div style="text-align:center;color:#6E6E73;font-size:10px">Total Documents</div>',
+                                                    id: prototype.id + '-displayChart_ByClarification02',
+                                                    width: 531,
+                                                    border: true,
+                                                    margin: '0 0 0 5',
+                                                    innerPadding: 90,
+                                                    height: 350,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            text: 'Total - Amount USD',
+//                                                            fieldStyle: 'font-size:5px',
+                                                            alignTo: 'center'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['rotate', 'itemhighlight'],
+//                                                    legend: {
+//                                                        docked: 'bottom',
+//                                                        background: '#E3EAEF'
+//                                                    },
+                                                    series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'AMOUNT_ON_PERCENT',
+                                                            colors: ['#50d464', '#0066ff'],
+                                                            label: {
+                                                                field: 'LABEL',
+                                                                renderer: function (value, b, callout) {
+                                                                    callout.calloutWidth = 0;
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            highlight: true,
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    var label = '';
+                                                                    if (ctx.field === 'AMOUNT_ON_PERCENT') {
+                                                                        label = 'Total Received';
+                                                                    } else {
+                                                                        label = 'Total ChargedBack';
+                                                                    }
+                                                                    toolTip.setHtml(label + ' - ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                }
+                                            ]
+                                        },
+                                    ]
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="boxGroupDataCLAtot">
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxGroupDataCLAtot',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            height: 'auto',
+                            width: 1237,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox'
+//                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridGroupCLAtot',
+                                    width: 1237,
+                                    columnLines: true,
+//                                    features: [{
+//                                        ftype: 'summary'
+//                                    }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Credit Card',
+                                                id: prototype.id + '-adgTitGrouptot',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Code', dataIndex: 'SENTDATE', width: 50},
+                                                    {
+                                                        text: 'Description', dataIndex: 'strDescripcion', width: 225,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Clarifications',
+//                                                id: prototype.id + '-headMonthConc',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Received',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYCLAR', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTCLARU', width: 90,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Answered',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYCLARP', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '%', dataIndex: 'perAnsw', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '%' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Not Answered',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYCLARS', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '%', dataIndex: 'perNoAnsw', width: 60,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '%' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Bank Notice',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'ChargeBack',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCHGBK', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTCHGBU', width: 90,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Reverse ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCLARR', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTREVCU', width: 90,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Net ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYBANK', width: 80,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTBANK', width: 90,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelDataSummaryGroupCLAtot',
+                                    width: 1237,
+                                    align: 'left',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'center',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;text-align:right;border: 0.3px #4A6371 solid;font-size:12px'
+                                    },
+                                    items: [
+                                        {width: 275},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLAR_Gt'},
+                                        {width: 90, id: prototype.id + '-lblTotAMTCLAR_Gt'},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLARP_Gt'},
+                                        {width: 60, id: prototype.id + '-lblTotperAnsGt'},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLARS_Gt'},
+                                        {width: 60, id: prototype.id + '-lblTotperNoAnsGt'},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCHGBK_Gt'},
+                                        {width: 90, id: prototype.id + '-lblTotAMTCHGBU_Gt'},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLARR_Gt'},
+                                        {width: 90, id: prototype.id + '-lblTotAMTREVCU_Gt'},
+                                        {width: 80, id: prototype.id + '-lngTotQTYBANK_Gt'},
+                                        {width: 90, id: prototype.id + '-dblTotAMTBANK_Gt'},
+                                    ]
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="boxMainDataCLA">
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxMainDataCLA',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            height: 'auto',
+                            width: 1132,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox'
+//                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataCLA',
+                                    width: 1132,
+                                    columnLines: true,
+//                                    features: [{
+//                                        ftype: 'summary'
+//                                    }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Reception',
+                                                id: prototype.id + '-adgTitFecha',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Date', dataIndex: 'strFormatDate', width: 100,
+                                                        listeners: {
+                                                            click: 'viewDetBank'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            value = '<b>' + value + '</b>';
+                                                            return '<a href="#program-pro-payments-control-form" style="color:#057ECB;text-decoration:none;">' + value + '</a>';
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Clarifications',
+//                                                id: prototype.id + '-headMonthConc',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Stand By', dataIndex: 'lngQTYCLARS', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'On Process', dataIndex: 'lngQTYCLARP', width: 90,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Not Found', dataIndex: 'lngQNMATCH', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            (record.data.lngQNMATCH > 0) ? metaData.style = "text-align:right;background-color:#d5f4d5;color:#800000"
+                                                                    : metaData.style = "text-align:right;background-color:#d5f4d5;color:#244066";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Total', dataIndex: 'lngQTYCLAR', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'USD', dataIndex: 'dblAMTCLARU', width: 100,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  '<b>' + value + '</b>';
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Bank Notice',
+//                                                id: prototype.id + '-headMonthConc',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCHGBK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTCHGBU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Reverse ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCLARR', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTREVCU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Net ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelDataSummaryCLA',
+                                    width: 1132,
+                                    align: 'left',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'center',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;text-align:right;border: 0.3px #4A6371 solid;font-size:12px'
+                                    },
+                                    items: [
+                                        {width: 100},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLARS'},
+                                        {width: 90, id: prototype.id + '-lblTotQTYCLARP'},
+                                        {width: 80, id: prototype.id + '-lblTotQNMATCH'},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLAR'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCLAR'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCHGBK'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCHGBU'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARR'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTREVCU'},
+                                        {width: 100, id: prototype.id + '-lngTotQTYBANK'},
+                                        {width: 100, id: prototype.id + '-dblTotAMTBANK'}
+                                    ]
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="boxGroupDataCLA">
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxGroupDataCLA',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            height: 'auto',
+                            width: 1307,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox'
+//                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridGroupDataCLA',
+                                    width: 1307,
+                                    columnLines: true,
+//                                    features: [{
+//                                        ftype: 'summary'
+//                                    }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Credit Card',
+                                                id: prototype.id + '-adgTitGroup',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Code', dataIndex: 'SENTDATE', width: 50},
+                                                    {
+                                                        text: 'Description', dataIndex: 'strDescripcion', width: 225,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Clarifications',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Stand By', dataIndex: 'lngQTYCLARS', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'On Process', dataIndex: 'lngQTYCLARP', width: 90,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Not Found', dataIndex: 'lngQNMATCH', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            (record.data.lngQNMATCH > 0) ? metaData.style = "text-align:right;background-color:#d5f4d5;color:#800000"
+                                                                    : metaData.style = "text-align:right;background-color:#d5f4d5;color:#244066";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Total', dataIndex: 'lngQTYCLAR', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'USD', dataIndex: 'dblAMTCLARU', width: 100,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  '<b>' + value + '</b>';
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Bank Notice',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'ChargeBack',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCHGBK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTCHGBU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Reverse ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCLARR', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTREVCU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Net ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelGroupDataSummaryCLA',
+                                    width: 1307,
+                                    align: 'left',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'center',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;text-align:right;border: 0.3px #4A6371 solid;font-size:12px'
+                                    },
+                                    items: [
+                                        {width: 50},
+                                        {width: 225},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLARS_G'},
+                                        {width: 90, id: prototype.id + '-lblTotQTYCLARP_G'},
+                                        {width: 80, id: prototype.id + '-lblTotQNMATCH_G'},
+                                        {width: 80, id: prototype.id + '-lblTotQTYCLAR_G'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCLAR_G'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCHGBK_G'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCHGBU_G'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARR_G'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTREVCU_G'},
+                                        {width: 100, id: prototype.id + '-lngTotQTYBANK_G'},
+                                        {width: 100, id: prototype.id + '-dblTotAMTBANK_G'}
+                                    ]
+                                }
+                            ]
+                        },
+                        // </editor-fold>,
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxDetailBank',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            height: 'auto',
+                            width: 1307,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox'
+//                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDetBank',
+                                    width: 1307,
+                                    columnLines: true,
+//                                    features: [{
+//                                        ftype: 'summary'
+//                                    }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Bank',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Code', dataIndex: 'CODEBANK', width: 50},
+                                                    {
+                                                        text: 'Description', dataIndex: 'strDescripcion', width: 225,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Clarifications',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'Stand By', dataIndex: 'lngQTYCLARS', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'On Process', dataIndex: 'lngQTYCLARP', width: 90,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Not Found', dataIndex: 'lngQNMATCH', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            (record.data.lngQNMATCH > 0) ? metaData.style = "text-align:right;background-color:#d5f4d5;color:#800000"
+                                                                    : metaData.style = "text-align:right;background-color:#d5f4d5;color:#244066";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Total', dataIndex: 'lngQTYCLAR', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'USD', dataIndex: 'dblAMTCLARU', width: 100,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            value = Ext.util.Format.number(value, '0,000');
+                                                            return  '<b>' + value + '</b>';
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Bank Notice',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {
+                                                        text: 'ChargeBack',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCHGBK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTCHGBU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#fff7d9;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Reverse ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'QTYCLARR', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'AMTREVCU', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#e0f5ff;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Net ChargeBack',
+//                                                        id: prototype.id + '-headMonthAcc',
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        columns: [
+                                                            {
+                                                                text: 'Total', dataIndex: 'lngQTYBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'USD', dataIndex: 'dblAMTBANK', width: 100,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;background-color:#ffccbf;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return  '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelSummaryDetailBank',
+                                    width: 1307,
+                                    align: 'left',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'center',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;text-align:right;border: 0.3px #4A6371 solid;font-size:12px'
+                                    },
+                                    items: [
+                                        {width: 50},
+                                        {width: 225},
+                                        {width: 80, id: prototype.id + '-lblTotDB_QTYCLARS'},
+                                        {width: 90, id: prototype.id + '-lblTotDB_QTYCLARP'},
+                                        {width: 80, id: prototype.id + '-lblTotDB_QNMATCH'},
+                                        {width: 80, id: prototype.id + '-lblTotDB_QTYCLAR'},
+                                        {width: 100, id: prototype.id + '-lblTotDB_AMTCLAR'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCHGBK_DB'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTCHGBU_DB'},
+                                        {width: 100, id: prototype.id + '-lblTotQTYCLARR_DB'},
+                                        {width: 100, id: prototype.id + '-lblTotAMTREVCU_DB'},
+                                        {width: 100, id: prototype.id + '-lngTotQTYBANK_DB'},
+                                        {width: 100, id: prototype.id + '-dblTotAMTBANK_DB'}
+                                    ]
+                                }
                             ]
                         },
                         {

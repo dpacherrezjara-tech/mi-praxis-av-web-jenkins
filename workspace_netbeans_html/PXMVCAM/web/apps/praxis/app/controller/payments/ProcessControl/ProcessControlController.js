@@ -22,6 +22,9 @@ Ext.define('Ext.Praxis.controller.payments.ProcessControl.ProcessControlControll
         me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
+
+        
+
         this.control({
             //   -------------------Eventos Genericos --------------------
             '#ProcessControlForm-xpanel': {
@@ -75,7 +78,15 @@ Ext.define('Ext.Praxis.controller.payments.ProcessControl.ProcessControlControll
             }
         });
     },
-
+    xpanel_afterrender: function (obj, e) {
+        let classSeb = document.getElementsByClassName('x-column-header-text-inner')
+        $('#ProcessControlForm-panelGridData-body span')[0].style.fontSize = '16px'
+        $('#ProcessControlForm-panelGridData-body span')[2].style.fontSize = '16px'
+        $('#ProcessControlForm-panelGridData-body span')[4].style.fontSize = '16px'
+//        $('#ProcessControlForm-panelGridData-body span')[3].style.fontSize = '16px'
+        
+        console.log($('#ProcessControlForm-panelGridData-body span'));
+    },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -141,8 +152,8 @@ Ext.define('Ext.Praxis.controller.payments.ProcessControl.ProcessControlControll
 
     },
     btnSearch_click: function (obj, e) {
-//        this.setFormatParameter();
-//        this.setGridData();
+        
+       
     },
     // <editor-fold defaultstate="collapsed" desc="setGridData">
     setGridData: function () {
@@ -220,6 +231,9 @@ Ext.define('Ext.Praxis.controller.payments.ProcessControl.ProcessControlControll
         }
     },
     btnClear_click: function (obj, e) {
+//        let classSeb = document.getElementsByClassName('x-column-header-text-inner')
+//        classSeb[0].style.fontSize = '50px'
+//        console.log(classSeb[0].style.fontSize = '50px','classSeb  ')
 //        Ext.getCmp(prototype.id + '-cmbCode').setValue('');
 //        Ext.getCmp(prototype.id + '-txtMERCHN').setValue('');
 //        Ext.getCmp(prototype.id + '-txtCODEM').setValue('');
