@@ -191,7 +191,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'MXN', dataIndex: 'VFOP', width: 90,
+                                                        text: 'COP', dataIndex: 'VFOP', width: 90,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             var color = (data.VFOP) !== (data.AUTAMOUNT) ? '#800000' : '#008000';
@@ -216,7 +216,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'MXN', dataIndex: 'AUTAMOUNT', width: 90,
+                                                        text: 'COP', dataIndex: 'AUTAMOUNT', width: 90,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             var color = (data.VFOP) !== (data.AUTAMOUNT) ? '#800000' : '#008000';
@@ -241,7 +241,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'MXN', dataIndex: 'dblANOT', width: 85,
+                                                        text: 'COP', dataIndex: 'dblANOT', width: 85,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             var color = (data.STVAL) === '5' ? '#800000' : '#244066';
@@ -546,7 +546,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'MXN', dataIndex: 'AUTAMOUNT', width: 100,
+                                                        text: 'COP', dataIndex: 'AUTAMOUNT', width: 100,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             var color = (data.STVAL) === '2' ? '#800000' : '#244066';
@@ -766,7 +766,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 text: 'Country', dataIndex: 'SCOUNTRY', width: 60
                                             },
                                             {
-                                                text: 'MXN', dataIndex: 'VFOP', width: 75,
+                                                text: 'COP', dataIndex: 'VFOP', width: 75,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     value = Ext.util.Format.number(value, '0,000.00');
@@ -1138,7 +1138,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'MXN', dataIndex: 'AUTAMOUNT', width: 100,
+                                                        text: 'COP', dataIndex: 'AUTAMOUNT', width: 100,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             value = Ext.util.Format.number(value, '0,000');
@@ -1378,7 +1378,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'MXN', dataIndex: 'AUTAMOUNT', width: 70,
+                                                text: 'COP', dataIndex: 'AUTAMOUNT', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     value = Ext.util.Format.number(value, '0,000');
@@ -1586,7 +1586,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'MXN', dataIndex: 'VFOP', width: 70,
+                                                text: 'COP', dataIndex: 'VFOP', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     value = Ext.util.Format.number(value, '0,000');
@@ -2015,7 +2015,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 text: 'Country', dataIndex: 'SCOUNTRY', width: 60
                                             },
                                             {
-                                                text: 'MXN', dataIndex: 'VFOP', width: 75,
+                                                text: 'COP', dataIndex: 'VFOP', width: 75,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     value = Ext.util.Format.number(value, '0,000.00');
@@ -2368,7 +2368,7 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 },
                                                 columns: [
                                                     {
-                                                        text: 'MXN', dataIndex: 'AUTAMOUNT', width: 100,
+                                                        text: 'COP', dataIndex: 'AUTAMOUNT', width: 100,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             value = Ext.util.Format.number(value, '0,000');

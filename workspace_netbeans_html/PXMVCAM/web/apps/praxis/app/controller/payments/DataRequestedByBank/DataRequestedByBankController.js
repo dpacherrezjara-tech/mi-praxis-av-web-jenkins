@@ -144,7 +144,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
             } else {
                 for (var j = 0; j < me.lstSendIata.length; j++) {
                     if (me.lstSendIata[j].SENTDATE === rowData.data.SENTDATE &&
-                            me.lstSendIata[j].MERCHN === rowData.data.MERCHN &&
+                            me.lstSendIata[j].MERCHNC === rowData.data.MERCHNC &&
                             me.lstSendIata[j].STVAL === rowData.data.STVAL) {
                         me.lstSendIata.splice(j, 1);
                         console.log(me.lstSendIata);
@@ -184,7 +184,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
             } else {
                 for (var j = 0; j < me.lstSendBank.length; j++) {
                     if (me.lstSendBank[j].SENTDATE === rowData.data.SENTDATE &&
-                            me.lstSendBank[j].MERCHN === rowData.data.MERCHN &&
+                            me.lstSendBank[j].MERCHNC === rowData.data.MERCHNC &&
                             me.lstSendBank[j].STVAL === rowData.data.STVAL) {
                         me.lstSendBank.splice(j, 1);
                         console.log(me.lstSendBank);
@@ -793,7 +793,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                     }
 //
                     var tit = Ext.getCmp(prototype.id + '-gridCardDataTKT');
-                    tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + ' - Merchant Number : ' + data.MERCHN + ' ' + data.MERCHNAM + '</center>');
+                    tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + ' - Merchant Number : ' + data.MERCHNC + ' ' + data.MERCHNAM + '</center>');
 
                     var a = [];
                     var dataRoot = {text: '.', expanded: false, children: []};
@@ -858,7 +858,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                                         DATES: value01.DATES,
                                         DATEN: value01.DATEN,
                                         //DataEntry Update
-                                        MERCHN: value01.MERCHN,
+                                        MERCHNC: value01.MERCHNC,
                                         SENTDATE: value01.SENTDATE,
                                         MERCHNAM: value01.MERCHNAM,
                                         CARDNBR: value01.CARDNBR,
@@ -1089,7 +1089,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         this.beanDetCard.IN_CARDC = rowData.data.IN_CARDC;
         this.beanDetCard.IN_CARDN1 = rowData.data.IN_CARDN1;
         this.beanDetCard.IN_CARDN2 = rowData.data.IN_CARDN2;
-        this.beanDetCard.MERCHN = rowData.data.MERCHN;
+        this.beanDetCard.MERCHNC = rowData.data.MERCHNC;
         this.beanDetCard.IN_AGENT = rowData.data.IN_AGENT;
         this.beanDetCard.IN_AUTHNBR = rowData.data.IN_AUTHNBR;
         this.beanDetCard.STVAL = rowData.data.STVAL;
@@ -1098,7 +1098,8 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         this.beanDetCard.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetCard.DATEN = rowData.data.DATEN;
         this.beanDetCard.IN_TCARD = rowData.data.IN_TCARD;
-        this.beanDetCard.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanDetCard.IN_MERCHNC = rowData.data.IN_MERCHNC;
+        this.beanDetCard.IN_MERCHNAM = rowData.data.MERCHNAM;
         this.beanDetCard.IN_CODEBANK = rowData.data.IN_CODEBANK;
         console.log(this.beanDetCard);
 
@@ -1148,7 +1149,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                     }
 //
                     var tit = Ext.getCmp(prototype.id + '-gridCardData');
-                    tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + ' - Merchant Number : ' + data.MERCHN + ' ' + data.MERCHNAM + '</center>');
+                    tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + ' - Merchant Number : ' + data.MERCHNC + ' ' + data.MERCHNAM + '</center>');
 
                     var a = [];
                     var dataRoot = {text: '.', expanded: false, children: []};
@@ -1216,7 +1217,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                                         DATES: value01.DATES,
                                         DATEN: value01.DATEN,
                                         //DataEntry Update
-                                        MERCHN: value01.MERCHN,
+                                        MERCHNC: value01.MERCHNC,
                                         SENTDATE: value01.SENTDATE,
                                         MERCHNAM: value01.MERCHNAM,
                                         CARDNBR: value01.CARDNBR,
@@ -1298,7 +1299,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                             }
 
                             var tit = Ext.getCmp(prototype.id + '-gridCardData');
-                            tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + ' - Merchant Number : ' + data.MERCHN + ' ' + data.MERCHNAM + '</center>');
+                            tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + ' - Merchant Number : ' + data.MERCHNC + ' ' + data.MERCHNAM + '</center>');
 
                         }
 //                        me.setWidthPie();
@@ -1327,7 +1328,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
             this.beanDetNoMatch.IN_CARDC = rowData.data.IN_CARDC;
             this.beanDetNoMatch.IN_CARDN1 = rowData.data.IN_CARDN1;
             this.beanDetNoMatch.IN_CARDN2 = rowData.data.IN_CARDN2;
-            this.beanDetNoMatch.MERCHN = rowData.data.MERCHN;
+            this.beanDetNoMatch.MERCHNC = rowData.data.MERCHNC;
             this.beanDetNoMatch.IN_AGENT = rowData.data.IN_AGENT;
             this.beanDetNoMatch.IN_AUTHNBR = rowData.data.IN_AUTHNBR;
             this.beanDetNoMatch.STVAL = rowData.data.STVAL;
@@ -1391,7 +1392,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                             }
 
                             var tit = Ext.getCmp(prototype.id + '-gridNoMatchData');
-                            tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.SENTDATE + '  - Merchant Number : ' + data.MERCHN + '  ' + data.MERCHNAM + '</center>');
+                            tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.SENTDATE + '  - Merchant Number : ' + data.MERCHNC + '  ' + data.MERCHNAM + '</center>');
                         }
 //                        me.setWidthPie();
                     }
@@ -1419,7 +1420,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
             this.beanDetUsos.IN_CARDC = rowData.data.IN_CARDC;
             this.beanDetUsos.IN_CARDN1 = rowData.data.IN_CARDN1;
             this.beanDetUsos.IN_CARDN2 = rowData.data.IN_CARDN2;
-            this.beanDetUsos.MERCHN = rowData.data.MERCHN;
+            this.beanDetUsos.MERCHNC = rowData.data.MERCHNC;
             this.beanDetUsos.IN_AGENT = rowData.data.IN_AGENT;
             this.beanDetUsos.IN_AUTHNBR = rowData.data.IN_AUTHNBR;
             this.beanDetUsos.STVAL = rowData.data.STVAL;
@@ -1482,7 +1483,7 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
                             }
 
                             var tit = Ext.getCmp(prototype.id + '-gridUsosData');
-                            tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + '  - Merchant Number : ' + data.MERCHN + ' ' + data.MERCHNAM + '   - Status : ' + data.strDescStatus + '</center>');
+                            tit.setTitle('<center style="font-size:12px;">' + descFilDate + ' : ' + data.strFormatDate + '  - Merchant Number : ' + data.MERCHNC + ' ' + data.MERCHNAM + '   - Status : ' + data.strDescStatus + '</center>');
                         }
 //                        me.setWidthPie();
                     }
@@ -1506,13 +1507,14 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         this.beanDetAvisos.IN_CARDC = rowData.data.IN_CARDC;
         this.beanDetAvisos.IN_CARDN1 = rowData.data.IN_CARDN1;
         this.beanDetAvisos.IN_CARDN2 = rowData.data.IN_CARDN2;
-        this.beanDetAvisos.MERCHN = rowData.data.MERCHN;
+        this.beanDetAvisos.MERCHNC = rowData.data.MERCHNC;
         this.beanDetAvisos.IN_AUTHNBR = rowData.data.IN_AUTHNBR;
         this.beanDetAvisos.CODEBANK = rowData.data.CODEBANK;
         this.beanDetAvisos.STVAL = rowData.data.STVAL;
         this.beanDetAvisos.IN_FECHA_FROM = rowData.data.IN_FECHA_FROM;
         this.beanDetAvisos.IN_FECHA_TO = rowData.data.IN_FECHA_TO;
-        this.beanDetAvisos.IN_MERCHN = rowData.data.IN_MERCHN;
+        this.beanDetAvisos.MERCHN = rowData.data.MERCHN;
+        this.beanDetAvisos.MERCHNAM = rowData.data.MERCHNAM;
         this.beanDetAvisos.IN_CODEBANK = rowData.data.IN_CODEBANK;
         this.beanDetAvisos.strDescStatus = rowData.data.strDescStatus;
 //        console.log(this.beanDetAvisos);

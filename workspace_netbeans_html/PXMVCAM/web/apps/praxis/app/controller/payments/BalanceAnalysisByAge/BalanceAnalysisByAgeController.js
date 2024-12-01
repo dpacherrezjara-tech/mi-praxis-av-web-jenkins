@@ -16,6 +16,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     typeBean: '',
     searchParams: {},
     searchParams2: {},
+    searchParams3: {},
     paramsDetail: {},
     paramsObtainData: {},
     paramsTKT: {},
@@ -154,6 +155,17 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+        
+        var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
+        cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["SENTDATE", "Reception Date"],
+                ["SALEDATE", "Sale Date"]
+            ]
+        }));
+        cmbFecFiltro.setValue("SENTDATE");
 
 
     },
@@ -267,6 +279,28 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             bean: me.bean
         };
     },
+    setFormatParameter3: function () {
+        me.bean = {};
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
+        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
+        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+        me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
+        me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
+        me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
+        me.bean.IN_DATE = 'SALEDATE';
+        me.bean.IN_SELECT = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb;
+
+
+        console.log(me.bean, 'me.bean TERCER parameter')
+        var beanString = JSON.stringify(me.bean);
+        searchParams3 = {
+            beanString: beanString,
+            bean: me.bean
+        };
+    },
 
     btnSearch_click: function (obj, e) {
 
@@ -276,6 +310,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelSumaryCanal = Ext.getCmp(prototype.id + '-boxSumaryCanalData')
         let panelSumaryCompany = Ext.getCmp(prototype.id + '-boxSumaryCompanyData')
         let panelSumaryCountry = Ext.getCmp(prototype.id + '-boxSumaryCountryData')
+        let panelMainDataCLAtot = Ext.getCmp(prototype.id + '-boxMainDataCLAtot')
+        let panelGroupDataCLAtot = Ext.getCmp(prototype.id + '-boxGroupDataCLAtot')
+        let panelMainDataCLA = Ext.getCmp(prototype.id + '-boxMainDataCLA')
+        let panelGroupDataCLA = Ext.getCmp(prototype.id + '-boxGroupDataCLA')
         let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
         if (panelReportDay.isVisible()) {
             me.typeBean = 'S' //Search
@@ -296,6 +334,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (panelSumaryCountry.isVisible()) {
             this.setFormatParameter2();
             this.setGridSumaryCountry();
+        } else if (panelMainDataCLAtot.isVisible() || panelGroupDataCLAtot.isVisible()) {
+            this.setFormatParameter3();
+            this.searchClarificationTOT();
+        } else if (panelMainDataCLA.isVisible() || panelGroupDataCLA.isVisible()) {
+            this.setFormatParameter3();
+            this.searchClarification();
         } else if (panelGridData.isVisible()) {
             this.setFormatParameter2();
             this.setGridDataTotal();
@@ -355,12 +399,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
 
                         if (obj.data.length === 0) {
-                            Ext.getCmp(prototype.id + '-graficosAños').bindStore('Ext.data.Store', {data: [],autoLoad: true});
-                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore('Ext.data.Store', {data: [],autoLoad: true});
-                            Ext.getCmp(prototype.id + '-displayPolarST').bindStore(Ext.create('Ext.data.Store', {data: [],autoLoad: true}));
-                            Ext.getCmp(prototype.id + '-displayPolarST_T').bindStore('Ext.data.Store', {data: [],autoLoad: true});
-                            Ext.getCmp(prototype.id + '-displayPolarST2').bindStore('Ext.data.Store', {data: [],autoLoad: true});
-                            Ext.getCmp(prototype.id + '-displayPolarST2_T').bindStore('Ext.data.Store', {data: [],autoLoad: true});
+                            Ext.getCmp(prototype.id + '-graficosAños').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST').bindStore(Ext.create('Ext.data.Store', {data: [], autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-displayPolarST_T').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST2').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST2_T').bindStore('Ext.data.Store', {data: [], autoLoad: true});
                             Ext.getCmp(prototype.id + '-gridData').setStore(Ext.create('Ext.data.TreeStore', {root: {}}));
                             global.Msg({
                                 msg: 'Data not found.'
@@ -497,20 +541,20 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                                 lstData.push(value.data)
                             }
-                            
+
                             let lstData2 = res.data2
                             let totAMATCH = lstData2[0].totAMATCH
                             let totAPEND = lstData2[0].totAPEND
                             let totAPOLIC = lstData2[0].totAPOLIC
                             let totAPOLIPE = lstData2[0].totAPOLIPE
                             let totASALES = lstData2[0].totASALES
-                            
+
                             let totQMATCH = lstData2[0].totQMATCH
                             let totQPEND = lstData2[0].totQPEND
                             let totQPOLIC = lstData2[0].totQPOLIC
                             let totQPOLIPE = lstData2[0].totQPOLIPE
                             let totQSALES = lstData2[0].totQSALES
-                           
+
                             console.log(totASALES, 'totASALES')
                             console.log(lstData, 'lstData')
                             let a = [];
@@ -599,8 +643,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             Ext.getCmp(prototype.id + '-totAPOLIC').setText(Ext.util.Format.number(totAPOLIC, '0,000'));
                             Ext.getCmp(prototype.id + '-totQPOLIPE').setText(Ext.util.Format.number(totQPOLIPE, '0,000'));
                             Ext.getCmp(prototype.id + '-totAPOLIPE').setText(Ext.util.Format.number(totAPOLIPE, '0,000'));
-                            
-                            
+
+
 
                             var storeTree = Ext.create('Ext.data.TreeStore', {
                                 root: dataRoot
@@ -673,10 +717,25 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         this.setFormatParameter2();
         if (newValue === 'T') {
             this.setGridDataTotal();
-            Ext.getCmp(prototype.id + '-contentFilter2').hide()
-        } else {
+//            Ext.getCmp(prototype.id + '-contentFilter').show();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+        } else if (newValue === 'P') {
             this.setGridSumaryMonth();
-            Ext.getCmp(prototype.id + '-contentFilter2').show()
+//            Ext.getCmp(prototype.id + '-contentFilter').hide();
+            Ext.getCmp(prototype.id + '-contentFilter2').show();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
+        } else if (newValue === 'C') {
+            
+            var valueRadio = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb;
+            Ext.getCmp(prototype.id + '-rbgFlag').items.items[0].setValue(true);
+            Ext.getCmp(prototype.id + '-rbgFlag').cheked = true;
+            
+            this.setFormatParameter3();
+            this.searchClarificationTOT();
+//            Ext.getCmp(prototype.id + '-contentFilter').hide();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').show();
         }
     },
     setGridData: function () {
@@ -921,6 +980,302 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
         }
     },
+    // <editor-fold defaultstate="collapsed" desc="searchClarificationTOT">
+    searchClarificationTOT: function () {
+        win.lblUser_toolTip("Estructura: A2342/A2343");
+
+        var IN_SELECT = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb;
+        console.log(IN_SELECT);
+        if (IN_SELECT === 'MONTH' || IN_SELECT === undefined) {
+
+            me.panelActual = '-boxMainDataCLAtot';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+            var IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
+            var tit_IN_DATE = '';
+            if (IN_DATE === 'SALEDATE') {
+                tit_IN_DATE = 'Sales';
+            } else {
+                tit_IN_DATE = 'Reception';
+            }
+
+            var msj = this.validateFields();
+            if (msj !== '') {
+                global.Msg({msg: msj
+                });
+            } else {
+                var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                    proxy: {
+                        url: prototype.url + '/searchClarificationTOT'
+                    }, listeners: {
+                        beforeload: function (obj) {
+                            obj.proxy.extraParams = searchParams3;
+                        },
+                        load: function (obj) {
+                            if (obj.data.length === 0) {
+                                global.Msg({
+                                    msg: 'Data not found.'
+                                });
+                            } else {
+                                console.log(obj.data);
+                                var lstTemp = [];
+                                var data = obj.data.items[0].data;
+//                                console.log(data);
+
+                                Ext.getCmp(prototype.id + '-adgTitFechatot').setText(tit_IN_DATE);
+
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARtot').setText(Ext.util.Format.number(data.lngTotQTYCLAR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARStot').setText(Ext.util.Format.number(data.lngTotQTYCLARS, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARPtot').setText(Ext.util.Format.number(data.lngTotQTYCLARP, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCLARtot').setText(Ext.util.Format.number(data.dblTotAMTCLARU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCHGBKtot').setText(Ext.util.Format.number(data.totQTYCHGBK, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCHGBUtot').setText(Ext.util.Format.number(data.totAMTCHGBU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARRtot').setText(Ext.util.Format.number(data.totQTYCLARR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTREVCUtot').setText(Ext.util.Format.number(data.totAMTREVCU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lngTotQTYBANKtot').setText(Ext.util.Format.number(data.lngTotQTYBANK, '0,000'));
+                                Ext.getCmp(prototype.id + '-dblTotAMTBANKtot').setText(Ext.util.Format.number(data.dblTotAMTBANK, '0,000'));
+
+                                Ext.getCmp(prototype.id + '-lblTotperAns').setText(Ext.util.Format.number(data.TotperAnsw, '0,000') + '%');
+                                Ext.getCmp(prototype.id + '-lblTotperNoAns').setText(Ext.util.Format.number(data.TotperNoAnsw, '0,000') + '%');
+                                Ext.getCmp(prototype.id + '-lblTotper').setText(Ext.util.Format.number(data.totper, '0,000') + '%');
+
+                                console.log(data);
+
+                                var sum = data.dblTotAMTCLARU - data.dblTotAMTBANK;
+                                var item = {};
+
+                                item.LABEL = 'Total Received - ' + Ext.util.Format.number(sum, '0,000.00');
+                                item.AMOUNT_ON_PERCENT = sum;
+                                lstTemp.push(item);
+
+                                item = {};
+                                item.LABEL = 'Total ChargedBack - ' + Ext.util.Format.number(data.dblTotAMTBANK, '0,000.00');
+                                item.AMOUNT_ON_PERCENT = data.dblTotAMTBANK;
+                                lstTemp.push(item);
+
+
+                                var storeData1er = Ext.create('Ext.data.Store', {
+                                    data: lstTemp,
+                                    autoLoad: true
+                                });
+                                Ext.getCmp(prototype.id + '-displayChart_ByClarification02').bindStore(storeData1er);
+
+
+                            }
+                        }
+                    }
+                });
+
+                global.clear();
+                Ext.getCmp(prototype.id + '-gridDataCLAtot').bindStore(storeGridDatas);
+                Ext.getCmp(prototype.id + '-displayChart_ByClarification01').bindStore(storeGridDatas);
+            }
+        } else {
+            me.panelActual = '-boxGroupDataCLAtot';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+            var titIN_SELECT = '';
+            if (IN_SELECT === 'CODEBANK') {
+                titIN_SELECT = 'Bank';
+            } else {
+                titIN_SELECT = 'Credit Card';
+            }
+
+            var msj = this.validateFields();
+            if (msj !== '') {
+                global.Msg({msg: msj
+                });
+            } else {
+                var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                    proxy: {
+                        url: prototype.url + '/searchClarificationTOT'
+                    }, listeners: {
+                        beforeload: function (obj) {
+                            obj.proxy.extraParams = searchParams3;
+                        },
+                        load: function (obj) {
+                            if (obj.data.length === 0) {
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLAR_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-lblTotAMTCLAR_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-lblTotQTYCHGBK_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-lblTotAMTCHGBU_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARR_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-lblTotAMTREVCU_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-lngTotQTYBANK_Gt').setText('0');
+                                Ext.getCmp(prototype.id + '-dblTotAMTBANK_Gt').setText('0');
+                                global.Msg({
+                                    msg: 'Data not found.'
+                                });
+                            } else {
+                                var data = obj.data.items[0].data;
+                                //                            console.log(data);
+
+                                Ext.getCmp(prototype.id + '-adgTitGrouptot').setText(titIN_SELECT);
+
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARS_Gt').setText(Ext.util.Format.number(data.lngTotQTYCLARS, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLAR_Gt').setText(Ext.util.Format.number(data.lngTotQTYCLAR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCLAR_Gt').setText(Ext.util.Format.number(data.dblTotAMTCLARU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARP_Gt').setText(Ext.util.Format.number(data.lngTotQTYCLARP, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCHGBK_Gt').setText(Ext.util.Format.number(data.totQTYCHGBK, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCHGBU_Gt').setText(Ext.util.Format.number(data.totAMTCHGBU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARR_Gt').setText(Ext.util.Format.number(data.totQTYCLARR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTREVCU_Gt').setText(Ext.util.Format.number(data.totAMTREVCU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lngTotQTYBANK_Gt').setText(Ext.util.Format.number(data.lngTotQTYBANK, '0,000'));
+                                Ext.getCmp(prototype.id + '-dblTotAMTBANK_Gt').setText(Ext.util.Format.number(data.dblTotAMTBANK, '0,000'));
+
+                                Ext.getCmp(prototype.id + '-lblTotperAnsGt').setText(Ext.util.Format.number(data.TotperAnsw, '0,000') + '%');
+                                Ext.getCmp(prototype.id + '-lblTotperNoAnsGt').setText(Ext.util.Format.number(data.TotperNoAnsw, '0,000') + '%');
+                                Ext.getCmp(prototype.id + '-lblTotper').setText(Ext.util.Format.number(data.totper, '0,000') + '%');
+                            }
+                            //                        me.setWidthPie();
+                        }
+                    }
+                });
+
+                global.clear();
+                Ext.getCmp(prototype.id + '-gridGroupCLAtot').bindStore(storeGridDatas);
+                //            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            }
+
+        }
+
+
+    },
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="searchClarification">
+    searchClarification: function () {
+        win.lblUser_toolTip("Estructura: A2342/A2343");
+
+        var IN_SELECT = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb;
+        if (IN_SELECT === 'MONTH') {
+
+            me.panelActual = '-boxMainDataCLA';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+            var IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
+            var tit_IN_DATE = '';
+            if (IN_DATE === 'SALEDATE') {
+                tit_IN_DATE = 'Sales';
+            } else {
+                tit_IN_DATE = 'Reception';
+            }
+
+            var msj = this.validateFields();
+            if (msj !== '') {
+                global.Msg({msg: msj
+                });
+            } else {
+                var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                    proxy: {
+                        url: prototype.url + '/searchClarification'
+                    }, listeners: {
+                        beforeload: function (obj) {
+                            obj.proxy.extraParams = searchParams3;
+                        },
+                        load: function (obj) {
+                            if (obj.data.length === 0) {
+                                global.Msg({
+                                    msg: 'Data not found.'
+                                });
+                            } else {
+                                var data = obj.data.items[0].data;
+                                //                            console.log(data);
+
+                                Ext.getCmp(prototype.id + '-adgTitFecha').setText(tit_IN_DATE);
+
+//                                Ext.getCmp(prototype.id + '-lblTotQTYCLARtot').setText(Ext.util.Format.number(data.lngTotQTYCLAR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARS').setText(Ext.util.Format.number(data.lngTotQTYCLARS, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARP').setText(Ext.util.Format.number(data.lngTotQTYCLARP, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQNMATCH').setText(Ext.util.Format.number(data.lngTotQNMATCH, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLAR').setText(Ext.util.Format.number(data.lngTotQTYCLAR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCLAR').setText(Ext.util.Format.number(data.dblTotAMTCLARU, '0,000'));
+
+                                Ext.getCmp(prototype.id + '-lblTotQTYCHGBK').setText(Ext.util.Format.number(data.totQTYCHGBK, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCHGBU').setText(Ext.util.Format.number(data.totAMTCHGBU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARR').setText(Ext.util.Format.number(data.totQTYCLARR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTREVCU').setText(Ext.util.Format.number(data.totAMTREVCU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lngTotQTYBANK').setText(Ext.util.Format.number(data.lngTotQTYBANK, '0,000'));
+                                Ext.getCmp(prototype.id + '-dblTotAMTBANK').setText(Ext.util.Format.number(data.dblTotAMTBANK, '0,000'));
+                            }
+                            //                        me.setWidthPie();
+                        }
+                    }
+                });
+
+                global.clear();
+                Ext.getCmp(prototype.id + '-gridDataCLA').bindStore(storeGridDatas);
+                //            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            }
+        } else {
+            me.panelActual = '-boxGroupDataCLA';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+            var titIN_SELECT = '';
+            if (IN_SELECT === 'CODEBANK') {
+                titIN_SELECT = 'Bank';
+            } else {
+                titIN_SELECT = 'Credit Card';
+            }
+
+            var msj = this.validateFields();
+            if (msj !== '') {
+                global.Msg({msg: msj
+                });
+            } else {
+                var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                    proxy: {
+                        url: prototype.url + '/searchClarification'
+                    }, listeners: {
+                        beforeload: function (obj) {
+                            obj.proxy.extraParams = searchParams3;
+                        },
+                        load: function (obj) {
+                            if (obj.data.length === 0) {
+//                                Ext.getCmp(prototype.id + '-lblTotQTYCLAR_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-lblTotAMTCLAR_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-lblTotQTYCHGBK_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-lblTotAMTCHGBU_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-lblTotQTYCLARR_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-lblTotAMTREVCU_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-lngTotQTYBANK_Gt').setText('0');
+//                                Ext.getCmp(prototype.id + '-dblTotAMTBANK_Gt').setText('0');
+                                global.Msg({
+                                    msg: 'Data not found.'
+                                });
+                            } else {
+                                var data = obj.data.items[0].data;
+                                //                            console.log(data);
+
+                                Ext.getCmp(prototype.id + '-adgTitGroup').setText(titIN_SELECT);
+
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARS_G').setText(Ext.util.Format.number(data.lngTotQTYCLARS, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARP_G').setText(Ext.util.Format.number(data.lngTotQTYCLARP, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQNMATCH_G').setText(Ext.util.Format.number(data.lngTotQNMATCH, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLAR_G').setText(Ext.util.Format.number(data.lngTotQTYCLAR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCLAR_G').setText(Ext.util.Format.number(data.dblTotAMTCLARU, '0,000'));
+
+                                Ext.getCmp(prototype.id + '-lblTotQTYCHGBK_G').setText(Ext.util.Format.number(data.totQTYCHGBK, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTCHGBU_G').setText(Ext.util.Format.number(data.totAMTCHGBU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotQTYCLARR_G').setText(Ext.util.Format.number(data.totQTYCLARR, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblTotAMTREVCU_G').setText(Ext.util.Format.number(data.totAMTREVCU, '0,000'));
+                                Ext.getCmp(prototype.id + '-lngTotQTYBANK_G').setText(Ext.util.Format.number(data.lngTotQTYBANK, '0,000'));
+                                Ext.getCmp(prototype.id + '-dblTotAMTBANK_G').setText(Ext.util.Format.number(data.dblTotAMTBANK, '0,000'));
+                            }
+                            //                        me.setWidthPie();
+                        }
+                    }
+                });
+
+                global.clear();
+                Ext.getCmp(prototype.id + '-gridGroupDataCLA').bindStore(storeGridDatas);
+                //            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            }
+
+        }
+
+
+    },
+    // </editor-fold>
     setPaidByCompany: function (array, ccust, id, idLabel) {
         if (array.length == 0) {
             console.log('NO HAY INFO PARA PAID')

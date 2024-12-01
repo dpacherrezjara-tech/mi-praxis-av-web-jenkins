@@ -62,7 +62,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['value', 'description'],
                                 data: [
-                                    ["T", "Totals by credit card"], ["P", "Pending by credit card"]
+                                    ["T", "Totals by credit card"], ["P", "Pending by credit card"], ["C", "By Clarification"]
                                 ]
                             }),
                             listConfig: {maxHeight: 100},
