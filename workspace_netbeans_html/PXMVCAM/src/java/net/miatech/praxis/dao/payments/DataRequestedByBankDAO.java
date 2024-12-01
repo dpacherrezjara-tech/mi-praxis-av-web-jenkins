@@ -71,7 +71,7 @@ public class DataRequestedByBankDAO {
 
         long QTKT = 0, QLINK = 0, QCARD = 0, QNOT = 0, QNMATCH = 0;
         double AUTAMOUNT = 0, VFOP = 0, ANOT = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01885(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01885_2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         System.out.println("Ejecutando ----> " + SQLCLL01);
         System.out.println(filter.page.PAGNUM);
         System.out.println(filter.page.PAGROW);
@@ -446,7 +446,7 @@ public class DataRequestedByBankDAO {
 
         long QTKT = 0, TOTCUP = 0;
         double AUTAMOUNT = 0, VFOP = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01884_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01884_2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -470,6 +470,7 @@ public class DataRequestedByBankDAO {
             cstmt.setString(15, filter.IN_COUNTRY.trim());
             cstmt.setString(16, filter.DATEN.trim());
             cstmt.setString(17, filter.IN_TCARD.trim());
+            cstmt.setString(18, filter.IN_MERCHNAM.trim());
             cstmt.execute();
 
             rs01 = cstmt.getResultSet();
@@ -1139,7 +1140,7 @@ public class DataRequestedByBankDAO {
 
         long QTYTRNX = 0;
         double AUTAMOUNT = 0, OPEAMOUNT = 0, IVA = 0;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01896_1(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01896_1(?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -1156,6 +1157,7 @@ public class DataRequestedByBankDAO {
             cstmt.setString(8, filter.IN_AUTHNBR.trim());
             cstmt.setString(9, filter.CODEBANK.trim());
             cstmt.setString(10, filter.STVAL.trim());
+            cstmt.setString(11, filter.MERCHNAM.trim());
             cstmt.execute();
 
             rs01 = cstmt.getResultSet();

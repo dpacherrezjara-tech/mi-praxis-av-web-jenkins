@@ -29,6 +29,7 @@ public class A2331Filter extends A2331 {
     public String IN_AUTHNBR = "";
     public String IN_CODEBANK = "";
     public String IN_TCARD = "";
+    public String IN_MERCHNAM = "";
     public String IN_CARDN1 = "";
     public String IN_CARDN2 = "";
     public String IN_RUTA = "";
