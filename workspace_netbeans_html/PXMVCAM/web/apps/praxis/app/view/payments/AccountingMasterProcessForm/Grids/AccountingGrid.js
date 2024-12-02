@@ -74,7 +74,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             },
             {text: 'Item', dataIndex: 'A4545ITEM', width: 60},
             {text: 'Large Text', dataIndex: 'A4545TEXTD', width: 400},
-            {text: 'Reference', dataIndex: 'A4545REPAG', width: 160},
+            {text: 'Reference', dataIndex: 'A4545REFD', width: 160},
             {text: 'Bank<br>Code', dataIndex: 'A4545BANCO', width: 70},
             {text: 'Bank Name', dataIndex: 'A4545REFB', width: 180},
             {text: 'Country', dataIndex: 'A4545PAIS', width: 70},
