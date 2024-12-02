@@ -370,7 +370,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         }
     },
     setGridDataTotal: function () {
-        win.lblUser_toolTip("Estructura: MPF118");
+        win.lblUser_toolTip("Estructura: MPF108");
         me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
