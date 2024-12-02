@@ -21,7 +21,6 @@ public class SpringWS {
     
     public Boolean postAsync(String body,String endpoint)throws Exception{
         String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
-        Unirest.setTimeouts(600000, 300000);
         HttpResponse<JsonNode> response = Unirest.post(url + endpoint)
                 .header("Content-Type", "application/json") // Header indicando JSON
                 .body(body) // Cuerpo de la solicitud

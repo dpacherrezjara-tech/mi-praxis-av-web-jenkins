@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import net.miatech.praxis.payment.dto.AccountingInterface;
 import net.miatech.utils.CustomExcelCell;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -319,22 +318,22 @@ public class ExportUtils {
         return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
     }
     
-    public ResponseEntity<byte[]> createZip(List<AccountingInterface> accountingInterfaces, String zipname) throws Exception{
+    public ResponseEntity<byte[]> createZip(List<List<String>> files, List<String> filenames, String zipname) throws Exception{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         
         try (ZipOutputStream zos = new ZipOutputStream(baos)) {
             
-            for (int i=0; i<accountingInterfaces.size(); i++) {  
+            for (int i=0; i<files.size(); i++) {  
                 StringJoiner csvJoiner = new StringJoiner("\n");
                 
-                accountingInterfaces.get(i).getInterfase().forEach(line->{
+                files.get(i).forEach(line->{
                     csvJoiner.add(line);
                 });
                 
                 String csv = csvJoiner.toString();
                 byte[] csvBytes = csv.getBytes(StandardCharsets.UTF_8);
                 
-                ZipEntry entry = new ZipEntry(accountingInterfaces.get(i).getFileName() + ".txt");
+                ZipEntry entry = new ZipEntry(filenames.get(i) + ".txt");
                 zos.putNextEntry(entry);
                 zos.write(csvBytes);
                 zos.closeEntry();

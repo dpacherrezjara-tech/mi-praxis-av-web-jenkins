@@ -63,7 +63,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGri
             {text: 'Reference', dataIndex: 'REFER', width: 130},
             {text: 'Key 1', dataIndex: 'CLAVE1', width: 130},
             {text: 'Key 3', dataIndex: 'CLAVE3', width: 200},
-            {text: 'Text', dataIndex: 'TEXTOLAR', width: 230},
+            {text: 'Text', dataIndex: 'TEXTO', width: 230},
             {text: 'Currency', dataIndex: 'SCURRENCY', width: 70},
             {text: 'Bank<br>Amount', dataIndex: 'NETO', width: 120},
             {text: 'Reconciled<br>Amount', dataIndex: 'NETOC', width: 120},

@@ -1,5 +1,6 @@
 package net.miatech.praxis.dao.payments;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,7 +57,7 @@ public class ProcessLogDAO implements ProcessLogLogic{
         
         List<A4451> resultCorreos = (List<A4451>) objCorreos.get("result");
         
-        String emisor = "notificaciones@miatech.net"; // Data.EmailRe;
+        String emisor = "notificaciones@miatech.net";//Data.EmailRe;
         
         List<String> receptores = resultCorreos.stream()
                 .filter(c->c.getA4451SEQ().equals("TO"))

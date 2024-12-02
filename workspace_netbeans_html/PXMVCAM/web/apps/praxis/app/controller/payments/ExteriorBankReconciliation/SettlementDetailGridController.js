@@ -4,7 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.Settlement
     url: CONTEXTPATH + '/BankReconciliationExt',
     request: axios.create({
         baseURL: CONTEXTPATH + '/BankReconciliationExt',
-        timeout: 0
+        timeout: 20000
       }),
     init: function (view) {
         if (view.backButton) {
