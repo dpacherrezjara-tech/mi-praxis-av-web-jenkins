@@ -256,18 +256,31 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         Ext.Msg.show(
             {
                 title: '.:PRAXIS:.',
-                msg: 'Upload this Accounting?',
+                msg: 'Send this Accounting?',
                 buttons: Ext.MessageBox.YESNO,
                 scope: this,
                 icon: Ext.MessageBox.QUESTION,
                 modal: true,
                 fn: function (btn) {
                     if (btn === 'yes') {
-                        global.downloadFile(me.request, 'uploadAccounting',params,'zip') ;
+                        me.sendAccountingToSFTP(params);
                     }
                 }
             });
         
+    },
+    sendAccountingToSFTP: async function(params){
+        const me = this;
+        try {
+            let req = me.request.post('uploadAccounting',params);
+            me.notifier.async(
+                req,
+                'Successfully sended To SFTP',
+                'Failed to send to SFTP'
+            );
+        } catch (e) {
+            console.error(e);
+        }
     },
     onDownloadExcel: function () {
         const me = this;
