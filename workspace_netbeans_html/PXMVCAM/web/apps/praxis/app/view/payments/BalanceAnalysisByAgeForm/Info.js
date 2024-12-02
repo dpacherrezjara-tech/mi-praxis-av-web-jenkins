@@ -92,26 +92,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         },
                                                         items: [
                                                             {
-                                                                text: 'Sales',
+                                                                text: 'Sales<br>Date',dataIndex: 'strFormatDate', width: 150, xtype: 'treecolumn',
 //                                                id: prototype.id + '-adgTitFecha',
                                                                 defaults: {
                                                                     menuDisabled: true,
                                                                     sortable: false,
                                                                     align: 'center'
                                                                 },
-                                                                columns: [
-                                                                    {
-                                                                        text: 'Date', dataIndex: 'strFormatDate', width: 150, xtype: 'treecolumn',
-//                                                        listeners: {
-//                                                            click: 'OnviewDetBank'
-//                                                        },
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "color:#057ECB;";
-//                                                            value = '<b>' + value + '</b>';
-//                                                            return '<a href="#payments-clarification-dashboard-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-//                                                        }
-                                                                    }
-                                                                ]
                                                             },
                                                             {
                                                                 text: 'Av Group', dataIndex: 'CCUST', width: 90,
