@@ -70,6 +70,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Logg
             },
             items: [
                 {
+                    text: 'Reload',
+                    iconCls: 'prx-icon-reload',
+                    listeners: {
+                        click: 'onReloadGrid'
+                    }
+                },
+                {
                     text: 'Cancel',
                     id: prototype.idDE2 + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
