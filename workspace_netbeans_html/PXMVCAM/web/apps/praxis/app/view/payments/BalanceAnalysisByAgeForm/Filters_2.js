@@ -108,18 +108,18 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_2', {
 //                                        change: 'btnSearch_click'
 //                                    }
 //                                },
-                                {xtype: 'tbspacer', width: 30},
-                                {
-                                    xtype: 'checkboxfield',
-                                    id: prototype.id + '-chkTOT',
-//                            margin: '0 20 0 30',
-                                    width: 80,
-                                    boxLabel: '<b>Detail</b>',
-                                    inputValue: '1',
-                                    listeners: {
-                                        change: 'ChangeCheckTotal'
-                                    }
-                                }
+//                                {xtype: 'tbspacer', width: 30},
+//                                {
+//                                    xtype: 'checkboxfield',
+//                                    id: prototype.id + '-chkTOT',
+////                            margin: '0 20 0 30',
+//                                    width: 80,
+//                                    boxLabel: '<b>Detail</b>',
+//                                    inputValue: '1',
+//                                    listeners: {
+//                                        change: 'ChangeCheckTotal'
+//                                    }
+//                                }
 
 
                             ]
