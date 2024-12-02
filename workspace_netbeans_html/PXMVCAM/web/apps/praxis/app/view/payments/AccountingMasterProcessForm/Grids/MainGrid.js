@@ -100,7 +100,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             click: 'onViewPostErrors'
                         }
                     },
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 300},
+                    {text: 'Corrl AV Assigned', dataIndex: 'FILENAM', width: 250},
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
@@ -210,6 +210,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                 xtype: 'actioncolumn',
                 width: 50,
                 text: 'Up.',
+                id: prototype.id + '-uploadAccountingBtn',
                 align: 'center',
                 items: [
                     {

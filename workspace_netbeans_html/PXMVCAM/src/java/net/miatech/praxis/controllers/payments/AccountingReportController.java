@@ -169,7 +169,7 @@ public class AccountingReportController extends BaseController {
         String fileName;
         if (filter.getResponse() != null) {
             List<A4545> result = filter.getResponse();
-
+            accountingInterface.getInterfase().add(fileHeader);
             int k = 0;
             for (int i = 0, j = 0; i < result.size(); i++, j++) {
                 StringBuilder sb = new StringBuilder();
