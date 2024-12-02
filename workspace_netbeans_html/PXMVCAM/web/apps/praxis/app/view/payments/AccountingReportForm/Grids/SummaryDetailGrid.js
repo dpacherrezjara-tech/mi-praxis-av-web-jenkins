@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-BandocsGrid',
+    alias: 'widget.' + prototype.id + '-SummaryDetailGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.BandocsGridController'
+        'Ext.Praxis.controller.payments.AccountingReport.SummaryDetailGridController'
     ],
-    controller: 'BandocsGridController',
+    controller: 'SummaryDetailGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
@@ -63,7 +63,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             {text: 'Reference', dataIndex: 'REFER', width: 130},
             {text: 'Key 1', dataIndex: 'CLAVE1', width: 130},
             {text: 'Key 3', dataIndex: 'CLAVE3', width: 200},
-            {text: 'Text', dataIndex: 'TEXTO', width: 230},
+            {text: 'Text', dataIndex: 'TEXTOLAR', width: 230},
             {text: 'Currency', dataIndex: 'SCURRENCY', width: 70},
             {text: 'Bank<br>Amount', dataIndex: 'NETO', width: 120},
             {text: 'Reconciled<br>Amount', dataIndex: 'NETOC', width: 120},
@@ -171,7 +171,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             {
                 xtype: 'button',
                 scale: 'small',
-                id: prototype.id + '-bandoc-btnBack',
+                id: prototype.id + '-dtsumm-btnBack',
                 iconCls: 'prx-icon-back',
                 width: 25,
                 hidden: true,

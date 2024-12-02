@@ -227,39 +227,79 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         };
         console.log('Download Params: ',params);
         Ext.Msg.show(
-                {
-                    title: '.:PRAXIS:.',
-                    msg: 'Download this Accounting?',
-                    buttons: Ext.MessageBox.YESNO,
-                    scope: this,
-                    icon: Ext.MessageBox.QUESTION,
-                    modal: true,
-                    fn: function (btn) {
-                        if (btn === 'yes') {
-                            global.downloadFile(me.request, 'downloadAccounting',params,'zip') ;
-                        }
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Download this Accounting?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        global.downloadFile(me.request, 'downloadAccounting',params,'zip') ;
                     }
-                });
+                }
+            });
         
+    },
+    onUploadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {CCUST, CODPRO, FCONT, TIPOCON, IDCONT } = record.data;
+        const me = this;
+        let params = {
+            IN_CCUST: CCUST,
+            IN_CODPRO: CODPRO,
+            IN_FCONT: FCONT,
+            IN_TIPOCON: TIPOCON,
+            IN_IDCONT:IDCONT
+        };
+        console.log('Upload Params: ',params);
+        Ext.Msg.show(
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Send this Accounting?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        me.sendAccountingToSFTP(params);
+                    }
+                }
+            });
+        
+    },
+    sendAccountingToSFTP: async function(params){
+        const me = this;
+        try {
+            let req = me.request.post('uploadAccounting',params);
+            me.notifier.async(
+                req,
+                'Successfully sended To SFTP',
+                'Failed to send to SFTP'
+            );
+        } catch (e) {
+            console.error(e);
+        }
     },
     onDownloadExcel: function () {
         const me = this;
         let params = me.view.searchParams;
         console.log('Download Params: ', params);
         Ext.Msg.show(
-                {
-                    title: '.:PRAXIS:.',
-                    msg: 'Download Excel?',
-                    buttons: Ext.MessageBox.YESNO,
-                    scope: this,
-                    icon: Ext.MessageBox.QUESTION,
-                    modal: true,
-                    fn: function (btn) {
-                        if (btn === 'yes') {
-                            global.downloadFile(me.request,'downloadExcelMain',params,'xlsx');
-                        }
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        global.downloadFile(me.request,'downloadExcelMain',params,'xlsx');
                     }
-                });
+                }
+            });
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

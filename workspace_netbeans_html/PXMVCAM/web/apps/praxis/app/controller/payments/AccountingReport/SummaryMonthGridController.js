@@ -38,5 +38,201 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.SummaryMonthGridCont
             me.view.setLoading(false);
         }
         //me.view.unmask();
+    },
+    onLoadTotalBandocs: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'T',
+            IN_TIPO:'D'
+        };
+        console.log('Days Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
+    },
+    onLoadSended: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'S',
+            IN_TIPO:'D'
+        };
+        console.log('Sended Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
+    },
+    onLoadAccounted: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'C',
+            IN_TIPO:'D'
+        };
+        console.log('Accounted Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
+    },
+    onLoadNoAccounted: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'N',
+            IN_TIPO:'D'
+        };
+        console.log('No Accounted Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
+    },
+    onLoadMatch: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'M',
+            IN_TIPO:'D'
+        };
+        console.log('Match Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
+    },
+    onLoadMatchF2: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'F',
+            IN_TIPO:'D'
+        };
+        console.log('Match Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
+    },
+    onLoadPending: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST,PROCESSOR,VALDATE} = record.data;
+        let params = {
+            IN_CCUST: CCUST || '',
+            IN_VALDATE: VALDATE,
+            IN_CODPRO:PROCESSOR,
+            IN_STATUS: 'P',
+            IN_TIPO:'D'
+        };
+        console.log('Pending Params: ',params);
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const panelDet = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid', {
+            id: prototype.id + '-SummaryDetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(panelDet);
     }
 });
