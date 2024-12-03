@@ -42,8 +42,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                         return value;
                     }
                 }, columns: [
-                    {text: 'Date', dataIndex: 'FCONT', width: 90},
-                    {text: 'Hour', dataIndex: 'HCONT', width: 80},
+                    {text: 'Posting<br>Date', dataIndex: 'FCONT', width: 90},
+                    {text: 'Generation<br>Date', dataIndex: 'FSEND', width: 90},
+                    {text: 'Generation<br>Hour', dataIndex: 'HCONT', width: 80},
                     {text: 'Type', dataIndex: 'TIPOCON', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#B2DAFA";

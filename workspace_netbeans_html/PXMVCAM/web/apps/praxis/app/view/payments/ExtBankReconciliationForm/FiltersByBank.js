@@ -470,29 +470,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersByBank', {
                                     queryMode: 'local',
                                     editable: false,
                                     value: ''
-                                },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbBankCOREP2',
-                                    name: 'IN_COREP',
-                                    labelWidth: 80,
-                                    width: 200,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    fieldLabel: 'Sugg. Proc.',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    allowBlank: true,
-                                    caseSensitive: false,
-                                    autoSelect: true,
-                                    labelAlign: 'right',
-                                    typeAhead: true,
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    value: '', // Valor inicial (vacío)
-                                    emptyText: '(All)'  // Texto que se muestra cuando no hay selección
-                                },
-                                
+                                }
                             ]
                         },
                         {
@@ -510,40 +488,26 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersByBank', {
                             },
                             items: [
                                 {
-                                    xtype: 'combobox',
-                                    fieldLabel: 'Status',
-                                    name: 'IN_STVAL',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['1', 'Match'],
-                                            ['3', 'Statement w/o Settlement'],
-                                            ['4', 'Match Diff.'],
-                                            ['5', 'Match Manual']
-                                        ]
-                                    }),
-                                    labelWidth: 55,
-                                    width: 220,
-                                    displayField: 'name',
-                                    valueField: 'code',
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbBankCODPRO2',
+                                    name: 'IN_CODPRO',
+                                    labelWidth: 80,
+                                    width: 250,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: ''
+                                    allowBlank: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    labelAlign: 'right',
+                                    typeAhead: true,
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: '', // Valor inicial (vacío)
+                                    emptyText: '(All)'  // Texto que se muestra cuando no hay selección
                                 },
-//                                {
-//                                    xtype: 'textfield',
-//                                    fieldLabel: 'Bank Code',
-//                                    labelWidth: 70,
-//                                    width: 150,
-//                                    name: 'IN_CODEBANK',
-//                                    maxLength: 4, // Límite máximo de caracteres
-//                                    maskRe: /[0-9]/, // Expresión regular para permitir solo números
-//                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-//                                    listeners: {
-//                                        specialkey: 'onEnterKeyPress'
-//                                    }
-//                                },
                                 {
                                     xtype: 'combo',
                                     id: prototype.id + '-cmbBankCodebank2',
@@ -631,33 +595,26 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersByBank', {
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
                                 },
                                 {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbBankCODPRO2',
-                                    name: 'IN_CODPRO',
-                                    labelWidth: 80,
-                                    width: 250,
-                                    valueField: 'A4451KEY2',
-                                    displayField: 'A4451DESC1',
-                                    fieldLabel: 'Recon. Proc.',
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Status',
+                                    name: 'IN_STVAL',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['1', 'Match'],
+                                            ['3', 'Statement w/o Settlement'],
+                                            ['4', 'Match Diff.'],
+                                            ['5', 'Match Manual']
+                                        ]
+                                    }),
+                                    labelWidth: 55,
+                                    width: 220,
+                                    displayField: 'name',
+                                    valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    allowBlank: true,
-                                    caseSensitive: false,
-                                    autoSelect: true,
-                                    labelAlign: 'right',
-                                    typeAhead: true,
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    value: '', // Valor inicial (vacío)
-                                    emptyText: '(All)'  // Texto que se muestra cuando no hay selección
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    name: 'IN_SEQPRO',
-                                    id:prototype.id + '-txtBankSEQPRO2',
-                                    value: '',
-                                    hidden: true,
-                                    readOnly: true
+                                    value: ''
                                 }
                             ]
                         },
