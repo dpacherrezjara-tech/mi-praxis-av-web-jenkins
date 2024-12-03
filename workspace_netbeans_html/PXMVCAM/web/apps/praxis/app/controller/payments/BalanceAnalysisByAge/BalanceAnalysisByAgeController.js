@@ -23,6 +23,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     dataObtain: {},
     beanTKT: {},
     bean_detail: {},
+    beanCountryTotal: {},
     dataGrid: [],
     init: function (view) {
         me = this;
@@ -615,6 +616,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
                                                 CCUST: value01.CCUST,
+                                                FCHILD: value01.FCHILD,
                                                 QSALES: value01.QSALES,
                                                 ASALES: value01.ASALES,
                                                 perc1: totASALES === 0 ? 0 : (value01.ASALES / totASALES) * 100,
@@ -671,6 +673,101 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
 
 //            Ext.getCmp(prototype.id + '-displayPolar2').bindStore(storeGridDatas);
+        }
+    },
+    onGridCountryTotal: function (column, e, row, column, x, rowData){
+        
+        if(  x.record.data.children && x.record.data.children[0].FCHILD === '1' ){
+            console.log('entra al child')
+            return false;
+        }
+        me.bean = {};
+        let dateFormat = {
+            '2024-Jan' : '202401',
+            '2024-Feb' : '202402',
+            '2024-Mar' : '202403',
+            '2024-Apr' : '202404',
+            '2024-May' : '202405',
+            '2024-Jun' : '202406',
+            '2024-Jul' : '202407',
+            '2024-Aug' : '202408',
+            '2024-Sep' : '202409',
+            '2024-Oct' : '202410',
+            '2024-Nov' : '202411',
+            '2024-Dec' : '202412',
+            
+        }
+        if( !rowData.data.CCUST){
+            console.log('filtrado')
+            me.bean.IN_CCUST = x.record.data.children[0].CCUST
+            
+        }else{
+            console.log('desplegado')
+            me.bean.IN_CCUST = x.record.data.CCUST
+        }
+        
+        me.bean.IN_SDATE = dateFormat[x.record.data.strFormatDate]
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+        console.log(searchParams, 'searchParams')
+        me.drillDown.push(me.panelActual);
+//        me.typeBean = 'D' // DRILL DOWN
+        this.setGridCountryTotal();
+        
+        
+    },
+    setGridCountryTotal: function () {
+        win.lblUser_toolTip("Estructura: MPF108");
+        me.panelActual = '-panelGridCountryTotal';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchCountryTotal'
+                }, listeners: {
+                    beforeload: function (obj) {
+
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj, obj2, success, response, obj5) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin8');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            let strCCUST = {
+                                134: 'AVIANCA',
+                                133: 'LACSA',
+                                202: 'TACA',
+                                547: 'AEROGAL',
+                            }
+                            var data = obj.data.items[0].data;
+                            Ext.getCmp(prototype.id + '-gridCountryTotal').setTitle('<center style="font-size:12px;">' + 'Avianca Group: ' + strCCUST[data.IN_CCUST] + ' - Date: ' + data.strDescripcion + '</center>')
+//                         
+
+                        }
+                        me.setWidthPie();
+                    }
+                }
+            });
+            global.clear();
+
+
+            Ext.getCmp(prototype.id + '-gridCountryTotal').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin8').bindStore(storeGridDatas);
         }
     },
     displayChart_ByMonth: function (a, b, c, d) {
@@ -1934,6 +2031,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 break;
             case  '-panelGridData':
                 me.pagginActual = '-paggin7';
+                break;
+            case  '-panelGridCountryTotal':
+                me.pagginActual = '-paggin8';
                 break;
         }
     },
