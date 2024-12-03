@@ -94,7 +94,17 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             {
                                                                 text: 'Sales<br>Date', dataIndex: 'strFormatDate', width: 150, xtype: 'treecolumn',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    console.log(record.data, 'sales dateeeee')
+                                                                    let valor = '';
                                                                     
+                                                                    if( record.data.children && record.data.children[0].FCHILD === '1' ){
+                                                                        valor = value;
+                                                                    }else if( record.data.children && record.data.children[0].FCHILD === '0' ){
+                                                                        valor = value;
+                                                                    }else{
+                                                                        valor = ' ';
+                                                                    }
+                                                                    return valor;
                                                                 },
 //                                                id: prototype.id + '-adgTitFecha',
                                                                 defaults: {

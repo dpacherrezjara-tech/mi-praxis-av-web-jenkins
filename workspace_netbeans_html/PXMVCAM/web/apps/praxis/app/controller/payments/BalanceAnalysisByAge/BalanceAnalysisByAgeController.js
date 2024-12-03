@@ -843,7 +843,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             this.setGridDataTotal();
 //            Ext.getCmp(prototype.id + '-contentFilter').show();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
-            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
         } else if (newValue === 'P') {
             this.setGridSumaryMonth();
 //            Ext.getCmp(prototype.id + '-contentFilter').hide();
