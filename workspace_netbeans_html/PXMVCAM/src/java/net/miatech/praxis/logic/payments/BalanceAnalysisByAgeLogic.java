@@ -42,6 +42,10 @@ public class BalanceAnalysisByAgeLogic {
         return balanceAnalysisByAge.loadSQP05120_CT(filter);
     }
     
+    public List<A2356Filter> loadSQP05120_CT2(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.loadSQP05120_CT2(filter);
+    }
+    
     public List<A2356Filter> loadSQP05120_RD(A2356Filter filter) throws SQLException, Exception {
         return balanceAnalysisByAge.loadSQP05120_RD(filter);
     }
