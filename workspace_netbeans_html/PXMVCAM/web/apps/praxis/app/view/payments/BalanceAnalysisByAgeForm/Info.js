@@ -931,6 +931,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         items: [
                                             {
                                                 text: 'Country', dataIndex: 'descSCOUNTRY', width: 150,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;background-color:#d5f4d5;";
+                                                    
+                                                    return  value;
+                                                },
 //                                                id: prototype.id + '-adgTitFecha',
                                                 defaults: {
                                                     menuDisabled: true,
@@ -980,8 +985,8 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                             let data = record.data;
 
-//                                                                    let perc1 = data.totASALES === 0 ? 0 : (data.ASALES / data.totASALES) * 100;
-                                                            return Ext.util.Format.number(value, '0.00%');
+                                                                    let perc1 = data.totASALES === 0 ? 0 : (data.ASALES / data.totASALES) * 100;
+                                                            return Ext.util.Format.number(perc1, '0.00%');
                                                         }
                                                     }
                                                 ]
