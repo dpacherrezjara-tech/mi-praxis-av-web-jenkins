@@ -17,6 +17,7 @@ public class A2356Filter extends A2356 {
     public String IN_CCUST = "";
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
+    public String IN_SDATE = "";
     public String strFormatDate = "";
     public String strFormatDate1 = "";
     public String strFormatDate2 = "";

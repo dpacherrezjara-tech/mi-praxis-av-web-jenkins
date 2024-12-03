@@ -12,6 +12,7 @@ package net.miatech.praxis.payment;
  */
 public class A2356 {
         public String CCUST= "";  
+        public String FCHILD= "";  
         public String NAME = "";  
         public String TYPE = "";  
         public String STVAL = "";  
