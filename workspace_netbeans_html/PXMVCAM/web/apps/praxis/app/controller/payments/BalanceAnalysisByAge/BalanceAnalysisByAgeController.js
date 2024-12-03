@@ -754,9 +754,36 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 202: 'TACA',
                                 547: 'AEROGAL',
                             }
+                            let charts = []
                             var data = obj.data.items[0].data;
                             Ext.getCmp(prototype.id + '-gridCountryTotal').setTitle('<center style="font-size:12px;">' + 'Avianca Group: ' + strCCUST[data.IN_CCUST] + ' - Date: ' + data.strDescripcion + '</center>')
 //                         
+                            var res = Ext.JSON.decode(response._response.responseText);
+                            if (res.data2.length > 0) {
+                            for (let i = res.data2.length - 1; i >= 0; i--) {
+                                let AMOUNT = res.data2[i].ASALES;
+                                let SCOUNTRY = res.data2[i].descSCOUNTRY;
+                                charts.push({strDescription: SCOUNTRY, AMOUNT: AMOUNT});
+                            }
+
+//                            for (let i = 0 ;i < res.data2.length; i++) {
+//                                let AMOUNT = res.data2[i].SVFOPUSDPENDING;
+//                                let SAGENT = res.data2[i].SAGENT;
+//                                let CANAL = res.data2[i].CANAL;
+//                                charts.push({strDescription: SAGENT + '-' + CANAL , AMOUNT: AMOUNT});
+//                            }
+                        } else {
+                            charts.push({strDescription: 'Not found', AMOUNT: 1});
+                        }
+
+
+
+                        var storeData1ercharts = Ext.create('Ext.data.Store', {
+                            data: charts,
+                            autoLoad: true
+                        });
+
+                        Ext.getCmp(prototype.id + '-displayGrafCountryTotal').bindStore(storeData1ercharts);
 
                         }
                         me.setWidthPie();
