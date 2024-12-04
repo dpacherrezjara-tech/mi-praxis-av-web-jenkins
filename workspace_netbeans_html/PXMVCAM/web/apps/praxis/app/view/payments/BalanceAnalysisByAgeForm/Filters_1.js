@@ -33,6 +33,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters_1', {
                         {xtype: 'tbspacer', width: 25},
                         {
                             xtype: 'radiogroup',
+                            id: prototype.id + '-rbgChangeReport',
 //                            fieldLabel: 'Sumary',
                             padding: '0 10 0 50',
                             columns: 5,
