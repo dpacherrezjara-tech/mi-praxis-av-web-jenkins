@@ -846,6 +846,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
         } else if (newValue === 'P') {
             this.setGridSumaryMonth();
+            
+            var valueRadio = Ext.getCmp(prototype.id + '-rbgChangeReport').getValue().rb;
+            Ext.getCmp(prototype.id + '-rbgChangeReport').items.items[0].setValue(true);
+            Ext.getCmp(prototype.id + '-rbgChangeReport').cheked = true;
 //            Ext.getCmp(prototype.id + '-contentFilter').hide();
             Ext.getCmp(prototype.id + '-contentFilter2').show();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
