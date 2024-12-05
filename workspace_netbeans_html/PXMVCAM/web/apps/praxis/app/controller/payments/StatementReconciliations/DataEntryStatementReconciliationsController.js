@@ -204,6 +204,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScan.IN_DATECI = meDE.beanResult.DATECI;
         this.beanScan.IN_TRANCI = meDE.beanResult.TRANCI;
         this.beanScan.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
+        this.beanScan.IN_TDOC = meDE.beanResult.TDOC;
 
         if (this.beanScan.IN_STVAL === 'Match' ) {
             this.beanScan.IN_STVAL = '1';
@@ -402,71 +403,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     exportExcel: function () {
-//        this.beanDetails.IN_VALDATE = meDE.bean.data.VALDATE;
-//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
-//        this.beanDetails.IN_MERCHAND = meDE.bean.data.MERCHAND;
-//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
-//        this.beanDetails.IN_NETO = meDE.bean.data.NETO + "";
-//        this.beanDetails.IN_RED = meDE.bean.data.RED;
-//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
-//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
-//            this.beanDetails.IN_STVAL = '1';
-//        } else {
-//            this.beanDetails.IN_STVAL = 'P';
-//        }
-
-        
-//        this.beanDetails = {}
-//        let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
-//        let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
-//        let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
-//        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
-//        var fecha_a_validar = "";
-//        this.beanDetails.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
-//        this.beanDetails.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
-//        this.beanDetails.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
-//        this.beanDetails.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
-//        this.beanDetails.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
-//
-//       this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
-//        if (this.beanDetails.IN_ACCNUMBER === '') {
-//            this.beanDetails.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
-//        }
-//        if (!chkACCNUMBER) {
-//            this.beanDetails.IN_ACCNUMBER = '';
-//        }
-//
-//        this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
-//        if (this.beanDetails.IN_MERCHAND === '') {
-//            this.beanDetails.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
-//        }
-//        if (!chkMERCHANT) {
-//            this.beanDetails.IN_MERCHAND = '';
-//        }
-//
-//        if (this.beanDetails.IN_FROMADATE === '') {
-//            this.beanDetails.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
-//        }
-//        if (!chkADATE) {
-//            this.beanDetails.IN_FROMADATE = '';
-//        }
-//
-//        this.beanDetails.IN_CODEBANK = meDE.bean.data.CODEBANK;
-//        this.beanDetails.IN_BANDOC = meDE.bean.data.BANDOC;
-//        this.beanDetails.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
-//        this.beanDetails.IN_RED = meDE.bean.data.RED;
-//        this.beanDetails.IN_STVAL = meDE.bean.data.STVAL;
-//        
-//        this.beanDetails.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
-//        this.beanDetails.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
-//        this.beanDetails.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
-//        
-//        if (this.beanDetails.IN_STVAL === 'Match' || this.beanDetails.IN_STVAL === 'Match Manual') {
-//            this.beanDetails.IN_STVAL = '1';
-//        } else {
-//            this.beanDetails.IN_STVAL = 'P';
-//        }
-
         me.paramsDetail.beanString = JSON.stringify(this.beanScan);
         global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
     },
@@ -604,12 +540,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScan.IN_CODEBANK = meDE.bean.data.CODEBANK;
         this.beanScan.IN_BANDOC = meDE.bean.data.BANDOC;
         this.beanScan.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
-        this.beanScan.IN_RED = meDE.bean.data.RED;
         this.beanScan.IN_STVAL = meDE.bean.data.STVAL;
         
         this.beanScan.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
         this.beanScan.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
         this.beanScan.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
+        this.beanScan.IN_RED = Ext.getCmp(prototype.id + '-txtRED').getValue();
         
         if (this.beanScan.IN_STVAL === 'Match' ) {
             this.beanScan.IN_STVAL = '1';
@@ -1066,8 +1002,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 VALDATE: Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue(),
                 DATECI: Ext.getCmp(prototype.id + '-de-txtDATECI').getValue(),
                 TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
-                TDOC_E: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(),
-                TDOC: record.get('TDOC').trim(),
+                TDOC: Ext.getCmp(prototype.id + '-de-txtTDOC').getValue(), //MANDATORIO EL TDOC DEL ESTADO DE CUENTA SEGUN LUIS ALCIDES 2024/12/05 "NIÑOS CON NIÑOS Y NIÑAS CON NIÑAS"
+//                TDOC: record.get('TDOC').trim(),
                 MERCHAND: Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue(),
                 BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
                 COREPL: record.get('CORES').trim(),

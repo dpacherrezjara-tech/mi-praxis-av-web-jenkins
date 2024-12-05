@@ -929,20 +929,38 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     enforceMaxLength: true,
                                                     enableKeyEvents: true
                                                 },
-                                                {xtype: 'tbspacer', width: 30},
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Sequence:',
+                                                    text: 'Seq:',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     margin: '4 0 4 4',
-                                                    width: 70
+                                                    width: 35
                                                 },
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-txtSEQ',
                                                     fieldStyle: 'text-align:center',
-                                                    width: 50,
+                                                    width: 35,
+                                                    maxLength: 2,
+                                                    enforceMaxLength: true,
+                                                    enableKeyEvents: true
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Red:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 0 4 4',
+                                                    width: 35
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtRED',
+                                                    fieldStyle: 'text-align:center',
+                                                    width: 35,
                                                     maxLength: 2,
                                                     enforceMaxLength: true,
                                                     enableKeyEvents: true
