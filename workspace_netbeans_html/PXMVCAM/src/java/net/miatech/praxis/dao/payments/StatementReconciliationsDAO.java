@@ -2935,7 +2935,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114Detail(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05114DETAIL_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3059,7 +3059,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(6, filter.MERCHAND.trim());
             cstmt.setString(7, filter.DATECI.trim());
             cstmt.setString(8, filter.TRANCI.trim());
-            cstmt.setString(9, filter.TDOC_E.trim());
+            cstmt.setString(9, filter.TDOC.trim());
             cstmt.setString(10, filter.FECSELEC.trim());
             cstmt.setString(11, filter.FSELEC.trim());
             cstmt.setInt(12, filters.size());
@@ -3072,7 +3072,7 @@ public class StatementReconciliationsDAO {
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF060_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF060_1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -3097,11 +3097,12 @@ public class StatementReconciliationsDAO {
                 cstmt2.setString(13, filter.DATECI.trim());
                 cstmt2.setString(14, filter.TRANCI.trim());
                 cstmt2.setString(15, filter.TDOC.trim());
-                cstmt2.setString(16, user.getUserInfo().USR);
-                cstmt2.setString(17, Functions.getFechaActual());
-                cstmt2.setString(18, Functions.getHoraActual());
-                cstmt2.setString(19, filterC.SEQ);
-
+                cstmt2.setString(16, filterC.SEQ);
+                cstmt2.setString(17, filterC.RED);
+                cstmt2.setString(18, user.getUserInfo().USR);
+                cstmt2.setString(19, Functions.getFechaActual());
+                cstmt2.setString(20, Functions.getHoraActual());
+                
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
             }
@@ -3680,7 +3681,7 @@ public class StatementReconciliationsDAO {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
                 + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '1', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
-                + "WHERE STVAL = '3' AND " + inQuery;
+                + "WHERE STVAL = '3' AND SEQ = '' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
