@@ -23,6 +23,7 @@ import net.miatech.praxis.payment.dto.SPACR016Filter;
 import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.dto.SPACR018Filter;
 import net.miatech.praxis.payment.dto.SPACR019Filter;
+import net.miatech.praxis.payment.dto.SPACR021Filter;
 import net.miatech.praxis.payment.dto.SPMC006Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4451;
@@ -277,6 +278,16 @@ public class AccountingReportDAO implements AccountingReportLogic {
         filter.setResponse((List<X3184>) obj.get("result"));
         return filter;
     }
+
+    @Override
+    public SPACR021Filter loadSPACR021Filter(SPACR021Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR021", params, 
+                new BeanPropertyRowMapper(A4545.class));
+        filter.setResponse((List<A4545>) obj.get("result"));
+        return filter;
+    }
+    
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">
