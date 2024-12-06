@@ -499,11 +499,16 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                             },
                                             {text: 'Status', dataIndex: 'STVAL', width: 100,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    let strStatus = {
+                                                        '3': 'Pending',
+                                                        '5': 'Match Manual',
+                                                        '1': 'Match'
+                                                    }
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
-                                                    let strStatus = value == '5' ? "Match Manual" : "Pendiente"
-                                                    return strStatus;
+//                                                    let strStatus = value == '5' ? "Match Manual" : "Pendiente"
+                                                    return strStatus[value];
                                                 }
                                             },
                                             
