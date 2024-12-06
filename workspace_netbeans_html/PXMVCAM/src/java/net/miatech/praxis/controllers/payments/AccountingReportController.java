@@ -6,15 +6,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.controllers.BaseController;
-import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
 import net.miatech.praxis.payment.dto.AccountingInterface;
 import net.miatech.praxis.payment.dto.ExcelBandocDto;
@@ -36,7 +33,6 @@ import net.miatech.praxis.payment.dto.SPACR019Filter;
 import net.miatech.praxis.payment.dto.SPACR021Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
-import net.miatech.praxis.payment.filter.SQP05233Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.praxis.utils.SpringWS;
@@ -169,7 +165,7 @@ public class AccountingReportController extends BaseController {
         String fileName;
         if (filter.getResponse() != null) {
             List<A4545> result = filter.getResponse();
-
+            accountingInterface.getInterfase().add(fileHeader);
             int k = 0;
             for (int i = 0, j = 0; i < result.size(); i++, j++) {
                 StringBuilder sb = new StringBuilder();
@@ -354,8 +350,9 @@ public class AccountingReportController extends BaseController {
         List<CustomExcelCell> header = new ArrayList<>();
         header.add(new CustomExcelCell("Client\nCode"));
         header.add(new CustomExcelCell("Processor"));
-        header.add(new CustomExcelCell("Date"));
-        header.add(new CustomExcelCell("Hour"));
+        header.add(new CustomExcelCell("Acc. Date"));
+        header.add(new CustomExcelCell("Gen. Date"));
+        header.add(new CustomExcelCell("Gen. Hour"));
         header.add(new CustomExcelCell("Type"));
         header.add(new CustomExcelCell("ID"));
         header.add(new CustomExcelCell("Bandocs"));
@@ -364,7 +361,8 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Final\nDate"));
         header.add(new CustomExcelCell("Pre Acc.\nErrors"));
         header.add(new CustomExcelCell("Post Acc.\nErrors"));
-        header.add(new CustomExcelCell("File Name"));
+        header.add(new CustomExcelCell("Corrl AV"));
+        header.add(new CustomExcelCell("Qty File"));
         header.add(new CustomExcelCell("Status"));
         header.add(new CustomExcelCell("User"));
         header.add(new CustomExcelCell("Datetime"));
@@ -374,6 +372,7 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getCCUST()));
             row.add(new CustomExcelCell(obj.getDESC_PRO()));
             row.add(new CustomExcelCell(obj.getFCONT()));
+            row.add(new CustomExcelCell(obj.getFSEND()));
             row.add(new CustomExcelCell(obj.getHCONT()));
             row.add(new CustomExcelCell(obj.getTIPOCON()));
             row.add(new CustomExcelCell(obj.getIDCONT()));
@@ -396,6 +395,7 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getQTYROWS()));
             row.add(new CustomExcelCell(obj.getQTYERRS()));
             row.add(new CustomExcelCell(obj.getFILENAM()));
+            row.add(new CustomExcelCell(obj.getQTYFILE()));
             row.add(new CustomExcelCell(obj.getSTCONT()));
             row.add(new CustomExcelCell(obj.getUSCR()));
             row.add(new CustomExcelCell(obj.getTSCR().toString()));

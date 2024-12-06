@@ -486,6 +486,7 @@ public class BankReconciliationExtController {
         header.add(new CustomExcelCell("Client\nCode"));
         header.add(new CustomExcelCell("Processing\nDate"));
         header.add(new CustomExcelCell("Doc. Type"));
+        header.add(new CustomExcelCell("Bank Doc."));
         header.add(new CustomExcelCell("Value\nDate"));
         header.add(new CustomExcelCell("Payment\nDate"));
         header.add(new CustomExcelCell("Status"));
@@ -514,6 +515,7 @@ public class BankReconciliationExtController {
             row.add(new CustomExcelCell(obj.getCCUST()));
             row.add(new CustomExcelCell(obj.getPRDA()));
             row.add(new CustomExcelCell(formatTDOC(obj.getTDOC())));
+            row.add(new CustomExcelCell(obj.getBANDOC()));
             row.add(new CustomExcelCell(obj.getVALDATE()));
             row.add(new CustomExcelCell(obj.getADATE()));
             row.add(new CustomExcelCell(formatSTVAL(obj.getSTVAL())));

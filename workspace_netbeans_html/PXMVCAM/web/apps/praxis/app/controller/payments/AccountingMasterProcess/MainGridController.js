@@ -16,6 +16,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
     afterRender: async function (obj, e) {
         const me = this;
         const view = me.view;
+        let username = document.getElementById('menuUser').innerText.trim();
+        const btnUpload = Ext.getCmp(prototype.id + '-uploadAccountingBtn');
+        if(username === 'MPACHECO' || username==='MPACHECOD'){
+            btnUpload.show();
+        }else{
+            btnUpload.hide();
+        }
         this.getData(view);
     },
     getData: function (view) {
@@ -170,6 +177,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         return !reverseAction.includes(record.get('STCONT'));
     },
     disableDownload: function(view, rowIndex, colIndex, item, record){
+        let reverseAction = ['2', '3', '5'];
+        return !reverseAction.includes(record.get('STCONT'));
+    },
+    disableUpload: function(view, rowIndex, colIndex, item, record){
         let reverseAction = ['2', '3', '5'];
         return !reverseAction.includes(record.get('STCONT'));
     },
