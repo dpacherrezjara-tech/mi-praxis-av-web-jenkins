@@ -373,8 +373,8 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 250,
-                                    valueField: 'A4451KEY2',
-                                    displayField: 'A4451DESC1',
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,
@@ -387,14 +387,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    name: 'IN_SEQPRO',
-                                    id: prototype.id + '-txtSettlSEQPRO2',
-                                    value: '',
-                                    hidden: true,
-                                    readOnly: true
                                 },
                                 {
                                     xtype: 'textfield',
@@ -564,8 +556,8 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 250,
-                                    valueField: 'A4451KEY2',
-                                    displayField: 'A4451DESC1',
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,
@@ -578,14 +570,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    name: 'IN_SEQPRO',
-                                    id: prototype.id + '-txtSettlSEQPRO3',
-                                    value: '',
-                                    hidden: true,
-                                    readOnly: true
                                 },
                                 {
                                     xtype: 'combobox',
@@ -858,8 +842,8 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 250,
-                                    valueField: 'A4451KEY2',
-                                    displayField: 'A4451DESC1',
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: false,
@@ -872,14 +856,6 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    name: 'IN_SEQPRO',
-                                    id: prototype.id + '-txtSettlSEQPRO4',
-                                    value: '',
-                                    hidden: true,
-                                    readOnly: true
                                 },
                                 {
                                     xtype: 'combobox',

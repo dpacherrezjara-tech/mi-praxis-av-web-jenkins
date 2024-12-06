@@ -122,7 +122,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGri
                     sortable: true,
                     align: 'center',
                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        metaData.style = "background-color:#786bb9;font-weight:bold;";
+                        metaData.style = "background-color:#9e95cb;font-weight:bold;";
                         return value;
                     }
                 },
@@ -130,7 +130,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGri
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Status', dataIndex: 'STSAP', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#786bb9;font-weight:bold;";
+                            metaData.style = "background-color:#9e95cb;font-weight:bold;";
                             const opts = {
                                 'P': () => {
                                     metaData.style = "background-color:#fffc33;font-weight:bold";

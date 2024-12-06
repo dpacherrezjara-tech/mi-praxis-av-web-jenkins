@@ -42,8 +42,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                         return value;
                     }
                 }, columns: [
-                    {text: 'Date', dataIndex: 'FCONT', width: 90},
-                    {text: 'Hour', dataIndex: 'HCONT', width: 80},
+                    {text: 'Posting<br>Date', dataIndex: 'FCONT', width: 90},
+                    {text: 'Generation<br>Date', dataIndex: 'FSEND', width: 90},
+                    {text: 'Generation<br>Hour', dataIndex: 'HCONT', width: 80},
                     {text: 'Type', dataIndex: 'TIPOCON', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#B2DAFA";
@@ -100,7 +101,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             click: 'onViewPostErrors'
                         }
                     },
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 300},
+                    {text: 'Corrl AV Assigned', dataIndex: 'FILENAM', width: 250},
+                    {text: 'Total<br>Files', dataIndex: 'QTYFILE', width: 70},
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
@@ -202,6 +204,22 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                         tooltip: 'Download',
                         handler: 'onDownloadAccounting',
                         isDisabled: 'disableDownload'
+                    }
+                ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Up.',
+                id: prototype.id + '-uploadAccountingBtn',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-process-send',
+                        tooltip: 'Upload',
+                        handler: 'onUploadAccounting',
+                        isDisabled: 'disableUpload'
                     }
                 ]
             }

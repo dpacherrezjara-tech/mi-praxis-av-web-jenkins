@@ -32,5 +32,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.LoggerDataEnt
     },
     onCancelClick: function () {
         this.view.close();
+    },
+    onReloadGrid: function(){
+        this.loadLogger();
     }
 });

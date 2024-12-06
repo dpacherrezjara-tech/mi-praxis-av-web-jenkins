@@ -131,7 +131,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                                     editable: true, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(new Date().setMonth(new Date().getMonth() - 6))
+                                    value: new Date(new Date().setMonth(new Date().getMonth() - 1))
                                 },
                                 {
                                     xtype: 'datefield',

@@ -27,7 +27,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             const cmbBankCtry2 = Ext.getCmp(prototype.id + '-cmbBankCtry2');
             const cmbBankCurr2 = Ext.getCmp(prototype.id + '-cmbBankCurr2');
             const cmbBankLocCurr2 = Ext.getCmp(prototype.id + '-cmbBankLocCurr2');
-            const cmbBankCOREP2 = Ext.getCmp(prototype.id + '-cmbBankCOREP2');
             const cmbBankCODPRO2 = Ext.getCmp(prototype.id + '-cmbBankCODPRO2');
             const cmbBankCodebank2 = Ext.getCmp(prototype.id + '-cmbBankCodebank2');
 
@@ -37,16 +36,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
                 valueField: 'CODE', displayField: 'NAME', value: ''});
             me.setComboStore({cmp: cmbBankLocCurr2, data: me.monedas,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-            me.setComboStore({cmp: cmbBankCOREP2, data: me.corepro,
+            me.setComboStore({cmp: cmbBankCODPRO2, data: me.corepro,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-            me.setComboStore({cmp: cmbBankCODPRO2, data: me.codpro,
-                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
             me.setComboStore({cmp: cmbBankCodebank2, data: me.codebank,
                 valueField: 'CODBANKN', displayField: 'NAMEBANK', value: ''});
-
-            cmbBankCODPRO2.on('select', function (cmb, record) {
-                Ext.getCmp(prototype.id + '-txtBankSEQPRO2').setValue(record.data.A4451SEQ || '');
-            });
             //</editor-fold>
 
             //<editor-fold defaultstate="collapsed" desc="Settlement Browser">
@@ -59,14 +52,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
                 valueField: 'CODE', displayField: 'NAME', value: ''});
             me.setComboStore({cmp: cmbSettlCurr2, data: me.monedas,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-            me.setComboStore({cmp: cmbSettlCODPRO2, data: me.codpro,
-                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
+            me.setComboStore({cmp: cmbSettlCODPRO2, data: me.corepro,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
             me.setComboStore({cmp: cmbSettlCodebank2, data: me.codebank,
                 valueField: 'CODBANKN', displayField: 'NAMEBANK', value: ''});
-
-            cmbSettlCODPRO2.on('select', function (cmb, record) {
-                Ext.getCmp(prototype.id + '-txtSettlSEQPRO2').setValue(record.data.A4451SEQ || '');
-            });
             //</editor-fold>
             
             //<editor-fold defaultstate="collapsed" desc="Tax Browser">
@@ -76,14 +65,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
 
             me.setComboStore({cmp: cmbSettlCurr3, data: me.monedas,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-            me.setComboStore({cmp: cmbSettlCODPRO3, data: me.codpro,
-                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
+            me.setComboStore({cmp: cmbSettlCODPRO3, data: me.corepro,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
             me.setComboStore({cmp: cmbSettlPCurr3, data: me.monedas,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-
-            cmbSettlCODPRO3.on('select', function (cmb, record) {
-                Ext.getCmp(prototype.id + '-txtSettlSEQPRO3').setValue(record.data.A4451SEQ || '');
-            });
             //</editor-fold>
 
             //<editor-fold defaultstate="collapsed" desc="Header Browser">
@@ -93,16 +78,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
 
             me.setComboStore({cmp: cmbSettlCurr4, data: me.monedas,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-            me.setComboStore({cmp: cmbSettlCODPRO4, data: me.codpro,
-                valueField: 'A4451KEY2', displayField: 'A4451DESC1', value: ''});
+            me.setComboStore({cmp: cmbSettlCODPRO4, data: me.corepro,
+                valueField: 'CODE', displayField: 'NAME', value: ''});
             me.setComboStore({cmp: cmbSettlPCurr4, data: me.monedas,
                 valueField: 'CODE', displayField: 'NAME', value: ''});
-
-            cmbSettlCODPRO3.on('select', function (cmb, record) {
-                Ext.getCmp(prototype.id + '-txtSettlSEQPRO4').setValue(record.data.A4451SEQ || '');
-            });
             //</editor-fold>
-            console.log(data);
         }
         filters.unmask();
     },
