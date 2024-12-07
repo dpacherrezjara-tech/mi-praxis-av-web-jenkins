@@ -1847,6 +1847,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
         me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
         me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
+        me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
 
         switch (column.dataIndex) {
             case 'PERCPENDING':

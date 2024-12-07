@@ -101,12 +101,24 @@ public class A2356 {
         public int QPEND  = 0;
         public int QPOLIC  = 0;
         public int QPOLIPE  = 0;
+        public int QTYTOTAL  = 0;
+        public int QDMATCH  = 0;
+        public int QRMATCH  = 0;
+        public int QCMATCH  = 0;
+        public int QAMATCH  = 0;
+        public int QDPEND  = 0;
         
         public int totQSALES  = 0;  
         public int totQMATCH  = 0;  
         public int totQPEND  = 0;  
         public int totQPOLIC  = 0;  
         public int totQPOLIPE  = 0;  
+        public int totQTYTOTAL  = 0;  
+        public int totQDMATCH  = 0;  
+        public int totQRMATCH  = 0;  
+        public int totQCMATCH  = 0;  
+        public int totQAMATCH  = 0;  
+        public int totQDPEND  = 0;  
         public int QTYTKT10  = 0;  
         public int QTYTKT30  = 0;  
         public int QTYTKT60  = 0;  
