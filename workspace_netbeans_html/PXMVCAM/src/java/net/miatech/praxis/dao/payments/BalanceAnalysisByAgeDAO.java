@@ -192,7 +192,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT2_V1(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT2_V2(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -203,7 +203,7 @@ public class BalanceAnalysisByAgeDAO {
 //            cstmt.registerOutParameter(9, Types.INTEGER);
 //            cstmt.registerOutParameter(10, Types.INTEGER);
 //            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -763,7 +763,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -775,7 +775,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -884,7 +884,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_MONTH_V3(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_MONTH_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -896,7 +896,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -1003,7 +1003,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_MONTH_2_V1(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_MONTH_2_V2(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1014,7 +1014,7 @@ public class BalanceAnalysisByAgeDAO {
 //            cstmt.registerOutParameter(9, Types.INTEGER);
 //            cstmt.registerOutParameter(10, Types.INTEGER);
 //            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -1132,7 +1132,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -1250,7 +1250,7 @@ public class BalanceAnalysisByAgeDAO {
 //            cstmt.registerOutParameter(9, Types.INTEGER);
 //            cstmt.registerOutParameter(10, Types.INTEGER);
 //            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -1356,7 +1356,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_COMPANY_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_COMPANY_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1475,7 +1475,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_COMPANY_2_V1(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_COMPANY_2_V2(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1592,7 +1592,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_SCOUNTRY_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_SCOUNTRY_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1604,7 +1604,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
@@ -1712,7 +1712,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_SCOUNTRY_2_V1(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF118_REPORT_SCOUNTRY_2_V2(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1723,7 +1723,7 @@ public class BalanceAnalysisByAgeDAO {
 //            cstmt.registerOutParameter(9, Types.INTEGER);
 //            cstmt.registerOutParameter(10, Types.INTEGER);
 //            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_SCOUNTRY);
