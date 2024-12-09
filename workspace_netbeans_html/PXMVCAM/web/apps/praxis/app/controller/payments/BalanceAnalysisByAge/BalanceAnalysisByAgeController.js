@@ -156,7 +156,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
-        
+
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
@@ -271,6 +271,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
         me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
         me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
+        console.log(Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue(), 'dadadadadada0')
+        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue() ? '1' : '2';
 
 
         console.log(me.bean, 'me.bean segundo parameter')
@@ -345,6 +347,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             this.setFormatParameter2();
             this.setGridDataTotal();
         }
+    },
+    onChkboxPending: function (checkbox, newValue, oldValue) {
+        console.log(newValue, 'newValue')
+        this.btnSearch_click()
     },
     isEmpty: function (elemento) {
         if (elemento.getValue() === '') {
@@ -675,37 +681,37 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //            Ext.getCmp(prototype.id + '-displayPolar2').bindStore(storeGridDatas);
         }
     },
-    onGridCountryTotal: function (column, e, row, column, x, rowData){
-        
-        if(  x.record.data.children && x.record.data.children[0].FCHILD === '1' ){
+    onGridCountryTotal: function (column, e, row, column, x, rowData) {
+
+        if (x.record.data.children && x.record.data.children[0].FCHILD === '1') {
             console.log('entra al child')
             return false;
         }
         me.bean = {};
         let dateFormat = {
-            '2024-Jan' : '202401',
-            '2024-Feb' : '202402',
-            '2024-Mar' : '202403',
-            '2024-Apr' : '202404',
-            '2024-May' : '202405',
-            '2024-Jun' : '202406',
-            '2024-Jul' : '202407',
-            '2024-Aug' : '202408',
-            '2024-Sep' : '202409',
-            '2024-Oct' : '202410',
-            '2024-Nov' : '202411',
-            '2024-Dec' : '202412',
-            
+            '2024-Jan': '202401',
+            '2024-Feb': '202402',
+            '2024-Mar': '202403',
+            '2024-Apr': '202404',
+            '2024-May': '202405',
+            '2024-Jun': '202406',
+            '2024-Jul': '202407',
+            '2024-Aug': '202408',
+            '2024-Sep': '202409',
+            '2024-Oct': '202410',
+            '2024-Nov': '202411',
+            '2024-Dec': '202412',
+
         }
-        if( !rowData.data.CCUST){
+        if (!rowData.data.CCUST) {
             console.log('filtrado')
             me.bean.IN_CCUST = x.record.data.children[0].CCUST
-            
-        }else{
+
+        } else {
             console.log('desplegado')
             me.bean.IN_CCUST = x.record.data.CCUST
         }
-        
+
         me.bean.IN_SDATE = dateFormat[x.record.data.strFormatDate]
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -716,8 +722,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.drillDown.push(me.panelActual);
 //        me.typeBean = 'D' // DRILL DOWN
         this.setGridCountryTotal();
-        
-        
+
+
     },
     setGridCountryTotal: function () {
         win.lblUser_toolTip("Estructura: MPF108");
@@ -760,11 +766,11 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //                         
                             var res = Ext.JSON.decode(response._response.responseText);
                             if (res.data2.length > 0) {
-                            for (let i = res.data2.length - 1; i >= 0; i--) {
-                                let AMOUNT = res.data2[i].ASALES;
-                                let SCOUNTRY = res.data2[i].descSCOUNTRY;
-                                charts.push({strDescription: SCOUNTRY, AMOUNT: AMOUNT});
-                            }
+                                for (let i = res.data2.length - 1; i >= 0; i--) {
+                                    let AMOUNT = res.data2[i].ASALES;
+                                    let SCOUNTRY = res.data2[i].descSCOUNTRY;
+                                    charts.push({strDescription: SCOUNTRY, AMOUNT: AMOUNT});
+                                }
 
 //                            for (let i = 0 ;i < res.data2.length; i++) {
 //                                let AMOUNT = res.data2[i].SVFOPUSDPENDING;
@@ -772,18 +778,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //                                let CANAL = res.data2[i].CANAL;
 //                                charts.push({strDescription: SAGENT + '-' + CANAL , AMOUNT: AMOUNT});
 //                            }
-                        } else {
-                            charts.push({strDescription: 'Not found', AMOUNT: 1});
-                        }
+                            } else {
+                                charts.push({strDescription: 'Not found', AMOUNT: 1});
+                            }
 
 
 
-                        var storeData1ercharts = Ext.create('Ext.data.Store', {
-                            data: charts,
-                            autoLoad: true
-                        });
+                            var storeData1ercharts = Ext.create('Ext.data.Store', {
+                                data: charts,
+                                autoLoad: true
+                            });
 
-                        Ext.getCmp(prototype.id + '-displayGrafCountryTotal').bindStore(storeData1ercharts);
+                            Ext.getCmp(prototype.id + '-displayGrafCountryTotal').bindStore(storeData1ercharts);
 
                         }
                         me.setWidthPie();
@@ -846,7 +852,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
         } else if (newValue === 'P') {
             this.setGridSumaryMonth();
-            
+
             var valueRadio = Ext.getCmp(prototype.id + '-rbgChangeReport').getValue().rb;
             Ext.getCmp(prototype.id + '-rbgChangeReport').items.items[0].setValue(true);
             Ext.getCmp(prototype.id + '-rbgChangeReport').cheked = true;
@@ -854,11 +860,11 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-contentFilter2').show();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
         } else if (newValue === 'C') {
-            
+
             var valueRadio = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb;
             Ext.getCmp(prototype.id + '-rbgFlag').items.items[0].setValue(true);
             Ext.getCmp(prototype.id + '-rbgFlag').cheked = true;
-            
+
             this.setFormatParameter3();
             this.searchClarificationTOT();
 //            Ext.getCmp(prototype.id + '-contentFilter').hide();
@@ -1524,50 +1530,57 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                         // ------------------ GRAFICOS -------------------------
 
-                        var item = {};
-                        var item2 = {};
-                        var totals = [];
-                        var charts = [];
-                        let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD) * 100;
-                        let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD) * 100;
-                        console.log(obj.data.items, 'obj.data.items')
-                        if (obj.data.items.length > 0) {
-                            item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
-                            var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
-                            item2.VENDOR = pending;
-                            totals.push(item2);
-
-                            item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
-                            var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
-                            item.VENDOR = Paid;
-                            totals.push(item);
-                            Ext.getCmp(prototype.id + '-lblTittlePaid4').setText('Total Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
 
 
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
                         } else {
-                            totals.push({})
-                        }
-                        console.log('wadadafafafa')
-                        me.setPaidByCompany(obj.data.items, '134', '-displayPolar4_1', '-lblTittlePaid4_1')
-                        me.setPaidByCompany(obj.data.items, '202', '-displayPolar4_2', '-lblTittlePaid4_2')
-                        me.setPaidByCompany(obj.data.items, '133', '-displayPolar4_3', '-lblTittlePaid4_3')
-                        me.setPaidByCompany(obj.data.items, '547', '-displayPolar4_4', '-lblTittlePaid4_4')
-                        console.log('kiskideiski')
-                        var storeData1er = Ext.create('Ext.data.Store', {
-                            data: totals,
-                            autoLoad: true
-                        });
-                        Ext.getCmp(prototype.id + '-displayPolar4').bindStore(storeData1er);
+                            var item = {};
+                            var item2 = {};
+                            var totals = [];
+                            var charts = [];
+                            let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD) * 100;
+                            let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD) * 100;
+                            console.log(obj.data.items, 'obj.data.items')
+                            if (obj.data.items.length > 0) {
+                                item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
+                                item2.VENDOR = pending;
+                                totals.push(item2);
 
-                        var res = Ext.JSON.decode(response._response.responseText);
-                        let strCCUST = {
-                            134: 'AVIANCA',
-                            133: 'LACSA',
-                            202: 'TACA',
-                            547: 'AEROGAL',
-                        }
+                                item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
+                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
+                                item.VENDOR = Paid;
+                                totals.push(item);
+                                Ext.getCmp(prototype.id + '-lblTittlePaid4').setText('Total Amount USD: ' + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSD, '0,000'))
 
-                        if (res.data2.length > 0) {
+
+                            } else {
+                                totals.push({})
+                            }
+                            console.log('wadadafafafa')
+                            me.setPaidByCompany(obj.data.items, '134', '-displayPolar4_1', '-lblTittlePaid4_1')
+                            me.setPaidByCompany(obj.data.items, '202', '-displayPolar4_2', '-lblTittlePaid4_2')
+                            me.setPaidByCompany(obj.data.items, '133', '-displayPolar4_3', '-lblTittlePaid4_3')
+                            me.setPaidByCompany(obj.data.items, '547', '-displayPolar4_4', '-lblTittlePaid4_4')
+                            console.log('kiskideiski')
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+                            Ext.getCmp(prototype.id + '-displayPolar4').bindStore(storeData1er);
+
+                            var res = Ext.JSON.decode(response._response.responseText);
+                            let strCCUST = {
+                                134: 'AVIANCA',
+                                133: 'LACSA',
+                                202: 'TACA',
+                                547: 'AEROGAL',
+                            }
+
+                            if (res.data2.length > 0) {
 //                            for (let i = res.data2.length - 1; i >= 0; i--) {
 //                                let PENDING = res.data2[i].SVFOPUSDPENDING;
 //                                let PAID = res.data2[i].SVFOPUSDP;
@@ -1575,36 +1588,29 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID});
 //                            }
 
-                            for (let i = 0; i < res.data2.length; i++) {
-                                let PAID = res.data2[i].SVFOPUSDP;
-                                let PENDING = res.data2[i].SVFOPUSDPENDING;
-                                let TOTAL = res.data2[i].SVFOPUSD;
-                                let CCUST = res.data2[i].CCUST;
-                                charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID, TOTAL: TOTAL});
+                                for (let i = 0; i < res.data2.length; i++) {
+                                    let PAID = res.data2[i].SVFOPUSDP;
+                                    let PENDING = res.data2[i].SVFOPUSDPENDING;
+                                    let TOTAL = res.data2[i].SVFOPUSD;
+                                    let CCUST = res.data2[i].CCUST;
+                                    charts.push({strDescription: strCCUST[CCUST], PENDING: PENDING, PAID: PAID, TOTAL: TOTAL});
+                                }
+                            } else {
+                                charts.push({strDescription: 'Not found', PENDING: 1, PAID: 1, TOTAL: 1});
                             }
-                        } else {
-                            charts.push({strDescription: 'Not found', PENDING: 1, PAID: 1, TOTAL: 1});
-                        }
 
 
-                        me.setBarByCompany(obj.data.items, '134', '-displayGraf4_1')
-                        me.setBarByCompany(obj.data.items, '202', '-displayGraf4_2')
-                        me.setBarByCompany(obj.data.items, '133', '-displayGraf4_3')
-                        me.setBarByCompany(obj.data.items, '547', '-displayGraf4_4')
+                            me.setBarByCompany(obj.data.items, '134', '-displayGraf4_1')
+                            me.setBarByCompany(obj.data.items, '202', '-displayGraf4_2')
+                            me.setBarByCompany(obj.data.items, '133', '-displayGraf4_3')
+                            me.setBarByCompany(obj.data.items, '547', '-displayGraf4_4')
 
-                        var storeData1ercharts = Ext.create('Ext.data.Store', {
-                            data: charts,
-                            autoLoad: true
-                        });
-
-                        Ext.getCmp(prototype.id + '-displayGraf4').bindStore(storeData1ercharts);
-
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
+                            var storeData1ercharts = Ext.create('Ext.data.Store', {
+                                data: charts,
+                                autoLoad: true
                             });
-                        } else {
 
+                            Ext.getCmp(prototype.id + '-displayGraf4').bindStore(storeData1ercharts);
                         }
                         me.setWidthPie();
                     }
@@ -1741,57 +1747,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                         // ------------------ GRAFICOS -------------------------
 
-                        var item = {};
-                        var item2 = {};
-                        var totals = [];
-                        var charts = [];
-                        let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD) * 100;
-                        let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD) * 100;
-                        console.log(obj.data.items, 'obj.data.items')
-                        if (obj.data.items.length > 0) {
-                            item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
-                            var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
-                            item2.VENDOR = pending;
-                            totals.push(item2);
 
-                            item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
-                            var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
-                            item.VENDOR = Paid;
-                            totals.push(item);
-                        } else {
-                            totals.push({})
-                        }
-
-
-                        var storeData1er = Ext.create('Ext.data.Store', {
-                            data: totals,
-                            autoLoad: true
-                        });
-                        Ext.getCmp(prototype.id + '-displayPolar').bindStore(storeData1er);
-
-                        var res = Ext.JSON.decode(response._response.responseText);
-
-
-                        if (res.data2.length > 0) {
-                            for (let i = 0; i < res.data2.length; i++) {
-
-                                let AMOUNT = res.data2[i].SVFOPUSD;
-                                let SAGENT = res.data2[i].SAGENT;
-                                let SDATE = res.data2[i].SDATE;
-                                charts.push({strDescription: SAGENT + "\n" + SDATE, AMOUNT: AMOUNT});
-                            }
-                        } else {
-                            charts.push({strDescription: 'Not found', AMOUNT: 1});
-                        }
-
-
-
-                        var storeData1ercharts = Ext.create('Ext.data.Store', {
-                            data: charts,
-                            autoLoad: true
-                        });
-
-                        Ext.getCmp(prototype.id + '-displayGraf').bindStore(storeData1ercharts);
 
                         if (obj.data.length === 0) {
                             global.Msg({
@@ -1799,6 +1755,57 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             });
                         } else {
                             var data = obj.data.items[0].data;
+                            var item = {};
+                            var item2 = {};
+                            var totals = [];
+                            var charts = [];
+                            let pendingPerc = (obj.data.items[0].data.totSVFOPUSDPENDING / obj.data.items[0].data.totSVFOPUSD) * 100;
+                            let paidPerc = (obj.data.items[0].data.totSVFOPUSDP / obj.data.items[0].data.totSVFOPUSD) * 100;
+                            console.log(obj.data.items, 'obj.data.items')
+                            if (obj.data.items.length > 0) {
+                                item2.Perc2 = obj.data.items[0].data.totSVFOPUSDPENDING;
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDPENDING, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
+                                item2.VENDOR = pending;
+                                totals.push(item2);
+
+                                item.Perc2 = obj.data.items[0].data.totSVFOPUSDP;
+                                var Paid = "Paid:\n" + Ext.util.Format.number(obj.data.items[0].data.totSVFOPUSDP, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
+                                item.VENDOR = Paid;
+                                totals.push(item);
+                            } else {
+                                totals.push({})
+                            }
+
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+                            Ext.getCmp(prototype.id + '-displayPolar').bindStore(storeData1er);
+
+                            var res = Ext.JSON.decode(response._response.responseText);
+
+
+                            if (res.data2.length > 0) {
+                                for (let i = 0; i < res.data2.length; i++) {
+
+                                    let AMOUNT = res.data2[i].SVFOPUSD;
+                                    let SAGENT = res.data2[i].SAGENT;
+                                    let SDATE = res.data2[i].SDATE;
+                                    charts.push({strDescription: SAGENT + "\n" + SDATE, AMOUNT: AMOUNT});
+                                }
+                            } else {
+                                charts.push({strDescription: 'Not found', AMOUNT: 1});
+                            }
+
+
+
+                            var storeData1ercharts = Ext.create('Ext.data.Store', {
+                                data: charts,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayGraf').bindStore(storeData1ercharts);
 
 //                            if(me.typeBean == 'D'){
 //                                console.log('drilldown')
@@ -1848,6 +1855,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
         me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
         me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
+        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue() ? '1' : '2';
 
         switch (column.dataIndex) {
             case 'PERCPENDING':
