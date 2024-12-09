@@ -418,6 +418,17 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             listeners: {
                             }
                         },
+                        {
+                            xtype: 'checkbox',
+                            boxLabel: 'Pending',
+                            id: prototype.id + '-chkboxTypeRecord',
+////                            inputValue: '1', 
+//                            uncheckedValue: '0', 
+                            margin: '0 0 0 15',
+                            listeners: {
+                                change: 'onChkboxPending'
+                            }
+                        }
                     ]
                 }
             ]
