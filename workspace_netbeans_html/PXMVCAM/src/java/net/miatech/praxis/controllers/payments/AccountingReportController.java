@@ -6,10 +6,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
@@ -329,7 +332,15 @@ public class AccountingReportController extends BaseController {
     @RequestMapping(value = "reverseMassiveBandoc", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody List<SPACR008Filter> lst) throws Exception {
         System.out.println("***** AccountingReport - reverseMassiveBandoc *****");
-        logic.loadSPACR008FilterMasive(lst);
+        List<SPACR008Filter> filtroDuplicados = lst.stream().collect(
+                Collectors.toMap(
+                        obj-> Arrays.asList(obj.getIN_BANDOC(),obj.getIN_DATECI(),obj.getIN_TRANCI()),
+                        Function.identity(),
+                        (p1,p2)-> p1))
+                .values()
+                .stream()
+                .collect(Collectors.toList());
+        logic.loadSPACR008FilterMasive(filtroDuplicados);
         return ResponseUtils.create();
     }
 
