@@ -9,7 +9,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Logg
     controller: 'LoggerDataEntryController',
     title: 'Logger - Form',
     header: true,
-    width: 700,
+    width: 750,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -45,10 +45,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Logg
                         xtype: 'rownumberer', // Columna de número de fila
                         width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                     },
-                    {text: 'Type', dataIndex: 'TIPO', width: 50},
                     {text: 'Message', dataIndex: 'MENSAJE', flex: 1},
                     {text: 'User', dataIndex: 'USUP', width: 100},
-                    {text: 'DateTime', dataIndex: 'TSUP', width: 130}
+                    {text: 'DateTime', dataIndex: 'TSUP', width: 150}
                 ]
             }
         }
