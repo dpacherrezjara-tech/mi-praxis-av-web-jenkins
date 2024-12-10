@@ -88,14 +88,14 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridCon
         mainPanel.add(newPanel);
     },
     reverseSingleBandoc: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {CCUST,CODPRO,TIPOCON,IDCONT,BANDOC,VALDATE} = record.data;
+        const {IDCONT,BANDOC,DATECI,TRANCI} = record.data;
         let params = {
-            IN_CCUST:CCUST,
-            IN_CODPRO:CODPRO,
-            IN_TIPOCON: TIPOCON,
-            IN_IDCONT:IDCONT,
-            IN_BANDOC: BANDOC,
-            IN_VALDATE: VALDATE
+            IN_IDCONT: IDCONT,
+            IN_BANDOC:BANDOC,
+            IN_DATECI: DATECI,
+            IN_TRANCI: TRANCI,
+            IN_REVORI: 'B',
+            IN_BPOMSG: 'Reversado manual Error Contable'
         };
         console.log('Reverse Params: ',params);
         Ext.Msg.show(
@@ -122,12 +122,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridCon
             return;
         }
         let params = selectedRecords.map(obj=>({
-                IN_CCUST:obj.data.CCUST,
-                IN_CODPRO:obj.data.CODPRO,
-                IN_TIPOCON: obj.data.TIPOCON,
                 IN_IDCONT:obj.data.IDCONT,
-                IN_BANDOC: obj.data.BANDOC,
-                IN_VALDATE: obj.data.VALDATE
+                IN_BANDOC:obj.data.BANDOC,
+                IN_DATECI: obj.data.DATECI,
+                IN_TRANCI:obj.data.TRANCI,
+                IN_REVORI: 'B',
+                IN_BPOMSG: 'Reversado Masivo Errores Contables'
             }));
         console.log('Reverse Params: ',params);
         Ext.Msg.show(
