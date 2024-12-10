@@ -19,7 +19,8 @@ public class MPF135 {
             CERROR,
             DESCERR,
             STREV,  
-            USUP,PGMUP;
+            USUP,PGMUP,
+            DATECI,TRANCI;
     private Timestamp TSUP;
     private Integer QTYERR;
     
