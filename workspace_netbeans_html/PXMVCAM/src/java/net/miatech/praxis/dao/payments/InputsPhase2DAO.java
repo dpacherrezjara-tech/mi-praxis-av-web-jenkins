@@ -16,11 +16,13 @@ import net.miatech.praxis.payment.dto.SPIL004Filter;
 import net.miatech.praxis.payment.dto.SPIL005Filter;
 import net.miatech.praxis.payment.dto.SPIL006Filter;
 import net.miatech.praxis.payment.dto.SPIL007Filter;
+import net.miatech.praxis.payment.dto.SPIL008Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.MPF054;
 import net.miatech.praxis.payment.entities.MPF089;
 import net.miatech.praxis.payment.entities.MPF090;
+import net.miatech.praxis.payment.entities.MPF122Filter;
 import net.miatech.praxis.payment.entities.MPF126;
 import net.miatech.praxis.utils.JdbcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,5 +188,13 @@ public class InputsPhase2DAO implements InputsPhase2Logic {
         return filter;
     }
 
+    @Override
+    public SPIL008Filter loadSPIL008Filter(SPIL008Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPIL008",
+                params, new BeanPropertyRowMapper(MPF122Filter.class));
+        filter.setResponse((List<MPF122Filter>) obj.get("result"));
+        return filter;
+    }
 
 }
