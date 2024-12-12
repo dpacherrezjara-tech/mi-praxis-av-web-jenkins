@@ -29,6 +29,20 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid', {
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 40,
+                text: 'Info',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-detail',
+                        tooltip: 'Open Detail',
+                        handler: 'onViewDetailReverseAccounting', // onViewDetailReverseAccounting
+                    }
+                ]
+            },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 200},
             {text: 'Type', dataIndex: 'TIPOCON', width: 70,
@@ -103,7 +117,7 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid', {
                 scale: 'small',
                 tooltip: 'Export to Excel',
                 listeners: {
-                    click: 'downloadExcel'
+                    click: 'onDownloadExcel'
                 }
             },
             {
