@@ -48,6 +48,7 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DetailGrid', {
                             return '<img src="resources/img/icon/16x16/check.png"/>';
                         },
                         '0':() => {
+                            metaData.style = 'cursor:pointer;';
                             return '<img src="resources/img/icon/delete.png"/>';
                         },
                         'E':() => {
@@ -55,6 +56,9 @@ Ext.define('Ext.Praxis.view.payments.InputsSecondPhaseForm.Grids.DetailGrid', {
                         }
                     };
                     return opts[value.trim()]();
+                },
+                listeners:{
+                    click:'onLoadFileErrors'
                 }
             },
             {text: 'Total Records',
