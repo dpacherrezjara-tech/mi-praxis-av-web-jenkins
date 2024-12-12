@@ -253,7 +253,7 @@ public class AccountingReportController extends BaseController {
                     fileName = fileNameTemp + "_" + filter.getIN_CCUST() + "_"
                             + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k + 1);
                     
-                    accountingInterface.setFechaContable(fechaContable.substring(2, 6));
+                    accountingInterface.setFechaContable(fechaContable);
                     accountingInterface.setFechaEnvio(fechaEnvio);
                     accountingInterface.setHoraEnvio(horaEnvio);
                     accountingInterface.setCliente(filter.getIN_CCUST());
