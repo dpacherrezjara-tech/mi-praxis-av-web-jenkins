@@ -18,6 +18,7 @@ import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.utils.CustomExcelCell;
 import java.util.stream.Collectors;
+import net.miatech.praxis.payment.dto.SPIL008Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -100,6 +101,14 @@ public class InputsPhase2Controller {
     public ResponseEntity<?> searchFileDelivery(@ModelAttribute SPIL006Filter params) throws Exception {
         System.out.println("***** InputsPhase2 - searchFileDelivery *****");
         SPIL006Filter filter = logic.loadSPIL006Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "searchFileErrors")
+    public ResponseEntity<?> searchFileErrors(SPIL008Filter params) throws Exception {
+        System.out.println("***** InputsPhase2 - searchFileErrors *****");
+        SPIL008Filter filter = logic.loadSPIL008Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
