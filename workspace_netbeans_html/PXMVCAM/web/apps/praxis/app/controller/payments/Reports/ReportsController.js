@@ -88,6 +88,9 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         });
     },
     xpanel_afterrender: function (obj, e) {
+        
+        let title_module = '<h2 class="label-praxis-module"><span style="font-size: 11pt; font-family: Arial; font-weight: bold;">PAYMENTS CONTROL </span>' + '<br>' + 'Debits Reports' + '</h2>';
+        $('#divTitle').html(title_module);
         this.setStoreData();
         this.obtainData();
     },
@@ -343,14 +346,38 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             bean: me.bean
         };
     },
+    
+    setFormatParameter2: function () {
+        me.bean = {};
+        me.bean.IN_FECFILTRO = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'SDATE' ? 'S' : 'A';
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+    },
 
     btnSearch_click: function (obj, e) {
-        this.setFormatParameter();
-        this.setGridData();
+        
+//        let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
+//        let detailBoolean = Ext.getCmp(prototype.id + '-boxMainData').isVisible()
+        if ( me.panelActual == '-panelGridSumaryMain' ){
+            this.setFormatParameter2();
+            this.setGridSumaryMain()
+        }else{
+            this.setFormatParameter();
+            this.setGridData();
+        }
+        
     },
 
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF101");
+        me.panelActual = '-boxMainData';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
         if (msj !== '') {
             global.Msg({msg: msj
@@ -388,7 +415,336 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
+    btnDisplay_click: function(){
+        let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
+        let detailBoolean = Ext.getCmp(prototype.id + '-boxMainData').isVisible()
+        console.log(summaryBoolean, 'summaryBoolean')
+        if ( !summaryBoolean ){
+            console.log('wadafafaf')
+            Ext.getCmp(prototype.id + '-containerFilters1').hide()
+            Ext.getCmp(prototype.id + '-containerFilters2').hide()
+            
+            this.setFormatParameter2();
+            this.setGridSumaryMain()
+        }else{
+            
+            Ext.getCmp(prototype.id + '-containerFilters1').show()
+            Ext.getCmp(prototype.id + '-containerFilters2').show()
+            this.setFormatParameter();
+            this.setGridData();
+        }
+        
 
+    },
+    setGridSumaryMain: function () {
+        win.lblUser_toolTip("Estructura: MPF101");
+        
+        me.panelActual = '-panelGridSumaryMain';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            console.log('entra al llamado')
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMain'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                       
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            // Setear treePanel
+                            let lstData = []
+                            for (let value of obj.data.items) {
+
+                                lstData.push(value.data)
+                            }
+                            let totQTYTOTAL = lstData[0].totQTYTOTAL;
+                            let totQDMATCH = lstData[0].totQDMATCH;
+                            let totADMATCH = lstData[0].totADMATCH;
+                            let totQRMATCH = lstData[0].totQRMATCH;
+                            let totARMATCH = lstData[0].totARMATCH;
+                            let totQCMATCH = lstData[0].totQCMATCH;
+                            let totACMATCH = lstData[0].totACMATCH;
+                            let totQAMATCH = lstData[0].totQAMATCH;
+                            let totAAMATCH = lstData[0].totAAMATCH;
+                            let totQDPEND = lstData[0].totQDPEND;
+                            let totADPEND = lstData[0].totADPEND;
+                            console.log(lstData, 'console.log(lstData)')
+                            let a = [];
+                            let dataRoot = {text: '.', expanded: false, children: []};
+
+                            Ext.Object.each(lstData, function (index, value) {
+                                if (a.indexOf(value.strFormatDate) < 0) {
+                                    let x = [];
+
+                                    let V_QDMATCH = 0;
+                                    let V_QRMATCH = 0;
+                                    let V_QCMATCH = 0;
+                                    let V_QAMATCH = 0;
+                                    let V_QDPEND = 0;
+                                    let V_QTYTOTAL = 0;
+                                    let V_ADMATCH = 0;
+                                    let V_ARMATCH = 0;
+                                    let V_ACMATCH = 0;
+                                    let V_AAMATCH = 0;
+                                    let V_ADPEND = 0;
+                                    
+
+
+                                    Ext.Object.each(lstData, function (index, valuex) {
+                                        if (value.strFormatDate === valuex.strFormatDate) {
+                                            V_QDMATCH += valuex.QDMATCH;
+                                            V_QRMATCH += valuex.QRMATCH;
+                                            V_QCMATCH += valuex.QCMATCH;
+                                            V_QAMATCH += valuex.QAMATCH;
+                                            V_QDPEND += valuex.QDPEND;
+                                            V_QTYTOTAL += valuex.QTYTOTAL;
+                                            V_ADMATCH += valuex.ADMATCH;
+                                            V_ARMATCH += valuex.ARMATCH;
+                                            V_ACMATCH += valuex.ACMATCH;
+                                            V_AAMATCH += valuex.AAMATCH;
+                                            V_ADPEND += valuex.ADPEND;
+                                        }
+                                    });
+
+
+                                    a.push(value.strFormatDate);
+                                    dataRoot.children.push({
+                                        strFormatDate: value.strFormatDate,
+                                        IN_FECFILTRO: value.IN_FECFILTRO,
+                                        QDMATCH : V_QDMATCH ,
+                                        QRMATCH : V_QRMATCH ,
+                                        QCMATCH : V_QCMATCH ,
+                                        QAMATCH : V_QAMATCH ,
+                                        QDPEND : V_QDPEND  ,
+                                        QTYTOTAL : V_QTYTOTAL,
+                                        ADMATCH : V_ADMATCH ,
+                                        ARMATCH : V_ARMATCH ,
+                                        ACMATCH : V_ACMATCH ,
+                                        AAMATCH : V_AAMATCH ,
+                                        ADPEND : V_ADPEND  ,
+
+                                        expanded: false, children: []
+                                    });
+                                    let b = [];
+                                    Ext.Object.each(lstData, function (index, value01) {
+                                        if (value.strFormatDate === value01.strFormatDate) {
+                                            dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                strFormatDate: value01.strFormatDate,
+                                                CCUST: value01.CCUST,
+//                                                FCHILD: value01.FCHILD,
+                                                IN_FECFILTRO: value01.IN_FECFILTRO,
+                                                QDMATCH : value01.QDMATCH,
+                                                QRMATCH : value01.QRMATCH,
+                                                QCMATCH : value01.QCMATCH,
+                                                QAMATCH : value01.QAMATCH,
+                                                QDPEND : value01.QDPEND,
+                                                QTYTOTAL : value01.QTYTOTAL,
+                                                ADMATCH : value01.ADMATCH,
+                                                ARMATCH : value01.ARMATCH,
+                                                ACMATCH : value01.ACMATCH,
+                                                AAMATCH : value01.AAMATCH,
+                                                ADPEND : value01.ADPEND,
+                                                leaf: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                            console.log(dataRoot, 'dataRoot')
+                            var storeTree = Ext.create('Ext.data.TreeStore', {
+                                root: dataRoot
+                            });
+
+                            Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
+                            
+                            Ext.getCmp(prototype.id + '-totQTYTOTAL').setText(Ext.util.Format.number(totQTYTOTAL, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQDMATCH').setText(Ext.util.Format.number(totQDMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totADMATCH').setText(Ext.util.Format.number(totADMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQRMATCH').setText(Ext.util.Format.number(totQRMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totARMATCH').setText(Ext.util.Format.number(totARMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQCMATCH').setText(Ext.util.Format.number(totQCMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totACMATCH').setText(Ext.util.Format.number(totACMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQAMATCH').setText(Ext.util.Format.number(totQAMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAAMATCH').setText(Ext.util.Format.number(totAAMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQDPEND').setText(Ext.util.Format.number(totQDPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-totADPEND').setText(Ext.util.Format.number(totADPEND, '0,000'));
+                            
+                            var data = obj.data.items[0].data;
+                            console.log(data, 'datadata');
+                            console.log(obj, 'objobj');
+                            
+                            let item = {};
+                            let item2 = {};
+                            let item3 = {};
+                            let item4 = {};
+                            let item5 = {};
+                            let totals = [];
+                            let charts = [];
+                            let debitoMatch = (obj.data.items[0].data.totQDMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
+                            let refundMatch = (obj.data.items[0].data.totQRMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
+                            let chgbkMatch = (obj.data.items[0].data.totQCMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
+                            let acreditMatch = (obj.data.items[0].data.totQAMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
+                            let debitoPend = (obj.data.items[0].data.totQDPEND / obj.data.items[0].data.totQTYTOTAL) * 100;
+                            
+                            if (obj.data.items.length > 0) {
+                                item.Perc2 = obj.data.items[0].data.totQDMATCH;
+                                var debitsM = "Debito:\n" + Ext.util.Format.number(obj.data.items[0].data.totQDMATCH, '0,000') + "\n" + Ext.util.Format.number(debitoMatch, '0.00%');
+                                item.VENDOR = debitsM;
+                                totals.push(item);
+                                
+                                item2.Perc2 = obj.data.items[0].data.totQRMATCH;
+                                var refundM = "Refund:\n" + Ext.util.Format.number(obj.data.items[0].data.totQRMATCH, '0,000') + "\n" + Ext.util.Format.number(refundMatch, '0.00%');
+                                item2.VENDOR = refundM;
+                                totals.push(item2);
+
+                                item3.Perc2 = obj.data.items[0].data.totQCMATCH;
+                                var chgbackM = "Chgback:\n" + Ext.util.Format.number(obj.data.items[0].data.totQCMATCH, '0,000') + "\n" + Ext.util.Format.number(chgbkMatch, '0.00%');
+                                item3.VENDOR = chgbackM;
+                                totals.push(item3);
+                                
+                                item4.Perc2 = obj.data.items[0].data.totQAMATCH;
+                                var acreditM = "Acredit:\n" + Ext.util.Format.number(obj.data.items[0].data.totQAMATCH, '0,000') + "\n" + Ext.util.Format.number(acreditMatch, '0.00%');
+                                item4.VENDOR = acreditM;
+                                totals.push(item4);
+                                
+                                item5.Perc2 = obj.data.items[0].data.totQDPEND;
+                                var debitsP = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQDPEND, '0,000') + "\n" + Ext.util.Format.number(debitoPend, '0.00%');
+                                item5.VENDOR = debitsP;
+                                totals.push(item5);
+                            } else {
+                                totals.push({})
+                            }
+
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+                            Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+                            Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(obj.data.items[0].data.totQTYTOTAL, '0,000'))
+                            
+                            
+                        }
+//                        me.setWidthPie();
+                    }
+                }
+            });
+            global.clear();
+            
+//            Ext.getCmp(prototype.id + '-gridSumaryMain').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
+        }
+    },
+    onGridDataDetail: function (column, e, row, column, x, rowData) {
+        
+        console.log(rowData, 'rowData')
+        console.log(rowData.data.children, 'rowData')
+        console.log(column, 'column')
+        me.bean = {};
+        let dateFormat = {
+            '2024-Jan': '202401',
+            '2024-Feb': '202402',
+            '2024-Mar': '202403',
+            '2024-Apr': '202404',
+            '2024-May': '202405',
+            '2024-Jun': '202406',
+            '2024-Jul': '202407',
+            '2024-Aug': '202408',
+            '2024-Sep': '202409',
+            '2024-Oct': '202410',
+            '2024-Nov': '202411',
+            '2024-Dec': '202412',
+
+        };
+        if( !rowData.data.children ){
+            me.bean.IN_CCUST = rowData.data.CCUST;
+        }else {
+            me.bean.IN_CCUST = '';
+        }
+        me.bean.IN_DATE = dateFormat[rowData.data.strFormatDate];
+        
+        if ( column === 1 ){
+            me.bean.IN_TDOC = 'Z';
+        }else if( column === 2 ){
+            me.bean.IN_TDOC = 'D';
+        }else if( column === 4 ){
+            me.bean.IN_TDOC = 'R';
+        }else if ( column === 6 ){
+            me.bean.IN_TDOC = 'C';
+        }else if ( column === 8 ){
+            me.bean.IN_TDOC = 'A';
+        }else if ( column === 10 ){
+            me.bean.IN_TDOC = 'P';
+        }
+        
+        me.bean.IN_FECFILTRO = rowData.data.IN_FECFILTRO;
+        
+        me.paramsDetail.beanString = JSON.stringify(me.bean);
+        var beanString = JSON.stringify(me.bean);
+//        searchParams = {
+//            beanString: beanString,
+//            bean: me.bean
+//        };
+        console.log(searchParams, 'searchParams')
+        me.drillDown.push(me.panelActual);
+//        me.typeBean = 'D' // DRILL DOWN
+        this.setGridDataDetail();
+
+
+    },
+    setGridDataDetail: function (){
+        win.lblUser_toolTip("Estructura: MPF101");
+        me.panelActual = '-boxDataDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDataDetail'
+                }, listeners: {
+                    beforeload: function (obj) {
+//                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+//                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin3');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            console.log(data);
+                        }
+                        me.setWidthPie();
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataDetail').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+        }
+    },
     validateFields: function () {
         var msj = '';
         var bean = searchParams.bean;
@@ -473,6 +829,10 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             case  '-boxMainData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
+            case  '-boxDataDetail':
+//                  console.log(me.paramsDetail.beanString, 'me.paramsDetail.beanString')
+                global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
             default:
                 global.Msg(
                         {msg: 'Under Construction'
@@ -490,7 +850,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     setWidthPie: function () {
 
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
-        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
+        console.log(ancho, 'ancho')
+//        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
     },
     getPaggin: function () {
@@ -498,6 +859,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         switch (me.panelActual) {
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
+                break;
+            case  '-panelGridSumaryMain':
+                me.pagginActual = '-paggin2';
+                break;
+            case  '-boxDataDetail':
+                me.pagginActual = '-paggin3';
                 break;
         }
     },

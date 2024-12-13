@@ -29,6 +29,14 @@ public class ReportsLogic {
         return banksCatalogDAO.loadSQP05120(filter);
     }
     
+    public List<A2356Filter> loadSQP05120_DETAIL(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_DETAIL(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_SM(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_SM(filter);
+    }
+    
     public A2356Filter loadSQP02856(A2356Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP02856(filter);
     }

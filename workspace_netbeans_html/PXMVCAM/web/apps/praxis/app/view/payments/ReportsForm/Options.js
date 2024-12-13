@@ -61,6 +61,14 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin3',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
                     ]
                 }
@@ -92,6 +100,15 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Options', {
                             id: prototype.id + '-btnExcel',
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
+                        },
+                        {
+                            xtype:'button',
+                            id: prototype.id+'-btnDisplay',
+                            icon: 'resources/img/botones/FalseChart.png',
+                            tooltip: 'Display Charts',
+                            listeners: {
+                                click: 'btnDisplay_click'
+                            }
                         },
                         {
                             xtype: 'button',
