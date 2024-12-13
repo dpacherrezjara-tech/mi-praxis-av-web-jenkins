@@ -192,7 +192,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'File Name',
+                                    fieldLabel: 'Corrl AV',
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_FILENAM',

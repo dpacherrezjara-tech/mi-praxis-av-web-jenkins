@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class MPF140 {
-    private String CCUST,CODPRO,BANDOC,VALDATE,IDCONT,FCONT,TIPOCON,
+    private String CCUST,CODPRO,BANDOC,VALDATE,IDCONT,FCONT,TIPOCON,DATECI,TRANCI,STCON,HEADER,
             STSAP,FECSAP,REFER,USCR,PGMCR,USUP,PGMUP;
     
     private Timestamp TSCR,TSUP;

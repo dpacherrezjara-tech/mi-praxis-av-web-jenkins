@@ -56,6 +56,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.BankDetailG
                     return opts[value];
                 }
             },
+            {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
             {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
             {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 80},
             {text: 'Status', dataIndex: 'STVAL', width: 160,

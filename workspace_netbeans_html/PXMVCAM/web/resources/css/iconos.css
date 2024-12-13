@@ -139,5 +139,9 @@
 }
 .prx-icon-graph-pie {
   background-image: url("../img/icon/graph_pie.png");
-  
+}
+
+.prx-icon-reload {
+  background-image: url("../img/icon/reload.png");
+  background-size: 16px;
 }

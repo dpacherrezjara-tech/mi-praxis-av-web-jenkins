@@ -16,6 +16,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
     afterRender: async function (obj, e) {
         const me = this;
         const view = me.view;
+        let username = document.getElementById('menuUser').innerText.trim();
+        const btnUpload = Ext.getCmp(prototype.id + '-uploadAccountingBtn');
+        if(username === 'MPACHECO' || username==='MPACHECOD'){
+            btnUpload.show();
+        }else{
+            btnUpload.hide();
+        }
         this.getData(view);
     },
     getData: function (view) {
@@ -69,6 +76,29 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         mainPanel.items.items.at(-1).hide();
         const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',{
             id: prototype.id + '-ErrorsGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onViewDownloadFiles: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT 
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadFilesGrid',{
+            id: prototype.id + '-DownloadFilesGrid-1',
             searchParams: params,
             backButton: ()=> {
                 mainPanel.items.items.at(-1).destroy();
@@ -170,6 +200,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         return !reverseAction.includes(record.get('STCONT'));
     },
     disableDownload: function(view, rowIndex, colIndex, item, record){
+        let reverseAction = ['2', '3', '5'];
+        return !reverseAction.includes(record.get('STCONT'));
+    },
+    disableUpload: function(view, rowIndex, colIndex, item, record){
         let reverseAction = ['2', '3', '5'];
         return !reverseAction.includes(record.get('STCONT'));
     },

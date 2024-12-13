@@ -96,6 +96,22 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.DetailGridControlle
             }
         }
     },
+    onLoadFileErrors: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const {CCUST, CODPRO, PRDA, ESTADO} = record.data;
+        if (ESTADO !== '0') {
+            return;
+        }
+        let params = {
+            IN_CCUST: CCUST,
+            IN_CODPRO: CODPRO,
+            IN_PRDA: PRDA
+        };
+        const newWin = Ext.create('Ext.Praxis.view.payments.InputsSecondPhaseForm.DataEntrys.ErrorsDataEntry', {
+            id: prototype.id + '-ErrorsDataEntry-1',
+            searchParams: params
+        });
+        newWin.show();
+    },
     downloadExcel: function () {
         let params = this.view.searchParams;
         global.getFile(`${this.url}/downloadSearch?${new URLSearchParams(params)}`);
