@@ -128,6 +128,64 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.MainGridController'
             return true;
         });
         return resultado;
+    },
+    
+    onViewDetailReverseAccounting: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        console.log("record --> ");
+        console.table(record);
+        
+//        IN_A4545USER=134
+//        REGSK20241209225215
+//        IN_A4545DOCBA=1700308135
+//        IN_A4545DATCI=20240808
+//        IN_A4545TRACI=000000158
+     
+//        IDCONT = '134REGSK20241209225215' AND  BANDOC = '1700308135' AND  DATECI = '20240808' AND  TRANCI = '000000158';
+
+        const {IDCONT, BANDOC, DATECI, TRANCI} = record.data;
+        
+        let params = {
+            IN_A4545USER: IDCONT,
+            IN_A4545DOCBA: BANDOC,
+            IN_A4545DATCI: DATECI,
+            IN_A4545TRACI : TRANCI
+        };
+        console.log("params --> ", params);
+        
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        
+        const newPanel = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.DetailGrid',{
+            id: prototype.id + '-DetailGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    
+    onDownloadExcel: function () {
+        const me = this;
+        let params = me.view.searchParams;
+        console.log('Download Params: ', params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download Excel?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            global.downloadFile(me.request,'downloadExcelReverseMainInfo',params,'xlsx');
+                        }
+                    }
+                });
     }
+    
     //</editor-fold>
 });

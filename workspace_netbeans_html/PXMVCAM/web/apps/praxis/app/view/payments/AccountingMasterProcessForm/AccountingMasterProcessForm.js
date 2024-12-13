@@ -15,7 +15,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingMaste
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid',
-        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid'
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadFilesGrid'
     ],
     controller: 'AccountingMasterProcessController',
     layout: {

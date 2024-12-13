@@ -7,6 +7,7 @@ import net.miatech.praxis.payment.dto.SPRAC001Filter;
 import net.miatech.praxis.payment.dto.SPRAC002Filter;
 import net.miatech.praxis.payment.dto.SPRAC003Filter;
 import net.miatech.praxis.payment.entities.A4545;
+import net.miatech.praxis.payment.entities.A4545REV;
 import net.miatech.praxis.payment.entities.MPF133;
 import net.miatech.praxis.utils.JdbcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,8 @@ public class ReverseAccountingDAO implements ReverseAccountingLogic{
     public SPRAC003Filter loadSPRAC003Filter(SPRAC003Filter filter) throws Exception {
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPRAC003",
-                params, new BeanPropertyRowMapper(A4545.class));
-        filter.setResponse((List<A4545>) obj.get("result"));
+                params, new BeanPropertyRowMapper(A4545REV.class));
+        filter.setResponse((List<A4545REV>) obj.get("result"));
         return filter;
     }
 

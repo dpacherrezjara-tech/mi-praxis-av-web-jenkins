@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.miatech.praxis.payment.entities.MPF133;
 import net.miatech.utils.CustomPageImpl;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  *
@@ -13,8 +15,10 @@ import net.miatech.utils.CustomPageImpl;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SPRAC001Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_TDATE,IN_PRDAF,IN_PRDAT,IN_IDCONT,IN_BANDOC,
-            IN_CODPRO,IN_TIPOCON,IN_REVORI,IN_USRV,IN_BPOMSG;
+    private String IN_CCUST ,IN_V_FROM ,IN_V_TO, IN_BANDOC, IN_IDCONT, IN_REVORI, IN_BPOMSG, IN_USRV;
     List<MPF133> response = new ArrayList<>();
 }
+
