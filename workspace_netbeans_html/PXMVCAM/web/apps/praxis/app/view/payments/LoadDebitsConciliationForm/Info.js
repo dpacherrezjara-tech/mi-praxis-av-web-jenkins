@@ -441,6 +441,22 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             readOnly: false,
         //                                    maskRe: /[a-zA-Z]/
                                         },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtPRDA',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maxLength: '8',
+                                            hidden: true,
+                                            width: 100,
+                                            maskRe: /[0-9]/,
+                                            editable: false,
+                                            enabled: false,
+                                            readOnly: false,
+        //                                    maskRe: /[a-zA-Z]/
+                                        },
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtDATECI',

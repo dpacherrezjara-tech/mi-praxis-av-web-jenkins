@@ -176,7 +176,7 @@ public class LoadDebitsConciliationDAO {
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
             
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF060_CONCI_DEBITS_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF060_CONCI_DEBITS_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             for (int i = 0; i < lstPayments.size(); ++i) {
                 cstmt2 = cnx.prepareCall(SQLCLL02);
@@ -215,9 +215,10 @@ public class LoadDebitsConciliationDAO {
                     cstmt2.setDouble(23, item.NETO);
                     cstmt2.setString(24, item.SEQ);
                     cstmt2.setString(25, item.IN_VALDATE.trim());
-                    cstmt2.setString(26, user.getUserInfo().USR);
-                    cstmt2.setString(27, Functions.getFechaActual());
-                    cstmt2.setString(28, Functions.getHoraActual());
+                    cstmt2.setString(26, item.IN_PRDA.trim());
+                    cstmt2.setString(27, user.getUserInfo().USR);
+                    cstmt2.setString(28, Functions.getFechaActual());
+                    cstmt2.setString(29, Functions.getHoraActual());
                   
                     cont++;
                     cstmt2.execute();
@@ -403,6 +404,7 @@ public class LoadDebitsConciliationDAO {
                 objRtn.STVAL = rs01.getString("STVAL").trim();
                 objRtn.ACCNUMBER = rs01.getString("ACCCOMP").trim();
                 objRtn.VALDATE = rs01.getString("VALDATE").trim();
+                objRtn.PRDA = rs01.getString("PRDA").trim();
                 objRtn.QTYTRAN1 = rs01.getInt("QTYTRAN1");
                 if(hmDescDocType.containsKey(objRtn.TDOC)){
                    objRtn.descTDOC = hmDescDocType.get(objRtn.TDOC);
