@@ -34,6 +34,7 @@ import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.dto.SPACR018Filter;
 import net.miatech.praxis.payment.dto.SPACR019Filter;
 import net.miatech.praxis.payment.dto.SPACR021Filter;
+import net.miatech.praxis.payment.dto.SPACR024Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.utils.ExportUtils;
@@ -120,6 +121,14 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> loadLogCont(SPACR007Filter params) throws Exception {
         System.out.println("***** AccountingReport - loadLogCont *****");
         SPACR007Filter filter = logic.loadSPACR007Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadDownloadFiles")
+    public ResponseEntity<?> loadDownloadFiles(SPACR024Filter params) throws Exception {
+        System.out.println("***** AccountingReport - loadDownloadFiles *****");
+        SPACR024Filter filter = logic.loadSPACR024Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
@@ -872,6 +881,63 @@ public class AccountingReportController extends BaseController {
 
         return exportUtils.createCustomExcel(data, title);
     }
+    
+    
+    @RequestMapping(value = "downloadExcelDownloadFilesInfo", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadExcelDownloadFilesInfo(@RequestBody SPACR024Filter params) throws Exception {
+        
+        System.out.println("***** AccountingMasterProcess - downloadExcelDownloadFilesInfo *****");
+        
+        params.setExcel(true);
+        
+        SPACR024Filter filter = logic.loadSPACR024Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+         String title = "AccountingMasterProcess - DF_"
+                 + params.getIN_IDCONT() ;
+         
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        
+        header.add(new CustomExcelCell("Number"));
+        header.add(new CustomExcelCell("Accounting\nID"));
+        header.add(new CustomExcelCell("Accounting\nPeriod")); 
+        header.add(new CustomExcelCell("Client\nCode")); 
+        header.add(new CustomExcelCell("Date\nGenerate")); 
+        header.add(new CustomExcelCell("Hour\nGenerate")); 
+        header.add(new CustomExcelCell("Processor")); 
+        header.add(new CustomExcelCell("Correlative")); 
+        header.add(new CustomExcelCell("Correlative\nName")); 
+        header.add(new CustomExcelCell("User\nGenerate"));
+        header.add(new CustomExcelCell("File Name")); 
+        header.add(new CustomExcelCell("User\nProcessor")); 
+        header.add(new CustomExcelCell("Register\nDate"));
+
+        
+        data.add(header);
+        filter.getResponse().forEach(obj -> {
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getRN()));
+            row.add(new CustomExcelCell(obj.getIDCONT()));
+            
+            row.add(new CustomExcelCell(obj.getFCONT()));
+            row.add(new CustomExcelCell(obj.getCCUST()));
+            row.add(new CustomExcelCell(obj.getFSEND()));
+            row.add(new CustomExcelCell(obj.getHSEND()));
+            row.add(new CustomExcelCell(obj.getDESC_PRO()));
+            row.add(new CustomExcelCell(obj.getCORRL()));
+            row.add(new CustomExcelCell(obj.getCORRLAV()));
+            row.add(new CustomExcelCell(obj.getUSENV()));
+            row.add(new CustomExcelCell(obj.getFILENAM()));
+            row.add(new CustomExcelCell(obj.getUSCR()));
+            row.add(new CustomExcelCell(obj.getTSCR()));
+            
+            data.add(row);
+        });
+
+        return exportUtils.createCustomExcel(data, title);        
+    }
+    
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">

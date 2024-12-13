@@ -102,7 +102,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                         }
                     },
                     {text: 'Corrl AV Assigned', dataIndex: 'FILENAM', width: 250},
-                    {text: 'Total<br>Files', dataIndex: 'QTYFILE', width: 70},
+                    {text: 'Total<br>Files', dataIndex: 'QTYFILE', width: 70,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#0095FF;";
+                            return value;
+                        },
+                        listeners: {
+                            click: 'onViewDownloadFiles'
+                        }
+                    },
                     {text: 'Status', dataIndex: 'STCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
