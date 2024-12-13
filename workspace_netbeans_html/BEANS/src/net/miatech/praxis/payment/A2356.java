@@ -107,6 +107,11 @@ public class A2356 {
         public int QCMATCH  = 0;
         public int QAMATCH  = 0;
         public int QDPEND  = 0;
+        public int ADMATCH  = 0;
+        public int ARMATCH  = 0;
+        public int ACMATCH  = 0;
+        public int AAMATCH  = 0;
+        public int ADPEND  = 0;
         
         public int totQSALES  = 0;  
         public int totQMATCH  = 0;  
@@ -119,6 +124,11 @@ public class A2356 {
         public int totQCMATCH  = 0;  
         public int totQAMATCH  = 0;  
         public int totQDPEND  = 0;  
+        public int totADMATCH  = 0;  
+        public int totARMATCH  = 0;  
+        public int totACMATCH  = 0;  
+        public int totAAMATCH  = 0;  
+        public int totADPEND  = 0; 
         public int QTYTKT10  = 0;  
         public int QTYTKT30  = 0;  
         public int QTYTKT60  = 0;  

@@ -180,6 +180,236 @@ public class ReportsDAO {
 
         return lstData;
     }
+    
+    public List<A2356Filter> loadSQP05120_DETAIL(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        double totTOTAL = 0, totNETO = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05120_DD(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_DATE);
+            cstmt.setString(3, filter.IN_TDOC);
+            cstmt.setString(4, filter.IN_FECFILTRO);
+
+
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totTOTAL = rst.getDouble("TOTAL");
+                totNETO = rst.getDouble("NETO");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.NAME = rst.getString("NAME").trim();
+                    bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                    bean.PAYDATE = rst.getString("PAYDATE").trim();
+                    bean.BANDOC = rst.getString("BANDOC").trim();
+                    bean.REFERENCE = rst.getString("REFER").trim();
+                    bean.CAR6 = rst.getString("CAR6").trim();
+                    bean.CAR4 = rst.getString("CAR4").trim();
+                    bean.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    bean.FTRAN = rst.getString("FTRAN").trim();
+                    bean.MERCHAND = rst.getString("MERCHNC").trim();
+                    bean.TOTAL = rst.getDouble("TOTAL");
+                    bean.NETO = rst.getDouble("NETO");
+                    bean.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    bean.TYPE = rst.getString("TYPE").trim();
+                    bean.STVAL = rst.getString("STVAL").trim();
+                    if (bean.STVAL.equals("1")) {
+                        bean.STVAL = "Match";
+                    }else if (bean.STVAL.equals("5")) {
+                        bean.STVAL = "Match Manual";
+                    } else {
+                        bean.STVAL = "Pend.";
+                    }
+                    bean.DEBSTVAL = rst.getString("DEBSTVAL").trim();
+                    if (bean.DEBSTVAL.equals("1")) {
+                        bean.DEBSTVAL = "Match";
+                    }else if (bean.DEBSTVAL.equals("5")) {
+                        bean.DEBSTVAL = "Manual";
+                    } else {
+                        bean.DEBSTVAL = "Pend.";
+                    }
+
+                    bean.totTOTAL = totTOTAL;
+                    bean.totNETO = totNETO;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    public List<A2356Filter> loadSQP05120_SM(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        int totQTYTOTAL = 0, totQDMATCH = 0, totQRMATCH = 0, totQCMATCH = 0, totQAMATCH = 0, totQDPEND = 0, totADMATCH = 0, totARMATCH = 0, totACMATCH = 0, totAAMATCH = 0, totADPEND = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05120_SM(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_FECFILTRO);
+ 
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totQTYTOTAL = rst.getInt("TOTQTYTOTAL");
+                totQDMATCH = rst.getInt("TOTQDMATCH");
+                totQRMATCH = rst.getInt("TOTQRMATCH");
+                totQCMATCH = rst.getInt("TOTQCMATCH");
+                totQAMATCH = rst.getInt("TOTQAMATCH");
+                totQDPEND = rst.getInt("TOTQDPEND");
+                totADMATCH = rst.getInt("TOTADMATCH");
+                totARMATCH = rst.getInt("TOTARMATCH");
+                totACMATCH = rst.getInt("TOTACMATCH");
+                totAAMATCH = rst.getInt("TOTAAMATCH");
+                totADPEND = rst.getInt("TOTADPEND");
+                
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("DATE").trim());
+                    bean.IN_FECFILTRO = filter.IN_FECFILTRO;
+                    
+                    bean.QTYTOTAL = rst.getInt("QTYTOTAL");
+                    bean.QDMATCH = rst.getInt("QDMATCH");
+                    bean.QRMATCH = rst.getInt("QRMATCH");
+                    bean.QCMATCH = rst.getInt("QCMATCH");
+                    bean.QAMATCH = rst.getInt("QAMATCH");
+                    bean.QDPEND = rst.getInt("QDPEND");
+                    bean.ADMATCH = rst.getInt("ADMATCH");
+                    bean.ARMATCH = rst.getInt("ARMATCH");
+                    bean.ACMATCH = rst.getInt("ACMATCH");
+                    bean.AAMATCH = rst.getInt("AAMATCH");
+                    bean.ADPEND = rst.getInt("ADPEND");
+
+                    bean.totQTYTOTAL = totQTYTOTAL;
+                    bean.totQDMATCH = totQDMATCH;
+                    bean.totQRMATCH = totQRMATCH;
+                    bean.totQCMATCH = totQCMATCH;
+                    bean.totQAMATCH = totQAMATCH;
+                    bean.totQDPEND = totQDPEND;
+                    bean.totADMATCH = totADMATCH;
+                    bean.totARMATCH = totARMATCH;
+                    bean.totACMATCH = totACMATCH;
+                    bean.totAAMATCH = totAAMATCH;
+                    bean.totADPEND = totADPEND;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
 
     public A2356Filter loadSQP02856(A2356Filter filter) throws SQLException, Exception {
 
