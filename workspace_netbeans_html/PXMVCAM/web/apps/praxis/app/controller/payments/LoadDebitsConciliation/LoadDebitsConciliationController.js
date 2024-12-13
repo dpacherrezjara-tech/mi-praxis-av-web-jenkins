@@ -213,8 +213,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         beanConciliation.IN_DATECI = Ext.getCmp(prototype.id + '-de-txtDATECI').getValue()
         beanConciliation.IN_TRANCI = Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue()
         beanConciliation.IN_VALDATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue()
+        beanConciliation.IN_PRDA = Ext.getCmp(prototype.id + '-de-txtPRDA').getValue()
         let beanString = JSON.stringify(beanConciliation);
-        console.log(Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(), 'TRANCI')
         var file = Ext.getCmp(prototype.id + '-file').getValue();
         if (file === '') {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
@@ -269,6 +269,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue('')
         Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue('')
         Ext.getCmp(prototype.id + '-de-txtVALDATE').setValue('')
+        Ext.getCmp(prototype.id + '-de-txtPRDA').setValue('')
         Ext.getCmp(prototype.id + '-file').reset();
         Ext.getCmp(prototype.id + '-btn-upload').setDisabled(false);
         Ext.getCmp(prototype.id + '-de-txtSumAmount').setFieldStyle('background-color: #CFE0EC;');
@@ -318,6 +319,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                     Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue(res.result.QTYTRAN1)
                     Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue(res.result.ACCNUMBER)
                     Ext.getCmp(prototype.id + '-de-txtVALDATE').setValue(res.result.VALDATE)
+                    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(res.result.PRDA)
                     if( res.result.STVAL == '1' || res.result.STVAL == '5' ){
                         global.Msg({msg: "REGISTRATION IN MATCH STATUS"});
                         Ext.getCmp(prototype.id + '-file').setDisabled(true)
