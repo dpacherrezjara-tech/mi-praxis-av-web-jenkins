@@ -17,6 +17,7 @@ import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
 import net.miatech.praxis.payment.dto.AccountingInterface;
+import net.miatech.praxis.payment.dto.EVALBANDOCFilter;
 import net.miatech.praxis.payment.dto.ExcelBandocDto;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -79,7 +80,7 @@ public class AccountingReportController extends BaseController {
     //<editor-fold defaultstate="collapsed" desc="Master Process">
     @RequestMapping(value = "loadMain")
     public ResponseEntity<?> loadMain(SPACR002Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadMain *****");
+        System.out.println("***** AccountingMaster - loadMain *****");
         SPACR002Filter filter = logic.loadSPACR002Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -87,7 +88,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "loadSettlements")
     public ResponseEntity<?> loadSettlements(SPACR011Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadSettlements *****");
+        System.out.println("***** AccountingMaster - loadSettlements *****");
         SPACR011Filter filter = logic.loadSPACR011Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -95,7 +96,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "loadBandocsSap")
     public ResponseEntity<?> loadBandocsSap(SPACR012Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadBandocsSap *****");
+        System.out.println("***** AccountingMaster - loadBandocsSap *****");
         SPACR012Filter filter = logic.loadSPACR012Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -103,7 +104,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "loadAccountingInfo")
     public ResponseEntity<?> loadAccountingInfo(SPACR013Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadAccountingInfo *****");
+        System.out.println("***** AccountingMaster - loadAccountingInfo *****");
         SPACR013Filter filter = logic.loadSPACR013Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -111,7 +112,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "loadErrors")
     public ResponseEntity<?> loadErrors(SPACR006Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadErrors *****");
+        System.out.println("***** AccountingMaster - loadErrors *****");
         SPACR006Filter filter = logic.loadSPACR006Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -119,7 +120,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "loadLogCont")
     public ResponseEntity<?> loadLogCont(SPACR007Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadLogCont *****");
+        System.out.println("***** AccountingMaster - loadLogCont *****");
         SPACR007Filter filter = logic.loadSPACR007Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -127,7 +128,7 @@ public class AccountingReportController extends BaseController {
     
     @RequestMapping(value = "loadDownloadFiles")
     public ResponseEntity<?> loadDownloadFiles(SPACR024Filter params) throws Exception {
-        System.out.println("***** AccountingReport - loadDownloadFiles *****");
+        System.out.println("***** AccountingMaster - loadDownloadFiles *****");
         SPACR024Filter filter = logic.loadSPACR024Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
@@ -135,7 +136,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "downloadAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> downloadAccounting(@RequestBody SPACR021Filter filter) throws Exception {
-        System.out.println("***** AccountingReport - downloadAccounting *****");
+        System.out.println("***** AccountingMaster - downloadAccounting *****");
         String zipName = "AccountingMaster_" + Functions.getFechaActual() + Functions.getHoraActual();
         List<AccountingInterface> accountingInterfaces = formatInterfases(filter);
         return exportUtils.createZip(accountingInterfaces, zipName);
@@ -143,7 +144,7 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "uploadAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> uploadAccounting(@RequestBody SPACR021Filter filter) throws Exception {
-        System.out.println("***** AccountingReport - uploadAccounting *****");
+        System.out.println("***** AccountingMaster - uploadAccounting *****");
         Gson gson = new Gson();
         List<AccountingInterface> lstResponse = formatInterfases(filter);
         Map<String,Object> map = new HashMap();
@@ -305,14 +306,14 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "reverseAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody SPACR005Filter params) throws Exception {
-        System.out.println("***** AccountingReport - reverseAccounting *****");
+        System.out.println("***** AccountingMaster - reverseAccounting *****");
         logic.loadSPACR005Filter(params);
         return ResponseUtils.create();
     }
 
     @RequestMapping(value = "processAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params) throws Exception {
-        System.out.println("***** AccountingReport - processAccounting *****");
+        System.out.println("***** AccountingMaster - processAccounting *****");
         SPMC007Filter filter = SPMC007Filter.builder()
                 .IN_KEY3("CONTABLEAV")
                 .IN_CORRL(params.getIN_TIPOCON())
@@ -333,14 +334,14 @@ public class AccountingReportController extends BaseController {
 
     @RequestMapping(value = "reverseSingleBandoc", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody SPACR008Filter params) throws Exception {
-        System.out.println("***** AccountingReport - reverseSingleBandoc *****");
+        System.out.println("***** AccountingMaster - reverseSingleBandoc *****");
         logic.loadSPACR008Filter(params);
         return ResponseUtils.create();
     }
 
     @RequestMapping(value = "reverseMassiveBandoc", method = RequestMethod.POST)
     public ResponseEntity<?> reverseAccounting(@RequestBody List<SPACR008Filter> lst) throws Exception {
-        System.out.println("***** AccountingReport - reverseMassiveBandoc *****");
+        System.out.println("***** AccountingMaster - reverseMassiveBandoc *****");
         List<SPACR008Filter> filtroDuplicados = lst.stream().collect(
                 Collectors.toMap(
                         obj-> Arrays.asList(obj.getIN_BANDOC(),obj.getIN_DATECI(),obj.getIN_TRANCI()),
@@ -353,6 +354,12 @@ public class AccountingReportController extends BaseController {
         return ResponseUtils.create();
     }
 
+    @RequestMapping(value = "evaluateBandoc")
+    public ResponseEntity<?> evaluateBandoc(EVALBANDOCFilter params) throws Exception {
+        System.out.println("***** AccountingMaster - evaluateBandoc *****");
+        EVALBANDOCFilter res = logic.loadEVALBANDOCFilter(params);
+        return ResponseUtils.ok(res);
+    }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Excel">
     @RequestMapping(value = "downloadExcelMain", method = RequestMethod.POST)

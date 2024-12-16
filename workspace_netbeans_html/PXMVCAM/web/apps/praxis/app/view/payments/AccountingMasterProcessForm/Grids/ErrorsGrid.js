@@ -54,6 +54,20 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGri
             },
             {text: 'Accounting ID', dataIndex: 'IDCONT', width: 180},
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 200},
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 40,
+                text: 'Eval',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-search',
+                        tooltip: 'Evaluate Bandoc',
+                        handler: 'onEvaluateBandoc'
+                    }
+                ]
+            },
             {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
             {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
             {text: 'Error<br>Code', dataIndex: 'CERROR', width: 50},
