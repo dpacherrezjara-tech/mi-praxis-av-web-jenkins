@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
+import net.miatech.praxis.payment.dto.EVALBANDOCFilter;
 import net.miatech.praxis.payment.dto.EstadisticaContable;
+import net.miatech.praxis.payment.dto.EvalBandocDto;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -300,7 +302,15 @@ public class AccountingReportDAO implements AccountingReportLogic {
         filter.setResponse((List<MPF141>) obj.get("result"));
         return filter;
     }
-    
+
+    @Override
+    public EVALBANDOCFilter loadEVALBANDOCFilter(EVALBANDOCFilter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "EVALBANDOC", params, 
+                new BeanPropertyRowMapper(EvalBandocDto.class));
+        filter.setResponse((List<EvalBandocDto>) obj.get("result"));
+        return filter;
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">

@@ -1,6 +1,7 @@
 package net.miatech.praxis.logic.payments;
 
 import java.util.List;
+import net.miatech.praxis.payment.dto.EVALBANDOCFilter;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
@@ -42,6 +43,7 @@ public interface AccountingReportLogic {
     SPACR021Filter loadSPACR021Filter(SPACR021Filter filter) throws Exception;
     SPACR024Filter loadSPACR024Filter(SPACR024Filter filter) throws Exception;
     SPMC007Filter loadSPMC007Filter(SPMC007Filter filter) throws Exception;
+    EVALBANDOCFilter loadEVALBANDOCFilter(EVALBANDOCFilter filter) throws Exception;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">
