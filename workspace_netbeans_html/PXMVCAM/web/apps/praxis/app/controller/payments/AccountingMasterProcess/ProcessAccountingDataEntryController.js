@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
 
         // console.log({date_IN_FCONT, date_IN_PRDAF, date_IN_PRDAT});        
         
-        if (date_IN_FCONT > date_IN_PRDAF || date_IN_FCONT > date_IN_PRDAT){
+        if (date_IN_FCONT < date_IN_PRDAF || date_IN_FCONT < date_IN_PRDAT){
             Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
