@@ -89,7 +89,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Band
                     {text: 'Core', dataIndex: 'CODPRO', width: 60},
                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
                     {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
-                    {text: 'Reference', dataIndex: 'REFER', width: 110},
+                    {text: 'Reference', dataIndex: 'REFER', width: 125},
                     {text: 'Status', dataIndex: 'STVAL', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "font-weight:bold;";
