@@ -75,6 +75,7 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.DetailGrid', {
             {text: 'Item', dataIndex: 'A4545ITEM', width: 60},
             {text: 'Large Text', dataIndex: 'A4545TEXTD', width: 400},
             {text: 'Reference', dataIndex: 'A4545REFD', width: 160},
+            {text: 'SEQ', dataIndex: 'A4545SEQ', width: 60},
             {text: 'Bank<br>Code', dataIndex: 'A4545BANCO', width: 70},
             {text: 'Bank Name', dataIndex: 'A4545REFB', width: 180},
             {text: 'Country', dataIndex: 'A4545PAIS', width: 70},
