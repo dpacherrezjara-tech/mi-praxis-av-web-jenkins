@@ -5141,7 +5141,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Info', {
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Card Number', width: 150, dataIndex: 'strSCARDN',
+                                                                        text: 'Card Number', width: 150, dataIndex: 'SCARDN',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             var data = record.data;
                                                                             var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
