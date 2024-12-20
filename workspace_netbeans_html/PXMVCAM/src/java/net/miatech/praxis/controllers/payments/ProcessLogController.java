@@ -1,9 +1,17 @@
 package net.miatech.praxis.controllers.payments;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
 import net.miatech.praxis.utils.ResponseUtils;
+import net.miatech.praxis.utils.SpringWS;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.PropertyNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +33,9 @@ public class ProcessLogController {
     @Autowired
     private ProcessLogLogic logic;
     
+    @Autowired
+    private SpringWS ws;
+    
     @RequestMapping(value = "search")
     public ResponseEntity<?> search(@ModelAttribute SPPL001Filter params) throws Exception{
         System.out.println("***** ProcessLog - search *****");
@@ -36,7 +47,15 @@ public class ProcessLogController {
     @RequestMapping(value = "process",method = RequestMethod.POST)
     public ResponseEntity<?> process(@RequestBody MPS023Filter params) throws Exception{
         System.out.println("***** ProcessLog - process *****");
-        logic.loadMPS023Filter(params);
-        return ResponseUtils.create();
+
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        
+        String body = gson.toJson(params);
+        boolean res = ws.postAsync(body, "ProcessLog/process");
+        
+        map.put("success", res);
+        
+        return ResponseUtils.ok(map);
     }
 }

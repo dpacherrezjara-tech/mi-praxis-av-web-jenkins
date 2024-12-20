@@ -24,7 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
             global.Msg({msg: 'Select Processor before Run'});
             return;
         }
-        console.log('Parameters: ', params);
+        
         try {
             const res = await fetch(`${me.url}/process`, {
                 method: 'POST',
@@ -34,7 +34,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
                 body: JSON.stringify(params)
             });
             if (res.ok) {
-                global.Msg({msg: 'Process Running...'});
+                global.Msg({msg: 'Success Process Running...'});
             } else {
                 global.Msg({msg: 'Process Failed...'});
             }
