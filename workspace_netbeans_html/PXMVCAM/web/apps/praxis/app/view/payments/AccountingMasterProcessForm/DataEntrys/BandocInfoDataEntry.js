@@ -53,8 +53,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Band
                                     metaData.style = "background-color:#d18d6d;";
                                     value = 'Extracto Bancario';
                                     break;
+                                case 'MPF081':
+                                    metaData.style = "background-color:#bb8fce;";
+                                    value = 'Extracto TacaFlown';
+                                    break;
                                 case 'MPF060':
-                                    metaData.style = "background-color:#7b6dd1;";
+                                    metaData.style = "background-color:#7ed16d;";
                                     value = 'Liquidacion F1';
                                     break;
                                 case 'MPF091':
@@ -62,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Band
                                     value = 'Taxes/Gastos';
                                     break;
                                 case 'MPF101':
-                                    metaData.style = "background-color:#7ed16d;";
+                                    metaData.style = "background-color:#7b6dd1;";
                                     value = 'Liquidacion F2';
                                     break;
                                 case 'MPF100':

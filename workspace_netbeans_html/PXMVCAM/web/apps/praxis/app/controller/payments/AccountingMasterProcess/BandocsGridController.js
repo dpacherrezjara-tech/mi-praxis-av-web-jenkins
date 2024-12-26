@@ -15,11 +15,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
     },
     afterRender: async function (obj, e) {
         const me = this;
-        const view = me.view;
-        this.getData(view);
+        this.getData();
     },
-    getData: function (view) {
+    getData: function () {
         const me = this;
+        const view = me.view;
         let store = Ext.create('Ext.data.Store', {
             loadMask: true,
             pageSize: 20,
@@ -75,6 +75,16 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
         });
         mainPanel.add(newPanel);
     },
+    disableReverse: function(view, rowIndex, colIndex, item, record){
+        const {STCON,STSAP} = record.data;
+        if(STSAP === 'L'){
+            return true;
+        }
+//        if(STCON === '2'){
+//            return true;
+//        }
+        return false;
+    },
     onDownloadExcel: function () {
         const me = this;
         let params = me.view.searchParams;
@@ -93,5 +103,50 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
                         }
                     }
                 });
-    }
+    },
+    reverseSingleBandoc: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {IDCONT,BANDOC,DATECI,TRANCI} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT,
+            IN_BANDOC: BANDOC,
+            IN_DATECI: DATECI,
+            IN_TRANCI: TRANCI,
+            IN_REVORI: 'B',
+            IN_BPOMSG: 'Reversado Manual Contable'
+        };
+        console.log('Reverse Params: ',params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Are you sure to reverse?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            this.reverseSingleAccounting(params);
+                        }
+                    }
+                });
+        
+    },
+    reverseSingleAccounting: async function(params){
+        const me = this;
+        me.view.setLoading(true);
+        try {
+            const res = await me.request.post('reverseSingleBandoc',params);
+            if(res.status === 201){
+                me.notifier.success('Bandoc Reversed');
+            }else{
+                me.notifier.alert('Error on Reverse');
+            }
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('System Error');
+        }finally {
+            me.getData();
+        }
+
+    },
 });

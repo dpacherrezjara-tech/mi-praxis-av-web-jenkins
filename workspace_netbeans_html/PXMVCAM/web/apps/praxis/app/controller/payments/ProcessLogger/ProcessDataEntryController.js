@@ -2,6 +2,11 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
     extend: 'Ext.app.ViewController',
     alias: 'controller.ProcessDataEntryController',
     url: CONTEXTPATH + '/ProcessLog',
+    request: axios.create({
+        baseURL: CONTEXTPATH + '/ProcessLog',
+        timeout: 0
+      }),
+    notifier: new AWN(),
     init: function (view) {
         const me = this;
         const cmbProcesadores = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
@@ -26,20 +31,15 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         }
         
         try {
-            const res = await fetch(`${me.url}/process`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            });
-            if (res.ok) {
-                global.Msg({msg: 'Success Process Running...'});
-            } else {
-                global.Msg({msg: 'Process Failed...'});
+            const res = me.request.post('process',params);
+            const {code,msg} = res.data;
+            if(code===0){
+                me.notifier.success(msg);
+            }else{
+                me.notifier.alert(msg);
             }
         } catch (e) {
-            global.Msg({msg: 'Process Failed...'});
+            me.notifier.alert('Process Failed...');
         }
         me.view.close();
     },

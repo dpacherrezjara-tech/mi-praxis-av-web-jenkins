@@ -1,21 +1,20 @@
 package net.miatech.praxis.controllers.payments;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
+import net.miatech.praxis.payment.dto.SPPL002Filter;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.praxis.utils.SpringWS;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.PropertyNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,14 +47,23 @@ public class ProcessLogController {
     public ResponseEntity<?> process(@RequestBody MPS023Filter params) throws Exception{
         System.out.println("***** ProcessLog - process *****");
 
-        Gson gson = new Gson();
+        SPPL002Filter log = SPPL002Filter.builder().VP_CCUST(params.getVP_CCUST()).build();
+        log = logic.loadSPPL002Filter(log);
         Map<String,Object> map = new HashMap();
-        
-        String body = gson.toJson(params);
-        boolean res = ws.postAsync(body, "ProcessLog/process");
-        
-        map.put("success", res);
-        
-        return ResponseUtils.ok(map);
+        map.put("code", log.getResponse());
+        if(log.getResponse() == 0){
+            Gson gson = new Gson();
+            String body = gson.toJson(params);
+            boolean res = ws.postAsync(body, "ProcessLog/process");
+            if(res){
+                map.put("msg", "In progress");
+                return ResponseUtils.ok(map);
+            }else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }else{
+            map.put("msg", "Another Process Running");
+            return ResponseUtils.ok(map);
+        }
     }
 }
