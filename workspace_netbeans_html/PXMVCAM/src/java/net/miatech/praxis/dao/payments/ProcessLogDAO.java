@@ -7,6 +7,7 @@ import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
 import net.miatech.praxis.payment.dto.SPMC004Filter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
+import net.miatech.praxis.payment.dto.SPPL002Filter;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.MPF121Filter;
 import net.miatech.praxis.utils.JdbcUtils;
@@ -36,6 +37,7 @@ public class ProcessLogDAO implements ProcessLogLogic{
     @Autowired
     private MailUtils mailUtils;
 
+    @Deprecated
     @Async
     @Override
     public MPS023Filter loadMPS023Filter(MPS023Filter filter) throws Exception {
@@ -98,6 +100,14 @@ public class ProcessLogDAO implements ProcessLogLogic{
                 params,new BeanPropertyRowMapper(MPF121Filter.class));
         filter.setResponse((List<MPF121Filter>) obj.get("result"));
         filter.setPageOut(obj);
+        return filter;
+    }
+
+    @Override
+    public SPPL002Filter loadSPPL002Filter(SPPL002Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPPL002",params);
+        filter.setResponse((int) obj.get("OU_RES"));
         return filter;
     }
     
