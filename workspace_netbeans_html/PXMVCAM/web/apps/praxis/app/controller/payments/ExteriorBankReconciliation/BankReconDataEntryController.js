@@ -11,11 +11,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     taxes: [],
     request: axios.create({
         baseURL: CONTEXTPATH + '/BankReconciliationExt',
-        timeout: 20000
+        timeout: 0
       }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
-        timeout: 20000
+        timeout: 0
       }),
     notifier: new AWN(),
     init: function (view) {

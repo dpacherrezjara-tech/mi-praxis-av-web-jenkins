@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1750,
+    width: prototype.width,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                 ]
             },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
-            {text: 'Processor', dataIndex: 'DESC_PRO', flex: 1},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 120},
             {
                 text: 'Accounting Information',
                 defaults: {
@@ -57,7 +57,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                     {text: 'Date', dataIndex: 'FCONT', width: 90},
                     {text: 'Type', dataIndex: 'TIPOCON', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#B2DAFA";
+                            metaData.style = "font-weight:bold";
                             const opts = {
                                 'DEB': 'Debits',
                                 'REG': 'Regular',
@@ -80,6 +80,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                     align: 'center'
                 },
                 columns:[
+                    {text: 'Corrl', dataIndex: 'HEADER', width: 200},
+                    {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Status', dataIndex: 'STSAP', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -88,12 +90,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                                 'P': ()=>{
                                     metaData.style = "background-color:#fffc33;font-weight:bold";
                                     return 'Pending';
-                                }, 
+                                },
+                                'S': ()=>{
+                                    metaData.style = "background-color:#7cf925;font-weight:bold";
+                                    return 'Sended';
+                                },
                                 'L': ()=>{
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
                                     return 'Loaded';
                                 }
-                            };
+                            };  
                             return opts[value]();
                         }
                     }
@@ -113,6 +119,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                     {text: 'Datetime<br>Create', dataIndex: 'TSCR', width: 130},
                     {text: 'User<br>Update', dataIndex: 'USUP', width: 100},
                     {text: 'Datetime<br>Update', dataIndex: 'TSUP', width: 130}
+                ]
+            },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                text: 'Rev.',
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-image-trash',
+                        tooltip: 'Reverse',
+                        handler: 'reverseSingleBandoc',
+                        isDisabled: 'disableReverse'
+                    }
                 ]
             }
             //</editor-fold>

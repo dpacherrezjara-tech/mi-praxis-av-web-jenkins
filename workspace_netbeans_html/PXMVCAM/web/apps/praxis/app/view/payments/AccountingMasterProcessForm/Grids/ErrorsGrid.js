@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGri
                     }
                 ]
             },
-            {text: 'Accounting ID', dataIndex: 'IDCONT', width: 180},
+            {text: 'Accounting ID', dataIndex: 'IDCONT', width: 200},
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 200},
             {
                 sortable: false,
