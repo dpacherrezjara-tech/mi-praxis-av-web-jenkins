@@ -99,7 +99,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
                                     return 'Loaded';
                                 }
-                            };
+                            };  
                             return opts[value]();
                         }
                     }
