@@ -397,7 +397,7 @@ public class BankReconciliationExtController {
         }
         
         if (!params.getHeaders().isEmpty()) {
-            Sheet sheet3 = workbook.createSheet("Taxes");
+            Sheet sheet3 = workbook.createSheet("Headers");
             Row headerRow3 = sheet3.createRow(0);
             headerRow3.createCell(0).setCellValue("Client");
             headerRow3.createCell(1).setCellValue("Processing\nDate");
