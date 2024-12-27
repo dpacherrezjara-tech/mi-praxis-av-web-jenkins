@@ -146,7 +146,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
             me.notifier.alert('System Error');
         }finally {
             me.getData();
+            me.view.setLoading(false);
         }
-
-    },
+    }
 });

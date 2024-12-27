@@ -73,33 +73,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                 ]
             },
             {
-                text: 'Miatech Information',
-                defaults: {
-                    menuDisabled: true,
-                    sortable: true,
-                    align: 'center'
-                },
-                columns:[
-                    {text: 'Status', dataIndex: 'STCON', width: 90,
-                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            //metaData.style = "background-color:#838187";
-                            const opts = {
-                                '1': ()=>{
-                                    metaData.style = "background-color:#bfc9ca;font-weight:bold";
-                                    return 'Generated';
-                                }, 
-                                '2': ()=>{
-                                    metaData.style = "background-color:#73c6b6;font-weight:bold";
-                                    return 'Sended To AV';
-                                }
-                            };
-                            return opts[value]?opts[value]():'';
-                        }
-                    },
-                    {text: 'Corrl', dataIndex: 'HEADER', width: 200}
-                ]
-            },
-            {
                 text: 'SAP Information',
                 defaults: {
                     menuDisabled: true,
@@ -107,6 +80,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                     align: 'center'
                 },
                 columns:[
+                    {text: 'Corrl', dataIndex: 'HEADER', width: 200},
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Status', dataIndex: 'STSAP', width: 120,
@@ -116,7 +90,11 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                                 'P': ()=>{
                                     metaData.style = "background-color:#fffc33;font-weight:bold";
                                     return 'Pending';
-                                }, 
+                                },
+                                'S': ()=>{
+                                    metaData.style = "background-color:#7cf925;font-weight:bold";
+                                    return 'Sended';
+                                },
                                 'L': ()=>{
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
                                     return 'Loaded';
