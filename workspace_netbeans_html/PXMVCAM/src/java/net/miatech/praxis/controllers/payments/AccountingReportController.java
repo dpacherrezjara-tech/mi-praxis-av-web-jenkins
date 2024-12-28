@@ -254,11 +254,11 @@ public class AccountingReportController extends BaseController {
                 sb.append(result.get(i).getA4545ANUMB().trim()).append("\t");          // ALLOC_NMBR
                 sb.append(result.get(i).getA4545PLACE().trim());                       // BUS_PLACE
 
-                if (j > 0
+                if ((j > 0
                         && // No el primer registro
-                        !result.get(i).getA4545SEQ().toString().equals(A4545SEQ)
-                        && // Debe haber cambiado secuencia
-                        (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO))) {    // Debe tener mas de 9000 lineas o cambio de modo
+                        !result.get(i).getA4545SEQ().toString().equals(A4545SEQ)) // Debe haber cambiado secuencia
+                        ||
+                        (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO) && j > 0)) {    // Debe tener mas de 9000 lineas o cambio de modo
 
                     fileName = fileNameTemp + "_" + filter.getIN_CCUST() + "_"
                             + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k + 1);
