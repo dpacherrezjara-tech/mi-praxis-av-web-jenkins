@@ -31,7 +31,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         }
         
         try {
-            const res = me.request.post('process',params);
+            const res = await me.request.post('process',params);
             const {code,msg} = res.data;
             if(code===0){
                 me.notifier.success(msg);

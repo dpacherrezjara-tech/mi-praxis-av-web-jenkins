@@ -110,6 +110,17 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Band
                     {text: 'Doc.<br>Type', dataIndex: 'TDOC', width: 60},
                     {text: 'Doc.<br>Origin', dataIndex: 'TDOCORG', width: 60},
                     {text: 'Adj.', dataIndex: 'GENCON', width: 50},
+                    {text: 'Bussiness', dataIndex: 'NEGOC', width: 100,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "font-weight:bold;";
+                            const opts = {
+                                '1':'Tickets',
+                                '2':'Cargo',
+                                '3':'Mail'
+                            };
+                            return opts[value] || '';
+                        }
+                    },
                     {text: 'Code', dataIndex: 'CODIGO', width: 100},
                     {text: 'Value', dataIndex: 'SVFOP', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
