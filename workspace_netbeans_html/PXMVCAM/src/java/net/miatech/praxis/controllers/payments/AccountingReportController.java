@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -125,7 +126,7 @@ public class AccountingReportController extends BaseController {
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }
-    
+
     @RequestMapping(value = "loadDownloadFiles")
     public ResponseEntity<?> loadDownloadFiles(SPACR024Filter params) throws Exception {
         System.out.println("***** AccountingMaster - loadDownloadFiles *****");
@@ -147,7 +148,7 @@ public class AccountingReportController extends BaseController {
         System.out.println("***** AccountingMaster - uploadAccounting *****");
         Gson gson = new Gson();
         List<AccountingInterface> lstResponse = formatInterfases(filter);
-        Map<String,Object> map = new HashMap();
+        Map<String, Object> map = new HashMap();
         map.put("userName", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
         map.put("idCont", filter.getIN_IDCONT().trim());
         map.put("dto", lstResponse);
@@ -158,151 +159,170 @@ public class AccountingReportController extends BaseController {
     }
 
     List<AccountingInterface> formatInterfases(SPACR021Filter filter) throws Exception {
-        List<AccountingInterface> lst = new ArrayList<>();
-        AccountingInterface accountingInterface = new AccountingInterface();
-        String A4545SEQ = "";
-        String CODPRO = filter.getIN_CODPRO().trim();
-        String A4545MODO = "";
-        String fileHeader = "SEQUENCE\tHEADER_TXT\tCOMP_CODE\tDOC_DATE\tPSTNG_DATE\tTRANS_DATE\tDOC_TYPE\tREF_DOC_NO\tZZ_AUTH_CODE\tPOSTING_KEY\tITEMNO_ACC\t"
-                + "GL_ACCOUNT\tITEM_TEXT\tREF_KEY_1\tREF_KEY_2\tREF_KEY_3\tBUS_AREA\tCOSTCENTER\tPROFIT_CTR\tCUSTOMER\tNAME\tCITY\tCOUNTRY\tCURRENCY\t"
-                + "AMT_DOCCUR\tAMT_BASE\tTAX_AMT\tZZ_LEGAL_INV\tZZ_LEGACY_INV\tZZ_ACM_ADM_NO\tPYMT_METH\tWTH_TYPE1\tWTH_CODE1\tWTH_BASE1\tWTH_AMT1\t"
-                + "WTH_TYPE2\tWTH_CODE2\tWTH_BASE2\tWTH_AMT2\tWTH_TYPE3\tWTH_CODE3\tWTH_BASE3\tWTH_AMT3\tWTH_TYPE4\tWTH_CODE4\tWTH_BASE4\tWTH_AMT4\t"
-                + "WTH_TYPE5\tWTH_CODE5\tWTH_BASE5\tWTH_AMT5\tWTH_TYPE6\tWTH_CODE6\tWTH_BASE6\tWTH_AMT6\tPAYMT_REF\tALLOC_NMBR\tBUS_PLACE";
-        
         filter = logic.loadSPACR021Filter(filter);
         String fechaEnvio = Functions.getFechaActual("yyMMdd");
         String horaEnvio = Functions.getHoraActualHHMM().replace(":", "");
-        String fechaContable = filter.getResponse().get(0).getA4545PSTGD().substring(2,6);
-        String corrlAV = filter.getResponse().get(0).getA4545HEADE();
-        String fileNameTemp = "TC_" + fechaContable + "_" + fechaEnvio + "_" + horaEnvio;
-        String fileName;
+
+        List<AccountingInterface> lst = new ArrayList<>();
         if (filter.getResponse() != null) {
+            String corrlAV = filter.getResponse().get(0).getA4545HEADE();
+            String fechaContable = filter.getResponse().get(0).getA4545PSTGD().substring(2, 6);
+            String fileNameTemp = "TC_" + fechaContable + "_" + fechaEnvio + "_" + horaEnvio;
+            String procesador = filter.getIN_CODPRO().trim();
+            final String cliente = filter.getIN_CCUST();
+
             List<A4545> result = filter.getResponse();
-            accountingInterface.getInterfase().add(fileHeader);
-            int k = 0;
-            for (int i = 0, j = 0; i < result.size(); i++, j++) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(result.get(i).getA4545SEQ()).append("\t");                   // SEQUENCE
-                sb.append(result.get(i).getA4545HEADE().trim()).append("\t");          // HEADER_TXT
-                sb.append(result.get(i).getA4545COMPC().trim()).append("\t");          // COMP_CODE
-                sb.append(result.get(i).getA4545DOCD().trim()).append("\t");           // DOC_DATE
-                sb.append(result.get(i).getA4545PSTGD().trim()).append("\t");          // PSTNG_DATE
-                sb.append(result.get(i).getA4545TRASD().trim()).append("\t");          // TRANS_DATE
-                sb.append(result.get(i).getA4545DOCT().trim()).append("\t");           // DOC_TYPE
-                sb.append(result.get(i).getA4545REFD().trim()).append("\t");           // REF_DOC_NO
-                sb.append("").append("\t");                                            // ZZ_AUTH_CODE
-                sb.append(result.get(i).getA4545PKEY().trim()).append("\t");           // POSTING_KEY
-                sb.append(result.get(i).getA4545ITEM()).append("\t");                  // ITEMNO_ACC
-                sb.append(result.get(i).getA4545CUENT().trim()).append("\t");          // GL_ACCOUNT
-                sb.append(result.get(i).getA4545TEXTD().trim()).append("\t");          // ITEM_TEXT
-                sb.append(result.get(i).getA4545REFK().trim()).append("\t");           // REF_KEY_1
-                sb.append(result.get(i).getA4545REFK2().trim()).append("\t");          // REF_KEY_2
-                sb.append(result.get(i).getA4545REFB().trim()).append("\t");           // REF_KEY_3
-                sb.append("").append("\t");                                            // BUS_AREA
-                sb.append(result.get(i).getA4545CCOST().trim()).append("\t");          // COSTCENTER
-                sb.append(result.get(i).getA4545PROFI().trim()).append("\t");          // PROFIT_CTR
-                sb.append(result.get(i).getA4545CUSTO().trim()).append("\t");          // CUSTOMER
-                sb.append("").append("\t");                                            // NAME
-                sb.append("").append("\t");                                            // CITY
-                sb.append("").append("\t");                                            // COUNTRY
-                sb.append(result.get(i).getA4545CUR().trim()).append("\t");            // CURRENCY
+            Map<String, List<A4545>> gb = this.groupByModo(result);
 
-                if (result.get(i).getA4545CUR().equals("COP")) {
-                    Long AMT_DOCCUR = result.get(i).getA4545ACTIV().longValue();
-                    sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
-                } else {
-                    sb.append(result.get(i).getA4545ACTIV()).append("\t");              // AMT_DOCCUR
-                }
-                sb.append("").append("\t");                                            // AMT_BASE
-                sb.append("").append("\t");                                            // TAX_AMT
-                sb.append("").append("\t");                                            // ZZ_LEGAL_INV
-                sb.append("").append("\t");                                            // ZZ_LEGACY_INV
-                sb.append("").append("\t");                                            // ZZ_ACM_ADM_NO
-                sb.append(result.get(i).getA4545MPAGO().trim()).append("\t");          // PYMT_METH
+            String fileHeader = "SEQUENCE\tHEADER_TXT\tCOMP_CODE\tDOC_DATE\tPSTNG_DATE\tTRANS_DATE\tDOC_TYPE\tREF_DOC_NO\tZZ_AUTH_CODE\tPOSTING_KEY\tITEMNO_ACC\t"
+                    + "GL_ACCOUNT\tITEM_TEXT\tREF_KEY_1\tREF_KEY_2\tREF_KEY_3\tBUS_AREA\tCOSTCENTER\tPROFIT_CTR\tCUSTOMER\tNAME\tCITY\tCOUNTRY\tCURRENCY\t"
+                    + "AMT_DOCCUR\tAMT_BASE\tTAX_AMT\tZZ_LEGAL_INV\tZZ_LEGACY_INV\tZZ_ACM_ADM_NO\tPYMT_METH\tWTH_TYPE1\tWTH_CODE1\tWTH_BASE1\tWTH_AMT1\t"
+                    + "WTH_TYPE2\tWTH_CODE2\tWTH_BASE2\tWTH_AMT2\tWTH_TYPE3\tWTH_CODE3\tWTH_BASE3\tWTH_AMT3\tWTH_TYPE4\tWTH_CODE4\tWTH_BASE4\tWTH_AMT4\t"
+                    + "WTH_TYPE5\tWTH_CODE5\tWTH_BASE5\tWTH_AMT5\tWTH_TYPE6\tWTH_CODE6\tWTH_BASE6\tWTH_AMT6\tPAYMT_REF\tALLOC_NMBR\tBUS_PLACE";
+            gb.forEach((obj, row) -> {
+                String modo = getModoDesc(obj);
+                final List<String> interfase = new ArrayList<>();
+                interfase.add(fileHeader);
 
-                sb.append("").append("\t");                                            // WTH_TYPE1
-                sb.append("").append("\t");                                            // WTH_CODE1
-                sb.append("").append("\t");                                            // WTH_BASE1
-                sb.append("").append("\t");                                            // WTH_AMT1
+                int[] fileNumber = {0};
+                int[] secuencia = {0};
+                int[] lineCount = {0};
+                row.forEach((data) -> {
+                    lineCount[0]++;
 
-                sb.append("").append("\t");                                            // WTH_TYPE2
-                sb.append("").append("\t");                                            // WTH_CODE2
-                sb.append("").append("\t");                                            // WTH_BASE2
-                sb.append("").append("\t");                                            // WTH_AMT2
-
-                sb.append("").append("\t");                                            // WTH_TYPE3
-                sb.append("").append("\t");                                            // WTH_CODE3
-                sb.append("").append("\t");                                            // WTH_BASE3
-                sb.append("").append("\t");                                            // WTH_AMT3
-
-                sb.append("").append("\t");                                            // WTH_TYPE4
-                sb.append("").append("\t");                                            // WTH_CODE4
-                sb.append("").append("\t");                                            // WTH_BASE4
-                sb.append("").append("\t");                                            // WTH_AMT4
-
-                sb.append("").append("\t");                                            // WTH_TYPE5
-                sb.append("").append("\t");                                            // WTH_CODE5
-                sb.append("").append("\t");                                            // WTH_BASE5
-                sb.append("").append("\t");                                            // WTH_AMT5
-
-                sb.append("").append("\t");                                            // WTH_TYPE6
-                sb.append("").append("\t");                                            // WTH_CODE6
-                sb.append("").append("\t");                                            // WTH_BASE6
-                sb.append("").append("\t");                                            // WTH_AMT6
-
-                sb.append(result.get(i).getA4545REPAG().trim()).append("\t");          // PAYMT_REF
-                sb.append(result.get(i).getA4545ANUMB().trim()).append("\t");          // ALLOC_NMBR
-                sb.append(result.get(i).getA4545PLACE().trim());                       // BUS_PLACE
-
-                if (((j > 0 && // No el primer registro
-                        !result.get(i).getA4545SEQ().toString().equals(A4545SEQ)) && j >= 9000) // Debe haber cambiado secuencia
-                    ||
-                    (j >= 9000 || !result.get(i).getA4545MODO().equals(A4545MODO) 
-                        && !result.get(i).getA4545SEQ().toString().equals(A4545SEQ))) // Debe tener mas de 9000 lineas o cambio de modo
-                {    
-
-                    fileName = fileNameTemp + "_" + filter.getIN_CCUST() + "_"
-                            + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k + 1);
+                    long countSeq = row.stream()
+                            .filter(person -> Objects.equals(person.getA4545SEQ(), data.getA4545SEQ())) // Condición
+                            .count();
                     
-                    accountingInterface.setFechaContable(fechaContable);
-                    accountingInterface.setFechaEnvio(fechaEnvio);
-                    accountingInterface.setHoraEnvio(horaEnvio);
-                    accountingInterface.setCliente(filter.getIN_CCUST());
-                    accountingInterface.setProceso(getModoDesc(A4545MODO));
-                    accountingInterface.setCodigoProcesador(CODPRO);
-                    accountingInterface.setCorrlAV(corrlAV);
-                    accountingInterface.setFileNumber(k+1);
-                    accountingInterface.setFileName(fileName);
-                    lst.add(accountingInterface);
+                    if((countSeq + lineCount[0]) > 9000 && secuencia[0] != data.getA4545SEQ()){
+                        fileNumber[0]++;
+                        AccountingInterface dto = new AccountingInterface();
+                        dto.setFechaContable(fechaContable);
+                        dto.setFechaEnvio(fechaEnvio);
+                        dto.setHoraEnvio(horaEnvio);
+                        dto.setCliente(cliente);
+                        dto.setProceso(modo);
+                        dto.setCodigoProcesador(procesador);
+                        dto.setCorrlAV(corrlAV);
+                        dto.setFileNumber(fileNumber[0]);
+                        String fileName = fileNameTemp + "_" + cliente + "_"
+                                + modo + "_" + procesador + "_" + fileNumber[0];
+                        dto.setFileName(fileName);
+                        dto.setInterfase(interfase);
+                        lst.add(dto);
+                        interfase.clear();
+                        interfase.add(fileHeader);
+                        lineCount[0] = 0;
+                    }
+                    
 
-                    accountingInterface = new AccountingInterface();
-                    accountingInterface.getInterfase().add(fileHeader);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(data.getA4545SEQ()).append("\t");                   // SEQUENCE
+                    sb.append(data.getA4545HEADE().trim()).append("\t");          // HEADER_TXT
+                    sb.append(data.getA4545COMPC().trim()).append("\t");          // COMP_CODE
+                    sb.append(data.getA4545DOCD().trim()).append("\t");           // DOC_DATE
+                    sb.append(data.getA4545PSTGD().trim()).append("\t");          // PSTNG_DATE
+                    sb.append(data.getA4545TRASD().trim()).append("\t");          // TRANS_DATE
+                    sb.append(data.getA4545DOCT().trim()).append("\t");           // DOC_TYPE
+                    sb.append(data.getA4545REFD().trim()).append("\t");           // REF_DOC_NO
+                    sb.append("").append("\t");                                            // ZZ_AUTH_CODE
+                    sb.append(data.getA4545PKEY().trim()).append("\t");           // POSTING_KEY
+                    sb.append(data.getA4545ITEM()).append("\t");                  // ITEMNO_ACC
+                    sb.append(data.getA4545CUENT().trim()).append("\t");          // GL_ACCOUNT
+                    sb.append(data.getA4545TEXTD().trim()).append("\t");          // ITEM_TEXT
+                    sb.append(data.getA4545REFK().trim()).append("\t");           // REF_KEY_1
+                    sb.append(data.getA4545REFK2().trim()).append("\t");          // REF_KEY_2
+                    sb.append(data.getA4545REFB().trim()).append("\t");           // REF_KEY_3
+                    sb.append("").append("\t");                                            // BUS_AREA
+                    sb.append(data.getA4545CCOST().trim()).append("\t");          // COSTCENTER
+                    sb.append(data.getA4545PROFI().trim()).append("\t");          // PROFIT_CTR
+                    sb.append(data.getA4545CUSTO().trim()).append("\t");          // CUSTOMER
+                    sb.append("").append("\t");                                            // NAME
+                    sb.append("").append("\t");                                            // CITY
+                    sb.append("").append("\t");                                            // COUNTRY
+                    sb.append(data.getA4545CUR().trim()).append("\t");            // CURRENCY
 
-                    j = 0;
-                    k = !result.get(i).getA4545MODO().equals(A4545MODO) ? 0 : (k + 1);
+                    if (data.getA4545CUR().equals("COP")) {
+                        Long AMT_DOCCUR = data.getA4545ACTIV().longValue();
+                        sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
+                    } else {
+                        sb.append(data.getA4545ACTIV()).append("\t");              // AMT_DOCCUR
+                    }
+                    sb.append("").append("\t");                                            // AMT_BASE
+                    sb.append("").append("\t");                                            // TAX_AMT
+                    sb.append("").append("\t");                                            // ZZ_LEGAL_INV
+                    sb.append("").append("\t");                                            // ZZ_LEGACY_INV
+                    sb.append("").append("\t");                                            // ZZ_ACM_ADM_NO
+                    sb.append(data.getA4545MPAGO().trim()).append("\t");          // PYMT_METH
+
+                    sb.append("").append("\t");                                            // WTH_TYPE1
+                    sb.append("").append("\t");                                            // WTH_CODE1
+                    sb.append("").append("\t");                                            // WTH_BASE1
+                    sb.append("").append("\t");                                            // WTH_AMT1
+
+                    sb.append("").append("\t");                                            // WTH_TYPE2
+                    sb.append("").append("\t");                                            // WTH_CODE2
+                    sb.append("").append("\t");                                            // WTH_BASE2
+                    sb.append("").append("\t");                                            // WTH_AMT2
+
+                    sb.append("").append("\t");                                            // WTH_TYPE3
+                    sb.append("").append("\t");                                            // WTH_CODE3
+                    sb.append("").append("\t");                                            // WTH_BASE3
+                    sb.append("").append("\t");                                            // WTH_AMT3
+
+                    sb.append("").append("\t");                                            // WTH_TYPE4
+                    sb.append("").append("\t");                                            // WTH_CODE4
+                    sb.append("").append("\t");                                            // WTH_BASE4
+                    sb.append("").append("\t");                                            // WTH_AMT4
+
+                    sb.append("").append("\t");                                            // WTH_TYPE5
+                    sb.append("").append("\t");                                            // WTH_CODE5
+                    sb.append("").append("\t");                                            // WTH_BASE5
+                    sb.append("").append("\t");                                            // WTH_AMT5
+
+                    sb.append("").append("\t");                                            // WTH_TYPE6
+                    sb.append("").append("\t");                                            // WTH_CODE6
+                    sb.append("").append("\t");                                            // WTH_BASE6
+                    sb.append("").append("\t");                                            // WTH_AMT6
+
+                    sb.append(data.getA4545REPAG().trim()).append("\t");          // PAYMT_REF
+                    sb.append(data.getA4545ANUMB().trim()).append("\t");          // ALLOC_NMBR
+                    sb.append(data.getA4545PLACE().trim());                         // BUS_PLACE
+
+                    interfase.add(sb.toString());
+
+                    secuencia[0] = data.getA4545SEQ();
+
+                });
+                
+                if (interfase.size()>1) {
+                    fileNumber[0]++;
+                    AccountingInterface dto = new AccountingInterface();
+                    dto.setFechaContable(fechaContable);
+                    dto.setFechaEnvio(fechaEnvio);
+                    dto.setHoraEnvio(horaEnvio);
+                    dto.setCliente(cliente);
+                    dto.setProceso(modo);
+                    dto.setCodigoProcesador(procesador);
+                    dto.setCorrlAV(corrlAV);
+                    dto.setFileNumber(fileNumber[0]);
+                    String fileName = fileNameTemp + "_" + cliente + "_"
+                            + modo + "_" + procesador + "_" + fileNumber[0];
+                    dto.setFileName(fileName);
+                    dto.setInterfase(interfase);
+                    lst.add(dto);
                 }
-
-                accountingInterface.getInterfase().add(sb.toString());
-
-                A4545SEQ = result.get(i).getA4545SEQ().toString();
-                A4545MODO = result.get(i).getA4545MODO();
-            }
-
-            fileName = fileNameTemp + "_" + filter.getIN_CCUST() + "_"
-                            + getModoDesc(A4545MODO) + "_" + CODPRO + "_" + (k + 1);
-            
-            accountingInterface.setFechaContable(fechaContable);
-            accountingInterface.setFechaEnvio(fechaEnvio);
-            accountingInterface.setHoraEnvio(horaEnvio);
-            accountingInterface.setCliente(filter.getIN_CCUST());
-            accountingInterface.setProceso(getModoDesc(A4545MODO));
-            accountingInterface.setCodigoProcesador(CODPRO);
-            accountingInterface.setCorrlAV(corrlAV);
-            accountingInterface.setFileNumber(k+1);
-            accountingInterface.setFileName(fileName);
-            lst.add(accountingInterface);
+            });
         }
         return lst;
+    }
+
+    private Map< String, List<A4545>> groupByModo(List<A4545> lst) {
+        Map<String, List<A4545>> gb = lst.stream()
+                .collect(Collectors.groupingBy(
+                        fila -> fila.getA4545MODO() // Extraer el valor de la columna "MODO"
+                ));
+        return gb;
     }
 
     @RequestMapping(value = "reverseAccounting", method = RequestMethod.POST)
@@ -345,9 +365,9 @@ public class AccountingReportController extends BaseController {
         System.out.println("***** AccountingMaster - reverseMassiveBandoc *****");
         List<SPACR008Filter> filtroDuplicados = lst.stream().collect(
                 Collectors.toMap(
-                        obj-> Arrays.asList(obj.getIN_BANDOC(),obj.getIN_DATECI(),obj.getIN_TRANCI()),
+                        obj -> Arrays.asList(obj.getIN_BANDOC(), obj.getIN_DATECI(), obj.getIN_TRANCI()),
                         Function.identity(),
-                        (p1,p2)-> p1))
+                        (p1, p2) -> p1))
                 .values()
                 .stream()
                 .collect(Collectors.toList());
@@ -361,6 +381,7 @@ public class AccountingReportController extends BaseController {
         EVALBANDOCFilter res = logic.loadEVALBANDOCFilter(params);
         return ResponseUtils.ok(res);
     }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Excel">
     @RequestMapping(value = "downloadExcelMain", method = RequestMethod.POST)
@@ -889,45 +910,43 @@ public class AccountingReportController extends BaseController {
 
         return exportUtils.createCustomExcel(data, title);
     }
-    
-    
+
     @RequestMapping(value = "downloadExcelDownloadFilesInfo", method = RequestMethod.POST)
     public ResponseEntity<?> downloadExcelDownloadFilesInfo(@RequestBody SPACR024Filter params) throws Exception {
-        
+
         System.out.println("***** AccountingMasterProcess - downloadExcelDownloadFilesInfo *****");
-        
+
         params.setExcel(true);
-        
+
         SPACR024Filter filter = logic.loadSPACR024Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
-        
-         String title = "AccountingMasterProcess - DF_"
-                 + params.getIN_IDCONT() ;
-         
+
+        String title = "AccountingMasterProcess - DF_"
+                + params.getIN_IDCONT();
+
         List<List<CustomExcelCell>> data = new ArrayList<>();
         List<CustomExcelCell> header = new ArrayList<>();
-        
+
         header.add(new CustomExcelCell("Number"));
         header.add(new CustomExcelCell("Accounting\nID"));
-        header.add(new CustomExcelCell("Accounting\nPeriod")); 
-        header.add(new CustomExcelCell("Client\nCode")); 
-        header.add(new CustomExcelCell("Date\nGenerate")); 
-        header.add(new CustomExcelCell("Hour\nGenerate")); 
-        header.add(new CustomExcelCell("Processor")); 
-        header.add(new CustomExcelCell("Correlative")); 
-        header.add(new CustomExcelCell("Correlative\nName")); 
+        header.add(new CustomExcelCell("Accounting\nPeriod"));
+        header.add(new CustomExcelCell("Client\nCode"));
+        header.add(new CustomExcelCell("Date\nGenerate"));
+        header.add(new CustomExcelCell("Hour\nGenerate"));
+        header.add(new CustomExcelCell("Processor"));
+        header.add(new CustomExcelCell("Correlative"));
+        header.add(new CustomExcelCell("Correlative\nName"));
         header.add(new CustomExcelCell("User\nGenerate"));
-        header.add(new CustomExcelCell("File Name")); 
-        header.add(new CustomExcelCell("User\nProcessor")); 
+        header.add(new CustomExcelCell("File Name"));
+        header.add(new CustomExcelCell("User\nProcessor"));
         header.add(new CustomExcelCell("Register\nDate"));
 
-        
         data.add(header);
         filter.getResponse().forEach(obj -> {
             List<CustomExcelCell> row = new ArrayList<>();
             row.add(new CustomExcelCell(obj.getRN()));
             row.add(new CustomExcelCell(obj.getIDCONT()));
-            
+
             row.add(new CustomExcelCell(obj.getFCONT()));
             row.add(new CustomExcelCell(obj.getCCUST()));
             row.add(new CustomExcelCell(obj.getFSEND()));
@@ -939,15 +958,14 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getFILENAM()));
             row.add(new CustomExcelCell(obj.getUSCR()));
             row.add(new CustomExcelCell(obj.getTSCR()));
-            
+
             data.add(row);
         });
 
-        return exportUtils.createCustomExcel(data, title);        
+        return exportUtils.createCustomExcel(data, title);
     }
-    
-    //</editor-fold>
 
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Accounting Report">
     @RequestMapping(value = "loadBandocsBrowser")
     public ResponseEntity<?> loadBandocsBrowser(SPACR014Filter params) throws Exception {
