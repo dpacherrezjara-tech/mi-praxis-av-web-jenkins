@@ -136,6 +136,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGri
                                     metaData.style = "background-color:#fffc33;font-weight:bold";
                                     return 'Pending';
                                 },
+                                'S': () => {
+                                    metaData.style = "background-color:#52be80;font-weight:bold";
+                                    return 'Sended';
+                                },
                                 'L': () => {
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
                                     return 'Loaded';
