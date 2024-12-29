@@ -208,7 +208,8 @@ public class AccountingReportController extends BaseController {
                         String fileName = fileNameTemp + "_" + cliente + "_"
                                 + modo + "_" + procesador + "_" + fileNumber[0];
                         dto.setFileName(fileName);
-                        dto.setInterfase(interfase);
+                        List<String> dtoInterfase = new ArrayList<>(interfase);
+                        dto.setInterfase(dtoInterfase);
                         lst.add(dto);
                         interfase.clear();
                         interfase.add(fileHeader);
