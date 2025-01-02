@@ -4132,13 +4132,17 @@ public class StatementReconciliationsController extends BaseController {
 
                     if (row.getRowNum() >= 1) {
 
+                        if(dataFormatter.formatCellValue(row.getCell(0)).equals("")){
+                            break;
+                        }
+                        
                         uniqueADATE.add(dataFormatter.formatCellValue(row.getCell(0)).trim());
-                        uniqueCODEBANK.add(dataFormatter.formatCellValue(row.getCell(1)).trim());
+                        uniqueCODEBANK.add(String.format("%04d", Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)).trim())));
                         BANDOC = dataFormatter.formatCellValue(row.getCell(2)).trim();
                         uniqueSDATE.add(dataFormatter.formatCellValue(row.getCell(3)).trim());
                         uniqueSAGENT.add(dataFormatter.formatCellValue(row.getCell(4)).trim());
                         uniqueMERCHAND.add(dataFormatter.formatCellValue(row.getCell(5)).trim());
-                        uniqueRED.add(dataFormatter.formatCellValue(row.getCell(6)).trim());
+                        uniqueRED.add(String.format("%02d", Integer.parseInt(dataFormatter.formatCellValue(row.getCell(6)).trim())));
                         COUNT++;
                     }
                 }
