@@ -346,10 +346,70 @@ public class LoadExchangeRateDAO {
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             pasarGarbageCollector();
         }
+        A2290Filter objRTN = new A2290Filter();
+        objRTN = this.validateFullDays();
+        if(objRTN.V_VALIDATE.equals("NOT")){
+            return objRTN.MESSAGE;
+        }
         System.out.println("mensaje: " + mensaje);
         return mensaje;
     }
+    
+    public A2290Filter validateFullDays() throws SQLException, Exception {
 
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String mensaje = "SUCCESSFUL. Information Updated.";
+        String dateFound = "Pending Dates";
+       
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS033_VALIDATEDAYS(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, Functions.getFechaActual());
+            cstmt01.registerOutParameter(2, Types.VARCHAR);
+            cstmt01.registerOutParameter(3, Types.VARCHAR);
+            cstmt01.execute();
+            objRtn.V_VALIDATE = cstmt01.getString(3);
+            String[] dateList = cstmt01.getString(2).split("\\|");
+            if( dateList.length > 0 ){
+                for (int i = 0; i < dateList.length ; i++){
+                    dateFound =  dateFound + "<br><b>" + dateList[i]  ;
+                }
+            }
+            
+            objRtn.MESSAGE = dateFound;
+            
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return objRtn;
+    } 
+    
     public List<A2290Filter> dataCODEUNI() throws SQLException, Exception {
 
         List<A2290Filter> listBeanTkt = new ArrayList<A2290Filter>(0);
