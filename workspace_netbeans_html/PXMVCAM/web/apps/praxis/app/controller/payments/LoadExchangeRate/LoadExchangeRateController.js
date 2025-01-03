@@ -85,34 +85,23 @@ Ext.define('Ext.Praxis.controller.payments.LoadExchangeRate.LoadExchangeRateCont
         var me = this;
         let beanValidation = {}
 
-        var fileField = Ext.getCmp(prototype.id + '-file');
-        var file = fileField.fileInputEl.dom.files[0];
         let beanString = JSON.stringify(beanValidation);
-        if (!file) {
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        if (file === '') {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
                 if (btn === 'ok' || btn === 'cancel')
                     setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
             });
             return;
         }
-
         // Crear una instancia de FormData para enviar el archivo
-        var formData = new FormData();
-        formData.append('excelfile', file);
-        
-        // Realizar una solicitud AJAX para cargar el archivo
-        Ext.Ajax.request({
+        var form = Ext.getCmp(prototype.id + '-form-01').getForm();
+        form.submit({
             url: prototype.url + '/loadMPF033',
-            method: 'POST',
-            rawData: formData,
-            params: {beanString: beanString},
-            beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
-            // Configurar el tipo de contenido adecuado y el encabezado
-            headers: {
-                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (fp, o) {
+                var res = Ext.decode(o.response.responseText);
                 console.log(res);
                 if (res.success) {
                     console.log(res.success, 'res.success')

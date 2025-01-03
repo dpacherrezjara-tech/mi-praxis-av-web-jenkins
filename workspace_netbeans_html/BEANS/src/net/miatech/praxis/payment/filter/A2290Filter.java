@@ -698,6 +698,7 @@ public class A2290Filter extends A2290 {
     public String CHARNBR = "";
     public String descDEBTYPE = "";
     public String MESSAGE = "";
+    public String V_VALIDATE = "";
 
     //PArametros view ticket
     public String option = "";
