@@ -1,10 +1,6 @@
 package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
-import com.monitorjbl.xlsx.StreamingReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,7 +15,6 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
 import net.miatech.praxis.payment.dto.AccountingInterface;
 import net.miatech.praxis.payment.dto.EVALBANDOCFilter;
-import net.miatech.praxis.payment.dto.ExcelBandocDto;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
@@ -32,25 +27,24 @@ import net.miatech.praxis.payment.dto.SPACR013Filter;
 import net.miatech.praxis.payment.dto.SPACR014Filter;
 import net.miatech.praxis.payment.dto.SPACR015Filter;
 import net.miatech.praxis.payment.dto.SPACR016Filter;
-import net.miatech.praxis.payment.dto.SPACR017Filter;
 import net.miatech.praxis.payment.dto.SPACR018Filter;
 import net.miatech.praxis.payment.dto.SPACR019Filter;
 import net.miatech.praxis.payment.dto.SPACR021Filter;
 import net.miatech.praxis.payment.dto.SPACR024Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
+import net.miatech.praxis.payment.entities.X3184;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.praxis.utils.SpringWS;
 import net.miatech.utils.CustomExcelCell;
 import net.miatech.utils.Functions;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -193,8 +187,8 @@ public class AccountingReportController extends BaseController {
                     long countSeq = row.stream()
                             .filter(person -> Objects.equals(person.getA4545SEQ(), data.getA4545SEQ())) // Condición
                             .count();
-                    
-                    if((countSeq + lineCount[0]) > 9000 && secuencia[0] != data.getA4545SEQ()){
+
+                    if ((countSeq + lineCount[0]) > 9000 && secuencia[0] != data.getA4545SEQ()) {
                         fileNumber[0]++;
                         AccountingInterface dto = new AccountingInterface();
                         dto.setFechaContable(fechaContable);
@@ -215,7 +209,6 @@ public class AccountingReportController extends BaseController {
                         interfase.add(fileHeader);
                         lineCount[0] = 0;
                     }
-                    
 
                     StringBuilder sb = new StringBuilder();
                     sb.append(data.getA4545SEQ()).append("\t");                   // SEQUENCE
@@ -295,8 +288,8 @@ public class AccountingReportController extends BaseController {
                     secuencia[0] = data.getA4545SEQ();
 
                 });
-                
-                if (interfase.size()>1) {
+
+                if (interfase.size() > 1) {
                     fileNumber[0]++;
                     AccountingInterface dto = new AccountingInterface();
                     dto.setFechaContable(fechaContable);
@@ -1080,49 +1073,15 @@ public class AccountingReportController extends BaseController {
             @RequestParam String IN_IDCONT,
             @RequestParam String IN_TIPOCON,
             @RequestParam MultipartFile file) throws Exception {
-
-        String filename = "BandocExcel" + UUID.randomUUID().toString();
-        String proceso = UUID.randomUUID().toString().replace("-", "");
-        String fechap = Functions.getFechaActual();
-
-        File tempFile = File.createTempFile(filename, ".xlsx");
-        file.transferTo(tempFile);
-        List<ExcelBandocDto> revertList = new ArrayList<>();
-        try (InputStream is = new FileInputStream(tempFile); Workbook workbook = StreamingReader.builder()
-                .rowCacheSize(100) // Número de filas en el caché
-                .bufferSize(4096) // Tamaño del buffer
-                .open(is)) {
-            Sheet sheet = workbook.getSheetAt(0);
-
-            sheet.forEach(x -> {
-                if (x.getRowNum() != 0) {
-                    ExcelBandocDto dto = ExcelBandocDto.builder()
-                            .BANDOC(x.getCell(0) != null ? x.getCell(0).getStringCellValue() : null)
-                            .VALDATE(x.getCell(1) != null ? x.getCell(1).getStringCellValue() : null)
-                            .REFER(x.getCell(2) != null ? x.getCell(2).getStringCellValue() : "")
-                            .CUUID(proceso)
-                            .FUUID(fechap)
-                            .build();
-                    System.out.println(dto);
-                    revertList.add(dto);
-                }
-            });
-        } catch (Exception e) {
-            System.out.println("Error excel: " + e.getMessage());
-        }
-        SPACR017Filter params = SPACR017Filter.builder()
-                .IN_CCUST(IN_CCUST)
-                .IN_TIPOCON(IN_TIPOCON)
-                .IN_IDCONT(IN_IDCONT)
-                .IN_CUUID(proceso)
-                .IN_FUUID(fechap)
-                .request(revertList)
-                .build();
-        SPACR017Filter filter = logic.loadSPACR017Filter(params);
-        ModelMap map = new ModelMap();
-        map.put("success", true);
-        map.put("data", filter.getResponse());
-        return ResponseUtils.ok(map);
+        Map map = new HashMap();
+        map.put("IN_CCUST", IN_CCUST);
+        map.put("IN_IDCONT", IN_IDCONT);
+        map.put("IN_TIPOCON", IN_TIPOCON);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonBody = mapper.writeValueAsString(map);
+        String res = ws.postFileAsync(file, jsonBody, "Accounting/postAvInformation");
+        //List<X3184> response = mapper.readValue(res, new TypeReference<List<X3184>>() {});
+        return ResponseUtils.ok(res);
     }
 //</editor-fold>
 }
