@@ -262,7 +262,7 @@ public class LoadExchangeRateDAO {
         //REALIZA UPDATE DE CUPON EN LA TABLA A3729.
 
         boolean correct = false;
-        String mensaje = "SUCCESSFUL. Information Updated.";
+        String mensaje = "<b>SUCCESSFUL. Information Updated.</b><br>";
         List<A2290Filter> lst_tkt_error = new ArrayList<A2290Filter>();
         int QTY_UPDATE = 0, cont = 0, contDup = 0;
         double NETOC = 0;
@@ -317,7 +317,7 @@ public class LoadExchangeRateDAO {
                 }
                 System.out.println("Updated final: " + updatedCount);
                 System.out.println("Inserted final: " + insertedCount);
-                mensaje = "" + mensaje + "<br><b>Read records: " + cantReg + "<br><b>Updated records: " + updatedCount+ "<br><b>Created records: " + insertedCount;
+                mensaje = "" + mensaje + "<br>Read records: " + cantReg + "<br>Updated records: " + updatedCount+ "<br>Created records: " + insertedCount;
             } catch (Exception e2) {
                 System.out.println("error" + e2);
                 System.out.println("error" + cantReg);
@@ -349,7 +349,7 @@ public class LoadExchangeRateDAO {
         A2290Filter objRTN = new A2290Filter();
         objRTN = this.validateFullDays();
         if(objRTN.V_VALIDATE.equals("NOT")){
-            return objRTN.MESSAGE;
+            return mensaje +  "<br><br>" +objRTN.MESSAGE;
         }
         System.out.println("mensaje: " + mensaje);
         return mensaje;
@@ -361,7 +361,7 @@ public class LoadExchangeRateDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
         String mensaje = "SUCCESSFUL. Information Updated.";
-        String dateFound = "Pending Dates";
+        String dateFound = "<b>Pending Dates</b>";
        
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS033_VALIDATEDAYS(?,?,?)}";
 
@@ -378,7 +378,7 @@ public class LoadExchangeRateDAO {
             String[] dateList = cstmt01.getString(2).split("\\|");
             if( dateList.length > 0 ){
                 for (int i = 0; i < dateList.length ; i++){
-                    dateFound =  dateFound + "<br><b>" + dateList[i]  ;
+                    dateFound =  dateFound + "<br>" + dateList[i]  ;
                 }
             }
             
