@@ -5,6 +5,7 @@ Ext.define('Ext.Praxis.controller.payments.ExchangeRate.DataEntryExchangeRateCon
     meDE: '',
     actionCode: '',
     bean: {},
+    beanDataEntry: {},
     beanResult: {},
     lstCountry: [],
     searchParams: {},
@@ -27,7 +28,7 @@ Ext.define('Ext.Praxis.controller.payments.ExchangeRate.DataEntryExchangeRateCon
                 this.obtainData();
                 win.setValue('cmbSCURRENCY1', '');
                 win.setValue('cmbSCURRENCY2', '');
-                Ext.getCmp(prototype.id + '-btn-save').show();
+                Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
@@ -38,8 +39,8 @@ Ext.define('Ext.Praxis.controller.payments.ExchangeRate.DataEntryExchangeRateCon
                 this.getData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-delete').show();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
@@ -140,8 +141,12 @@ Ext.define('Ext.Praxis.controller.payments.ExchangeRate.DataEntryExchangeRateCon
     },
     
     getData: function () {
-
-        var beanString = JSON.stringify(meDE.bean.data);
+        console.log(meDE.bean, 'meDE.bean')
+        this.beanDataEntry = {};
+        this.beanDataEntry.DATECH = meDE.bean.DATECH
+        this.beanDataEntry.SCURRENCY1 = meDE.bean.SCURRENCY1
+        this.beanDataEntry.SCURRENCY2 = meDE.bean.SCURRENCY2
+        var beanString = JSON.stringify(this.beanDataEntry);
         //console.log('rata',meDE.bean.data)
         Ext.Ajax.request({
             url: prototype.url + '/searchCompleteDetail',

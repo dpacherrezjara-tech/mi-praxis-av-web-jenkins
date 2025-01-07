@@ -29,10 +29,10 @@ Ext.define('Ext.Praxis.controller.payments.LoadExchangeRate.LoadExchangeRateCont
         me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.control({
-//            //   -------------------Eventos Genericos --------------------
-//            '#LoadExchangeRateForm-xpanel': {
-//                afterrender: this.xpanel_afterrender            
-//            },
+            //   -------------------Eventos Genericos --------------------
+            '#LoadExchangeRateForm-xpanel': {
+                afterrender: this.xpanel_afterrender            
+            },
             '#LoadExchangeRateForm-btnSearch': {
                 click: this.btnSearch_click
             },
@@ -71,7 +71,18 @@ Ext.define('Ext.Praxis.controller.payments.LoadExchangeRate.LoadExchangeRateCont
 //
         });
     },
-
+    xpanel_afterrender: function (obj, e) {
+        Ext.util.CSS.createStyleSheet(`
+        .large-font-msg .x-window-body {
+            font-size: 16px;  
+             
+        }
+        .large-font-msg .x-window {
+            width: 600px;  
+            height: 300px;  
+        }
+    `, 'large-font-msg-style');
+    },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -107,7 +118,16 @@ Ext.define('Ext.Praxis.controller.payments.LoadExchangeRate.LoadExchangeRateCont
                     console.log(res.success, 'res.success')
                     let objResult = res.objResult;
                     Ext.getCmp(prototype.id + '-panelGridData').unmask()
-                    global.Msg({msg: objResult.MESSAGE});
+//                    global.Msg({msg: objResult.MESSAGE});
+                    Ext.Msg.show({
+                        title: '.:PRAXIS:.',
+                        message: objResult.MESSAGE,
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.INFO,
+                        cls: 'large-font-msg',  // Asignar la clase personalizada
+                        width: 450,
+//                        height: 250
+                    });
                     // No es necesario restaurar el archivo ya que no se borra el campo de archivo
                 } else {
                     global.Msg({msg: "Error TXT Load"});

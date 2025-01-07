@@ -71,6 +71,7 @@ public class A2356Filter extends A2356 {
     public String IN_CUTDAYS = "";
     public String IN_TOP = "";
     public String IN_TREG = "";
+    public String IN_SURPLUS = "";
     public String IN_CARDN1 = "";
     public String IN_CARDN2 = "";
     public String IN_SAUTHOC = "";
