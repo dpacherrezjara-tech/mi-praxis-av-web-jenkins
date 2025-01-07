@@ -273,6 +273,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
         console.log(Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue(), 'dadadadadada0')
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue() ? '1' : '2';
+        me.bean.IN_SURPLUS = Ext.getCmp(prototype.id + '-chkboxSurplus').getValue() ? '1' : '2';
 
 
         console.log(me.bean, 'me.bean segundo parameter')
@@ -349,6 +350,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         }
     },
     onChkboxPending: function (checkbox, newValue, oldValue) {
+        console.log(newValue, 'newValue')
+        this.btnSearch_click()
+    },
+    onChkboxSurplus: function (checkbox, newValue, oldValue) {
         console.log(newValue, 'newValue')
         this.btnSearch_click()
     },
