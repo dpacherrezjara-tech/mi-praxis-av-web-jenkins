@@ -31,7 +31,7 @@ public class ExchangeRateLogic {
     public A2353Filter loadPX638MPS075(A2353Filter filter) throws Exception {
         return ExchangeRateDAO.loadPX638MPS075(filter);
     }
- public String loadPX638MPS076(A2353Filter filter, String option) throws SQLException, Exception {
+    public String loadPX638MPS076(A2353Filter filter, String option) throws SQLException, Exception {
         return ExchangeRateDAO.loadPX638MPS076(filter, option);
     }
     

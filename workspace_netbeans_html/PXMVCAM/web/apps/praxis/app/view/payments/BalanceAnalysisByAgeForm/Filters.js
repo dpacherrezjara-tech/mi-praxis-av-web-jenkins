@@ -428,6 +428,17 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             listeners: {
                                 change: 'onChkboxPending'
                             }
+                        },
+                        {
+                            xtype: 'checkbox',
+                            boxLabel: 'Surplus',
+                            id: prototype.id + '-chkboxSurplus',
+////                            inputValue: '1', 
+//                            uncheckedValue: '0', 
+                            margin: '0 0 0 15',
+                            listeners: {
+                                change: 'onChkboxSurplus'
+                            }
                         }
                     ]
                 }
