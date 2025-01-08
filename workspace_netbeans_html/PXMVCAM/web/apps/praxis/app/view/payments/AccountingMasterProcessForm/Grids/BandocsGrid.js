@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                             return opts[value];
                         }
                     },
-                    {text: 'Sub-Type', dataIndex: 'STCON', width: 100,
+                    {text: 'Sub-Type', dataIndex: 'STCON', width: 130,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
                             const opts = {

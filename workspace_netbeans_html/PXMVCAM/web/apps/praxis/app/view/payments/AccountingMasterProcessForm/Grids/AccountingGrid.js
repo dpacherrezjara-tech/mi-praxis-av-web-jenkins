@@ -86,7 +86,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Key 2', dataIndex: 'A4545REFK2', width: 120},
             {text: 'Payment', dataIndex: 'A4545MPAGO', width: 70},
             {text: 'Acc. Number', dataIndex: 'A4545ANUMB', width: 160},
-            {text: 'Sub-Type', dataIndex: 'A4545MODO', width: 100,
+            {text: 'Sub-Type', dataIndex: 'A4545MODO', width: 130,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     //metaData.style = "background-color:#838187";
                     const opts = {
