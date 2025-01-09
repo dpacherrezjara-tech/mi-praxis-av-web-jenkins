@@ -39,16 +39,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Primary<br>Key', dataIndex: 'A4545PKEY', width: 60,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
-                        '15':()=>{
+                        '15': () => {
                             metaData.style = "color:#2fc611;font-weight:bold;";
                         },
-                        '50':()=>{
+                        '50': () => {
                             metaData.style = "color:#2fc611;font-weight:bold;";
                         },
-                        '40':()=>{
+                        '40': () => {
                             metaData.style = "color:#c61111;font-weight:bold;";
                         },
-                        '01':()=>{
+                        '01': () => {
                             metaData.style = "color:#c61111;font-weight:bold;";
                         }
                     };
@@ -86,6 +86,54 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Key 2', dataIndex: 'A4545REFK2', width: 120},
             {text: 'Payment', dataIndex: 'A4545MPAGO', width: 70},
             {text: 'Acc. Number', dataIndex: 'A4545ANUMB', width: 160},
+            {text: 'Sub-Type', dataIndex: 'A4545MODO', width: 130,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    //metaData.style = "background-color:#838187";
+                    const opts = {
+                        'P': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Tickets CO';
+                        },
+                        'A': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Cargo CO';
+                        },
+                        'C': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Mails CO';
+                        },
+                        'E': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Tickets EXT';
+                        },
+                        'G': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Cargo EXT';
+                        },
+                        'T': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Taxes EXT';
+                        },
+                        'D': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Debits CO';
+                        },
+                        'B': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Debits EXT';
+                        },
+                        'J': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Adjustments CO';
+                        },
+                        'K': () => {
+                            metaData.style = "font-weight:bold";
+                            return 'Adjustments EXT';
+                        }
+                    };
+                    return opts[value] ? opts[value]() : '';
+                }
+            },
             {text: 'Accounting<br>Date', dataIndex: 'A4545PSTGD', width: 100},
             {text: 'Accounting<br>ID', dataIndex: 'A4545USER', width: 200}
             //</editor-fold>
