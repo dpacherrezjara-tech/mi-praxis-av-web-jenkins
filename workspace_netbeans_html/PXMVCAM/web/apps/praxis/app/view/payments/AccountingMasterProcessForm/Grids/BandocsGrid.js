@@ -45,14 +45,14 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                 ]
             },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
-            {text: 'Processor', dataIndex: 'DESC_PRO', width: 120},
+            {text: 'Processor', dataIndex: 'DESC_PRO', width: 160},
             {
                 text: 'Accounting Information',
                 defaults: {
                     menuDisabled: true,
                     sortable: true,
                     align: 'center'
-                }, 
+                },
                 columns: [
                     {text: 'Date', dataIndex: 'FCONT', width: 90},
                     {text: 'Type', dataIndex: 'TIPOCON', width: 80,
@@ -61,9 +61,51 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                             const opts = {
                                 'DEB': 'Debits',
                                 'REG': 'Regular',
-                                'ADJ': 'Adjustment'
+                                'ADJ': 'Adjustment',
+                                'ADM': "ADM's"
                             };
                             return opts[value];
+                        }
+                    },
+                    {text: 'Sub-Type', dataIndex: 'STCON', width: 130,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "font-weight:bold";
+                            const opts = {
+                                'P': () => {
+                                    return 'Tickets CO';
+                                },
+                                'A': () => {
+                                    return 'Cargo CO';
+                                },
+                                'C': () => {
+                                    return 'Mails CO';
+                                },
+                                'E': () => {
+                                    return 'Tickets EXT';
+                                },
+                                'G': () => {
+                                    return 'Cargo EXT';
+                                },
+                                'T': () => {
+                                    return 'Taxes EXT';
+                                },
+                                'D': () => {
+                                    return 'Debits CO';
+                                },
+                                'B': () => {
+                                    return 'Debits EXT';
+                                },
+                                'J': () => {
+                                    return 'Adjustments CO';
+                                },
+                                'K': () => {
+                                    return 'Adjustments EXT';
+                                },
+                                'M': () => {
+                                    return "ADM's";
+                                }
+                            };
+                            return opts[value]? opts[value]() : '';
                         }
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
@@ -79,27 +121,26 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                     sortable: true,
                     align: 'center'
                 },
-                columns:[
+                columns: [
                     {text: 'Corrl', dataIndex: 'HEADER', width: 200},
-                    {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
                     {text: 'Status', dataIndex: 'STSAP', width: 120,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             //metaData.style = "background-color:#838187";
                             const opts = {
-                                'P': ()=>{
+                                'P': () => {
                                     metaData.style = "background-color:#fffc33;font-weight:bold";
                                     return 'Pending';
                                 },
-                                'S': ()=>{
+                                'S': () => {
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
                                     return 'Sended';
                                 },
-                                'L': ()=>{
+                                'L': () => {
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
                                     return 'Loaded';
                                 }
-                            };  
+                            };
                             return opts[value]();
                         }
                     }
