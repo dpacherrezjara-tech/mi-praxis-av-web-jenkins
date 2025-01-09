@@ -51,7 +51,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             const opts = {
                                 'DEB': 'Debits',
                                 'REG': 'Regular',
-                                'ADJ': 'Adjustment'
+                                'ADJ': 'Adjustment',
+                                'ADM': "ADM's"
                             };
                             return opts[value];
                         }
@@ -73,7 +74,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             const opts = {
                               'REG':  TOTREG,
                               'DEB': TOTDEB,
-                              'ADJ': TOTADJ
+                              'ADJ': TOTADJ,
+                              'ADM': 0
                             };
                             return opts[TIPOCON];
                         },

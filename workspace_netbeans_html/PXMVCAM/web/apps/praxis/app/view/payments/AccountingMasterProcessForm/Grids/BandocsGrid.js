@@ -61,54 +61,48 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                             const opts = {
                                 'DEB': 'Debits',
                                 'REG': 'Regular',
-                                'ADJ': 'Adjustment'
+                                'ADJ': 'Adjustment',
+                                'ADM': "ADM's"
                             };
                             return opts[value];
                         }
                     },
                     {text: 'Sub-Type', dataIndex: 'STCON', width: 130,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            //metaData.style = "background-color:#838187";
+                            metaData.style = "font-weight:bold";
                             const opts = {
                                 'P': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Tickets CO';
                                 },
                                 'A': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Cargo CO';
                                 },
                                 'C': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Mails CO';
                                 },
                                 'E': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Tickets EXT';
                                 },
                                 'G': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Cargo EXT';
                                 },
                                 'T': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Taxes EXT';
                                 },
                                 'D': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Debits CO';
                                 },
                                 'B': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Debits EXT';
                                 },
                                 'J': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Adjustments CO';
                                 },
                                 'K': () => {
-                                    metaData.style = "font-weight:bold";
                                     return 'Adjustments EXT';
+                                },
+                                'M': () => {
+                                    return "ADM's";
                                 }
                             };
                             return opts[value]? opts[value]() : '';

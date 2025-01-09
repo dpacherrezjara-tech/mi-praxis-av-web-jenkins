@@ -1027,6 +1027,9 @@ public class AccountingReportController extends BaseController {
             case "K":
                 descModo = "ADJ";
                 break;
+            case "M":
+                descModo = "ADM";
+                break;
         }
 
         return descModo;

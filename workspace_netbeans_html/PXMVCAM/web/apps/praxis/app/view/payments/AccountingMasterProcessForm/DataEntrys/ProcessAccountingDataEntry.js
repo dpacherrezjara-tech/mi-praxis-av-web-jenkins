@@ -107,10 +107,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                                 {
                                     xtype: 'combobox',
                                     name: 'IN_TDATE',
+                                    id:prototype.idDE + '-cmbTdate',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['PRDA', 'Processing Date']
+                                            ['VALDATE', 'Value Date'],
+                                            ['SDATE', 'Sale Date']
                                         ]
                                     }),
                                     fieldLabel: 'Date Type',
@@ -121,7 +123,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                                     queryMode: 'local',
                                     editable: false,
                                     readOnly:true,
-                                    value: 'PRDA'
+                                    value: 'VALDATE'
                                 },
                                 {
                                     xtype: 'datefield',
@@ -158,7 +160,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                                         data: [
                                             ['REG', 'Regular'],
                                             ['DEB', 'Debits'],
-                                            ['ADJ','Adjustment']
+                                            ['ADJ','Adjustment'],
+                                            ['ADM','ADM']
                                         ]
                                     }),
                                     labelWidth: 85,
