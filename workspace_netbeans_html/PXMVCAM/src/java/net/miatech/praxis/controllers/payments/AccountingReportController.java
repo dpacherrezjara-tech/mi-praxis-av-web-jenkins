@@ -1084,7 +1084,10 @@ public class AccountingReportController extends BaseController {
         String jsonBody = mapper.writeValueAsString(map);
         String res = ws.postFileAsync(file, jsonBody, "Accounting/postAvInformation");
         //List<X3184> response = mapper.readValue(res, new TypeReference<List<X3184>>() {});
-        return ResponseUtils.ok(res);
+        Map<String,Object> body = new HashMap<>();
+        body.put("sucess", true);
+        body.put("response", res);
+        return ResponseUtils.ok(body);
     }
 //</editor-fold>
 }
