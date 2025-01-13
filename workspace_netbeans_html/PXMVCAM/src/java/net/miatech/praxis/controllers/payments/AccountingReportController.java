@@ -465,10 +465,12 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Processor"));
         header.add(new CustomExcelCell("Processing\nDate"));
         header.add(new CustomExcelCell("Type"));
+        header.add(new CustomExcelCell("Sub-Type"));
         header.add(new CustomExcelCell("Accounting\nID"));
         header.add(new CustomExcelCell("Bank Doc"));
         header.add(new CustomExcelCell("Value\nDate"));
         header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("Corrl SAP"));
         header.add(new CustomExcelCell("SAP Date"));
         header.add(new CustomExcelCell("SAP Status"));
         header.add(new CustomExcelCell("User\nCreate"));
@@ -483,10 +485,12 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getCODPRO()));
             row.add(new CustomExcelCell(obj.getFCONT()));
             row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(obj.getSTCON()));
             row.add(new CustomExcelCell(obj.getIDCONT()));
             row.add(new CustomExcelCell(obj.getBANDOC()));
             row.add(new CustomExcelCell(obj.getVALDATE()));
             row.add(new CustomExcelCell(obj.getREFER()));
+            row.add(new CustomExcelCell(obj.getHEADER()));
             row.add(new CustomExcelCell(obj.getFECSAP()));
             row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
             row.add(new CustomExcelCell(obj.getUSCR()));
@@ -764,6 +768,7 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Item"));
         header.add(new CustomExcelCell("Large Text"));
         header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("SEQ"));
         header.add(new CustomExcelCell("Bank\nCode"));
         header.add(new CustomExcelCell("Bank\nName"));
         header.add(new CustomExcelCell("Country"));
@@ -774,6 +779,7 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Key 2"));
         header.add(new CustomExcelCell("Payment"));
         header.add(new CustomExcelCell("Acc. Number"));
+        header.add(new CustomExcelCell("Sub-Type"));
         header.add(new CustomExcelCell("Accounting\nDate"));
         header.add(new CustomExcelCell("Accounting\nID"));
 
@@ -795,7 +801,7 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getA4545PASIV()));
             row.add(new CustomExcelCell(obj.getA4545ITEM()));
             row.add(new CustomExcelCell(obj.getA4545TEXTD()));
-            row.add(new CustomExcelCell(obj.getA4545REPAG()));
+            row.add(new CustomExcelCell(obj.getA4545SEQ()));
             row.add(new CustomExcelCell(obj.getA4545BANCO()));
             row.add(new CustomExcelCell(obj.getA4545REFB()));
             row.add(new CustomExcelCell(obj.getA4545PAIS()));
@@ -806,6 +812,8 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getA4545REFK2()));
             row.add(new CustomExcelCell(obj.getA4545MPAGO()));
             row.add(new CustomExcelCell(obj.getA4545ANUMB()));
+            String modo = getModoDesc(obj.getA4545ANUMB());
+            row.add(new CustomExcelCell(modo));
             row.add(new CustomExcelCell(obj.getA4545PSTGD()));
             row.add(new CustomExcelCell(obj.getA4545USER()));
 
@@ -1030,6 +1038,9 @@ public class AccountingReportController extends BaseController {
             case "M":
                 descModo = "ADM";
                 break;
+            case "T":
+                descModo = "TAX";
+                break;
         }
 
         return descModo;
@@ -1064,6 +1075,9 @@ public class AccountingReportController extends BaseController {
             case "L":
                 res = "Loaded";
                 break;
+            case "S":
+                res = "Sended";
+                break;
         }
         return res;
     }
@@ -1084,7 +1098,10 @@ public class AccountingReportController extends BaseController {
         String jsonBody = mapper.writeValueAsString(map);
         String res = ws.postFileAsync(file, jsonBody, "Accounting/postAvInformation");
         //List<X3184> response = mapper.readValue(res, new TypeReference<List<X3184>>() {});
-        return ResponseUtils.ok(res);
+        Map<String,Object> body = new HashMap<>();
+        body.put("success", true);
+        body.put("response", res);
+        return ResponseUtils.ok(body);
     }
 //</editor-fold>
 }

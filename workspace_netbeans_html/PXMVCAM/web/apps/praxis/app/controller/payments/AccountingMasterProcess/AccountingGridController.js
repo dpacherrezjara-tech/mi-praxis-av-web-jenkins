@@ -24,6 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingGri
                 params: me.view.searchParams
             });
             const {response} = res.data;
+            me.setTotalFields(response);
             let store = new Ext.data.Store({
                data:response 
             });
@@ -33,7 +34,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingGri
         } finally {
             grid.setLoading(false);
         }
-
+    },
+    setTotalFields: function(data){
+        const txtActiv = Ext.getCmp(prototype.id + '-totPkey50');
+        const txtPasiv = Ext.getCmp(prototype.id + '-totPkey40');
+        let pkey50 = global.sumByFilter(data,'A4545ACTIV','A4545PKEY','50');
+        let pkey15 = global.sumByFilter(data,'A4545ACTIV','A4545PKEY','15');
+        let pkey40 = global.sumByFilter(data,'A4545ACTIV','A4545PKEY','40');
+        let pkey01 = global.sumByFilter(data,'A4545ACTIV','A4545PKEY','01');
+        
+        let activ = pkey50 + pkey15;
+        let pasiv = pkey40 + pkey01;
+        txtActiv.setValue(Ext.util.Format.number(activ, '0,000.00'));
+        txtPasiv.setValue(Ext.util.Format.number(pasiv, '0,000.00'));
     },
     onDownloadExcel: function () {
         const me = this;

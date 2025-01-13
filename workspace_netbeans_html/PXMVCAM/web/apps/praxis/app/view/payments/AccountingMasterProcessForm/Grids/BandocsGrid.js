@@ -67,39 +67,39 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                             return opts[value];
                         }
                     },
-                    {text: 'Sub-Type', dataIndex: 'STCON', width: 130,
+                    {text: 'Sub-Type', dataIndex: 'STCON', width: 100,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "font-weight:bold";
                             const opts = {
                                 'P': () => {
-                                    return 'Tickets CO';
+                                    return 'PAX CO';
                                 },
                                 'A': () => {
-                                    return 'Cargo CO';
+                                    return 'CGO CO';
                                 },
                                 'C': () => {
-                                    return 'Mails CO';
+                                    return 'COR CO';
                                 },
                                 'E': () => {
-                                    return 'Tickets EXT';
+                                    return 'PAX EXT';
                                 },
                                 'G': () => {
-                                    return 'Cargo EXT';
+                                    return 'CGO EXT';
                                 },
                                 'T': () => {
-                                    return 'Taxes EXT';
+                                    return 'TAX EXT';
                                 },
                                 'D': () => {
-                                    return 'Debits CO';
+                                    return 'DEB CO';
                                 },
                                 'B': () => {
-                                    return 'Debits EXT';
+                                    return 'DEB EXT';
                                 },
                                 'J': () => {
-                                    return 'Adjustments CO';
+                                    return 'ADJ CO';
                                 },
                                 'K': () => {
-                                    return 'Adjustments EXT';
+                                    return 'ADJ EXT';
                                 },
                                 'M': () => {
                                     return "ADM's";

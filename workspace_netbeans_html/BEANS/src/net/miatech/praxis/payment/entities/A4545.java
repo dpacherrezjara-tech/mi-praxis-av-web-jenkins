@@ -46,7 +46,9 @@ public class A4545 {
                 A4545CPRO, 
                 A4545REGIS, 
                 A4545FREGI, 
-                A4545HREGI; 
+                A4545HREGI,
+                A4545DATCI,
+                A4545TRACI; 
                         
     private Integer A4545SEQ,A4545ITEM;
     private BigDecimal A4545ACTIV ,

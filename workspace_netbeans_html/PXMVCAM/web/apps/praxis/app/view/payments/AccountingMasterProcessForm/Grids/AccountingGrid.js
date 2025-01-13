@@ -86,54 +86,56 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Key 2', dataIndex: 'A4545REFK2', width: 120},
             {text: 'Payment', dataIndex: 'A4545MPAGO', width: 70},
             {text: 'Acc. Number', dataIndex: 'A4545ANUMB', width: 160},
-            {text: 'Sub-Type', dataIndex: 'A4545MODO', width: 130,
+            {text: 'Sub-Type', dataIndex: 'A4545MODO', width: 100,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     //metaData.style = "background-color:#838187";
                     const opts = {
                         'P': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Tickets CO';
+                            return 'PAX CO';
                         },
                         'A': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Cargo CO';
+                            return 'CGO CO';
                         },
                         'C': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Mails CO';
+                            return 'COR CO';
                         },
                         'E': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Tickets EXT';
+                            return 'PAX EXT';
                         },
                         'G': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Cargo EXT';
+                            return 'CGO EXT';
                         },
                         'T': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Taxes EXT';
+                            return 'TAX EXT';
                         },
                         'D': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Debits CO';
+                            return 'DEB CO';
                         },
                         'B': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Debits EXT';
+                            return 'DEB EXT';
                         },
                         'J': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Adjustments CO';
+                            return 'ADJ CO';
                         },
                         'K': () => {
                             metaData.style = "font-weight:bold";
-                            return 'Adjustments EXT';
+                            return 'ADJ EXT';
                         }
                     };
                     return opts[value] ? opts[value]() : '';
                 }
             },
+            {text: 'Date Gen', dataIndex: 'A4545DATCI', width: 100},
+            {text: 'Trans. Gen', dataIndex: 'A4545TRACI', width: 100},
             {text: 'Accounting<br>Date', dataIndex: 'A4545PSTGD', width: 100},
             {text: 'Accounting<br>ID', dataIndex: 'A4545USER', width: 200}
             //</editor-fold>
@@ -164,6 +166,35 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
                 width: 25,
                 hidden: true,
                 tooltip: 'Back'
+            }
+        ]
+    },
+    bbar: {
+        layout: {
+            pack: 'end'
+        },
+        defaults: {
+            xtype: 'textfield',
+            margin: '2 5 2 5',
+            fieldStyle: 'text-align:right;font-weight:bold;',
+            editable: false
+        },
+        items: [
+            {
+                labelStyle: 'text-align:left;font-weight: bolder;color:green;',
+                fieldLabel: 'Key Active (50/15)',
+                id: prototype.id + '-totPkey50',
+                labelWidth: 130,
+                width: 250,
+                value: ''
+            },
+            {
+                labelStyle: 'text-align:left;font-weight: bolder;color:red;',
+                fieldLabel: 'Key Passive (40/01)',
+                id: prototype.id + '-totPkey40',
+                labelWidth: 130,
+                width: 250,
+                value: ''
             }
         ]
     }
