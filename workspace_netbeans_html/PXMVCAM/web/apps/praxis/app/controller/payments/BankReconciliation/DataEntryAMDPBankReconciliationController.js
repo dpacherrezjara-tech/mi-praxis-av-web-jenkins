@@ -480,6 +480,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         var comg = Ext.getCmp(prototype.id + '-de-txtSOCIETYL').getValue();
         var comp = Ext.getCmp(prototype.id + '-de-txtSOCIETY').getValue();
+        var vBandoc = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue();
 
         if (comg !== '' && comp !== '' && comg !== comp) {
 
@@ -502,6 +503,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             this.setValue('de-txtCCUSTCC', this.bean.CCUST);
             Ext.util.CSS.createStyleSheet('.detalle-society { background-color: transparent !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #ccdeeb !important; }');
+        }
+        console.log(vBandoc.substring(0,1), 'subcadena de bandoc')
+        if( vBandoc.substring(0,1) === 'W' &&  comg !== '' && comp !== '' && comg === comp){
+            this.setValue('de-txtCCUSTCC', this.bean.CCUSTCC);
+        } else{
+            this.setValue('de-txtCCUSTCC', this.bean.CCUST);
         }
 
         this.setValue('de-txtPAYDATE', this.bean.PAYDATE);
