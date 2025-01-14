@@ -417,7 +417,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                             store: new Ext.data.SimpleStore({
                                                 fields: ['code', 'name'],
                                                 data: [
-                                                    ["", "All"], ["AVC", "AVC"], ["BSP", "BSP"],["AMA", "AMA"],["ARC", "ARC"]
+                                                    ["", "All"],["BSP", "BSP"],["AMA", "AMA"],["ARC", "ARC"]
                                                 ]
                                             }),
                                             queryMode: 'local',
