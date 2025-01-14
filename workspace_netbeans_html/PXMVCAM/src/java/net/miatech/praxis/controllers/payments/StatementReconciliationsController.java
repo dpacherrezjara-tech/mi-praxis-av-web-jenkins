@@ -903,7 +903,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -3505,7 +3505,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
-    
+
     @RequestMapping(value = "/searchBeanMPF060")
     public @ResponseBody
     String searchBeanMPF060(ModelMap map, HttpServletRequest request) {
@@ -3803,7 +3803,6 @@ public class StatementReconciliationsController extends BaseController {
         String beanString;
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            
 
             logic = new StatementReconciliationsLogic();
             logic.setSession(this.serverSession.getServerSession());
@@ -3818,7 +3817,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "executeOptionHead")
     public @ResponseBody
     String executeOptionHead(ModelMap map, HttpServletRequest request) {
@@ -3853,7 +3852,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "MaintenanceMPF060")
     public @ResponseBody
     String MaintenanceMPF060(ModelMap map, HttpServletRequest request) {
@@ -3876,8 +3875,7 @@ public class StatementReconciliationsController extends BaseController {
             filter.SAUTHOC = request.getParameter("SAUTHOC");
             filter.SEQ = request.getParameter("SEQ");
             filter.NEGOC = request.getParameter("NEGOC");
-            
-           
+
             logic = new StatementReconciliationsLogic();
             logic.setSession(this.serverSession.getServerSession());
             msj = logic.loadPX269SQP05115MPF060_UPDATE(filter, option);
@@ -4094,7 +4092,7 @@ public class StatementReconciliationsController extends BaseController {
         try {
             String strSesion = UUID.randomUUID().toString();
             String strNomExcel = "Revision." + strSesion + ".xlsx";
-            
+
             logic = new StatementReconciliationsLogic();
             logic.setSession(this.serverSession.getServerSession());
 
@@ -4132,10 +4130,10 @@ public class StatementReconciliationsController extends BaseController {
 
                     if (row.getRowNum() >= 1) {
 
-                        if(dataFormatter.formatCellValue(row.getCell(0)).equals("")){
+                        if (dataFormatter.formatCellValue(row.getCell(0)).equals("")) {
                             break;
                         }
-                        
+
                         uniqueADATE.add(dataFormatter.formatCellValue(row.getCell(0)).trim());
                         uniqueCODEBANK.add(String.format("%04d", Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)).trim())));
                         BANDOC = dataFormatter.formatCellValue(row.getCell(2)).trim();
@@ -4160,27 +4158,39 @@ public class StatementReconciliationsController extends BaseController {
                 listaDataEECC = logic.CONFIEC(BANDOC);
                 listaDataLIQUI = logic.CONFILIQ(QUERY);
 
-                if (listaDataEECC.get(0).NETOS.equals(listaDataLIQUI.get(0).NETOS) && COUNT == listaDataLIQUI.get(0).QTY) {
-                    //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
-                    String ban = listaDataEECC.get(0).BANDOC;
-                    String dateci = listaDataEECC.get(0).DATECI;
-                    String tranci = listaDataEECC.get(0).TRANCI;
-                    int qty = listaDataLIQUI.get(0).QTY;
-                    String netos = listaDataLIQUI.get(0).NETOS;
-                    String valdate = listaDataEECC.get(0).VALDATE;
-                    String prda = listaDataEECC.get(0).PRDA;
+                if (!listaDataEECC.isEmpty() && !listaDataLIQUI.isEmpty()) {
 
-                    boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                    boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda);
-                    
-                    if(conci1 && conci2){
-                        message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
-                    }else{
-                        message = "Error in conciliation";
+                    for (int a = 0; a < listaDataEECC.size(); a++) {
+                        if (listaDataEECC.get(a).NETOS.equals(listaDataLIQUI.get(0).NETOS) && COUNT == listaDataLIQUI.get(0).QTY) {
+                            //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
+                            String ban = listaDataEECC.get(a).BANDOC;
+                            String dateci = listaDataEECC.get(a).DATECI;
+                            String tranci = listaDataEECC.get(a).TRANCI;
+                            int qty = listaDataLIQUI.get(0).QTY;
+                            String netos = listaDataLIQUI.get(0).NETOS;
+                            String valdate = listaDataEECC.get(a).VALDATE;
+                            String prda = listaDataEECC.get(a).PRDA;
+
+                            boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
+                            boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda);
+
+                            if (conci1 && conci2) {
+                                message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
+                            } else {
+                                message = "Error in conciliation";
+                            }
+
+                        } else {
+                            message = "Cannot be conciliate: <br>";
+                            message += "Neto EECC: " + listaDataEECC.get(a).NETOS + " <br>";
+                            message += "Neto Liqui: " + listaDataLIQUI.get(0).NETOS + " <br>";
+                            message += "Qty Liqui BPO: " + COUNT + " <br>";
+                            message += "Qty Liqui PRAXIS: " + listaDataLIQUI.get(0).QTY + " <br>";
+                        }
                     }
 
-                }else{
-                    message = "The total amount or the number of settlements will not apply";
+                } else {
+                    message = "Records not found to reconcile.";
                 }
 
             } catch (Exception e) {
