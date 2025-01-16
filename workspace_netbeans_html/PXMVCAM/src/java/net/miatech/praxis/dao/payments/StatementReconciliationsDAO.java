@@ -3640,6 +3640,40 @@ public class StatementReconciliationsDAO {
 
         return listBeanTkt;
     }
+    
+    public List<MPF101> CONFILIQ_SEQ(String QUERY) throws SQLException, Exception {
+
+        List<MPF101> listBeanTkt = new ArrayList<MPF101>(0);
+        MPF101 beanTkt = new MPF101();
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.CONFILIQ_SEQ(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.setString(1, QUERY);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new MPF101();
+                beanTkt.NETOS = rst.getString("NETO").trim();
+                beanTkt.QTY = rst.getInt("QTY");
+                listBeanTkt.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
+
+        return listBeanTkt;
+    }
 
     public boolean CONCILIA1(String QUERY, String ban, String dateci, String tranci, int qty, String netos) throws SQLException, Exception {
 
@@ -3681,7 +3715,39 @@ public class StatementReconciliationsDAO {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
                 + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
-                + "WHERE STVAL = '3'  AND " + inQuery;
+                + "WHERE STVAL = '3' AND " + inQuery;
+
+        try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
+                PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            // Asignación de valores a los parámetros
+            preparedStatement.setString(1, inBandoc);
+            preparedStatement.setString(2, inDateci);
+            preparedStatement.setString(3, inTranci);
+            preparedStatement.setString(4, inValdate);
+            preparedStatement.setString(5, inPrda);
+            preparedStatement.setString(6, session.getUserView().getCustomerInfo().USR);
+            preparedStatement.setString(7, Functions.getFechaActual());
+            preparedStatement.setString(8, Functions.getHoraActual());
+
+            // Ejecuta el UPDATE
+            int rowsUpdated = preparedStatement.executeUpdate();
+            System.out.println("Filas actualizadas: " + rowsUpdated);
+            result = rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        }
+
+        return result;
+    }
+    
+    public boolean CONCILIA2_SEQ(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda) throws SQLException, Exception {
+        boolean result = false;
+        String updateQuery = "UPDATE PRAXISMP.MPF060 "
+                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
+                + "WHERE STVAL = '3' AND SEQ = '' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
