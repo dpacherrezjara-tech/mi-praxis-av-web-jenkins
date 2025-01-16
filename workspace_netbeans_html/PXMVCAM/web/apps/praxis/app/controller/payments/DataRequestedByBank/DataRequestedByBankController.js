@@ -57,6 +57,8 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         prototypeProgram.title = 'Data Requested by Bank';
         prototypeProgram.modulo = '';
 
+        console.log("AAAAAAAAAAAAAAAAAA")
+
         this.control({
 //            //   -------------------Eventos Genericos --------------------
             '#DataRequestedByBankForm-xpanel': {
@@ -376,10 +378,11 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
             }
         });
     },
-    eventKey2: function (e, eOpts) {
-        var strTkt = e.value.replace(' ', '');
+    eventKey2: function (column, e, row, column, x, rowData) {
+        var data = x.record.data;
+        var strTkt = data.strTicket.replace(' ', '');
         console.log(strTkt);
-        if (eOpts.getKey() === 13) {
+        if (strTkt.length === 13) {
             this.viewMasterTkt(strTkt);
         }
     },
@@ -2575,6 +2578,13 @@ Ext.define('Ext.Praxis.controller.payments.DataRequestedByBank.DataRequestedByBa
         Ext.getCmp(prototype.id + '-txtMERCHN').setValue('');
         Ext.getCmp(prototype.id + '-txtSAGENT').setValue('');
         Ext.getCmp(prototype.id + '-txtAUTHNBR').setValue('');
+    },
+    onGridDataViewTktFinal: function (column, e, row, column, x, rowData) {
+        var data = x.record.data;
+        console.log("DATAAAAAAAAAAA")
+        console.log(data)
+        var strTkt = data.A1531TKT;
+        var beanProMasterTicket = {};
     },
     btnExcel_click: function (obj, e) {
 
