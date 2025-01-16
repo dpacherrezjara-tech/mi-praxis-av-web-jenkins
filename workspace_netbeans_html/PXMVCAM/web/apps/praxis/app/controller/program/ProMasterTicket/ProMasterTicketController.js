@@ -997,7 +997,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
 
     //<editor-fold defaultstate="collapsed" desc="controlLight">
     controlLight: function () {
-        if(PERMC === 'Y'){
+        if(this.PERMC === 'Y'){
             Ext.getCmp(prototype.id+'-btnTicket').hide();
             Ext.getCmp(prototype.id+'-btnAccounting').hide();
             //Ext.getCmp(prototype.id+'-btnProrrate').hide();

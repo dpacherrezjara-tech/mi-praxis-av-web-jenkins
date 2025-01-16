@@ -4106,6 +4106,7 @@ public class StatementReconciliationsController extends BaseController {
 
             List<MPF101> listaDataEECC = new ArrayList<MPF101>(0);
             List<MPF101> listaDataLIQUI = new ArrayList<MPF101>(0);
+            List<MPF101> listaDataLIQUI_SEQ = new ArrayList<MPF101>(0);
 
             //CODEBANK,ADATE,SDATE,MERCHAND,SAGENT,RED
             int COUNT = 0;
@@ -4157,8 +4158,9 @@ public class StatementReconciliationsController extends BaseController {
 
                 listaDataEECC = logic.CONFIEC(BANDOC);
                 listaDataLIQUI = logic.CONFILIQ(QUERY);
+                listaDataLIQUI_SEQ = logic.CONFILIQ_SEQ(QUERY);
 
-                if (!listaDataEECC.isEmpty() && !listaDataLIQUI.isEmpty()) {
+                if (!listaDataEECC.isEmpty() && !listaDataLIQUI.isEmpty() && !listaDataLIQUI_SEQ.isEmpty()) {
 
                     for (int a = 0; a < listaDataEECC.size(); a++) {
                         if (listaDataEECC.get(a).NETOS.equals(listaDataLIQUI.get(0).NETOS) && COUNT == listaDataLIQUI.get(0).QTY) {
@@ -4176,6 +4178,26 @@ public class StatementReconciliationsController extends BaseController {
 
                             if (conci1 && conci2) {
                                 message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
+                            } else {
+                                message = "Error in conciliation";
+                            }
+
+                        } else if (listaDataEECC.get(a).NETOS.equals(listaDataLIQUI_SEQ.get(0).NETOS) && COUNT == listaDataLIQUI_SEQ.get(0).QTY) {
+
+                            //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
+                            String ban = listaDataEECC.get(a).BANDOC;
+                            String dateci = listaDataEECC.get(a).DATECI;
+                            String tranci = listaDataEECC.get(a).TRANCI;
+                            int qty = listaDataLIQUI_SEQ.get(0).QTY;
+                            String netos = listaDataLIQUI_SEQ.get(0).NETOS;
+                            String valdate = listaDataEECC.get(a).VALDATE;
+                            String prda = listaDataEECC.get(a).PRDA;
+
+                            boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
+                            boolean conci2 = logic.CONCILIA2_SEQ(QUERY, ban, dateci, tranci, valdate, prda);
+
+                            if (conci1 && conci2) {
+                                message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI_SEQ.get(0).NETOS + " has concilied with " + listaDataLIQUI_SEQ.get(0).QTY + " settlements.";
                             } else {
                                 message = "Error in conciliation";
                             }
