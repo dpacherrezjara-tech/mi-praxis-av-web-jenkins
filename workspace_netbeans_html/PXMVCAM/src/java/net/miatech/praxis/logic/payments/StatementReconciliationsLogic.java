@@ -146,6 +146,9 @@ public class StatementReconciliationsLogic {
     public List<MPF101> CONFILIQ(String Query) throws SQLException, Exception {
         return StatementReconciliationsDAO.CONFILIQ(Query);
     }
+    public List<MPF101> CONFILIQ_SEQ(String Query) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONFILIQ_SEQ(Query);
+    }
     
     public boolean CONCILIA1(String QUERY ,String ban,String dateci,String tranci,int qty,String netos) throws SQLException, Exception {
         return StatementReconciliationsDAO.CONCILIA1( QUERY , ban, dateci, tranci, qty, netos);
@@ -155,4 +158,7 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci, valdate, prda);
     }
     
+    public boolean CONCILIA2_SEQ(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA2_SEQ( QUERY , ban, dateci, tranci, valdate, prda);
+    }
 }

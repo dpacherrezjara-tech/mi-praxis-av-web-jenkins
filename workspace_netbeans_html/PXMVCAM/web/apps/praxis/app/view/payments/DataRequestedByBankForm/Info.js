@@ -718,20 +718,14 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 columns: [
                                                     {
                                                         text: 'Number', dataIndex: 'strTicket', width: 140,
-                                                        editor: {
-                                                            xtype: 'textfield',
-                                                            editable: true,
-                                                            enableKeyEvents: true,
-                                                            listeners: {
-                                                                keypress: 'eventKey2',
-                                                                specialkey: 'eventKey2'
-                                                            }
-                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "color:#057ECB;background-color:#FFFFFF;";
                                                             metaData.tdAttr = 'data-qtip="' + data.strTicket + ' - Enter to view Image' + '"';
                                                             return '<b>' + value + '<b>';
+                                                        },
+                                                        listeners: {
+                                                            click: 'eventKey2'
                                                         }
                                                     }
                                                 ]
@@ -1173,20 +1167,14 @@ Ext.define('Ext.Praxis.view.payments.DataRequestedByBankForm.Info', {
                                                 columns: [
                                                     {
                                                         text: 'Number', dataIndex: 'strTicket', width: 120,
-                                                        editor: {
-                                                            xtype: 'textfield',
-                                                            editable: true,
-                                                            enableKeyEvents: true,
-                                                            listeners: {
-                                                                keypress: 'eventKey2',
-                                                                specialkey: 'eventKey2'
-                                                            }
-                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "color:#057ECB;background-color:#FFFFFF;";
                                                             metaData.tdAttr = 'data-qtip="' + data.strTicket + ' - Enter to view Image' + '"';
                                                             return '<b>' + value + '<b>';
+                                                        },
+                                                        listeners: {
+                                                            click: 'eventKey2'
                                                         }
                                                     }
                                                 ]
