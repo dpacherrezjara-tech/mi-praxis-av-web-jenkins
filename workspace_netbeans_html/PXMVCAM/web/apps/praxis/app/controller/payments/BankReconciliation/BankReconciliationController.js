@@ -3638,6 +3638,61 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDataIatas').bindStore(storeGridDatas);
 
     },
+    
+    onFileLoad: function () {
+        var me = this;
+        let beanValidation = {}
+        
+//        beanValidation.IN_CONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue()
+        console.log(beanValidation,'beanValidation')
+        let beanString = JSON.stringify(beanValidation);
+
+        
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        if (file === '') {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+        var form = Ext.getCmp(prototype.id + '-form-01').getForm();
+        form.submit({
+            url: prototype.url + '/loadExcelFile',
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (fp, o) {
+                var res = Ext.decode(o.response.responseText);
+                console.log(res);
+
+                if (res.success) {
+                    let objResult = res.objResult;
+//                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
+//                    Ext.getCmp(prototype.id + '-de-txtQTYREC').setValue(objResult.QTYREC)
+//                    Ext.getCmp(prototype.id + '-de-txtQTYUPL').setValue(objResult.QTYUPL)
+//                    Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL').setValue(objResult.QTYNOTUPL)
+//                    Ext.getCmp(prototype.id + '-de-txtUSCR').setValue(objResult.USCR)
+//                    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(objResult.FECR)
+//                    Ext.getCmp(prototype.id + '-de-txtTRANL').setValue(objResult.TRANL)
+//                    Ext.getCmp(prototype.id + '-btn-process').show()
+//                    Ext.getCmp(prototype.id + '-chkCONTAB').show()
+//                    Ext.getCmp(prototype.id + '-lblCONTAB').show()
+//                    Ext.getCmp(prototype.id + '-btn-upload').setDisabled(true)
+//                    Ext.getCmp(prototype.id + '-file').setDisabled(true)
+                    
+                    global.Msg({msg: '<b>'+objResult.MESSAGE+'</b><br>Total records: ' + objResult.QTYREC +'<br>Total updated: ' + objResult.QTYUPL +'<br>Total not updated: ' + objResult.QTYNOTUPL});
+
+
+                } else {
+                    global.Msg({msg: "Error Excel Load"});
+                }
+
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
     selectedChild: function (padre, child, add) {
         add = add === undefined ? true : add;
         if (add && this.peek() !== prototype.id + '-' + child)

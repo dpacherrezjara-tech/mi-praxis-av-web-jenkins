@@ -260,6 +260,10 @@ public class BankReconciliationLogic {
     public String asginarTW(A2290Filter filter) throws Exception {
         return bankReconciliationDAO.asginarTW(filter);
     }
+    
+    public A2290Filter massiveReverseADM(List<A2290Filter> lstData, UserView user) throws Exception {
+        return bankReconciliationDAO.massiveReverseADM(lstData,user );
+    }
 
     public List<A2290Filter> loadPX269SQPMPF100(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQPMPF100(filter);

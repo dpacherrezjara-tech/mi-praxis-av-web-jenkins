@@ -181,7 +181,51 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.FiltersBT', {
                                         listeners: {
                                             click: 'btnAsignar_click',
                                         }
-                                    }
+                                    },
+                                    {xtype: 'tbspacer', width: 27},
+                                                {
+                                                    xtype: 'form',
+                                                    id: prototype.id + '-form-01',
+                                                    border: false,
+                                                    bodyStyle: 'background-color: #E3EAF9;',
+                                                    //                                            padding: '0 0 5 7',
+                                                    items: [{
+                                                            xtype: 'filefield',
+                                                            id: prototype.id + '-file',
+                                                            name: 'excelfile',
+//                                                        fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
+                                                            allowBlank: true,
+                                                            accept: '.xlsx, .xls',
+                                                            labelWidth: 85,
+                                                            width: 400,
+                                                            style: 'font-weight:bold;',
+                                                            buttonAlign: 'left',
+                                                            buttonText: 'Select excel...',
+                                                            regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                                                            regexText: 'Only XLS and XLSX formats are accepted',
+                                                            buttonConfig: {
+                                                                text: '<strong>Select</strong>',
+                                                                width: 80,
+                                                                style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
+                                                            },
+                                                            listeners: {
+                                                                //change: 'onUploadChange'
+                                                            }
+                                                        }]
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    id: prototype.id + '-btn-upload',
+                                                    margin: '0 5 0 0',
+                                                    width: 80,
+                                                    html: '<strong style="color:black;">Reverse</strong>',
+                                                    style: 'background:#70E3EC;color:white;font-weight:bold;',
+                                                    border: true,
+                                                    listeners: {
+                                                        click: 'onFileLoad'
+                                                    }
+                                                },
+                                    
                             ]
                         }
                        
