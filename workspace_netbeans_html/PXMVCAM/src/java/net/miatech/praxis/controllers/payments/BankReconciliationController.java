@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.BankReconciliationLogic;
+import net.miatech.praxis.logic.payments.LoadSalesConciliationLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
 import net.miatech.praxis.spring.INF020;
@@ -41,6 +43,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -49,13 +52,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -4424,6 +4430,136 @@ public class BankReconciliationController extends BaseController {
 //    }
 //
 //    public List<A2290Filter> getListTeleworking(HttpServletRequest request, Boolean bExcel) {
+    
+    @RequestMapping(value = "/loadExcelFile", method = RequestMethod.POST)
+    public @ResponseBody
+    String loadExcelFile(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request) throws IOException {
+        byte[] bytes = null;
+        Gson gson = new Gson();
+        Integer cont = 0;
+        A2290Filter objResult = new A2290Filter();
+        A2290Filter filter = new A2290Filter();
+        
+
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            String filename = excelfile.getOriginalFilename();
+            String beanString = request.getParameter("beanString");
+            
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            byte[] dataFile = excelfile.getBytes();
+            objResult = getExcelFile(dataFile, filter );
+
+            map.put("success", true);
+            map.put("objResult", objResult);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private A2290Filter getExcelFile(byte[] bytes, A2290Filter filter) throws Exception {
+
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        logic = new BankReconciliationLogic();
+        List<A2290Filter> lstDataIngreso = new ArrayList<>();
+        List<A2290Filter> lstDataVenta = new ArrayList<>();
+        List<A2290Filter> lstDataNotFound = new ArrayList<>();
+        List<A2290Filter> lstData = new ArrayList<>();
+        A2290Filter respt = new A2290Filter();
+        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//        String ruta = "D:";
+        double neto = 0;
+//        boolean isDiff = false;
+        String mensaje = "Hubo un error al actualizar los pagos", strHora = Functions.getHoraActual();
+        String mensajePost = "";
+        double montoTotal = 0;
+        int i = 0;
+        int qty = 0;
+  
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "SalesDocumentLoad.xlsx";
+
+            String strArchivo = ruta + "\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+            DataFormatter df = new DataFormatter();
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter formatter = new DataFormatter();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            Row row0 = rowIterator.next();
+
+            try {
+                while (rowIterator.hasNext()) {
+                    i++;
+                    Row row = rowIterator.next();
+                    if (row.getRowNum() > 0) {
+                        A2290Filter obj = new A2290Filter();
+                        
+                        obj.TKT = formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
+                        obj.SCARDN = formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
+                        obj.SAUTHOC = formatter.formatCellValue(row.getCell(7)) == null ? "" : formatter.formatCellValue(row.getCell(7)).trim();
+                        
+                        if( obj.TKT.equals("") && obj.SCARDN.equals("") && obj.SAUTHOC.equals("") ){       
+                            break;
+                        }
+                        if( obj.TKT.contains("IF") || obj.TKT.contains("(") || obj.TKT.contains("(") ){
+                            respt.MESSAGE = "The file contains formula";
+                            return respt;
+                        }
+                        if( obj.SCARDN.contains("IF") || obj.SCARDN.contains("(") || obj.SCARDN.contains("(") ){
+                            respt.MESSAGE = "The file contains formula";
+                            return respt;
+                        }
+                        if( obj.SAUTHOC.contains("IF") || obj.SAUTHOC.contains("(") || obj.SAUTHOC.contains("(") ){
+                            respt.MESSAGE = "The file contains formula";
+                            return respt;
+                        }
+                        qty++;
+                        lstData.add(obj);
+                    }
+                }
+                file.close();
+            } catch (Exception e) {
+                e.getMessage();
+                if (e.getMessage().contains("String index out of range")) {
+                    mensajePost = "";
+                } else {
+                    mensajePost = "Error en linea : " + i + " | error: " + e.getMessage();
+                }
+            }
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic.setSession(this.serverSession.getServerSession());
+                
+            respt = logic.massiveReverseADM(lstData, user);
+//            respt.MESSAGE = mensaje;
+            
+            //Eliminar temporal           
+            archivo.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return respt;
+
+    }
+    
     @RequestMapping(value = "/searchTeleworking")
     public @ResponseBody
     String searchTeleworking(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
