@@ -3288,7 +3288,7 @@ public class LoadConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_V1(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00659_V1(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3305,6 +3305,8 @@ public class LoadConciliationDAO {
             cstmt.setString(8, filter.SCARCOD.trim());
             cstmt.setString(9, filter.ACARCOD.trim());
             cstmt.setString(10, filter.STVAL.trim());
+            cstmt.setString(11, filter.SCARDN.trim());
+            cstmt.setString(12, filter.SAUTHOC.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
