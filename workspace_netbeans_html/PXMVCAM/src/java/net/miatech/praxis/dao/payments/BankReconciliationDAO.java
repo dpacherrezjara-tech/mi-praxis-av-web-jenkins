@@ -7,6 +7,7 @@ package net.miatech.praxis.dao.payments;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -17,6 +18,7 @@ import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
 import static net.miatech.praxis.dao.payments.LoadConciliationDAO.pasarGarbageCollector;
+import static net.miatech.praxis.dao.payments.LoadSalesConciliationDAO.pasarGarbageCollector;
 import static net.miatech.praxis.dao.payments.StatementReconciliationsDAO.pasarGarbageCollector;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
@@ -7326,6 +7328,100 @@ public class BankReconciliationDAO {
         }
 
         return strMsj;
+    }
+    
+    public A2290Filter massiveReverseADM(List<A2290Filter> lstdata, UserView user) throws Exception {
+        //REALIZA UPDATE DE CUPON EN LA TABLA A3729.
+
+        boolean correct = false;
+        boolean duplicateExists = false;
+        String mensaje = "SUCCESSFUL. Information Updated.";
+        List<A2290Filter> lst_tkt_error = new ArrayList<A2290Filter>();
+        LoadSalesConciliationDAO objDao = new LoadSalesConciliationDAO();
+        A2290Filter objRtn = new A2290Filter();
+        A2290Filter objRtn2 = new A2290Filter();
+        A2290Filter rspt = new A2290Filter();
+        int QTY_UPDATE = 0, cont = 0, contDup = 0;
+        double NETOC = 0;
+        String mensajePost = "";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        int count = 0;
+        int cantReg = 0;
+        int loadedCount = 0;
+        int notLoadedCount = 0;
+        int duplicateCount = 0;
+        PreparedStatement cstmtBS;
+        cstmtBS = null;
+        
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_MASSIVE_REVERSE_MPF100(?,?,?,?,?,?)}";
+        try {
+            int QTYTRAN1 = lstdata.size();
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+//            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmtBS = cnx.prepareStatement(SQLCLL01);
+            try {
+                for (int i = 0; i < lstdata.size(); i++) {
+                    try {
+                        cstmtBS.setString(1, lstdata.get(i).TKT.trim());
+                        cstmtBS.setString(2, lstdata.get(i).SCARDN.trim());
+                        cstmtBS.setString(3, lstdata.get(i).SAUTHOC.trim());
+                        cstmtBS.setString(4, user.getUserInfo().USR);
+                        cstmtBS.setString(5, Functions.getFechaActual());
+                        cstmtBS.setString(6, Functions.getHoraActual());
+                        cstmtBS.addBatch();
+                        count++;
+                        
+                        if (count % 10000 == 0 ) {
+                            cstmtBS.executeBatch();
+                            cstmtBS.clearBatch();
+                        }
+                        cantReg++;
+                    } catch (Exception e) {
+                        loadedCount++;
+                        System.out.println("errorSQL");
+                        System.out.println(e);
+                        if(e.getMessage().contains("clave duplicada")){
+                            duplicateExists = true;
+                            duplicateCount++;
+                            
+                        }
+                    }
+                }
+                cstmtBS.executeBatch();
+                rspt.QTYREC = lstdata.size();    
+                rspt.QTYUPL = cantReg;    
+                rspt.QTYNOTUPL = loadedCount;      
+            
+            } catch (Exception e2) {
+                System.out.println("error" + e2);
+                System.out.println("error" + cantReg);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error en registro" + cont);
+            mensaje = "Error" + e.getMessage();
+
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+
+                }
+            }
+            if (cstmtBS != null) {
+                try {
+                    cstmtBS.close();
+                } catch (SQLException e) {
+
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        rspt.MESSAGE = mensaje;
+        return rspt;
     }
 
     public List<A2290Filter> loadPX269SQPMPF100(A2290Filter filter) throws SQLException, Exception {
