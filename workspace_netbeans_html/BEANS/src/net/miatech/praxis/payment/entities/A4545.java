@@ -48,7 +48,14 @@ public class A4545 {
                 A4545FREGI, 
                 A4545HREGI,
                 A4545DATCI,
-                A4545TRACI; 
+                A4545TRACI,
+                A4545DATEC,
+                A4545TRANC,
+                A4545CCDIG,
+                A4545CCAUTH,
+                A4545CCDAT,
+                A4545MERCH,
+                A4545TSCR; 
                         
     private Integer A4545SEQ,A4545ITEM;
     private BigDecimal A4545ACTIV ,
