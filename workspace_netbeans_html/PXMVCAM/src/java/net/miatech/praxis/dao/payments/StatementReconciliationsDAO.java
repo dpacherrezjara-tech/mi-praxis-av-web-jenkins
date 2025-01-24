@@ -3714,7 +3714,7 @@ public class StatementReconciliationsDAO {
     public boolean CONCILIA2(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda) throws SQLException, Exception {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
-                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB', FSELEC = 'L' , FECSELEC = '" + Functions.getFechaActual() + "' "
+                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
                 + "WHERE STVAL = '3' AND TDOC = 'S' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -3746,7 +3746,7 @@ public class StatementReconciliationsDAO {
     public boolean CONCILIA2_SEQ(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda) throws SQLException, Exception {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
-                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB', FSELEC = 'L' , FECSELEC = '" + Functions.getFechaActual() + "' "
+                + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
                 + "WHERE STVAL = '3' AND SEQ = '' AND TDOC = 'S' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
