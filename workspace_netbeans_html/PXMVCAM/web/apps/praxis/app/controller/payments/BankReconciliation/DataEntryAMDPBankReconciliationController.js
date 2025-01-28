@@ -41,13 +41,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 Ext.getCmp(prototype.id + '-btn-reverse').hide();
             }
         } else {
-            this.onSearchPendingDetail();
-            Ext.getCmp(prototype.id + '-btn-update').show();
-            Ext.getCmp(prototype.id + '-btn-reverse').hide();
+
+            if (this.bean.NEGOC === '1') {
+                this.onSearchPendingDetail();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-reverse').hide();
+
+            } else {
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-reverse').hide();
+            }
+                
+
+
+            
         }
         meDe.agregaTicket(meDe.bean);
     },
-    joinMultiSelect: function (element){
+    joinMultiSelect: function (element) {
         let comboBox = element.getValue();
         return comboBox.join('|');
     },
@@ -504,10 +515,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.util.CSS.createStyleSheet('.detalle-society { background-color: transparent !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #ccdeeb !important; }');
         }
-        console.log(vBandoc.substring(0,1), 'subcadena de bandoc')
-        if( vBandoc.substring(0,1) === 'W' &&  comg !== '' && comp !== '' && comg === comp){
+        console.log(vBandoc.substring(0, 1), 'subcadena de bandoc')
+        if (vBandoc.substring(0, 1) === 'W' && comg !== '' && comp !== '' && comg === comp) {
             this.setValue('de-txtCCUSTCC', this.bean.CCUSTCC);
-        } else{
+        } else {
             this.setValue('de-txtCCUSTCC', this.bean.CCUST);
         }
 
