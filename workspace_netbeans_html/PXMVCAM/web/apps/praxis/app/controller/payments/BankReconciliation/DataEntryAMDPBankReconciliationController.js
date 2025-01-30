@@ -41,13 +41,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 Ext.getCmp(prototype.id + '-btn-reverse').hide();
             }
         } else {
-            this.onSearchPendingDetail();
-            Ext.getCmp(prototype.id + '-btn-update').show();
-            Ext.getCmp(prototype.id + '-btn-reverse').hide();
+
+            if (this.bean.NEGOC === '1') {
+                this.onSearchPendingDetail();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-reverse').hide();
+
+            } else {
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-reverse').hide();
+            }
+
+
+
+
         }
         meDe.agregaTicket(meDe.bean);
     },
-    joinMultiSelect: function (element){
+    joinMultiSelect: function (element) {
         let comboBox = element.getValue();
         return comboBox.join('|');
     },
@@ -435,6 +446,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
             Ext.getCmp(prototype.id + '-columnACCNUMA').show();
             Ext.getCmp(prototype.id + '-vacioComment').show();
+            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 300');
             this.hiddenByMatch();
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
@@ -446,6 +458,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-columnACCNUMA').hide();
             Ext.getCmp(prototype.id + '-columnINVOICE').setWidth(143);
             Ext.getCmp(prototype.id + '-vacioComment').hide();
+            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 265')
         }
 
         this.setValue('de-txtPRDA', this.bean.PRDA);
@@ -504,10 +517,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.util.CSS.createStyleSheet('.detalle-society { background-color: transparent !important; }');
             Ext.util.CSS.createStyleSheet('.detalle-society-textfield { background-color: #ccdeeb !important; }');
         }
-        console.log(vBandoc.substring(0,1), 'subcadena de bandoc')
-        if( vBandoc.substring(0,1) === 'W' &&  comg !== '' && comp !== '' && comg === comp){
+        console.log(vBandoc.substring(0, 1), 'subcadena de bandoc')
+        if (vBandoc.substring(0, 1) === 'W' && comg !== '' && comp !== '' && comg === comp) {
             this.setValue('de-txtCCUSTCC', this.bean.CCUSTCC);
-        } else{
+        } else {
             this.setValue('de-txtCCUSTCC', this.bean.CCUST);
         }
 
@@ -1061,6 +1074,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             console.error(error.message);
             return false;
         }
+
+        let isDiff = false;
+        let agentSales = '';
+        grilla.getStore().each(function (record, index) {
+            let currentAgent = record.get('A720AGENTE');
+            if (index === 0) {
+                agentSales = currentAgent;
+            } else if (currentAgent !== agentSales) {
+                isDiff = true;
+            }
+        })
+
         grilla.getStore().each(function (record) {
             let registro = {
                 PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), // 
@@ -1080,6 +1105,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(),
                 DATECI: Ext.getCmp(prototype.id + '-de-txtDATECI').getValue(),
                 TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
+                SAGENT: isDiff === false ? record.get('A720AGENTE') : '',
                 COREP: meDe.bean.COREP,
                 CODPRO: meDe.bean.CODPRO,
                 CCUSTPRO: meDe.bean.CCUSTPRO
