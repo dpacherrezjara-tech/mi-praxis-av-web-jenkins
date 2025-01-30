@@ -19,6 +19,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     me: '',
     searchParams: {},
     paramsDetail: {},
+    paramsObtainData: {},
     dataObtain: {},
     init: function (view) {
         me = this;
@@ -97,8 +98,8 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         if (!proces.isVisible()) {
             Ext.getCmp(prototype.id + '-PRO').show();
             Ext.getCmp(prototype.id + '-cmbCores').show();
-            
-        }else{
+
+        } else {
             Ext.getCmp(prototype.id + '-PRO').hide();
             Ext.getCmp(prototype.id + '-cmbCores').hide();
         }
@@ -136,12 +137,13 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             ]
         }));
         cmbFecFiltro.setValue("PRDA");
-        
+
         var cmbClient = Ext.getCmp(prototype.id + '-cmbClient');
         cmbClient.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
             fields: ['CODE', 'NAME'],
             data: [
+                ["", "All"],
                 ["134", "AVIANCA"],
                 ["202", "TACA"],
                 ["133", "LACSA"],
@@ -175,6 +177,29 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 
             }
         });
+        
+        this.paramsObtainData.USERPERMIS = 2;
+        this.paramsObtainData.NPROG = sessionStorage.getItem('nprog');
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                beanString: JSON.stringify(this.paramsObtainData)
+            },
+            success: function (response, options) {
+                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.userPermis.PERMM === 'Y') {
+                    Ext.getCmp(prototype.id + '-btn-bill').show();
+                } else {
+                    Ext.getCmp(prototype.id + '-btn-bill').hide();
+                }
+                global.clear();
+
+            }
+        });
 
     },
     //</editor-fold>
@@ -188,12 +213,12 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         if (!proces.isVisible()) {
             //solo es colombia
             me.bean.IN_FUENTE = 'C';
-        }else{
+        } else {
             //exterior
             me.bean.IN_FUENTE = 'E';
             me.bean.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
         }
-        
+
         var beanString = JSON.stringify(me.bean);
         console.log(me.bean);
         searchParams = {
@@ -249,6 +274,14 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);
     },
+    getLastDayOfMonth: function(inPrda) {
+        
+    const year = parseInt(inPrda.substring(0, 4), 10);
+    const month = parseInt(inPrda.substring(4, 6), 10);
+    const lastDay = new Date(year, month, 0);
+    const formattedDate = `${lastDay.getFullYear()}${(lastDay.getMonth() + 1).toString().padStart(2, '0')}${lastDay.getDate().toString().padStart(2, '0')}`;
+    return formattedDate;
+    },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
@@ -287,6 +320,62 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 //        Ext.getCmp(prototype.id + '-txtCODEM').setValue('');
 
     },
+    
+    onBill: function (obj, e) {
+        let beanProcess = {}
+        beanProcess.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        beanProcess.IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
+        beanProcess.IN_CCUST = Ext.getCmp(prototype.id + '-cmbClient').getValue();
+        let proces = Ext.getCmp(prototype.id + '-cmbCores');
+        if (!proces.isVisible()) {
+            //solo es colombia
+            beanProcess.IN_FUENTE = 'C';
+        } else {
+            //exterior
+            beanProcess.IN_FUENTE = 'E';
+            beanProcess.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
+        }
+        beanProcess.IN_LDATE = this.getLastDayOfMonth(beanProcess.IN_PRDA);
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Process billing?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    let beanString = JSON.stringify(beanProcess);
+                    Ext.Ajax.request({
+                        url: prototype.url + '/updateBilledMPF100',
+                        method: 'POST',
+                        timeout: 60000000,
+                        beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
+                        params: {beanString: beanString},
+
+                        success: function (response) {
+                            var res = Ext.decode(response.responseText);
+                            console.log(res);
+                            if (res.success) {
+
+                                let objResult = res.result;
+                                global.Msg({msg: objResult.MESSAGE});
+                                Ext.getCmp(prototype.id + '-panelGridData').unmask()
+
+                            } else {
+                                global.Msg({msg: "Error Processed "});
+                            }
+                        },
+                        failure: function (response) {
+                            Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                            console.log('server-side failure with status code ' + response.status);
+                        }
+                    });
+                }
+            }
+        });
+    },
+
     btnExcel_click: function (obj, e) {
 
         this.setFormatParameter();
