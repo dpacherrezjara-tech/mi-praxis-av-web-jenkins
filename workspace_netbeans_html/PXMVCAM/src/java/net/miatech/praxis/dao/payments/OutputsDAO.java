@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.ReportEmdDetailsA1530Filter;
+import net.miatech.beans.spring.UserView;
 
 import net.miatech.beans.spring.implement.IServerSession;
+import static net.miatech.praxis.dao.payments.LoadSalesConciliationDAO.pasarGarbageCollector;
 import net.miatech.praxis.interline.filter.SFI021Filter;
 import net.miatech.praxis.interline.filter.WRF016Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
@@ -184,7 +186,7 @@ public class OutputsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105_V1(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -230,6 +232,55 @@ public class OutputsDAO {
         }
 
         return lstData;
+    }
+    
+    public A2353Filter SQP05105_UPDATE(A2353Filter filter, UserView user) throws SQLException, Exception {
+
+        String strMsj = "Operation was successful.";
+        A2353Filter objRtn = new A2353Filter();
+        CallableStatement cstmt = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105_UPDATE(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST.trim());
+            cstmt.setString(2, filter.IN_FILE.trim());
+            cstmt.setString(3, filter.IN_PRDA.trim());
+            cstmt.setString(4, filter.IN_DATE.trim());
+            cstmt.setString(5, filter.IN_CORE.trim());
+            cstmt.setString(6, filter.IN_FUENTE.trim());
+            cstmt.setString(7, filter.IN_LDATE.trim());
+            cstmt.execute();
+
+            
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        objRtn.MESSAGE = strMsj;
+        return objRtn;
     }
 
 }

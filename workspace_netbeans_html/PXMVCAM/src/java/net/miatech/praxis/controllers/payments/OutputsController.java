@@ -22,10 +22,12 @@ import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.BankReconciliationLogic;
+import net.miatech.praxis.logic.payments.LoadSalesConciliationLogic;
 import net.miatech.praxis.logic.payments.MerchantNumberLogic;
 import net.miatech.praxis.logic.payments.RejectionstLogic;
 import net.miatech.praxis.logic.payments.OutputsLogic;
@@ -191,6 +193,34 @@ public class OutputsController extends BaseController {
         } catch (Exception ex) {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "updateBilledMPF100",  method = RequestMethod.POST)
+    public @ResponseBody
+    String updateRecords(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- LoadSalesConciliation : updateRecords-------------");
+        
+        Gson gson = new Gson();
+        A2353Filter filter = new A2353Filter();
+        A2353Filter result = new A2353Filter();
+        String beanString;
+        try {
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2353Filter.class);
+
+        logic = new OutputsLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        UserView user = this.serverSession.getServerSession().getUserView();
+        
+            result = logic.SQP05105_UPDATE(filter, user);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
         }
         return new Gson().toJson(map);
     }
@@ -560,6 +590,7 @@ public class OutputsController extends BaseController {
         String name = "TICKETS - ";
 
         HashMap<String, String> hmCCUST = new HashMap<String, String>();
+        hmCCUST.put("", "ALL");
         hmCCUST.put("134", "AVIANCA");
         hmCCUST.put("202", "TACA");
         hmCCUST.put("133", "LACSA");

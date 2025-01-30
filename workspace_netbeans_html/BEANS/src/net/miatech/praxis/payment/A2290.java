@@ -231,6 +231,9 @@ public class A2290 {
     public String SOCIETYL = "";
     public String INTCOMP = "";
     public String AMOUNT = "";
+    public String AMOUNTV = "";
+    public String AMOUNTL = "";
+    public String VARIACIONP = "";
     public String USERAV = "";
     public String TYPETRAN = "";
     public String FCONCEP = "";

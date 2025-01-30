@@ -9,6 +9,7 @@ import net.miatech.praxis.logic.interline.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.interline.ReasonCodeReportDAO;
 import net.miatech.praxis.dao.payments.OutputsDAO;
@@ -41,6 +42,10 @@ public class OutputsLogic {
     
     public List<A2353Filter> loadPX285SQP05105(A2353Filter filter) throws SQLException, Exception {
         return OutputsDAO.loadPX285SQP05105(filter);
+    }
+    
+    public A2353Filter SQP05105_UPDATE(A2353Filter filter, UserView user) throws SQLException, Exception {
+        return OutputsDAO.SQP05105_UPDATE(filter, user);
     }
     
 }
