@@ -243,7 +243,20 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             icon: 'resources/img/botones/txt.png',
                                             tooltip: 'Export to Txt Sale',
                                             padding: '3 0'
-                                        }
+                                        },
+                                        {xtype: 'tbspacer', width: 15},
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btn-bill',
+                                            padding: '3 0',
+                                            width: 80,
+                                            html: '<strong style="color:black;">Bill</strong>',
+                                            style: 'background:#70E3EC;color:white;font-weight:bold;',
+                                            border: true,
+                                            listeners: {
+                                                click: 'onBill'
+                                            }
+                                        },
                                     ]
                                 },
                                 {xtype: 'tbspacer', width: 7, height: 10},

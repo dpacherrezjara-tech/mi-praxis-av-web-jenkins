@@ -238,6 +238,7 @@ public class A2290Filter extends A2290 {
 
     public double NETOL = 0;
     public double SVFOPL = 0;
+    public double SVFOPT = 0;
     public double DIFF = 0;
     public double totNETO = 0;
     public double totNETOC = 0;

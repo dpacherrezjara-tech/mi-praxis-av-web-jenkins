@@ -30,6 +30,7 @@ public class A2353Filter extends A2353 {
      public String IN_DATE = "";
      public String IN_CORE = "";
      public String IN_FUENTE = "";
+     public String IN_LDATE = "";
      public String IN_APLIC = "";
      public String IN_INPNAME = "";
      public String IN_OUTNAME = "";
@@ -52,6 +53,7 @@ public class A2353Filter extends A2353 {
      public String TCCOTDIR2 = "";
      public String TREG = "";
      public String SIGN = "";
+     public String MESSAGE = "";
 //     public String IN_TABLA = "";
      
      public long RN = 0; 

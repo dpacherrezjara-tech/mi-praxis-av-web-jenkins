@@ -44,17 +44,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
             if (this.bean.NEGOC === '1') {
                 this.onSearchPendingDetail();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-reverse').hide();
-
+                Ext.getCmp(prototype.id + '-btn-update').show();
             } else {
                 Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-reverse').hide();
             }
-                
+            Ext.getCmp(prototype.id + '-btn-reverse').hide();
 
-
-            
         }
         meDe.agregaTicket(meDe.bean);
     },
@@ -446,6 +441,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
             Ext.getCmp(prototype.id + '-columnACCNUMA').show();
             Ext.getCmp(prototype.id + '-vacioComment').show();
+            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 300');
             this.hiddenByMatch();
         } else {
             Ext.getCmp(prototype.id + '-mostrarComment').show();
@@ -457,6 +453,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             Ext.getCmp(prototype.id + '-columnACCNUMA').hide();
             Ext.getCmp(prototype.id + '-columnINVOICE').setWidth(143);
             Ext.getCmp(prototype.id + '-vacioComment').hide();
+            Ext.getCmp(prototype.id + '-panelSumAmount').setMargin('0 0 0 265')
         }
 
         this.setValue('de-txtPRDA', this.bean.PRDA);
@@ -1072,6 +1069,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             console.error(error.message);
             return false;
         }
+
+        let isDiff = false;
+        let agentSales = '';
+        grilla.getStore().each(function (record, index) {
+            let currentAgent = record.get('A720AGENTE');
+            if (index === 0) {
+                agentSales = currentAgent;
+            } else if (currentAgent !== agentSales) {
+                isDiff = true;
+            }
+        })
+
         grilla.getStore().each(function (record) {
             let registro = {
                 PRDA: Ext.getCmp(prototype.id + '-de-txtPRDA').getValue(), // 
@@ -1091,6 +1100,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 DATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(),
                 DATECI: Ext.getCmp(prototype.id + '-de-txtDATECI').getValue(),
                 TRANCI: Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue(),
+                SAGENT: isDiff === false ? record.get('A720AGENTE') : '',
                 COREP: meDe.bean.COREP,
                 CODPRO: meDe.bean.CODPRO,
                 CCUSTPRO: meDe.bean.CCUSTPRO
