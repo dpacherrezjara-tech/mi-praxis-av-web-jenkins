@@ -1884,6 +1884,7 @@ public class BankReconciliationDAO {
         hmDescReglas.put("*", "Intercompany");
         hmDescReglas.put("A", "By Spreadsheet");
         hmDescReglas.put("B", "By IATA/Sdate");
+        hmDescReglas.put("C", "By WEB-OPER");
 
         HashMap<String, String> hmDescFCOMPL = new HashMap<String, String>();
         hmDescFCOMPL.put("", "");
@@ -2166,7 +2167,7 @@ public class BankReconciliationDAO {
         Connection cnx2 = null;
         Connection cnx3 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF101(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF101(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2193,6 +2194,7 @@ public class BankReconciliationDAO {
             cstmt.setString(15, Functions.getHoraActual());
             cstmt.setString(16, filter.strComment.toUpperCase());
             cstmt.setString(17, filter.FREGLA.trim());
+            cstmt.setString(18, filter.SAGENT.trim());
             
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
