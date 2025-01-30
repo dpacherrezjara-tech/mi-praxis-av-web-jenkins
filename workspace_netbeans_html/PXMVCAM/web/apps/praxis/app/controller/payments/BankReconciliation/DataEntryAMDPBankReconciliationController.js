@@ -44,16 +44,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
             if (this.bean.NEGOC === '1') {
                 this.onSearchPendingDetail();
-                Ext.getCmp(prototype.id + '-btn-update').hide();
-                Ext.getCmp(prototype.id + '-btn-reverse').hide();
-
+                Ext.getCmp(prototype.id + '-btn-update').show();
             } else {
                 Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-reverse').hide();
             }
-
-
-
+            Ext.getCmp(prototype.id + '-btn-reverse').hide();
 
         }
         meDe.agregaTicket(meDe.bean);
