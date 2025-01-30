@@ -1247,12 +1247,20 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
                             params: {beanString: JSON.stringify(bean)},
                             beforerequest: Ext.getBody().mask('Loading...'),
                             success: function(response, options){
+                                console.log(response, options)
                                 Ext.getBody().unmask();
                                 var res = Ext.JSON.decode(response.responseText);
+                                console.log(res,'RES__****')
                                 if (res.success){
                                     let objResponse = res.result
-                                    if(objResponse.MESSAGE == 'YES'){
+                                    if(objResponse.MESSAGE == 'YES|CHARGEBACK'){
                                        Ext.getCmp(prototype.id + '-lblChargebackss').setText('Chargeback');
+                                       Ext.getCmp(prototype.id + '-lblChargebackss').show() 
+                                    }else if(objResponse.MESSAGE == 'YES|REVERSA CHARGEBACK'){
+                                       Ext.getCmp(prototype.id + '-lblChargebackss').setText('Reversa Chargeback');
+                                       Ext.getCmp(prototype.id + '-lblChargebackss').show() 
+                                    }else if(objResponse.MESSAGE == 'YES|BLANK'){
+                                       Ext.getCmp(prototype.id + '-lblChargebackss').setText('');
                                        Ext.getCmp(prototype.id + '-lblChargebackss').show() 
                                     }else{
                                         Ext.getCmp(prototype.id + '-lblChargebackss').hide();
