@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
     beanDetailTar: {},
     beanIBT: {},
     beanDetailAcc: {},
+    beanDetailBill: {},
     beanDetailMer: {},
     beanDebits: {},
     lstTarjetas: {},
@@ -1123,6 +1124,29 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
                 }
 
                 this.searchAcc(this.beanDetailAcc);
+            } else if (win.getValue('cmbFecFiltro').trim() === 'DBILLED') {
+                //***********CONSULTA A SUMARIO CONTAB.***********
+                this.beanDetailBill.strFecFiltro = win.getValue('cmbFecFiltro');
+                this.beanDetailBill.strYearFrom = win.getValue('cmbDateFromYear');
+                this.beanDetailBill.strMonthFrom = win.getValue('cmbDateFromMonth');
+                this.beanDetailBill.strYearTo = win.getValue('cmbDateToYear');
+                this.beanDetailBill.strMonthTo = win.getValue('cmbDateToMonth');
+                this.beanDetailBill.IN_COUNTRY = win.getValue('cmbCountry');
+
+                if (win.getValue('chkTP')) {
+                    this.beanDetailBill.IN_SCAR = 'Y';
+                } else {
+                    this.beanDetailBill.IN_SCAR = 'N';
+                }
+
+                let proces = Ext.getCmp(prototype.id + '-TEST');
+                if (!proces.isVisible()) {
+                    this.beanDetailBill.IN_EXT = 'N';
+                } else {
+                    this.beanDetailBill.IN_EXT = 'Y';
+                }
+
+                this.searchBill(this.beanDetailBill);
             } else if (win.getValue('cmbTDOC').trim() === 'D' || win.getValue('cmbTDOC').trim() === 'R' || win.getValue('cmbTDOC').trim() === 'C' || win.getValue('cmbTDOC').trim() === 'A') {
                 //***********CONSULTA A SUMARIO DEBITOS***********
                 this.beanDebits.strFecFiltro = win.getValue('cmbFecFiltro');
@@ -1527,6 +1551,50 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
         Ext.getCmp(prototype.id + '-gridDataAcc').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pagginAcc').bindStore(storeGridDatas);
+        var grid = Ext.getCmp(prototype.id + '-gridDataAcc');
+        var columns = grid.getColumns();
+        var columnIndex = 0; 
+        if (columns[columnIndex]) {
+            columns[columnIndex].setText('Accounting<br>Date');
+        }
+    },
+    searchBill: function (bean) {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/search'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(bean)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                    win.lblUser_toolTip("Estructura: MPF108");
+
+                    me.selectedChild('vskMain', 'boxMainDataAcc');
+
+                    var res = Ext.JSON.decode(response._response.responseText);
+                    if (res.success) {
+                        if (obj.data.length > 0) {
+                            var obj = obj.data.items[0].data;
+
+                        } else {
+                            global.Msg({msg: 'Data not found'});
+                        }
+                    } else
+                        global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataAcc').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pagginAcc').bindStore(storeGridDatas);
+        var grid = Ext.getCmp(prototype.id + '-gridDataAcc');
+        var columns = grid.getColumns();
+        var columnIndex = 0; 
+        if (columns[columnIndex]) {
+            columns[columnIndex].setText('Bill<br>Date');
+        }
     },
     searchDebits: function (beanDebits) {
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
