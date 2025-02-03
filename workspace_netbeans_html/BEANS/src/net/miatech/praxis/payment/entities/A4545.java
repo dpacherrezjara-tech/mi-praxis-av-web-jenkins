@@ -55,7 +55,8 @@ public class A4545 {
                 A4545CCAUTH,
                 A4545CCDAT,
                 A4545MERCH,
-                A4545TSCR; 
+                A4545TSCR,
+                A4545ADATE; 
                         
     private Integer A4545SEQ,A4545ITEM;
     private BigDecimal A4545ACTIV ,
