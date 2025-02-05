@@ -16,6 +16,8 @@ import java.util.List;
 import net.miatech.beans.spring.UserView;
 
 import net.miatech.beans.spring.implement.IServerSession;
+import static net.miatech.praxis.dao.payments.LoadSalesConciliationDAO.pasarGarbageCollector;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2295Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -446,6 +448,7 @@ public class SalesConciliationManualDAO {
                 objRtn.TRANC = rs01.getString("TRANC").trim();
                 objRtn.SAGENT = rs01.getString("SAGENT").trim();
                 objRtn.INVOICE = rs01.getString("INVOICE").trim();
+                objRtn.SPNR = rs01.getString("SPNR").trim();
 
                 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;
@@ -890,4 +893,17 @@ public class SalesConciliationManualDAO {
         }
         return objRtn;
     }
+    
+    public String formatAmount(String amount) {
+
+        if (amount.substring(amount.length() - 3).contains(",")) {
+            amount = amount.replace(".", "").replace(",", ".");
+        } else if (amount.substring(amount.length() - 3).contains(".")) {
+            amount = amount.replace(",", "");
+        } else {
+            amount = amount;
+        }
+
+        return amount;
+    } 
 }
