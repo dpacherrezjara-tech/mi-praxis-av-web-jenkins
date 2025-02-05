@@ -70,7 +70,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.LoadSalesConcilia
                                         ,
                                         {
                                             xtype: 'panel',
-                                            height: 340,
+                                            height: 362,
                                             width: 750,
                                             layout: 'fit',
                                             items: [

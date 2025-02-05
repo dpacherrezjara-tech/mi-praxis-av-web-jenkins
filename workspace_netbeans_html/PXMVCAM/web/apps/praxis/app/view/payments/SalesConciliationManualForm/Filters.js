@@ -449,7 +449,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                         },
                     ]
 
-                }
+                },
             ]
         }
     ]

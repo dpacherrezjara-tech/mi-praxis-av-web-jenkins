@@ -29,6 +29,7 @@ import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.dao.payments.LoadSalesConciliationDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.LoadSalesConciliationLogic;
+import net.miatech.praxis.logic.payments.SalesConciliationManualLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF106Filter;
 import net.miatech.utils.Functions;
@@ -285,6 +286,156 @@ public class LoadSalesConciliationController extends BaseController {
 
     }
 
+    @RequestMapping(value = "/loadExcelFilePWP", method = RequestMethod.POST)
+    public @ResponseBody
+    String loadExcelFilePWP(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request) throws IOException {
+        byte[] bytes = null;
+        Gson gson = new Gson();
+        Integer cont = 0;
+        A2290Filter objResult = new A2290Filter();
+        A2290Filter filter = new A2290Filter();
+        
+
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            String filename = excelfile.getOriginalFilename();
+            String beanString = request.getParameter("beanString");
+            
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            byte[] dataFile = excelfile.getBytes();
+            objResult = getExcelFilePWP(dataFile, filter );
+
+            map.put("success", true);
+            map.put("objResult", objResult);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private A2290Filter getExcelFilePWP(byte[] bytes, A2290Filter filter) throws Exception {
+
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        logic = new LoadSalesConciliationLogic();
+        List<A2290Filter> lstDataIngreso = new ArrayList<>();
+        List<A2290Filter> lstDataVenta = new ArrayList<>();
+        List<A2290Filter> lstDataNotFound = new ArrayList<>();
+        List<A2290Filter> lstData = new ArrayList<>();
+        A2290Filter respt = new A2290Filter();
+        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+//        String ruta = "D:";
+        double neto = 0;
+//        boolean isDiff = false;
+        String mensaje = "Hubo un error al actualizar los pagos", strHora = Functions.getHoraActual();
+        String mensajePost = "";
+        double montoTotal = 0;
+        int i = 0;
+        int qty = 0;
+  
+        try {
+            String strSesion = UUID.randomUUID().toString();
+            String strNomExcel = "SalesDocumentLoad.xlsx";
+
+            String strArchivo = ruta + "\\" + strNomExcel;
+            File archivo = new File(strArchivo);
+            FileOutputStream fs = new FileOutputStream(archivo);
+            DataFormatter df = new DataFormatter();
+
+            fs.write(bytes);
+            fs.flush();
+            fs.close();
+
+            DataFormatter formatter = new DataFormatter();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            FileInputStream file = new FileInputStream(new File(strArchivo));
+            XSSFWorkbook worbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = worbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            System.out.println(filter.IN_CONTAB);
+            Row row0 = rowIterator.next();
+
+            try {
+                while (rowIterator.hasNext()) {
+                    i++;
+                    Row row = rowIterator.next();
+                    if (row.getRowNum() > 0) {
+                        A2290Filter obj = new A2290Filter();
+                        
+//                        obj.SEQ = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim();
+//                        obj.USERF = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
+                        obj.TYPETRAN = "V";
+                        obj.CCUST = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
+                        obj.TKT = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim();
+                        obj.CCIA = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
+                        obj.FORMA = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(3,7);
+                        obj.SERIE = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(7);
+                        obj.SDATE = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim().substring(4) + formatter.formatCellValue(row.getCell(0)).trim().substring(2,4) + formatter.formatCellValue(row.getCell(0)).trim().substring(0,2);
+                        obj.SAGENT = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
+                        obj.SPNR= formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
+                        obj.SCURRENCY= formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
+                        obj.SCARDN= formatter.formatCellValue(row.getCell(12)) == null ? "" : formatter.formatCellValue(row.getCell(12)).trim().substring(2);
+                        obj.SAUTHOC= formatter.formatCellValue(row.getCell(13)) == null ? "" : formatter.formatCellValue(row.getCell(13)).trim();
+                        while (obj.SAUTHOC.length() < 6) {
+                            obj.SAUTHOC = "0" + obj.SAUTHOC;
+                        }
+                        obj.AMOUNT = formatter.formatCellValue(row.getCell(14)) == null ? "" : formatter.formatCellValue(row.getCell(14)).trim();
+                        obj.AMOUNTV = formatter.formatCellValue(row.getCell(30)) == null ? "" : formatAmount(formatter.formatCellValue(row.getCell(30)).trim().replaceAll("[^\\d.,-]", ""));
+                        obj.AMOUNTL = formatter.formatCellValue(row.getCell(31)) == null ? "" : formatAmount(formatter.formatCellValue(row.getCell(31)).trim().replaceAll("[^\\d.,-]", ""));
+                        obj.VARIACIONP = formatter.formatCellValue(row.getCell(39)) == null ? "" : formatAmount(formatter.formatCellValue(row.getCell(39)).trim().replaceAll("[^\\d.,-]", ""));
+                        obj.STVAL = "3";
+//                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)) == null ? "" : formatter.formatCellValue(row.getCell(11)).trim();
+                        obj.CECO = formatter.formatCellValue(row.getCell(42)) == null ? "" : formatter.formatCellValue(row.getCell(42)).trim();
+                        obj.CECO = obj.CECO.contains("CARGO A CECO") ? obj.CECO.split(" ")[3] : "";
+                        System.out.println(obj.AMOUNT);
+                        
+                        if(obj.CCUST.equals("") && obj.TKT.equals("") && obj.SAGENT.equals("") && obj.SCURRENCY.equals("") 
+                           && obj.SCARDN.equals("") && obj.SAUTHOC.equals("") ){       
+                            break;
+                        }
+                        if( obj.SEQ.contains("IF") || obj.SEQ.contains("(") || obj.SEQ.contains("(") ){
+                            respt.MESSAGE = "The file contains formula";
+                            return respt;
+                        }
+                        if( obj.AMOUNT.length() <= 3  ){
+                            respt.MESSAGE = "Amount without #,00 format";
+                            return respt;
+                        }
+                        qty++;
+                        lstData.add(obj);
+                    }
+                }
+                file.close();
+            } catch (Exception e) {
+                e.getMessage();
+                if (e.getMessage().contains("String index out of range")) {
+                    mensajePost = "";
+                } else {
+                    mensajePost = "Error en linea : " + i + " | error: " + e.getMessage();
+                }
+            }
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic.setSession(this.serverSession.getServerSession());
+            System.out.println(lstData +"");
+            respt = logic.SQP_INSERT_PO_MPF114(lstData, user);
+//            respt.MESSAGE = mensaje;
+            
+            //Eliminar temporal           
+            archivo.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return respt;
+
+    }
+    
     public String formatAmount(String amount) {
 
         if (amount.substring(amount.length() - 3).contains(",")) {
@@ -424,39 +575,6 @@ public class LoadSalesConciliationController extends BaseController {
 
     }
 
-
-    @RequestMapping(value = "MaintenanceMPF016")
-    public @ResponseBody
-    String MaintenanceMPF106(ModelMap map, HttpServletRequest request) {
-
-        System.out.println("-------------- LoadSalesConciliation : MaintenanceMPF106-------------");
-        String option;
-        MPF106Filter filter = new MPF106Filter();
-        Gson gson = new Gson();
-        String msj = "";
-        String beanString = "";
-
-        try {
-            option = request.getParameter("option");
-            filter.TERMP = request.getParameter("TERMP");
-            filter.SAGENT = request.getParameter("SAGENT");
-
-            logic = new LoadSalesConciliationLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX620SQP05108(filter, option);
-
-            map.put("success", true);
-            map.put("Mensaje", msj);
-        } catch (NumberFormatException | SQLException ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        } catch (Exception ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        }
-        return new Gson().toJson(map);
-    }
-
     @RequestMapping(value = "updateRecords",  method = RequestMethod.POST)
     public @ResponseBody
     String updateRecords(ModelMap map, HttpServletRequest request) {
@@ -476,6 +594,34 @@ public class LoadSalesConciliationController extends BaseController {
         UserView user = this.serverSession.getServerSession().getUserView();
         
             result = logic.SQPMPS076_UP(filter, user);
+            map.put("result", result);
+            map.put("success", true);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RejectionsController.class.getName()).log(Level.SEVERE, null, ex);
+            map.put("success", false);
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "updateRecordsOperational",  method = RequestMethod.POST)
+    public @ResponseBody
+    String updateRecordsOperational(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- LoadSalesConciliation : updateRecordsOperational-------------");
+        
+        Gson gson = new Gson();
+        A2290Filter filter = new A2290Filter();
+        A2290Filter result = new A2290Filter();
+        String beanString;
+        try {
+        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        beanString = request.getParameter("beanString");
+        filter = gson.fromJson(beanString, A2290Filter.class);
+
+        logic = new LoadSalesConciliationLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        UserView user = this.serverSession.getServerSession().getUserView();
+        
+            result = logic.SQPMPS076_UP_OPERATIONAL(filter, user);
             map.put("result", result);
             map.put("success", true);
         } catch (Exception ex) {
