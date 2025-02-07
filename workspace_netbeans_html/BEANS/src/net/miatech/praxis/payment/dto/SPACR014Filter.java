@@ -18,6 +18,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SPACR014Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_VALDATEF,IN_VALDATET,IN_CODPRO,IN_BANDOC,IN_REFER,IN_TIPOCON,IN_IDCONT,IN_FCONT,IN_STATUS;
+    private String IN_CCUST,IN_VALDATEF,IN_VALDATET,IN_CODPRO,IN_BANDOC,IN_REFER,IN_TIPOCON,IN_IDCONT,IN_FCONT,IN_STATUS,IN_HEADER;
     List<MPF102> response = new ArrayList<>();
 }

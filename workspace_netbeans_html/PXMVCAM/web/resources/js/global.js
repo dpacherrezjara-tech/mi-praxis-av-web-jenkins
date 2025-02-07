@@ -1597,6 +1597,19 @@ var LarSyrExt = function () {
             }
         }
     };
+    this.maintenanceObj = function (jsonData) {
+        const resultado = {};
+        for (const clave in jsonData) {
+            if (jsonData.hasOwnProperty(clave)) {
+                // Convierte la clave a mayúsculas y añade "IN" como prefijo
+                const nuevaClave = `IN_${clave.toUpperCase()}`;
+
+                // Asigna el valor original a la nueva clave
+                resultado[nuevaClave] = jsonData[clave];
+            }
+        }
+        return resultado;
+    };
 };
 
 var global = new LarSyrExt();

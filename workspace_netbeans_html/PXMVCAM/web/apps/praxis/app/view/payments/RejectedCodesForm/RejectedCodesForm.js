@@ -1,25 +1,18 @@
-prototype.id = 'AccountingReportForm';
-prototype.url = CONTEXTPATH + '/AccountingReport';
+prototype.id = 'RejectedCodesForm';
+prototype.url = CONTEXTPATH + '/RejectedCodesCatalog';
 prototype.width = 1900;
 prototype.height = 630;
 fechaActual = new Date(), mesActual = fechaActual.getMonth(), anioActual = fechaActual.getFullYear();
 
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm', {
+Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.RejectedCodesForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.AccountingReportForm',
+    alias: 'widget.RejectedCodesForm',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.AccountingReportController',
-        'Ext.Praxis.view.payments.AccountingReportForm.Options',
-        'Ext.Praxis.view.payments.AccountingReportForm.FiltersDetail',
-        'Ext.Praxis.view.payments.AccountingReportForm.FiltersSummary',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid',
-        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid'
+        'Ext.Praxis.controller.payments.RejectedCodesCatalog.RejectedCodesCatalogController',
+        'Ext.Praxis.view.payments.RejectedCodesForm.Options',
+        'Ext.Praxis.view.payments.RejectedCodesForm.Filters'
     ],
-    controller: 'AccountingReportController',
+    controller: 'RejectedCodesCatalogController',
     layout: {
         type: 'fit'
     },
@@ -78,39 +71,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
                                             },
                                             items: [
                                                 {
-                                                    xtype: 'combobox',
-                                                    labelStyle: 'font-weight:bold;',
-                                                    fieldLabel: 'Search By',
-                                                    id: prototype.id + '-cmbType',
-                                                    store: Ext.create('Ext.data.SimpleStore', {
-                                                        fields: ['code', 'name'],
-                                                        data: [
-                                                            ['S', 'Summary'],
-                                                            ['D', 'Detail']
-                                                        ]
-                                                    }),
-                                                    fieldStyle:'text-align:center;',
-                                                    labelWidth: 80,
-                                                    width: 190,
-                                                    padding: 5,
-                                                    margin:'12 0 0 12',
-                                                    displayField: 'name',
-                                                    valueField: 'code',
-                                                    queryMode: 'local',
-                                                    editable: false,
-                                                    value: 'S',
-                                                    listeners:{
-                                                        change:'onChangeReport'
-                                                    }
-                                                },
-                                                {
-                                                    xtype: prototype.id + '-filtersDetail',
-                                                    id: prototype.id + '-fdetail',
-                                                    hidden:true
-                                                },
-                                                {
-                                                    xtype: prototype.id + '-filtersSummary',
-                                                    id: prototype.id + '-fsummary'
+                                                    xtype: prototype.id + '-filters'
                                                 }
                                             ]
                                         },

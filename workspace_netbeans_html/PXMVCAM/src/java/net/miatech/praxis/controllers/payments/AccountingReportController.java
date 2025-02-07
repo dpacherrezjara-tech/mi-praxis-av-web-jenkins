@@ -610,6 +610,9 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Processor"));
         header.add(new CustomExcelCell("Bank Doc"));
         header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Reference"));
+        header.add(new CustomExcelCell("Date Bank"));
+        header.add(new CustomExcelCell("Trans. Bank"));
         header.add(new CustomExcelCell("Error\nCode"));
         header.add(new CustomExcelCell("Error\nDescription"));
         header.add(new CustomExcelCell("Error\nRecords"));
@@ -624,6 +627,9 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getCODPRO()));
             row.add(new CustomExcelCell(obj.getBANDOC()));
             row.add(new CustomExcelCell(obj.getVALDATE()));
+            row.add(new CustomExcelCell(obj.getREFER()));
+            row.add(new CustomExcelCell(obj.getDATECI()));
+            row.add(new CustomExcelCell(obj.getTRANCI()));
             row.add(new CustomExcelCell(obj.getCERROR()));
             row.add(new CustomExcelCell(obj.getDESCERR()));
             row.add(new CustomExcelCell(obj.getQTYERR()));
@@ -748,7 +754,7 @@ public class AccountingReportController extends BaseController {
         System.out.println("Total: " + filter.getResponse().size());
 
         String title = "AccountingMasterProcess-AccountingInfo-"
-                + params.getIN_CCUST() + "_" + params.getIN_IDCONT().trim() + params.getIN_BANDOC()
+                + params.getIN_IDCONT().trim() + params.getIN_BANDOC()
                 + "_" + UUID.randomUUID().toString().substring(0, 6);
 
         List<List<CustomExcelCell>> data = new ArrayList<>();
@@ -758,28 +764,34 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Processor"));
         header.add(new CustomExcelCell("Bank Doc"));
         header.add(new CustomExcelCell("Value\nDate"));
+        header.add(new CustomExcelCell("Reference"));
         header.add(new CustomExcelCell("Record\nType"));
+        header.add(new CustomExcelCell("SEQ"));
+        header.add(new CustomExcelCell("Item"));
         header.add(new CustomExcelCell("Profit"));
+        header.add(new CustomExcelCell("Cost\nCenter"));
         header.add(new CustomExcelCell("Primary Key"));
         header.add(new CustomExcelCell("Account"));
         header.add(new CustomExcelCell("Currency"));
         header.add(new CustomExcelCell("Value"));
         header.add(new CustomExcelCell("Balance"));
-        header.add(new CustomExcelCell("Item"));
         header.add(new CustomExcelCell("Large Text"));
-        header.add(new CustomExcelCell("Reference"));
-        header.add(new CustomExcelCell("SEQ"));
+        header.add(new CustomExcelCell("Place"));
         header.add(new CustomExcelCell("Bank\nCode"));
         header.add(new CustomExcelCell("Bank\nName"));
         header.add(new CustomExcelCell("Country"));
-        header.add(new CustomExcelCell("Place"));
+        header.add(new CustomExcelCell("Merchant"));
         header.add(new CustomExcelCell("Agent"));
-        header.add(new CustomExcelCell("Cost\nCenter"));
         header.add(new CustomExcelCell("Key 1"));
         header.add(new CustomExcelCell("Key 2"));
         header.add(new CustomExcelCell("Payment"));
         header.add(new CustomExcelCell("Acc. Number"));
         header.add(new CustomExcelCell("Sub-Type"));
+        header.add(new CustomExcelCell("A. Date"));
+        header.add(new CustomExcelCell("Date Bank"));
+        header.add(new CustomExcelCell("Trans. Bank"));
+        header.add(new CustomExcelCell("Date Settl"));
+        header.add(new CustomExcelCell("Trans. Settl"));
         header.add(new CustomExcelCell("Accounting\nDate"));
         header.add(new CustomExcelCell("Accounting\nID"));
 
@@ -792,31 +804,37 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getDESC_PRO()));
             row.add(new CustomExcelCell(obj.getA4545DOCBA()));
             row.add(new CustomExcelCell(obj.getA4545DOCD()));
+            row.add(new CustomExcelCell(obj.getA4545REFD()));
             row.add(new CustomExcelCell(obj.getA4545HREGI()));
+            row.add(new CustomExcelCell(obj.getA4545SEQ()));
+            row.add(new CustomExcelCell(obj.getA4545ITEM()));
             row.add(new CustomExcelCell(obj.getA4545PROFI()));
+            row.add(new CustomExcelCell(obj.getA4545CCOST()));
             row.add(new CustomExcelCell(obj.getA4545PKEY()));
             row.add(new CustomExcelCell(obj.getA4545CUENT()));
             row.add(new CustomExcelCell(obj.getA4545CUR()));
             row.add(new CustomExcelCell(obj.getA4545ACTIV()));
             row.add(new CustomExcelCell(obj.getA4545PASIV()));
-            row.add(new CustomExcelCell(obj.getA4545ITEM()));
             row.add(new CustomExcelCell(obj.getA4545TEXTD()));
-            row.add(new CustomExcelCell(obj.getA4545SEQ()));
+            row.add(new CustomExcelCell(obj.getA4545PLACE()));
             row.add(new CustomExcelCell(obj.getA4545BANCO()));
             row.add(new CustomExcelCell(obj.getA4545REFB()));
             row.add(new CustomExcelCell(obj.getA4545PAIS()));
-            row.add(new CustomExcelCell(obj.getA4545PLACE()));
+            row.add(new CustomExcelCell(obj.getA4545MERCH()));
             row.add(new CustomExcelCell(obj.getA4545AGENT()));
-            row.add(new CustomExcelCell(obj.getA4545CCOST()));
             row.add(new CustomExcelCell(obj.getA4545REFK()));
             row.add(new CustomExcelCell(obj.getA4545REFK2()));
             row.add(new CustomExcelCell(obj.getA4545MPAGO()));
             row.add(new CustomExcelCell(obj.getA4545ANUMB()));
-            String modo = getModoDesc(obj.getA4545ANUMB());
+            String modo = getModoDesc(obj.getA4545MODO());
             row.add(new CustomExcelCell(modo));
+            row.add(new CustomExcelCell(obj.getA4545ADATE()));
+            row.add(new CustomExcelCell(obj.getA4545DATCI()));
+            row.add(new CustomExcelCell(obj.getA4545TRACI()));
+            row.add(new CustomExcelCell(obj.getA4545DATEC()));
+            row.add(new CustomExcelCell(obj.getA4545TRANC()));
             row.add(new CustomExcelCell(obj.getA4545PSTGD()));
             row.add(new CustomExcelCell(obj.getA4545USER()));
-
             data.add(row);
         });
 
@@ -864,11 +882,11 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Qty\nTax"));
         header.add(new CustomExcelCell("Accounting\nDate"));
         header.add(new CustomExcelCell("Accounting\nType"));
+        header.add(new CustomExcelCell("Accounting\nSub-Type"));
         header.add(new CustomExcelCell("Accounting\nID"));
         header.add(new CustomExcelCell("Sap\nDate"));
         header.add(new CustomExcelCell("Sap\nStatus"));
         header.add(new CustomExcelCell("Sap\nCorrl AV"));
-        header.add(new CustomExcelCell("Sap\nFile Name"));
         data.add(header);
         filter.getResponse().forEach(obj -> {
             List<CustomExcelCell> row = new ArrayList<>();
@@ -901,12 +919,11 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getQTYGAS()));
             row.add(new CustomExcelCell(obj.getFECACC()));
             row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(getModoDesc(obj.getSTACC())));
             row.add(new CustomExcelCell(obj.getIDACC()));
             row.add(new CustomExcelCell(obj.getFECSAP()));
             row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
             row.add(new CustomExcelCell(obj.getHEADER()));
-            row.add(new CustomExcelCell(obj.getFILENAM()));
-
             data.add(row);
         });
 
@@ -1039,7 +1056,7 @@ public class AccountingReportController extends BaseController {
                 descModo = "ADM";
                 break;
             case "T":
-                descModo = "TAX";
+                descModo = "GAS";
                 break;
         }
 
@@ -1069,14 +1086,17 @@ public class AccountingReportController extends BaseController {
     String formatStsap(String stsap) {
         String res = "";
         switch (stsap) {
+            case "N":
+                res = "Pending Accounting";
+                break;
             case "P":
-                res = "Pending";
+                res = "Pending to Send";
                 break;
             case "L":
-                res = "Loaded";
+                res = "Loaded to SAP";
                 break;
             case "S":
-                res = "Sended";
+                res = "Sended to AV";
                 break;
         }
         return res;

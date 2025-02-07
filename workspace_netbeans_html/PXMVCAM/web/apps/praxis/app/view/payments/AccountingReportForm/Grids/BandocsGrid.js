@@ -37,7 +37,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             {text: 'Core', dataIndex: 'COREP', width: 60},
             {text: 'Status<br>Phase 1', dataIndex: 'STVAL', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "background-color:#50dd56;font-weight:bold;";
+                    metaData.style = "background-color:#bbe3ac;font-weight:bold;";
                     const opts = {
                         '1': 'Match',
                         '3': 'Bank w/o Settl.',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             },
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 130,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "background-color:#50dd56;font-weight:bold;";
+                    metaData.style = "background-color:#bbe3ac;font-weight:bold;";
                     return value;
                 }
             },
@@ -65,10 +65,28 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
             {text: 'Key 3', dataIndex: 'CLAVE3', width: 200},
             {text: 'Text', dataIndex: 'TEXTO', width: 230},
             {text: 'Currency', dataIndex: 'SCURRENCY', width: 70},
-            {text: 'Bank<br>Amount', dataIndex: 'NETO', width: 120},
-            {text: 'Reconciled<br>Amount', dataIndex: 'NETOC', width: 120},
+            {text: 'Bank<br>Amount', dataIndex: 'NETO', width: 120,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "text-align:right;";
+                    value = Ext.util.Format.number(value, '0,000.00');
+                    return value;
+                }
+            },
+            {text: 'Reconciled<br>Amount', dataIndex: 'NETOC', width: 120,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "text-align:right;";
+                    value = Ext.util.Format.number(value, '0,000.00');
+                    return value;
+                }
+            },
             {text: 'Rev<br>Currency', dataIndex: 'LOCRENCY2', width: 70},
-            {text: 'Rev<br>Amount', dataIndex: 'LOCAMOUNT2', width: 120},
+            {text: 'Rev<br>Amount', dataIndex: 'LOCAMOUNT2', width: 120,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "text-align:right;";
+                    value = Ext.util.Format.number(value, '0,000.00');
+                    return value;
+                }
+            },
             {text: 'Qty<br>Settl. F1', dataIndex: 'QTYLIQ1', width: 60},
             {text: 'Qty<br>Settl. F2', dataIndex: 'QTYLIQ2', width: 60,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -112,7 +130,56 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                             return opts[value];
                         }
                     },
-                    {text: 'ID', dataIndex: 'IDACC', width: 210}
+                    {text: 'Sub-type', dataIndex: 'STACC', width: 100,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#B2DAFA;font-weight:bold;";
+                            const opts = {
+                                'P': () => {
+                                    return 'PAX CO';
+                                },
+                                'A': () => {
+                                    return 'CGO CO';
+                                },
+                                'C': () => {
+                                    return 'COR CO';
+                                },
+                                'E': () => {
+                                    return 'PAX EXT';
+                                },
+                                'G': () => {
+                                    return 'CGO EXT';
+                                },
+                                'T': () => {
+                                    return 'TAX EXT';
+                                },
+                                'D': () => {
+                                    return 'DEB CO';
+                                },
+                                'B': () => {
+                                    return 'DEB EXT';
+                                },
+                                'J': () => {
+                                    return 'ADJ CO';
+                                },
+                                'K': () => {
+                                    return 'ADJ EXT';
+                                }
+                            };
+                            return opts[value] ? opts[value]() : '';
+                        }
+                    },
+                    {text: 'ID', dataIndex: 'IDACC', width: 210,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = 'background-color:#B2DAFA;';
+                            if(value.trim() !== ''){
+                                metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                            }
+                            return value;
+                        },
+                        listeners:{
+                            click:'onLoadAccounting'
+                        }
+                    }
                 ]
             },
             {
@@ -122,30 +189,37 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                     sortable: true,
                     align: 'center',
                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        metaData.style = "background-color:#786bb9;font-weight:bold;";
+                        metaData.style = "background-color:#a5d7d6;font-weight:bold;";
                         return value;
                     }
                 },
                 columns: [
                     {text: 'Date', dataIndex: 'FECSAP', width: 100},
-                    {text: 'Status', dataIndex: 'STSAP', width: 120,
+                    {text: 'Status', dataIndex: 'STSAP', width: 150,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#786bb9;font-weight:bold;";
+                            metaData.style = "background-color:#7ec7d5;font-weight:bold;";
                             const opts = {
+                                'N': () => {
+                                    metaData.style = "background-color:#ef6f59;font-weight:bold";
+                                    return 'Pending Accounting';
+                                },
                                 'P': () => {
                                     metaData.style = "background-color:#fffc33;font-weight:bold";
-                                    return 'Pending';
+                                    return 'Pending to Send';
                                 },
                                 'L': () => {
+                                    metaData.style = "background-color:#deace3;font-weight:bold";
+                                    return 'Loaded to SAP';
+                                },
+                                'S': () => {
                                     metaData.style = "background-color:#7cf925;font-weight:bold";
-                                    return 'Loaded';
+                                    return 'Sended to AV';
                                 }
                             };
                             return opts[value]() || '';
                         }
                     },
-                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 300}
+                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200}
                 ]
             }
             //</editor-fold>

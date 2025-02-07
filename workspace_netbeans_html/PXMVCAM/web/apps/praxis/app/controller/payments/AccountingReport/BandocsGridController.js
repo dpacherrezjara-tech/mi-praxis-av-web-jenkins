@@ -101,6 +101,31 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocsGridControlle
         });
         mainPanel.add(newPanel);
     },
+    onLoadAccounting: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '') {
+            return;
+        }
+        const {BANDOC,DATECI,TRANCI,IDACC} = record.data;
+        let params = {
+            IN_IDCONT: IDACC,
+            IN_BANDOC: BANDOC,
+            IN_DATECI: DATECI,
+            IN_TRANCI: TRANCI
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',{
+            id: prototype.id + '-AccountingGrid-1',
+            searchParams: params,
+            backButton: ()=> {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
     downloadExcel: function () {
         const me = this;
         let params = me.view.searchParams;

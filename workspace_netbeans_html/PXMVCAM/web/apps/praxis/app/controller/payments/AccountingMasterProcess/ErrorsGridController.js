@@ -65,15 +65,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridCon
     },
     onLoadAccountingInfo: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const me = this;
-        const {IDCONT,BANDOC,CODPRO,VALDATE} = record.data;
+        const {IDCONT,BANDOC,DATECI,TRANCI} = record.data;
         let params = {
-            IN_CCUST: IDCONT.toString().slice(0,3),
             IN_IDCONT: IDCONT,
-            IN_FCONT: '',
-            IN_CODPRO : CODPRO,
             IN_BANDOC: BANDOC,
-            IN_VALDATE: VALDATE,
-            IN_REFER: ''
+            IN_DATECI: DATECI,
+            IN_TRANCI: TRANCI
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();

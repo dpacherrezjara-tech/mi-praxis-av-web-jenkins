@@ -26,28 +26,38 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
         const tipocon = Ext.getCmp(prototype.idDE + '-cmbTIPOCON');
         const cmbProc = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
         const cmbTdate = Ext.getCmp(prototype.idDE + '-cmbTdate');
-
-        if (tipocon.value !== 'ADM') {
-            cmbTdate.setValue('VALDATE');
-            cmbProc.show();
-            let data = me.procesadores.filter(x =>
-                x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
-            let store = new Ext.data.Store({
-                data: data
-            });
-            cmbProc.setStore(store);
-            if (cmbCccust.value === '134') {
-                cmbProc.setValue('CO');
-            } else {
-                cmbProc.setValue(data.at(0).A4451KEY2);
-            }
-        } else {
-            cmbTdate.setValue('SDATE');
-            cmbProc.setValue('');
-            cmbProc.hide();
+        switch (tipocon.value) {
+            case 'ADM':
+                cmbTdate.setValue('SDATE');
+                cmbProc.setValue('');
+                cmbProc.hide();
+                break;
+            case 'ADJ':
+                cmbTdate.setValue('FEUP');
+                cmbProc.show();
+                me.setProcessors(tipocon,cmbCccust,cmbProc);
+                break;
+            default:
+                cmbTdate.setValue('VALDATE');
+                cmbProc.show();
+                me.setProcessors(tipocon,cmbCccust,cmbProc);
+                break;
         }
-
         //global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
+    },
+    setProcessors: function (tipocon,cmbCccust,cmbProc) {
+        const me = this;
+        let data = me.procesadores.filter(x =>
+            x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
+        let store = new Ext.data.Store({
+            data: data
+        });
+        cmbProc.setStore(store);
+        if (cmbCccust.value === '134') {
+            cmbProc.setValue('CO');
+        } else {
+            cmbProc.setValue(data.at(0).A4451KEY2);
+        }
     },
     onProcessClick: function (btn) {
         let params = this.formatParameters();
