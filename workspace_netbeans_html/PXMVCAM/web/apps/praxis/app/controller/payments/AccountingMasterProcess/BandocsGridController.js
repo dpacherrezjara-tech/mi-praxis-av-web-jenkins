@@ -53,15 +53,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
     },
     onLoadAccountingInfo: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const me = this;
-        const {CCUST,IDCONT,FCONT,BANDOC,REFER,CODPRO,VALDATE} = record.data;
+        const {IDCONT,BANDOC,DATECI,TRANCI} = record.data;
         let params = {
-            IN_CCUST: CCUST,
             IN_IDCONT: IDCONT,
-            IN_FCONT: FCONT,
-            IN_CODPRO : CODPRO,
             IN_BANDOC: BANDOC,
-            IN_VALDATE: VALDATE,
-            IN_REFER: REFER
+            IN_DATECI: DATECI,
+            IN_TRANCI: TRANCI
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
@@ -84,6 +81,18 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
 //            return true;
 //        }
         return false;
+    },
+    onEvaluateBandoc:function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {BANDOC} = record.data;
+        let params = {
+            IN_BANDOC:BANDOC,
+            IN_REFER:''
+        };
+        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.BandocInfoDataEntry',{
+            id: prototype.id + '-BandocInfoDataEntry-1',
+            searchParams: params
+        });
+        newWin.show(newWin);
     },
     onDownloadExcel: function () {
         const me = this;

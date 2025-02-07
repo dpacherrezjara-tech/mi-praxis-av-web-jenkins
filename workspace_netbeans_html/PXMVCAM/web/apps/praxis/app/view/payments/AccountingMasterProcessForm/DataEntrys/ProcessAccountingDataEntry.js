@@ -112,7 +112,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                                         fields: ['code', 'name'],
                                         data: [
                                             ['VALDATE', 'Value Date'],
-                                            ['SDATE', 'Sale Date']
+                                            ['SDATE', 'Sale Date'],
+                                            ['FEUP', 'Update Date']
                                         ]
                                     }),
                                     fieldLabel: 'Date Type',
