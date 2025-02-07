@@ -70,6 +70,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGri
             },
             {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
             {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
+            {text: 'Reference', dataIndex: 'REFER', width: 130},
+            {text: 'Date Bank', dataIndex: 'DATECI', width: 80},
+            {text: 'Trans. Bank', dataIndex: 'TRANCI', width: 100},
             {text: 'Error<br>Code', dataIndex: 'CERROR', width: 50},
             {text: 'Error<br>Description', dataIndex: 'DESCERR', flex: 1,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {

@@ -219,8 +219,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                             return opts[value]() || '';
                         }
                     },
-                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
-                    {text: 'File Name', dataIndex: 'FILENAM', width: 300}
+                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200}
                 ]
             }
             //</editor-fold>
