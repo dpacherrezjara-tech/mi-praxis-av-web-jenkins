@@ -122,7 +122,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid'
                             return 'Holded Accounting';
                         }
                     };
-                    return opts[value]() || '';
+                    return opts[value]? opts[value]() : '';
                 }
             },
             {text: 'Acc. Date', dataIndex: 'FCONT', width: 80},
