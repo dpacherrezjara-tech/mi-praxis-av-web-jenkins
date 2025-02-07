@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid'
                         return value;
                     }
                 },
-                columns:[
+                columns: [
                     {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 80},
                     {text: 'Payment<br>Date', dataIndex: 'PAYDATE', width: 80},
                     {text: 'Agent', dataIndex: 'SAGENT', width: 100},
@@ -97,7 +97,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid'
                         return value;
                     }
                 },
-                columns:[
+                columns: [
                     {text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 120},
                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120},
                     {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80},
@@ -105,13 +105,32 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid'
                     {text: 'TRANCI', dataIndex: 'TRANCI', width: 100}
                 ]
             },
-            {text: 'Acc. Status', dataIndex: 'STCON', width: 80},
-            {text: 'Acc. Date', dataIndex: 'FCONT', width: 100},
-            {text: 'Regular ID', dataIndex: 'IDCONT', width: 350},
-            {text: 'Debit Date', dataIndex: 'FCONT', width: 100},
-            {text: 'Debit ID', dataIndex: 'IDCDEB', width: 350},
-            {text: 'Adj Date', dataIndex: 'FCONT', width: 100},
-            {text: 'Adjustment ID', dataIndex: 'IDCADJ', width: 350}
+            {text: 'Acc. Status', dataIndex: 'STCON', width: 150,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "font-weight:bold;";
+                    const opts = {
+                        '1': () => {
+                            return 'Accounted';
+                        },
+                        '2': () => {
+                            return 'Sended to AV';
+                        },
+                        '3': () => {
+                            return 'Loaded to SAP';
+                        },
+                        'S': () => {
+                            return 'Holded Accounting';
+                        }
+                    };
+                    return opts[value]() || '';
+                }
+            },
+            {text: 'Acc. Date', dataIndex: 'FCONT', width: 80},
+            {text: 'Regular ID', dataIndex: 'IDCONT', width: 250},
+            {text: 'Debit Date', dataIndex: 'FDEBIT', width: 80},
+            {text: 'Debit ID', dataIndex: 'IDCDEB', width: 250},
+            {text: 'Adj Date', dataIndex: 'FAJUST', width: 80},
+            {text: 'Adjustment ID', dataIndex: 'IDCADJ', width: 250}
             //</editor-fold>
         ]
     },

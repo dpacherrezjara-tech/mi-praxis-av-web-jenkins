@@ -1799,7 +1799,7 @@ public class MasterDAO {
     
 
     public Connection getIBMDB2Connection() {
-
+        //SETEO DE ORIGEN
         String url = "jdbc:as400://10.0.0.25/PRAXIS;libraries=PRAXIS"; //PRODUCCION
         //String url = "jdbc:as400://10.0.0.47/PRAXIS;libraries=PRAXISMP"; //DESARROLLO
 

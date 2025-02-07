@@ -748,7 +748,7 @@ public class AccountingReportController extends BaseController {
         System.out.println("Total: " + filter.getResponse().size());
 
         String title = "AccountingMasterProcess-AccountingInfo-"
-                + params.getIN_CCUST() + "_" + params.getIN_IDCONT().trim() + params.getIN_BANDOC()
+                + params.getIN_IDCONT().trim() + params.getIN_BANDOC()
                 + "_" + UUID.randomUUID().toString().substring(0, 6);
 
         List<List<CustomExcelCell>> data = new ArrayList<>();
