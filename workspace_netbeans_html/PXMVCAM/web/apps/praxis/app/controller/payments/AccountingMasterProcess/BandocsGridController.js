@@ -82,6 +82,18 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.BandocsGridCo
 //        }
         return false;
     },
+    onEvaluateBandoc:function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const {BANDOC} = record.data;
+        let params = {
+            IN_BANDOC:BANDOC,
+            IN_REFER:''
+        };
+        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.BandocInfoDataEntry',{
+            id: prototype.id + '-BandocInfoDataEntry-1',
+            searchParams: params
+        });
+        newWin.show(newWin);
+    },
     onDownloadExcel: function () {
         const me = this;
         let params = me.view.searchParams;

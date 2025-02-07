@@ -105,13 +105,27 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                                     return "ADM's";
                                 }
                             };
-                            return opts[value]? opts[value]() : '';
+                            return opts[value] ? opts[value]() : '';
                         }
                     },
                     {text: 'ID', dataIndex: 'IDCONT', width: 210},
                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100},
                     {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 100},
-                    {text: 'Reference', dataIndex: 'REFER', width: 160}
+                    {text: 'Reference', dataIndex: 'REFER', width: 160},
+                    {
+                        sortable: false,
+                        xtype: 'actioncolumn',
+                        width: 40,
+                        text: 'Eval',
+                        align: 'center',
+                        items: [
+                            {
+                                iconCls: 'prx-icon-search',
+                                tooltip: 'Evaluate Bandoc',
+                                handler: 'onEvaluateBandoc'
+                            }
+                        ]
+                    },
                 ]
             },
             {
