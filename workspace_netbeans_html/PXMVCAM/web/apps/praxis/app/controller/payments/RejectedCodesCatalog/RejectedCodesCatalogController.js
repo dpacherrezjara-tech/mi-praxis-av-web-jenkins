@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.controller.payments.RejectedCodesCatalog.RejectedCodesCat
     procesadores: [],
     request: axios.create({
         baseURL: CONTEXTPATH + '/RejectedCodesCatalog',
-        timeout: 20000
+        timeout: 0
     }),
     init: function (view) {
     },
@@ -24,5 +24,23 @@ Ext.define('Ext.Praxis.controller.payments.RejectedCodesCatalog.RejectedCodesCat
     },
     onClickSearchBtn:function(){
         this.loadMain();
+    },
+    onAddRecord:function(){
+       const dataEntry = Ext.create('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanceDataEntry', {
+            id: prototype.id + '-CodeMaintenanceDataEntry-1',
+            option:'C'
+        }); 
+        dataEntry.show();
+    },
+    onDisplayFilterBtn:function(){
+        const filters = Ext.getCmp(prototype.id + '-contentFilter');
+        if(filters.isVisible()){
+            filters.hide();
+        }else{
+            filters.show();
+        }
+    },
+    onClearOptionsBtn:function(){
+        Ext.getCmp(prototype.id + '-formFilters').getForm().reset();
     }
 });
