@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         this.control({
 //            //   -------------------Eventos Genericos --------------------
             '#LoadSalesConciliationForm-xpanel': {
-                afterrender: this.xpanel_afterrender            
+                afterrender: this.xpanel_afterrender
             },
             '#LoadSalesConciliationForm-btnSearch': {
                 click: this.btnSearch_click
@@ -73,6 +73,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         });
     },
     xpanel_afterrender: function (obj, e) {
+        console.log('XDXDXDDXDXD');
         this.setStoreData();
     },
     eventKey: function (e, eOpts) {
@@ -83,19 +84,19 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
     onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    setStoreData: function (){
+    setStoreData: function () {
         var month = this.fecha.getMonth() + 1;
         if (month < 10) {
             month = '0' + month;
         }
         var mes = Ext.String.leftPad(this.fecha.getMonth() + 1, 2, '0');
-        
+
         Ext.getCmp(prototype.id + '-cmbYear').bindStore(win.getStoreYear(false));
 //        Ext.getCmp(prototype.id + '-cmbMonth').bindStore(win.getStoreMonth(true));
         Ext.getCmp(prototype.id + '-cmbYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbMonth').setValue(mes);
-        
-        
+
+
         this.paramsObtainData.COUNTRY = 2;
         this.paramsObtainData.USERPERMIS = 2;
         this.paramsObtainData.NPROG = sessionStorage.getItem('nprog');
@@ -117,9 +118,9 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                     data: me.lstCountry,
                     autoLoad: true
                 });
-                if(res.userPermis.PERMM === 'Y'){
+                if (res.userPermis.PERMM === 'Y') {
                     Ext.getCmp(prototype.id + '-btnQuery').show();
-                }else{
+                } else {
                     Ext.getCmp(prototype.id + '-btnQuery').hide();
                 }
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
@@ -129,91 +130,30 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
             }
         });
     },
-    onMonthlyReconciliation: function (){
-        
-        if( Ext.getCmp(prototype.id + '-panelGridData2').isVisible() ){
-            me.panelActual = '-panelGridData'; 
+    onMonthlyReconciliation: function () {
+
+        if (Ext.getCmp(prototype.id + '-panelGridData2').isVisible()) {
+            me.panelActual = '-panelGridData';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-        }else{
-            me.panelActual = '-panelGridData2'; 
+        } else {
+            me.panelActual = '-panelGridData2';
             global.selectedChild(me.childs, prototype.id + me.panelActual);
         }
     },
-    obtainData: function (){
-        
+    obtainData: function () {
+
     },
-    
-    onFileLoad: function () {
+    onSelectFileEvent: function () {
+        console.log('WADAFAFAFAFAFA');
+
+    },
+    cargarPlanilla: function () {
         var me = this;
         let beanValidation = {}
-        
+
         beanValidation.IN_CONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue()
-        console.log(beanValidation,'beanValidation')
-//        var fileField = Ext.getCmp(prototype.id + '-file');
-//        var file = fileField.fileInputEl.dom.files[0];
+
         let beanString = JSON.stringify(beanValidation);
-//        if (!file) {
-//            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
-//                if (btn === 'ok' || btn === 'cancel')
-//                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
-//            });
-//            return;
-//        }
-//
-//        // Crear una instancia de FormData para enviar el archivo
-//        var formData = new FormData();
-//        formData.append('excelfile', file);
-//        
-//        // Realizar una solicitud AJAX para cargar el archivo
-//        Ext.Ajax.request({
-//            url: prototype.url + '/loadExcelFile',
-//            method: 'POST',
-//            rawData: formData,
-//            beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
-//            params: {beanString: beanString},
-//            // Configurar el tipo de contenido adecuado y el encabezado
-//            headers: {
-//                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
-//            },
-//            success: function (response) {
-//                var res = Ext.decode(response.responseText);
-//                console.log(res);
-//                if (res.success) {
-//                    
-//                    let objResult = res.objResult;
-//                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
-//                    Ext.getCmp(prototype.id + '-de-txtQTYREC').setValue(objResult.QTYREC)
-//                    Ext.getCmp(prototype.id + '-de-txtQTYUPL').setValue(objResult.QTYUPL)
-//                    Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL').setValue(objResult.QTYNOTUPL)
-//                    Ext.getCmp(prototype.id + '-de-txtUSCR').setValue(objResult.USCR)
-//                    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(objResult.FECR)
-//                    Ext.getCmp(prototype.id + '-de-txtTRANL').setValue(objResult.TRANL)
-//                    Ext.getCmp(prototype.id + '-btn-process').show()
-//                    Ext.getCmp(prototype.id + '-chkCONTAB').show()
-//                    Ext.getCmp(prototype.id + '-lblCONTAB').show()
-//                    Ext.getCmp(prototype.id + '-btn-upload').setDisabled(true)
-//                    Ext.getCmp(prototype.id + '-file').setDisabled(true)
-//                    
-//                    global.Msg({msg: objResult.MESSAGE});
-//                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
-//                    
-////                    let numberWithCommas = me.formatNumberWithCommas_string(objResult.netoAcum);
-////                    Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(numberWithCommas);
-////                    me.validationAmount();
-//                    // No es necesario restaurar el archivo ya que no se borra el campo de archivo
-//                } else {
-//                    global.Msg({msg: "Error Excel Load"});
-//                }
-//            },
-//            failure: function (response) {
-//                global.Msg({msg: "SOLTÓ LA CARGA:" + response});
-//                Ext.getCmp(prototype.id + '-panelGridData').unmask()
-//                
-//                console.log('server-side failure with status code ' + response.status);
-//                console.log(response);
-//            }
-//        });
-        
         var file = Ext.getCmp(prototype.id + '-file').getValue();
         if (file === '') {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
@@ -244,8 +184,9 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                     Ext.getCmp(prototype.id + '-chkCONTAB').show()
                     Ext.getCmp(prototype.id + '-lblCONTAB').show()
                     Ext.getCmp(prototype.id + '-btn-upload').setDisabled(true)
+                    Ext.getCmp(prototype.id + '-rbgFlag').setDisabled(true)
                     Ext.getCmp(prototype.id + '-file').setDisabled(true)
-                    
+
                     global.Msg({msg: objResult.MESSAGE});
                     console.log(objResult.MESSAGE, 'objResult.MESSAGE')
 
@@ -259,12 +200,106 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
             }
         });
     },
-    onProcess: function () {
+    cargarPlanillaOperativa: function () {
+        let beanValidation = {}
+        let beanString = JSON.stringify(beanValidation);
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        if (file === '') {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout("Ext.getCmp(prototype.id + '-File').focus();", 100);
+            });
+            return;
+        }
+        var form = Ext.getCmp(prototype.id + '-form-01').getForm();
+        form.submit({
+            url: prototype.url + '/loadExcelFilePWP',
+            waitMsg: 'Uploading your sure to upload the file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (fp, o) {
+                var res = Ext.decode(o.response.responseText);
+                console.log(res);
+
+                if (res.success) {
+                    let objResult = res.objResult;
+                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                    Ext.getCmp(prototype.id + '-de-txtQTYREC').setValue(objResult.QTYREC)
+                    Ext.getCmp(prototype.id + '-de-txtQTYUPL').setValue(objResult.QTYUPL)
+                    Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL').setValue(objResult.QTYNOTUPL)
+                    Ext.getCmp(prototype.id + '-de-txtUSCR').setValue(objResult.USCR)
+                    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(objResult.FECR)
+                    Ext.getCmp(prototype.id + '-de-txtTRANL').setValue(objResult.TRANL)
+                    Ext.getCmp(prototype.id + '-btn-process').show()
+                    Ext.getCmp(prototype.id + '-btn-upload').setDisabled(true)
+                    Ext.getCmp(prototype.id + '-rbgFlag').setDisabled(true)
+                    Ext.getCmp(prototype.id + '-file').setDisabled(true)
+
+                    global.Msg({msg: objResult.MESSAGE});
+                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
+
+                } else {
+                    global.Msg({msg: "Error Excel Load"});
+                }
+
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
+    onFileLoad: function () {
+
+        let fileType = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb
+        if (fileType === '1') {
+            this.cargarPlanilla();
+        } else {
+            this.cargarPlanillaOperativa();
+        }
+    },
+    procesarPlanillaOperativa: function (){
         let beanProcess = {}
         beanProcess.IN_PRDA = Ext.getCmp(prototype.id + '-de-txtPRDA').getValue()
         beanProcess.IN_USCR = Ext.getCmp(prototype.id + '-de-txtUSCR').getValue()
         beanProcess.IN_TRANL = parseInt(Ext.getCmp(prototype.id + '-de-txtTRANL').getValue())
-        console.log(Ext.getCmp(prototype.id + '-chkCONTAB').getValue(), 'chkcontab')
+        beanProcess.IN_CERROR = '57';
+        beanProcess.IN_STCON = '1';
+        let beanString = JSON.stringify(beanProcess);
+        Ext.Ajax.request({
+            url: prototype.url + '/updateRecordsOperational',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
+            params: {beanString: beanString},
+
+            success: function (response) {
+                var res = Ext.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+
+                    let objResult = res.result;
+                    Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                    Ext.getCmp(prototype.id + '-de-txtQTY').setValue(objResult.QTY)
+                    Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue(objResult.QTYPROCUP)
+                    Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue(objResult.QTYNPROCUP)
+                    Ext.getCmp(prototype.id + '-btn-process').setDisabled(true)
+                    global.Msg({msg: objResult.MESSAGE});
+                    //                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
+
+                } else {
+                    global.Msg({msg: "Error Processed "});
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
+    procesarPlanilla: function (){
+        let beanProcess = {}
+        beanProcess.IN_PRDA = Ext.getCmp(prototype.id + '-de-txtPRDA').getValue()
+        beanProcess.IN_USCR = Ext.getCmp(prototype.id + '-de-txtUSCR').getValue()
+        beanProcess.IN_TRANL = parseInt(Ext.getCmp(prototype.id + '-de-txtTRANL').getValue())
         beanProcess.IN_CERROR = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '46' : '45'
         beanProcess.IN_STCON = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '1' : '2'
         let msgCONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? 'Generate with accounting?' : 'Generate without accounting?'
@@ -275,60 +310,63 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     let beanString = JSON.stringify(beanProcess);
                     console.log(beanProcess, 'beanProcess')
                     console.log(beanString, 'beanString')
                     Ext.Ajax.request({
-                    url: prototype.url + '/updateRecords',
-                    method: 'POST',
-                    timeout: 60000000,
-                    beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
-                    params: {beanString: beanString},
+                        url: prototype.url + '/updateRecords',
+                        method: 'POST',
+                        timeout: 60000000,
+                        beforerequest: Ext.getCmp(prototype.id + '-panelGridData').mask('Loading...'),
+                        params: {beanString: beanString},
 
-                    success: function (response) {
-                        var res = Ext.decode(response.responseText);
-                        console.log(res);
-                        if (res.success) {
+                        success: function (response) {
+                            var res = Ext.decode(response.responseText);
+                            console.log(res);
+                            if (res.success) {
 
-                            let objResult = res.result;
+                                let objResult = res.result;
+                                Ext.getCmp(prototype.id + '-panelGridData').unmask()
+                                console.log(objResult, 'objResult')
+                                Ext.getCmp(prototype.id + '-de-txtQTY').setValue(objResult.QTY)
+                                Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue(objResult.QTYPROCUP)
+                                Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue(objResult.QTYNPROCUP)
+                                Ext.getCmp(prototype.id + '-btn-process').setDisabled(true)
+                                global.Msg({msg: objResult.MESSAGE});
+                                //                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
+
+                            } else {
+                                global.Msg({msg: "Error Processed "});
+                            }
+                        },
+                        failure: function (response) {
                             Ext.getCmp(prototype.id + '-panelGridData').unmask()
-                            console.log(objResult, 'objResult')
-                            Ext.getCmp(prototype.id + '-de-txtQTY').setValue(objResult.QTY)
-                            Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue(objResult.QTYPROCUP)
-                            Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue(objResult.QTYNPROCUP)
-                            Ext.getCmp(prototype.id + '-btn-process').setDisabled(true)
-                            global.Msg({msg: objResult.MESSAGE});
-        //                    console.log(objResult.MESSAGE, 'objResult.MESSAGE')
-
-                        } else {
-                            global.Msg({msg: "Error Processed "});
+                            console.log('server-side failure with status code ' + response.status);
                         }
-                    },
-                    failure: function (response) {
-                        Ext.getCmp(prototype.id + '-panelGridData').unmask()
-                        console.log('server-side failure with status code ' + response.status);
-                    }
-                });
+                    });
                 }
             }
         });
-        
-        
-        
-        
-        
-    }, 
-    onReconciliationMonth:  function () {
+    },
+    onProcess: function () {
+        let fileType = Ext.getCmp(prototype.id + '-rbgFlag').getValue().rb
+        if (fileType === '1') {
+            this.procesarPlanilla();
+        } else {
+            this.procesarPlanillaOperativa();
+        }
+    },
+    onReconciliationMonth: function () {
         let beanReconciliation = {}
         beanReconciliation.IN_SDATE = Ext.getCmp(prototype.id + '-cmbYear').getValue() + Ext.getCmp(prototype.id + '-cmbMonth').getValue()
-        beanReconciliation.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() 
-        if(beanReconciliation.IN_SDATE.length !== 6){
+        beanReconciliation.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+        if (beanReconciliation.IN_SDATE.length !== 6) {
             global.Msg({msg: "Complete date"});
             return false;
         }
-        if(beanReconciliation.IN_SCOUNTRY === ''){
+        if (beanReconciliation.IN_SCOUNTRY === '') {
             global.Msg({msg: "Complete country"});
             return false;
         }
@@ -339,43 +377,43 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     let beanString = JSON.stringify(beanReconciliation);
-                   
+
                     Ext.Ajax.request({
-                    url: prototype.url + '/monthReconciliation',
-                    method: 'POST',
-                    timeout: 60000000,
-                    beforerequest: Ext.getCmp(prototype.id + '-panelGridData2').mask('Loading...'),
-                    params: {beanString: beanString},
+                        url: prototype.url + '/monthReconciliation',
+                        method: 'POST',
+                        timeout: 60000000,
+                        beforerequest: Ext.getCmp(prototype.id + '-panelGridData2').mask('Loading...'),
+                        params: {beanString: beanString},
 
-                    success: function (response) {
-                        var res = Ext.decode(response.responseText);
-                        console.log(res);
-                        if (res.success) {
+                        success: function (response) {
+                            var res = Ext.decode(response.responseText);
+                            console.log(res);
+                            if (res.success) {
 
-                            let objResult = res.result;
+                                let objResult = res.result;
+                                Ext.getCmp(prototype.id + '-panelGridData2').unmask()
+                                console.log(objResult, 'objResult')
+                                Ext.getCmp(prototype.id + '-de-txtQTYREC2').setValue(objResult.QTYRECORDS)
+                                Ext.getCmp(prototype.id + '-de-txtQTYUPL2').setValue(objResult.QTYRECORDS)
+                                Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL2').setValue(0)
+                                Ext.getCmp(prototype.id + '-de-txtUSCR2').setValue(objResult.USCR)
+                                Ext.getCmp(prototype.id + '-de-txtPRDA2').setValue(objResult.FECR)
+                                Ext.getCmp(prototype.id + '-de-txtTRANL2').setValue(objResult.TRANL)
+                                Ext.getCmp(prototype.id + '-btn-reconciliation').setDisabled(true)
+
+
+                            } else {
+                                global.Msg({msg: "Error Processed "});
+                            }
+                        },
+                        failure: function (response) {
                             Ext.getCmp(prototype.id + '-panelGridData2').unmask()
-                            console.log(objResult, 'objResult')
-                            Ext.getCmp(prototype.id + '-de-txtQTYREC2').setValue(objResult.QTYRECORDS)
-                            Ext.getCmp(prototype.id + '-de-txtQTYUPL2').setValue(objResult.QTYRECORDS)
-                            Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL2').setValue(0)
-                            Ext.getCmp(prototype.id + '-de-txtUSCR2').setValue(objResult.USCR)
-                            Ext.getCmp(prototype.id + '-de-txtPRDA2').setValue(objResult.FECR)
-                            Ext.getCmp(prototype.id + '-de-txtTRANL2').setValue(objResult.TRANL)
-                            Ext.getCmp(prototype.id + '-btn-reconciliation').setDisabled(true)
-                                
-
-                        } else {
-                            global.Msg({msg: "Error Processed "});
+                            console.log('server-side failure with status code ' + response.status);
                         }
-                    },
-                    failure: function (response) {
-                        Ext.getCmp(prototype.id + '-panelGridData2').unmask()
-                        console.log('server-side failure with status code ' + response.status);
-                    }
-                });
+                    });
                 }
             }
         });
@@ -390,29 +428,30 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         Ext.getCmp(prototype.id + '-de-txtQTY').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYPROCUP').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYNPROCUP').setValue('')
-        
+
         Ext.getCmp(prototype.id + '-de-txtQTYREC2').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYUPL2').setValue('')
         Ext.getCmp(prototype.id + '-de-txtQTYNOTUPL2').setValue('')
         Ext.getCmp(prototype.id + '-de-txtUSCR2').setValue('')
         Ext.getCmp(prototype.id + '-de-txtPRDA2').setValue('')
         Ext.getCmp(prototype.id + '-de-txtTRANL2').setValue('')
-                            
+
         Ext.getCmp(prototype.id + '-btn-process').setDisabled(false)
         Ext.getCmp(prototype.id + '-btn-process').hide()
         Ext.getCmp(prototype.id + '-chkCONTAB').hide()
         Ext.getCmp(prototype.id + '-lblCONTAB').hide()
         Ext.getCmp(prototype.id + '-btn-upload').setDisabled(false)
+        Ext.getCmp(prototype.id + '-rbgFlag').setDisabled(false)
         Ext.getCmp(prototype.id + '-btn-reconciliation').setDisabled(false)
         Ext.getCmp(prototype.id + '-file').setDisabled(false)
         Ext.getCmp(prototype.id + '-file').reset();
 
     },
     btnSearch_click: function (obj, e) {
-        
+
         Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(true)
-        if( Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == '' || Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == undefined  ){
-             Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
+        if (Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == '' || Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == undefined) {
+            Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
             global.Msg({msg: "Enter the SAP document"});
             return false
         }
@@ -426,14 +465,14 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
             method: 'POST',
             timeout: 60000000,
             params: {beanString: beanString},
-            success: function(response, options) {
-                
+            success: function (response, options) {
+
                 var res = Ext.JSON.decode(response.responseText);
-                
-                if( res.result.BANDOC == ''){
+
+                if (res.result.BANDOC == '') {
                     global.Msg({msg: "SAP Document not fund "});
                     Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
-                }else {
+                } else {
                     let formateadoNeto = me.formatNumberWithCommas_double(res.result.NETO)
                     console.log(formateadoNeto, 'formateadoNeto')
                     Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(res.result.CODEBANK)
@@ -450,14 +489,14 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                     Ext.getCmp(prototype.id + '-de-txtSTVAL').setValue(res.result.strDescStatus)
                     Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue(res.result.QTYTRAN1)
                     Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue(res.result.ACCNUMBER)
-                    if( res.result.STVAL == '1'){
+                    if (res.result.STVAL == '1') {
                         global.Msg({msg: "REGISTRATION IN MATCH STATUS"});
                         Ext.getCmp(prototype.id + '-file').setDisabled(true)
-                        
+
                     }
                 }
-               
-                
+
+
 //                meDE.beanResult = res.result;
 //                meDE.mostrarData();
 
