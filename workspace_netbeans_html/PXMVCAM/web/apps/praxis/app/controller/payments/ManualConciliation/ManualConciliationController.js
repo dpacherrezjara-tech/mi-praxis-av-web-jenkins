@@ -182,11 +182,8 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         Ext.getCmp(prototype.id + '-cmbDateMonthTW').bindStore(win.getStoreMonth(true));
 
         var mes = Ext.String.leftPad(this.fecha.getMonth() + 1, 2, '0');
-//        Ext.getCmp(prototype.id + '-cmbDateYearTW').setValue(this.fecha.getFullYear());
-//        Ext.getCmp(prototype.id + '-cmbDateMonthTW').setValue(mes);
-
-        Ext.getCmp(prototype.id + '-cmbDateYearTW').setValue('2024');
-        Ext.getCmp(prototype.id + '-cmbDateMonthTW').setValue('11');
+        Ext.getCmp(prototype.id + '-cmbDateYearTW').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateMonthTW').setValue(mes);
 
         var cmbTipoFecha = Ext.getCmp(prototype.id + '-cmbTipoFecha');
         cmbTipoFecha.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -506,11 +503,11 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         me.pagginActual = '';
         if (Ext.getCmp(prototype.id + '-panelGridDataMain').isVisible()) {
 
-            if (Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()) {
-                me.pagginActual = '-pagginMPF101TW';
-            } else {
+//            if (Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()) {
+//                me.pagginActual = '-pagginMPF101TW';
+//            } else {
                 me.pagginActual = '-paggin';
-            }
+//            }
         } else {
             switch (me.panelActual) {
                 case  '-panelGridDataMain':
