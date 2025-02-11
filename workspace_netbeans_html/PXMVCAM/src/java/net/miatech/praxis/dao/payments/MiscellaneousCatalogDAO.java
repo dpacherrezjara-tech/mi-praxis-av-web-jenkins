@@ -11,6 +11,7 @@ import net.miatech.praxis.payment.dto.SPMC005Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.A4451PK;
+import net.miatech.praxis.payment.entities.MPF142;
 import net.miatech.praxis.utils.JdbcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -36,12 +37,14 @@ public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic {
         BeanPropertyRowMapper mapper = new BeanPropertyRowMapper(A4451PK.class);
         BeanPropertyRowMapper mapper2 = new BeanPropertyRowMapper(A4451.class);
         BeanPropertyRowMapper mapper3 = new BeanPropertyRowMapper(A2281.class);
+        BeanPropertyRowMapper mapper4 = new BeanPropertyRowMapper(MPF142.class);
         lstMappers.add(mapper);
         lstMappers.add(mapper);
         lstMappers.add(mapper);
         lstMappers.add(mapper);
         lstMappers.add(mapper2);
         lstMappers.add(mapper3);
+        lstMappers.add(mapper4);
         Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC001",
                 lstMappers);
         SPMC001Filter filter = new SPMC001Filter();
@@ -51,6 +54,7 @@ public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic {
         filter.setMONEDAS((List<A4451PK>) obj.get("result3"));
         filter.setCODPRO((List<A4451>) obj.get("result4"));
         filter.setCODEBANK((List<A2281>) obj.get("result5"));
+        filter.setERRORES((List<MPF142>) obj.get("result6"));
         return filter;
     }
 

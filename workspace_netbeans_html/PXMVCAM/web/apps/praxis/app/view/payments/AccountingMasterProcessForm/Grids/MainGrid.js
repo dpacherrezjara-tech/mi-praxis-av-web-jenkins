@@ -122,28 +122,28 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                     return 'Processing';
                                 }, 
                                 '1': ()=>{
-                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Loaded';
+                                    metaData.style = "background-color:#91fc63;font-weight:bold";
+                                    return 'Loaded to SAP';
                                 }, 
                                 '2': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
                                     return 'Post-Accounting Errors';
                                 }, 
                                 '3': ()=>{
-                                    metaData.style = "background-color:#91fc63;font-weight:bold";
-                                    return 'Validated';
+                                    metaData.style = "background-color:#f3a146;font-weight:bold";
+                                    return 'Ready to Send';
                                 }, 
                                 '4': ()=>{
                                     metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
                                     return 'Reversed';
                                 },
                                 '5': ()=>{
-                                    metaData.style = "background-color:#7f69af;font-weight:bold";
-                                    return 'Downloaded/Sended';
+                                    metaData.style = "background-color:#8a86bd;font-weight:bold";
+                                    return 'Sended to AV';
                                 },
                                 '6': ()=>{
-                                    metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
-                                    return 'Partially Loaded';
+                                    metaData.style = "background-color:#bb92be;font-weight:bold";
+                                    return 'Partially Loaded to SAP';
                                 }, 
                                 '7': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";

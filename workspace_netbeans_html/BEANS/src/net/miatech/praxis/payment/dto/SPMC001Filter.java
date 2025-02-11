@@ -6,6 +6,7 @@ import lombok.Data;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.A4451PK;
+import net.miatech.praxis.payment.entities.MPF142;
 
 /**
  *
@@ -19,4 +20,5 @@ public class SPMC001Filter {
     List<A4451PK> MONEDAS = new ArrayList<>();
     List<A4451> CODPRO = new ArrayList<>();
     List<A2281> CODEBANK = new ArrayList<>();
+    List<MPF142> ERRORES = new ArrayList<>();
 }

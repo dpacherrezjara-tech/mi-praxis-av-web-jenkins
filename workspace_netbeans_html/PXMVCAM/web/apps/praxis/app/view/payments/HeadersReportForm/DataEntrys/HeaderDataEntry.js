@@ -248,9 +248,54 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                             border: false,
                                             id: prototype.idDE + '-gridAccounted',
                                             emptyText: 'No documents available',
+                                            tbar: {
+                                                xtype: 'panel',
+                                                layout: {
+                                                    type: 'hbox',
+                                                    pack: 'end'
+                                                },
+                                                width: '100%',
+                                                items: [
+                                                    {
+                                                        xtype: 'textfield',
+                                                        margin: '2 5 2 5',
+                                                        labelStyle: 'text-align:left;font-weight: bolder;',
+                                                        fieldStyle: 'text-align:center;',
+                                                        editable: true,
+                                                        fieldLabel: 'Reference',
+                                                        labelWidth: 70,
+                                                        width: 200,
+                                                        maxLength: 30,
+                                                        listeners: {
+                                                            change: 'onChangeReference'
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'textfield',
+                                                        margin: '2 5 2 5',
+                                                        labelStyle: 'text-align:left;font-weight: bolder;',
+                                                        fieldStyle: 'text-align:center;',
+                                                        editable: true,
+                                                        fieldLabel: 'Bank Doc.',
+                                                        labelWidth: 80,
+                                                        width: 190,
+                                                        maxLength: 10,
+                                                        listeners: {
+                                                            change: 'onChangeBandoc'
+                                                        }
+                                                    }
+                                                ]
+                                            },
                                             bbar: {
                                                 xtype: 'pagingtoolbar',
-                                                displayInfo: true
+                                                displayInfo: true,
+                                                items: [
+                                                    {
+                                                        xtype: 'button',
+                                                        itemId: 'refresh',
+                                                        hidden: true // Oculta el botón de refresh
+                                                    }
+                                                ]
                                             },
                                             columns: {
                                                 defaults: {
@@ -259,6 +304,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     sortable: true
                                                 },
                                                 items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
@@ -281,6 +332,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
+                                                        id:prototype.idDE + '-btnRejectRec',
                                                         width: 50,
                                                         text: 'Rej.',
                                                         align: 'center',
@@ -309,7 +361,14 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                             emptyText: 'No documents available',
                                             bbar: {
                                                 xtype: 'pagingtoolbar',
-                                                displayInfo: true
+                                                displayInfo: true,
+                                                items: [
+                                                    {
+                                                        xtype: 'button',
+                                                        itemId: 'refresh',
+                                                        hidden: true // Oculta el botón de refresh
+                                                    }
+                                                ]
                                             },
                                             columns: {
                                                 defaults: {
@@ -318,6 +377,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     sortable: true
                                                 },
                                                 items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
@@ -333,10 +398,11 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                             }
                                                         ]
                                                     },
-                                                    {text: 'Reference', dataIndex: 'REFER', flex: 1},
+                                                    {text: 'Reference', dataIndex: 'REFER', width: 160},
                                                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 150},
                                                     {text: 'Value Date', dataIndex: 'VALDATE', width: 120},
-                                                    {text: 'Processor', dataIndex: 'CODPRO', width: 150}
+                                                    {text: 'Processor', dataIndex: 'CODPRO', width: 150},
+                                                    {text: 'Rejection Error', dataIndex: 'DESCR', width: 320}
                                                 ]
                                             }
                                         }
@@ -408,14 +474,14 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
             dock: 'bottom',
             ui: 'footer',
             border: false,
-            margin: '7 0 7 0',
-            padding: '3 0 3 0',
+            margin: '5 0 5 0',
             layout: {
                 pack: 'center'
             },
             fieldStyle: 'text-align:center',
             defaults: {
-                scale: 'medium'
+                scale: 'medium',
+                margin: '5 0 5 0'
             },
             items: [
                 {

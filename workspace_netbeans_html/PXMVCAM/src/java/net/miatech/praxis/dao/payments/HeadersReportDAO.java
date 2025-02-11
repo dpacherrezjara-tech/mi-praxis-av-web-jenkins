@@ -66,12 +66,13 @@ public class HeadersReportDAO implements HeadersReportLogic {
     public void loadSPHRP003Filter(SPHRP003Filter filter) throws Exception {
         String cuuid = UUID.randomUUID().toString().replace("-", "");
         String fuuid = Functions.getFechaActual();
+        System.out.println("Process: " + cuuid);
         filter.getDocuments().forEach(x->{
             x.setCUUID(cuuid);
             x.setFUUID(fuuid);
         });
         //<editor-fold defaultstate="collapsed" desc="SQL">
-        final String sql = "INSERT INTO PRAXISMP.X3183"
+        final String sql = "INSERT INTO PRAXISMP.X3184"
                 + "(CCUST,BANDOC,REFER,VALDATE,IDCONT,DATECI,TRANCI,DATEC,TRANC,TEXTD,CUUID,FUUID)"
                 + "VALUES"
                 + "(:CCUST,:BANDOC,:REFER,:VALDATE,:IDCONT,:DATECI,:TRANCI,:DATEC,:TRANC,"
@@ -85,7 +86,6 @@ public class HeadersReportDAO implements HeadersReportLogic {
         filter.setIN_CUUID(cuuid);
         filter.setIN_FUUID(fuuid);
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
-        jdbcUtils.executeSQP(LIBRARY, "SPHRP003",
-                params);
+        jdbcUtils.executeSQP(LIBRARY, "SPHRP003",params);
     }
 }
