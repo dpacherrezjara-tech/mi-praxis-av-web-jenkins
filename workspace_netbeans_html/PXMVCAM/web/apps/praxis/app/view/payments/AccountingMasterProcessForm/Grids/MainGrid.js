@@ -85,7 +85,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                     },
                     {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
                     {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
-                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,
+                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,hidden:true,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -123,7 +123,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                 }, 
                                 '1': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Pre-Accounting Errors';
+                                    return 'Loaded';
                                 }, 
                                 '2': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
@@ -143,7 +143,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                 },
                                 '6': ()=>{
                                     metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
-                                    return 'Program Down';
+                                    return 'Partially Loaded';
                                 }, 
                                 '7': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
@@ -152,6 +152,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                 '8': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
                                     return 'No Data';
+                                },
+                                '9': ()=>{
+                                    metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
+                                    return 'Rejected';
                                 }
                             };
                             return opts[value]();
