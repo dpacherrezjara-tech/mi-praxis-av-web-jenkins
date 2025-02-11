@@ -1,21 +1,20 @@
 
-prototype.id = 'LoadSalesConciliationForm';
-prototype.url = CONTEXTPATH + '/LoadSalesConciliation';
+prototype.id = 'ManualConciliationForm';
+prototype.url = CONTEXTPATH + '/ManualConciliation';
 
-Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.LoadSalesConciliationForm', {
+Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.ManualConciliationForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.LoadSalesConciliationForm',
+    alias: 'widget.ManualConciliationForm',
     requires: [
-        'Ext.Praxis.view.payments.LoadSalesConciliationForm.Options',
-        'Ext.Praxis.view.payments.LoadSalesConciliationForm.Filters',
-        'Ext.Praxis.view.payments.LoadSalesConciliationForm.Info',
-        'Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConciliationController'
+        'Ext.Praxis.view.payments.ManualConciliationForm.Options',
+        'Ext.Praxis.view.payments.ManualConciliationForm.Filters',
+        'Ext.Praxis.view.payments.ManualConciliationForm.Info',
+        'Ext.Praxis.controller.payments.ManualConciliation.ManualConciliationController'
     ],
-    controller: 'LoadSalesConciliationController',
+    controller: 'ManualConciliationController',
     layout: {
         type: 'fit'
     },
-    padding: '0 0 0 0',
     border: false,
     defaults: {
         border: false
@@ -40,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.LoadSalesConcilia
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 750,
+                            width: 950,
                             layout: 'border',
                             
                             items: [
@@ -54,33 +53,34 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.LoadSalesConcilia
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 750,
+                                        width: 1840,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options'
+                                            xtype: prototype.id + '-options',
+                                            id: prototype.id + '-contentOptions'
                                         }
                                         ,
                                         {
                                             xtype: prototype.id + '-filters',
-                                            id: prototype.id + '-contentFilter',
-                                            hidden: true
+                                            id: prototype.id + '-contentFilter'
                                         }
                                         ,
                                         {
                                             xtype: 'panel',
-                                            height: 362,
-                                            width: 750,
+                                            id: prototype.id + '-heigGraf',
+                                            height: 600,
+                                            width: 1840,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 750,
+                                                    width: 1800,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true, 
+                                                    border: true,
                                                     defaults: {
                                                         border: false
                                                     },

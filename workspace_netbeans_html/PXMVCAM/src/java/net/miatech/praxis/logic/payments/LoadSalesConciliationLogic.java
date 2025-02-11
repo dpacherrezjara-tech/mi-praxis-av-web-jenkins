@@ -30,12 +30,12 @@ public class LoadSalesConciliationLogic {
         return loadSalesConciliationDAO.loadPX620SQP05106(filter);
     }
 
-    public String loadPX620SQP05108(MPF106Filter filter, String option) throws SQLException, Exception {
-        return loadSalesConciliationDAO.loadPX620SQP05108(filter, option);
-    }
-
     public A2290Filter SQPMPS076_UP(A2290Filter filter, UserView user) throws SQLException, Exception {
         return loadSalesConciliationDAO.SQPMPS076_UP(filter, user);
+    }
+    
+    public A2290Filter SQPMPS076_UP_OPERATIONAL(A2290Filter filter, UserView user) throws SQLException, Exception {
+        return loadSalesConciliationDAO.SQPMPS076_UP_OPERATIONAL(filter, user);
     }
     
     public String SQP05099(List<A2290Filter> lstData, UserView user) throws Exception {
@@ -48,5 +48,9 @@ public class LoadSalesConciliationLogic {
 
     public A2290Filter SQPMPF114_PREV(A2290Filter filter, UserView user) throws SQLException, Exception {
         return loadSalesConciliationDAO.SQPMPF114_PREV(filter, user);
+    }
+    
+    public A2290Filter SQP_INSERT_PO_MPF114(List<A2290Filter> lstData, UserView user) throws Exception {
+        return loadSalesConciliationDAO.SQP_INSERT_PO_MPF114(lstData,user );
     }
 }

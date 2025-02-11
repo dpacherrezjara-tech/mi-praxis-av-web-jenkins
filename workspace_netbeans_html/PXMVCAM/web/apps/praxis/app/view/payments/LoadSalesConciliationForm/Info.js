@@ -71,6 +71,20 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                     ]
                                 },
                                 {
+                                    xtype: 'radiogroup',
+                                    id: prototype.id + '-rbgFlag',
+                                    fieldLabel: '',
+                                    margin: '10 2 2 20',
+                                    horizontal: true,
+                                    items: [
+                                        {boxLabel: '<strong >SHEET</strong>', name: 'rb', inputValue: '1', width: 100,checked: true},
+                                        {boxLabel: '<strong >WEB-OPER</strong>', name: 'rb', inputValue: '2', width: 100 },
+                                    ],
+                                    listeners: {
+//                                        change: 'btnSearch_click'
+                                    }
+                                },
+                                {
                                     xtype: 'panel',
                                     layout: 'vbox',
                                     border: false,
@@ -106,13 +120,13 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                             name: 'excelfile',
 //                                                        fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
                                                             allowBlank: true,
-                                                            accept: '.xlsx, .xls',
+                                                            accept: '.xlsx, .xls, .xlsb',
                                                             labelWidth: 85,
                                                             width: 400,
                                                             style: 'font-weight:bold;',
                                                             buttonAlign: 'left',
                                                             buttonText: 'Select excel...',
-                                                            regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                                                            regex: /(.)+((\.xlsx)|(\.xls)|(\.xlsb)|(\.csv)(\w)?)$/i,
                                                             regexText: 'Only XLS and XLSX formats are accepted',
                                                             buttonConfig: {
                                                                 text: '<strong>Select</strong>',
@@ -120,7 +134,7 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                                 style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
                                                             },
                                                             listeners: {
-                                                                //change: 'onUploadChange'
+                                                                click: 'onSelectFileEvent'
                                                             }
                                                         }]
                                                 },

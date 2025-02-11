@@ -563,6 +563,15 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            {text: 'PNR', dataIndex: 'SPNR', width: 60,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+//                                                    if(value !== )
+                                                    return value;
+                                                }
+                                            },
                                             {text: 'Card Number', dataIndex: 'SCARDN', width: 150,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
@@ -579,14 +588,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                             {text: 'Invoice', dataIndex: 'INVOICE', width: 150,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
+                                             
                                             {text: 'Currency', dataIndex: 'SCURRENCY', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
@@ -609,11 +611,21 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
+                                                    metaData.style = "text-align:right;";
                                                     
                                                     if(record.data.FCONCEP === 'L'){
                                                         metaData.style = "text-align:right;background-color:#fdfd8e;";
                                                     }else if(record.data.FCONCEP === 'T'){
                                                         metaData.style = "text-align:right;background-color:#cbfffc;";
+                                                    }
+                                                    
+                                                    
+                                                    if(record.data.FCONCEP === 'V'){
+                                                        metaData.style = "text-align:right;background-color:#fdfd8e;";
+                                                    }else if(record.data.FCONCEP === 'A'){
+                                                        metaData.style = "text-align:right;background-color:#cbfffc;";
+                                                    }else{
+                                                        metaData.style = "text-align:right;background-color:#ffffff;";
                                                     }
                                                     if(value == null ){
                                                        metaData.style = "text-align:right;background-color:#ffffff;"; 
@@ -678,6 +690,14 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     //metaData.style = "text-align:center;";
                                                     metaData.style = "text-align:center;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Invoice', dataIndex: 'INVOICE', width: 90,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
