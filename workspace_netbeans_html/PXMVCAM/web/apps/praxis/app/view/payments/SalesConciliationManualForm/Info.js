@@ -565,9 +565,10 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                             },
                                             {text: 'PNR', dataIndex: 'SPNR', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
+                                                    metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
+//                                                    if(value !== )
                                                     return value;
                                                 }
                                             },

@@ -336,6 +336,7 @@ public class LoadSalesConciliationController extends BaseController {
         double montoTotal = 0;
         int i = 0;
         int qty = 0;
+        int qtyPRUEBA = 0;
   
         try {
             String strSesion = UUID.randomUUID().toString();
@@ -354,7 +355,7 @@ public class LoadSalesConciliationController extends BaseController {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             FileInputStream file = new FileInputStream(new File(strArchivo));
             XSSFWorkbook worbook = new XSSFWorkbook(file);
-            XSSFSheet sheet = worbook.getSheetAt(0);
+            XSSFSheet sheet = worbook.getSheetAt(1);
             Iterator<Row> rowIterator = sheet.iterator();
             System.out.println(filter.IN_CONTAB);
             Row row0 = rowIterator.next();
@@ -365,48 +366,63 @@ public class LoadSalesConciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 0) {
                         A2290Filter obj = new A2290Filter();
-                        
+                        qtyPRUEBA++;
+                        if(qtyPRUEBA == 280){
+                            System.out.println(qtyPRUEBA + "");
+                        }
 //                        obj.SEQ = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim();
 //                        obj.USERF = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
-                        obj.TYPETRAN = "V";
-                        obj.CCUST = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
-                        obj.TKT = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim();
-                        obj.CCIA = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
-                        obj.FORMA = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(3,7);
-                        obj.SERIE = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(7);
-                        obj.SDATE = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim().substring(4) + formatter.formatCellValue(row.getCell(0)).trim().substring(2,4) + formatter.formatCellValue(row.getCell(0)).trim().substring(0,2);
-                        obj.SAGENT = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
-                        obj.SPNR= formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
-                        obj.SCURRENCY= formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
-                        obj.SCARDN= formatter.formatCellValue(row.getCell(12)) == null ? "" : formatter.formatCellValue(row.getCell(12)).trim().substring(2);
-                        obj.SAUTHOC= formatter.formatCellValue(row.getCell(13)) == null ? "" : formatter.formatCellValue(row.getCell(13)).trim();
-                        while (obj.SAUTHOC.length() < 6) {
-                            obj.SAUTHOC = "0" + obj.SAUTHOC;
+                        try{
+                            obj.TYPETRAN = "V";
+                            obj.CCUST = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
+                            obj.TKT = formatter.formatCellValue(row.getCell(3)) == null || formatter.formatCellValue(row.getCell(3)).equals("") ? "" : formatter.formatCellValue(row.getCell(3)).trim();
+                            obj.CCIA = formatter.formatCellValue(row.getCell(3)) == null || formatter.formatCellValue(row.getCell(3)).equals("") ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
+                            obj.FORMA = formatter.formatCellValue(row.getCell(3)) == null || formatter.formatCellValue(row.getCell(3)).equals("") ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(3,7);
+                            obj.SERIE = formatter.formatCellValue(row.getCell(3)) == null || formatter.formatCellValue(row.getCell(3)).equals("") ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(7);
+                            obj.SDATE = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim().substring(4) + formatter.formatCellValue(row.getCell(0)).trim().substring(2,4) + formatter.formatCellValue(row.getCell(0)).trim().substring(0,2);
+                            obj.SAGENT = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
+                            obj.SPNR= formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
+                            obj.SCURRENCY= formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
+                            obj.SCARDN= formatter.formatCellValue(row.getCell(12)) == null || formatter.formatCellValue(row.getCell(12)).equals("") ? "" : formatter.formatCellValue(row.getCell(12)).trim().substring(2) ;
+                            obj.SAUTHOC= formatter.formatCellValue(row.getCell(13)) == null ? "" : formatter.formatCellValue(row.getCell(13)).trim();
+                            while (obj.SAUTHOC.length() < 6) {
+                                obj.SAUTHOC = "0" + obj.SAUTHOC;
+                            }
+                            obj.AMOUNT = formatter.formatCellValue(row.getCell(14)) == null || formatter.formatCellValue(row.getCell(14)).equals("") ? "0.00" : formatter.formatCellValue(row.getCell(14)).trim();
+                            obj.AMOUNTV = formatter.formatCellValue(row.getCell(30)) == null || formatter.formatCellValue(row.getCell(30)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row.getCell(30)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.AMOUNTL = formatter.formatCellValue(row.getCell(31)) == null || formatter.formatCellValue(row.getCell(31)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row.getCell(31)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.VARIACIONP = formatter.formatCellValue(row.getCell(39)) == null || formatter.formatCellValue(row.getCell(39)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row.getCell(39)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.STVAL = "3";
+    //                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)) == null ? "" : formatter.formatCellValue(row.getCell(11)).trim();
+                            obj.CECO = formatter.formatCellValue(row.getCell(42)) == null ? "" : formatter.formatCellValue(row.getCell(42)).trim();
+                            obj.CECO = obj.CECO.contains("CARGO A CECO") ? obj.CECO.split(" ")[3] : "";
+                            
+                            System.out.println(qtyPRUEBA + "");
+
+                            if(obj.CCUST.equals("") && obj.TKT.equals("") && obj.SAGENT.equals("") && obj.SCURRENCY.equals("") 
+                               && obj.SCARDN.equals("") && obj.SAUTHOC.equals("") ){   
+                                System.out.println(qtyPRUEBA + "SALTADO");
+                                break;
+                            }
+                            if( obj.SEQ.contains("IF") || obj.SEQ.contains("(") || obj.SEQ.contains("(") ){
+                                respt.MESSAGE = "The file contains formula";
+                                return respt;
+                            }
+                            if( obj.AMOUNT.length() <= 3  ){
+                                respt.MESSAGE = "Amount without #,00 format";
+                                return respt;
+                            }
+                            qty++;
+                            lstData.add(obj);
+                        } catch (Exception e) {
+                            e.getMessage();
+                            if (e.getMessage().contains("String index out of range")) {
+                                mensajePost = "";
+                            } else {
+                                mensajePost = "Error en linea : " + i + " | error: " + e.getMessage();
+                            }
                         }
-                        obj.AMOUNT = formatter.formatCellValue(row.getCell(14)) == null ? "" : formatter.formatCellValue(row.getCell(14)).trim();
-                        obj.AMOUNTV = formatter.formatCellValue(row.getCell(30)) == null ? "" : formatAmount(formatter.formatCellValue(row.getCell(30)).trim().replaceAll("[^\\d.,-]", ""));
-                        obj.AMOUNTL = formatter.formatCellValue(row.getCell(31)) == null ? "" : formatAmount(formatter.formatCellValue(row.getCell(31)).trim().replaceAll("[^\\d.,-]", ""));
-                        obj.VARIACIONP = formatter.formatCellValue(row.getCell(39)) == null ? "" : formatAmount(formatter.formatCellValue(row.getCell(39)).trim().replaceAll("[^\\d.,-]", ""));
-                        obj.STVAL = "3";
-//                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)) == null ? "" : formatter.formatCellValue(row.getCell(11)).trim();
-                        obj.CECO = formatter.formatCellValue(row.getCell(42)) == null ? "" : formatter.formatCellValue(row.getCell(42)).trim();
-                        obj.CECO = obj.CECO.contains("CARGO A CECO") ? obj.CECO.split(" ")[3] : "";
-                        System.out.println(obj.AMOUNT);
                         
-                        if(obj.CCUST.equals("") && obj.TKT.equals("") && obj.SAGENT.equals("") && obj.SCURRENCY.equals("") 
-                           && obj.SCARDN.equals("") && obj.SAUTHOC.equals("") ){       
-                            break;
-                        }
-                        if( obj.SEQ.contains("IF") || obj.SEQ.contains("(") || obj.SEQ.contains("(") ){
-                            respt.MESSAGE = "The file contains formula";
-                            return respt;
-                        }
-                        if( obj.AMOUNT.length() <= 3  ){
-                            respt.MESSAGE = "Amount without #,00 format";
-                            return respt;
-                        }
-                        qty++;
-                        lstData.add(obj);
                     }
                 }
                 file.close();
@@ -422,6 +438,8 @@ public class LoadSalesConciliationController extends BaseController {
             UserView user = this.serverSession.getServerSession().getUserView();
             logic.setSession(this.serverSession.getServerSession());
             System.out.println(lstData +"");
+            System.out.println(qty +"");
+            System.out.println(qtyPRUEBA +"");
             respt = logic.SQP_INSERT_PO_MPF114(lstData, user);
 //            respt.MESSAGE = mensaje;
             

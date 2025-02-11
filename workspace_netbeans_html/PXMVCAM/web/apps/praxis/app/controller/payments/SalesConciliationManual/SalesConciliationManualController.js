@@ -1,4 +1,5 @@
 
+
 Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConciliationManualController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.SalesConciliationManualController',
@@ -368,6 +369,28 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                                     SVFOPACUM2: acumValue
                                 };
                             });
+                            
+                            
+                            
+//                            var grid = Ext.getCmp(prototype.id + '-gridDataDet');
+//                            var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataDet').getStore();
+//                            var groupField = 'A720PNR';
+//                            var sum = {};
+//
+//                            store_gridInfoScan.each(function (record) {
+//                                var key = record.get(groupField);
+//                                var value = record.get('A1531VFOP');
+//                                sum[key] = (sum[key] || 0) + parseFloat(value);
+//                            });
+//                            store_gridInfoScan.each(function (record) {
+//                                var key = record.get(groupField);
+//                                record.set('tot_VFOP', sum[key]);
+//                            });
+//                            grid.getView().refresh();
+
+                           
+                            
+                            
 
                             console.log(registrosConAcum, 'registrosConAcum');
                             console.log('WADAAFA');
@@ -375,11 +398,14 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
                                 data: registrosConAcum,
                                 autoLoad: true
                             });
-
+                            
 
                             Ext.getCmp(prototype.id + '-gridDataDet').bindStore(newStore);
                             Ext.getCmp(prototype.id + '-gridDataDet').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
 //                            win.setText('lblTittleByDayS', data.strTitulo);
+
+
+                            
                         }
                     }
                 }
@@ -387,6 +413,32 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             global.clear();
 
             Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+            
+            var grid = Ext.getCmp(prototype.id + '-gridDataDet');
+            var store = grid.getStore();
+            var groupField = 'SPNR';
+            var currentColorIndex = 0;
+            var lastPNR = null;
+            var colors = ['#b2e1ff', '#FFFFFF']; // Azul claro y naranja claro
+
+            // Configura el renderer para la columna PNR
+            grid.columns.forEach(function (column) {
+                if (column.dataIndex === groupField) {
+                    column.renderer = function (value, metaData, record, rowIndex) {
+                        if (lastPNR !== value) {
+                            currentColorIndex = (currentColorIndex + 1) % colors.length;
+                            lastPNR = value;
+                        }
+                        metaData.style = 'background-color: ' + colors[currentColorIndex] + ';';
+                        return value;
+                    };
+                }
+            });
+
+            // Refresca la grilla para aplicar el renderer
+            grid.getView().refresh();
+
+            
         }
     },
     onGridDayMain: function (obj, metaData, rowNum, columnNum, obj2, rowData) {

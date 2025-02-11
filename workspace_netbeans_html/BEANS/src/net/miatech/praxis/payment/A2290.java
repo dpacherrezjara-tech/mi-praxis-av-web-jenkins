@@ -35,6 +35,11 @@ public class A2290 {
     public String DATABASE = "";
     public String CASOCVS = "";
 //    public double IDDEB = 0;
+    public String CODRULE = "";
+    public String GRORULE = "";
+    public String RQUERY = "";
+    public String TTABLE = "";
+    
     public String SEQ = "";
     public String STVAL = "";
     public String FSTVAL = "";
@@ -67,9 +72,11 @@ public class A2290 {
     public String DESC_SCOUNTRY = "";
     public String SAGENT = "";
     public String TERMI = "";
+    public String GENCON = "";
     public String descTERMI = "";
     public String RED = "";
     public String DESAGENT = "";
+    public String RULE = "";
     public String SDATE = "";
     public String SDATEC = "";
     public String SDATEVTA = "";
@@ -248,6 +255,16 @@ public class A2290 {
     public String HOUP = "";
     public String PGMUP = "";
     
+   
+    public long QTY_100 = 0;
+    public long QTY_101 = 0;
+    public double SVFOP_100 = 0;
+    public double SVFOP_101 = 0;
     
+    public long TotlngQTYTKT = 0;
+    public long TotlngQTYLIQ = 0;
+    public double TotdblSVFOPTKT = 0;
+    public double TotdblSVFOPLIQ = 0;
+
     public String SCARDNCOR = "";
 }
