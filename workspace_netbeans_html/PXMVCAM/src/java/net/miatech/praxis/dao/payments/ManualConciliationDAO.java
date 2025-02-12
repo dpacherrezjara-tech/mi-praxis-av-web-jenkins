@@ -7450,7 +7450,10 @@ public class ManualConciliationDAO {
                     }
                     beanTkt.DATEC = rst.getString("DATEC").trim();
                     beanTkt.TRANC = rst.getString("TRANC").trim();
+                    beanTkt.UNIQUE = rst.getString("UNIQUE").trim();
                     beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                    beanTkt.TKT = rst.getString("TKT").trim();
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
                     beanTkt.PAYDATE = rst.getString("PAYDATE").trim();
                     beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
                     beanTkt.TERMI = rst.getString("TERMI").trim();

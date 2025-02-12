@@ -88,7 +88,8 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                     },
                                     items: [
                                         {
-                                            xtype: 'grid',
+//                                            xtype: 'grid',
+                                            xtype: 'treepanel',
                                             id: prototype.id + '-gridDataMain',
                                             width: 1787,
                                             columnLines: true,
@@ -103,7 +104,12 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                     selectOnEdit: true,
                                                     gridcellediting: true
                                                 })
-                                            ],
+                                            ],     
+                                            reserveScrollbar: true,
+                                            useArrows: true,
+                                            rootVisible: false,
+                                            multiSelect: true,
+                                            rowLines: true,
                                             columns: {
                                                 defaults: {
                                                     menuDisabled: true,
@@ -111,6 +117,24 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                     align: 'center'
                                                 },
                                                 items: [
+                                                    {
+                                                        text: 'UNIQUE', dataIndex: 'UNIQUE', width: 130, align: 'center', menuDisabled: true, xtype: 'treecolumn',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'TKT', dataIndex: 'TKT', width: 130, align: 'center', menuDisabled: true, 
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            return value;
+                                                        }
+                                                    },
                                                     {
                                                         text: 'Status', dataIndex: 'descSTVAL', width: 130, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {

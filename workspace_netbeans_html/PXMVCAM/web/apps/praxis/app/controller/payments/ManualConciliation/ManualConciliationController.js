@@ -506,7 +506,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
 //            if (Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()) {
 //                me.pagginActual = '-pagginMPF101TW';
 //            } else {
-                me.pagginActual = '-paggin';
+            me.pagginActual = '-paggin';
 //            }
         } else {
             switch (me.panelActual) {
@@ -950,6 +950,53 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        let lstData = []
+                        for (let value of obj.data.items) {
+                            lstData.push(value.data)
+                        }
+                        let a = [];
+                        let dataRoot = {text: '.', expanded: false, children: []};
+
+                        Ext.Object.each(lstData, function (index, value) {
+                            if (a.indexOf(value.UNIQUE) < 0) {
+                                let x = [];
+                                let V_SVFOP = 0;
+                                //20250102002939384
+                                Ext.Object.each(lstData, function (index, valuex) {
+                                    if (value.UNIQUE === valuex.UNIQUE) {
+                                        V_SVFOP += valuex.SVFOP;
+                                    }
+                                });
+                                a.push(value.UNIQUE);
+                                dataRoot.children.push({
+                                    UNIQUE: value.UNIQUE,
+                                    SVFOP: V_SVFOP,
+                                    SCARDN: value.SCARDNL,
+                                    SAUTHOC: value.SAUTHOCL,
+                                    SDATE: value.SDATEL,
+                                    expanded: false, children: []
+                                });
+                                let b = [];
+                                Ext.Object.each(lstData, function (index, value01) {                
+                                    if (value.UNIQUE === value01.UNIQUE) {
+                                        dataRoot.children[a.indexOf(value.UNIQUE)].children.push({
+                                            UNIQUE: value01.UNIQUE,
+                                            SVFOP: value01.SVFOP,
+                                            SCARDN: value01.SCARDN,
+                                            TKT: value01.TKT,
+                                            SAUTHOC: value01.SAUTHOC,
+                                            SDATE: value01.SDATE,
+                                            leaf: true
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        var storeTree = Ext.create('Ext.data.TreeStore', {
+                            root: dataRoot
+                        });
+
+                        Ext.getCmp(prototype.id + '-gridDataMain').setStore(storeTree);
 
                     } else {
                         global.Msg({msg: 'Data not found'});
@@ -958,8 +1005,8 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                 }
             }
         });
-        Ext.getCmp(prototype.id + '-gridDataMain').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-gridDataMain').bindStore(storeGridDatas);
+//        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 
     },
     guardaFiltroMPF100: function () {
