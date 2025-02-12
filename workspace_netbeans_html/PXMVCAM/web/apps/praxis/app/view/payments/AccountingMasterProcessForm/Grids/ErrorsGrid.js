@@ -89,12 +89,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGri
                             return 'Pending';
                         },
                         '1': () => {
-                            metaData.style = "background-color:#7dee50;font-weight:bold";
+                            metaData.style = "background-color:#b09ad2;font-weight:bold";
                             return 'Reversed';
                         },
                         '2': () => {
                             metaData.style = "background-color:#dbf12d;font-weight:bold";
                             return 'Stand By';
+                        },
+                        '3': () => {
+                            metaData.style = "background-color:#7dee50;font-weight:bold";
+                            return 'Validated';
                         }
                     };
                     return opts[value]();
