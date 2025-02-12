@@ -1574,7 +1574,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                         fieldStyle: 'text-align: center;',
                                         padding: '0px 0px 0px 0px'
                                     },
-                                    margin: '0 0 0 70',
+//                                    margin: '0 0 0 20',
                                     layout: {
                                         type: 'vbox',
                                         align: 'center',
@@ -1585,7 +1585,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                             padding: '10 0 0 0',
                                             id: prototype.id + '-gridDataColumns',
                                             height: 160,
-                                            width: 494,
+                                            width: 574,
                                             resizable: false,
                                             columnLines: true,
                                             clicksToEdit: 1,
@@ -1602,13 +1602,19 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                                 },
                                                 items: [
                                                     {text: 'Rule', width: 40, dataIndex: 'CODRULE'},
-                                                    {text: 'Agroup', width: 250, dataIndex: 'GRORULE',
+                                                    {text: 'Agroup', width: 330, dataIndex: 'GRORULE',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:left;";
                                                             return value;
                                                         }
                                                     },
                                                     {text: 'Rquery', width: 240, dataIndex: 'RQUERY', hidden: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Tquery', width: 240, dataIndex: 'TQUERY', hidden: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:left;";
                                                             return value;
