@@ -3,7 +3,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
     alias: 'widget.' + prototype.id + '-filters',
     border: false,
     requires: [
-        'Ext.Praxis.view.widgets.MonthField'
+        'Ext.Praxis.view.widgets.MonthField2'
     ],
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
@@ -76,28 +76,20 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                     value: ''
                                 },
                                 {
-                                    xtype: 'monthfield',
+                                    xtype: 'monthfield2',
                                     fieldLabel: 'From',
-                                    format: 'Ym',
-                                    altFormats: 'm/Y',
-                                    editable: false, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(),
-                                    name: 'IN_DATEF'
-                                    
+                                    name: 'IN_DATEF',
+                                    fieldStyle: 'font-weight:bold;text-align:center;'
                                 },
                                 {
-                                    xtype: 'monthfield',
+                                    xtype: 'monthfield2',
                                     fieldLabel: 'To',
-                                    format: 'Ym',
-                                    altFormats: 'm',
-                                    editable: false, // Deshabilita la edición del campo
-                                    lastDay: true,
                                     labelWidth: 30,
                                     width: 130,
-                                    value: new Date(),
-                                    name: 'IN_DATET'
+                                    name: 'IN_DATET',
+                                    fieldStyle: 'font-weight:bold;text-align:center;'
                                 },
                                 {
                                     xtype: 'combobox',

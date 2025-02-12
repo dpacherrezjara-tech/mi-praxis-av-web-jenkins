@@ -11,19 +11,18 @@ Ext.define('Ext.Praxis.view.widgets.MonthField', {
     , selectDate: 1
     , selectMonth: null
     , createPicker: function () {
-        var me = this
+        let me = this
                 , format = Ext.String.format;
-
-        return Ext.create('Ext.picker.Month', {
+        let mp = Ext.create('Ext.picker.Month', {
             pickerField: me
             , ownerCt: me.ownerCt
             , renderTo: document.body
             , floating: true
             , hidden: true
-            , focusOnShow: true
+            , focusOnShow: false
+            , width: 200
             , minDate: me.minValue
             , maxDate: me.maxValue
-            , width:'auto'
             , disabledDatesRE: me.disabledDatesRE
             , disabledDatesText: me.disabledDatesText
             , disabledDays: me.disabledDays
@@ -61,8 +60,11 @@ Ext.define('Ext.Praxis.view.widgets.MonthField', {
                 }
             }
         });
+        return mp;
+    },
+    afterRender: function() {
+        this.callParent(arguments);
     }
-
     , onCancelClick: function () {
         this.selectMonth = null;
         this.collapse();
