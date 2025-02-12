@@ -57,7 +57,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/AccountingReport")
 @Scope("request")
-public class AccountingReportController extends BaseController {
+public class AccountingReportController{
 
     @Autowired
     private AccountingReportLogic logic;
@@ -198,6 +198,7 @@ public class AccountingReportController extends BaseController {
                         dto.setCodigoProcesador(procesador);
                         dto.setCorrlAV(corrlAV);
                         dto.setFileNumber(fileNumber[0]);
+                        dto.setTipoConta(obj);
                         String fileName = fileNameTemp + "_" + cliente + "_"
                                 + modo + "_" + procesador + "_" + fileNumber[0];
                         dto.setFileName(fileName);
@@ -299,6 +300,7 @@ public class AccountingReportController extends BaseController {
                     dto.setCodigoProcesador(procesador);
                     dto.setCorrlAV(corrlAV);
                     dto.setFileNumber(fileNumber[0]);
+                    dto.setTipoConta(obj);
                     String fileName = fileNameTemp + "_" + cliente + "_"
                             + modo + "_" + procesador + "_" + fileNumber[0];
                     dto.setFileName(fileName);

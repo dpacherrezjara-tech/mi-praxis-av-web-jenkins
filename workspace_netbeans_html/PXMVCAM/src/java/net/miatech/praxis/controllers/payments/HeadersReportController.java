@@ -1,15 +1,22 @@
 package net.miatech.praxis.controllers.payments;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.logic.payments.HeadersReportLogic;
+import net.miatech.praxis.payment.dto.AccountingInterface;
+import net.miatech.praxis.payment.dto.SPACR021Filter;
 import net.miatech.praxis.payment.dto.SPHRP001Filter;
 import net.miatech.praxis.payment.dto.SPHRP002Filter;
 import net.miatech.praxis.payment.dto.SPHRP003Filter;
 import net.miatech.praxis.payment.dto.SPHRP004Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
+import net.miatech.praxis.utils.SpringWS;
 import net.miatech.utils.CustomExcelCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,6 +39,14 @@ public class HeadersReportController {
     private HeadersReportLogic logic;
     @Autowired
     private ExportUtils exportUtils;
+    
+    @Autowired
+    private SpringWS ws;
+    @Autowired
+    private CurrentSession cs;
+    
+    @Autowired
+    private AccountingReportController arc;
 
     @RequestMapping(value = "loadHeaders")
     public ResponseEntity<?> loadHeaders(SPHRP001Filter params) throws Exception {
@@ -53,6 +68,21 @@ public class HeadersReportController {
     public ResponseEntity<?> maintenanceHeader(@RequestBody SPHRP003Filter params) throws Exception {
         System.out.println("***** HeadersReport - maintenanceHeader *****");
         logic.loadSPHRP003Filter(params);
+        
+        SPACR021Filter filter = new SPACR021Filter();
+        filter.setIN_CCUST(params.getIN_IDCONT().substring(0,2));
+        filter.setIN_IDCONT(params.getIN_IDCONT());
+        filter.setIN_CODPRO(params.getIN_CODPRO());
+        
+        Gson gson = new Gson();
+        List<AccountingInterface> lstResponse = arc.formatInterfases(filter);
+        Map<String, Object> map = new HashMap();
+        map.put("userName", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
+        map.put("idCont", params.getIN_IDCONT().trim());
+        map.put("dto", lstResponse);
+        String body = gson.toJson(map);
+        ws.postAsync(body, "Accounting/sendInterfaseToSFTP");
+        
         return ResponseUtils.create();
     }
     

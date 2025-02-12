@@ -39,9 +39,61 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadF
             {text: 'Correlative<br>Name', dataIndex: 'CORRLAV', width: 160},
             {text: 'User<br>Generate', dataIndex: 'USENV', width: 100},
             {text: 'File Name', dataIndex: 'FILENAM', flex: 1},
+            {text: 'Status', dataIndex: 'STSAP', width: 100,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "font-weight:bold";
+                    const opts = {
+                        '1': 'Pending',
+                        '2': 'Loaded',
+                        '3': 'Rejected'
+                    };
+                    return opts[value];
+                }
+            },
+            {text: 'Type', dataIndex: 'MODO', width: 80,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "font-weight:bold";
+                    const opts = {
+                        'P': () => {
+                            return 'PAX CO';
+                        },
+                        'A': () => {
+                            return 'CGO CO';
+                        },
+                        'C': () => {
+                            return 'COR CO';
+                        },
+                        'E': () => {
+                            return 'PAX EXT';
+                        },
+                        'G': () => {
+                            return 'CGO EXT';
+                        },
+                        'T': () => {
+                            return 'TAX EXT';
+                        },
+                        'D': () => {
+                            return 'DEB CO';
+                        },
+                        'B': () => {
+                            return 'DEB EXT';
+                        },
+                        'J': () => {
+                            return 'ADJ CO';
+                        },
+                        'K': () => {
+                            return 'ADJ EXT';
+                        },
+                        'M': () => {
+                            return "ADM's";
+                        }
+                    };
+                    return opts[value] ? opts[value]() : '';
+                }
+            },
             {text: 'User<br>Processor', dataIndex: 'USCR', width: 100},
             {text: 'Register<br>Date', dataIndex: 'TSCR', width: 160}
-            
+
             //</editor-fold>
         ]
     },
