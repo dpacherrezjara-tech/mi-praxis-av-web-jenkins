@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.miatech.praxis.logic.payments.HeadersReportLogic;
+import net.miatech.praxis.payment.dto.HeadersReport;
 import net.miatech.praxis.payment.dto.SPHRP001Filter;
 import net.miatech.praxis.payment.dto.SPHRP002Filter;
 import net.miatech.praxis.payment.dto.SPHRP003Filter;
+import net.miatech.praxis.payment.dto.SPHRP004Filter;
 import net.miatech.praxis.payment.entities.HeaderReport;
 import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF137;
@@ -87,5 +89,14 @@ public class HeadersReportDAO implements HeadersReportLogic {
         filter.setIN_FUUID(fuuid);
         SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
         jdbcUtils.executeSQP(LIBRARY, "SPHRP003",params);
+    }
+
+    @Override
+    public SPHRP004Filter loadSPHRP004Filter(SPHRP004Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPHRP004",
+                params, new BeanPropertyRowMapper(HeadersReport.class));
+        filter.setResponse((List<HeadersReport>) obj.get("result"));
+        return filter;
     }
 }

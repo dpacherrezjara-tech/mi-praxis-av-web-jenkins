@@ -62,5 +62,11 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     formatParams: function () {
         const filters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         return filters.getValues();
+    },
+    onProcessClick:function(){
+        const win = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeadersDataEntry',{
+            id: prototype.id + '-DownloadHeadersDataEntry-1'
+        });
+        win.show();
     }
 });

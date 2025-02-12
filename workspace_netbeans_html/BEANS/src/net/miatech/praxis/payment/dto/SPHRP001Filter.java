@@ -14,6 +14,6 @@ import net.miatech.utils.CustomPageImpl;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SPHRP001Filter extends CustomPageImpl{
-    private String IN_CCUST,IN_TIPOCON,IN_DATEF,IN_DATET,IN_CODPRO;
+    private String IN_CCUST,IN_TIPOCON,IN_DATEF,IN_DATET,IN_CODPRO,IN_HEADER,IN_STSAP;
     List<HeaderReport> response = new ArrayList<>();
 }

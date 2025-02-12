@@ -81,6 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         filesGrid.setStore(storeFiles);
         accountedGrid.setStore(storeAcc);
         rejectionsGrid.setStore(storeRej);
+        me.view.center();
     },
     onCancelClick: function () {
         this.view.close();

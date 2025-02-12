@@ -1,10 +1,16 @@
 package net.miatech.praxis.controllers.payments;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import net.miatech.praxis.logic.payments.HeadersReportLogic;
 import net.miatech.praxis.payment.dto.SPHRP001Filter;
 import net.miatech.praxis.payment.dto.SPHRP002Filter;
 import net.miatech.praxis.payment.dto.SPHRP003Filter;
+import net.miatech.praxis.payment.dto.SPHRP004Filter;
+import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
+import net.miatech.utils.CustomExcelCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +30,8 @@ public class HeadersReportController {
 
     @Autowired
     private HeadersReportLogic logic;
+    @Autowired
+    private ExportUtils exportUtils;
 
     @RequestMapping(value = "loadHeaders")
     public ResponseEntity<?> loadHeaders(SPHRP001Filter params) throws Exception {
@@ -47,4 +55,96 @@ public class HeadersReportController {
         logic.loadSPHRP003Filter(params);
         return ResponseUtils.create();
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="Exceles">
+    @RequestMapping(value = "downloadHeaders")
+    public ResponseEntity<?> downloadHeaders(SPHRP001Filter params) throws Exception {
+        System.out.println("***** HeadersReport - downloadHeaders *****");
+        params.setExcel(true);
+        SPHRP001Filter filter = logic.loadSPHRP001Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        
+        String title = "HeadersReport-"+ UUID.randomUUID().toString().substring(0, 6);
+
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("Type"));
+        header.add(new CustomExcelCell("Header ID"));
+        header.add(new CustomExcelCell("Period"));
+        header.add(new CustomExcelCell("Date"));
+        header.add(new CustomExcelCell("Praxis ID"));
+        header.add(new CustomExcelCell("Status"));
+        header.add(new CustomExcelCell("Qty\nBussiness"));
+        header.add(new CustomExcelCell("Qty\nDocuments"));
+
+        data.add(header);
+        filter.getResponse().forEach(obj -> {
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(obj.getHEADER()));
+            row.add(new CustomExcelCell(obj.getPERIOD()));
+            row.add(new CustomExcelCell(obj.getFCONT()));
+            row.add(new CustomExcelCell(obj.getIDCONT()));
+            row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
+            row.add(new CustomExcelCell(obj.getNEGOCIOS()));
+            row.add(new CustomExcelCell(obj.getTRNX()));
+            data.add(row);
+        });
+
+        return exportUtils.createCustomExcel(data, title);
+    }
+    
+    @RequestMapping(value = "downloadHeadersReport")
+    public ResponseEntity<?> downloadHeadersReport(SPHRP004Filter params) throws Exception {
+        System.out.println("***** HeadersReport - downloadHeaders *****");
+        SPHRP004Filter filter = logic.loadSPHRP004Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        
+        
+        String title = "HeadersReport_AV-"+ UUID.randomUUID().toString().substring(0, 6);
+
+        List<List<CustomExcelCell>> data = new ArrayList<>();
+        List<CustomExcelCell> header = new ArrayList<>();
+        header.add(new CustomExcelCell("ACC_TYPE"));
+        header.add(new CustomExcelCell("PERIOD"));
+        header.add(new CustomExcelCell("POSTING_DATE"));
+        header.add(new CustomExcelCell("HEADER"));
+        header.add(new CustomExcelCell("GEN_DATE"));
+        header.add(new CustomExcelCell("CODE_PROCESSOR"));
+        header.add(new CustomExcelCell("FILE_NAME"));
+
+        data.add(header);
+        filter.getResponse().forEach(obj -> {
+            List<CustomExcelCell> row = new ArrayList<>();
+            row.add(new CustomExcelCell(obj.getACC_TYPE()));
+            row.add(new CustomExcelCell(obj.getPERIOD()));
+            row.add(new CustomExcelCell(obj.getPOSTING_DATE()));
+            row.add(new CustomExcelCell(obj.getHEADER()));
+            row.add(new CustomExcelCell(obj.getGEN_DATE()));
+            row.add(new CustomExcelCell(obj.getCODE_PROCESSOR()));
+            row.add(new CustomExcelCell(obj.getFILE_NAME()));
+            data.add(row);
+        });
+
+        return exportUtils.createCustomExcel(data, title);
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Data Bindings">
+    String formatStsap(String stsap){
+        String res = "";
+        switch (stsap) {
+            case "S":
+                res = "Sended to AV";
+                break;
+            case "L":
+                res = "Loaded to SAP";
+                break;
+            default:
+                res="";
+        }
+        return res;
+    }
+//</editor-fold>
 }

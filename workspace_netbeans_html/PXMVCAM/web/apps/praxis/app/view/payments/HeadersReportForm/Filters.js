@@ -144,6 +144,38 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Corrl AV',
+                                    labelWidth: 90,
+                                    width: 280,
+                                    name: 'IN_HEADER',
+                                    maxLength: 20,
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Status',
+                                    name: 'IN_STSAP',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['S', 'Sended to AV'],
+                                            ['L', 'Loaded to SAP']
+                                        ]
+                                    }),
+                                    labelWidth: 60,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
                                 }
                             ]
                         }
