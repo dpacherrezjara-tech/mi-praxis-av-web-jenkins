@@ -94,7 +94,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             click: 'onViewPreErrors'
                         }
                     },
-                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 80,
+                    {text: 'Accounting<br>Errors', dataIndex: 'QTYERRS', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -127,7 +127,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                 }, 
                                 '2': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Post-Accounting Errors';
+                                    return 'Accounting Errors';
                                 }, 
                                 '3': ()=>{
                                     metaData.style = "background-color:#f3a146;font-weight:bold";

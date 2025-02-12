@@ -159,7 +159,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                             ['', 'All'],
                                             ['0', 'Processing'],
                                             ['1', 'Loaded to SAP'],
-                                            ['2', 'Post-Accounting Errors'],
+                                            ['2', 'Accounting Errors'],
                                             ['3', 'Ready to Send'],
                                             ['4', 'Reversed'],
                                             ['5', 'Sended to AV'],
