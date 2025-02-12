@@ -1,4 +1,4 @@
-prototype.idDE2 = prototype.id + '-ProcessDataEntry';
+prototype.idDE2 = prototype.id + '-ProcessConciliationDataEntry';
 Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConciliationDataEntry', {
     extend: 'Ext.window.Window',
     alias: 'widget.ProcessConciliationDataEntry',
@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConcili
     controller: 'ProcessConciliationDataEntryController',
     title: 'Process Conciliation - Form',
     header: true,
-    width: 900,
+    width: 800,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -70,7 +70,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConcili
                             id: prototype.idDE2 + '-cmbCODPRO',
                             name: 'VP_CODPRO',
                             labelWidth: 70,
-                            width: 250,
+                            width: 240,
                             valueField: 'CODE',
                             displayField: 'NAME',
                             fieldLabel: 'Processor',
@@ -116,12 +116,12 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConcili
             dock: 'bottom',
             ui: 'footer',
             border: false,
-            margin: '3 5 3 5',
             layout: {
                 pack: 'center'
             },
             fieldStyle: 'text-align:center',
             defaults: {
+                margin: '3 5 3 5',
                 scale: 'medium'
             },
             items: [

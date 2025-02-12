@@ -314,6 +314,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
                                                         width: 40,
+                                                        hidden:true,
                                                         text: 'Info',
                                                         locked: true,
                                                         align: 'center',
@@ -386,6 +387,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
+                                                        hidden:true,
                                                         width: 40,
                                                         text: 'Info',
                                                         locked: true,

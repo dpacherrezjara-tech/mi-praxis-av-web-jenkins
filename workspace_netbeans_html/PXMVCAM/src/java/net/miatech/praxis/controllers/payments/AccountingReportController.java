@@ -17,6 +17,7 @@ import net.miatech.praxis.payment.dto.AccountingInterface;
 import net.miatech.praxis.payment.dto.EVALBANDOCFilter;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
+import net.miatech.praxis.payment.dto.SPACR003Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
@@ -33,14 +34,12 @@ import net.miatech.praxis.payment.dto.SPACR021Filter;
 import net.miatech.praxis.payment.dto.SPACR024Filter;
 import net.miatech.praxis.payment.dto.SPMC007Filter;
 import net.miatech.praxis.payment.entities.A4545;
-import net.miatech.praxis.payment.entities.X3184;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.praxis.utils.SpringWS;
 import net.miatech.utils.CustomExcelCell;
 import net.miatech.utils.Functions;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -1006,6 +1005,14 @@ public class AccountingReportController extends BaseController {
     public ResponseEntity<?> loadTaxesBrowser(SPACR016Filter params) throws Exception {
         System.out.println("***** AccountingReport - loadTaxesBrowser *****");
         SPACR016Filter filter = logic.loadSPACR016Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadRejectionsBrowser")
+    public ResponseEntity<?> loadRejectionsBrowser(SPACR003Filter params) throws Exception {
+        System.out.println("***** AccountingReport - loadRejectionsBrowser *****");
+        SPACR003Filter filter = logic.loadSPACR003Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
     }

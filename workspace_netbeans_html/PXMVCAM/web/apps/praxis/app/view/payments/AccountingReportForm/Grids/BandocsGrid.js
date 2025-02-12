@@ -171,13 +171,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                     {text: 'ID', dataIndex: 'IDACC', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = 'background-color:#B2DAFA;';
-                            if(value.trim() !== ''){
+                            if (value.trim() !== '') {
                                 metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
                             }
                             return value;
                         },
-                        listeners:{
-                            click:'onLoadAccounting'
+                        listeners: {
+                            click: 'onLoadAccounting'
                         }
                     }
                 ]
@@ -219,7 +219,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                             return opts[value]() || '';
                         }
                     },
-                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200}
+                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
+                    {text: 'Qty<br>Rejections', dataIndex: 'QTYREJ', width: 60,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#a5d7d6;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
+                            return value;
+                        },
+                        listeners: {
+                            click: 'onLoadRejections'
+                        }
+                    }
                 ]
             }
             //</editor-fold>
