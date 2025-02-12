@@ -501,51 +501,12 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
     },
     getPaggin: function () {
         me.pagginActual = '';
-        if (Ext.getCmp(prototype.id + '-panelGridDataMain').isVisible()) {
 
-//            if (Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()) {
-//                me.pagginActual = '-pagginMPF101TW';
-//            } else {
+        switch (me.panelActual) {
+            case  '-panelGridDataMain':
                 me.pagginActual = '-paggin';
-//            }
-        } else {
-            switch (me.panelActual) {
-                case  '-panelGridDataMain':
-                    me.pagginActual = '-paggin';
-                    break;
-                case '-panelGridDataCountry':
-                    me.pagginActual = '-paggin2';
-                    break;
-                case '-panelGridDataDay':
-                    me.pagginActual = '-paggin3';
-                    break;
-                case '-panelGridDataDetalle':
-                    me.pagginActual = '-paggin4';
-                    break;
-                case '-panelGridDetCardByS':
-                    me.pagginActual = '-paggin5';
-                    break;
-                case '-panelGridDetCardNbrByS':
-                    me.pagginActual = '-paggin6';
-                    break;
-                case '-panelGridDataTicket':
-                    me.pagginActual = '-paggin7';
-                    break;
-                case '-panelGridDetDayByS':
-                    me.pagginActual = '-paggin8';
-                    break;
-                case '-boxDebitsData':
-                    me.pagginActual = '-pagginDebits';
-                    break;
-                case '-panelGridDetCardByS_Debits':
-                    me.pagginActual = '-pagginDebits_country';
-                    break;
-                case '-panelGridDataDetalle_DEBITS':
-                    me.pagginActual = '-pagginDebits_detail';
-                    break;
-            }
+                break;
         }
-
     },
 
     /*     
@@ -561,9 +522,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         pag.movePrevious();
     },
     pagNext: function (obj, e) {
-        console.log(obj, e, 'nikaaaaa')
         this.getPaggin();
-        console.log(this.getPaggin(), 'this.getPaggin')
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         console.log(pag, 'pag')
         pag.moveNext();
@@ -950,6 +909,71 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        let lstData = []
+                        for (let value of obj.data.items) {
+                            lstData.push(value.data)
+                        }
+                        let a = [];
+                        let dataRoot = {text: '.', expanded: false, children: []};
+
+                        Ext.Object.each(lstData, function (index, value) {
+                            if (a.indexOf(value.UNIKEY) < 0) {
+                                let V_SVFOP = 0; 
+                                Ext.Object.each(lstData, function (index, valuex) {
+                                    if (value.UNIKEY === valuex.UNIKEY) {
+                                        V_SVFOP += valuex.SVFOP_100;
+                                    }
+                                });
+                                a.push(value.UNIKEY);
+                                dataRoot.children.push({
+                                    UNIKEY: value.UNIKEY,
+                                    QTY: value.QTY_101,
+                                    SVFOP: value.SVFOP_101,
+                                    SVFOP_100: V_SVFOP,
+                                    SCURRENCY: value.SCURRENCY_101,
+                                    TDOC: value.TDOC_101,
+                                    SDATE: value.SDATE_101,
+                                    PAYDATE: value.PAYDATE,
+                                    CODEBANK: value.CODEBANK,
+                                    MERCHNC: value.MERCHNC,
+                                    ACCNUMBER: value.ACCNUMBER,
+                                    TERMI: value.TERMI,
+                                    SAGENT: value.SAGENT_101,
+                                    SCARCOD: value.SCARCOD_101,
+                                    SCARDN: value.SCARDN_101,
+                                    SAUTHOC: value.SAUTHOC_101,
+                                    SEQNUM: value.SEQNUM,
+                                    expanded: false, children: []
+                                });
+                                let b = [];
+                                Ext.Object.each(lstData, function (index, value01) {
+                                    if (value.UNIKEY === value01.UNIKEY) {
+                                        dataRoot.children[a.indexOf(value.UNIKEY)].children.push({
+                                            UNIKEY: value01.UNIKEY,
+                                            TKT: value01.TKT,
+                                            QTY: value01.QTY_100,
+                                            SVFOP_100: value01.SVFOP_100,
+                                            SCURRENCY: value01.SCURRENCY_100,
+                                            TDOC: value01.TDOC_100,
+                                            SDATE: value01.SDATE_100,
+                                            SAGENT: value01.SAGENT_100,
+                                            SCARCOD: value01.SCARCOD_100,
+                                            SCARDN: value01.SCARDN_100,
+                                            SAUTHOC: value01.SAUTHOC_100,
+                                            leaf: true
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+                        console.log(dataRoot);
+
+                        var storeTree = Ext.create('Ext.data.TreeStore', {
+                            root: dataRoot
+                        });
+
+                        Ext.getCmp(prototype.id + '-gridDataMain').setStore(storeTree);
 
                     } else {
                         global.Msg({msg: 'Data not found'});
@@ -958,7 +982,6 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                 }
             }
         });
-        Ext.getCmp(prototype.id + '-gridDataMain').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 
     },
