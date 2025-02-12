@@ -2196,7 +2196,7 @@ public class ManualConciliationDAO {
                 try {
                     cstmt.close();
                     strMsj = "Successful," + count + " records have been reconciled.";
-                    
+
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
@@ -2247,7 +2247,7 @@ public class ManualConciliationDAO {
                     try {
                         cstmt.close();
                         strMsj = "Successful," + count + " records have been reconciled.";
-                        
+
                     } catch (SQLException e) {
                         logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                     }
@@ -7280,7 +7280,7 @@ public class ManualConciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadRules() throws SQLException, Exception {
 
         List<A2290Filter> lista = new ArrayList<>();
@@ -7381,86 +7381,74 @@ public class ManualConciliationDAO {
             filter.page.TOTROW = cstmt.getInt(14);
 
             while (rst.next()) {
-                lngQTYLIQ += rst.getLong("QTY_101");
-                dblSVFOPLIQ += rst.getDouble("SVFOP_101");
-                lngQTYTKT += rst.getLong("QTY_100");
-                dblSVFOPTKT += rst.getDouble("SVFOP_100");
+
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?)}";
+
+                Connection cnx2 = null;
+                try {
+                    cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
+                    cstmt2 = cnx2.prepareCall(SQLCLL02);
+
+                    cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt2.setString(2, rst.getString("TDOC_101"));
+                    cstmt2.setString(3, rst.getString("SDATE_101"));
+                    cstmt2.setString(4, filter.SCOUNTRY.trim());
+                    cstmt2.setString(5, rst.getString("SCURRENCY_101"));
+                    cstmt2.setString(6, rst.getString("SCARDN_101"));
+                    cstmt2.setString(7, rst.getString("SAUTHOC_101"));
+                    cstmt2.setString(8, rst.getString("SAGENT_101"));
+                    cstmt2.setString(9, filter.RQUERY.trim());
+
+                    cstmt2.execute();
+
+                    rst2 = cstmt2.getResultSet();
+
+                    while (rst2.next()) {
+                        beanTkt = new A2290Filter();
+                        beanTkt.TKT = rst2.getString("TKT");
+                        beanTkt.QTY_100 = rst2.getLong("QTY_100");
+                        beanTkt.SVFOP_100 = rst2.getDouble("SVFOP_100");
+                        beanTkt.SCURRENCY_100 = rst2.getString("SCURRENCY_100");
+                        beanTkt.TDOC_100 = rst2.getString("TDOC_100");
+                        beanTkt.SDATE_100 = rst2.getString("SDATE_100");
+                        beanTkt.SAGENT_100 = rst2.getString("SAGENT_100");
+                        beanTkt.SCARCOD_100 = rst2.getString("SCARCOD_100");
+                        beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
+                        beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
+
+                        beanTkt.UNIKEY = rst.getString("UNIKEY");
+                        beanTkt.PAYDATE = rst.getString("PAYDATE");
+                        beanTkt.CODEBANK = rst.getString("CODEBANK");
+                        beanTkt.MERCHNC = rst.getString("MERCHNC");
+                        beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
+                        beanTkt.TERMI = rst.getString("TERMI");
+                        beanTkt.NEGOC = rst.getString("NEGOC");
+                        beanTkt.SEQNUM = rst.getString("SEQNUM");
+                        beanTkt.QTY_101 = rst.getLong("QTY_101");
+                        beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
+                        beanTkt.SCURRENCY_101 = rst.getString("SCURRENCY_101");
+                        beanTkt.TDOC_101 = rst.getString("TDOC_101");
+                        beanTkt.SDATE_101 = rst.getString("SDATE_101");
+                        beanTkt.SAGENT_101 = rst.getString("SAGENT_101");
+                        beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
+                        beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
+                        beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+
+                        beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                        beanTkt.page.PAGROW = filter.page.PAGROW;
+                        beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                        beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                        lstTkts.add(beanTkt);
+
+                    }
+
+                } catch (Exception e) {
+
+                }
             }
             rst.close();
-            
-            if (cstmt.getMoreResults()) {
-                rst = cstmt.getResultSet();
-
-                while (rst.next()) {
-                     
-                    String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?)}";
-
-                    Connection cnx2 = null;
-                    try {
-                        cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-                        cstmt2 = cnx2.prepareCall(SQLCLL02);
-                        
-                        cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                        cstmt2.setString(2, rst.getString("TDOC_101"));
-                        cstmt2.setString(3, rst.getString("SDATE_101"));
-                        cstmt2.setString(4, filter.SCOUNTRY.trim());
-                        cstmt2.setString(5, rst.getString("SCURRENCY_101"));
-                        cstmt2.setString(6, rst.getString("SCARDN_101"));
-                        cstmt2.setString(7, rst.getString("SAUTHOC_101"));
-                        cstmt2.setString(8, rst.getString("SAGENT_101"));
-                        cstmt2.setString(9, filter.RQUERY.trim());
-                        
-                        cstmt2.execute();
-
-                        rst2 = cstmt2.getResultSet();
-                        
-                        while (rst2.next()) {
-                            beanTkt = new A2290Filter();
-                            beanTkt.TKT = rst2.getString("TKT");
-                            beanTkt.QTY_100 = rst2.getLong("QTY_100");
-                            beanTkt.SVFOP_100 = rst2.getDouble("SVFOP_100");
-                            beanTkt.SCURRENCY_100 = rst2.getString("SCURRENCY_100");
-                            beanTkt.TDOC_100 = rst2.getString("TDOC_100");
-                            beanTkt.SDATE_100 = rst2.getString("SDATE_100");
-                            beanTkt.SAGENT_100 = rst2.getString("SAGENT_100");
-                            beanTkt.SCARCOD_100 = rst2.getString("SCARCOD_100");
-                            beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
-                            beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
-                            
-                            beanTkt.UNIKEY = rst.getString("UNIKEY");
-                            beanTkt.PAYDATE = rst.getString("PAYDATE");
-                            beanTkt.CODEBANK = rst.getString("CODEBANK");
-                            beanTkt.MERCHNC = rst.getString("MERCHNC");
-                            beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
-                            beanTkt.TERMI = rst.getString("TERMI");
-                            beanTkt.NEGOC = rst.getString("NEGOC");
-                            beanTkt.SEQNUM = rst.getString("SEQNUM");
-                            beanTkt.QTY_101 = rst.getLong("QTY_101");
-                            beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
-                            beanTkt.SCURRENCY_101 = rst.getString("SCURRENCY_101");
-                            beanTkt.TDOC_101 = rst.getString("TDOC_101");
-                            beanTkt.SDATE_101 = rst.getString("SDATE_101");
-                            beanTkt.SAGENT_101 = rst.getString("SAGENT_101");
-                            beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
-                            beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
-                            beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
-                            
-                            beanTkt.page.PAGNUM = filter.page.PAGNUM;
-                            beanTkt.page.PAGROW = filter.page.PAGROW;
-                            beanTkt.page.TOTPAG = filter.page.TOTPAG;
-                            beanTkt.page.TOTROW = filter.page.TOTROW;
-                            
-                            lstTkts.add(beanTkt);
-                            
-                        }
-                        
-                    } catch(Exception e){
-                        
-                    }
-                }
-                rst.close();
-                rst2.close();
-            }
+            rst2.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -8118,7 +8106,7 @@ public class ManualConciliationDAO {
 
         return lista;
     }
-    
+
     public A2290Filter loadPX285SQP00829Search(A2290Filter filter) throws SQLException, Exception {
 
         A2290Filter objRtn = new A2290Filter();
@@ -8177,7 +8165,7 @@ public class ManualConciliationDAO {
 
         return objRtn;
     }
-    
+
     public String loadPX285SQP00829Update(A2290Filter filter, String option) throws SQLException, Exception {
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2284.
         String strMsj = "Operation was successful.";
