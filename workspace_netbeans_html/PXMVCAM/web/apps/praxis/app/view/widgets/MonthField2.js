@@ -8,6 +8,8 @@ Ext.define('Ext.Praxis.view.widgets.MonthField2', {
     initComponent: function () {
         let me = this;
         me.fieldStyle = 'font-weight:bold;background-color:transparent;';
+        me.margin = 5;
+        me.padding = 5;
         me.callParent(arguments);
 
         me.on('afterrender', function () {

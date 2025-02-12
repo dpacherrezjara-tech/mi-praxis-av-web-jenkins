@@ -314,7 +314,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
                                                         width: 40,
-                                                        hidden:true,
+                                                        hidden: true,
                                                         text: 'Info',
                                                         locked: true,
                                                         align: 'center',
@@ -329,11 +329,59 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {text: 'Reference', dataIndex: 'REFER', flex: 1},
                                                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 150},
                                                     {text: 'Value Date', dataIndex: 'VALDATE', width: 120},
-                                                    {text: 'Processor', dataIndex: 'CODPRO', width: 150},
+                                                    {text: 'Processor', dataIndex: 'CODPRO', width: 80},
+                                                    {text: 'Type', dataIndex: 'STCON', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //metaData.style = "background-color:#838187";
+                                                            const opts = {
+                                                                'P': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'PAX CO';
+                                                                },
+                                                                'A': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'CGO CO';
+                                                                },
+                                                                'C': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'COR CO';
+                                                                },
+                                                                'E': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'PAX EXT';
+                                                                },
+                                                                'G': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'CGO EXT';
+                                                                },
+                                                                'T': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'TAX EXT';
+                                                                },
+                                                                'D': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'DEB CO';
+                                                                },
+                                                                'B': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'DEB EXT';
+                                                                },
+                                                                'J': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'ADJ CO';
+                                                                },
+                                                                'K': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'ADJ EXT';
+                                                                }
+                                                            };
+                                                            return opts[value] ? opts[value]() : '';
+                                                        }
+                                                    },
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
-                                                        id:prototype.idDE + '-btnRejectRec',
+                                                        id: prototype.idDE + '-btnRejectRec',
                                                         width: 50,
                                                         text: 'Rej.',
                                                         align: 'center',
@@ -387,7 +435,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
-                                                        hidden:true,
+                                                        hidden: true,
                                                         width: 40,
                                                         text: 'Info',
                                                         locked: true,
@@ -403,7 +451,56 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {text: 'Reference', dataIndex: 'REFER', width: 160},
                                                     {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 150},
                                                     {text: 'Value Date', dataIndex: 'VALDATE', width: 120},
+                                                    {text: 'Qty SEQ', dataIndex: 'SEQNBR', width: 80},
                                                     {text: 'Processor', dataIndex: 'CODPRO', width: 150},
+                                                    {text: 'Type', dataIndex: 'MODO', width: 70,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //metaData.style = "background-color:#838187";
+                                                            const opts = {
+                                                                'P': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'PAX CO';
+                                                                },
+                                                                'A': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'CGO CO';
+                                                                },
+                                                                'C': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'COR CO';
+                                                                },
+                                                                'E': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'PAX EXT';
+                                                                },
+                                                                'G': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'CGO EXT';
+                                                                },
+                                                                'T': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'TAX EXT';
+                                                                },
+                                                                'D': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'DEB CO';
+                                                                },
+                                                                'B': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'DEB EXT';
+                                                                },
+                                                                'J': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'ADJ CO';
+                                                                },
+                                                                'K': () => {
+                                                                    metaData.style = "font-weight:bold";
+                                                                    return 'ADJ EXT';
+                                                                }
+                                                            };
+                                                            return opts[value] ? opts[value]() : '';
+                                                        }
+                                                    },
                                                     {text: 'Rejection Error', dataIndex: 'DESCR', width: 320}
                                                 ]
                                             }
