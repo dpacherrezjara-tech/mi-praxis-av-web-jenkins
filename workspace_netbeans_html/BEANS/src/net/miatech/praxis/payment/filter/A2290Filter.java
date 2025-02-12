@@ -179,6 +179,7 @@ public class A2290Filter extends A2290 {
     public String DATEC = "";
     public String FECSELEC = "";
     public String TRANC = "";
+    public String UNIKEY = "";
     public String DATCO = "";
     public String DATECTRANC = "";
     public String STATUSC = "";
@@ -910,6 +911,21 @@ public class A2290Filter extends A2290 {
     public String ST_FEUP = "";
     public String ST_HOUP = "";
     public String ST_PGMUP = "";
+     
+    public String SCURRENCY_100 = "";
+    public String SCURRENCY_101 = "";
+    public String TDOC_100 = "";
+    public String TDOC_101 = "";
+    public String SDATE_100 = "";
+    public String SDATE_101 = "";
+    public String SAGENT_100 = "";
+    public String SAGENT_101 = "";
+    public String SCARCOD_100 = "";
+    public String SCARCOD_101 = "";
+    public String SCARDN_100 = "";
+    public String SCARDN_101 = "";
+    public String SAUTHOC_100 = "";
+    public String SAUTHOC_101 = "";
 
     public String getVariable() {
         return BANDOC;
