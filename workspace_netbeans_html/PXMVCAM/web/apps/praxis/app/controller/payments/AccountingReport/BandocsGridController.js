@@ -104,7 +104,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocsGridControlle
     onLoadRejections:function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
         const me = this;
         let valorCelda = td.textContent || td.innerText;
-        if (valorCelda === '') {
+        if (valorCelda === '0') {
             return;
         }
         const {BANDOC,DATECI,TRANCI,TIPOCON} = record.data;
