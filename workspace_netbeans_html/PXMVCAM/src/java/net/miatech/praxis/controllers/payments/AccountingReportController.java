@@ -544,11 +544,12 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Qty\nTax"));
         header.add(new CustomExcelCell("Accounting\nDate"));
         header.add(new CustomExcelCell("Accounting\nType"));
+        header.add(new CustomExcelCell("Accounting\nSub-Type"));
         header.add(new CustomExcelCell("Accounting\nID"));
         header.add(new CustomExcelCell("Sap\nDate"));
         header.add(new CustomExcelCell("Sap\nStatus"));
         header.add(new CustomExcelCell("Sap\nCorrl AV"));
-        header.add(new CustomExcelCell("Sap\nFile Name"));
+        header.add(new CustomExcelCell("Qty\nRejections"));
         data.add(header);
         filter.getResponse().forEach(obj -> {
             List<CustomExcelCell> row = new ArrayList<>();
@@ -581,11 +582,13 @@ public class AccountingReportController extends BaseController {
             row.add(new CustomExcelCell(obj.getQTYGAS()));
             row.add(new CustomExcelCell(obj.getFECACC()));
             row.add(new CustomExcelCell(obj.getTIPOCON()));
+            row.add(new CustomExcelCell(getModoDesc(obj.getSTACC())));
             row.add(new CustomExcelCell(obj.getIDACC()));
             row.add(new CustomExcelCell(obj.getFECSAP()));
-            row.add(new CustomExcelCell(obj.getHEADER()));
-            row.add(new CustomExcelCell(obj.getFILENAM()));
             row.add(new CustomExcelCell(formatStsap(obj.getSTSAP())));
+            row.add(new CustomExcelCell(obj.getHEADER()));
+            row.add(new CustomExcelCell(obj.getQTYREJ()));
+            
             data.add(row);
         });
 

@@ -220,7 +220,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                         }
                     },
                     {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
-                    {text: 'Qty<br>Rejections', dataIndex: 'QTYREJ', width: 60,
+                    {text: 'Qty<br>Rejections', dataIndex: 'QTYREJ', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#a5d7d6;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
                             return value;

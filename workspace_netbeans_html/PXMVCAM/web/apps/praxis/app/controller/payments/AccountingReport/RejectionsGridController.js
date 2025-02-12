@@ -24,7 +24,6 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.RejectionsGridContro
                 params: me.view.searchParams
             });
             const {response} = res.data;
-            me.setTotalFields(response);
             let store = new Ext.data.Store({
                data:response 
             });
