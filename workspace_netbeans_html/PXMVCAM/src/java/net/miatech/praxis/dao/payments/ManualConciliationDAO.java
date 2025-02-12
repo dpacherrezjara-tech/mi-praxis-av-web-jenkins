@@ -7336,25 +7336,8 @@ public class ManualConciliationDAO {
         A2290Filter beanTkt;
         long lngQTYTKT = 0, lngQTYLIQ = 0;
         double dblSVFOPTKT = 0, dblSVFOPLIQ = 0;
-        HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
-        hmDescSTCONL.put("", "");
-        hmDescSTCONL.put("1", "Accounted");
-        hmDescSTCONL.put("2", "Accounted to Debug");
 
         String estado = "", strTitulo = "";
-        HashMap<String, String> hmDescEstadosTit = new HashMap<String, String>();
-        hmDescEstadosTit.put("1", "Accepted");
-        hmDescEstadosTit.put("2", "Rejected");
-        hmDescEstadosTit.put("3", "Suspect");
-        hmDescEstadosTit.put("P", "Paying w/o Sales");
-        hmDescEstadosTit.put("C", "Clarifications");
-        hmDescEstadosTit.put("H", "Chargebacks");
-
-        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
-        hmDescEstados.put("1", "Match");
-        hmDescEstados.put("3", "Settlements w/o Tkts");
-        hmDescEstados.put("4", "Match with Difference");
-        hmDescEstados.put("5", "Match Manual");
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -7409,126 +7392,34 @@ public class ManualConciliationDAO {
                 while (rst.next()) {
 
                     beanTkt = new A2290Filter();
-                    beanTkt.strFecFiltro = filter.strFecFiltro.trim();
-                    beanTkt.strFormatDate = filter.strFormatDate.trim();
-                    beanTkt.IN_SDATE = filter.IN_SDATE.trim();
-                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
-                    beanTkt.IN_CARDN1 = filter.IN_CARDN1.trim();
-                    beanTkt.IN_CARDN2 = filter.IN_CARDN2.trim();
-                    beanTkt.IN_CARDC = filter.IN_CARDC.trim();
-                    beanTkt.IN_STVAL = filter.IN_STVAL.trim();
-                    beanTkt.IN_BSTVAL = filter.IN_BSTVAL.trim();
-                    beanTkt.SCARCOD = filter.SCARCOD.trim();
-                    beanTkt.strDescCard = filter.strDescCard.trim();
-                    beanTkt.SORIG = filter.SORIG.trim();
-                    beanTkt.IN_MERCHN = filter.IN_MERCHN.trim();
-                    beanTkt.IN_AGENT = filter.IN_AGENT.trim();
-                    beanTkt.IN_BANK = filter.IN_BANK.trim();
-                    beanTkt.SCOUNTRY = filter.SCOUNTRY.trim();
-                    beanTkt.strDescCountry = filter.strDescCountry.trim();
-                    beanTkt.IN_FTE = filter.IN_FTE.trim();
-                    beanTkt.IN_ADYEN = filter.IN_ADYEN.trim();
-                    beanTkt.IN_TKT_ASIG = filter.CCIA + filter.FORMA + filter.SERIE;
-
-                    beanTkt.FCONC = rst.getString("FCONC").trim();
-
-                    if (beanTkt.IN_ADYEN.equals("Y") && (beanTkt.IN_STVAL.equals("2") || beanTkt.IN_STVAL.equals("3"))) {
-                        beanTkt.strCampo = "assets/icons/16x16/Change.png";
-                    } else {
-                        beanTkt.strCampo = "assets/icons/16x16/1326498593_018.png";
-                    }
-
-                    beanTkt.FTE = rst.getString("FTE").trim();
-                    if (rst.getString("FTE").trim().equals("S")) {
-                        beanTkt.strDescFTE = "ASR";
-                    } else if (rst.getString("FTE").trim().equals("A")) {
-                        beanTkt.strDescFTE = "ARC";
-                    } else if (rst.getString("FTE").trim().equals("B")) {
-                        beanTkt.strDescFTE = "BSP";
-                    } else {
-                        beanTkt.strDescFTE = rst.getString("FTE").trim();
-                    }
-                    beanTkt.DATEC = rst.getString("DATEC").trim();
-                    beanTkt.TRANC = rst.getString("TRANC").trim();
-                    beanTkt.UNIQUE = rst.getString("UNIQUE").trim();
-                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
-                    beanTkt.TKT = rst.getString("TKT").trim();
-                    beanTkt.SDATE = rst.getString("SDATE").trim();
-                    beanTkt.PAYDATE = rst.getString("PAYDATE").trim();
-                    beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
-                    beanTkt.TERMI = rst.getString("TERMI").trim();
+                    beanTkt.UNIKEY = rst.getString("UNIKEY");
+                    beanTkt.PAYDATE = rst.getString("PAYDATE");
+                    beanTkt.CODEBANK = rst.getString("CODEBANK");
                     beanTkt.MERCHNC = rst.getString("MERCHNC");
-                    beanTkt.SEQNUM = rst.getString("SEQNUM").trim();
-                    beanTkt.NUMREF = rst.getString("NUMREF").trim();
-                    beanTkt.SAGENT = rst.getString("SAGENT").trim();
-                    beanTkt.strDescripcion = rst.getString("DESCAGT").trim();
-                    beanTkt.strTRNXCODE = rst.getString("TRNXCODE").trim();
-                    beanTkt.strPEM = rst.getString("PEM").trim();
-                    if (beanTkt.strPEM.trim().equals("01")) {
-                        beanTkt.strPEM = "Manual";
-                    } else if (beanTkt.strPEM.trim().equals("05")) {
-                        beanTkt.strPEM = "Chip EMV";
-                    } else if (beanTkt.strPEM.trim().equals("80")) {
-                        beanTkt.strPEM = "Fallback";
-                    } else if (beanTkt.strPEM.trim().equals("90")) {
-                        beanTkt.strPEM = "Deslizada";
-                    }
-                    beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
-                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
-                    beanTkt.strSCARDN = Functions.enmascararNumTarjeta(rst.getString("SCARDN").trim(), "");
-                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
-                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                    beanTkt.SVFOP = rst.getDouble("SVFOP");
-                    beanTkt.TDATE = rst.getString("TDATE").trim();
-                    beanTkt.DATEF = rst.getString("DATEF").trim();
-                    if (rst.getString("BDATEP").trim().length() == 6) {
-                        beanTkt.BDATEP = Functions.FormatFecha(rst.getString("BDATEP").trim(), "yyMMdd", "yyyyMMdd");
-                    } else {
-                        beanTkt.BDATEP = rst.getString("BDATEP").trim();
-                    }
-                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
-                        beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
-                    } else {
-                        beanTkt.descSTVAL = rst.getString("STVAL").trim();
-                    }
-                    beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
-
-                    beanTkt.TDOC = rst.getString("TDOC").trim();
-                    beanTkt.strNUMREF = rst.getString("NUMREF").trim();
-                    beanTkt.SDATE = rst.getString("SDATE").trim();
-                    beanTkt.strFLOAD = rst.getString("FLOAD").trim();
-                    beanTkt.SPNR = rst.getString("SPNR").trim();
-                    if (beanTkt.strFLOAD.trim().equals("M")) {
-                        beanTkt.strFLOAD = "Manual";
-                    }
-                    beanTkt.SDATEL = rst.getString("LDATE").trim();
-                    beanTkt.strSORIG = rst.getString("SORIG").trim();
-
-                    beanTkt.strSORIG = rst.getString("SORIG").trim();
-
-                    beanTkt.BAID = rst.getString("BAID").trim();
-                    beanTkt.MERCHN = rst.getString("MERCHN").trim();
-                    if (rst.getString("NMERCHN") != null && !rst.getString("NMERCHN").trim().equals("-")) {
-                        beanTkt.strDescMerchn = rst.getString("NMERCHN").trim();
-                    }
-                    if (rst.getString("FLAGC").trim().equals("C")) {
-                        beanTkt.FLAGC = "Match";
-                    }/* else {
-                     beanTkt.FLAGC = "Paying w/o Sales";
-                     }*/
-
-                    //**********************************************************
-                    if (!filter.IN_BSTVAL.trim().equals("")) {
-                        estado = hmDescEstadosTit.get(beanTkt.IN_BSTVAL).toString();
-                    }
-
-                    beanTkt.DATEC = rst.getString("DATEC").trim();
-                    if (!rst.getString("DATEC").trim().equals("")) {
-                        beanTkt.strBankDeposit = rst.getString("DATEC").trim();
-                    } else if (!beanTkt.BDATEP.trim().isEmpty()) {
-                        beanTkt.strBankDeposit = String.valueOf(Functions.diferenciaDiasEntreSistema(beanTkt.BDATEP)) + " days";
-                    }
-
+                    beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
+                    beanTkt.TERMI = rst.getString("TERMI");
+                    beanTkt.TKT = rst.getString("TKT");
+                    beanTkt.NEGOC = rst.getString("NEGOC");
+                    beanTkt.SEQNUM = rst.getString("SEQNUM");
+                    beanTkt.QTY_100 = rst.getLong("QTY_100");
+                    beanTkt.QTY_101 = rst.getLong("QTY_101");
+                    beanTkt.SVFOP_100 = rst.getDouble("SVFOP_100");
+                    beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
+                    beanTkt.SCURRENCY_100 = rst.getString("SCURRENCY_100");
+                    beanTkt.SCURRENCY_101 = rst.getString("SCURRENCY_101");
+                    beanTkt.TDOC_100 = rst.getString("TDOC_100");
+                    beanTkt.TDOC_101 = rst.getString("TDOC_101");
+                    beanTkt.SDATE_100 = rst.getString("SDATE_100");
+                    beanTkt.SDATE_101 = rst.getString("SDATE_101");
+                    beanTkt.SAGENT_100 = rst.getString("SAGENT_100");
+                    beanTkt.SAGENT_101 = rst.getString("SAGENT_101");
+                    beanTkt.SCARCOD_100 = rst.getString("SCARCOD_100");
+                    beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
+                    beanTkt.SCARDN_100 = rst.getString("SCARDN_100");
+                    beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
+                    beanTkt.SAUTHOC_100 = rst.getString("SAUTHOC_100");
+                    beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+                    
                     if (filter.IN_STVAL.trim().equals("1")) {
                         estado = "Match";
                     } else if (filter.IN_STVAL.trim().equals("2")) {
@@ -7540,35 +7431,7 @@ public class ManualConciliationDAO {
                     } else if (filter.IN_STVAL.trim().equals("5")) {
                         estado = "Match Manual";
                     }
-
-                    if (filter.strFecFiltro.trim().equals("BDATEP")) {
-                        strTitulo = "Conciliaton Date : ";
-                    } else if (filter.IN_TDOC.trim().equals("R")) {
-                        strTitulo = "Refund Date : ";
-                    } else {
-                        strTitulo = "Sales Date : ";
-                    }
-                    strTitulo += beanTkt.SDATE + " - Card : " + beanTkt.SCARCOD + " : " + beanTkt.strDescCard + " *** " + estado + " ***";
-                    if (!beanTkt.SCOUNTRY.trim().isEmpty()) {
-                        strTitulo += " - Country : " + beanTkt.SCOUNTRY + " : " + filter.strDescCountry.trim();
-                    }
-                    beanTkt.strTitulo = strTitulo;
-
-                    beanTkt.FAREO = rst.getDouble("FAREO");
-                    beanTkt.FAREC = rst.getDouble("FAREC");
-                    beanTkt.DIFF_FARE = rst.getDouble("FAREDIFFC");
-
-                    beanTkt.COMMAMO = rst.getDouble("COMMAMO");
-                    beanTkt.COMMAMOC = rst.getDouble("COMMAMOC");
-                    beanTkt.DIFF_COMMAMO = rst.getDouble("COMMDIFFC");
-                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
-                    beanTkt.STCON = rst.getString("STCON").trim();
-                    if (hmDescSTCONL.containsKey(rst.getString("STCON").trim())) {
-                        beanTkt.STCON = hmDescSTCONL.get(rst.getString("STCON").trim()).toString();
-                    } else {
-                        beanTkt.STCON = rst.getString("FREGLA").trim();
-                    }
-                    beanTkt.FCONT = rst.getString("FCONT").trim();
+                      
                     beanTkt.NEGOC = rst.getString("NEGOC").trim();
                     if (beanTkt.NEGOC.equals("1")) {
                         beanTkt.NEGOC = "PASAJES";
@@ -7579,16 +7442,7 @@ public class ManualConciliationDAO {
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
                     }
-
-                    beanTkt.QTY_101 = rst.getLong("QTY_101");
-                    beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
-                    beanTkt.QTY_100 = rst.getLong("QTY_100");
-                    beanTkt.SVFOP_100 = rst.getDouble("SVFOP_100");
-
-                    beanTkt.TotlngQTYLIQ = lngQTYLIQ;
-                    beanTkt.TotdblSVFOPLIQ = dblSVFOPLIQ;
-                    beanTkt.TotlngQTYTKT = lngQTYTKT;
-                    beanTkt.TotdblSVFOPTKT = dblSVFOPTKT;
+  
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
                     beanTkt.page.TOTPAG = filter.page.TOTPAG;
