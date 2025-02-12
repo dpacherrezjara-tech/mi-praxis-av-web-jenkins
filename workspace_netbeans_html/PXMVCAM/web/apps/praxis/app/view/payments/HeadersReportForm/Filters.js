@@ -79,17 +79,17 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                     xtype: 'monthfield2',
                                     fieldLabel: 'From',
                                     labelWidth: 50,
-                                    width: 150,
+                                    width: 160,
                                     name: 'IN_DATEF',
-                                    fieldStyle: 'font-weight:bold;text-align:center;'
+                                    //fieldStyle: 'font-weight:bold;text-align:center;'
                                 },
                                 {
                                     xtype: 'monthfield2',
                                     fieldLabel: 'To',
                                     labelWidth: 30,
-                                    width: 130,
-                                    name: 'IN_DATET',
-                                    fieldStyle: 'font-weight:bold;text-align:center;'
+                                    width: 140,
+                                    name: 'IN_DATET'
+                                    //fieldStyle: 'font-weight:bold;text-align:center;'
                                 },
                                 {
                                     xtype: 'combobox',
