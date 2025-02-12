@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
     alias: 'widget.DownloadHeadersDataEntry',
     requires: [
         'Ext.Praxis.controller.payments.HeadersReport.DownloadHeadersDataEntryController',
-        'Ext.Praxis.view.widgets.MonthField'
+        'Ext.Praxis.view.widgets.MonthField2'
     ],
     controller: 'DownloadHeadersDataEntryController',
     title: 'Download Report - Form',
@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
                         margin: '2 5 2 5',
                         labelStyle: 'text-align:left;font-weight: bolder;',
                         fieldStyle: 'text-align:center;',
-                        editable: true
+                        editable: false
                     }
                 }
             },
@@ -66,28 +66,21 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
                         {
                             items: [
                                 {
-                                    xtype: 'monthfield',
+                                    xtype: 'monthfield2',
                                     fieldLabel: 'From',
-                                    format: 'Ym',
-                                    altFormats: 'm/Y',
-                                    editable: false, // Deshabilita la edición del campo
                                     labelWidth: 50,
                                     width: 150,
-                                    value: new Date(),
-                                    name: 'IN_PRDAF'
+                                    name: 'IN_PRDAF',
+                                    fieldStyle: 'font-weight:bold;text-align:center;'
                                     
                                 },
                                 {
-                                    xtype: 'monthfield',
+                                    xtype: 'monthfield2',
                                     fieldLabel: 'To',
-                                    format: 'Ym',
-                                    altFormats: 'm',
-                                    editable: false, // Deshabilita la edición del campo
-                                    lastDay: true,
                                     labelWidth: 30,
                                     width: 130,
-                                    value: new Date(),
-                                    name: 'IN_PRDAT'
+                                    name: 'IN_PRDAT',
+                                    fieldStyle: 'font-weight:bold;text-align:center;'
                                 }
                             ]
                         }

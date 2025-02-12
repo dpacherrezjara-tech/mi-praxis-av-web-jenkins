@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.widgets.MonthField2', {
         'Ext.form.field.Text'
     ],
     editable: false,
-    
+
     initComponent: function () {
         let me = this;
         me.callParent(arguments);
@@ -21,7 +21,9 @@ Ext.define('Ext.Praxis.view.widgets.MonthField2', {
             ShowIcon: false,
             StartYear: new Date().getFullYear(),
             MonthFormat: 'yymm',
-            SelectedMonth: 0
+            SelectedMonth: 0,
+            HideAnim: 'slideUp',
+            IsRTL: true
         });
     }
 });
