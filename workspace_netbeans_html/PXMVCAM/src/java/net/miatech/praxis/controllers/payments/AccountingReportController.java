@@ -544,7 +544,7 @@ public class AccountingReportController extends BaseController {
         header.add(new CustomExcelCell("Qty\nTax"));
         header.add(new CustomExcelCell("Accounting\nDate"));
         header.add(new CustomExcelCell("Accounting\nType"));
-        header.add(new CustomExcelCell("Accounting\nSub-Type"));
+        header.add(new CustomExcelCell("Accounting\nSubType"));
         header.add(new CustomExcelCell("Accounting\nID"));
         header.add(new CustomExcelCell("Sap\nDate"));
         header.add(new CustomExcelCell("Sap\nStatus"));
@@ -1039,7 +1039,6 @@ public class AccountingReportController extends BaseController {
 
     //<editor-fold defaultstate="collapsed" desc="Data Bindings">
     String getModoDesc(String codModo) {
-
         String descModo = "";
 
         switch (codModo) {
@@ -1068,6 +1067,8 @@ public class AccountingReportController extends BaseController {
             case "T":
                 descModo = "GAS";
                 break;
+            default:
+                descModo = "";
         }
 
         return descModo;
