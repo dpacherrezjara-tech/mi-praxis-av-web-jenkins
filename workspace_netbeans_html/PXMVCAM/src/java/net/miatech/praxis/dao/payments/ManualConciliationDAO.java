@@ -7340,7 +7340,9 @@ public class ManualConciliationDAO {
         String estado = "", strTitulo = "";
 
         CallableStatement cstmt = null;
+        CallableStatement cstmt2 = null;
         ResultSet rst = null;
+        ResultSet rst2 = null;
 
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
@@ -7385,72 +7387,79 @@ public class ManualConciliationDAO {
                 dblSVFOPTKT += rst.getDouble("SVFOP_100");
             }
             rst.close();
-
+            
             if (cstmt.getMoreResults()) {
                 rst = cstmt.getResultSet();
 
                 while (rst.next()) {
+                     
+                    String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?)}";
 
-                    beanTkt = new A2290Filter();
-                    beanTkt.UNIKEY = rst.getString("UNIKEY");
-                    beanTkt.PAYDATE = rst.getString("PAYDATE");
-                    beanTkt.CODEBANK = rst.getString("CODEBANK");
-                    beanTkt.MERCHNC = rst.getString("MERCHNC");
-                    beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
-                    beanTkt.TERMI = rst.getString("TERMI");
-                    beanTkt.TKT = rst.getString("TKT");
-                    beanTkt.NEGOC = rst.getString("NEGOC");
-                    beanTkt.SEQNUM = rst.getString("SEQNUM");
-                    beanTkt.QTY_100 = rst.getLong("QTY_100");
-                    beanTkt.QTY_101 = rst.getLong("QTY_101");
-                    beanTkt.SVFOP_100 = rst.getDouble("SVFOP_100");
-                    beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
-                    beanTkt.SCURRENCY_100 = rst.getString("SCURRENCY_100");
-                    beanTkt.SCURRENCY_101 = rst.getString("SCURRENCY_101");
-                    beanTkt.TDOC_100 = rst.getString("TDOC_100");
-                    beanTkt.TDOC_101 = rst.getString("TDOC_101");
-                    beanTkt.SDATE_100 = rst.getString("SDATE_100");
-                    beanTkt.SDATE_101 = rst.getString("SDATE_101");
-                    beanTkt.SAGENT_100 = rst.getString("SAGENT_100");
-                    beanTkt.SAGENT_101 = rst.getString("SAGENT_101");
-                    beanTkt.SCARCOD_100 = rst.getString("SCARCOD_100");
-                    beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
-                    beanTkt.SCARDN_100 = rst.getString("SCARDN_100");
-                    beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
-                    beanTkt.SAUTHOC_100 = rst.getString("SAUTHOC_100");
-                    beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
-                    
-                    if (filter.IN_STVAL.trim().equals("1")) {
-                        estado = "Match";
-                    } else if (filter.IN_STVAL.trim().equals("2")) {
-                        estado = "Settlement w/o Paying";
-                    } else if (filter.IN_STVAL.trim().equals("3")) {
-                        estado = "Settlement w/o Sales";
-                    } else if (filter.IN_STVAL.trim().equals("4")) {
-                        estado = "Match with Differences";
-                    } else if (filter.IN_STVAL.trim().equals("5")) {
-                        estado = "Match Manual";
-                    }
-                      
-                    beanTkt.NEGOC = rst.getString("NEGOC").trim();
-                    if (beanTkt.NEGOC.equals("1")) {
-                        beanTkt.NEGOC = "PASAJES";
-                    } else if (beanTkt.NEGOC.equals("2")) {
-                        beanTkt.NEGOC = "CARGO";
-                    } else if (beanTkt.NEGOC.equals("3")) {
-                        beanTkt.NEGOC = "CORREO";
-                    } else if (beanTkt.NEGOC.equals("S")) {
-                        beanTkt.NEGOC = "STANDBY";
-                    }
-  
-                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
-                    beanTkt.page.PAGROW = filter.page.PAGROW;
-                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
-                    beanTkt.page.TOTROW = filter.page.TOTROW;
+                    Connection cnx2 = null;
+                    try {
+                        cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
+                        cstmt2 = cnx2.prepareCall(SQLCLL02);
+                        
+                        cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                        cstmt2.setString(2, rst.getString("TDOC_101"));
+                        cstmt2.setString(3, rst.getString("SDATE_101"));
+                        cstmt2.setString(4, filter.SCOUNTRY.trim());
+                        cstmt2.setString(5, rst.getString("SCURRENCY_101"));
+                        cstmt2.setString(6, rst.getString("SCARDN_101"));
+                        cstmt2.setString(7, rst.getString("SAUTHOC_101"));
+                        cstmt2.setString(8, rst.getString("SAGENT_101"));
+                        cstmt2.setString(9, filter.RQUERY.trim());
+                        
+                        cstmt2.execute();
 
-                    lstTkts.add(beanTkt);
+                        rst2 = cstmt2.getResultSet();
+                        
+                        while (rst2.next()) {
+                            beanTkt = new A2290Filter();
+                            beanTkt.TKT = rst2.getString("TKT");
+                            beanTkt.QTY_100 = rst2.getLong("QTY_100");
+                            beanTkt.SVFOP_100 = rst2.getDouble("SVFOP_100");
+                            beanTkt.SCURRENCY_100 = rst2.getString("SCURRENCY_100");
+                            beanTkt.TDOC_100 = rst2.getString("TDOC_100");
+                            beanTkt.SDATE_100 = rst2.getString("SDATE_100");
+                            beanTkt.SAGENT_100 = rst2.getString("SAGENT_100");
+                            beanTkt.SCARCOD_100 = rst2.getString("SCARCOD_100");
+                            beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
+                            beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
+                            
+                            beanTkt.UNIKEY = rst.getString("UNIKEY");
+                            beanTkt.PAYDATE = rst.getString("PAYDATE");
+                            beanTkt.CODEBANK = rst.getString("CODEBANK");
+                            beanTkt.MERCHNC = rst.getString("MERCHNC");
+                            beanTkt.ACCNUMBER = rst.getString("ACCNUMBER");
+                            beanTkt.TERMI = rst.getString("TERMI");
+                            beanTkt.NEGOC = rst.getString("NEGOC");
+                            beanTkt.SEQNUM = rst.getString("SEQNUM");
+                            beanTkt.QTY_101 = rst.getLong("QTY_101");
+                            beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
+                            beanTkt.SCURRENCY_101 = rst.getString("SCURRENCY_101");
+                            beanTkt.TDOC_101 = rst.getString("TDOC_101");
+                            beanTkt.SDATE_101 = rst.getString("SDATE_101");
+                            beanTkt.SAGENT_101 = rst.getString("SAGENT_101");
+                            beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
+                            beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
+                            beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+                            
+                            beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                            beanTkt.page.PAGROW = filter.page.PAGROW;
+                            beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                            beanTkt.page.TOTROW = filter.page.TOTROW;
+                            
+                            lstTkts.add(beanTkt);
+                            
+                        }
+                        
+                    } catch(Exception e){
+                        
+                    }
                 }
                 rst.close();
+                rst2.close();
             }
 
         } catch (Exception e) {
@@ -7459,6 +7468,7 @@ public class ManualConciliationDAO {
             if (rst != null) {
                 try {
                     rst.close();
+                    rst2.close();
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
