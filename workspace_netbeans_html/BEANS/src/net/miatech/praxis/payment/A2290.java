@@ -38,6 +38,7 @@ public class A2290 {
     public String CODRULE = "";
     public String GRORULE = "";
     public String RQUERY = "";
+    public String TQUERY = "";
     public String TTABLE = "";
     
     public String SEQ = "";
