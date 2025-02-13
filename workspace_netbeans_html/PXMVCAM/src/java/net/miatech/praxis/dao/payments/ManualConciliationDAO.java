@@ -1943,6 +1943,7 @@ public class ManualConciliationDAO {
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
                 objRtn.IN_TKT_ASIG = filter.IN_TKT_ASIG;
+                objRtn.TQUERY = filter.TQUERY.trim();
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SOCIETY = rs01.getString("SOCIETY");
                 objRtn.SOCIETYL = rs01.getString("SOCIETYL");
@@ -6436,7 +6437,7 @@ public class ManualConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6456,6 +6457,7 @@ public class ManualConciliationDAO {
             cstmt.setString(11, filter.TRANC.trim());
             cstmt.setString(12, filter.PRDA.trim());
             cstmt.setString(13, filter.RQUERY.trim());
+            cstmt.setString(14, filter.TQUERY.trim());
 
             cstmt.execute();
 
@@ -7302,6 +7304,7 @@ public class ManualConciliationDAO {
                 record.CODRULE = rst.getString("CODRULE").trim();
                 record.GRORULE = rst.getString("GRORULE").trim();
                 record.RQUERY = rst.getString("RQUERY").trim();
+                record.TQUERY = rst.getString("TQUERY").trim();
                 record.TTABLE = rst.getString("TTABLE").trim();
                 lista.add(record);
             }
@@ -7344,17 +7347,17 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
+            cstmt.registerOutParameter(15, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -7366,23 +7369,24 @@ public class ManualConciliationDAO {
             cstmt.setString(8, filter.SCARDN);
             cstmt.setString(9, filter.SCURRENCY);
             cstmt.setString(10, filter.RQUERY);
+            cstmt.setString(11, filter.TQUERY);
 
-            cstmt.setInt(11, filter.page.PAGNUM);
-            cstmt.setInt(12, filter.page.PAGROW);
-            cstmt.setInt(13, filter.page.TOTPAG);
-            cstmt.setInt(14, filter.page.TOTROW);
+            cstmt.setInt(12, filter.page.PAGNUM);
+            cstmt.setInt(13, filter.page.PAGROW);
+            cstmt.setInt(14, filter.page.TOTPAG);
+            cstmt.setInt(15, filter.page.TOTROW);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
-            filter.page.PAGNUM = cstmt.getInt(11);
-            filter.page.PAGROW = cstmt.getInt(12);
-            filter.page.TOTPAG = cstmt.getInt(13);
-            filter.page.TOTROW = cstmt.getInt(14);
+            filter.page.PAGNUM = cstmt.getInt(12);
+            filter.page.PAGROW = cstmt.getInt(13);
+            filter.page.TOTPAG = cstmt.getInt(14);
+            filter.page.TOTROW = cstmt.getInt(15);
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -7398,6 +7402,7 @@ public class ManualConciliationDAO {
                     cstmt2.setString(7, rst.getString("SAUTHOC_101"));
                     cstmt2.setString(8, rst.getString("SAGENT_101"));
                     cstmt2.setString(9, filter.RQUERY.trim());
+                    cstmt2.setString(10, filter.TQUERY.trim());
 
                     cstmt2.execute();
 
@@ -7405,6 +7410,7 @@ public class ManualConciliationDAO {
 
                     while (rst2.next()) {
                         beanTkt = new A2290Filter();
+                        beanTkt.TQUERY = filter.TQUERY.trim();
                         beanTkt.TKT = rst2.getString("TKT");
                         beanTkt.QTY_100 = rst2.getLong("QTY_100");
                         beanTkt.SVFOP_100 = rst2.getDouble("SVFOP_100");
@@ -7446,10 +7452,10 @@ public class ManualConciliationDAO {
                 } catch (Exception e) {
 
                 }
+                rst2.close();
             }
             rst.close();
-            rst2.close();
-
+             
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -8131,6 +8137,7 @@ public class ManualConciliationDAO {
                 objRtn.CODRULE = rs01.getString("CODRULE").trim();
                 objRtn.GRORULE = rs01.getString("GRORULE").trim();
                 objRtn.RQUERY = rs01.getString("RQUERY").trim();
+                objRtn.TQUERY = rs01.getString("TQUERY").trim();
                 objRtn.TTABLE = rs01.getString("TTABLE").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
@@ -8172,7 +8179,7 @@ public class ManualConciliationDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00829UPDATE(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00829UPDATE(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -8184,11 +8191,12 @@ public class ManualConciliationDAO {
             cstmt.setString(3, filter.CODRULE.trim());
             cstmt.setString(4, filter.GRORULE.trim());
             cstmt.setString(5, filter.RQUERY.trim());
-            cstmt.setString(6, filter.TTABLE.trim());
+            cstmt.setString(6, filter.TQUERY.trim());
+            cstmt.setString(7, filter.TTABLE.trim());
 
-            cstmt.setString(7, session.getUserView().getUserInfo().USR);
-            cstmt.setString(8, Functions.getFechaActual());
-            cstmt.setString(9, Functions.getHoraActual());
+            cstmt.setString(8, session.getUserView().getUserInfo().USR);
+            cstmt.setString(9, Functions.getFechaActual());
+            cstmt.setString(10, Functions.getHoraActual());
             cstmt.execute();
 
         } catch (Exception e) {
