@@ -125,7 +125,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGr
                                 handler: 'onEvaluateBandoc'
                             }
                         ]
-                    },
+                    }
                 ]
             },
             {

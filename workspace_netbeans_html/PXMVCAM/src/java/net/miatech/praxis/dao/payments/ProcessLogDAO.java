@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
+import net.miatech.praxis.payment.dto.MPS200WFilter;
 import net.miatech.praxis.payment.dto.SPMC004Filter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
 import net.miatech.praxis.payment.dto.SPPL002Filter;
@@ -110,5 +111,13 @@ public class ProcessLogDAO implements ProcessLogLogic{
         filter.setResponse((int) obj.get("OU_RES"));
         return filter;
     }
+
+    @Async
+    @Override
+    public void loadMPS200WFilter(MPS200WFilter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        jdbcUtils.executeSQP(LIBRARY, "MPS200W",params);
+    }
+    
     
 }

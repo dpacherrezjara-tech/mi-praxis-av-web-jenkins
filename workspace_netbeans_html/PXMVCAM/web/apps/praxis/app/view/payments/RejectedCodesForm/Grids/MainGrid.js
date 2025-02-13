@@ -30,7 +30,14 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.Grids.MainGrid', {
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
-            {text: 'Type', dataIndex: 'TIPO', width: 80},
+            {text: 'Type', dataIndex: 'TIPO', width: 80,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    const opts = {
+                        'C': 'Accounting'
+                    };
+                    return opts[value] || '';
+                }
+            },
             {text: 'Code', dataIndex: 'CODREC', width: 100},
             {text: 'Description', dataIndex: 'DESCR', flex: 1},
             {
@@ -51,13 +58,13 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.Grids.MainGrid', {
                 sortable: false,
                 xtype: 'actioncolumn',
                 width: 50,
-                text: 'Dl.',
+                text: 'Upd',
                 align: 'center',
                 items: [
                     {
-                        iconCls: 'prx-icon-download',
-                        tooltip: 'Delete',
-                        handler: 'onDeleteRec'
+                        iconCls: 'prx-icon-edit',
+                        tooltip: 'Update',
+                        handler: 'onUpdateRec'
                     }
                 ]
             },
@@ -65,16 +72,17 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.Grids.MainGrid', {
                 sortable: false,
                 xtype: 'actioncolumn',
                 width: 50,
-                text: 'Upd',
+                text: 'Dl.',
                 align: 'center',
                 items: [
                     {
-                        iconCls: 'prx-icon-image-log',
-                        tooltip: 'Update',
-                        handler: 'onUpdateRec'
+                        iconCls: 'prx-icon-image-trash',
+                        tooltip: 'Delete',
+                        handler: 'onDeleteRec'
                     }
                 ]
             }
+            
             //</editor-fold>
         ]
     },

@@ -23,6 +23,7 @@ public class AccountingInterface {
     private Integer fileNumber;
     private String fechaEnvio;
     private String horaEnvio;
+    private String tipoConta;
     @JsonIgnore
     private String fileName;
     private List<String> interfase = new ArrayList<>();

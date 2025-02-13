@@ -1590,6 +1590,36 @@ var LarSyrExt = function () {
         'Sucessfully Downloaded',
         'Error on Download');
     };
+    this.downloadFile2 = function(objAxios,url,params,typeFile = 'zip'){
+        new AWN().async(
+            objAxios.get(url,
+        {
+            params: params,
+            responseType: 'blob'  // Configuración para recibir un Blob
+        }).then(response => {
+            // Procesar la descarga del archivo
+            const contentDisposition = response.headers['content-disposition'];
+            let nombreArchivo = `file.${typeFile}`;
+
+            if (contentDisposition) {
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(contentDisposition);
+                if (matches !== null && matches[1]) {
+                    nombreArchivo = matches[1].replace(/['"]/g, '');
+                }
+            }
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreArchivo;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        }),
+        'Sucessfully Downloaded',
+        'Error on Download');
+    };
     this.cleanPXobj = function(obj){
         for (let key in obj) {
             if (typeof obj[key] === 'string') {

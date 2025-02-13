@@ -75,8 +75,8 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanc
                                             ['C', 'Accounting']
                                         ]
                                     }),
-                                    labelWidth: 60,
-                                    width: 190,
+                                    labelWidth: 100,
+                                    width: 200,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
@@ -86,22 +86,24 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanc
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: 'Code',
-                                    labelWidth: 80,
-                                    width: 180,
+                                    labelWidth: 50,
+                                    width: 160,
                                     name: 'CODREC',
-                                    editable:false
+                                    editable: false
                                 }
                             ]
                         },
                         {
-                            items:[
+                            items: [
                                 {
-                                    name:'DESCR',
-                                    editable: false, // Deshabilita la edición del campo
+                                    name: 'DESCR',
+                                    editable: true, // Deshabilita la edición del campo
                                     fieldLabel: 'Description',
+                                    fieldStyle: 'text-align:left;',
+                                    allowBlank: false,
                                     labelWidth: 100,
-                                    width: 450,
-                                    maxLength:100
+                                    width: 500,
+                                    maxLength: 100
                                 }
                             ]
                         }
@@ -150,7 +152,7 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanc
                                 },
                                 {
                                     labelWidth: 75,
-                                    width: 175,
+                                    width: 200,
                                     fieldLabel: 'Date Crt.',
                                     name: 'TSCR'
                                 }
@@ -166,7 +168,7 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanc
                                 },
                                 {
                                     labelWidth: 75,
-                                    width: 175,
+                                    width: 200,
                                     fieldLabel: 'Date Upd.',
                                     name: 'TSUP'
                                 }
@@ -195,11 +197,11 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanc
             },
             items: [
                 {
-                    text: 'Process',
-                    id: prototype.idDE + '-btn-process',
-                    iconCls: 'prx-icon-image-process',
+                    text: 'Save',
+                    id: prototype.idDE + '-btn-save',
+                    iconCls: 'prx-icon-image-update',
                     listeners: {
-                        click: 'onProcessClick'
+                        click: 'onSaveRecord'
                     }
                 },
                 {
