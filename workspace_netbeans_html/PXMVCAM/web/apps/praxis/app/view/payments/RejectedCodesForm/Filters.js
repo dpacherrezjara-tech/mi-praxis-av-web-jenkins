@@ -91,10 +91,7 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.Filters', {
                                     maxLength: 100,
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
-                                        specialkey: 'onEnterKeyPress',
-                                        change: function (field, newValue) {
-                                            field.setValue(newValue.toUpperCase());
-                                        }
+                                        specialkey: 'onEnterKeyPress'
                                     }
                                 }
                             ]
