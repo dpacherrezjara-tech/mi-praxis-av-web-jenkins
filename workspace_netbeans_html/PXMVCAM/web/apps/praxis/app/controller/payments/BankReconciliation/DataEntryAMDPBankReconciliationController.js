@@ -28,6 +28,25 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstAdjustment = [];
     },
     afterRender: function () {
+        
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify({USERPERMIS: 2, NPROG: sessionStorage.getItem('nprog')})},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    if (res.userPermis.PERMM === 'Y') {
+                        Ext.getCmp(prototype.id + '-btn-reverse').show();
+                    } else {
+                        Ext.getCmp(prototype.id + '-btn-reverse').hide();
+                    }
+                } else
+                    global.Msg({msg: res.sesion});
+            }
+        });
+        
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-delete').hide();
@@ -35,11 +54,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
             Ext.getCmp(prototype.id + '-btn-update').hide();
-            if (!['45', '46'].includes(this.bean.CERROR)) {
-                Ext.getCmp(prototype.id + '-btn-reverse').show();
-            } else {
-                Ext.getCmp(prototype.id + '-btn-reverse').hide();
-            }
+            this.ocultarBtnReversa();
         } else {
 
             if (this.bean.NEGOC === '1') {
@@ -52,6 +67,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         }
         meDe.agregaTicket(meDe.bean);
+    },
+    ocultarBtnReversa: function () {
+        let validacion1 = ['45', '46','54','55'].includes(this.bean.CERROR);
+        let validacion2 = this.bean.TERMI === '00000000' && this.bean.CODEBANK === '0051';
+        if(validacion1  || validacion2){
+            console.log('entra en ocultar')
+            Ext.getCmp(prototype.id + '-btn-reverse').hide();
+        }else{
+            console.log('entra en mostrar')
+            Ext.getCmp(prototype.id + '-btn-reverse').show();
+        }
     },
     joinMultiSelect: function (element) {
         let comboBox = element.getValue();
@@ -307,7 +333,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
 
         this.dataObtain.CARD = 2;
         this.dataObtain.BANK = 2;
-
+        this.dataObtain.USERPERMIS = 2;
+        this.dataObtain.NPROG = sessionStorage.getItem('nprog');
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -320,6 +347,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
                             Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');
+                    if (res.userPermis.PERMM === 'Y') {
+                        Ext.getCmp(prototype.id + '-btn-reverse').show();
+                    } else {
+                        Ext.getCmp(prototype.id + '-btn-reverse').hide();
+                    }
+                   
                 } else
                     global.Msg({msg: res.sesion});
             }
