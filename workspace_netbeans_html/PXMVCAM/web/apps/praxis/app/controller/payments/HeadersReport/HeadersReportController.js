@@ -26,7 +26,6 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
             const res = await me.requestMisc.get('loadMdpFilters');
             if (res.status === 200) {
                 me.filters = res.data;
-                console.log(me.filters);
                 const cmbProc = Ext.getCmp(prototype.id + '-cmbCODPRO');
                 global.setComboStore(cmbProc, me.filters.PROCESADORES, 'CODE', 'NAME', '');
             }

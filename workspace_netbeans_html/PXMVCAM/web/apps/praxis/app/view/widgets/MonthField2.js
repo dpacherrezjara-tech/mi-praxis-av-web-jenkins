@@ -17,7 +17,6 @@ Ext.define('Ext.Praxis.view.widgets.MonthField2', {
 
     initMonthPicker: function () {
         let me = this;
-        console.log(me.el.dom);
         
         $(me.inputEl.dom).wrap(
             '<div class="monthpicker-container" style="display: flex; align-items: center;text-align:center; border-radius: 20px; padding: 5px;height:26px;width:95px;background: #EAEAEA; border: 1px solid #B5B8C8;"></div>');
