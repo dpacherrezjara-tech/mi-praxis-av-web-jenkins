@@ -70,7 +70,7 @@ public class HeadersReportController {
         logic.loadSPHRP003Filter(params);
         
         SPACR021Filter filter = new SPACR021Filter();
-        filter.setIN_CCUST(params.getIN_IDCONT().substring(0,2));
+        filter.setIN_CCUST(params.getIN_IDCONT().substring(0,3));
         filter.setIN_IDCONT(params.getIN_IDCONT());
         filter.setIN_CODPRO(params.getIN_CODPRO());
         
