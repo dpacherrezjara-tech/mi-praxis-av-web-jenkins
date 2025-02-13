@@ -218,12 +218,15 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         if (selectedRecord) {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
             console.log('RQUERY seleccionado:', rquery);
             console.log('TQUERY seleccionado:', tquery);
+            console.log('Table seleccionada:', ttable);
 
             me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
+            me.beanDetailTW.TTABLE = ttable;
             me.beanDetailTW.strSQL = this.armandoQuery();
             me.viewMPF101_clickHandler(me.beanDetailTW);
         } else {
