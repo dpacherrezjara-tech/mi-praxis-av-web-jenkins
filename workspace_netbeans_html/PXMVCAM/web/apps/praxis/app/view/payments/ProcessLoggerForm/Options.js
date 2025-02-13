@@ -43,6 +43,15 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnProcessConcil',
+                            iconCls: 'prx-icon-reload',
+                            tooltip: 'Process Concil.',
+                            listeners: {
+                                click: 'onClickProcessConcilBtn'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options',

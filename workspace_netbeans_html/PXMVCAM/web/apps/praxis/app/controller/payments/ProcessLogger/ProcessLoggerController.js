@@ -70,6 +70,14 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
         });
         procWin.show();
     },
+    onClickProcessConcilBtn: function(){
+        const me = this;
+        const procWin = Ext.create('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConciliationDataEntry', {
+            id: prototype.id + '-ProcessConciliationDataEntry-1',
+            procesadores: me.procesadores
+        });
+        procWin.show();
+    },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

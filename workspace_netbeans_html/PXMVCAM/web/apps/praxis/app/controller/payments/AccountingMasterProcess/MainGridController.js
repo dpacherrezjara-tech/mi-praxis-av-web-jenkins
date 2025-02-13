@@ -200,7 +200,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         return !reverseAction.includes(record.get('STCONT'));
     },
     disableDownload: function(view, rowIndex, colIndex, item, record){
-        let reverseAction = ['2', '3', '5'];
+        let reverseAction = ['1','2', '3', '5','6'];
         return !reverseAction.includes(record.get('STCONT'));
     },
     disableUpload: function(view, rowIndex, colIndex, item, record){

@@ -1,5 +1,6 @@
 package net.miatech.praxis.dao.payments;
 
+//<editor-fold defaultstate="collapsed" desc="Imports">
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import net.miatech.praxis.payment.dto.EvalBandocDto;
 import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
+import net.miatech.praxis.payment.dto.SPACR003Filter;
 import net.miatech.praxis.payment.dto.SPACR005Filter;
 import net.miatech.praxis.payment.dto.SPACR006Filter;
 import net.miatech.praxis.payment.dto.SPACR007Filter;
@@ -35,6 +37,7 @@ import net.miatech.praxis.payment.entities.MPF101;
 import net.miatech.praxis.payment.entities.MPF102;
 import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF135;
+import net.miatech.praxis.payment.entities.MPF137;
 import net.miatech.praxis.payment.entities.MPF140;
 import net.miatech.praxis.payment.entities.MPF141;
 import net.miatech.praxis.payment.entities.X3183;
@@ -50,6 +53,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+//</editor-fold>
 
 /**
  *
@@ -358,6 +362,16 @@ public class AccountingReportDAO implements AccountingReportLogic {
         filter.setResponse((List<EstadisticaContable>) obj.get("result"));
         return filter;
     }
+
+    @Override
+    public SPACR003Filter loadSPACR003Filter(SPACR003Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPACR003",
+                params, new BeanPropertyRowMapper(MPF137.class));
+        filter.setResponse((List<MPF137>) obj.get("result"));
+        return filter;
+    }
+    
     
     
     //</editor-fold>

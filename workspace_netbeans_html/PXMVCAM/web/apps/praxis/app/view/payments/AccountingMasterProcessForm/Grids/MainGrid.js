@@ -85,7 +85,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                     },
                     {text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90},
                     {text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90},
-                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,
+                    {text: 'Pre Acc.<br>Errors', dataIndex: 'QTYROWS', width: 80,hidden:true,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -94,7 +94,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             click: 'onViewPreErrors'
                         }
                     },
-                    {text: 'Post Acc.<br>Errors', dataIndex: 'QTYERRS', width: 80,
+                    {text: 'Accounting<br>Errors', dataIndex: 'QTYERRS', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;";
                             return value;
@@ -119,39 +119,43 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                             const opts = {
                                 '0': ()=>{
                                     metaData.style = "background-color:#838187;font-weight:bold";
-                                    return 'Processing';
-                                }, 
-                                '1': ()=>{
-                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Pre-Accounting Errors';
-                                }, 
-                                '2': ()=>{
-                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Post-Accounting Errors';
+                                    return 'Processing ️🔃';
                                 }, 
                                 '3': ()=>{
-                                    metaData.style = "background-color:#91fc63;font-weight:bold";
-                                    return 'Validated';
-                                }, 
-                                '4': ()=>{
-                                    metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
-                                    return 'Reversed';
+                                    metaData.style = "background-color:#8cdfe3;font-weight:bold";
+                                    return 'Ready to Send ️🆗';
                                 },
                                 '5': ()=>{
-                                    metaData.style = "background-color:#7f69af;font-weight:bold";
-                                    return 'Downloaded/Sended';
+                                    metaData.style = "background-color:#9187e1;font-weight:bold";
+                                    return 'Sended to AV ️🆗';
                                 },
-                                '6': ()=>{
-                                    metaData.style = "background-color:#f71a1a;color:#ffffff;font-weight:bold";
-                                    return 'Program Down';
+                                '1': ()=>{
+                                    metaData.style = "background-color:#88d556;font-weight:bold";
+                                    return 'Loaded to SAP ☑';
                                 }, 
+                                '6': ()=>{
+                                    metaData.style = "background-color:#88d556;font-weight:bold";
+                                    return 'Partially Loaded to SAP ☑';
+                                }, 
+                                '2': ()=>{
+                                    metaData.style = "background-color:#fdb333;font-weight:bold";
+                                    return 'Accounting Errors 🚫️';
+                                },
                                 '7': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Executor Error';
-                                }, 
+                                    return 'Process Error ⚠️';
+                                }, //❌🚫☢️🆗✅⛔⚠️⭕☑️🔃
                                 '8': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'No Data';
+                                    return 'No Data ️⭕';
+                                },
+                                '9': ()=>{
+                                    metaData.style = "background-color:#f7ec35;color:#ce3232;font-weight:bold";
+                                    return 'Rejected by AV ❌';
+                                },
+                                '4': ()=>{
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
+                                    return 'Reversed ⛔';
                                 }
                             };
                             return opts[value]();

@@ -327,7 +327,7 @@ input[type="text"], input[type="password"], textarea {
     text-indent:2px;
     -webkit-transition: border linear 0.2s; /* For Safari 3.1 to 6.0 */
     transition: border linear 0.2s; /* For Safari 3.1 to 6.0 */
-    margin-right: 10px;
+    /*margin-right: 10px;*/
 }
 
 input[type="text"]:focus,input[type="password"]:focus, textarea:focus {

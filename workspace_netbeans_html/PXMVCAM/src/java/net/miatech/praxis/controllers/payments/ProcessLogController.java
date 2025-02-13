@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.miatech.praxis.logic.payments.ProcessLogLogic;
 import net.miatech.praxis.payment.dto.MPS023Filter;
+import net.miatech.praxis.payment.dto.MPS200WFilter;
 import net.miatech.praxis.payment.dto.SPPL001Filter;
 import net.miatech.praxis.payment.dto.SPPL002Filter;
 import net.miatech.praxis.utils.ResponseUtils;
@@ -65,5 +66,12 @@ public class ProcessLogController {
             map.put("msg", "Another Process Running");
             return ResponseUtils.ok(map);
         }
+    }
+    
+    @RequestMapping(value = "processConciliation",method = RequestMethod.POST)
+    public ResponseEntity<?> processConciliation(@RequestBody MPS200WFilter params) throws Exception{
+        System.out.println("***** ProcessLog - processConciliation *****");
+        logic.loadMPS200WFilter(params);
+        return ResponseUtils.create();
     }
 }
