@@ -257,5 +257,96 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                         }
                     }
                 });
+    },
+    onRejectAll: function (btn) {
+        this.rejectAccounting();
+    },
+    rejectAccounting: function () {
+        const me = this;
+        Ext.create('Ext.window.Window', {
+            title: 'Reject Accounting',
+            width: 500,
+            modal: true, // Hace que la ventana sea modal
+            layout: 'fit',
+            items: {
+                xtype: 'form',
+                layout: {
+                    type: 'vbox',
+                    align: 'center'
+                },
+                bodyPadding: 5,
+                items: [
+                    {
+                        xtype: 'label',
+                        text: 'Are you sure to Reject Complete Accounting?',
+                        style: {
+                            fontSize: '14px',
+                            color: 'red',
+                            fontWeight: 'bold',
+                            marginTop: '10px',
+                            marginBottom: '10px'
+                        }
+                    },
+                    {
+                        xtype: 'combobox',
+                        id: prototype.idDE + '-cmbRejectError2',
+                        labelStyle: 'font-weight:bold;',
+                        fieldLabel: 'Rejection Error',
+                        store: me.view.filters.ERRORES.filter(x => x.TIPO === 'C'),
+                        labelWidth: 100,
+                        width: 380,
+                        displayField: 'DESCR',
+                        valueField: 'CODREC',
+                        queryMode: 'local',
+                        editable: false,
+                        emptyText: '(Select)',
+                        value: ''
+                    }
+                ]
+            },
+            buttons: [
+                {
+                    text: 'Reject',
+                    style: {
+                        backgroundColor: 'white', // Fondo blanco
+                        border: '2px solid red', // Marco rojo
+                        color: 'red', // Letras rojas
+                        fontWeight: 'bold', // Texto en negrita
+                        marginTop: '3px',
+                        marginBottom: '3px'
+                    },
+                    handler: function (btn) {
+                        let combo = Ext.getCmp(prototype.idDE + '-cmbRejectError2');
+                        if (!combo.value) {
+                            me.notifier.alert('Select Error');
+                            return;
+                        }
+                        let rejected = me.dataAcc.map(x => {
+                            return {
+                                ...x,
+                                DATEC:combo.value,
+                                DESCR: me.view.filters.ERRORES.filter(x => x.CODREC === combo.value).at(0).DESCR
+                            };
+                        });
+                        me.dataRej = global.arrayAddUnique(me.dataRej, rejected, ['BANDOC', 'DATECI', 'TRANCI']).data;
+                        me.dataAcc = [];
+                        me.loadStores();
+                        me.notifier.success('<br>All Documents Rejected');
+                        Ext.getCmp(prototype.idDE + '-btn-rejectAll').setDisabled(true);
+                        btn.up('window').close();
+                    }
+                },
+                {
+                    text: 'Close',
+                    style: {
+                        marginTop: '3px',
+                        marginBottom: '3px'
+                    },
+                    handler: function (btn) {
+                        btn.up('window').close();
+                    }
+                }
+            ]
+        }).show();
     }
 });

@@ -592,6 +592,14 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                     }
                 },
                 {
+                    text: 'Reject',
+                    id: prototype.idDE + '-btn-rejectAll',
+                    iconCls: 'prx-icon-incomplete',
+                    listeners: {
+                        click: 'onRejectAll'
+                    }
+                },
+                {
                     text: 'Cancel',
                     id: prototype.idDE + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',

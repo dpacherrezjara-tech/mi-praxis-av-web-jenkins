@@ -43,8 +43,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadF
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "font-weight:bold";
                     const opts = {
-                        '1': 'Pending',
-                        '2': 'Loaded',
+                        '1': 'Loaded',
                         '3': 'Rejected'
                     };
                     return opts[value];
