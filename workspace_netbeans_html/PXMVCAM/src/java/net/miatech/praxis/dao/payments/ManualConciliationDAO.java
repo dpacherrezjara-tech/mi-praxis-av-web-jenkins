@@ -1943,6 +1943,7 @@ public class ManualConciliationDAO {
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
                 objRtn.IN_TKT_ASIG = filter.IN_TKT_ASIG;
+                objRtn.TQUERY = filter.TQUERY.trim();
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SOCIETY = rs01.getString("SOCIETY");
                 objRtn.SOCIETYL = rs01.getString("SOCIETYL");
@@ -7409,6 +7410,7 @@ public class ManualConciliationDAO {
 
                     while (rst2.next()) {
                         beanTkt = new A2290Filter();
+                        beanTkt.TQUERY = filter.TQUERY.trim();
                         beanTkt.TKT = rst2.getString("TKT");
                         beanTkt.QTY_100 = rst2.getLong("QTY_100");
                         beanTkt.SVFOP_100 = rst2.getDouble("SVFOP_100");

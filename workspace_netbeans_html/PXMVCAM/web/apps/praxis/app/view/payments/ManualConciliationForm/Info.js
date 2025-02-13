@@ -285,6 +285,13 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         }
                                                     },
                                                     {
+                                                        text: 'TQUERY', dataIndex: 'TQUERY', width: 50, align: 'center',hidden:true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
                                                         width: 40,

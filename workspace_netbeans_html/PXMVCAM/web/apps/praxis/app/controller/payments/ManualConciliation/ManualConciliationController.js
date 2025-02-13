@@ -940,6 +940,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                                     MERCHNC: value.MERCHNC,
                                     ACCNUMBER: value.ACCNUMBER,
                                     TERMI: value.TERMI,
+                                    TQUERY: value.TQUERY,
                                     SAGENT: value.SAGENT_101,
                                     SCARCOD: value.SCARCOD_101,
                                     SCARDN: value.SCARDN_101,
