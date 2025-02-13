@@ -45,9 +45,11 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         if (sts.includes(info.STCONT)) {
             Ext.getCmp(prototype.idDE + '-btn-save').hide();
             Ext.getCmp(prototype.idDE + '-btnRejectRec').hide();
+            Ext.getCmp(prototype.idDE + '-btn-rejectAll').hide();
         } else {
             Ext.getCmp(prototype.idDE + '-btn-save').show();
             Ext.getCmp(prototype.idDE + '-btnRejectRec').show();
+            Ext.getCmp(prototype.idDE + '-btn-rejectAll').show();
         }
         me.dataFiles = files;
         me.dataAcc = bandocs;
