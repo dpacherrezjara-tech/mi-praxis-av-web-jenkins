@@ -262,6 +262,38 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             bean: bean
         };
     },
+    setParameterTW: function () {
+        var bean = {};
+
+        var grid = Ext.getCmp(prototype.id + '-gridDataColumns');
+        var store = grid.getStore();
+
+        var selectedRecord = store.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecord) {
+            var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
+            console.log('RQUERY seleccionado:', rquery);
+            console.log('TQUERY seleccionado:', tquery);
+            console.log('Table seleccionada:', ttable);
+
+            bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
+            bean.RQUERY = rquery;
+            bean.TQUERY = tquery;
+            bean.TTABLE = ttable;
+            bean.strSQL = this.armandoQuery();
+
+            var beanString = JSON.stringify(bean);
+            searchParams = {
+                beanString: beanString,
+                bean: bean
+            };
+        } else {
+            global.Msg({msg: '...You must select a rule...'
+            }); 
+        }
+    },
     btnImgSwap1: function () {
         var panel1 = Ext.getCmp(prototype.id + '-gridData');
         var panel2 = Ext.getCmp(prototype.id + '-gridDataSwap');
@@ -279,18 +311,6 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         var rec = grid.getStore().getAt(rowIndex);
 
         this.searchBean(rec);
-
-        setTimeout(function () {
-            item.enable();
-        }, 1000);
-
-    },
-    onEditClickF2: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
-
-        item.disable();
-
-        var rec = grid.getStore().getAt(rowIndex);
-        this.searchBeanF2(rec);
 
         setTimeout(function () {
             item.enable();
@@ -414,77 +434,31 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
     },
     btnExcel_click: function (obj, e) {
 
-        this.setFormatParameter();
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            Ext.Msg.show({
-                title: '.:PRAXIS:.',
-                msg: 'Download Excel ?..',
-                buttons: Ext.MessageBox.OKCANCEL,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'ok') {
-                        this.exportExcel();
-                    }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Excel ?..',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.exportExcel();
                 }
-            });
-        }
+            }
+        });
     },
     exportExcel: function () {
-        this.setFormatParameter();
-
-        if (Ext.getCmp(prototype.id + '-panelGridDataMain').isVisible()) {
-
-
-            if (Ext.getCmp(prototype.id + '-panelDetailTW').isVisible()) {
-                global.getFileExcelPost('searchMPF101Teleworking', JSON.stringify(this.beanDetailTW), Ext.getCmp(prototype.id + '-gridDetailTeleworking').config.columns.items);
-            } else {
-
-                global.getFileExcelPost('searchTeleworking', JSON.stringify(this.beanTW), Ext.getCmp(prototype.id + '-gridDataMain').config.columns.items);
-            }
-        } else {
-
-            switch (me.panelActual) {
-                case  '-panelGridDataMain':
-                    global.getFile(prototype.url + '/getXLSXMain?beanString=' + encodeURI(searchParams.beanString));
-                    break;
-                case '-panelGridDataCountry':
-                    global.getFile(prototype.url + '/getXLSXCountry?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDataDay':
-                    global.getFile(prototype.url + '/getXLSXDay?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDataDetalle':
-                    global.getFile(prototype.url + '/getXLSXDetalle?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDataTicket':
-                    global.getFile(prototype.url + '/getXLSXTicket?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDetCardByS':
-                    global.getFile(prototype.url + '/getXLSXDetCardByS?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDetDayByS':
-                    global.getFile(prototype.url + '/getXLSXDetDayByS?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDetCardNbrByS':
-                    global.getFile(prototype.url + '/getXLSXDetCardNbrByS?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                case '-panelGridDataDetalle_DEBITS':
-                    global.getFileExcelPost('searchDetByStval_DEBITS', me.paramsDetail.beanString, Ext.getCmp(prototype.id + '-gridDataDetalle_DEBITS').config.columns.items);
-//                    global.getFile(prototype.url + '/getXLSXDetByStval_DEBITS?beanString=' + encodeURI(me.paramsDetail.beanString));
-                    break;
-                default:
-                    global.Msg(
-                            {msg: 'Under Construction'
-                            });
-            }
+        this.setParameterTW();
+        switch (me.panelActual) {
+            case  '-panelGridDataMain':
+                global.getFile(prototype.url + '/getXLSXMain?beanString=' + encodeURI(searchParams.beanString));
+                break;
+            default:
+                global.Msg(
+                        {msg: 'Under Construction'
+                        });
         }
-
 
     },
     btnFilter_click: function (obj) {
@@ -923,7 +897,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
 
                         Ext.Object.each(lstData, function (index, value) {
                             if (a.indexOf(value.UNIKEY) < 0) {
-                                let V_SVFOP = 0; 
+                                let V_SVFOP = 0;
                                 Ext.Object.each(lstData, function (index, valuex) {
                                     if (value.UNIKEY === valuex.UNIKEY) {
                                         V_SVFOP += valuex.SVFOP_100;
@@ -1153,6 +1127,23 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         }
     },
     procesarRegistros: async function (grilla) {
+        
+        var grid = Ext.getCmp(prototype.id + '-gridDataColumns');
+        var store = grid.getStore();
+
+        var selectedRecord = store.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecord) {
+            var codrule = selectedRecord.get('CODRULE'); // Obtener el valor de RQUERY
+            var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
+ 
+        } else {
+            global.Msg({msg: '...You must select a rule...'
+            }); 
+        }
+        
         let listaDeDatos = [];
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
@@ -1179,8 +1170,9 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                 SEQ: record.get('SEQ'),
                 SCURRENCY: record.get('SCURRENCY'),
                 VFOP: record.get('SVFOP_101'),
-//                RULE: Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, ''),
-                RULE: '1',
+                RQUERY: rquery,
+                TQUERY: tquery,
+                RULE: codrule
             };
 
             listaDeDatos.push(registro);
