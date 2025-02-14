@@ -43,7 +43,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridCon
     disableReverse: function(view, rowIndex, colIndex, item, record){
         console.log(record);
         let strev = ['0','3'];
-        if(strev.includes(record.data.STREV)){
+        if(!strev.includes(record.data.STREV)){
             return true;
         }
         if(record.data.TIPOERR === 'PRE'){
