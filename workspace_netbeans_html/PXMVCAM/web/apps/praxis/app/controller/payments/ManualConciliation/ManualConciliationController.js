@@ -956,6 +956,8 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                         Ext.getCmp(prototype.id + '-gridDataMain').setStore(storeTree);
 
                     } else {
+                        var grid = Ext.getCmp(prototype.id + '-gridDataMain');
+                        grid.getStore().reload();
                         global.Msg({msg: 'Data not found'});
                     }
                     global.clear();
@@ -1060,7 +1062,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
     getCheckedCount: function () {
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
-
+        
         var count = store.queryBy(function (record) {
             return record.get('select') === true;
         }).length;
@@ -1200,7 +1202,23 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
 
     },
     executeOptionAll: async function () {
+        
+        
+        var gridCo = Ext.getCmp(prototype.id + '-gridDataColumns');
+        var storeCo = gridCo.getStore();
 
+        var selectedRecordCo = storeCo.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecordCo) {
+            var codrule = selectedRecordCo.get('CODRULE'); // Obtener el valor de RQUERY
+            var rquery = selectedRecordCo.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecordCo.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecordCo.get('TTABLE'); // Obtener el valor de RQUERY
+        } else {
+            global.Msg({msg: '...You must select a rule...'
+            }); 
+        }
+         
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
 
@@ -1214,6 +1232,10 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
 
         me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
         me.beanDetailTW.strSQL = this.armandoQuery();
+        me.beanDetailTW.CODRULE = codrule;
+        me.beanDetailTW.RQUERY = rquery;
+        me.beanDetailTW.TQUERY = tquery;
+        me.beanDetailTW.TTABLE = ttable;
 
         Ext.Ajax.request({
             url: prototype.url + '/executeAllUpdate',
