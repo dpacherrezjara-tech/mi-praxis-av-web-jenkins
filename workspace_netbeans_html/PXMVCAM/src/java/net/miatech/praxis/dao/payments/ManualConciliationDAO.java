@@ -406,7 +406,7 @@ public class ManualConciliationDAO {
                 if (cstmt != null) {
                     try {
                         cstmt.close();
-                        strMsj = "Successful," + count + " records have been reconciled.";
+                        strMsj = "Successful,All records have been reconciled.";
 
                     } catch (SQLException e) {
                         logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
