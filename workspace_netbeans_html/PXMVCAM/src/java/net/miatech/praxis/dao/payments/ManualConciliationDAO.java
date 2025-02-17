@@ -382,16 +382,19 @@ public class ManualConciliationDAO {
             CallableStatement cstmt = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL(?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL(?,?,?,?,?,?,?,?)}";
 
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt = cnx.prepareCall(SQLCLL01);
                 cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                cstmt.setString(2, filter.RULE.trim());
-                cstmt.setString(3, user.getUserInfo().USR);
-                cstmt.setString(4, Functions.getFechaActual());
-                cstmt.setString(5, Functions.getHoraActual());
+                cstmt.setString(2, filter.CODRULE.trim()); 
+                cstmt.setString(3, filter.RQUERY.trim());
+                cstmt.setString(4, filter.TQUERY.trim());
+                cstmt.setString(5, filter.TTABLE.trim());
+                cstmt.setString(6, user.getUserInfo().USR);
+                cstmt.setString(7, Functions.getFechaActual());
+                cstmt.setString(8, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
                 count++;
