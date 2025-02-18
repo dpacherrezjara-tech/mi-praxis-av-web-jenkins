@@ -357,7 +357,7 @@ public class LoadSalesConciliationDAO {
         CallableStatement cstmt01 = null;
         CallableStatement cstmt02 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_PLANILLA_OPERATIVA_F2(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_PLANILLA_OPERATIVA_F2_V1(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         Connection cnx2 = null;
@@ -681,7 +681,7 @@ public class LoadSalesConciliationDAO {
             tranl = objRtn2.CONT + 1;
             coorrelativol = objRtn2.CONT + 1;
         }
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_INSERT_PO_MPF114(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_INSERT_PO_MPF114(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         try {
             int QTYTRAN1 = lstdata.size();
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -709,15 +709,16 @@ public class LoadSalesConciliationDAO {
                         cstmt.setString(17, lstdata.get(i).CECO.trim());
                         cstmt.setInt(18,  tran);
                         cstmt.setInt(19,  tranl);
-                        cstmt.setString(20, user.getUserInfo().USR);
-                        cstmt.setString(21, Functions.getFechaActual());
-                        cstmt.setString(22, Functions.getHoraActual());
-
-                        
+                        cstmt.setString(20, lstdata.get(i).STVALU.trim());
+                        cstmt.setString(21, user.getUserInfo().USR);
+                        cstmt.setString(22, Functions.getFechaActual());
+                        cstmt.setString(23, Functions.getHoraActual());
+                            
+                            
                         
                         
                         System.out.println(i);
-                        if(i == 6113){
+                        if(i == 66){
                             System.out.println(i);
                         }
                         cstmt.execute();
