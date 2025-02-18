@@ -915,7 +915,9 @@ public class A2290Filter extends A2290 {
     public String SCURRENCY_100 = "";
     public String SCURRENCY_101 = "";
     public String TDOC_100 = "";
+    public String SCOUNTRY_100 = "";
     public String TDOC_101 = "";
+    public String SCOUNTRY_101 = "";
     public String SDATE_100 = "";
     public String SDATE_101 = "";
     public String SAGENT_100 = "";
