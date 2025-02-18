@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1790,
+                width: 1840,
                 height: 'auto',
                 align: 'center'
             },
@@ -92,7 +92,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                             xtype: 'treepanel',
                                             id: prototype.id + '-gridDataMain',
                                             bodyStyle: 'background-color: #E3EAEF;',
-                                            width: 1780,
+                                            width: 1840,
                                             height: 545,
                                             columnLines: true,
                                             viewConfig: {
@@ -125,6 +125,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
                                                             metaData.tdAttr = 'data-qtip="' + data.SCARDN + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             value = data.SCARDN;
                                                             return value;
                                                         }
@@ -133,6 +134,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Ticket', dataIndex: 'TKT', width: 130, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -140,6 +142,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Qty<br>Tkt', dataIndex: 'QTY', width: 50, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             value = Ext.util.Format.number(value, '0,000');
                                                             return value;
                                                         },
@@ -153,6 +156,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                             return value;
                                                         },
@@ -166,6 +170,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Amount TKT', dataIndex: 'SVFOP_100', width: 100, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                             return value;
                                                         },
@@ -179,6 +184,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Curr.', dataIndex: 'SCURRENCY', width: 60, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#cbdbf5;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -186,8 +192,15 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Doc<br>Type', dataIndex: 'TDOC', width: 60, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#cbdbf5";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Country', dataIndex: 'SCOUNTRY', width: 60, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -195,8 +208,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Sales<br>Date', dataIndex: 'SDATE', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#cbdbf5";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -204,6 +216,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Credit Card', dataIndex: 'SCARDN', width: 150, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -211,6 +224,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Auth. Code', dataIndex: 'SAUTHOC', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -218,8 +232,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Agent', dataIndex: 'SAGENT', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;background-color:#cbdbf5";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -227,8 +240,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Code', dataIndex: 'SCARCOD', width: 55, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
                                                     },
@@ -236,8 +248,6 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
                                                             return value;
                                                         }
                                                     },
@@ -245,8 +255,6 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Abono<br>Date', dataIndex: 'PAYDATE', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
                                                             return value;
                                                         }
                                                     },
@@ -254,8 +262,6 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Merchand', dataIndex: 'MERCHNC', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
                                                             return value;
                                                         }
                                                     },
@@ -263,8 +269,6 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Account<br>Number', dataIndex: 'ACCNUMBER', width: 130, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
                                                             return value;
                                                         }
                                                     },
@@ -272,8 +276,6 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         text: 'Terminal', dataIndex: 'TERMI', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strSORIG + '"';
                                                             return value;
                                                         }
                                                     },
@@ -285,7 +287,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'TQUERY', dataIndex: 'TQUERY', width: 50, align: 'center',hidden:true,
+                                                        text: 'TQUERY', dataIndex: 'TQUERY', width: 50, align: 'center', hidden: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             return value;

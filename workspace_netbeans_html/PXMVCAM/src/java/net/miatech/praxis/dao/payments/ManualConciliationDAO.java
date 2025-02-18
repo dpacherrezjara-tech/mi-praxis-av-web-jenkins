@@ -429,7 +429,7 @@ public class ManualConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -445,6 +445,9 @@ public class ManualConciliationDAO {
             cstmt.setString(7, session.getUserView().getCustomerInfo().USR);
             cstmt.setString(8, filter.SCARDN);
             cstmt.setString(9, filter.SCURRENCY);
+            cstmt.setString(10, filter.RQUERY.trim());
+            cstmt.setString(11, filter.TQUERY.trim());
+            cstmt.setString(12, filter.TTABLE.trim());
 
             cstmt.execute();
 
@@ -1239,43 +1242,39 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(13, Types.INTEGER);
-            cstmt.registerOutParameter(14, Types.INTEGER);
-            cstmt.registerOutParameter(15, Types.INTEGER);
-            cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
             cstmt.setString(3, filter.IN_FECHA.trim());
-            cstmt.setString(4, filter.strSQL.trim());
-            cstmt.setString(5, filter.SCARDNCOR);
-            cstmt.setString(6, filter.SAUTHOC);
-            cstmt.setString(7, session.getUserView().getCustomerInfo().USR);
-            cstmt.setString(8, filter.SCARDN);
-            cstmt.setString(9, filter.SCURRENCY);
-            cstmt.setString(10, filter.RQUERY);
-            cstmt.setString(11, filter.TQUERY);
-            cstmt.setString(12, filter.TTABLE);
+            cstmt.setString(4, filter.strSQL.trim()); 
+            cstmt.setString(5, filter.SCOUNTRY); 
+            cstmt.setString(6, filter.RQUERY);
+            cstmt.setString(7, filter.TQUERY);
+            cstmt.setString(8, filter.TTABLE);
 
-            cstmt.setInt(13, filter.page.PAGNUM);
-            cstmt.setInt(14, filter.page.PAGROW);
-            cstmt.setInt(15, filter.page.TOTPAG);
-            cstmt.setInt(16, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
-            filter.page.PAGNUM = cstmt.getInt(13);
-            filter.page.PAGROW = cstmt.getInt(14);
-            filter.page.TOTPAG = cstmt.getInt(15);
-            filter.page.TOTROW = cstmt.getInt(16);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             while (rst.next()) {
 
@@ -1289,7 +1288,7 @@ public class ManualConciliationDAO {
                     cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
                     cstmt2.setString(2, rst.getString("TDOC_101"));
                     cstmt2.setString(3, rst.getString("SDATE_101"));
-                    cstmt2.setString(4, filter.SCOUNTRY.trim());
+                    cstmt2.setString(4, rst.getString("SCOUNTRY_101"));
                     cstmt2.setString(5, rst.getString("SCURRENCY_101"));
                     cstmt2.setString(6, rst.getString("SCARDN_101"));
                     cstmt2.setString(7, rst.getString("SAUTHOC_101"));
@@ -1310,6 +1309,7 @@ public class ManualConciliationDAO {
                         beanTkt.SVFOP_100 = rst2.getDouble("SVFOP_100");
                         beanTkt.SCURRENCY_100 = rst2.getString("SCURRENCY_100");
                         beanTkt.TDOC_100 = rst2.getString("TDOC_100");
+                        beanTkt.SCOUNTRY_100 = rst2.getString("SCOUNTRY_100");
                         beanTkt.SDATE_100 = rst2.getString("SDATE_100");
                         beanTkt.SAGENT_100 = rst2.getString("SAGENT_100");
                         beanTkt.SCARCOD_100 = rst2.getString("SCARCOD_100");
@@ -1328,6 +1328,7 @@ public class ManualConciliationDAO {
                         beanTkt.SVFOP_101 = rst.getDouble("SVFOP_101");
                         beanTkt.SCURRENCY_101 = rst.getString("SCURRENCY_101");
                         beanTkt.TDOC_101 = rst.getString("TDOC_101");
+                        beanTkt.SCOUNTRY_101 = rst.getString("SCOUNTRY_101");
                         beanTkt.SDATE_101 = rst.getString("SDATE_101");
                         beanTkt.SAGENT_101 = rst.getString("SAGENT_101");
                         beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
@@ -1344,7 +1345,8 @@ public class ManualConciliationDAO {
                     }
 
                 } catch (Exception e) {
-
+                    e.getMessage();
+                    e.printStackTrace();
                 }
                 rst2.close();
             }
@@ -1389,7 +1391,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1399,15 +1401,11 @@ public class ManualConciliationDAO {
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
             cstmt.setString(3, filter.IN_FECHA.trim());
-            cstmt.setString(4, filter.strSQL.trim());
-            cstmt.setString(5, filter.SCARDNCOR);
-            cstmt.setString(6, filter.SAUTHOC);
-            cstmt.setString(7, session.getUserView().getCustomerInfo().USR);
-            cstmt.setString(8, filter.SCARDN);
-            cstmt.setString(9, filter.SCURRENCY);
-            cstmt.setString(10, filter.RQUERY);
-            cstmt.setString(11, filter.TQUERY);
-            cstmt.setString(12, filter.TTABLE);
+            cstmt.setString(4, filter.strSQL.trim()); 
+            cstmt.setString(5, filter.SCOUNTRY); 
+            cstmt.setString(6, filter.RQUERY);
+            cstmt.setString(7, filter.TQUERY);
+            cstmt.setString(8, filter.TTABLE);
 
             cstmt.execute();
 

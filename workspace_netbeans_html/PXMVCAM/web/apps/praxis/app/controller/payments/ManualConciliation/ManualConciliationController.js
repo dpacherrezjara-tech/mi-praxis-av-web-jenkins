@@ -196,13 +196,40 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         }));
         cmbTipoFecha.setValue("SDATE");
 
+        this.paramsObtainData.COUNTRY = 2;
+
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                beanString: JSON.stringify(this.paramsObtainData)
+            },
+            success: function (response, options) {
+                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+
+                me.lstCountry = res.lstCountry;
+
+                var storeData3 = Ext.create('Ext.data.Store', {
+                    data: me.lstCountry,
+                    autoLoad: true
+                });
+
+                Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                Ext.getCmp(prototype.id + '-cmbCountry').setValue('CO');
+                global.clear();
+            }
+        });
+
         this.onRefreshClick();
     },
     //</editor-fold>
     btnSearch_click: function (obj, e) {
         console.log('btnSearch_click');
         if (Ext.getCmp(prototype.id + '-panelMain').isVisible()) {
-            this.search();
+            this.onRefreshClick();
         }
     },
     onRefreshClick: function () {
@@ -223,7 +250,9 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             console.log('TQUERY seleccionado:', tquery);
             console.log('Table seleccionada:', ttable);
 
+            me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue();
             me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
+            me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
             me.beanDetailTW.TTABLE = ttable;
@@ -277,8 +306,10 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             console.log('RQUERY seleccionado:', rquery);
             console.log('TQUERY seleccionado:', tquery);
             console.log('Table seleccionada:', ttable);
-
+ 
+            bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue();
             bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYearTW').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonthTW').getValue();
+            bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
             bean.RQUERY = rquery;
             bean.TQUERY = tquery;
             bean.TTABLE = ttable;
@@ -291,7 +322,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             };
         } else {
             global.Msg({msg: '...You must select a rule...'
-            }); 
+            });
         }
     },
     btnImgSwap1: function () {
@@ -305,6 +336,36 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             panel2.setVisible(false);
         }
     },
+    btnFrill_click: function () {
+        var panel1 = Ext.getCmp(prototype.id + '-gridDataColumns');
+        var panel2 = Ext.getCmp(prototype.id + '-gridDataColumnsLine');
+        var store1 = panel1.getStore();
+        var store2 = panel2.getStore();
+
+        if (panel1.isVisible()) {
+            var selectedRecords = store1.query('select', true).getRange();
+
+            if (selectedRecords.length > 0) {
+                store2.removeAll();
+
+                var clonedRecords = selectedRecords.map(function (record) {
+                    return record.copy();
+                });
+
+                store2.add(clonedRecords);
+                panel2.getView().refresh();
+
+                panel1.setVisible(false);
+                panel2.setVisible(true);
+            } else {
+                console.log('No hay registros seleccionados.');
+            }
+        } else {
+            panel1.setVisible(true);
+            panel2.setVisible(false);
+        }
+    },
+
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
 
         item.disable();
@@ -911,6 +972,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                                     SVFOP_100: V_SVFOP,
                                     SCURRENCY: value.SCURRENCY_101,
                                     TDOC: value.TDOC_101,
+                                    SCOUNTRY: value.SCOUNTRY_101,
                                     SDATE: value.SDATE_101,
                                     PAYDATE: value.PAYDATE,
                                     CODEBANK: value.CODEBANK,
@@ -935,6 +997,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                                             SVFOP_100: value01.SVFOP_100,
                                             SCURRENCY: value01.SCURRENCY_100,
                                             TDOC: value01.TDOC_100,
+                                            SCOUNTRY: value.SCOUNTRY_100,
                                             SDATE: value01.SDATE_100,
                                             SAGENT: value01.SAGENT_100,
                                             SCARCOD: value01.SCARCOD_100,
@@ -1062,7 +1125,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
     getCheckedCount: function () {
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
-        
+
         var count = store.queryBy(function (record) {
             return record.get('select') === true;
         }).length;
@@ -1129,7 +1192,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
         }
     },
     procesarRegistros: async function (grilla) {
-        
+
         var grid = Ext.getCmp(prototype.id + '-gridDataColumns');
         var store = grid.getStore();
 
@@ -1140,12 +1203,12 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
- 
+
         } else {
             global.Msg({msg: '...You must select a rule...'
-            }); 
+            });
         }
-        
+
         let listaDeDatos = [];
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
@@ -1202,8 +1265,8 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
 
     },
     executeOptionAll: async function () {
-        
-        
+
+
         var gridCo = Ext.getCmp(prototype.id + '-gridDataColumns');
         var storeCo = gridCo.getStore();
 
@@ -1216,9 +1279,9 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             var ttable = selectedRecordCo.get('TTABLE'); // Obtener el valor de RQUERY
         } else {
             global.Msg({msg: '...You must select a rule...'
-            }); 
+            });
         }
-         
+
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
 
