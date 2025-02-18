@@ -48,7 +48,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
             xtype: 'form',
             border: false,
             bodyStyle: 'background: transparent',
-            padding: '2px 5px 1px 170px',
+            padding: '2px 5px 1px 20px',
             layout: 'vbox',
             defaults: {
                 labelStyle: 'font-weight:bold;',
@@ -77,10 +77,9 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                             defaults: {
                                 labelStyle: 'font-weight:bold;',
                                 fieldStyle: 'text-align: center;',
-                                padding: '2px 1px 2px 1px'
+                                padding: '10px 1px 2px 1px'
                             },
                             items: [
-//                                {xtype: 'tbspacer', width: 50},
                                 {
                                     xtype: 'combo',
                                     id: prototype.id + '-cmbTipoFecha',
@@ -95,7 +94,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                     displayField: 'name',
                                     emptyText: 'All',
                                     labelWidth: 0,
-                                    width: 150,
+                                    width: 100,
                                     anchor: '100%'
                                 },
                                 {
@@ -113,7 +112,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                     displayField: 'name',
                                     emptyText: 'All',
                                     labelWidth: 0,
-                                    width: 70,
+                                    width: 60,
                                     anchor: '100%'
                                 },
                                 {
@@ -129,9 +128,49 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                     displayField: 'name',
                                     emptyText: 'All',
                                     labelWidth: 0,
-                                    width: 80,
+                                    width: 60,
                                     anchor: '100%'
                                 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            bodyStyle: 'background: transparent',
+                            id: prototype.id + '-panelFilters4',
+                            border: false,
+                            layout: 'column',
+                            width: '100%',
+                            pack: 'center',
+                            defaults: {
+                                labelStyle: 'font-weight:bold;',
+                                fieldStyle: 'text-align: center;',
+                                padding: '10px 1px 2px 10px'
+                            },
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    text: 'Country:',
+                                    padding: '15 0 0 10',
+                                    width: 50
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbCountry',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    forceSelection: true,
+                                    selectOnFocus: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    editable: true,
+                                    width: 189,
+                                    typeAhead: true,
+                                    valueField: 'A006PAIS',
+                                    displayField: 'A006NOMBRE',
+                                    listConfig: {maxHeight: 111},
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                },
                             ]
                         },
                         {
@@ -150,13 +189,13 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                     defaults: {
                                         labelStyle: 'font-weight:bold;',
                                         fieldStyle: 'text-align: center;',
-                                        padding: '1px 5px 1px 5px'
+                                        padding: '1px 5px 1px 10px'
                                     },
                                     items: [
                                         {
                                             xtype: 'panel',
                                             align: 'center',
-                                            margin: '0 0 0 50',
+                                            margin: '0 0 0 0',
                                             bodyStyle: 'background: transparent',
                                             border: true,
                                             layout: 'hbox',
@@ -190,7 +229,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                         {
                                             xtype: 'panel',
                                             align: 'center',
-                                            margin: '0 0 0 50',
+                                            margin: '0 0 0 0',
                                             bodyStyle: 'background: transparent',
                                             border: true,
                                             layout: 'hbox',
@@ -370,7 +409,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                         },
                                         {
                                             xtype: 'panel',
-                                            margin: '0 0 0 50',
+                                            margin: '0 0 0 0',
                                             border: true,
                                             bodyStyle: 'background-color: #E3EAF9;',
                                             layout: {
@@ -1573,8 +1612,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                         labelStyle: 'font-weight:bold;',
                                         fieldStyle: 'text-align: center;',
                                         padding: '0px 0px 0px 0px'
-                                    },
-//                                    margin: '0 0 0 20',
+                                    }, 
                                     layout: {
                                         type: 'vbox',
                                         align: 'center',
@@ -1582,10 +1620,11 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                     items: [
                                         {
                                             xtype: 'grid',
-                                            padding: '10 0 0 0',
+                                            padding: '10 0 0 10',
                                             id: prototype.id + '-gridDataColumns',
+                                            bodyStyle: 'background-color: #E3EAEF;',
                                             height: 160,
-                                            width: 574,
+                                            width: 604,
                                             resizable: false,
                                             columnLines: true,
                                             clicksToEdit: 1,
@@ -1602,7 +1641,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                                 },
                                                 items: [
                                                     {text: 'Rule', width: 40, dataIndex: 'CODRULE'},
-                                                    {text: 'Agroup', width: 330, dataIndex: 'GRORULE',
+                                                    {text: 'Agroup', width: 350, dataIndex: 'GRORULE',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:left;";
                                                             return value;
@@ -1647,6 +1686,66 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                             }
                                         },
                                         {
+                                            xtype: 'grid',
+                                            padding: '10 0 0 10',
+                                            id: prototype.id + '-gridDataColumnsLine',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            height: 160,
+                                            width: 604,
+                                            hidden:true,
+                                            resizable: false,
+                                            columnLines: true,
+                                            clicksToEdit: 1,
+                                            plugins: {
+                                                ptype: 'cellediting',
+                                                clicksToEdit: 1
+                                            },
+
+                                            columns: {
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {text: 'Rule', width: 40, dataIndex: 'CODRULE'},
+                                                    {text: 'Agroup', width: 350, dataIndex: 'GRORULE',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Rquery', width: 240, dataIndex: 'RQUERY', hidden: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Tquery', width: 240, dataIndex: 'TQUERY', hidden: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Table', width: 100, dataIndex: 'TTABLE'},
+                                                    {
+                                                        sortable: false,
+                                                        xtype: 'actioncolumn',
+                                                        width: 40,
+                                                        text: 'View',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-edit',
+                                                                tooltip: 'View',
+                                                                handler: 'onEditClickRules'
+                                                            }
+                                                        ]
+                                                    },
+                                                ]
+                                            }
+                                        },
+                                        {
                                             xtype: 'panel',
                                             bodyStyle: 'background: transparent',
                                             border: false,
@@ -1656,7 +1755,7 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Filters', {
                                                 labelStyle: 'font-weight:bold;',
                                                 fieldStyle: 'text-align: center;',
                                             },
-                                            padding: '3 0 0 320',
+                                            padding: '3 0 0 450',
                                             items: [
                                                 {
                                                     xtype: 'button',

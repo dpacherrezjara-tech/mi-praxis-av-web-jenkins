@@ -81,6 +81,15 @@ Ext.define('Ext.Praxis.view.payments.ManualConciliationForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnGill',
+                            icon: 'resources/img/botones/build.png',
+                            tooltip: 'Display filter',
+                            listeners: {
+                                click: 'btnFrill_click'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnDisplay',
                             icon: 'resources/img/botones/FalseChart.png',
                             tooltip: 'Display Charts',
