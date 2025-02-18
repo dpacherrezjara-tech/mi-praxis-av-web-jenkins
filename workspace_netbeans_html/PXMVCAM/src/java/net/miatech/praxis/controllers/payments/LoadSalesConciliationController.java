@@ -335,6 +335,7 @@ public class LoadSalesConciliationController extends BaseController {
         String mensajePost = "";
         double montoTotal = 0;
         int i = 0;
+        int j = 0;
         int qty = 0;
         int qtyPRUEBA = 0;
   
@@ -356,10 +357,12 @@ public class LoadSalesConciliationController extends BaseController {
             FileInputStream file = new FileInputStream(new File(strArchivo));
             XSSFWorkbook worbook = new XSSFWorkbook(file);
             XSSFSheet sheet = worbook.getSheetAt(1);
+            XSSFSheet sheet2 = worbook.getSheetAt(2);
             Iterator<Row> rowIterator = sheet.iterator();
+            Iterator<Row> rowIterator2 = sheet2.iterator();
             System.out.println(filter.IN_CONTAB);
             Row row0 = rowIterator.next();
-
+            Row row1 = rowIterator2.next();
             try {
                 while (rowIterator.hasNext()) {
                     i++;
@@ -373,6 +376,10 @@ public class LoadSalesConciliationController extends BaseController {
 //                        obj.SEQ = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim();
 //                        obj.USERF = formatter.formatCellValue(row.getCell(1)) == null ? "" : formatter.formatCellValue(row.getCell(1)).trim();
                         try{
+                            if( formatter.formatCellValue(row.getCell(40)).trim().equals("Conciliado") ){
+                                System.out.println(""+ formatter.formatCellValue(row.getCell(40)).trim() );
+                                continue;
+                            }
                             obj.TYPETRAN = "V";
                             obj.CCUST = formatter.formatCellValue(row.getCell(3)) == null ? "" : formatter.formatCellValue(row.getCell(3)).trim().substring(0,3);
                             obj.TKT = formatter.formatCellValue(row.getCell(3)) == null || formatter.formatCellValue(row.getCell(3)).equals("") ? "" : formatter.formatCellValue(row.getCell(3)).trim();
@@ -393,9 +400,10 @@ public class LoadSalesConciliationController extends BaseController {
                             obj.AMOUNTL = formatter.formatCellValue(row.getCell(31)) == null || formatter.formatCellValue(row.getCell(31)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row.getCell(31)).trim().replaceAll("[^\\d.,-]", ""));
                             obj.VARIACIONP = formatter.formatCellValue(row.getCell(39)) == null || formatter.formatCellValue(row.getCell(39)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row.getCell(39)).trim().replaceAll("[^\\d.,-]", ""));
                             obj.STVAL = "3";
+                            obj.STVALU = "2";
     //                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)) == null ? "" : formatter.formatCellValue(row.getCell(11)).trim();
                             obj.CECO = formatter.formatCellValue(row.getCell(42)) == null ? "" : formatter.formatCellValue(row.getCell(42)).trim();
-                            obj.CECO = obj.CECO.contains("CARGO A CECO") ? obj.CECO.split(" ")[3] : "";
+                            obj.CECO = obj.CECO.contains("CARGO A CECO") ? obj.CECO.split(" ")[3].substring(0,10) : "";
                             
                             System.out.println(qtyPRUEBA + "");
 
@@ -425,6 +433,60 @@ public class LoadSalesConciliationController extends BaseController {
                         
                     }
                 }
+                while (rowIterator2.hasNext()) {
+                    j++;
+                    Row row2 = rowIterator2.next();
+                    if (row2.getRowNum() > 0) {
+                        A2290Filter obj = new A2290Filter();
+                        try{
+                            if( formatter.formatCellValue(row2.getCell(17)).trim().equals("Conciliado") ){
+                                System.out.println(""+ formatter.formatCellValue(row2.getCell(17)).trim() );
+                                continue;
+                            }
+                            if( !formatter.formatCellValue(row2.getCell(18)).trim().equals("Realizar Acreditación") && !formatter.formatCellValue(row2.getCell(18)).trim().equals("Cargar a CECO") ){
+                                System.out.println(""+ formatter.formatCellValue(row2.getCell(17)).trim() );
+                                continue;
+                            }
+                            obj.TYPETRAN = "I";
+                            obj.CCUST = "134";                            
+//                            obj.SDATE = formatter.formatCellValue(row2.getCell(0)) == null ? "" : formatter.formatCellValue(row2.getCell(0)).trim().substring(4) + formatter.formatCellValue(row2.getCell(0)).trim().substring(2,4) + formatter.formatCellValue(row2.getCell(0)).trim().substring(0,2);
+//                            obj.SAGENT = formatter.formatCellValue(row2.getCell(1)) == null ? "" : formatter.formatCellValue(row2.getCell(1)).trim();
+                            obj.SPNR= formatter.formatCellValue(row2.getCell(6)) == null ? "" : formatter.formatCellValue(row2.getCell(6)).trim();
+                            obj.SCURRENCY= formatter.formatCellValue(row2.getCell(3)) == null ? "" : formatter.formatCellValue(row2.getCell(3)).trim();
+                            obj.SCARDN= formatter.formatCellValue(row2.getCell(1)) == null || formatter.formatCellValue(row2.getCell(1)).equals("") ? "" : formatter.formatCellValue(row2.getCell(1)).trim();
+                            obj.SAUTHOC= formatter.formatCellValue(row2.getCell(4)) == null ? "" : formatter.formatCellValue(row2.getCell(4)).trim();
+                            while (obj.SAUTHOC.length() < 6) {
+                                obj.SAUTHOC = "0" + obj.SAUTHOC;
+                            }
+                            obj.AMOUNT = formatter.formatCellValue(row2.getCell(2)) == null || formatter.formatCellValue(row2.getCell(2)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row2.getCell(2)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.AMOUNTV = formatter.formatCellValue(row2.getCell(15)) == null || formatter.formatCellValue(row2.getCell(15)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row2.getCell(15)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.AMOUNTL = formatter.formatCellValue(row2.getCell(2)) == null || formatter.formatCellValue(row2.getCell(2)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row2.getCell(2)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.VARIACIONP = formatter.formatCellValue(row2.getCell(16)) == null || formatter.formatCellValue(row2.getCell(16)).equals("") ? "0.00" : formatAmount(formatter.formatCellValue(row2.getCell(16)).trim().replaceAll("[^\\d.,-]", ""));
+                            obj.STVAL = "3";
+                            obj.STVALU = "3";
+    //                        obj.ACCNUMBER = formatter.formatCellValue(row.getCell(11)) == null ? "" : formatter.formatCellValue(row.getCell(11)).trim();
+                            obj.CECO = formatter.formatCellValue(row2.getCell(19)) == null ? "" : formatter.formatCellValue(row2.getCell(19)).trim();
+                            obj.CECO = obj.CECO.contains("CARGO A CECO") ? obj.CECO.split(" ")[3].substring(0,10) : "";
+                            if( obj.SEQ.contains("IF") || obj.SEQ.contains("(") || obj.SEQ.contains("(") ){
+                                respt.MESSAGE = "The file contains formula";
+                                return respt;
+                            }
+                            if( obj.AMOUNT.length() <= 3  ){
+                                respt.MESSAGE = "Amount without #,00 format";
+                                return respt;
+                            }
+                            lstData.add(obj);
+                        } catch (Exception e) {
+                            e.getMessage();
+                            if (e.getMessage().contains("String index out of range")) {
+                                mensajePost = "";
+                            } else {
+                                mensajePost = "Error en linea : " + i + " | error: " + e.getMessage();
+                            }
+                        }
+                    }
+                }
+                
                 file.close();
             } catch (Exception e) {
                 e.getMessage();
@@ -434,7 +496,7 @@ public class LoadSalesConciliationController extends BaseController {
                     mensajePost = "Error en linea : " + i + " | error: " + e.getMessage();
                 }
             }
-
+            
             UserView user = this.serverSession.getServerSession().getUserView();
             logic.setSession(this.serverSession.getServerSession());
             System.out.println(lstData +"");

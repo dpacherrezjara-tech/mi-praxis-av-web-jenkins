@@ -1882,9 +1882,9 @@ public class BankReconciliationDAO {
         hmDescReglas.put("3", "By PNR");
         hmDescReglas.put("4", "By Terminal Zeros");
         hmDescReglas.put("*", "Intercompany");
-        hmDescReglas.put("A", "By Spreadsheet");
-        hmDescReglas.put("B", "By IATA/Sdate");
-        hmDescReglas.put("C", "By WEB-OPER");
+        hmDescReglas.put("S", "By Spreadsheet");
+        hmDescReglas.put("V", "By IATA/SDATE");
+        hmDescReglas.put("T", "By WEB-OPER");
 
         HashMap<String, String> hmDescFCOMPL = new HashMap<String, String>();
         hmDescFCOMPL.put("", "");

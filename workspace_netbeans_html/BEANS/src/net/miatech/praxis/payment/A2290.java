@@ -136,6 +136,7 @@ public class A2290 {
     public String IDDEB = "";
     public String NOMCONCEP = "";
     public String SCONTROL = "";
+    public String STVALU = "";
     public int MPF076TRAN = 0;
     public int MPF077TRAN = 0;
     public String SPNRSP = "";
