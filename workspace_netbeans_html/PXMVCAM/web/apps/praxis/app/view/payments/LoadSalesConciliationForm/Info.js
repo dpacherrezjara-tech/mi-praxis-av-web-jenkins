@@ -77,8 +77,8 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                     margin: '10 2 2 20',
                                     horizontal: true,
                                     items: [
-                                        {boxLabel: '<strong >SHEET</strong>', name: 'rb', inputValue: '1', width: 100,checked: true},
-                                        {boxLabel: '<strong >WEB-OPER</strong>', name: 'rb', inputValue: '2', width: 100 },
+                                        {boxLabel: '<strong >Payment collection sheet</strong>', name: 'rb', inputValue: '1', width: 200,checked: true},
+                                        {boxLabel: '<strong >Web-Operational</strong>', name: 'rb', inputValue: '2', width: 150 },
                                     ],
                                     listeners: {
 //                                        change: 'btnSearch_click'
