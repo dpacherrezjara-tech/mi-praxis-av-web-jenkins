@@ -446,16 +446,18 @@ public class LoadSalesConciliationDAO {
         int coorrelativo = lstdata.size();
         int coorrelativol = 1;
         boolean isAdj = false;
-        for(int j = 0; j < lstdata.size(); j++){
-            if( lstdata.get(j).FCONCEP.trim().equals("A")){
-                isAdj = true;
-            }
-        }
         
-        if( !user.getUserInfo().USR.substring(0,2).equals("AV") && isAdj && !user.getUserInfo().USR.equals("SAV58D") && !user.getUserInfo().USR.equals("USRWEBAV") ){
-            rspt.MESSAGE = "You are not allowed to make an adjustment";
-            return rspt;
-        }
+        //validacion comentada por requerimiento CSR: 826
+//        for(int j = 0; j < lstdata.size(); j++){
+//            if( lstdata.get(j).FCONCEP.trim().equals("A")){
+//                isAdj = true;
+//            }
+//        }
+        
+//        if( !user.getUserInfo().USR.substring(0,2).equals("AV") && isAdj && !user.getUserInfo().USR.equals("SAV58D") && !user.getUserInfo().USR.equals("USRWEBAV") ){
+//            rspt.MESSAGE = "You are not allowed to make an adjustment";
+//            return rspt;
+//        }
         
         //COORRELATIVO TRAN
         A2290Filter filter = new A2290Filter();
@@ -476,7 +478,7 @@ public class LoadSalesConciliationDAO {
             tranl = objRtn2.CONT + 1;
             coorrelativol = objRtn2.CONT + 1;
         }
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS076(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS076(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         try {
             int QTYTRAN1 = lstdata.size();
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -500,17 +502,18 @@ public class LoadSalesConciliationDAO {
                         cstmt.setString(13, lstdata.get(i).STVAL.trim());
                         cstmt.setString(14, lstdata.get(i).ACCNUMBER.trim());
                         cstmt.setString(15, lstdata.get(i).CECO.trim());
-                        cstmt.setString(16, Functions.getFechaActual());
-                        cstmt.setInt(17,  tran);
-                        cstmt.setInt(18,  tranl);
-                        cstmt.setString(19, lstdata.get(i).STCON.trim());
-                        cstmt.setString(20, lstdata.get(i).FCONT.trim());
-                        cstmt.setString(21, user.getUserInfo().USR);
-                        cstmt.setString(22, Functions.getFechaActual());
-                        cstmt.setString(23, Functions.getHoraActual());
-                        cstmt.setString(24, "MPPWEB");
-                        cstmt.setInt(25, coorrelativo);
-                        cstmt.setInt(26, coorrelativol);
+                        cstmt.setString(16, lstdata.get(i).CREJEC.trim());
+                        cstmt.setString(17, Functions.getFechaActual());
+                        cstmt.setInt(18,  tran);
+                        cstmt.setInt(19,  tranl);
+                        cstmt.setString(20, lstdata.get(i).STCON.trim());
+                        cstmt.setString(21, lstdata.get(i).FCONT.trim());
+                        cstmt.setString(22, user.getUserInfo().USR);
+                        cstmt.setString(23, Functions.getFechaActual());
+                        cstmt.setString(24, Functions.getHoraActual());
+                        cstmt.setString(25, "MPPWEB");
+                        cstmt.setInt(26, coorrelativo);
+                        cstmt.setInt(27, coorrelativol);
                         
                         
                         
@@ -690,7 +693,7 @@ public class LoadSalesConciliationDAO {
                 for (int i = 0; i < lstdata.size(); i++) {
                     try {
                         tran++;
-                        cstmt.setString(1, lstdata.get(i).CCUST.trim());
+                        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
                         cstmt.setString(2, lstdata.get(i).TYPETRAN.trim());
                         cstmt.setString(3, lstdata.get(i).CCIA.trim());
                         cstmt.setString(4, lstdata.get(i).FORMA.trim());
