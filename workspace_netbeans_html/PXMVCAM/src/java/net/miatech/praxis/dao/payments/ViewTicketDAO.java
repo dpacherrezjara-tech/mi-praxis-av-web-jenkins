@@ -138,6 +138,7 @@ public class ViewTicketDAO {
                 objRtn.BANDOC = rs01.getString("BANDOC").trim();
                 objRtn.INVOICE = rs01.getString("INVOICE").trim();
                 objRtn.PAYDATE = rs01.getString("DPAYMEN").trim();
+                objRtn.SCONSOL = rs01.getString("SCONSOL").trim();
                 //VOID
                 //REVERSE POLICY
                 //REVERSE ADM
