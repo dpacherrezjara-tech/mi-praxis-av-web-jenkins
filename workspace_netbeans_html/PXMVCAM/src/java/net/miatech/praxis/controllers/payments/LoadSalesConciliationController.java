@@ -217,9 +217,9 @@ public class LoadSalesConciliationController extends BaseController {
                         obj.SDATE = formatter.formatCellValue(row.getCell(5)) == null ? "" : formatter.formatCellValue(row.getCell(5)).trim();
                         obj.SCARDN = formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
                         obj.SAUTHOC = formatter.formatCellValue(row.getCell(7)) == null ? "" : formatter.formatCellValue(row.getCell(7)).trim();
-//                        while (obj.SAUTHOC.length() < 6) {
-//                            obj.SAUTHOC = "0" + obj.SAUTHOC;
-//                        }
+                        while (obj.SAUTHOC.length() < 6) {
+                            obj.SAUTHOC = "0" + obj.SAUTHOC;
+                        }
                         obj.AMOUNT = formatter.formatCellValue(row.getCell(8)) == null ? "" : formatter.formatCellValue(row.getCell(8)).trim();
                         obj.SCURRENCY = formatter.formatCellValue(row.getCell(9)) == null ? "" : formatter.formatCellValue(row.getCell(9)).trim();
                         obj.STVAL = formatter.formatCellValue(row.getCell(10)) == null ? "" : formatter.formatCellValue(row.getCell(10)).trim();

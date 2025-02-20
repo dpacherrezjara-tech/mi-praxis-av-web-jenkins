@@ -132,7 +132,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
                             iconCls: 'prx-icon-excel',
-                            tooltip: 'Export to Excel'
+                            tooltip: 'Export to Excel.'
                         },
                         {
                             xtype: 'button',
