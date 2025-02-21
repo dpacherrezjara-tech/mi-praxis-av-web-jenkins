@@ -95,7 +95,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
                 this.setValue('txtIDFile', this.IdFile);
                 this.beanErrorFormat.IN_IDFIL = '000000000'+this.getValue("txtIDFile");;
                 this.beanErrorFormat.IN_IDFIL = this.beanErrorFormat.IN_IDFIL.substr(this.beanErrorFormat.IN_IDFIL.length - 9);
-                this.beanErrorFormat.IN_FUENT = 'ASR';
+                this.beanErrorFormat.IN_FUENT = 'AMA';
                 this.searchIdFile(this.beanErrorFormat);
                 break;
         }
@@ -117,7 +117,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
         }
         var tipo_fil = this.getValue("cbxFiltro");
         if(obj==='BWR'){
-            this.bean.IN_A1698CCUST = '139';
+            this.bean.IN_A1698CCUST = '134';
             this.bean.IN_A1698PAIS = '';  // IATA PAISES
             this.bean.IN_A1698BANK  = ''; //BANCO (EWL, IAP, IAR) CIUDAD(BSP) , REF. TBLE: Miscelanea
             this.bean.IN_A1698FPRDA = '';
@@ -147,14 +147,14 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
         } else if(obj==='LOAD'){
             this.loadASR(this.beanASR);
         } else if(obj==='ERR'){
-            this.beanError.IN_A1697CCUST = '139';
+            this.beanError.IN_A1697CCUST = '134';
             this.beanError.IN_A1697PAIS = '';
             this.beanError.IN_A1697BANK  = '';
             this.beanError.IN_A1697FPRDA = '';
             this.beanError.IN_A1697FFILE = '';
             this.beanError.IN_A1697HFILE = '';
             this.beanError.IN_A1697FREGI = '';
-            this.beanError.IN_A1697SOURC = 'ASR';
+            this.beanError.IN_A1697SOURC = 'AMA';
             if ( tipo_fil === '2' ) {
                 this.beanError.IN_A1697FPRDA = this.getValue("txtA1698FPRDA");
                 
@@ -541,5 +541,75 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
                 this.btnSearch_click('ERR_FORMAT', 'XLS');
                 break;
         }
+    },
+    btnVerifyErrors_clickHandler: function () {
+
+        let filter = this.getValue("cbxFiltro");
+        let A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
+        if (filter !== '2') {
+            global.Msg({
+                msg: 'Seleccionar filtro fecha PRDA'
+            });
+            return;
+        }
+        if (A1698FPRDA === '') {
+            global.Msg({
+                msg: 'Ingresar la fecha PRDA'
+            });
+            return;
+        }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Process verify errors?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.VERIFY_ERRORS();
+                }
+            }
+        });
+    },
+    VERIFY_ERRORS: function () {
+        //let filter = this.getValue("cbxFiltro");
+        let A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
+        let me = this;
+        let beanfilter = {
+            VP_PRDA: A1698FPRDA,
+            VP_FUENT: 'AMA'
+        };
+
+        Ext.Ajax.request({
+            url: prototype.url + '/processVerifyErrors',
+            method: 'POST',
+            timeout: 60000000,
+            params: beanfilter,
+            beforerequest: Ext.getCmp(prototype.id + '-boxErrorsFormat').mask('Loading...', ''),
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                Ext.getCmp(prototype.id + '-boxErrorsFormat').unmask('Loading...', '');
+                console.log(res);
+                if (res.success) {
+                    var objRtn = res.filter;
+                    global.Msg({
+                        msg: objRtn.dbException.MESSAGE,
+                        icon: 1,
+                        fn: function () {
+                            //exito
+                            me.btnSearchIDFile_clickHandler();
+                        }
+                    });
+                } else {
+                    global.Msg({
+                        msg: res.sesion,
+                        icon: 2,
+                        fn: function () {
+                        }
+                    });
+                }
+            }
+        });
     }
 });
