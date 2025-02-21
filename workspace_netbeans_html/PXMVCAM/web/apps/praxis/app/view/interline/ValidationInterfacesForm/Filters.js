@@ -20,12 +20,12 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Filters', {
             items: [
                 
                 {
-                    fieldLabel: 'Customer',
+                    fieldLabel: 'Avianca Group',
                     hidden: false,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     width: 200,
-                    labelWidth: 70,
+                    labelWidth: 100,
                     xtype: 'combo', 
                     id: prototype.id + '-typeClient',
                     queryMode: 'local',
@@ -139,6 +139,20 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Filters', {
                     readOnly: false,
                     enforceMaxLength: true,
                     maxLength: 20,
+                    labelWidth: 70,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    width: 230
+                },
+                {xtype: 'tbspacer', width: 15, height:20},
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Referencia',
+                    id: prototype.id + '-referencia',
+                    editable: true,
+                    readOnly: false,
+                    enforceMaxLength: true,
+                    maxLength: 40,
                     labelWidth: 70,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',

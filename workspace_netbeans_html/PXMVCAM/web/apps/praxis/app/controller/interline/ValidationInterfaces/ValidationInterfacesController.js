@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
     me: '',
     drillDown: [],
     gridActual: '-boxMainData',
-    boxActual: '-boxMainData',
+    boxActual: '-vskMain',
     pagginActual: '-paggin',
     user: '',
     columnCode: '',
@@ -91,8 +91,13 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         this.btnSearch_click();
     },
     setStoreData: function () {
-        var month = this.fecha.getMonth() + 1;
-        var day = this.fecha.getDate(); // Obtener el día actual
+        // Obtener la fecha de ayer
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        var month = yesterday.getMonth() + 1;
+        var day = yesterday.getDate();
+        var year = yesterday.getFullYear();
 
         if (month < 10) {
             month = '0' + month;
@@ -110,9 +115,9 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
         Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(storeComboDataDay);
 
-        Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(year);
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
-        Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue(day); // Aquí se establece el día actual
+        Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue(day); // Ahora se establece el día de ayer
     },
     btnSearch_click: function () {
         this.setFormatParameter();
@@ -122,6 +127,7 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         me.bean = {};
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getInterface = Ext.getCmp(prototype.id + '-interface').getValue();
+        let getReferencia = Ext.getCmp(prototype.id + '-referencia').getValue();
         let getExtractionDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() +
                                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()+
                                 Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
@@ -129,12 +135,13 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         me.bean.IN_CCUST = getCustomer;
         me.bean.IN_EXTRACTION_DATE = getExtractionDate;
         me.bean.IN_INTERFACE = getInterface;
+        me.bean.IN_REFERENCIA = getReferencia;
         this.searchParams.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'me.bean')
     },
     search: function () {
         let lstData = []
-        this.showGrid('-boxMainData');
+        this.showGrid('-vskMain');
         
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
             proxy: {
@@ -145,20 +152,19 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
                 },
                 load: function(obj) {
                     console.log(obj,'obj')
+                    var pag = Ext.getCmp(prototype.id + '-paggin');
+                    var pagData = pag.getPageData();
+                    console.log(pagData,'pagData')
                     
-//                    var pag = Ext.getCmp(prototype.id + '-paggin');
-//                    var pagData = pag.getPageData();
-//                    console.log(pagData,'pagData')
-//                    
-//                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-//                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-//                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-//                    
-//                    if (obj.data.length === 0) {
-//                        global.Msg({
-//                            msg: 'Data not found.'
-//                        });
-//                    }
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    }
                 }
             }
         });
@@ -167,17 +173,11 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
     },
     showGrid: function (nameGrid) {
-        me.drillDown.push(me.gridActual);
-        Ext.getCmp(prototype.id + me.gridActual).hide();
-        
-        
-        me.gridActual = nameGrid;
-        Ext.getCmp(prototype.id + me.gridActual).show();
-        
+
         if (me.drillDown.indexOf(nameGrid) === -1) {
             var paginacion = Ext.getCmp(prototype.id + '-boxPag');
             //Mostrar paginacion
-            if (nameGrid === '-detailTicket' || nameGrid === '-detailTicket2' )
+            if (nameGrid === '-vskMain' || nameGrid === '-detailTicket2' )
             {
                 paginacion.setVisible(true);
             } else {
@@ -190,8 +190,6 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
             Ext.getCmp(prototype.id + me.boxActual).show();
             console.log(me.drillDown,'me.drillDown')
         }
-        
-
     },
     btnExcel_click: function () {
         this.setFormatParameter();
@@ -219,22 +217,22 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         }
     },
     pagFirst: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-boxMainData').isVisible()) {
+        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
             Ext.getCmp(prototype.id + '-paggin').moveFirst();
         }
     },
     pagPrevious: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-boxMainData').isVisible()) {
+        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
             Ext.getCmp(prototype.id + '-paggin').movePrevious();
         }
     },
     pagNext: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-boxMainData').isVisible()) {
+        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
             Ext.getCmp(prototype.id + '-paggin').moveNext();
         }
     },
     pagLast: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-boxMainData').isVisible()) {
+        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
             Ext.getCmp(prototype.id + '-paggin').moveLast();
         }
     },

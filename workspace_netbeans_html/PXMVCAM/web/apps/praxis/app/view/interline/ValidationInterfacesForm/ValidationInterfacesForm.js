@@ -65,7 +65,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.ValidationInterfa
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 650,
+                                            height: 680,
                                             layout: 'fit',
                                             items: [
                                                 {
