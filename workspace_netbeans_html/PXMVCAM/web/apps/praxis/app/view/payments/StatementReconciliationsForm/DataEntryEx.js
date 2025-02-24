@@ -1781,9 +1781,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                     {text: 'Comission', dataIndex: 'COMISION', width: 100,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
+                                                                            var data = record.data;
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             metaData.unselectableAttr = "unselectable='off'";
-                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                            return Ext.util.Format.number(data.COMISTOTA, '0,000.00');
                                                                         }
                                                                     },
                                                                     {
