@@ -269,4 +269,9 @@ public class A2290 {
     public double TotdblSVFOPLIQ = 0;
 
     public String SCARDNCOR = "";
+    
+    
+    public String DCONTA4545 = "";
+    public String USERA4545 = "";
+    
 }
