@@ -418,6 +418,15 @@ Ext.define('Ext.Praxis.view.sales.LoadControlBSPForm.Info', {
                                                 click: 'btnSearchIDFile_clickHandler'
                                             }
                                         },
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btnVerifyIDFile',
+                                            style: 'font-weight:bold;background:#024F79;',
+                                            html: '<strong style="background:#024F79;color:white;">Verify Errors</strong>',
+                                            listeners: {
+                                                click: 'btnVerifyErrors_clickHandler'
+                                            } 
+                                        },
                                         '->',
                                         //<editor-fold defaultstate="collapsed" desc="paggin2">
                                         {
