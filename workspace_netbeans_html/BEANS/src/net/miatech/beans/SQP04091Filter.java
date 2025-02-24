@@ -23,6 +23,8 @@ public class SQP04091Filter extends A4022 {
     public String IN_CCUST = ""; 
     public String IN_EXTRACTION_DATE = ""; 
     public String IN_INTERFACE = ""; 
+    public String IN_REFERENCIA = ""; 
+    
     
     
     public String IDCONT = "";

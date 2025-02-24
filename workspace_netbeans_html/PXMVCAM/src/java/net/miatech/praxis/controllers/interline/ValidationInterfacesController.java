@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.interline.ValidationInterfacesLogic;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.utils.Functions;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -270,4 +272,54 @@ public class ValidationInterfacesController extends BaseController {
         
     }
     
+    @RequestMapping(value = "searchDetalle")
+    public @ResponseBody
+    String searchDetalle(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchDetalle-------------");
+
+        map.put("success", true);
+
+        List<A2290Filter> lst = this.getListDetalle(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListDetalle(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new ValidationInterfacesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX269SQP00698Detalle(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
 }
