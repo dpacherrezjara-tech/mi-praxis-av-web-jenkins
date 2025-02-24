@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridData',
-                                    height: 591,
+                                    height: 595,
                                     width: 1712,
                                     hidden: false,
                                     columnLines: true,
@@ -319,7 +319,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    height: 562,
+                                    height: 565,
                                     width: 1712,
                                     hidden: false,
                                     columnLines: true,

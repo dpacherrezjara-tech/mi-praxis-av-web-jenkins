@@ -593,7 +593,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             if (dataRow1.data.STMANUAL !== 'Blocked') {
                 var total = parseFloat(dataRow1.data.TOTAL) || 0;
                 var neto = parseFloat(dataRow1.data.NETO) || 0;
-                var comision = parseFloat(dataRow1.data.COMISION) || 0;
+//                var comision = parseFloat(dataRow1.data.COMISION) || 0;
+                var comision = parseFloat(dataRow1.data.COMISTOTA) || 0;
                 var importe = parseFloat(dataRow1.data.IMPORTEPAG) || 0;
 
                 this.sumAmount_Tot += total;
