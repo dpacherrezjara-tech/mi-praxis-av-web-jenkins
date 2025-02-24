@@ -435,6 +435,7 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
         let getFilters = Ext.getCmp(prototype.id + '-typeGrid').getValue();
         
         if (getFilters == 1) {
+            Ext.getCmp(prototype.id + '-panelMain').setHeight(650);
             let lstData = []
 //            this.showGrid('-vskMain');
 
@@ -447,7 +448,7 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
                     },
                     load: function(obj) {
                         console.log(obj,'obj')
-                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pag = Ext.getCmp(prototype.id + '-paggin2');
                         var pagData = pag.getPageData();
                         console.log(pagData,'pagData')
 
@@ -464,11 +465,10 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
                 }
             });
             Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-pie').setVisible(true);
         } else {
-//            this.showGrid('-vskMain');
-            console.log(me.paramsDetail, 'AUUUUUUUUUU')
-            
+            Ext.getCmp(prototype.id + '-panelMain').setHeight(630);
             win.lblUser_toolTip("Estructura: MPF101");
             var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
                 proxy: {
@@ -516,6 +516,7 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
 
             Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-pie').setVisible(true);
         }
     },
     showGrid: function (nameGrid) {
@@ -562,25 +563,66 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
             me.goURLpost('excelAccountingInterfaces', this.searchParams.beanString, Ext.getCmp(prototype.id + '-gridData').config.columns.items);
         }
     },
+    getPaggin: function () {
+        me.pagginActual = '';
+        switch (me.panelActual) {
+            case  '-panelGridDataDetalle':
+                me.pagginActual = '-paggin';
+                break;
+            case '-vskMain':
+                me.pagginActual = '-paggin2';
+                break;
+            case '-panelGridDataDay':
+                me.pagginActual = '-paggin3';
+                break;
+            case '-panelGridDataDetalle':
+                me.pagginActual = '-paggin4';
+                break;
+            case '-panelGridDetCardByS':
+                me.pagginActual = '-paggin5';
+                break;
+            case '-panelGridDetCardNbrByS':
+                me.pagginActual = '-paggin6';
+                break;
+            case '-panelGridDataTicket':
+                me.pagginActual = '-paggin7';
+                break;
+            case '-panelGridDetDayByS':
+                me.pagginActual = '-paggin8';
+                break;
+            case '-boxDebitsData':
+                me.pagginActual = '-pagginDebits';
+                break;
+            case '-panelGridDetCardByS_Debits':
+                me.pagginActual = '-pagginDebits_country';
+                break;
+            case '-panelGridDataDetalle_DEBITS':
+                me.pagginActual = '-pagginDebits_detail';
+                break;
+        }
+
+    },
     pagFirst: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
-            Ext.getCmp(prototype.id + '-paggin').moveFirst();
-        }
+        this.getPaggin();
+        var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        pag.moveFirst();
     },
-    pagPrevious: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
-            Ext.getCmp(prototype.id + '-paggin').movePrevious();
-        }
+    pagPrevious: function (obj, e) {
+        this.getPaggin();
+        var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        pag.movePrevious();
     },
-    pagNext: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
-            Ext.getCmp(prototype.id + '-paggin').moveNext();
-        }
+    pagNext: function (obj, e) {
+        this.getPaggin();
+        console.log(this.getPaggin(), 'this.getPaggin')
+        var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        console.log(pag, 'pag')
+        pag.moveNext();
     },
-    pagLast: function(obj, e) {
-        if (Ext.getCmp(prototype.id + '-vskMain').isVisible()) {
-            Ext.getCmp(prototype.id + '-paggin').moveLast();
-        }
+    pagLast: function (obj, e) {
+        this.getPaggin();
+        var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        pag.moveLast();
     },
     goURLpost: function (method, parms, columns) {
 
