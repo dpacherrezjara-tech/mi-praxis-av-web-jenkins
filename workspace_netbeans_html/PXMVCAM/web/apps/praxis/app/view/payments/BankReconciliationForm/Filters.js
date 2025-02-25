@@ -866,21 +866,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 //                                change: 'btnSearch_click'
 //                            }
 //                        },
-                        {
-                            xtype: 'radiogroup',
-                            id: prototype.id + '-radioGroup',
-                            columns: 1,
-                            items: [
-                                {
-                                    boxLabel: 'Validation <br> Interface',
-                                    name: 'validationOption',
-                                    inputValue: '1',
-                                    id: prototype.id + '-radioValidationInterface',
-                                    listeners: {
-                                        change: 'btnSearch_click'
-                                    }
-                                }
-                            ]
+                         {
+                            xtype: 'checkboxfield',
+                            id: prototype.id + '-chkValidationInterface',
+                            boxLabel: 'Validation <br> Interface',
+                            name: 'validationOption',
+                            inputValue: '1',
+                            uncheckedValue: '0',
+                            listeners: {
+                                change: 'btnSearch_click' // Mismo listener para manejar el cambio
+                            }
                         },
                         {xtype: 'tbspacer', width: 10},
                         {
