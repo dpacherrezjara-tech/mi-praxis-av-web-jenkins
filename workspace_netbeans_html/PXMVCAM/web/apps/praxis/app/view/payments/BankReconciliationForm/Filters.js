@@ -24,10 +24,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                     layout: 'hbox',
                     bodyStyle: 'background: transparent;"',
                     defaults: {
-                        margin: '10 0 0 0'
+                        margin: '5 0 0 0'
                     },
                     items: [
-                        {xtype: 'tbspacer', width: 60},
+                        {xtype: 'tbspacer', width: 30},
                         {
                             xtype: 'label',
                             text: 'Search By:',
@@ -531,7 +531,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 change: 'cmbTranType_changeHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 60},
+                        {xtype: 'tbspacer', width: 30},
                         {
                             xtype: 'label',
                             text: 'Doc. Type:',
@@ -591,7 +591,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 //                                ]
 //                            }
 //                        },
-                        {xtype: 'tbspacer', width: 25},
+                        {xtype: 'tbspacer', width: 10},
 
 //                        {xtype: 'tbspacer', width: 25},
                         {
@@ -629,7 +629,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 //                            fieldLabel: 'Doc',
                             width: 130,
                             emptyText: 'All',
-                            value: '',  
+                            value: [],  
                             displayField: 'NAME',
                             valueField: 'VALUE',
                             queryMode: 'local',
@@ -663,7 +663,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 keypress: 'BuscarSAGENT_keyDownHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 20},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
                             text: 'Status :',
@@ -719,7 +719,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 
 
                         },
-                        {xtype: 'tbspacer', width: 20},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
                             text: 'Amount :',
@@ -754,7 +754,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 keypress: 'eventKey'
                             }
                         },
-                        {xtype: 'tbspacer', width: 20},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
                             text: 'Source:',
@@ -809,7 +809,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 
 
                         },
-                        {xtype: 'tbspacer', width: 20},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
 //                            style: 'font-weight:bold;color:#0B333C;',
@@ -832,7 +832,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             hidden: false,
                             hiddenLabel: false
                         },
-                        {xtype: 'tbspacer', width: 24},
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
                             text: 'Doc Sap Bank:',
@@ -846,10 +846,78 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             enforceMaxLength: true,
                             maskRe: /[0-9a-zA-Z]/,
                             maxLength: 10,
-                            width: 100,
+                            width: 90,
                             enableKeyEvents: true,
                             listeners: {
                                 keypress: 'eventKey_BANDOC'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+//                        {
+//                            xtype: 'checkboxfield',
+//                            id: prototype.id + '-chkValidationInterface',
+//                            labelStyle: 'color:#378BCC;font-weight:bold;',
+//                            width: 100,
+//                            labelWidth: 50,
+//                            boxLabel: 'Validation <br> Interface',
+//                            inputValue: '1',
+////                            checked   : true,
+//                            listeners: {
+//                                change: 'btnSearch_click'
+//                            }
+//                        },
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-radioGroup',
+                            columns: 1,
+                            items: [
+                                {
+                                    boxLabel: 'Validation <br> Interface',
+                                    name: 'validationOption',
+                                    inputValue: '1',
+                                    id: prototype.id + '-radioValidationInterface',
+                                    listeners: {
+                                        change: 'btnSearch_click'
+                                    }
+                                }
+                            ]
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
+                            fieldLabel: 'Avianca <br> Group',
+                            hidden: false,
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: left;',
+                            width: 160,
+                            labelWidth: 50,
+                            hidden: true,
+                            xtype: 'combo', 
+                            id: prototype.id + '-typeClient',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            listConfig: {maxHeight: 130},
+                            typeAhead: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            value: '134',
+                            store: {
+                                fields: ['code', 'name'],
+                                data: [
+                                    {code: '133', name: 'LACSA'},
+                                    {code: '134', name: 'AVIANCA'},
+                                    {code: '202', name: 'TACA'},
+                                    {code: '547', name: 'AEROGAL'}
+                                ]
+                            },
+                            listeners: {
+                                change: 'btnSearch_click'
                             }
                         },
 //                        {

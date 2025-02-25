@@ -272,4 +272,8 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadgetIatas(String fecha) throws Exception {
         return bankReconciliationDAO.loadgetIatas(fecha);
     }
+    
+    public List<A2290Filter> loadPX269SQP00698Detalle2(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698Detalle2(filter);
+    }
 }

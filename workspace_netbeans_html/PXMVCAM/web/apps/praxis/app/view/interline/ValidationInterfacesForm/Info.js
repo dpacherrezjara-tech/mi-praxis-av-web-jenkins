@@ -156,7 +156,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_LIQ, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_LIQ, '0,000.00') + '<b>';
                                                 }
                                             },
                                             {
@@ -174,7 +174,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_COMISION, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_COMISION, '0,000.00') + '<b>';
                                                 },
                                             },
                                             {
@@ -192,7 +192,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_RTEFUE, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_RTEFUE, '0,000.00') + '<b>';
                                                 }
                                             },
                                             {
@@ -210,7 +210,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_RTEIVA, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_RTEIVA, '0,000.00') + '<b>';
                                                 },
                                             },
                                             {
@@ -228,7 +228,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_RTEICA, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_RTEICA, '0,000.00') + '<b>';
                                                 },
                                             },
                                             {
@@ -246,7 +246,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_NETO, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_NETO, '0,000.00') + '<b>';
                                                 },
                                             },
                                             {
@@ -276,7 +276,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_LIQ_IMPORTE, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_LIQ_IMPORTE, '0,000.00') + '<b>';
                                                 },
                                             },
                                             {
@@ -294,7 +294,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
                                                     metaData.style = 'text-align:right';
-                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_TAX_IMPORTE, '0,000') + '<b>';
+                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_TAX_IMPORTE, '0,000.00') + '<b>';
                                                 },
                                             },
                                         ]
