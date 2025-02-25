@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridData',
-                                    height: 595,
+                                    height: 591,
                                     width: 1712,
                                     hidden: false,
                                     columnLines: true,
@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                         },
                                         items: [
                                             {
-                                                text: 'ID CONT',
+                                                text: 'ID Cont',
                                                 width: 90,
                                                 dataIndex: 'IDCONT',
                                                 align: 'center',
@@ -78,7 +78,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'INTERFACE',
+                                                text: 'Interface',
                                                 width: 150,
                                                 dataIndex: 'INTERFACE',
                                                 align: 'center',
@@ -90,7 +90,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'BANDOC',
+                                                text: 'Bandoc',
                                                 width: 100,
                                                 dataIndex: 'BANDOC',
                                                 align: 'center',
@@ -102,7 +102,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'PROCESSOR',
+                                                text: 'Processor',
                                                 width: 100,
                                                 dataIndex: 'PROCESADOR',
                                                 align: 'center',
@@ -114,7 +114,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'REFERENCIA',
+                                                text: 'Reference',
                                                 width: 130,
                                                 dataIndex: 'REFERENCIA',
                                                 align: 'center',
@@ -126,7 +126,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'MONEDA <br> LIQ',
+                                                text: 'Currency',
                                                 width: 80,
                                                 dataIndex: 'MONEDA_LIQ',
                                                 align: 'center',
@@ -143,7 +143,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'VALOR LIQ',
+                                                text: 'Amount Total',
                                                 width: 130,
                                                 dataIndex: 'VALOR_LIQ',
                                                 align: 'center',
@@ -160,7 +160,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'COMISION',
+                                                text: 'Comision',
                                                 width: 120,
                                                 dataIndex: 'COMISION',
                                                 align: 'center',
@@ -178,7 +178,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'RTEFUE',
+                                                text: 'Rtefue',
                                                 width: 120,
                                                 dataIndex: 'RTEFUE',
                                                 align: 'center',
@@ -196,7 +196,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'RTEIVA',
+                                                text: 'Rteiva',
                                                 width: 120,
                                                 dataIndex: 'RTEIVA',
                                                 align: 'center',
@@ -214,7 +214,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'RTEICA',
+                                                text: 'Rteica',
                                                 width: 120,
                                                 dataIndex: 'RTEICA',
                                                 align: 'center',
@@ -232,7 +232,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'NETO',
+                                                text: 'Net',
                                                 width: 130,
                                                 dataIndex: 'NETO',
                                                 align: 'center',
@@ -250,7 +250,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'MONEDA <br> PAGO',
+                                                text: 'Pay. Currency',
                                                 width: 80,
                                                 dataIndex: 'MONEDA_PAGO',
                                                 align: 'center',
@@ -262,7 +262,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'LIQ IMPORTE <br> PAG',
+                                                text: 'Amount Liq',
                                                 width: 110,
                                                 dataIndex: 'LIQ_IMPORTE_PAG',
                                                 align: 'center',
@@ -280,7 +280,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 },
                                             },
                                             {
-                                                text: 'TAX IMPORTE <br> PAG',
+                                                text: 'Amount Tax',
                                                 width: 130,
                                                 dataIndex: 'TAX_IMPORTE_PAG',
                                                 align: 'center',
@@ -319,7 +319,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetalle',
-                                    height: 565,
+                                    height: 562,
                                     width: 1712,
                                     hidden: false,
                                     columnLines: true,
