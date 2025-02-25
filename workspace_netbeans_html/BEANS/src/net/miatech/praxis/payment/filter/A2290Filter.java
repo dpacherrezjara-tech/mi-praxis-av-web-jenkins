@@ -16,6 +16,7 @@ public class A2290Filter extends A2290 {
 
     //Campos clave originales =======
     public String origSDATE = "";
+    public String IN_CCUST = "";
     public String origSCOUNTRY = "";
     public String origTDOC = "";
     public String origCODEBANK = "";
