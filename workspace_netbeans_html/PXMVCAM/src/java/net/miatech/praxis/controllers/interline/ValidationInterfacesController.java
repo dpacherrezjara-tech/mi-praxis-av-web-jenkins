@@ -57,7 +57,7 @@ public class ValidationInterfacesController extends BaseController {
         SQP04091Filter filter;
         
         String beanString = "";
-        System.out.println("======");
+        System.out.println("-------------- ValidationInterfaces : search-------------");
         try {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, SQP04091Filter.class);
@@ -92,7 +92,7 @@ public class ValidationInterfacesController extends BaseController {
         Gson gson = new Gson();
         SQP04091Filter filter;
         Workbook workbook;
-        String fileNameDownload = String.format("Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Validation Interfaces Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         File file = File.createTempFile(fileNameDownload, ".xlsx");
         
         String beanString = "";
@@ -275,7 +275,7 @@ public class ValidationInterfacesController extends BaseController {
     @RequestMapping(value = "searchDetalle")
     public @ResponseBody
     String searchDetalle(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankReconciliation : searchDetalle-------------");
+        System.out.println("-------------- ValidationInterfaces : searchDetalle-------------");
 
         map.put("success", true);
 
