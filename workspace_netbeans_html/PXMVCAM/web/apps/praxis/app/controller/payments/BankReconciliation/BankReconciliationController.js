@@ -667,14 +667,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     btnSearch_click: function (obj, e) {
         console.log('btnSearch_click');
         
-        if (Ext.getCmp(prototype.id + '-radioValidationInterface').getValue()) {
-            $("#BankReconciliationForm-radioValidationInterface-boxLabelEl").css({
+        if (Ext.getCmp(prototype.id + '-chkValidationInterface').getValue()) {
+            $("#BankReconciliationForm-chkValidationInterface-boxLabelEl").css({
                 "color": "green",
                 "font-weight": "bold"
             });
             Ext.getCmp(prototype.id + '-typeClient').show();
         } else {
-            $("#BankReconciliationForm-radioValidationInterface-boxLabelEl").css({
+            $("#BankReconciliationForm-chkValidationInterface-boxLabelEl").css({
                 "color": "black",
                 "font-weight": "normal"
             });
@@ -707,7 +707,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''
                     || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP')) !== '' || Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-typeClient').getValue() !== '')
             
-            if ((Ext.getCmp(prototype.id + '-radioValidationInterface').getValue() == true) && (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== ''
+            if ((Ext.getCmp(prototype.id + '-chkValidationInterface').getValue() == true) && (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== ''
                     || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== ''
                     || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbStatus')) !== '' || this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbSource')) !== ''
                     || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''
@@ -2758,12 +2758,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         win.displayProMasterTicket(this, 'ViewFlightConciliation', beanProMasterTicket);
     },
     btnClear_click: function (obj, e) {
-        console.log(Ext.getCmp(prototype.id + '-radioValidationInterface').getValue())
-        
-        if (Ext.getCmp(prototype.id + '-radioValidationInterface').getValue()) {
-            Ext.getCmp(prototype.id + '-radioValidationInterface').setValue(false);
-            this.btnSearch_click()
-        }
+//        console.log(Ext.getCmp(prototype.id + '-chkValidationInterface').getValue())
+//        
+//        if (Ext.getCmp(prototype.id + '-chkValidationInterface').getValue()) {
+//            Ext.getCmp(prototype.id + '-chkValidationInterface').setValue(false);
+//            this.btnSearch_click()
+//        }
         
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());

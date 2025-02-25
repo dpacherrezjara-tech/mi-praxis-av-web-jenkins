@@ -149,7 +149,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 align: 'center',
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -167,7 +167,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -185,7 +185,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -203,7 +203,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -221,7 +221,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -239,7 +239,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -251,7 +251,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                             },
                                             {
                                                 text: 'Pay. Currency',
-                                                width: 80,
+                                                width: 120,
                                                 dataIndex: 'MONEDA_PAGO',
                                                 align: 'center',
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
@@ -263,13 +263,13 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                             },
                                             {
                                                 text: 'Amount Liq',
-                                                width: 110,
+                                                width: 100,
                                                 dataIndex: 'LIQ_IMPORTE_PAG',
                                                 align: 'center',
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -281,13 +281,13 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                             },
                                             {
                                                 text: 'Amount Tax',
-                                                width: 130,
+                                                width: 100,
                                                 dataIndex: 'TAX_IMPORTE_PAG',
                                                 align: 'center',
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
