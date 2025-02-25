@@ -106,7 +106,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Filters', {
                     id: prototype.id + '-cmbDateFromYearVa',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
-                    fieldLabel: 'Extraction Date',
+                    fieldLabel: 'Posting Date',
                     labelAlign: 'right',
                     queryMode: 'local',
                     editable:false,
