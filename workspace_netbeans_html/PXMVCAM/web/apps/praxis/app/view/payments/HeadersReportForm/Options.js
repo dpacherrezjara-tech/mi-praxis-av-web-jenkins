@@ -9,8 +9,27 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Options', {
     items: [
         {
             xtype: 'panel',
-            border: true,
+            border: false,
+            layout: {
+                type: 'hbox',
+                pack: 'end'
+            },
             items: [
+                {
+                    xtype: 'radiogroup',
+                    columns: 2, // Muestra los radios en columna
+                    vertical: false,
+                    border: false,
+                    padding: 5,
+                    width:200,
+                    items: [
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Report</span>', name: 'opcion', inputValue: '1', checked: true},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Week View</span>', name: 'opcion', inputValue: '2'}
+                    ],
+                    listeners: {
+                        change: 'onChangeView'
+                    }
+                },
                 {
                     xtype: 'toolbar',
                     items: [

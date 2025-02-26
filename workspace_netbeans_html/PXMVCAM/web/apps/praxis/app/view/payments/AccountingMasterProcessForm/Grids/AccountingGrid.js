@@ -40,6 +40,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Item', dataIndex: 'A4545ITEM', width: 60},
             {text: 'Profit', dataIndex: 'A4545PROFI', width: 120},
             {text: 'Cost Center', dataIndex: 'A4545CCOST', width: 100},
+            {text: 'Customer', dataIndex: 'A4545CUSTO', width: 100},
             {text: 'Primary<br>Key', dataIndex: 'A4545PKEY', width: 60,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
@@ -81,12 +82,11 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Bank<br>Code', dataIndex: 'A4545BANCO', width: 70},
             {text: 'Bank Name', dataIndex: 'A4545REFB', width: 180},
             {text: 'Country', dataIndex: 'A4545PAIS', width: 70},
-            {text: 'Merchant', dataIndex: 'A4545MERCH', width: 120},
-            {text: 'Agent', dataIndex: 'A4545AGENT', width: 90},
             {text: 'Key 1', dataIndex: 'A4545REFK', width: 120},
             {text: 'Key 2', dataIndex: 'A4545REFK2', width: 120},
             {text: 'Payment', dataIndex: 'A4545MPAGO', width: 70},
             {text: 'Acc. Number', dataIndex: 'A4545ANUMB', width: 160},
+            {text: 'Pay Reference', dataIndex: 'A4545REPAG', width: 170},
             {text: 'Sub-Type', dataIndex: 'A4545MODO', width: 100,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     //metaData.style = "background-color:#838187";
@@ -135,6 +135,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
                     return opts[value] ? opts[value]() : '';
                 }
             },
+            {text: 'Merchant', dataIndex: 'A4545MERCH', width: 120},
+            {text: 'Agent', dataIndex: 'A4545AGENT', width: 90},
             {text: 'A. Date', dataIndex: 'A4545ADATE', width: 100},
             {text: 'Date Bank', dataIndex: 'A4545DATCI', width: 100},
             {text: 'Trans. Bank', dataIndex: 'A4545TRACI', width: 100},

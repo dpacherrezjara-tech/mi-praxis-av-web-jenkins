@@ -10,11 +10,14 @@ import net.miatech.praxis.payment.dto.SPHRP001Filter;
 import net.miatech.praxis.payment.dto.SPHRP002Filter;
 import net.miatech.praxis.payment.dto.SPHRP003Filter;
 import net.miatech.praxis.payment.dto.SPHRP004Filter;
+import net.miatech.praxis.payment.dto.SPHRP005Filter;
+import net.miatech.praxis.payment.dto.SPHRP006Filter;
 import net.miatech.praxis.payment.entities.HeaderReport;
 import net.miatech.praxis.payment.entities.MPF134;
 import net.miatech.praxis.payment.entities.MPF137;
 import net.miatech.praxis.payment.entities.MPF140;
 import net.miatech.praxis.payment.entities.MPF141;
+import net.miatech.praxis.payment.entities.WeekHeader;
 import net.miatech.praxis.utils.JdbcUtils;
 import net.miatech.utils.Functions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,4 +102,25 @@ public class HeadersReportDAO implements HeadersReportLogic {
         filter.setResponse((List<HeadersReport>) obj.get("result"));
         return filter;
     }
+
+    @Override
+    public SPHRP005Filter loadSPHRP005Filter(SPHRP005Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPHRP005",
+                params, new BeanPropertyRowMapper(WeekHeader.class));
+        filter.setResponse((List<WeekHeader>) obj.get("result"));
+        return filter;
+    }
+
+    @Override
+    public SPHRP006Filter loadSPHRP006Filter(SPHRP006Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPHRP006",
+                params, new BeanPropertyRowMapper(MPF141.class));
+        filter.setResponse((List<MPF141>) obj.get("result"));
+        return filter;
+    }
+    
+    
+    
 }
