@@ -11,7 +11,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
         'Ext.Praxis.controller.payments.HeadersReport.HeadersReportController',
         'Ext.Praxis.view.payments.HeadersReportForm.Options',
         'Ext.Praxis.view.payments.HeadersReportForm.Filters',
-        'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid'
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid',
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel'
     ],
     controller: 'HeadersReportController',
     layout: {
@@ -85,6 +86,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                                 type: 'vbox',
                                                 align: 'center'
                                             }
+                                        },
+                                        {
+                                            xtype: 'daypilotpanel',
+                                            id: prototype.id + '-dayPilotCmp',
+                                            height: prototype.height,
+                                            hidden:true
                                         }
                                     ]
                                 }

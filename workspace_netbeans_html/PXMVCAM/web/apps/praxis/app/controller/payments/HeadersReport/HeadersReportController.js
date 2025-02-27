@@ -67,5 +67,16 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
             id: prototype.id + '-DownloadHeadersDataEntry-1'
         });
         win.show();
+    },
+    onChangeView: function(field, newValue){
+        if(newValue.opcion === '2'){
+            Ext.getCmp(prototype.id + '-contentFilter').hide();
+            Ext.getCmp(prototype.id + '-mainContent').hide();
+            Ext.getCmp(prototype.id + '-dayPilotCmp').show();
+        }else{
+            Ext.getCmp(prototype.id + '-contentFilter').show();
+            Ext.getCmp(prototype.id + '-mainContent').show();
+            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
+        }
     }
 });

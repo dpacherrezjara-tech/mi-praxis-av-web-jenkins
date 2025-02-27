@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
     },
     bindData: function (info, files, bandocs, rejections) {
         const me = this;
-        console.log(info.STCONT);
+        //console.log(info.STCONT);
         let sts = ['1', '6'];
         if (sts.includes(info.STCONT)) {
             Ext.getCmp(prototype.idDE + '-btn-save').hide();
