@@ -224,7 +224,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel', {
             const res = await me.request.get('loadWeekHeaderDetail', {
                 params: event.searchParams
             });
-            console.log(res.data);
             const {response} = res.data;
             let store = new Ext.data.Store({
                 data: response
