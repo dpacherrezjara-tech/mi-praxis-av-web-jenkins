@@ -37,7 +37,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersGridController',
                     if (!successful) {
                         global.Msg({msg: 'Data not Found'});
                     } else {
-                        console.log(records);
+                        //console.log(records);
                         if (records.length === 0) {
                             global.Msg({msg: 'Data not Found'});
                         }
