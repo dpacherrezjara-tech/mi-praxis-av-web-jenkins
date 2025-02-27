@@ -72,7 +72,10 @@ Ext.define('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanc
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['C', 'Accounting']
+                                            ['C', 'Accounting'],
+                                            ['V', 'Validations'],
+                                            ['2', 'Phase 2'],
+                                            ['1', 'Phase 1']
                                         ]
                                     }),
                                     labelWidth: 100,
