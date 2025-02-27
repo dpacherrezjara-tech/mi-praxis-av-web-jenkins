@@ -50,6 +50,7 @@
     <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/DayPilot/daypilot-all.min.js" />"></script>
     <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/js/MonthPicker/MonthPicker.min.css"/>" rel="stylesheet" type="text/css">
     <script src="<c:url value="/resources/js/MonthPicker/MonthPicker.min.js"/>"></script>

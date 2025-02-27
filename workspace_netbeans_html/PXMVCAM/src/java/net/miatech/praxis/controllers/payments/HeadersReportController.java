@@ -14,6 +14,8 @@ import net.miatech.praxis.payment.dto.SPHRP001Filter;
 import net.miatech.praxis.payment.dto.SPHRP002Filter;
 import net.miatech.praxis.payment.dto.SPHRP003Filter;
 import net.miatech.praxis.payment.dto.SPHRP004Filter;
+import net.miatech.praxis.payment.dto.SPHRP005Filter;
+import net.miatech.praxis.payment.dto.SPHRP006Filter;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.praxis.utils.SpringWS;
@@ -84,6 +86,22 @@ public class HeadersReportController {
         ws.postAsync(body, "Accounting/sendInterfaseToSFTP");
         
         return ResponseUtils.create();
+    }
+    
+    @RequestMapping(value = "loadWeekHeaders")
+    public ResponseEntity<?> loadWeekHeaders(SPHRP005Filter params) throws Exception {
+        System.out.println("***** HeadersReport - loadWeekHeaders *****");
+        SPHRP005Filter filter = logic.loadSPHRP005Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadWeekHeaderDetail")
+    public ResponseEntity<?> loadWeekHeaderDetail(SPHRP006Filter params) throws Exception {
+        System.out.println("***** HeadersReport - loadWeekHeaderDetail *****");
+        SPHRP006Filter filter = logic.loadSPHRP006Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
     }
     
     //<editor-fold defaultstate="collapsed" desc="Exceles">
