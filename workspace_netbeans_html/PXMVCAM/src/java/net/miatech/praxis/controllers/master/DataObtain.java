@@ -6,6 +6,7 @@ package net.miatech.praxis.controllers.master;
  */
 public class DataObtain {
     public byte AIRLINE = 0;
+    public byte CODPRO = 0;
     public byte SOURCE = 0;
     public byte USO = 0;
     public byte CITY = 0;
