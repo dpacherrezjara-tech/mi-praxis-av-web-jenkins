@@ -5,11 +5,15 @@ import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.payment.dto.SPMC003Filter;
 import net.miatech.praxis.payment.dto.SPMC005Filter;
+import net.miatech.praxis.payment.dto.SPMC008Filter;
+import net.miatech.praxis.payment.dto.SPMC009Filter;
+import net.miatech.praxis.payment.dto.SPMC010Filter;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -59,5 +63,28 @@ public class MiscellaneousCatalogController {
         SPMC005Filter filter = logic.loadSPMC005Filter();
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
+    }
+    
+    
+    @RequestMapping(value = "loadMiscCatalog")
+    public ResponseEntity<?> loadMiscCatalog(SPMC008Filter params) throws Exception{
+        System.out.println("***** MiscellaneousCatalog - loadMiscCatalog *****");
+        SPMC008Filter filter = logic.loadSPMC008Filter(params);
+        System.out.println("Total: " + filter.getResponse().size());
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "loadSingleInfo")
+    public ResponseEntity<?> loadSingleInfo(SPMC010Filter params) throws Exception{
+        System.out.println("***** MiscellaneousCatalog - loadSingleInfo *****");
+        SPMC010Filter filter = logic.loadSPMC010Filter(params);
+        return ResponseUtils.ok(filter);
+    }
+    
+    @RequestMapping(value = "saveMiscCatalog")
+    public ResponseEntity<?> saveMiscCatalog(@RequestBody SPMC009Filter params) throws Exception{
+        System.out.println("***** MiscellaneousCatalog - saveMiscCatalog *****");
+        logic.loadSPMC009Filter(params);
+        return ResponseUtils.create();
     }
 }

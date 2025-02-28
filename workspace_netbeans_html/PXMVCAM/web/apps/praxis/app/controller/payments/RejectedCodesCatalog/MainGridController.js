@@ -31,12 +31,15 @@ Ext.define('Ext.Praxis.controller.payments.RejectedCodesCatalog.MainGridControll
         }
     },
     onUpdateRec: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
         global.cleanPXobj(record.data);
-        console.log(record.data);
         const dataEntry = Ext.create('Ext.Praxis.view.payments.RejectedCodesForm.DataEntrys.CodeMaintenanceDataEntry', {
             id: prototype.id + '-CodeMaintenanceDataEntry-1',
             option: 'U',
-            obj: record.data
+            obj: record.data,
+            reloadGrid: ()=>{
+                me.loadMain();
+            }
         });
         dataEntry.show();
     },
