@@ -24,8 +24,27 @@ public class SQP04091Filter extends A4022 {
     public String IN_EXTRACTION_DATE = ""; 
     public String IN_INTERFACE = ""; 
     public String IN_REFERENCIA = ""; 
+    public String IN_NUMBER_ACCOUNT = ""; 
+    public String IN_SALES_DATE = ""; 
+    public String IN_PROCESSOR = ""; 
     
     
+    public String CODPRO = ""; 
+    public String TDOC = ""; 
+    public String SDATE = ""; 
+    public String SAGENT = ""; 
+    public String SCURRENCY = ""; 
+    public String MERCHAND = ""; 
+    public String ACCNUMA = ""; 
+    public String SDATE100 = ""; 
+    public String SAGENT100 = ""; 
+    public String SCURRENCY100 = ""; 
+    
+    public double TOTAL = 0;
+    public double SVFOP100 = 0;
+    public double VARIACION = 0;
+    public double IMPORTE = 0;
+    public double PORCENTAJE_VARIACION = 0;
     
     public String IDCONT = "";
     public String INTERFACE = "";
