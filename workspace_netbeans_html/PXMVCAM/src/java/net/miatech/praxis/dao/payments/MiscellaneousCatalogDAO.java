@@ -8,6 +8,9 @@ import net.miatech.praxis.payment.dto.SPMC001Filter;
 import net.miatech.praxis.payment.dto.SPMC002Filter;
 import net.miatech.praxis.payment.dto.SPMC003Filter;
 import net.miatech.praxis.payment.dto.SPMC005Filter;
+import net.miatech.praxis.payment.dto.SPMC008Filter;
+import net.miatech.praxis.payment.dto.SPMC009Filter;
+import net.miatech.praxis.payment.dto.SPMC010Filter;
 import net.miatech.praxis.payment.entities.A2281;
 import net.miatech.praxis.payment.entities.A4451;
 import net.miatech.praxis.payment.entities.A4451PK;
@@ -16,6 +19,8 @@ import net.miatech.praxis.utils.JdbcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -84,4 +89,31 @@ public class MiscellaneousCatalogDAO implements MiscellaneousCatalogLogic {
                 .response((List<A4451>) obj.get("result"))
                 .build();
     }
+
+    @Override
+    public SPMC008Filter loadSPMC008Filter(SPMC008Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC008",params,
+                new BeanPropertyRowMapper(A4451.class));
+        filter.setResponse((List<A4451>) obj.get("result"));
+        return filter;
+    }
+
+    @Override
+    public void loadSPMC009Filter(SPMC009Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        jdbcUtils.executeSQP(LIBRARY, "SPMC009",params);
+    }
+
+    @Override
+    public SPMC010Filter loadSPMC010Filter(SPMC010Filter filter) throws Exception {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(filter);
+        Map<String, Object> obj = jdbcUtils.executeSQP(LIBRARY, "SPMC010",params,
+                new BeanPropertyRowMapper(A4451.class));
+        List<A4451> lst = (List<A4451>) obj.get("result");
+        filter.setResult(lst.get(0));
+        return filter;
+    }
+    
+    
 }
