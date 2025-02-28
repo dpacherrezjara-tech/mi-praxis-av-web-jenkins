@@ -35,8 +35,9 @@ Ext.define('Ext.Praxis.controller.payments.RejectedCodesCatalog.CodeMaintenanceD
             me.view.close();
         } finally {
             me.view.setLoading(false);
+            me.view.reloadGrid();
             me.view.close();
-            Ext.getCmp(prototype.id + '-MainGrid-1').getController().loadMain();
+            //Ext.getCmp(prototype.id + '-MainGrid-1').getController().loadMain();
         }
 
     },
