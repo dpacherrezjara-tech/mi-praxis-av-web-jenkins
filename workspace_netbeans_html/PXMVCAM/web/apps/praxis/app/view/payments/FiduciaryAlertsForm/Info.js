@@ -35,201 +35,224 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                     height: 580,
                     items: [
                         {
-    xtype: 'panel',
-    id: prototype.id + '-vskMain',
-    layout: {
-        type: 'vbox',
-        align: 'center'
-    },
-    defaults: {
-        border: false,
-        height: 150
-    },
-    bodyStyle: 'background: transparent',
-    border: false,
-    items: [
-        {
-            xtype: 'grid',
-            id: prototype.id + '-gridData',
-            height: 519,
-            width: 1640,
-            hidden: false,
-            columnLines: true,
-            columns: {
-                defaults: {
-                    menuDisabled: true,
-                    sortable: true,
-                    align: 'center'
-                },
-                items: [
-                    {
-                        text: 'Settlement Information',
-                        menuDisabled: true,
-                        style: 'background: #6C87A8;', // Azul suave
-                        columns: [
-                            {
-                                text: 'Process',
-                                width: 90,
-                                dataIndex: 'CODPRO',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                            xtype: 'panel',
+                            id: prototype.id + '-vskMain',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
                             },
-                            {
-                                text: 'Doctype',
-                                width: 80,
-                                dataIndex: 'TDOC',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                            defaults: {
+                                border: false,
+                                height: 150
                             },
-                            {
-                                text: 'Sale Date',
-                                width: 90,
-                                dataIndex: 'SDATE',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;' // Azul suave
-                            },
-                            {
-                                text: 'Agent',
-                                width: 90,
-                                dataIndex: 'SAGENT',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;' // Azul suave
-                            },
-                            {
-                                text: 'Currency',
-                                width: 90,
-                                dataIndex: 'SCURRENCY',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;' // Azul suave
-                            },
-                            {
-                                text: 'Account Number',
-                                width: 120,
-                                dataIndex: 'ACCNUMA',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;' // Azul suave
-                            },
-                            {
-                                text: 'Total',
-                                width: 120,
-                                dataIndex: 'TOTAL',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;', // Azul suave
-                                summaryType: 'sum',
-                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                    metaData.style = "text-align:right;";
-                                    value = Ext.util.Format.number(value, '0,000.00');
-                                    return '<b>' + value + '</b>'; // Número en negrita
+                            bodyStyle: 'background: transparent',
+                            border: false,
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridData',
+                                    height: 519,
+                                    width: 1750,
+                                    hidden: false,
+                                    columnLines: true,
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Settlement Information',
+                                                menuDisabled: true,
+                                                style: 'background: #6C87A8;', // Azul suave
+                                                columns: [
+                                                    {
+                                                        text: 'Processor',
+                                                        width: 90,
+                                                        dataIndex: 'CODPRO',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                    },
+                                                    {
+                                                        text: 'Doc Type',
+                                                        width: 80,
+                                                        dataIndex: 'TDOC',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                    },
+                                                    {
+                                                        text: 'Sale Date',
+                                                        width: 80,
+                                                        dataIndex: 'SDATE',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                    },
+                                                    {
+                                                        text: 'Agent',
+                                                        width: 70,
+                                                        dataIndex: 'SAGENT',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                    },
+                                                    {
+                                                        text: 'Currency',
+                                                        width: 80,
+                                                        dataIndex: 'SCURRENCY',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                    },
+                                                    {
+                                                        text: 'Account Number',
+                                                        width: 120,
+                                                        dataIndex: 'ACCNUMA',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                    },
+                                                    {
+                                                        text: 'Total',
+                                                        width: 120,
+                                                        dataIndex: 'TOTAL',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Comision',
+                                                        width: 110,
+                                                        dataIndex: 'COMISION',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Import',
+                                                        width: 100,
+                                                        dataIndex: 'IMPORTE',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Neto',
+                                                        width: 120,
+                                                        dataIndex: 'NETO',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Sales Information',
+                                                menuDisabled: true,
+                                                style: 'background: #7D9F7D;', // Verde suave
+                                                columns: [
+                                                    {
+                                                        text: 'Sale Date',
+                                                        width: 80,
+                                                        dataIndex: 'SDATE100',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;' // Verde suave
+                                                    },
+                                                    {
+                                                        text: 'Agent',
+                                                        width: 70,
+                                                        dataIndex: 'SAGENT100',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;' // Verde suave
+                                                    },
+                                                    {
+                                                        text: 'Currency',
+                                                        width: 80,
+                                                        dataIndex: 'SCURRENCY100',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;' // Verde suave
+                                                    },
+                                                    {
+                                                        text: 'Match Core',
+                                                        width: 110,
+                                                        dataIndex: 'SVFOP100W',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;', // Verde suave
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Match Other',
+                                                        width: 110,
+                                                        dataIndex: 'SVFOP100O',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;', // Verde suave
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Pending',
+                                                        width: 110,
+                                                        dataIndex: 'SVFOP100P',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;', // Verde suave
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Variation',
+                                                width: 120,
+                                                dataIndex: 'VARIACION',
+                                                align: 'center',
+                                                style: 'background: #D18F77;', // Naranja suave
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return '<b>' + value + '</b>'; // Número en negrita
+                                                }
+                                            },
+                                            {
+                                                text: '% Variation ',
+                                                width: 100,
+                                                dataIndex: 'PORCENTAJE_VARIACION',
+                                                align: 'center',
+                                                style: 'background: #D18F77;', // Naranja suave
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    return '<b>' + value + ' %</b>'; // Número en negrita
+                                                }
+                                            }
+                                        ]
+                                    }
                                 }
-                            },
-                            {
-                                text: 'Comision',
-                                width: 110,
-                                dataIndex: 'COMISION',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;', // Azul suave
-                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                    metaData.style = "text-align:right;";
-                                    value = Ext.util.Format.number(value, '0,000.00');
-                                    return '<b>' + value + '</b>'; // Número en negrita
-                                }
-                            },
-                            {
-                                text: 'Import',
-                                width: 100,
-                                dataIndex: 'IMPORTE',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;', // Azul suave
-                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                    metaData.style = "text-align:right;";
-                                    value = Ext.util.Format.number(value, '0,000.00');
-                                    return '<b>' + value + '</b>'; // Número en negrita
-                                }
-                            },
-                            {
-                                text: 'Net',
-                                width: 120,
-                                dataIndex: 'NETO',
-                                align: 'center',
-                                style: 'padding: 6px; background: #6C87A8;', // Azul suave
-                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                    metaData.style = "text-align:right;";
-                                    value = Ext.util.Format.number(value, '0,000.00');
-                                    return '<b>' + value + '</b>'; // Número en negrita
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        text: 'Sales Information',
-                        menuDisabled: true,
-                        style: 'background: #7D9F7D;', // Verde suave
-                        columns: [
-                            {
-                                text: 'S. Date',
-                                width: 100,
-                                dataIndex: 'SDATE100',
-                                align: 'center',
-                                style: 'padding: 6px; background: #7D9F7D;' // Verde suave
-                            },
-                            {
-                                text: 'S. Agent',
-                                width: 100,
-                                dataIndex: 'SAGENT100',
-                                align: 'center',
-                                style: 'padding: 6px; background: #7D9F7D;' // Verde suave
-                            },
-                            {
-                                text: 'S. Currency',
-                                width: 100,
-                                dataIndex: 'SCURRENCY100',
-                                align: 'center',
-                                style: 'padding: 6px; background: #7D9F7D;' // Verde suave
-                            },
-                            {
-                                text: 'Sv. Fop',
-                                width: 110,
-                                dataIndex: 'SVFOP100',
-                                align: 'center',
-                                style: 'padding: 6px; background: #7D9F7D;', // Verde suave
-                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                    metaData.style = "text-align:right;";
-                                    value = Ext.util.Format.number(value, '0,000.00');
-                                    return '<b>' + value + '</b>'; // Número en negrita
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        text: 'Variation',
-                        width: 120,
-                        dataIndex: 'VARIACION',
-                        align: 'center',
-                        style: 'background: #D18F77;', // Naranja suave
-                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "text-align:right;";
-                            value = Ext.util.Format.number(value, '0,000.00');
-                            return '<b>' + value + '</b>'; // Número en negrita
-                        }
-                    },
-                    {
-                        text: '% Variation ',
-                        width: 100,
-                        dataIndex: 'PORCENTAJE_VARIACION',
-                        align: 'center',
-                        style: 'background: #D18F77;', // Naranja suave
-                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "text-align:right;";
-                            return '<b>' + value + ' %</b>'; // Número en negrita
-                        }
-                    }
-                ]
-            }
-        }
-    ]
-},
-
-                       // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
+                            ]
+                        },
+                        // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
@@ -280,7 +303,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                             text: '0',
                                             width: 50 // Aumenté el ancho para acomodar el texto más grande
                                         },
-                                        { xtype: 'tbspacer', width: 60 }, // Aumenté el ancho del espaciador
+                                        {xtype: 'tbspacer', width: 60}, // Aumenté el ancho del espaciador
                                         {
                                             text: 'Total Found',
                                             width: 90 // Aumenté el ancho para acomodar el texto más grande
