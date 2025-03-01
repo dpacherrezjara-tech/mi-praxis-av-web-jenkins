@@ -23,6 +23,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     labelWidth: 68,
                     emptyText: 'All',
                     value: [],  
+                    hidden:true,
                     displayField: 'NAME',
                     valueField: 'VALUE',
                     queryMode: 'local',
@@ -57,6 +58,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     store: {
                         fields: ['code', 'name'],
                         data: [
+                            {code: '', name: 'All'},
                             {code: '109003', name: '109003'},
                             {code: '109004', name: '109004'},
                             {code: '109002', name: '109002'}
