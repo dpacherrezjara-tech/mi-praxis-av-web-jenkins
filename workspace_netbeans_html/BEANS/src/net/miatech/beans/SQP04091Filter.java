@@ -42,6 +42,9 @@ public class SQP04091Filter extends A4022 {
     
     public double TOTAL = 0;
     public double SVFOP100 = 0;
+    public double SVFOP100W = 0;
+    public double SVFOP100O = 0;
+    public double SVFOP100P = 0;
     public double VARIACION = 0;
     public double IMPORTE = 0;
     public double PORCENTAJE_VARIACION = 0;
