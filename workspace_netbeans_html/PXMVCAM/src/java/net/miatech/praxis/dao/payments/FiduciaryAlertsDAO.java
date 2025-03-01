@@ -105,18 +105,20 @@ public class FiduciaryAlertsDAO {
                 objRtn.SDATE100 = rs02.getString("SDATE100");
                 objRtn.SAGENT100 = rs02.getString("SAGENT100");
                 objRtn.SCURRENCY100 = rs02.getString("SCURRENCY100");
-                objRtn.SVFOP100 = rs02.getDouble("SVFOP100");
+                objRtn.SVFOP100W = rs02.getDouble("SVFOP100W");
+                objRtn.SVFOP100O = rs02.getDouble("SVFOP100O");
+                objRtn.SVFOP100P = rs02.getDouble("SVFOP100P");
                 objRtn.VARIACION = rs02.getDouble("VARIACION");
 
                 // Calcular el porcentaje de variación
-                if (objRtn.SVFOP100 != 0) { // Evitar división por cero
-                    double porcentajeVariacion = ((objRtn.TOTAL - objRtn.SVFOP100) / objRtn.SVFOP100) * 100;
+                if (objRtn.SVFOP100W != 0) { // Evitar división por cero
+                    double porcentajeVariacion = ((objRtn.TOTAL - objRtn.SVFOP100W) / objRtn.SVFOP100W) * 100;
                     // Formatear a 2 decimales
                     String porcentajeVariacionStr = df.format(porcentajeVariacion); // Formatea a 2 decimales
                     double porcentajeVariacionFormateado = Double.parseDouble(porcentajeVariacionStr); // Convierte a double
                     objRtn.PORCENTAJE_VARIACION = porcentajeVariacionFormateado; // Asignar el valor formateado
                 } else {
-                    objRtn.PORCENTAJE_VARIACION = 0.0; // Si SVFOP100 es cero, el porcentaje de variación es 0
+                    objRtn.PORCENTAJE_VARIACION = 0.0; // Si SVFOP100W es cero, el porcentaje de variación es 0
                 }
 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;

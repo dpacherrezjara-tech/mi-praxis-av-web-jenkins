@@ -82,7 +82,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
     init_this: function () {
         me = this;
     },
-    xpanel_afterrender: function(obj, e) {
+    xpanel_afterrender: function (obj, e) {
         this.setStoreData();
         this.btnSearch_click();
     },
@@ -114,9 +114,9 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         Ext.getCmp(prototype.id + '-cmbDateFromYearVa').setValue(year);
         Ext.getCmp(prototype.id + '-cmbDateFromMonthVa').setValue(month);
         Ext.getCmp(prototype.id + '-cmbDateFromDayVa').setValue(day);
-    
+
         this.paramsObtainData.COREP = 2;
-        
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -142,14 +142,14 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         this.search();
     },
     setFormatParameter: function () {
-        
+
         me.bean = {};
         let getSaleDate = Ext.getCmp(prototype.id + '-cmbDateFromYearVa').getValue() +
-                                Ext.getCmp(prototype.id + '-cmbDateFromMonthVa').getValue()+
-                                Ext.getCmp(prototype.id + '-cmbDateFromDayVa').getValue();
+                Ext.getCmp(prototype.id + '-cmbDateFromMonthVa').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateFromDayVa').getValue();
         let getNumberAccount = Ext.getCmp(prototype.id + '-numberAccount').getValue();
         let getProcessor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue().length == 0 ? '' : this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP'));
-        
+
         me.bean.IN_CCUST = '134';
         me.bean.IN_NUMBER_ACCOUNT = getNumberAccount;
         me.bean.IN_SALES_DATE = getSaleDate;
@@ -158,10 +158,10 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.searchParams.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'me.bean')
-        
+
     },
     search: function () {
-        
+
         let lstData = []
 //            this.showGrid('-vskMain');
 
@@ -169,14 +169,14 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
             proxy: {
                 url: prototype.url + '/searchAccountingInterfaces'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = me.searchParams;
                 },
-                load: function(obj) {
-                    console.log(obj,'obj')
+                load: function (obj) {
+                    console.log(obj, 'obj')
                     var pag = Ext.getCmp(prototype.id + '-paggin2');
                     var pagData = pag.getPageData();
-                    console.log(pagData,'pagData')
+                    console.log(pagData, 'pagData')
 
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -199,7 +199,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         if (me.drillDown.indexOf(nameGrid) === -1) {
             var paginacion = Ext.getCmp(prototype.id + '-boxPag');
             //Mostrar paginacion
-            if (nameGrid === '-vskMain' )
+            if (nameGrid === '-vskMain')
             {
                 paginacion.setVisible(true);
             } else {
@@ -210,12 +210,11 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
             Ext.getCmp(prototype.id + me.boxActual).hide();
             me.boxActual = nameGrid;
             Ext.getCmp(prototype.id + me.boxActual).show();
-            console.log(me.drillDown,'me.drillDown')
+            console.log(me.drillDown, 'me.drillDown')
         }
     },
     btnExcel_click: function () {
         this.setFormatParameter();
-        console.log(this.searchParams,'this.searchParams')
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Download Excel ?',
@@ -223,20 +222,18 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     this.exportExcel();
                 }
             }
         });
     },
-    exportExcel: function() {
-        console.log(this.boxActual,'this.boxActual')
-        console.log(me.boxActual,'this.boxActual')
-        if (this.boxActual === '-boxMainData') {
-            console.log('entre excel')
-            me.goURLpost('excelAccountingInterfaces', this.searchParams.beanString, Ext.getCmp(prototype.id + '-gridData').config.columns.items);
-        }
+    exportExcel: function () {
+        console.log(this.boxActual, 'this.boxActual')
+        console.log(me.boxActual, 'this.boxActual')
+
+        global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(me.searchParams.beanString));
     },
     getPaggin: function () {
         me.pagginActual = '';
@@ -271,7 +268,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         }
 
     },
-    pagFirst: function(obj, e) {
+    pagFirst: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveFirst();
@@ -323,7 +320,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
             this.btnSearch_click();
         }
     },
-    joinMultiSelect: function (element){
+    joinMultiSelect: function (element) {
         let comboBox = element.getValue();
         return comboBox.join('|');
     },
