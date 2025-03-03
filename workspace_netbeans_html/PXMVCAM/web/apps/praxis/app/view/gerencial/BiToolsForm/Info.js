@@ -5,7 +5,7 @@
  */
 
 var controller = {
-    select: function(value, row) {
+    select: function (value, row) {
         var dataStore = Ext.getCmp(prototype.id + '-gridDataColumns').getStore();
         var dataRow = dataStore.data.items[row].data;
         //console.log(dataRow);
@@ -113,7 +113,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                         items: [
                                             {text: 'Select', width: 50, dataIndex: 'select',
                                                 headerCheckbox: true,
-                                                renderer: function(value, meta, record, row, col) {
+                                                renderer: function (value, meta, record, row, col) {
                                                     var check = record.data.select;
                                                     if (check) {
                                                         return '<input type="checkbox" checked  onclick="controller.select(this.checked,' + row + ')">';
@@ -123,7 +123,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {text: 'Field', width: 250, dataIndex: 'DESCRIPT',
-                                                renderer: function(value, meta, record, row, col) {
+                                                renderer: function (value, meta, record, row, col) {
                                                     var color = record.data['COLOR'].trim();
                                                     //console.log('LOG : **' + color + '**');
                                                     meta.style = 'text-align:left;color:' + color + ';';
@@ -131,7 +131,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {text: 'Position', width: 60, dataIndex: 'OrderBy',
-                                                renderer: function(value, meta, record, row, col) {
+                                                renderer: function (value, meta, record, row, col) {
                                                     var check = record.data.select;
                                                     if (!check) {
                                                         meta['tdCls'] = 'x-item-disabled';
@@ -150,7 +150,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {text: 'Order', width: 60, dataIndex: 'DownUp',
-                                                renderer: function(value, meta, record, row, col) {
+                                                renderer: function (value, meta, record, row, col) {
                                                     var check = record.data.select;
                                                     if (!check) {
                                                         meta['tdCls'] = 'x-item-disabled';
@@ -192,7 +192,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                         preserveScrollOnRefresh: true,
                                         preserveScrollOnReload: true,
                                         listeners: {
-                                            drop: function(node, data, dropRec, dropPosition) {
+                                            drop: function (node, data, dropRec, dropPosition) {
                                                 var dropOn = dropRec ? ' ' + dropPosition + ' ' + dropRec.get('DESCRIPT') : ' on empty view';
                                             }
                                         }
@@ -205,7 +205,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                         },
                                         items: [
                                             {text: 'Field', width: 195, dataIndex: 'DESCRIPT',
-                                                renderer: function(value, meta, record, row, col) {
+                                                renderer: function (value, meta, record, row, col) {
                                                     var color = record.data['COLOR'].trim();
                                                     //console.log('LOG : **' + color + '**');
                                                     meta.style = 'text-align:left;color:' + color + ';';
@@ -1240,7 +1240,332 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                             ]
                         }
                     ]
+                },
+
+                {
+                    xtype: 'panel',
+                    id: prototype.id + '-panelGridDataMain',
+                    bodyStyle: 'background-color: #E3EAEF;',
+                    border: false,
+                    hidden: true,
+                    width: 1840,
+                    layout: {
+                        type: 'hbox',
+                        align: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'panel',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'treepanel',
+                                    id: prototype.id + '-gridDataMain',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    width: 1840,
+                                    height: 545,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        preserveScrollOnRefresh: true,
+                                        preserveScrollOnReload: true
+                                    },
+                                    bufferedRenderer: true,
+                                    plugins: [
+                                        Ext.create('Ext.grid.plugin.CellEditing', {
+                                            clicksToEdit: 1,
+                                            selectOnEdit: true,
+                                            gridcellediting: true
+                                        })
+                                    ],
+                                    reserveScrollbar: true,
+                                    useArrows: true,
+                                    rootVisible: false,
+                                    multiSelect: true,
+                                    rowLines: true,
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Key Concil', dataIndex: 'UNIKEY', width: 180, align: 'center', menuDisabled: true, xtype: 'treecolumn',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.tdAttr = 'data-qtip="' + data.SCARDN + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = data.SCARDN;
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Ticket', dataIndex: 'TKT', width: 130, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Qty<br>Tkt', dataIndex: 'QTY', width: 50, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = Ext.util.Format.number(value, '0,000');
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataTeleworking').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.TotlngQTYTKT, '0,000') + '<b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataTeleworking').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.TotdblSVFOPTKT, '0,000.00') + '<b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount TKT', dataIndex: 'SVFOP_100', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataTeleworking').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.TotdblSVFOPTKT, '0,000.00') + '<b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Curr.', dataIndex: 'SCURRENCY', width: 60, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Doc<br>Type', dataIndex: 'TDOC', width: 60, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Country', dataIndex: 'SCOUNTRY', width: 60, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Sales<br>Date', dataIndex: 'SDATE', width: 90, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Credit Card', dataIndex: 'SCARDN', width: 150, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Auth. Code', dataIndex: 'SAUTHOC', width: 90, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Agent', dataIndex: 'SAGENT', width: 90, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Code', dataIndex: 'SCARCOD', width: 55, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Abono<br>Date', dataIndex: 'PAYDATE', width: 90, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Merchand', dataIndex: 'MERCHNC', width: 90, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Account<br>Number', dataIndex: 'ACCNUMBER', width: 130, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Terminal', dataIndex: 'TERMI', width: 90, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Seq', dataIndex: 'SEQNUM', width: 50, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'TQUERY', dataIndex: 'TQUERY', width: 50, align: 'center', hidden: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 40,
+                                                text: 'View',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'View',
+                                                        handler: 'onEditClick',
+                                                        getClass: function (value, meta, record) {
+                                                            return record.isLeaf() ? 'x-hidden' : 'prx-icon-edit';
+                                                        }
+
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Select',
+                                                width: 50,
+                                                dataIndex: 'select',
+                                                headerCheckbox: true,
+                                                renderer: function (value, meta, record, row, col) {
+                                                    if (record.isLeaf()) {
+                                                        return '';
+                                                    }
+                                                    var checked = record.data.select ? 'checked' : '';
+                                                    return '<input type="checkbox" ' + checked + ' onclick="controller.select(this.checked,' + row + ')">';
+                                                }
+                                            }
+
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-paginacion',
+                                    margin: '2px 0 0 0',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    border: false,
+                                    width: 1132,
+                                    height: 25,
+                                    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            width: 572,
+                                            height: 25,
+                                            layout: {
+                                                type: 'hbox',
+                                                pack: 'center'
+                                            },
+                                            defaults: {
+                                                xtype: 'label'
+                                            },
+                                            items: [
+                                                {
+                                                    text: 'Page',
+                                                    width: 50
+                                                },
+                                                {
+                                                    id: prototype.id + '-lbl-currentPage_JS',
+                                                    text: '1',
+                                                    width: 50
+                                                },
+                                                {
+                                                    text: 'Of',
+                                                    width: 50
+                                                },
+                                                {
+                                                    id: prototype.id + '-lbl-pageCount_JS',
+                                                    text: '0',
+                                                    width: 50
+                                                },
+                                                {xtype: 'tbspacer', width: 100},
+                                                {
+                                                    text: 'Total found',
+                                                    width: 80
+                                                },
+                                                {
+                                                    id: prototype.id + '-lbl-total_JS',
+                                                    text: '0',
+                                                    width: 50
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
+
 
             ]
         },
