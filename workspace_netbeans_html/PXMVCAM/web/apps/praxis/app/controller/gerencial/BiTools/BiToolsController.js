@@ -14,6 +14,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     me: '',
     searchParams: {},
     paramsDetail: {},
+    beanDetailTW: {},
     gridProviderDynamic: [],
     listaCampos : [],
     info_perm: [],
@@ -67,12 +68,18 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             '#BiToolsForm-imgSave': {
                 click: this.onClickImgSave
             },
+            '#BiToolsForm-imgView': {
+                click: this.onClickImgView
+            },
             '#BiToolsForm-cmbFav': {
                 select: this.onSelectCmbFav
             },
             '#BiToolsForm-imgBuild': {
                 click: this.onClickImgBuild
-            }
+            },
+            '#BiToolsForm-btnAdd': {
+                click: this.btnAdd_clickRules
+            },
 
 
 
@@ -83,6 +90,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     xpanel_afterrender: function(obj, e) {
 
         console.log("Inicio Controller");
+        this.getRules();
         this.setStoreData();
         //win.lblUser_toolTip("Estructura: CAF020");
         // this.btnSearch_click();
@@ -142,13 +150,35 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }
         }).show();
     },
-    ChangeFunction: function(args, obj ,newValue , oldValue , event ) {
-
+    onClickImgView: function() {
+        if(Ext.getCmp(prototype.id + '-panelGridDataMain').isVisible()){
+            Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+            Ext.getCmp(prototype.id + '-boxFunctions').hide();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').show();
+        }else{
+            Ext.getCmp(prototype.id + '-panelGridDataMain').show();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').hide();
+            Ext.getCmp(prototype.id + '-boxFunctions').show();
+        }
+        
+        
     },
+    
+    
     onChangeCmbTabla: function(args, obj ,newValue , oldValue , event ) {
         console.log('1-' +obj + ' =====' + args + '······newValue=' + newValue + '?????oldValue=' + oldValue + 'FIN' + event + '<----');
         //console.log(value);
+        if(newValue === 'MPF101' && args === 'Primario'){
+            
+           Ext.getCmp(prototype.id + '-boxFunctions').show();
+        }else{
+            if(args === 'Primario'){
+               
+               Ext.getCmp(prototype.id + '-boxFunctions').hide(); 
+            }
+        }
         if (newValue !== '' && newValue !== '#') {
+            
             win.lblUser_toolTip("Estructura: " + Ext.getCmp(prototype.id + '-cmbTabla').getValue());
             this.changeFile(args, 0);
             console.log(args, 'args')
@@ -170,13 +200,13 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         }
         
         //Panel para la funcion de valoracion
-        if(tabla ==='A1692'){
-            if(me.validateAccess('M')) {
-                Ext.getCmp(prototype.id + '-boxFunctions').show();
-            }
-        }else{
-            Ext.getCmp(prototype.id + '-boxFunctions').hide();
-        }
+//        if(tabla ==='A1692'){
+//            if(me.validateAccess('M')) {
+//                Ext.getCmp(prototype.id + '-boxFunctions').show();
+//            }
+//        }else{
+//            Ext.getCmp(prototype.id + '-boxFunctions').hide();
+//        }
         
         
     },
@@ -506,11 +536,460 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }
         });
     },
+    onRefreshClick: function () {
+        console.log('btnRefresh_click');
+        win.lblUser_toolTip("Estructura: IMF101");
+
+        var grid = Ext.getCmp(prototype.id + '-gridDataColumns_JS');
+        var store = grid.getStore();
+
+        // Buscar el registro marcado
+        var selectedRecord = store.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecord) {
+            Ext.getCmp(prototype.id + '-panelGridDataMain').show();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').hide();
+            var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
+            console.log('RQUERY seleccionado:', rquery);
+            console.log('TQUERY seleccionado:', tquery);
+            console.log('Table seleccionada:', ttable);
+            console.log(Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1], 'nikaa')
+            me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
+            me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
+//            me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+            me.beanDetailTW.RQUERY = rquery;
+            me.beanDetailTW.TQUERY = tquery;
+            me.beanDetailTW.TTABLE = ttable;
+            me.beanDetailTW.strSQL = this.armandoQuery();
+            me.gridActual = '-panelGridDataMain'
+            me.viewMPF101_clickHandler(me.beanDetailTW);
+            
+        } else {
+            console.log('No hay ningún registro seleccionado.');
+            Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').show();
+        }
+    },
+    getRules: function () {
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: '/AVIANCA/ManualConciliation/getRules'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataColumns_JS').bindStore(storeGridDatas);
+
+    },
+    viewMPF101_clickHandler: function (beanDet) {
+        console.log('viewMPF101_clickHandler');
+        console.log(beanDet, 'beanDet')
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: '/AVIANCA/ManualConciliation/searchMPF101Teleworking'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    Ext.getCmp(prototype.id + '-panelGridDataMain').mask('Loading...');
+                    obj.proxy.extraParams = {beanString: JSON.stringify(beanDet)};
+                },
+                load: function (obj, obj2, success, response, obj5) {
+                    win.lblUser_toolTip("Estructura: MPF101");
+
+                    Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
+
+                    if (obj.data.length > 0) {
+                        var Objtemp = obj.data.items[0].data;
+
+                        var pag = Ext.getCmp(prototype.id + '-paggin3');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage_JS').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount_JS').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total_JS').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        let lstData = []
+                        for (let value of obj.data.items) {
+                            lstData.push(value.data)
+                        }
+                        let a = [];
+                        let dataRoot = {text: '.', expanded: false, children: []};
+
+                        Ext.Object.each(lstData, function (index, value) {
+                            if (a.indexOf(value.UNIKEY) < 0) {
+                                let V_SVFOP = 0;
+                                Ext.Object.each(lstData, function (index, valuex) {
+                                    if (value.UNIKEY === valuex.UNIKEY) {
+                                        V_SVFOP += valuex.SVFOP_100;
+                                    }
+                                });
+                                a.push(value.UNIKEY);
+                                dataRoot.children.push({
+                                    UNIKEY: value.UNIKEY,
+                                    QTY: value.QTY_101,
+                                    SVFOP: value.SVFOP_101,
+                                    SVFOP_100: V_SVFOP,
+                                    SCURRENCY: value.SCURRENCY_101,
+                                    TDOC: value.TDOC_101,
+                                    SCOUNTRY: value.SCOUNTRY_101,
+                                    SDATE: value.SDATE_101,
+                                    PAYDATE: value.PAYDATE,
+                                    CODEBANK: value.CODEBANK,
+                                    MERCHNC: value.MERCHNC,
+                                    ACCNUMBER: value.ACCNUMBER,
+                                    TERMI: value.TERMI,
+                                    TQUERY: value.TQUERY,
+                                    SAGENT: value.SAGENT_101,
+                                    SCARCOD: value.SCARCOD_101,
+                                    SCARDN: value.SCARDN_101,
+                                    SAUTHOC: value.SAUTHOC_101,
+                                    SEQNUM: value.SEQNUM,
+                                    expanded: false, children: []
+                                });
+                                let b = [];
+                                Ext.Object.each(lstData, function (index, value01) {
+                                    if (value.UNIKEY === value01.UNIKEY) {
+                                        dataRoot.children[a.indexOf(value.UNIKEY)].children.push({
+                                            UNIKEY: value01.UNIKEY,
+                                            TKT: value01.TKT,
+                                            QTY: value01.QTY_100,
+                                            SVFOP_100: value01.SVFOP_100,
+                                            SCURRENCY: value01.SCURRENCY_100,
+                                            TDOC: value01.TDOC_100,
+                                            SCOUNTRY: value.SCOUNTRY_100,
+                                            SDATE: value01.SDATE_100,
+                                            SAGENT: value01.SAGENT_100,
+                                            SCARCOD: value01.SCARCOD_100,
+                                            SCARDN: value01.SCARDN_100,
+                                            SAUTHOC: value01.SAUTHOC_100,
+                                            leaf: true
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+                        console.log(dataRoot);
+
+                        var storeTree = Ext.create('Ext.data.TreeStore', {
+                            root: dataRoot
+                        });
+
+                        Ext.getCmp(prototype.id + '-gridDataMain').setStore(storeTree);
+
+                    } else {
+                        var grid = Ext.getCmp(prototype.id + '-gridDataMain');
+                        grid.getStore().reload();
+                        global.Msg({msg: 'Data not found'});
+                    }
+                    global.clear();
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+
+    },
+    getCheckedCount: function () {
+        var grid = Ext.getCmp(prototype.id + '-gridDataMain');
+        var store = grid.getStore();
+
+        var count = store.queryBy(function (record) {
+            return record.get('select') === true;
+        }).length;
+
+        return count;
+    },
+    getGrillData: async function (btn) {
+        var dato = this.getCheckedCount();
+
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to conciliate ' + dato + ' records ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.executeOption();
+                }
+            }
+        });
+    },
+    executeOption: async function () {
+
+        let miGrilla = Ext.getCmp(prototype.id + '-gridDataMain');
+        let datos = {};
+        if (miGrilla) {
+
+            datos = await this.procesarRegistros(miGrilla);
+            if (miGrilla) {
+                Ext.Ajax.request({
+                    url: '/AVIANCA/ManualConciliation/executeGrillUpdate',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: datos},
+                    beforerequest: Ext.getCmp(prototype.id + '-panelGridDataMain').mask('Loading...'),
+                    success: function (response, opts) {
+                        Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
+                        var res = Ext.JSON.decode(response.responseText);
+                        if (res.success) {
+
+                            global.Msg({
+                                msg: res.Mensaje,
+                                icon: 1,
+                                fn: function () {
+                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                                }
+                            });
+                        } else {
+                            global.Msg({msg: res.Mensaje});
+                        }
+                    },
+                    failure: function (response, opts) {
+                        console.log('server-side failure with status code ' + response.status);
+                        Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
+                    }
+                });
+            } else {
+                console.log('nadine');
+            }
+        } else {
+            console.error('No se pudo encontrar la grilla con el ID especificado.');
+        }
+    },
+    procesarRegistros: async function (grilla) {
+
+        var grid = Ext.getCmp(prototype.id + '-gridDataColumns_JS');
+        var store = grid.getStore();
+
+        var selectedRecord = store.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecord) {
+            var codrule = selectedRecord.get('CODRULE'); // Obtener el valor de RQUERY
+            var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
+
+        } else {
+            global.Msg({msg: '...You must select a rule...'
+            });
+        }
+
+        let listaDeDatos = [];
+        var grid = Ext.getCmp(prototype.id + '-gridDataMain');
+        var store = grid.getStore();
+        var selectedRecords = store.getRange().filter(record => record.get('select'));
+
+        if (selectedRecords.length === 0) {
+            console.warn("No hay registros seleccionados.");
+            return null;
+        }
+
+        selectedRecords.forEach(function (record) {
+            let registro = {
+                TDOC: record.get('TDOC'),
+                SDATE: record.get('SDATE'),
+                PAYDATE: record.get('PAYDATE'),
+                CODEBANK: record.get('CODEBANK'),
+                MERCHNC: record.get('MERCHNC'),
+                ACCNUMBER: record.get('ACCNUMBER'),
+                TERMI: record.get('TERMI'),
+                SAGENT: record.get('SAGENT'),
+                SCARCOD: record.get('SCARCOD'),
+                SCARDN: record.get('SCARDN'),
+                SAUTHOC: record.get('SAUTHOC'),
+                SEQ: record.get('SEQ'),
+                SCURRENCY: record.get('SCURRENCY'),
+                VFOP: record.get('SVFOP_101'),
+                RQUERY: rquery,
+                TQUERY: tquery,
+                RULE: codrule
+            };
+
+            listaDeDatos.push(registro);
+        });
+
+        let datosEnJSON = Ext.JSON.encode(listaDeDatos);
+        return datosEnJSON;
+    },
+    getGrillDataAll: async function (btn) {
+        var dato = Ext.getCmp(prototype.id + '-lbl-total').text;
+
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to conciliate ' + dato + ' records ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.executeOptionAll();
+                }
+            }
+        });
+
+    },
+    executeOptionAll: async function () {
+
+
+        var gridCo = Ext.getCmp(prototype.id + '-gridDataColumns_JS');
+        var storeCo = gridCo.getStore();
+
+        var selectedRecordCo = storeCo.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecordCo) {
+            var codrule = selectedRecordCo.get('CODRULE'); // Obtener el valor de RQUERY
+            var rquery = selectedRecordCo.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecordCo.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecordCo.get('TTABLE'); // Obtener el valor de RQUERY
+        } else {
+            global.Msg({msg: '...You must select a rule...'
+            });
+        }
+
+        var grid = Ext.getCmp(prototype.id + '-gridDataMain');
+        var store = grid.getStore();
+
+        store.suspendEvents();
+        store.each(function (record) {
+            record.set('select', true);
+            record.commit();
+        });
+        store.resumeEvents();
+        grid.getView().refresh();
+
+        me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
+        me.beanDetailTW.strSQL = this.armandoQuery();
+        me.beanDetailTW.CODRULE = codrule;
+        me.beanDetailTW.RQUERY = rquery;
+        me.beanDetailTW.TQUERY = tquery;
+        me.beanDetailTW.TTABLE = ttable;
+
+        Ext.Ajax.request({
+            url: '/AVIANCA/ManualConciliation/executeAllUpdate',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(me.beanDetailTW)},
+            beforerequest: Ext.getCmp(prototype.id + '-panelGridDataMain').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
+            }
+        });
+    },
     btnSearch_click: function(obj, e) {
-        me.gridActual = '-gridData';
-        this.showGridActual();
-        this.setFormatParameter();
-        this.setGridData(obj, e);
+        if (Ext.getCmp(prototype.id + '-panelGridDataMain').isVisible()) {
+            this.onRefreshClick();
+        }else{
+            me.gridActual = '-gridData';
+            this.showGridActual();
+            this.setFormatParameter();
+            this.setGridData(obj, e);
+        }
+        
+    },
+    onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
+
+        item.disable();
+        var rec = grid.getStore().getAt(rowIndex);
+
+        this.searchBean(rec);
+
+        setTimeout(function () {
+            item.enable();
+        }, 1000);
+
+    },
+    searchBean: function (rec) {
+
+        Ext.Ajax.request({
+            url: '/AVIANCA/ManualConciliation/searchBean',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(rec.data)},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    var beanCons = res.result;
+                    console.log('beanCons');
+                    console.log(beanCons);
+                    if (beanCons !== null) {
+                        me.winDataEntry('U', beanCons);
+                    } else {
+                        global.Msg({
+                            msg: 'An error has ocurred. Please contact our System Department'
+                        });
+                    }
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
+    winDataEntry: function (action, beanCons) {
+
+        action = action === null || action === undefined ? 'U' : action;
+
+        Ext.create('Ext.Praxis.view.gerencial.BiToolsForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                lstCountry: me.lstCountry,
+                lstCard: me.lstCard,
+                lstBank: me.lstBank,
+                beanCons: beanCons
+            }
+        }).show();
+
+    },
+    btnAdd_clickRules: function () {
+        this.winDataEntryRules('I');
+    },
+    onEditClickRules: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        this.winDataEntryRules('U', rec);
+    },
+    winDataEntryRules: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryRules', {
+            id: prototype.id + '-dataEntryRules',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: me.lstCountry
+            }
+        }).show();
     },
     setFormatParameter: function() {
 
@@ -1339,6 +1818,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                     storeList.removeAll();
                     var res = Ext.JSON.decode(response.responseText);
                     res = res.data;
+                    console.log(res,'res')
                     me.resObtainDataFavoritos = res;
                     if (res[0].IN_TABLA2.trim() !== '') {
                         Ext.getCmp(prototype.id + '-cmbTabla2').setValue(res[0].IN_TABLA2.trim());
@@ -1882,6 +2362,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 break;
             case  '-gridDataPending':
                 me.pagginActual = '-paggin2';
+                break;
+            case  '-panelGridDataMain':
+                me.pagginActual = '-paggin3';
                 break;
 
         }
