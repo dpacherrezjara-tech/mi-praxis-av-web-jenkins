@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.BiToolsForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1250,
+                                        width: 1840,
                                         align: 'center'
                                     },
                                     items: [
