@@ -144,13 +144,15 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
     setFormatParameter: function () {
 
         me.bean = {};
+        
+        let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getSaleDate = Ext.getCmp(prototype.id + '-cmbDateFromYearVa').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateFromMonthVa').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateFromDayVa').getValue();
         let getNumberAccount = Ext.getCmp(prototype.id + '-numberAccount').getValue();
         let getProcessor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue().length == 0 ? '' : this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP'));
 
-        me.bean.IN_CCUST = '134';
+        me.bean.IN_CCUST = getCustomer;
         me.bean.IN_NUMBER_ACCOUNT = getNumberAccount;
         me.bean.IN_SALES_DATE = getSaleDate;
         me.bean.IN_PROCESSOR = getProcessor;

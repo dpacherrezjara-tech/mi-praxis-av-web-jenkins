@@ -96,16 +96,16 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                         style: 'padding: 6px; background: #6C87A8;' // Azul suave
                                                     },
                                                     {
-                                                        text: 'Currency',
-                                                        width: 80,
-                                                        dataIndex: 'SCURRENCY',
+                                                        text: 'Account Number',
+                                                        width: 120,
+                                                        dataIndex: 'ACCNUMA',
                                                         align: 'center',
                                                         style: 'padding: 6px; background: #6C87A8;' // Azul suave
                                                     },
                                                     {
-                                                        text: 'Account Number',
-                                                        width: 120,
-                                                        dataIndex: 'ACCNUMA',
+                                                        text: 'Currency',
+                                                        width: 80,
+                                                        dataIndex: 'SCURRENCY',
                                                         align: 'center',
                                                         style: 'padding: 6px; background: #6C87A8;' // Azul suave
                                                     },
