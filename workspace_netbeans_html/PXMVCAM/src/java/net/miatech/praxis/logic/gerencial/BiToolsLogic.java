@@ -10,6 +10,7 @@ import net.miatech.beans.SQP00768;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
 import net.miatech.praxis.dao.gerencial.BiToolsDAO;
+import net.miatech.praxis.payment.filter.A2290Filter;
 
 /**
  *
