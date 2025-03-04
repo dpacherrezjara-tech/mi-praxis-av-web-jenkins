@@ -164,19 +164,32 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         
     },
     
-    
+    ChangeFunction: function() {
+        console.log('wadadadfafafafaf')
+        if(Ext.getCmp(prototype.id + '-cmbFunction').getValue()=== 'MPF101') {
+            console.log('entro al MC')
+            Ext.getCmp(prototype.id + '-boxFunctions').show()
+            Ext.getCmp(prototype.id + '-btnAdd').show()
+            Ext.getCmp(prototype.id + '-panelGridDataMain').show();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').hide();
+            Ext.getCmp(prototype.id + '-cmbTabla').setValue('');
+            
+            this.obtainData('MPF101', '', 0);
+        }else {
+            Ext.getCmp(prototype.id + '-boxFunctions').hide()
+            Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').show();
+            Ext.getCmp(prototype.id + '-btnAdd').hide();
+        }
+        
+    },
     onChangeCmbTabla: function(args, obj ,newValue , oldValue , event ) {
+        if (newValue !== ''){
+            Ext.getCmp(prototype.id + '-cmbFunction').setValue('');
+        }
+        
         console.log('1-' +obj + ' =====' + args + '······newValue=' + newValue + '?????oldValue=' + oldValue + 'FIN' + event + '<----');
         //console.log(value);
-        if(newValue === 'MPF101' && args === 'Primario'){
-            
-           Ext.getCmp(prototype.id + '-boxFunctions').show();
-        }else{
-            if(args === 'Primario'){
-               
-               Ext.getCmp(prototype.id + '-boxFunctions').hide(); 
-            }
-        }
         if (newValue !== '' && newValue !== '#') {
             
             win.lblUser_toolTip("Estructura: " + Ext.getCmp(prototype.id + '-cmbTabla').getValue());
@@ -188,7 +201,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         console.log('changeFile');
         var tabla = Ext.getCmp(prototype.id + '-cmbTabla').getValue();
         var tabla2 = Ext.getCmp(prototype.id + '-cmbTabla2').getValue();
-        
+        console.log(tabla,'tablaaaaaaaaaaaaaaaaaaaaaaa')
         win.lblUser_toolTip("Estructura: " + tabla);
         if (tabla !== '') {
             if (tipo === 'Secundario') {
@@ -414,7 +427,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 //                ["TAX", "Match Tax"],
 //                ["ADM", "Generation of ADM"],
 //                ["QATPCO", "Match Q"],
-                ["MC", "Manual Conciliation"],
+                ["MPF101", "Mass Conciliation"],
 //                ["FORCE", "Match Force"],
 //                ["XO", "Tax XO"],
 //                ["F31", "Tax F31"]
@@ -426,7 +439,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             fields: ['code', 'name'],
             data: [
                 ['', 'Select'],
-                ["CAF020", "Cargo Conciliation"]
+                ["CAF020", "Cargo Conciliation"],
             ]}));
         cmbTabla.setValue('');
 
@@ -822,7 +835,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         return datosEnJSON;
     },
     getGrillDataAll: async function (btn) {
-        var dato = Ext.getCmp(prototype.id + '-lbl-total').text;
+        var dato = Ext.getCmp(prototype.id + '-lbl-total_JS').text;
 
         Ext.Msg.show({
             title: '.:Confirmation:.',
@@ -1806,7 +1819,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     onSelectCmbFav: function(obj, value) {
         
         if (obj.value !== '') {
-            var tabla = Ext.getCmp(prototype.id + '-cmbTabla').getValue();
+            var tabla = Ext.getCmp(prototype.id + '-cmbTabla').getValue() === '' ? Ext.getCmp(prototype.id + '-cmbFunction').getValue() : Ext.getCmp(prototype.id + '-cmbTabla').getValue();
             var codigo = Ext.getCmp(prototype.id + '-cmbFav').getValue();
 
             Ext.Ajax.request({
@@ -2090,15 +2103,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }
         });
     },
-    changeFunction: function() {
-        
-        if(Ext.getCmp(prototype.id + '-cmbFunctions').getValue()==='') {
-            Ext.getCmp(prototype.id + '-btnFunct').setDisabled(true);
-        }else{
-            Ext.getCmp(prototype.id + '-btnFunct').setDisabled(false);
-        }
-        
-    },
+    
     procesar_function: function(obj, e) {
         
         
