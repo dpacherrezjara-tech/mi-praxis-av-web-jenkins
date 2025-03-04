@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridData',
                                     height: 519,
-                                    width: 1750,
+                                    width: 1420,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -124,6 +124,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                     },
                                                     {
                                                         text: 'Comision',
+                                                        hidden:true,
                                                         width: 110,
                                                         dataIndex: 'COMISION',
                                                         align: 'center',
@@ -136,6 +137,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                     },
                                                     {
                                                         text: 'Import',
+                                                        hidden:true,
                                                         width: 100,
                                                         dataIndex: 'IMPORTE',
                                                         align: 'center',
@@ -148,6 +150,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                     },
                                                     {
                                                         text: 'Neto',
+                                                        hidden:true,
                                                         width: 120,
                                                         dataIndex: 'NETO',
                                                         align: 'center',
