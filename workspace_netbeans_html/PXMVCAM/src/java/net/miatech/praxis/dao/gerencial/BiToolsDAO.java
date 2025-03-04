@@ -1078,6 +1078,7 @@ public class BiToolsDAO {
                 TablaJoin = rst.getString("TABJOIN");
                 Queryname = rst.getString("DESCRIP");
                 Query = rst.getString("QUERYF");
+                
                 linea = rst.getString("SELECTF").split(";");
                 chkGroup = (rst.getString("FLAGSGB").equals("1") ? true : false);
                 Fecha = rst.getString("FECHAF");
@@ -1088,9 +1089,9 @@ public class BiToolsDAO {
                     campos = linea[c].split("\\#");
 
                     record.strCampo = campos[0];
-                    record.strOrderBy = campos[1].replace("@", "");
-                    record.strAscDesc = Integer.parseInt(campos[2]);
-                    record.orden = Integer.parseInt(campos[3].trim());
+                    record.strOrderBy = rst.getString("SELECTF").trim().equals("") ? "" : campos[1].replace("@", "");
+                    record.strAscDesc = rst.getString("SELECTF").trim().equals("") ? 0 :Integer.parseInt(campos[2]);
+                    record.orden = rst.getString("SELECTF").trim().equals("") ? 0 :Integer.parseInt(campos[3].trim());
 
                     record.strDescrip = Queryname;
                     record.strSQL = Query;
