@@ -50,6 +50,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
     layout: 'column',
+    
     items: [
         {
             xtype: 'form',
@@ -77,7 +78,9 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                     id: prototype.id + '-panelFilters',
                     border: false,
 //                    style: 'border-bottom: 2px #ffffff solid;border-left: 0px;',
-                    layout: 'column',
+//                    layout: 'column',
+                    layout: 'hbox',
+                    margin: '0 0 0 300',
                     defaults: {
                         labelStyle: 'font-weight:bold;',
                         fieldStyle: 'text-align: center;',
@@ -288,6 +291,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                             id: prototype.id + '-imgView',
                             style: 'background:#E3EAF9',
                             border: false,
+                            hidden: true,
                             width: 16,
                             height: 16,
                             padding: '0 0 0 0',
@@ -300,6 +304,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                             id: prototype.id + '-btnAdd',
                             style: 'background:#E3EAF9',
                             border: false,
+                            hidden: true,
                             width: 16,
                             height: 16,
                             padding: '0 0 0 0',
@@ -322,6 +327,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                     align: 'center',
 //                    style: 'border-bottom: 2px #ffffff solid;border-left: 0px;',
                     layout: 'hbox',
+                    margin: '0 0 0 200',
                     defaults: {
                         labelStyle: 'font-weight:bold;',
                         fieldStyle: 'text-align: center;',
@@ -1944,6 +1950,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                     border: false,
                     layout: 'column',
                     width: 1400,
+                    margin: '0 0 0 300',
                     defaults: {
                         //labelStyle: 'font-weight:bold;',
                         fieldStyle: 'text-align: center;',
@@ -2007,7 +2014,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbFunction',
-                            hidden: true,
+                            hidden: false,
                             fieldLabel: 'Function',
                             fieldStyle: 'text-align: left;',
                             labelAlign: 'right',
