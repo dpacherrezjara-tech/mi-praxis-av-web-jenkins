@@ -21,6 +21,23 @@ var controller = {
     }
 };
 
+var controller = {
+    select: function (value, row) {
+        var dataStore = Ext.getCmp(prototype.id + '-gridDataMain').getStore();
+        var dataRow = dataStore.data.items[row].data;
+        //console.log(dataRow);
+        var name = dataRow.DESCRIPT;
+        if (dataRow.select === true) {
+            storeList.remove(storeList.findRecord('DESCRIPT', name));
+            dataRow.select = false;
+        } else {
+            dataRow.select = true;
+            storeList.add(dataRow);
+        }
+        Ext.getCmp(prototype.id + '-gridDataMain').setStore(dataStore);
+    }
+};
+
 var storeCombo = Ext.create('Ext.data.SimpleStore', {
     fields: ['code', 'name'],
     data: [

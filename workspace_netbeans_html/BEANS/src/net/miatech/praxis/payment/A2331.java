@@ -93,6 +93,13 @@ public class A2331 {
     public String FORMAEX = "";
     public String SERIEEX = "";
     public String TKTEXCH = "";
+    
+    public String VALDATE = "";
+    public long QTY_LF2 = 0;
+    public long QTY_CF2 = 0;
+    public long QTY_PF2 = 0;
+    public long QTY_SE = 0;
+    public long QTY_PE = 0;
 
     //Datos Auditoria        
     public String USCR = "";

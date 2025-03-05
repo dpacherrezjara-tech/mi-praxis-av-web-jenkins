@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
     layout: 'column',
-    
+
     items: [
         {
             xtype: 'form',
@@ -80,7 +80,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
 //                    style: 'border-bottom: 2px #ffffff solid;border-left: 0px;',
 //                    layout: 'column',
                     layout: 'hbox',
-                    margin: '0 0 0 300',
+                    margin: '0 0 0 200',
                     defaults: {
                         labelStyle: 'font-weight:bold;',
                         fieldStyle: 'text-align: center;',
@@ -327,7 +327,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                     align: 'center',
 //                    style: 'border-bottom: 2px #ffffff solid;border-left: 0px;',
                     layout: 'hbox',
-                    margin: '0 0 0 200',
+                    margin: '0 0 0 100',
                     defaults: {
                         labelStyle: 'font-weight:bold;',
                         fieldStyle: 'text-align: center;',
@@ -1734,10 +1734,10 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                             hidden: true,
                             bodyStyle: 'background: transparent',
                             border: false,
-                            align: 'center',
+//                            align: 'center',
 //                            style: 'border-bottom: 2px #ffffff solid;border-left: 0px;',
                             layout: 'vbox',
-                            width: 700,
+                            width: 1000,
                             defaults: {
                                 labelStyle: 'font-weight:bold;',
 //                                fieldStyle: 'text-align: center;',
@@ -1769,73 +1769,110 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
 //                                },
 
                                 {
-                                    xtype: 'grid',
-                                    padding: '10 0 0 10',
-                                    id: prototype.id + '-gridDataColumns_JS',
-                                    bodyStyle: 'background-color: #E3EAEF;',
-                                    height: 160,
-                                    width: 604,
-                                    resizable: false,
+                                    xtype: 'panel',
+                                    bodyStyle: 'background: transparent',
+                                    border: false,
+                                    layout: 'hbox',
+                                    pack: 'center',
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            padding: '10 0 0 10',
+                                            id: prototype.id + '-gridDataColumns_JS',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            height: 160,
+                                            width: 604,
+                                            resizable: false,
 //                                    hidden: true,
-                                    columnLines: true,
-                                    clicksToEdit: 1,
-                                    plugins: {
-                                        ptype: 'cellediting',
-                                        clicksToEdit: 1
-                                    },
+                                            columnLines: true,
+                                            clicksToEdit: 1,
+                                            plugins: {
+                                                ptype: 'cellediting',
+                                                clicksToEdit: 1
+                                            },
 
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: true,
-                                            align: 'center'
-                                        },
-                                        items: [
-                                            {text: 'Rule', width: 40, dataIndex: 'CODRULE'},
-                                            {text: 'Agroup', width: 350, dataIndex: 'GRORULE',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:left;";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Rquery', width: 240, dataIndex: 'RQUERY', hidden: true,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:left;";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Tquery', width: 240, dataIndex: 'TQUERY', hidden: true,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:left;";
-                                                    return value;
-                                                }
-                                            },
-                                            {text: 'Table', width: 100, dataIndex: 'TTABLE'},
-                                            {
-                                                sortable: false,
-                                                xtype: 'actioncolumn',
-                                                width: 40,
-                                                text: 'View',
-                                                align: 'center',
+                                            columns: {
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
                                                 items: [
+                                                    {text: 'Rule', width: 40, dataIndex: 'CODRULE'},
+                                                    {text: 'Agroup', width: 350, dataIndex: 'GRORULE',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Rquery', width: 240, dataIndex: 'RQUERY', hidden: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Tquery', width: 240, dataIndex: 'TQUERY', hidden: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:left;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Table', width: 100, dataIndex: 'TTABLE'},
                                                     {
-                                                        iconCls: 'prx-icon-edit',
-                                                        tooltip: 'View',
-                                                        handler: 'onEditClickRules'
-                                                    }
+                                                        sortable: false,
+                                                        xtype: 'actioncolumn',
+                                                        width: 40,
+                                                        text: 'View',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-edit',
+                                                                tooltip: 'View',
+                                                                handler: 'onEditClickRules'
+                                                            }
+                                                        ]
+                                                    },
+                                                    {text: 'Select', width: 50, dataIndex: 'select',
+                                                        headerCheckbox: true,
+                                                        renderer: function (value, meta, record, row, col) {
+                                                            var check = record.data.select;
+                                                            return '<input type="checkbox" ' + (check ? 'checked' : '') +
+                                                                    ' onclick="controllerR.select(this.checked,' + row + ');" >';
+                                                        }
+                                                    },
                                                 ]
-                                            },
-                                            {text: 'Select', width: 50, dataIndex: 'select',
-                                                headerCheckbox: true,
-                                                renderer: function (value, meta, record, row, col) {
-                                                    var check = record.data.select;
-                                                    return '<input type="checkbox" ' + (check ? 'checked' : '') +
-                                                            ' onclick="controllerR.select(this.checked,' + row + ');" >';
-                                                }
-                                            },
-                                        ]
-                                    }
+                                            }
+                                        },
+                                        { xtype: 'tbspacer', width: 15 },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Country:',
+//                                            padding: '15 0 0 10',
+                                            margin: '15 0 0 0',
+                                            width: 50
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbCountry',
+                                            queryMode: 'local',
+                                            margin: '10 0 0 0',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            width: 189,
+                                            typeAhead: true,
+                                            valueField: 'A006PAIS',
+                                            displayField: 'A006NOMBRE',
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                        },
+                                    ]
                                 },
+
                                 {
                                     xtype: 'grid',
                                     padding: '10 0 0 10',
@@ -1950,7 +1987,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                     border: false,
                     layout: 'column',
                     width: 1400,
-                    margin: '0 0 0 300',
+                    margin: '0 0 0 200',
                     defaults: {
                         //labelStyle: 'font-weight:bold;',
                         fieldStyle: 'text-align: center;',
