@@ -14,6 +14,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     me: '',
     searchParams: {},
     paramsDetail: {},
+    paramsObtainData: {},
     beanDetailTW: {},
     gridProviderDynamic: [],
     listaCampos : [],
@@ -465,6 +466,29 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 ]}));
             cmbConector.setValue('AND');
         }
+        this.paramsObtainData.COUNTRY = 2;
+
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getBody().mask('Loading...'),
+            params: {
+                beanString: JSON.stringify(this.paramsObtainData)
+            },
+            success: function (response, options) {
+                Ext.getBody().unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                var storeData3 = Ext.create('Ext.data.Store', {
+                    data: res.lstCountry,
+                    autoLoad: true
+                });
+
+                Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                Ext.getCmp(prototype.id + '-cmbCountry').setValue('CO');
+                global.clear();
+            }
+        });
         
 //        var cmbFunctions = Ext.getCmp(prototype.id + '-cmbFunctions');
 //        cmbFunctions.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -570,8 +594,10 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             console.log('Table seleccionada:', ttable);
             console.log(Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1], 'nikaa')
             me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
-            me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
-//            me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+            me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue()
+//            me.beanDetailTW.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
+//            me.beanDetailTW.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+            me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
             me.beanDetailTW.TTABLE = ttable;
