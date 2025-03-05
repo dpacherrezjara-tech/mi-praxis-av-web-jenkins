@@ -506,7 +506,7 @@ public class BalanceAnalysisByAgeDAO {
 
         return lstData;
     }
-    
+
     public List<A2356Filter> loadSQP05120_CT(A2356Filter filter) throws SQLException, Exception {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
@@ -527,18 +527,16 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
-            
+
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_SDATE);
-            
-            
+
             cstmt.setInt(3, filter.page.PAGNUM);
             cstmt.setInt(4, filter.page.PAGROW);
             cstmt.setInt(5, filter.page.TOTPAG);
             cstmt.setInt(6, filter.page.TOTROW);
             cstmt.execute();
-            
-            
+
             filter.page.PAGNUM = cstmt.getInt(3);
             filter.page.PAGROW = cstmt.getInt(4);
             filter.page.TOTPAG = cstmt.getInt(5);
@@ -631,7 +629,7 @@ public class BalanceAnalysisByAgeDAO {
 
         return lstData;
     }
-    
+
     public List<A2356Filter> loadSQP05120_CT2(A2356Filter filter) throws SQLException, Exception {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
@@ -652,18 +650,16 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
-            
+
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_SDATE);
-            
-            
+
             cstmt.setInt(3, filter.page.PAGNUM);
             cstmt.setInt(4, filter.page.PAGROW);
             cstmt.setInt(5, filter.page.TOTPAG);
             cstmt.setInt(6, filter.page.TOTROW);
             cstmt.execute();
-            
-            
+
             filter.page.PAGNUM = cstmt.getInt(3);
             filter.page.PAGROW = cstmt.getInt(4);
             filter.page.TOTPAG = cstmt.getInt(5);
@@ -2612,6 +2608,102 @@ public class BalanceAnalysisByAgeDAO {
                 list.add(objRtnNotFound);
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return list;
+    }
+
+    public List<A2331Filter> loadPX419SQP02080(A2331Filter filter) throws SQLException, Exception {
+
+        List<A2331Filter> list = new ArrayList<A2331Filter>();
+        A2331Filter objRtn;
+        A2331Filter objRtnNotFound = new A2331Filter();
+        long QTY_LF2 = 0, QTY_CF2 = 0, QTY_SE = 0, QTY_PE = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rs01 = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPSUMPROV(?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_DATE.trim());
+            cstmt.setString(3, filter.SENTDATE);
+            cstmt.setString(4, filter.IN_TDOC.trim());
+            cstmt.execute();
+
+            rs01 = cstmt.getResultSet();
+
+            if (rs01.next()) {
+                QTY_LF2 = rs01.getLong("QTY_LF2");
+                QTY_CF2 = rs01.getLong("QTY_CF2");
+                QTY_SE = rs01.getLong("QTY_SE");
+                QTY_PE = rs01.getLong("QTY_PE");
+
+            }
+            try {
+                rs01.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+
+            if (cstmt.getMoreResults()) {
+                rs01 = cstmt.getResultSet();
+                while (rs01.next()) {
+
+                    objRtn = new A2331Filter();
+                    objRtn.IN_DATE = filter.IN_DATE;
+                    objRtn.SENTDATE = filter.SENTDATE;
+                    objRtn.strFormatDate = filter.strFormatDate;
+                    objRtn.IN_TDOC = filter.IN_TDOC;
+
+                    objRtn.VALDATE = rs01.getString("VALDATE").trim();
+                    objRtn.QTY_LF2 = rs01.getLong("QTY_LF2");
+                    objRtn.QTY_CF2 = rs01.getLong("QTY_CF2");
+                    objRtn.QTY_SE = rs01.getLong("QTY_SE");
+                    objRtn.QTY_PE = rs01.getLong("QTY_PE");
+
+                    objRtn.totQTY_LF2 = QTY_LF2;
+                    objRtn.totQTY_CF2 = QTY_CF2;
+                    objRtn.totQTY_SE = QTY_SE;
+                    objRtn.totQTY_PE = QTY_PE;
+
+                    list.add(objRtn);
+                }
+            }
+            try {
+                rs01.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            try {
+                cstmt.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

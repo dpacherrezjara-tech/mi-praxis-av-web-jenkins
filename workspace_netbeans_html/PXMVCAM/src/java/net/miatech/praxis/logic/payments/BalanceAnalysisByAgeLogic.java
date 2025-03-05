@@ -113,4 +113,8 @@ public class BalanceAnalysisByAgeLogic {
     public List<A2331Filter> loadPX419SQP02104(A2331Filter filter) throws SQLException, Exception {
         return balanceAnalysisByAge.loadPX419SQP02104(filter);
     }
+    
+    public List<A2331Filter> loadPX419SQP02080(A2331Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.loadPX419SQP02080(filter);
+    }
 }
