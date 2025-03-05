@@ -5543,7 +5543,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1004,
+                            width: 1104,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'hbox'
@@ -5555,7 +5555,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     bodyStyle: 'background-color: #E3EAEF;',
                                     border: false,
                                     height: 'auto',
-                                    width: 500,
+                                    width: 600,
                                     margin: '0 0 0 0 ',
                                     layout: {
                                         type: 'vbox'
@@ -5566,7 +5566,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             id: prototype.id + '-gridDataProvisions',
                                             height: 400,
                                             bodyStyle: 'background-color: #E3EAEF;',
-                                            width: 502,
+                                            width: 602,
                                             border: false,
                                             hidden: false,
                                             columnLines: true,
@@ -5603,24 +5603,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         style: 'background: #6C87A8;',
                                                         columns: [
                                                             {
-                                                                text: 'Qty',
-                                                                width: 100,
-                                                                dataIndex: 'QTY_LF2',
-                                                                align: 'center',
-                                                                style: 'padding: 6px; background: #6C87A8;',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return '<b>' + value + '</b>';
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
-                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_LF2, '0,000') + '<b>';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Qty Match',
+                                                                text: 'Match',
                                                                 width: 100,
                                                                 dataIndex: 'QTY_CF2',
                                                                 align: 'center',
@@ -5636,6 +5619,40 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     return '<b>' + Ext.util.Format.number(data.totQTY_CF2, '0,000') + '<b>';
                                                                 }
                                                             },
+                                                            {
+                                                                text: 'Pending',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_PF2',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_PF2, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Total',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_LF2',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_LF2, '0,000') + '<b>';
+                                                                }
+                                                            },
                                                         ]
                                                     },
                                                     {
@@ -5644,7 +5661,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         style: 'background: #7D9F7D;',
                                                         columns: [
                                                             {
-                                                                text: 'Qty Send',
+                                                                text: 'Send',
                                                                 width: 100,
                                                                 dataIndex: 'QTY_SE',
                                                                 align: 'center',
@@ -5661,7 +5678,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Qty Pend',
+                                                                text: 'Pending',
                                                                 width: 100,
                                                                 dataIndex: 'QTY_PE',
                                                                 align: 'center',

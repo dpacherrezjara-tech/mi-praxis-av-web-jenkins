@@ -2683,11 +2683,13 @@ public class BalanceAnalysisByAgeDAO {
                     objRtn.VALDATE = rs01.getString("VALDATE").trim();
                     objRtn.QTY_LF2 = rs01.getLong("QTY_LF2");
                     objRtn.QTY_CF2 = rs01.getLong("QTY_CF2");
+                    objRtn.QTY_PF2 = objRtn.QTY_LF2 - objRtn.QTY_CF2;
                     objRtn.QTY_SE = rs01.getLong("QTY_SE");
                     objRtn.QTY_PE = rs01.getLong("QTY_PE");
 
                     objRtn.totQTY_LF2 = QTY_LF2;
                     objRtn.totQTY_CF2 = QTY_CF2;
+                    objRtn.totQTY_PF2 = QTY_LF2 - QTY_CF2;
                     objRtn.totQTY_SE = QTY_SE;
                     objRtn.totQTY_PE = QTY_PE;
 

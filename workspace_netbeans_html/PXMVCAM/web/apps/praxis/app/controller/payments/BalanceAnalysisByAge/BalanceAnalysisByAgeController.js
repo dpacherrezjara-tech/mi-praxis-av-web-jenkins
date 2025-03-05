@@ -1460,18 +1460,17 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     } else {
                         var lstTemp = [];
                         var lstTemp2 = [];
-                        var data = obj.data.items[0].data;
-                        var sumDif2 = data.totQTY_LF2 - data.totQTY_CF2; 
+                        var data = obj.data.items[0].data; 
                         var item = {};
                         var item2 = {};
 
-                        item.LABEL = 'Total Received - ' + Ext.util.Format.number(data.QTY_LF2, '0,000');
-                        item.QTY = data.QTY_LF2;
+                        item.LABEL = 'Total Concilied - ' + Ext.util.Format.number(data.totQTY_CF2, '0,000');
+                        item.QTY = data.totQTY_CF2;
                         lstTemp.push(item);
 
                         item = {};
-                        item.LABEL = 'Pending to Concilied - ' + Ext.util.Format.number(sumDif2, '0,000');
-                        item.QTY = sumDif2;
+                        item.LABEL = 'Pending to Concilied - ' + Ext.util.Format.number(data.totQTY_PF2, '0,000');
+                        item.QTY = data.totQTY_PF2;
                         lstTemp.push(item);
   
                         item2.LABEL = 'Total Send - ' + Ext.util.Format.number(data.totQTY_SE, '0,000');

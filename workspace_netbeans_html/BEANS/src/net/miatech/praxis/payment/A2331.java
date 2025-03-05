@@ -97,6 +97,7 @@ public class A2331 {
     public String VALDATE = "";
     public long QTY_LF2 = 0;
     public long QTY_CF2 = 0;
+    public long QTY_PF2 = 0;
     public long QTY_SE = 0;
     public long QTY_PE = 0;
 
