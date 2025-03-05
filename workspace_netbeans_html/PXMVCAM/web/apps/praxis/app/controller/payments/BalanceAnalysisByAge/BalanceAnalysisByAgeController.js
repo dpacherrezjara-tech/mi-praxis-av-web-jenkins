@@ -17,6 +17,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     searchParams: {},
     searchParams2: {},
     searchParams3: {},
+    searchParams4: {},
     paramsDetail: {},
     paramsObtainData: {},
     paramsTKT: {},
@@ -305,7 +306,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             bean: me.bean
         };
     },
+    setFormatParameter4: function () {
+        me.bean = {};
+        me.bean.SENTDATE = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_DATE = 'VALDATE';
 
+        console.log(me.bean, 'me.bean CUARTO parameter')
+        var beanString = JSON.stringify(me.bean);
+        searchParams4 = {
+            beanString: beanString,
+            bean: me.bean
+        };
+    },
     btnSearch_click: function (obj, e) {
 
         let panelReportDay = Ext.getCmp(prototype.id + '-boxPendingData')
@@ -318,6 +330,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelGroupDataCLAtot = Ext.getCmp(prototype.id + '-boxGroupDataCLAtot')
         let panelMainDataCLA = Ext.getCmp(prototype.id + '-boxMainDataCLA')
         let panelGroupDataCLA = Ext.getCmp(prototype.id + '-boxGroupDataCLA')
+        let panelDataProvisions = Ext.getCmp(prototype.id + '-boxDataProvisions')
         let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
         if (panelReportDay.isVisible()) {
             me.typeBean = 'S' //Search
@@ -347,6 +360,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (panelGridData.isVisible()) {
             this.setFormatParameter2();
             this.setGridDataTotal();
+        } else if (panelDataProvisions.isVisible()) {
+            this.setFormatParameter4();
+            this.searchProvisions();
         }
     },
     onChkboxPending: function (checkbox, newValue, oldValue) {
@@ -875,6 +891,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //            Ext.getCmp(prototype.id + '-contentFilter').hide();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').show();
+        } else if (newValue === 'V') {
+            Ext.getCmp(prototype.id + '-pie').setVisible(false);
+            this.setFormatParameter4();
+            this.searchProvisions();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
+            
         }
     },
     setGridData: function () {
@@ -1413,6 +1436,74 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         }
 
 
+    },
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="searchProvisions">
+    searchProvisions: function () {
+        win.lblUser_toolTip("Estructura: MPF140/MPF102");
+
+        me.panelActual = '-boxDataProvisions';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        Ext.getCmp(prototype.id + '-pie').setVisible(false);
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchProvisions'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = searchParams4;
+                },
+                load: function (obj) {
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var lstTemp = [];
+                        var lstTemp2 = [];
+                        var data = obj.data.items[0].data; 
+                        var item = {};
+                        var item2 = {};
+
+                        item.LABEL = 'Total Concilied - ' + Ext.util.Format.number(data.totQTY_CF2, '0,000');
+                        item.QTY = data.totQTY_CF2;
+                        lstTemp.push(item);
+
+                        item = {};
+                        item.LABEL = 'Pending to Concilied - ' + Ext.util.Format.number(data.totQTY_PF2, '0,000');
+                        item.QTY = data.totQTY_PF2;
+                        lstTemp.push(item);
+  
+                        item2.LABEL = 'Total Send - ' + Ext.util.Format.number(data.totQTY_SE, '0,000');
+                        item2.QTY = data.totQTY_SE;
+                        lstTemp2.push(item2);
+
+                        item2 = {};
+                        item2.LABEL = 'Pending to Send - ' + Ext.util.Format.number(data.totQTY_PE, '0,000');
+                        item2.QTY = data.totQTY_PE;
+                        lstTemp2.push(item2);
+                        
+                        var storeData1er = Ext.create('Ext.data.Store', {
+                            data: lstTemp,
+                            autoLoad: true
+                        });
+                        var storeData1er2 = Ext.create('Ext.data.Store', {
+                            data: lstTemp2,
+                            autoLoad: true
+                        });
+                        
+                        Ext.getCmp(prototype.id + '-displayProvisions').bindStore(storeData1er);
+                        Ext.getCmp(prototype.id + '-displayProvisions2').bindStore(storeData1er2);
+                        
+                        
+                    }
+
+                }
+            }
+        });
+
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataProvisions').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pie').setVisible(false);
     },
     // </editor-fold>
     setPaidByCompany: function (array, ccust, id, idLabel) {

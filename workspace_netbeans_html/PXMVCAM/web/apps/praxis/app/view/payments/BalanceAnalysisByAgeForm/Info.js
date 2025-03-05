@@ -96,12 +96,12 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     console.log(record.data, 'sales dateeeee')
                                                                     let valor = '';
-                                                                    
-                                                                    if( record.data.children && record.data.children[0].FCHILD === '1' ){
+
+                                                                    if (record.data.children && record.data.children[0].FCHILD === '1') {
                                                                         valor = value;
-                                                                    }else if( record.data.children && record.data.children[0].FCHILD === '0' ){
+                                                                    } else if (record.data.children && record.data.children[0].FCHILD === '0') {
                                                                         valor = value;
-                                                                    }else{
+                                                                    } else {
                                                                         valor = ' ';
                                                                     }
                                                                     return valor;
@@ -5536,6 +5536,273 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 }
                             ]
                         },
+                        // <editor-fold defaultstate="collapsed" desc="boxDataProvisions">
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxDataProvisions',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+                            height: 'auto',
+                            width: 1104,
+                            margin: '10 0 0 0 ',
+                            layout: {
+                                type: 'hbox'
+                            },
+                            items: [
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-boxGrill',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    border: false,
+                                    height: 'auto',
+                                    width: 600,
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'vbox'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridDataProvisions',
+                                            height: 400,
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            width: 602,
+                                            border: false,
+                                            hidden: false,
+                                            columnLines: true,
+                                            features: [{
+                                                    ftype: 'summary'
+                                                }],
+                                            columns: {
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'Value<br>Date',
+                                                        width: 100,
+                                                        dataIndex: 'VALDATE',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;"; 
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:center; background: #6C87A8;color: white; ';
+                                                            return '<b>' + 'Total' + '<b>';
+                                                        }
+
+                                                    },
+                                                    {
+                                                        text: 'Settlement Information',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Match',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_CF2',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_CF2, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Pending',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_PF2',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_PF2, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Total',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_LF2',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_LF2, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Accounting Information',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7D9F7D;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Send',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_SE',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #7D9F7D ;color: white;';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_SE, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Pending',
+                                                                width: 100,
+                                                                dataIndex: 'QTY_PE',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_PE, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                        ]
+                                                    },
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-boxGraf',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    border: false,
+                                    height: 'auto',
+                                    width: 500,
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'vbox'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'polar',
+                                            id: prototype.id + '-displayProvisions',
+                                            width: 531,
+                                            border: true,
+                                            margin: '0 0 0 10',
+                                            innerPadding: 15,
+                                            height: 200,
+                                            background: '#E0F8F7',
+                                            captions: {
+                                                title: {
+                                                    text: 'Settlement Information',
+                                                    fieldStyle: 'font-size:5px',
+                                                    alignTo: 'center'
+                                                }
+                                            },
+                                            animation: {
+                                                duration: 200
+                                            },
+                                            interactions: ['rotate', 'itemhighlight'],
+                                            series: [{
+                                                    type: 'pie3d',
+                                                    angleField: 'QTY',
+                                                    colors: ['#5B86D3', '#94B5E0'],
+
+                                                    label: {
+                                                        field: 'LABEL',
+                                                        renderer: function (value, b, callout) {
+                                                            callout.calloutWidth = 0;
+                                                            return value;
+                                                        }
+                                                    },
+                                                    highlight: true,
+                                                    tooltip: {
+                                                        trackMouse: true,
+                                                        height: 28,
+                                                        renderer: function (toolTip, record, ctx) {
+                                                            var label = 'Total';
+                                                            toolTip.setHtml(label + ' - ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                        }
+                                                    }
+                                                }]
+                                        },
+                                        {
+                                            xtype: 'polar',
+                                            id: prototype.id + '-displayProvisions2',
+                                            width: 531,
+                                            border: true,
+                                            margin: '5 0 0 10',
+                                            innerPadding: 15,
+                                            height: 200,
+                                            background: '#E0F8F7',
+                                            captions: {
+                                                title: {
+                                                    text: 'Accounting Information',
+                                                    fieldStyle: 'font-size:5px',
+                                                    alignTo: 'center'
+                                                }
+                                            },
+                                            animation: {
+                                                duration: 200
+                                            },
+                                            interactions: ['rotate', 'itemhighlight'],
+                                            series: [{
+                                                    type: 'pie3d',
+                                                    angleField: 'QTY',
+                                                    colors: ['#8BC69C', '#C8E0C8'],
+                                                    label: {
+                                                        field: 'LABEL',
+                                                        renderer: function (value, b, callout) {
+                                                            callout.calloutWidth = 0;
+                                                            return value;
+                                                        }
+                                                    },
+                                                    highlight: true,
+                                                    tooltip: {
+                                                        trackMouse: true,
+                                                        height: 28,
+                                                        renderer: function (toolTip, record, ctx) {
+                                                            var label = 'Total';
+                                                            toolTip.setHtml(label + ' - ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                        }
+                                                    }
+                                                }]
+                                        }
+                                    ]
+                                },
+                            ]
+                        },
+                        // </editor-fold>
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
