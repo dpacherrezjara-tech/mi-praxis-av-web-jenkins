@@ -175,6 +175,12 @@ public class A2331Filter extends A2331 {
     public double totAMTGDSB = 0;
     public double totAMTGDSBU = 0;
     
+     public long totQTY_LF2 = 0;
+     public long totQTY_CF2 = 0;
+     public long totQTY_PF2 = 0;
+     public long totQTY_SE = 0;
+     public long totQTY_PE = 0;
+    
     public Pagination page = new Pagination();
 
 }
