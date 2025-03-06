@@ -103,7 +103,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.BANK = 1;
-        this.dataObtain.CARD = 2;
+        this.dataObtain.CARD = 2; 
+        this.dataObtain.COREP = 2;
 
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -114,12 +115,34 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res, 'res')
                 if (res.success) {
-
-                    me.lstCountry = res.lstCountry;
+                    
                     me.lstBank = res.lstBank;
-                    Ext.getCmp(prototype.id + '-cmbScarCode').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-cmbScarCode').setValue('');
+                    me.lstCard = res.lstCard;
+                    me.lstCountry = res.lstCountry;
+                    var lstProcessor = res.lstProcessor;
+
+                    var storeData2 = Ext.create('Ext.data.Store', {
+                        data: me.lstCard,
+                        autoLoad: true
+                    });
+                    var storeData3 = Ext.create('Ext.data.Store', {
+                        data: me.lstCountry,
+                        autoLoad: true
+                    });
+
+                    var storeDataProcessor = Ext.create('Ext.data.Store', {
+                        data: lstProcessor,
+                        autoLoad: true
+                    });
+                     
+                    Ext.getCmp(prototype.id + '-cmbCardType').bindStore(storeData2);
+                    Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                    Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
+
+                    Ext.getCmp(prototype.id + '-cmbCardType').setValue('');
+                    Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                    Ext.getCmp(prototype.id + '-cmbCOREP').setValue('');
+                    global.clear();
 
 
                     me.btnSearch_click();
@@ -134,9 +157,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
         me.bean = {};
         me.bean.IN_CMERCHAN = Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue();
         me.bean.IN_BMERCHAN = Ext.getCmp(prototype.id + '-txtBMERCHAN').getValue();
-        me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbScarCode').getValue();
+        me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbCardType').getValue();
         me.bean.IN_CTABANK = Ext.getCmp(prototype.id + '-txtCTABANK').getValue();
-
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,
@@ -286,7 +311,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     buscarFilter: function (obj, e, eOpts) {
         switch (e.getKey()) {
             case 13:
-                if (Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue().length > 0 || Ext.getCmp(prototype.id + '-txtCTABANK').getValue().length > 0 || Ext.getCmp(prototype.id + '-cmbScarCode').getValue().length > 0) {
+                if (Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue().length > 0 || Ext.getCmp(prototype.id + '-txtCTABANK').getValue().length > 0 || Ext.getCmp(prototype.id + '-cmbCardType').getValue().length > 0) {
 //                    if (Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 7 || Ext.getCmp(prototype.id + '-txtCAGENCY').getValue().length === 8) {
 //                        this.btnSearch_click();
 //                    } else {
@@ -352,7 +377,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         Ext.getCmp(prototype.id + '-txtBMERCHAN').setValue('');
         Ext.getCmp(prototype.id + '-txtCMERCHAN').setValue('');
-        Ext.getCmp(prototype.id + '-cmbScarCode').setValue('');
+        Ext.getCmp(prototype.id + '-cmbCardType').setValue('');
 //        Ext.getCmp(prototype.id + '-cmbSTATUS').setValue('');
 //        Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
 //        Ext.getCmp(prototype.id + '-txtCANAL').setValue('');

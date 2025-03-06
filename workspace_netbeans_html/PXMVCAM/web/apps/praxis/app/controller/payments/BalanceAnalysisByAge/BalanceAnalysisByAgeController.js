@@ -310,6 +310,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean = {};
         me.bean.SENTDATE = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_DATE = 'VALDATE';
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 
         console.log(me.bean, 'me.bean CUARTO parameter')
         var beanString = JSON.stringify(me.bean);
