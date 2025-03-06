@@ -32,6 +32,7 @@ public String STATUS = "";
 public String desSTATUS = "";
 public String IN_STATUS = "";
 public String IN_COUNTRY = "";
+public String IN_COREP = "";
 public String CODE = "";
 public String COREP = "";
 public String NAME = "";

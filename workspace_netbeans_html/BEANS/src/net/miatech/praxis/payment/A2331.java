@@ -95,11 +95,25 @@ public class A2331 {
     public String TKTEXCH = "";
     
     public String VALDATE = "";
-    public long QTY_LF2 = 0;
-    public long QTY_CF2 = 0;
+    public long QTY_TF1 = 0;
+    public long QTY_MF1 = 0;
+    public long QTY_PF1 = 0;
+    public long QTY_TF2 = 0;
+    public long QTY_MF2 = 0;
     public long QTY_PF2 = 0;
     public long QTY_SE = 0;
     public long QTY_PE = 0;
+    public long QTY_PR = 0;
+    
+    public double AMOUNT_TF1 = 0;
+    public double AMOUNT_MF1 = 0;
+    public double AMOUNT_PF1 = 0;
+    public double AMOUNT_TF2 = 0;
+    public double AMOUNT_MF2 = 0;
+    public double AMOUNT_PF2 = 0; 
+    public double AMOUNT_SE = 0;
+    public double AMOUNT_PE = 0;
+    public double AMOUNT_PR = 0;
 
     //Datos Auditoria        
     public String USCR = "";
