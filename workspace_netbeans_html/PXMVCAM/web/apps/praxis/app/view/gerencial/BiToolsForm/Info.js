@@ -21,7 +21,7 @@ var controller = {
     }
 };
 
-var controller = {
+var controller_JS = {
     select: function (value, row) {
         var dataStore = Ext.getCmp(prototype.id + '-gridDataMain').getStore();
         var dataRow = dataStore.data.items[row].data;
@@ -1514,7 +1514,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                         return '';
                                                     }
                                                     var checked = record.data.select ? 'checked' : '';
-                                                    return '<input type="checkbox" ' + checked + ' onclick="controller.select(this.checked,' + row + ')">';
+                                                    return '<input type="checkbox" ' + checked + ' onclick="controller_JS.select(this.checked,' + row + ')">';
                                                 }
                                             }
 
