@@ -5543,10 +5543,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1104,
-                            margin: '10 0 0 0 ',
+                            width: 1800,
+                            margin: '10 0 0 80 ',
                             layout: {
-                                type: 'hbox'
+                                type: 'vbox'
                             },
                             items: [
                                 {
@@ -5555,7 +5555,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     bodyStyle: 'background-color: #E3EAEF;',
                                     border: false,
                                     height: 'auto',
-                                    width: 600,
                                     margin: '0 0 0 0 ',
                                     layout: {
                                         type: 'vbox'
@@ -5566,7 +5565,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             id: prototype.id + '-gridDataProvisions',
                                             height: 400,
                                             bodyStyle: 'background-color: #E3EAEF;',
-                                            width: 602,
+                                            width: 1722,
                                             border: false,
                                             hidden: false,
                                             columnLines: true,
@@ -5585,9 +5584,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         width: 100,
                                                         dataIndex: 'VALDATE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        style: ' background: #6C87A8;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;"; 
+                                                            metaData.style = "text-align:center;";
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -5598,91 +5597,365 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 
                                                     },
                                                     {
-                                                        text: 'Settlement Information',
+                                                        text: 'Statement Information',
                                                         menuDisabled: true,
                                                         style: 'background: #6C87A8;',
                                                         columns: [
                                                             {
                                                                 text: 'Match',
-                                                                width: 100,
-                                                                dataIndex: 'QTY_CF2',
-                                                                align: 'center',
-                                                                style: 'padding: 6px; background: #6C87A8;',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return '<b>' + value + '</b>';
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
-                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_CF2, '0,000') + '<b>';
-                                                                }
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_MF1',
+                                                                        align: 'center',
+                                                                        style: ' background: #6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_MF1, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_MF1',
+                                                                        align: 'center',
+                                                                        style: ' background: #6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_MF1, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
                                                             },
                                                             {
                                                                 text: 'Pending',
-                                                                width: 100,
-                                                                dataIndex: 'QTY_PF2',
-                                                                align: 'center',
-                                                                style: 'padding: 6px; background: #6C87A8;',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return '<b>' + value + '</b>';
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
-                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_PF2, '0,000') + '<b>';
-                                                                }
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_PF1',
+                                                                        align: 'center',
+                                                                        style: ' background: #6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_PF1, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_PF1',
+                                                                        align: 'center',
+                                                                        style: ' background: #6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_PF1, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
-                                                                dataIndex: 'QTY_LF2',
-                                                                align: 'center',
-                                                                style: 'padding: 6px; background: #6C87A8;',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return '<b>' + value + '</b>';
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
-                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_LF2, '0,000') + '<b>';
-                                                                }
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_TF1',
+                                                                        align: 'center',
+                                                                        style: ' background: #6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_TF1, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_TF1',
+                                                                        align: 'center',
+                                                                        style: ' background: #6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #6C87A8;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_TF1, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Settlement Information',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7D9F7D;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Match',
+                                                                menuDisabled: true,
+                                                                style: 'background: #7D9F7D;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_MF2',
+                                                                        align: 'center',
+                                                                        style: ' background: #7D9F7D;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_MF2, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_MF2',
+                                                                        align: 'center',
+                                                                        style: ' background: #7D9F7D;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_MF2, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Pending',
+                                                                menuDisabled: true,
+                                                                style: 'background: #7D9F7D;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_PF2',
+                                                                        align: 'center',
+                                                                        style: ' background: #7D9F7D;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_PF2, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_PF2',
+                                                                        align: 'center',
+                                                                        style: ' background: #7D9F7D;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_PF2, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Total',
+                                                                menuDisabled: true,
+                                                                style: 'background: #7D9F7D;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_TF2',
+                                                                        align: 'center',
+                                                                        style: ' background: #7D9F7D;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_TF2, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_TF2',
+                                                                        align: 'center',
+                                                                        style: ' background: #7D9F7D;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_TF2, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
                                                             },
                                                         ]
                                                     },
                                                     {
                                                         text: 'Accounting Information',
                                                         menuDisabled: true,
-                                                        style: 'background: #7D9F7D;',
+                                                        style: 'background: #D18F77;',
                                                         columns: [
                                                             {
                                                                 text: 'Send',
-                                                                width: 100,
-                                                                dataIndex: 'QTY_SE',
-                                                                align: 'center',
-                                                                style: 'padding: 6px; background: #7D9F7D;',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return '<b>' + value + '</b>';
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; background: #7D9F7D ;color: white;';
-                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_SE, '0,000') + '<b>';
-                                                                }
+                                                                menuDisabled: true,
+                                                                style: 'background: #D18F77;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_SE',
+                                                                        align: 'center',
+                                                                        style: ' background: #D18F77;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #D18F77 ;color: white;';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_SE, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_SE',
+                                                                        align: 'center',
+                                                                        style: ' background: #D18F77;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #D18F77 ;color: white;';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_SE, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
                                                             },
                                                             {
                                                                 text: 'Pending',
-                                                                width: 100,
-                                                                dataIndex: 'QTY_PE',
+                                                                menuDisabled: true,
+                                                                style: 'background: #D18F77;',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Qty',
+                                                                        width: 70,
+                                                                        dataIndex: 'QTY_PE',
+                                                                        align: 'center',
+                                                                        style: ' background: #D18F77;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #D18F77;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totQTY_PE, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount',
+                                                                        width: 110,
+                                                                        dataIndex: 'AMOUNT_PE',
+                                                                        align: 'center',
+                                                                        style: ' background: #D18F77;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            value = Ext.util.Format.number(value, '0,000');
+                                                                            return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; background: #D18F77;color: white; ';
+                                                                            return '<b>' + Ext.util.Format.number(data.totAMOUNT_PE, '0,000') + '<b>';
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Provision',
+                                                        menuDisabled: true,
+                                                        style: 'background: #8A99A6;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Qty',
+                                                                width: 70,
+                                                                dataIndex: 'QTY_PR',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                style: ' background: #8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     value = Ext.util.Format.number(value, '0,000');
@@ -5690,8 +5963,25 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
-                                                                    metaData.style = 'text-align:right; background: #7D9F7D;color: white; ';
-                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_PE, '0,000') + '<b>';
+                                                                    metaData.style = 'text-align:right; background: #8A99A6 ;color: white;';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQTY_PR, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Amount',
+                                                                width: 110,
+                                                                dataIndex: 'AMOUNT_PR',
+                                                                align: 'center',
+                                                                style: ' background: #8A99A6;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; background: #8A99A6 ;color: white;';
+                                                                    return '<b>' + Ext.util.Format.number(data.totAMOUNT_PR, '0,000') + '<b>';
                                                                 }
                                                             },
                                                         ]
@@ -5707,10 +5997,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     bodyStyle: 'background-color: #E3EAEF;',
                                     border: false,
                                     height: 'auto',
+                                    hidden: true,
                                     width: 500,
                                     margin: '0 0 0 0 ',
                                     layout: {
-                                        type: 'vbox'
+                                        type: 'hbox'
                                     },
                                     items: [
                                         {
@@ -5718,6 +6009,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             id: prototype.id + '-displayProvisions',
                                             width: 531,
                                             border: true,
+
                                             margin: '0 0 0 10',
                                             innerPadding: 15,
                                             height: 200,

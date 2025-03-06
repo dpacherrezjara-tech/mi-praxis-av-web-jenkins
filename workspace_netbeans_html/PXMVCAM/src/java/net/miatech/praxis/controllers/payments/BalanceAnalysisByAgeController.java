@@ -1136,7 +1136,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
     @RequestMapping(value = "searchProvisions")
     public @ResponseBody
     String searchProvisions(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- ProPaymentsControl : searchClarification-------------");
+        System.out.println("-------------- ProPaymentsControl : searchProvisions-------------");
         map.put("success", true);
         List<A2331Filter> lst = this.getListProvisions(request, false);
         System.out.println("Total : " + lst.size());
