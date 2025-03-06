@@ -29,8 +29,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                 {
                     xtype: 'label',
                     strong: true,
-                    html: '<strong>Merchant :</strong>',
-                    padding: '7 0 0 20',
+                    html: '<strong>Merchant:</strong>',
+                    padding: '7 0 0 10',
                     width: 87,
                 },
                 {
@@ -49,9 +49,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                 {
                     xtype: 'label',
                     strong: true,
-                    html: '<strong>Branch Merchant :</strong>',
-                    padding: '7 0 0 20',
-                    width: 140,
+                    html: '<strong>Branch Merchant:</strong>',
+                    padding: '7 0 0 10',
+                    width: 130,
                 },
                 {
                     xtype: 'textfield',
@@ -68,8 +68,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                 },
                 {
                     xtype: 'label',
-                    html: '<strong>Cta Bank :</strong>',
-                    padding: '7 0 0 20',
+                    html: '<strong>Cta Bank:</strong>',
+                    padding: '7 0 0 10',
                     width: 87,
                     hidden: true,
                 },
@@ -90,7 +90,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Credit Card Code',
-                    id: prototype.id + '-cmbScarCode',
+                    id: prototype.id + '-cmbCardType',
                     disabled: false,
                     width: 300,
                     labelWidth: 120,
@@ -103,6 +103,52 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     listeners: {
                         keypress: 'buscarFilter'
                     }
+                },
+                {
+                    xtype: 'label',
+                    html: '<strong>Country:</strong>',
+                    strong: true,
+                    padding: '7 0 0 10',
+                    width: 70
+                },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCountry',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 210,
+                    typeAhead: true,
+                    valueField: 'A006PAIS',
+                    displayField: 'A006NOMBRE',
+                    listConfig: {maxHeight: 111},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                },
+                {
+                    xtype: 'label',
+                    html: '<strong>Processor:</strong>',
+                    strong: true,
+                    padding: '7 0 0 10',
+                    width: 80,
+                },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCOREP',
+                    width: 130,
+                    emptyText: 'All',
+//                    value: [],
+                    displayField: 'NAME',
+                    valueField: 'VALUE',
+                    queryMode: 'local',
+//                    filterPickList: true,
+                    editable: true,
+//                    multiSelect: true,
+                    forceSelection: true,
                 },
                 {
                     xtype: 'form',
@@ -135,7 +181,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                                     allowBlank: true,
                                     accept: '.xlsx, .xls',
                                     labelWidth: 85,
-                                    width: 400,
+                                    width: 300,
                                     buttonAlign: 'left',
                                     buttonText: 'Select excel...',
                                     regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,

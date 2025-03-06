@@ -175,11 +175,24 @@ public class A2331Filter extends A2331 {
     public double totAMTGDSB = 0;
     public double totAMTGDSBU = 0;
     
-     public long totQTY_LF2 = 0;
-     public long totQTY_CF2 = 0;
+     public long totQTY_TF1 = 0;
+     public long totQTY_MF1 = 0;
+     public long totQTY_PF1 = 0;
+     public long totQTY_TF2 = 0;
+     public long totQTY_MF2 = 0;
      public long totQTY_PF2 = 0;
      public long totQTY_SE = 0;
      public long totQTY_PE = 0;
+     public long totQTY_PR = 0;
+     public double totAMOUNT_TF1 = 0;
+     public double totAMOUNT_MF1 = 0;
+     public double totAMOUNT_PF1 = 0;
+     public double totAMOUNT_TF2 = 0;
+     public double totAMOUNT_MF2 = 0;
+     public double totAMOUNT_PF2 = 0;
+     public double totAMOUNT_SE = 0;
+     public double totAMOUNT_PE = 0;
+     public double totAMOUNT_PR = 0;
     
     public Pagination page = new Pagination();
 

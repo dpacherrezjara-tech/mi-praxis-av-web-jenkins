@@ -2637,7 +2637,8 @@ public class BalanceAnalysisByAgeDAO {
         List<A2331Filter> list = new ArrayList<A2331Filter>();
         A2331Filter objRtn;
         A2331Filter objRtnNotFound = new A2331Filter();
-        long QTY_LF2 = 0, QTY_CF2 = 0, QTY_SE = 0, QTY_PE = 0;
+        long QTY_TF1 = 0, QTY_MF1 = 0, QTY_PF1 = 0, QTY_TF2 = 0, QTY_MF2 = 0, QTY_PF2 = 0, QTY_SE = 0, QTY_PE = 0;
+        double AMOUNT_TF1 = 0, AMOUNT_MF1 = 0, AMOUNT_PF1 = 0, AMOUNT_TF2 = 0, AMOUNT_MF2 = 0, AMOUNT_PF2 = 0, AMOUNT_SE = 0, AMOUNT_PE = 0;
 
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
@@ -2651,17 +2652,29 @@ public class BalanceAnalysisByAgeDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_DATE.trim());
-            cstmt.setString(3, filter.SENTDATE);
-            cstmt.setString(4, filter.IN_TDOC.trim());
+            cstmt.setString(3, filter.SENTDATE.trim());
+            cstmt.setString(4, filter.IN_COUNTRY.trim());
             cstmt.execute();
 
             rs01 = cstmt.getResultSet();
-
+           
             if (rs01.next()) {
-                QTY_LF2 = rs01.getLong("QTY_LF2");
-                QTY_CF2 = rs01.getLong("QTY_CF2");
+                QTY_TF1 = rs01.getLong("QTY_TF1");
+                QTY_MF1 = rs01.getLong("QTY_MF1");
+                QTY_PF1 = QTY_TF1 - QTY_MF1;
+                QTY_TF2 = rs01.getLong("QTY_TF2");
+                QTY_MF2 = rs01.getLong("QTY_MF2");
+                QTY_PF2 = QTY_TF2 - QTY_MF2;
                 QTY_SE = rs01.getLong("QTY_SE");
                 QTY_PE = rs01.getLong("QTY_PE");
+                AMOUNT_TF1 = rs01.getDouble("AMOUNT_TF1");
+                AMOUNT_MF1 = rs01.getDouble("AMOUNT_MF1");
+                AMOUNT_PF1 = AMOUNT_TF1 - AMOUNT_MF1;
+                AMOUNT_TF2 = rs01.getDouble("AMOUNT_TF2");
+                AMOUNT_MF2 = rs01.getDouble("AMOUNT_MF2");
+                AMOUNT_PF2 = AMOUNT_TF2 - AMOUNT_MF2;
+                AMOUNT_SE = rs01.getDouble("AMOUNT_SE");
+                AMOUNT_PE = rs01.getDouble("AMOUNT_PE");
 
             }
             try {
@@ -2681,17 +2694,49 @@ public class BalanceAnalysisByAgeDAO {
                     objRtn.IN_TDOC = filter.IN_TDOC;
 
                     objRtn.VALDATE = rs01.getString("VALDATE").trim();
-                    objRtn.QTY_LF2 = rs01.getLong("QTY_LF2");
-                    objRtn.QTY_CF2 = rs01.getLong("QTY_CF2");
-                    objRtn.QTY_PF2 = objRtn.QTY_LF2 - objRtn.QTY_CF2;
+                    objRtn.QTY_TF1 = rs01.getLong("QTY_TF1");
+                    objRtn.QTY_MF1 = rs01.getLong("QTY_MF1");
+                    objRtn.QTY_PF1 = objRtn.QTY_TF1 - objRtn.QTY_MF1;
+                    objRtn.QTY_TF2 = rs01.getLong("QTY_TF2");
+                    objRtn.QTY_MF2 = rs01.getLong("QTY_MF2");
+                    objRtn.QTY_PF2 = objRtn.QTY_TF2 - objRtn.QTY_MF2;
                     objRtn.QTY_SE = rs01.getLong("QTY_SE");
                     objRtn.QTY_PE = rs01.getLong("QTY_PE");
+                    
+                    objRtn.QTY_PR = objRtn.QTY_PF1 + objRtn.QTY_PF2 + objRtn.QTY_PE;
 
-                    objRtn.totQTY_LF2 = QTY_LF2;
-                    objRtn.totQTY_CF2 = QTY_CF2;
-                    objRtn.totQTY_PF2 = QTY_LF2 - QTY_CF2;
+                    objRtn.AMOUNT_TF1 = rs01.getDouble("AMOUNT_TF1");
+                    objRtn.AMOUNT_MF1 = rs01.getDouble("AMOUNT_MF1");
+                    objRtn.AMOUNT_PF1 = objRtn.AMOUNT_TF1 - objRtn.AMOUNT_MF1;
+                    objRtn.AMOUNT_TF2 = rs01.getDouble("AMOUNT_TF2");
+                    objRtn.AMOUNT_MF2 = rs01.getDouble("AMOUNT_MF2");
+                    objRtn.AMOUNT_PF2 = objRtn.AMOUNT_TF2 - objRtn.AMOUNT_MF2;
+                    objRtn.AMOUNT_SE = rs01.getDouble("AMOUNT_SE");
+                    objRtn.AMOUNT_PE = rs01.getDouble("AMOUNT_PE");
+                    
+                    objRtn.AMOUNT_PR = objRtn.AMOUNT_PF1 + objRtn.AMOUNT_PF2 + objRtn.AMOUNT_PE;
+
+                    objRtn.totQTY_TF1 = QTY_TF1;
+                    objRtn.totQTY_MF1 = QTY_MF1;
+                    objRtn.totQTY_PF1 = QTY_TF1 - QTY_MF1;
+                    objRtn.totQTY_TF2 = QTY_TF2;
+                    objRtn.totQTY_MF2 = QTY_MF2;
+                    objRtn.totQTY_PF2 = QTY_TF2 - QTY_MF2;
                     objRtn.totQTY_SE = QTY_SE;
                     objRtn.totQTY_PE = QTY_PE;
+                    
+                    objRtn.totQTY_PR = objRtn.totQTY_PF1 + objRtn.totQTY_PF2 + objRtn.totQTY_PE;
+
+                    objRtn.totAMOUNT_TF1 = AMOUNT_TF1;
+                    objRtn.totAMOUNT_MF1 = AMOUNT_MF1;
+                    objRtn.totAMOUNT_PF1 = AMOUNT_TF1 - AMOUNT_MF1;
+                    objRtn.totAMOUNT_TF2 = AMOUNT_TF2;
+                    objRtn.totAMOUNT_MF2 = AMOUNT_MF2;
+                    objRtn.totAMOUNT_PF2 = AMOUNT_TF2 - AMOUNT_MF2;
+                    objRtn.totAMOUNT_SE = AMOUNT_SE;
+                    objRtn.totAMOUNT_PE = AMOUNT_PE;
+                    
+                    objRtn.totAMOUNT_PR = objRtn.totAMOUNT_PF1 + objRtn.totAMOUNT_PF2 + objRtn.totAMOUNT_PE;
 
                     list.add(objRtn);
                 }
