@@ -52,7 +52,25 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.DataEntryShortcutBiToolsCont
         this.setValue('txtHOUP', this.beanResult.HOUP);
     },
     setCommandSearch: function (column, e, row, column, x, rowData) {
-        console.log('sebas es gay')
+        Ext.getCmp(prototype.id + '-command').setValue(rowData.data.Example);
+    },
+    onDisplayWindow: function (){
+
+        var strTkt = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1]
+//        console.log(strTkt,'strTkt')
+//        var beanProMasterTicket = {};
+//        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
+//        beanProMasterTicket.IN_FORMA = strTkt.substr(3, 4);
+//        beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
+//        beanProMasterTicket.IN_SEQ = '00';
+//        console.log(beanProMasterTicket);
+//        prototypeProgram.view = 'gerencial-bi-tools-form';
+//        prototypeProgram.nprog = 'PX00000676';
+//        prototypeProgram.title = 'Business Tools';
+//        prototypeProgram.modulo = '';
+//        win.displayProMasterTicket(this, 'BiTools', beanProMasterTicket);
+        window.open('http://localhost:8080/AVIANCA/?params=' + strTkt + '#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+//        window.open('http://localhost:8080/AVIANCA/Home#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function(beanTemp) {

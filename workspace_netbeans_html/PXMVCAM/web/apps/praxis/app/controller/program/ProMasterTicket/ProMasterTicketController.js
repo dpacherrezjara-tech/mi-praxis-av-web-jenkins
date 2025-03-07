@@ -44,6 +44,8 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
     },
     afterRender: function() {
         console.log(me);
+        console.log(window.location.href, 'WINDOW.HREF');
+        console.log(window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=",""), 'WINDOW.location');
         this.startDisplay();
     },
     startDisplay: function() {
@@ -89,7 +91,25 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
 		|| this.actionCode === 'VIEW_INFO_SALE_RFND' || this.actionCode === 'VIEW_TRANSACTION_CARD' || this.actionCode === 'VIEW_TRANSACTION_RFND' 
 		|| this.actionCode === 'RequestedBank' || this.actionCode === 'LinkBank' || this.actionCode === 'ViewValuesOUT' || this.actionCode === 'ViewControlFigures' || this.actionCode === 'ViewFlightConciliation' 
                 || this.actionCode === 'ViewDuplicateACCB' || this.actionCode === 'PassengerInvoicesIP' || this.actionCode === 'InterlineVsSalesController' || this.actionCode === 'Dashboard1' || this.actionCode === 'PendingAccountingCoupons' 
-                || this.actionCode === 'AbnormalValue') {
+                || this.actionCode === 'AbnormalValue' || this.actionCode === 'BiTools') {
+            win.setValue('cbxSelectBy', 'TKT');
+            this.cbxSelectBy_closeHandler();
+            win.setValue('txtFilterTicketCia', this.bean.IN_CIA);
+            win.setValue('txtFilterTicketFormSer', this.bean.IN_FORMA+this.bean.IN_SERIE);
+            //if(this.bean.IN_SEQ==="") this.bean.IN_SEQ = "00";
+//            if(this.bean.IN_SEQ!=="") win.setValue('txtFilterTicketSeq', this.bean.IN_SEQ);
+            
+            //this.loadTicket(this.bean);
+            this.loadTicketSeq(this.bean);
+        } else if(window.location.href.includes("params")){
+            console.log('entra al params')
+            let paramsTkt = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","")
+            this.bean.IN_CIA = paramsTkt.substring(0,3);
+            this.bean.IN_FORMA = paramsTkt.substring(3,7)
+            this.bean.IN_SERIE = paramsTkt.substring(7)
+            this.bean.IN_SEQ = ""
+            console.log(paramsTkt, 'paramsTkt')
+            console.log(this.bean, 'this.bean')
             win.setValue('cbxSelectBy', 'TKT');
             this.cbxSelectBy_closeHandler();
             win.setValue('txtFilterTicketCia', this.bean.IN_CIA);
@@ -99,6 +119,7 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
             
             //this.loadTicket(this.bean);
             this.loadTicketSeq(this.bean);
+            
         } else {
             this.imgBrowser_clickHandler();
         }

@@ -12,6 +12,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     orderbyEtiquetas: '',
     me: '',
     searchParams: {},
+    searchParams2: {},
     paramsDetail: {},
     paramsObtainData: {},
     beanDetailTW: {},
@@ -107,23 +108,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         });
     },
     
-    onGridDataViewTktFinal: function (column, e, row, column, x, rowData) {
 
-        var data = x.record.data;
-        var strTkt = data.A1531TKT;
-        var beanProMasterTicket = {};
-//        
-        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
-        beanProMasterTicket.IN_FORMA = strTkt.substr(3, 4);
-        beanProMasterTicket.IN_SERIE = strTkt.substr(7, 6);
-        beanProMasterTicket.IN_SEQ = '00';
-//        console.log(beanProMasterTicket);
-        prototypeProgram.view = 'payments-bank-reconciliation-form';
-        prototypeProgram.nprog = 'PX00000269';
-        prototypeProgram.title = 'Bank Reconciliation';
-        prototypeProgram.modulo = '';
-        win.displayProMasterTicket(this, 'BankConciliation', beanProMasterTicket);
-    },
     showGridActual: function () {
         this.hideAllGrid();
 //        Ext.getCmp(prototype.id + this.gridActual).show();
@@ -2060,8 +2045,42 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         }
 
     },
-    exportExcel: function () {
+    setParameterTW: function () {
+        var bean = {};
 
+        var grid = Ext.getCmp(prototype.id + '-gridDataColumns_JS');
+        var store = grid.getStore();
+
+        var selectedRecord = store.findRecord('select', true, 0, false, false, true);
+
+        if (selectedRecord) {
+            var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
+            var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
+            var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
+            console.log('RQUERY seleccionado:', rquery);
+            console.log('TQUERY seleccionado:', tquery);
+            console.log('Table seleccionada:', ttable);
+ 
+            bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
+            bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
+            bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+            bean.RQUERY = rquery;
+            bean.TQUERY = tquery;
+            bean.TTABLE = ttable;
+            bean.strSQL = this.armandoQuery();
+
+            var beanString = JSON.stringify(bean);
+            searchParams2 = {
+                beanString: beanString,
+                bean: bean
+            };
+        } else {
+            global.Msg({msg: '...You must select a rule...'
+            });
+        }
+    },
+    exportExcel: function () {
+        this.setParameterTW();
         switch (me.gridActual) {
             case  '-gridData':
 //                        var grid = Ext.getCmp(prototype.id + '-gridData');
@@ -2134,6 +2153,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
                 break;
 
+            case  '-panelGridDataMain':
+                global.getFile('/AVIANCA/ManualConciliation/getXLSXMain?beanString=' + encodeURI(searchParams2.beanString));
+                break;
             default:
                 global.Msg({
                     msg: 'Under Construction'
