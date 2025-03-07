@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.DataEntryShortcutBiToolsCont
 //        prototypeProgram.title = 'Business Tools';
 //        prototypeProgram.modulo = '';
 //        win.displayProMasterTicket(this, 'BiTools', beanProMasterTicket);
-        window.open('http://localhost:8080/AVIANCA/?params=' + strTkt + '#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+        window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strTkt + '#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
 //        window.open('http://localhost:8080/AVIANCA/Home#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
