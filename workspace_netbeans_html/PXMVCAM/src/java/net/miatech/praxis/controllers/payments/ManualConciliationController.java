@@ -27,6 +27,8 @@ import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -491,7 +493,7 @@ public class ManualConciliationController extends BaseController {
     public @ResponseBody
     void getXLSXMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getXLSXMain");
-        String fileNameDownload = String.format("Bank Reconciliation Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Manual Conciliation Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
@@ -516,10 +518,13 @@ public class ManualConciliationController extends BaseController {
 
             listaData = logic.loadPX269SQP00871JS_LIQ(filter);
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
-            
+
+            // <editor-fold defaultstate="collapsed" desc=" GENERA EXCELS ">
+            System.out.println("Report : getXLSX");
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Report");
             XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle totalStyle = (XSSFCellStyle) workbook.createCellStyle();
             XSSFCellStyle bodyStyle = (XSSFCellStyle) workbook.createCellStyle();
             Font headerFont = workbook.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -537,6 +542,19 @@ public class ManualConciliationController extends BaseController {
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle.setFont(headerFont);
+            totalStyle.setBorderRight(CellStyle.BORDER_THIN);
+            totalStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            totalStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            totalStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setBorderTop(CellStyle.BORDER_THIN);
+            totalStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            totalStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+            totalStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            totalStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            totalStyle.setVerticalAlignment(CellStyle.ALIGN_RIGHT);
+            totalStyle.setFont(headerFont);
             bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -545,9 +563,17 @@ public class ManualConciliationController extends BaseController {
             bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            DataFormat dataFormat = workbook.createDataFormat();
+            CellStyle amountStyle = workbook.createCellStyle();
+            CellStyle qtyStyle = workbook.createCellStyle();
+            amountStyle.setDataFormat(dataFormat.getFormat("#,##0.00"));
+            qtyStyle.setDataFormat(dataFormat.getFormat("#,##0"));
+
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
-            Iterator iter = listaData.iterator();
+//                Iterator iter = listaData.iterator();
+            Iterator<A2290Filter> iter = listaData.iterator();
             // ====== CREANDO TITULOS ======================================
 
             // ======  Nivel 1 ==========
@@ -609,56 +635,89 @@ public class ManualConciliationController extends BaseController {
             CH1_16.setCellStyle(headerStyle);
             CH1_17.setCellStyle(headerStyle);
 
-            //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-//            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0)); 
             ++vj;
             //============================================ 
-            
+
+            // Estilo para cabeceras en negrita
+            CellStyle style1 = workbook.createCellStyle();
+            style1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            style1.setFillPattern((short) 1);
+
+            XSSFCellStyle style2 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFColor gray15 = new XSSFColor(new byte[]{(byte) 217, (byte) 217, (byte) 217});
+            style2.setFillForegroundColor(gray15);
+            style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            CellStyle boldStyle1 = workbook.createCellStyle();
+            boldStyle1.cloneStyleFrom(style1);
+            Font boldFont1 = workbook.createFont();
+            boldFont1.setBold(true);
+            boldStyle1.setFont(boldFont1);
+
+            CellStyle boldStyle2 = workbook.createCellStyle();
+            boldStyle2.cloneStyleFrom(style2);
+            Font boldFont2 = workbook.createFont();
+            boldFont2.setBold(true);
+            boldStyle2.setFont(boldFont2);
+
+            String lastKey = "";
+            boolean useStyle1 = true;
+
             while (iter.hasNext()) {
-                row1 = sheet.createRow(vj);
-                Cell rcell0 = row1.createCell(0);
-                Cell rcell1 = row1.createCell(1);
-                Cell rcell2 = row1.createCell(2);
-                Cell rcell3 = row1.createCell(3);
-                Cell rcell4 = row1.createCell(4);
-                Cell rcell5 = row1.createCell(5);
-                Cell rcell6 = row1.createCell(6);
-                Cell rcell7 = row1.createCell(7);
-                Cell rcell8 = row1.createCell(8);
-                Cell rcell9 = row1.createCell(9);
-                Cell rcell10 = row1.createCell(10);
-                Cell rcell11 = row1.createCell(11);
-                Cell rcell12 = row1.createCell(12);
-                Cell rcell13 = row1.createCell(13);
-                Cell rcell14 = row1.createCell(14);
-                Cell rcell15 = row1.createCell(15);
-                Cell rcell16 = row1.createCell(16);
-                Cell rcell17 = row1.createCell(17);
+                A2290Filter data = iter.next();
 
-                rcell0.setCellValue(listaData.get(vi).UNIKEY);
-                rcell1.setCellValue(listaData.get(vi).TKT);
-                rcell2.setCellValue(listaData.get(vi).QTY_101);
-                rcell3.setCellValue(listaData.get(vi).SVFOP_101);
-                rcell4.setCellValue(listaData.get(vi).SVFOP_100);
-                rcell5.setCellValue(listaData.get(vi).SCURRENCY_101);
-                rcell6.setCellValue(listaData.get(vi).TDOC_101);
-                rcell7.setCellValue(listaData.get(vi).SDATE_101);
-                rcell8.setCellValue(listaData.get(vi).SCARDN_101);
-                rcell9.setCellValue(listaData.get(vi).SAUTHOC_101);
-                rcell10.setCellValue(listaData.get(vi).SAGENT_101);
-                rcell11.setCellValue(listaData.get(vi).SCARCOD);
-                rcell12.setCellValue(listaData.get(vi).CODEBANK);
-                rcell13.setCellValue(listaData.get(vi).PAYDATE);
-                rcell14.setCellValue(listaData.get(vi).MERCHNC);
-                rcell15.setCellValue(listaData.get(vi).ACCNUMBER);
-                rcell16.setCellValue(listaData.get(vi).TERMI);
-                rcell17.setCellValue(listaData.get(vi).SEQNUM);
+                if (!data.UNIKEY.equals(lastKey)) {
+                    useStyle1 = !useStyle1;
+                    CellStyle currentStyle = useStyle1 ? style1 : style2;
+                    CellStyle currentBoldStyle = useStyle1 ? boldStyle1 : boldStyle2;
 
-                iter.next();
-                ++vi;
-                ++vj;
+                    Row headerRow = sheet.createRow(vj++);
+
+                    createStyledCell(headerRow, 0, data.SCARDN_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 1, "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 2, String.valueOf(data.QTY_101), currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 3, String.valueOf(data.SVFOP_101), currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 4, "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 5, data.SCURRENCY_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 6, data.TDOC_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 7, data.SDATE_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 8, data.SCARDN_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 9, data.SAUTHOC_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 10, data.SAGENT_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 11, data.SCARCOD_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 12, data.CODEBANK, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 13, data.PAYDATE + "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 14, data.MERCHNC + "", currentBoldStyle, workbook);
+                    createStyledCellString(headerRow, 15, data.ACCNUMBER + "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 16, data.TERMI, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 17, "", currentBoldStyle, workbook);
+
+                    lastKey = data.UNIKEY;
+                }
+
+                CellStyle currentStyle = useStyle1 ? style1 : style2;
+                Row detailRow = sheet.createRow(vj++);
+
+                createStyledCell(detailRow, 0, "", currentStyle, workbook);
+                createStyledCellString(detailRow, 1, data.TKT + " ", currentStyle, workbook);
+                createStyledCell(detailRow, 2, "1", currentStyle, workbook);
+                createStyledCell(detailRow, 3, "", currentStyle, workbook);
+                createStyledCell(detailRow, 4, String.valueOf(data.SVFOP_100), currentStyle, workbook);
+                createStyledCell(detailRow, 5, data.SCURRENCY_100, currentStyle, workbook);
+                createStyledCell(detailRow, 6, data.TDOC_100, currentStyle, workbook);
+                createStyledCell(detailRow, 7, data.SDATE_100, currentStyle, workbook);
+                createStyledCell(detailRow, 8, data.SCARDN_100, currentStyle, workbook);
+                createStyledCell(detailRow, 9, data.SAUTHOC_100, currentStyle, workbook);
+                createStyledCell(detailRow, 10, data.SAGENT_100, currentStyle, workbook);
+                createStyledCell(detailRow, 11, data.SCARCOD_100, currentStyle, workbook);
+                createStyledCell(detailRow, 12, "", currentStyle, workbook);
+                createStyledCell(detailRow, 13, "", currentStyle, workbook);
+                createStyledCell(detailRow, 14, "", currentStyle, workbook);
+                createStyledCell(detailRow, 15, "", currentStyle, workbook);
+                createStyledCell(detailRow, 16, "", currentStyle, workbook);
+                createStyledCell(detailRow, 17, "", currentStyle, workbook);
             }
-  
+
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
@@ -677,18 +736,47 @@ public class ManualConciliationController extends BaseController {
             sheet.autoSizeColumn(15, true);
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
-
+   
             //============================================
             response.setContentType("application/vnd.openxml");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
-
+            
             FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             workbook.write(response.getOutputStream());
             fos.close();
-
+            // </editor-fold>
         } catch (IOException e) {
             throw new SpringException(e);
         }
+    }
+    
+    public void createStyledCell(Row row, int column, String value, CellStyle baseStyle, Workbook workbook) {
+        Cell cell = row.createCell(column);
+
+        CellStyle newStyle = workbook.createCellStyle();
+        newStyle.cloneStyleFrom(baseStyle);
+
+        try {
+            double numericValue = Double.parseDouble(value);
+            cell.setCellStyle(newStyle);
+            cell.setCellValue(numericValue);
+        } catch (NumberFormatException e) {
+            DataFormat format = workbook.createDataFormat();
+            newStyle.setDataFormat(format.getFormat("@"));
+            cell.setCellStyle(newStyle);
+            cell.setCellValue(value);
+        }
+    }
+    
+    public void createStyledCellString(Row row, int column, String value, CellStyle baseStyle, Workbook workbook) {
+        Cell cell = row.createCell(column);
+ 
+        CellStyle newStyle = workbook.createCellStyle();
+        newStyle.cloneStyleFrom(baseStyle);
+  
+        cell.setCellStyle(newStyle);
+        cell.setCellValue(value); 
+         
     }
 
 }
