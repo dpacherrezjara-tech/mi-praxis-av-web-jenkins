@@ -23,6 +23,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
                     items: [
                         {
                             fieldLabel: 'Command',
+                            id: prototype.id + '-command',
                             name: 'txtFilter',
                             labelWidth: 80,
                             flex: 1
@@ -30,7 +31,10 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
                         {
                             xtype: 'button',
                             text: 'Search',
-                            margin: '0 10 0 10'
+                            margin: '0 10 0 10',
+                            listeners: {
+                                click: 'onDisplayWindow'
+                            },
                         },
                         {
                             xtype: 'button',
