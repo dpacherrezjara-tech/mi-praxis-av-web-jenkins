@@ -1739,6 +1739,27 @@ var LarSyrExt = function () {
         });
         return store;
     };
+    this.callStorePagginExcel = async function (library, procedure, params) {
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        params.excel = true;
+        params.start = 0;
+        params.limit = -1;
+        try {
+            const res = await request.get(`CallStorePaggin/${library}/${procedure}`, {
+                params:params
+            });
+            const {status, data} = res;
+            if (status === 200) {
+                return data;
+            }
+        } catch (e) {
+            console.error('Error on load', e);
+            return null;
+        }
+    };
 };
 
 var global = new LarSyrExt();

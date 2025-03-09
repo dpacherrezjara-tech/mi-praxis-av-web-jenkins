@@ -35,8 +35,14 @@ public class CallStorePaggin {
     
     public void setPage() {
         Integer start = Integer.valueOf(this.params.get("start").toString());
-        this.IO_PAGROW = 20;
-        this.IO_PAGNUM = (start / this.IO_PAGROW) + 1;
+        if(this.params.containsKey("excel")){
+            this.IO_PAGROW = -1;
+            this.IO_PAGNUM = 1;
+        }else{
+            this.IO_PAGROW = 20;
+            this.IO_PAGNUM = (start / this.IO_PAGROW) + 1;
+        }
+        
         params.put("IO_PAGNUM", this.IO_PAGNUM);
         params.put("IO_PAGROW", this.IO_PAGROW);
         params.put("IO_TOTPAG", this.IO_TOTPAG);

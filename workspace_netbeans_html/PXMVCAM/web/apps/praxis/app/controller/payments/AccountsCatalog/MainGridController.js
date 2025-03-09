@@ -25,6 +25,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.MainGridController', 
         let store = global.callStorePaggin('PRAXISMP','SPNAC001',me.view.searchParams);
         me.view.setStore(store);
         me.store = store;
+    },
+    downloadExcel: async function(){
+        const me = this;
+        console.log(XLSX);
+        let data = await global.callStorePagginExcel('PRAXISMP','SPNAC001',me.view.searchParams);
+        console.log(data);
+        //const worksheet = XLSX.utils.json_to_sheet(rows);
     }
     
 });
