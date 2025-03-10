@@ -19,7 +19,6 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-//                height: 450,
             },
             border: false,
             autoScroll: true,
@@ -36,7 +35,298 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                     items: [
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-vskMain',
+                            id: prototype.id + '-panelGridDataMain',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            defaults: {
+                                border: false,
+                                height: 150
+                            },
+                            bodyStyle: 'background: transparent',
+                            border: false,
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataMain',
+                                    height: 532,
+                                    width: 1762,
+                                    hidden: false,
+                                    columnLines: true,
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Day',
+                                                width: 80,
+                                                dataIndex: 'DAY_NAME',
+                                                align: 'center',
+                                                style: 'padding: 6px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Date',
+                                                width: 80,
+                                                dataIndex: 'VALDATE',
+                                                align: 'center',
+                                                style: 'padding: 6px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Processor',
+                                                menuDisabled: true,
+                                                style: 'background: #6C87A8;',
+                                                columns: [
+                                                    {
+                                                        text: 'Amex(AV)',
+                                                        width: 100,
+                                                        dataIndex: 'AXAV',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Amex(TA)',
+                                                        width: 100,
+                                                        dataIndex: 'AXTA',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        width: 100,
+                                                        dataIndex: 'DS',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Worlday IQ',
+                                                        width: 100,
+                                                        dataIndex: 'WQ',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Worlday Pazien',
+                                                        width: 100,
+                                                        dataIndex: 'WP',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #6C87A8;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: 'Daily Actual<br>Collection',
+                                                width: 100,
+                                                dataIndex: 'RR',
+                                                align: 'center',
+                                                style: 'padding: 6px; background: #D18F77;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return '<b>' + value + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: 'Last 2 Months',
+                                                menuDisabled: true,
+                                                style: 'background: #7D9F7D;',
+                                                columns: [
+                                                    {
+                                                        text: 'Amex(AV)',
+                                                        width: 100,
+                                                        dataIndex: 'PAXAV',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b> ';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Amex(AT)',
+                                                        width: 100,
+                                                        dataIndex: 'PAXTA',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b> ';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        width: 100,
+                                                        dataIndex: 'PDS',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b> ';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Worldpay IQ',
+                                                        width: 100,
+                                                        dataIndex: 'PWQ',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b> ';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Worldpay Pazien',
+                                                        width: 100,
+                                                        dataIndex: 'PWP',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return '<b>' + value + '</b> ';
+                                                        }
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: 'Actual vs Average Variation',
+                                                menuDisabled: true,
+                                                style: 'background: #8A99A6;',
+                                                columns: [
+                                                    {
+                                                        text: 'Amex(AV)',
+                                                        width: 100,
+                                                        dataIndex: 'PORAXAV',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #8A99A6;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b> %';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Amex(AT)',
+                                                        width: 100,
+                                                        dataIndex: 'PORAXTA',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #8A99A6;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b> %';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        width: 100,
+                                                        dataIndex: 'PORDS',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #8A99A6;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b> %';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Worldpay IQ',
+                                                        width: 100,
+                                                        dataIndex: 'PORWQ',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #8A99A6;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b> %';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Worldpay Pazien',
+                                                        width: 100,
+                                                        dataIndex: 'PORWP',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #8A99A6;',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b> %';
+                                                        }
+                                                    },
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridData',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -52,7 +342,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridData',
                                     height: 519,
-                                    width: 1420,
+                                    width: 1530,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -65,100 +355,100 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                             {
                                                 text: 'Settlement Information',
                                                 menuDisabled: true,
-                                                style: 'background: #6C87A8;', // Azul suave
+                                                style: 'background: #6C87A8;',
                                                 columns: [
                                                     {
                                                         text: 'Processor',
                                                         width: 90,
                                                         dataIndex: 'CODPRO',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;'
                                                     },
                                                     {
                                                         text: 'Doc Type',
                                                         width: 80,
                                                         dataIndex: 'TDOC',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;'
                                                     },
                                                     {
                                                         text: 'Sale Date',
                                                         width: 80,
                                                         dataIndex: 'SDATE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;'
                                                     },
                                                     {
                                                         text: 'Agent',
                                                         width: 70,
                                                         dataIndex: 'SAGENT',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;'
                                                     },
                                                     {
                                                         text: 'Account Number',
                                                         width: 120,
                                                         dataIndex: 'ACCNUMA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;'
                                                     },
                                                     {
                                                         text: 'Currency',
                                                         width: 80,
                                                         dataIndex: 'SCURRENCY',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;' // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;'
                                                     },
                                                     {
                                                         text: 'Total',
                                                         width: 120,
                                                         dataIndex: 'TOTAL',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;',
                                                         summaryType: 'sum',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     },
                                                     {
                                                         text: 'Comision',
-                                                        hidden:true,
+                                                        hidden: true,
                                                         width: 110,
                                                         dataIndex: 'COMISION',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     },
                                                     {
                                                         text: 'Import',
-                                                        hidden:true,
+                                                        hidden: true,
                                                         width: 100,
                                                         dataIndex: 'IMPORTE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     },
                                                     {
                                                         text: 'Neto',
-                                                        hidden:true,
+                                                        hidden: true,
                                                         width: 120,
                                                         dataIndex: 'NETO',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #6C87A8;', // Azul suave
+                                                        style: 'padding: 6px; background: #6C87A8;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     }
                                                 ]
@@ -166,39 +456,39 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                             {
                                                 text: 'Sales Information',
                                                 menuDisabled: true,
-                                                style: 'background: #7D9F7D;', // Verde suave
+                                                style: 'background: #7D9F7D;',
                                                 columns: [
                                                     {
                                                         text: 'Sale Date',
                                                         width: 80,
                                                         dataIndex: 'SDATE100',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #7D9F7D;' // Verde suave
+                                                        style: 'padding: 6px; background: #7D9F7D;'
                                                     },
                                                     {
                                                         text: 'Agent',
                                                         width: 70,
                                                         dataIndex: 'SAGENT100',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #7D9F7D;' // Verde suave
+                                                        style: 'padding: 6px; background: #7D9F7D;'
                                                     },
                                                     {
                                                         text: 'Currency',
                                                         width: 80,
                                                         dataIndex: 'SCURRENCY100',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #7D9F7D;' // Verde suave
+                                                        style: 'padding: 6px; background: #7D9F7D;'
                                                     },
                                                     {
                                                         text: 'Match Core',
                                                         width: 110,
                                                         dataIndex: 'SVFOP100W',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #7D9F7D;', // Verde suave
+                                                        style: 'padding: 6px; background: #7D9F7D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     },
                                                     {
@@ -206,11 +496,11 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                         width: 110,
                                                         dataIndex: 'SVFOP100O',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #7D9F7D;', // Verde suave
+                                                        style: 'padding: 6px; background: #7D9F7D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     },
                                                     {
@@ -218,11 +508,23 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                         width: 110,
                                                         dataIndex: 'SVFOP100P',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #7D9F7D;', // Verde suave
+                                                        style: 'padding: 6px; background: #7D9F7D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             value = Ext.util.Format.number(value, '0,000.00');
-                                                            return '<b>' + value + '</b>'; // Número en negrita
+                                                            return '<b>' + value + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Total',
+                                                        width: 110,
+                                                        dataIndex: 'SVFOP100T',
+                                                        align: 'center',
+                                                        style: 'padding: 6px; background: #7D9F7D;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>';
                                                         }
                                                     }
                                                 ]
@@ -236,7 +538,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
                                                     value = Ext.util.Format.number(value, '0,000.00');
-                                                    return '<b>' + value + '</b>'; // Número en negrita
+                                                    return '<b>' + value + '</b>';
                                                 }
                                             },
                                             {
@@ -247,7 +549,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                 style: 'background: #D18F77;', // Naranja suave
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
-                                                    return '<b>' + value + ' %</b>'; // Número en negrita
+                                                    return '<b>' + value + ' %</b>';
                                                 }
                                             }
                                         ]

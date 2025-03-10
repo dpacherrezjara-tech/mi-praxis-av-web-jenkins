@@ -31,18 +31,143 @@ import org.apache.log4j.Logger;
  * @author vhidalgo
  */
 public class FiduciaryAlertsDAO {
+
     private IServerSession session;
     private static final Logger logError = Logger.getLogger("errorLog");
+
     public static void pasarGarbageCollector() {
         System.gc();
         System.runFinalization();
         System.gc();
     }
+
     public void setSession(IServerSession ss) {
         session = ss;
     }
-    
-    public List<SQP04091Filter> searchAccountingInterfaces(SQP04091Filter filter) throws SQLException, Exception {
+
+    public List<SQP04091Filter> searchMain(SQP04091Filter filter) throws SQLException, Exception {
+        List<SQP04091Filter> lstRtn = new ArrayList<>();
+        SQP04091Filter objRtn;
+
+        CallableStatement cstmt01 = null;
+        CallableStatement cstmt02 = null;
+        ResultSet rs02 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL PRAXISMP.LIST_FIDUCIARY_ALERTS_MAIN(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            // Registrar parámetros de salida
+            cstmt01.registerOutParameter(5, Types.INTEGER);
+            cstmt01.registerOutParameter(6, Types.INTEGER);
+            cstmt01.registerOutParameter(7, Types.INTEGER);
+            cstmt01.registerOutParameter(8, Types.INTEGER);
+
+            // Establecer parámetros de entrada
+            cstmt01.setString(1, filter.IN_CCUST);
+            cstmt01.setString(2, filter.IN_NUMBER_ACCOUNT);
+            cstmt01.setString(3, filter.IN_VALUE_DATE);
+            cstmt01.setString(4, filter.IN_PROCESSOR);
+            cstmt01.setInt(5, filter.page.PAGNUM);
+            cstmt01.setInt(6, filter.page.PAGROW);
+            cstmt01.setInt(7, filter.page.TOTPAG);
+            cstmt01.setInt(8, filter.page.TOTROW);
+
+            // Ejecutar el procedimiento almacenado
+            cstmt01.execute();
+
+            // Actualizar valores de paginación
+            filter.page.PAGNUM = cstmt01.getInt(5);
+            filter.page.PAGROW = cstmt01.getInt(6);
+            filter.page.TOTPAG = cstmt01.getInt(7);
+            filter.page.TOTROW = cstmt01.getInt(8);
+
+            // Obtener el primer y único ResultSet directamente
+            rs02 = cstmt01.getResultSet();
+
+            // Crear un DecimalFormat con punto como separador decimal
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US); // Usar punto como separador
+            DecimalFormat df = new DecimalFormat("#.##", symbols); // Formato de 2 decimales
+
+            // Procesar registros del ResultSet
+            while (rs02 != null && rs02.next()) {
+
+                String SQLCLL02 = "{CALL PRAXISMP.LIST_FIDUCIARY_ALERTS_DETA(?,?,?)}";
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt02 = cnx.prepareCall(SQLCLL02);
+                cstmt02.setString(1, filter.IN_CCUST);
+                cstmt02.setString(2, filter.IN_NUMBER_ACCOUNT);
+                cstmt02.setString(3, rs02.getString("VALDATE"));
+                cstmt02.execute();
+
+                rs01 = cstmt02.getResultSet();
+                
+                while (rs01 != null && rs01.next()) {
+
+                    objRtn = new SQP04091Filter();
+
+                    objRtn.VALDATE = rs02.getString("VALDATE");
+                    objRtn.DAY_NAME = rs02.getString("DAY_NAME");
+                    objRtn.AXAV = rs02.getDouble("AXAV");
+                    objRtn.AXTA = rs02.getDouble("AXTA");
+                    objRtn.DS = rs02.getDouble("DS");
+                    objRtn.WQ = rs02.getDouble("WQ");
+                    objRtn.WP = rs02.getDouble("WP");
+
+                    objRtn.RR = objRtn.AXAV + objRtn.AXTA + objRtn.DS + objRtn.WQ + objRtn.WP;
+
+                    objRtn.PAXAV = rs01.getDouble("PAXAV");
+                    objRtn.PAXTA = rs01.getDouble("PAXTA");
+                    objRtn.PDS = rs01.getDouble("PDS");
+                    objRtn.PWQ = rs01.getDouble("PWQ");
+                    objRtn.PWP = rs01.getDouble("PWP");
+                    
+                    objRtn.PORAXAV = ((rs02.getDouble("AXAV") - rs01.getDouble("PAXAV")) / rs01.getDouble("PAXAV")) * 100;
+                    objRtn.PORAXTA = ((rs02.getDouble("AXTA") - rs01.getDouble("PAXTA")) / rs01.getDouble("PAXTA")) * 100;
+                    objRtn.PORDS = ((rs02.getDouble("DS") - rs01.getDouble("PDS")) / rs01.getDouble("PDS")) * 100;
+                    objRtn.PORWQ = ((rs02.getDouble("WQ") - rs01.getDouble("PWQ")) / rs01.getDouble("PWQ")) * 100;
+                    objRtn.PORWP = ((rs02.getDouble("WP") - rs01.getDouble("PWP")) / rs01.getDouble("PWP")) * 100;
+
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    lstRtn.add(objRtn);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rs02 != null) {
+                try {
+                    rs02.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
+
+    public List<SQP04091Filter> search(SQP04091Filter filter) throws SQLException, Exception {
         List<SQP04091Filter> lstRtn = new ArrayList<>();
         SQP04091Filter objRtn;
 
@@ -108,6 +233,7 @@ public class FiduciaryAlertsDAO {
                 objRtn.SVFOP100W = rs02.getDouble("SVFOP100W");
                 objRtn.SVFOP100O = rs02.getDouble("SVFOP100O");
                 objRtn.SVFOP100P = rs02.getDouble("SVFOP100P");
+                objRtn.SVFOP100T = objRtn.SVFOP100W + objRtn.SVFOP100O + objRtn.SVFOP100P;
                 objRtn.VARIACION = rs02.getDouble("VARIACION");
 
                 // Calcular el porcentaje de variación
@@ -133,16 +259,29 @@ public class FiduciaryAlertsDAO {
             e.printStackTrace();
             throw e;
         } finally {
-            if (rs02 != null) try { rs02.close(); } catch (SQLException e) { e.printStackTrace(); }
-            if (cstmt01 != null) try { cstmt01.close(); } catch (SQLException e) { e.printStackTrace(); }
-            if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            if (rs02 != null) {
+                try {
+                    rs02.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
             pasarGarbageCollector();
         }
 
         return lstRtn;
     }
-    
-    
+
     public List<A2290Filter> loadPX269SQP00698Detalle(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -288,7 +427,7 @@ public class FiduciaryAlertsDAO {
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
                     }
-                    
+
                     beanTkt.DCONTA4545 = rst.getString("DCONTA4545").trim();
                     beanTkt.USERA4545 = rst.getString("USERA4545").trim();
                     beanTkt.BANDOC = rst.getString("COREPN").trim();
@@ -329,7 +468,7 @@ public class FiduciaryAlertsDAO {
 
         return lstTkts;
     }
-    
+
     public List<CPF031Filter> lstProcessor() {
 
         //Connection con = null;

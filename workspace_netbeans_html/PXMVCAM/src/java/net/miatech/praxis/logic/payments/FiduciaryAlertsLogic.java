@@ -24,8 +24,12 @@ public class FiduciaryAlertsLogic {
         objDAO.setSession(ss);
     }
     
-    public List<SQP04091Filter> searchAccountingInterfaces(SQP04091Filter filter) throws SQLException, Exception {
-        return objDAO.searchAccountingInterfaces(filter);
+    public List<SQP04091Filter> searchMain(SQP04091Filter filter) throws SQLException, Exception {
+        return objDAO.searchMain(filter);
+    }
+    
+    public List<SQP04091Filter> search(SQP04091Filter filter) throws SQLException, Exception {
+        return objDAO.search(filter);
     }
     
     public List<A2290Filter> loadPX269SQP00698Detalle(A2290Filter filter) throws SQLException, Exception {
