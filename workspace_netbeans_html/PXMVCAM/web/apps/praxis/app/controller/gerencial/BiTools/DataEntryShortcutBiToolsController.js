@@ -55,8 +55,11 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.DataEntryShortcutBiToolsCont
         Ext.getCmp(prototype.id + '-command').setValue(rowData.data.Example);
     },
     onDisplayWindow: function (){
-
-        var strTkt = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1]
+        if( Ext.getCmp(prototype.id + '-command').getValue() === '' || Ext.getCmp(prototype.id + '-command').getValue() === null || !Ext.getCmp(prototype.id + '-command').getValue().includes("/") ){
+            global.Msg({msg: 'Enter a valid command'});
+            return false
+        }
+        
 //        console.log(strTkt,'strTkt')
 //        var beanProMasterTicket = {};
 //        beanProMasterTicket.IN_CIA = strTkt.substr(0, 3);
@@ -69,7 +72,23 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.DataEntryShortcutBiToolsCont
 //        prototypeProgram.title = 'Business Tools';
 //        prototypeProgram.modulo = '';
 //        win.displayProMasterTicket(this, 'BiTools', beanProMasterTicket);
-        window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strTkt + '#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+
+        if( Ext.getCmp(prototype.id + '-command').getValue().split("/")[0] === 'DVT' ){
+            let strTkt = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1]
+            window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strTkt + '#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+        } else if ( Ext.getCmp(prototype.id + '-command').getValue().split("/")[0] === 'DST' ){
+            let strTkt = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1]
+            let strOrig = Ext.getCmp(prototype.id + '-command').getValue().split("/")[2]
+            window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strTkt +'/'+strOrig +'#payments-sales-reconciliation-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+        } else if ( Ext.getCmp(prototype.id + '-command').getValue().split("/")[0] === 'DBR' ){
+            let strSauthoc = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1]
+            let strScardn = Ext.getCmp(prototype.id + '-command').getValue().split("/")[2]
+            window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strSauthoc +'/'+strScardn+ '#payments-bank-reconciliation-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+        } else{
+            global.Msg({msg: 'Enter a valid command'});
+        }
+        
+        
 //        window.open('http://localhost:8080/AVIANCA/Home#program-pro-master-ticket-form', '_blank', 'width=1200,height=800,scrollbars=yes');
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
