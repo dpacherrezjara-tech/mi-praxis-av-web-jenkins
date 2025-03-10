@@ -8,6 +8,8 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
     title: 'Shortcut Help',
     width: 485,
     height: 410,
+    x: 0,
+    y: 245,
     modal: true,
     layout: 'border',
     items: [
@@ -50,7 +52,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
             region: 'center',
             xtype: 'grid',
             id: prototype.id + '-cmdGrid',
-            title: 'Lista de Comandos',
+            title: 'Command list',
             margin: '0 0 0 0',
             width: 420,
 
@@ -58,7 +60,9 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
 
                 fields: ['CM', 'Description', 'Example'],
                 data: [
-                    {CM: 'VTK', Description: 'Display View Ticket', Example: 'VTK/1344094544135'}
+                    {CM: 'DVT', Description: 'Display View Ticket', Example: 'DVT/1344203080502'},
+                    {CM: 'DST', Description: 'Display Sales By Ticket', Example: 'DST/1344203080502/CO'},
+                    {CM: 'DBR', Description: 'Display Bank Reconciliation', Example: 'DBR/27US6P/1453'},
                 ],
                 pageSize: 10,
                 proxy: {
@@ -74,7 +78,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
                         click: 'setCommandSearch'
                     },
                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        metaData.style = "text-align:center;color:#057ECB";
+                        metaData.style = "text-align:left;color:#057ECB";
                         metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                         return '<a <a href="#gerencial-bi-tools-form" style="color:#008FE3;text-decoration:underline;">' + value + '</a>';
                     }
