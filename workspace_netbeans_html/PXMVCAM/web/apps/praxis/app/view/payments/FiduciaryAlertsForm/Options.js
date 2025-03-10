@@ -87,21 +87,6 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Options', {
                             tooltip: 'Display filter'
 
                         },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnAdd',
-//                            iconCls: 'prx-icon-add',
-//                            tooltip: 'New',
-//                        },
-//                        {
-//                            xtype:'button',
-//                            id: prototype.id+'-btnDisplay',
-//                            icon: 'resources/img/botones/FalseChart.png',
-//                            tooltip: 'Display Charts',
-//                            listeners: {
-//                                click: 'btnDisplay_click'
-//                            }
-//                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
@@ -114,33 +99,6 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Options', {
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'
                         },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnLog',
-//                            icon: 'resources/img/botones/log.png',
-//                            tooltip: 'Execute Log'
-//                        },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnExcelLog',
-//                            icon: 'resources/img/botones/excel2.png',
-//                            tooltip: 'Export to Excel Log'
-//                        },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id+'-btnQuery',
-//                            icon: 'resources/img/botones/query.png',
-//                            tooltip: 'Query',
-//                            listeners: {
-//                                click: 'btnQuery_click'
-//                            }
-//                        },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnBack',
-//                            iconCls: 'prx-icon-back',
-//                            tooltip: 'Back'
-//                        }
                     ]
                 }
             ]

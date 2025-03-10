@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     width: 200,
                     labelWidth: 95,
-                    xtype: 'combo', 
+                    xtype: 'combo',
                     id: prototype.id + '-typeClient',
                     queryMode: 'local',
                     allowBlank: false,
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                         change: 'btnSearch_click'
                     }
                 },
-                {xtype: 'tbspacer', width: 10, height:20},
+                {xtype: 'tbspacer', width: 10, height: 20},
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCOREP',
@@ -59,17 +59,17 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     width: 220,
                     labelWidth: 68,
                     emptyText: 'All',
-                    value: [],  
-                    hidden:true,
+                    value: [],
+                    hidden: true,
                     displayField: 'NAME',
                     valueField: 'VALUE',
                     queryMode: 'local',
                     filterPickList: true,
                     editable: true,
-                    multiSelect: true, 
+                    multiSelect: true,
                     forceSelection: true
                 },
-                {xtype: 'tbspacer', width: 10, height:20},
+                {xtype: 'tbspacer', width: 10, height: 20},
                 {
                     fieldLabel: 'Number Account',
                     hidden: false,
@@ -77,7 +77,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     width: 200,
                     labelWidth: 110,
-                    xtype: 'combo', 
+                    xtype: 'combo',
                     id: prototype.id + '-numberAccount',
                     queryMode: 'local',
                     allowBlank: false,
@@ -105,7 +105,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                         change: 'btnSearch_click'
                     }
                 },
-                {xtype: 'tbspacer', width: 10, height:20},
+                {xtype: 'tbspacer', width: 10, height: 20},
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbDateFromYearVa',
@@ -114,7 +114,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     fieldLabel: 'Sale Date',
                     labelAlign: 'right',
                     queryMode: 'local',
-                    editable:false,
+                    editable: false,
                     triggerAction: 'all',
                     autoSelect: false,
                     enableKeyEvents: true,
@@ -124,7 +124,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     emptyText: 'All',
                     labelWidth: 70,
                     width: 135,
-                    anchor: '100%'                    
+                    anchor: '100%'
                 },
                 {
                     xtype: 'combo',
@@ -134,7 +134,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     labelAlign: 'right',
                     queryMode: 'local',
                     triggerAction: 'all',
-                    editable:false,
+                    editable: false,
                     autoSelect: false,
                     enableKeyEvents: true,
                     caseSensitive: true,
@@ -147,7 +147,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                 },
                 {
                     xtype: 'combo',
-                    id: prototype.id+'-cmbDateFromDayVa',
+                    id: prototype.id + '-cmbDateFromDayVa',
                     fieldStyle: 'text-align: left;',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
@@ -165,7 +165,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     anchor: '100%',
                     listConfig: {maxHeight: 111, minWidth: 60}
                 },
-                {xtype: 'tbspacer', width: 10, height:20},
+                {xtype: 'tbspacer', width: 10, height: 20},
                 {
                     fieldLabel: 'Type Document',
                     hidden: false,
@@ -173,7 +173,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     width: 200,
                     labelWidth: 106,
-                    xtype: 'combo', 
+                    xtype: 'combo',
                     id: prototype.id + '-typeDocument',
                     queryMode: 'local',
                     allowBlank: false,
@@ -199,6 +199,20 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Filters', {
                     },
                     listeners: {
                         change: 'btnSearch_click'
+                    }
+                },
+                {xtype: 'tbspacer', width: 20, height: 20},
+                {
+                    xtype: 'radiogroup',
+                    id: prototype.id + '-rbChart_IA',
+                    fieldLabel: '',
+                    horizontal: true,
+                    items: [
+                        {boxLabel: '<strong >Main</strong>', name: 'rb', inputValue: 'rbc1_IA', width: 120},
+                        {boxLabel: '<strong >Detail</strong>', name: 'rb', inputValue: 'rbc2_IA', width: 120}
+                    ],
+                    listeners: {
+                        change: 'onChangeRadio'
                     }
                 }
                 //</editor-fold>

@@ -26,11 +26,14 @@ public class SQP04091Filter extends A4022 {
     public String IN_REFERENCIA = ""; 
     public String IN_NUMBER_ACCOUNT = ""; 
     public String IN_SALES_DATE = ""; 
+    public String IN_VALUE_DATE = ""; 
     public String IN_PROCESSOR = ""; 
     
     
     public String CODPRO = ""; 
     public String TDOC = ""; 
+    public String VALDATE = ""; 
+    public String DAY_NAME = ""; 
     public String SDATE = ""; 
     public String SAGENT = ""; 
     public String SCURRENCY = ""; 
@@ -40,11 +43,29 @@ public class SQP04091Filter extends A4022 {
     public String SAGENT100 = ""; 
     public String SCURRENCY100 = ""; 
     
+    public double AXAV = 0;
+    public double AXTA = 0;
+    public double DS = 0;
+    public double WQ = 0;
+    public double WP = 0;
+    public double RR = 0;
+    public double PAXAV = 0;
+    public double PAXTA = 0;
+    public double PDS = 0;
+    public double PWQ = 0;
+    public double PWP = 0;
+    public double PORAXAV = 0;
+    public double PORAXTA = 0;
+    public double PORDS = 0;
+    public double PORWQ = 0;
+    public double PORWP = 0;
+    
     public double TOTAL = 0;
     public double SVFOP100 = 0;
     public double SVFOP100W = 0;
     public double SVFOP100O = 0;
     public double SVFOP100P = 0;
+    public double SVFOP100T = 0;
     public double VARIACION = 0;
     public double IMPORTE = 0;
     public double PORCENTAJE_VARIACION = 0;
