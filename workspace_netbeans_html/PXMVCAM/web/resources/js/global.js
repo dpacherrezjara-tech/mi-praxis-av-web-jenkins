@@ -27,7 +27,8 @@ win = {
                 var success = res.success;
                 if (success) {
                     //lg(response);                
-                } else global.Msg({msg: res.sesion});
+                } else
+                    global.Msg({msg: res.sesion});
             }
         });
     },
@@ -225,8 +226,8 @@ win = {
         this.showModule(params, new Function("me.startDisplay()"));
         global.clear();
     },
-    displaySalesReportTkt:function (cia,documento,seq,use){
-        console.log('prototype.id: '+prototype.id);
+    displaySalesReportTkt: function (cia, documento, seq, use) {
+        console.log('prototype.id: ' + prototype.id);
         console.log(Ext.getCmp(prototype.id + '-dataEntryTkt'));
         var data = {};
         data.A720CIA = cia;
@@ -238,23 +239,23 @@ win = {
         prototype.idSale = 'SalesReportFormSale';
         prototype.url = CONTEXTPATH + '/SalesReport';
         /*var dataEntryTkt = Ext.create('Ext.Praxis.view.sales.SalesReportForm.DataEntryTkt', {
-            id: prototype.id+'-dataEntryTkt',
-            params: {
-                rec: rec, 
-                mode:'POPUP'
-            }
-        });
-        console.log(rec);
-        dataEntryTkt.show();*/
-        
+         id: prototype.id+'-dataEntryTkt',
+         params: {
+         rec: rec, 
+         mode:'POPUP'
+         }
+         });
+         console.log(rec);
+         dataEntryTkt.show();*/
+
         switch (use) {
             case 'EXCH':
             case 'FLWN':
                 var dataEntryTkt = Ext.create('Ext.Praxis.view.sales.SalesReportForm.DataEntryTkt', {
-                    id: prototype.idGr+ '-dataEntryTkt',
+                    id: prototype.idGr + '-dataEntryTkt',
                     params: {
                         rec: rec,
-                        mode:'POPUP'
+                        mode: 'POPUP'
                     }
                 });
                 console.log(rec);
@@ -265,7 +266,7 @@ win = {
                     id: prototype.idGr + '-dataEntryRfnd',
                     params: {
                         rec: rec,
-                        mode:'POPUP',
+                        mode: 'POPUP',
                         modo: 'U',
                         exchrate: 1, // Ext.getCmp(prototype.idGr + '-de-lblExchangeRate').getValue(),
                         locCurr: 'MXN' //Ext.getCmp(prototype.idGr + '-de-lblCurrency').getValue()
@@ -278,24 +279,24 @@ win = {
                     id: prototype.idGr + '-dataEntryAdm',
                     params: {
                         rec: rec,
-                        mode:'POPUP'
+                        mode: 'POPUP'
                     }
                 });
                 dataEntryAdm.show();
                 break;
             default:
                 var dataEntryTkt = Ext.create('Ext.Praxis.view.sales.SalesReportForm.DataEntryTkt', {
-                    id: prototype.idGr+ '-dataEntryTkt',
+                    id: prototype.idGr + '-dataEntryTkt',
                     params: {
                         rec: rec,
-                        mode:'POPUP'
+                        mode: 'POPUP'
                     }
                 });
                 console.log(rec);
                 dataEntryTkt.show();
                 break;
         }
-        
+
         global.clear();
     },
     displayScrProrrateoIxC: function (controller, data, back) {
@@ -315,7 +316,7 @@ win = {
         params.back = controller;
         params.beanA020 = data;
         params.strBack = back;
-        
+
         this.showProgram('program-prorrateo-ix-c-form', params);
         global.clear();
     },
@@ -328,7 +329,7 @@ win = {
         params.back = controller;
         params.beanA020 = bean;
         params.strBack = strModulo;
-        
+
         this.showProgram('program-prorrateo-ix-c-form', params);
         global.clear();
     },
@@ -343,7 +344,7 @@ win = {
 
         params.strModulo = strModulo;
         params.A020KEY = nroprt;
-        
+
         this.showProgram('program-prorrateo-form', params);
         global.clear();
     },
@@ -695,40 +696,52 @@ win = {
     getMonthAbbreviation: function (strDate) {
         var strReturn = '';
         switch (strDate) {
-            case 'Jan':case 'JAN':
+            case 'Jan':
+            case 'JAN':
                 strReturn = '01';
                 break;
-            case 'Feb': case 'FEB':
+            case 'Feb':
+            case 'FEB':
                 strReturn = '02';
                 break;
-            case 'Mar':case 'MAR':
+            case 'Mar':
+            case 'MAR':
                 strReturn = '03';
                 break;
-            case 'Apr':case 'APR':
+            case 'Apr':
+            case 'APR':
                 strReturn = '04';
                 break;
-            case 'May':case 'MAY':
+            case 'May':
+            case 'MAY':
                 strReturn = '05';
                 break;
-            case 'Jun': case 'JUN':
+            case 'Jun':
+            case 'JUN':
                 strReturn = '06';
                 break;
-            case 'Jul':case 'JUL':
+            case 'Jul':
+            case 'JUL':
                 strReturn = '07';
                 break;
-            case 'Aug':case 'AUG':
+            case 'Aug':
+            case 'AUG':
                 strReturn = '08';
                 break;
-            case 'Sep':case 'SEP':
+            case 'Sep':
+            case 'SEP':
                 strReturn = '09';
                 break;
-            case 'Oct':case 'OCT':
+            case 'Oct':
+            case 'OCT':
                 strReturn = '10';
                 break;
-            case 'Nov':case 'NOV':
+            case 'Nov':
+            case 'NOV':
                 strReturn = '11';
                 break;
-            case 'Dec':case 'DEC':
+            case 'Dec':
+            case 'DEC':
                 strReturn = '12';
                 break;
             default:
@@ -880,7 +893,7 @@ win = {
                 break;
         }
         return "";
-    }   
+    }
 }
 
 var LarSyrExt = function () {
@@ -975,7 +988,7 @@ var LarSyrExt = function () {
         p.buttons = p.buttons == undefined ? 1 : p.buttons;
         p.icon = p.icon == undefined ? 1 : p.icon;
         p.fn = p.fn == undefined ? false : p.fn;
-        if(p.msg === 'SESSION_CONTROL')
+        if (p.msg === 'SESSION_CONTROL')
         {
             p.msg = 'Session Expired.';
             Ext.Msg.show({
@@ -985,11 +998,12 @@ var LarSyrExt = function () {
                 icon: icons[p.icon],
                 fn: p.fn
             });
-            var strDomain = CONTEXTPATH +'/';
+            var strDomain = CONTEXTPATH + '/';
             var strURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + strDomain;
-            setTimeout(function(){ window.location.href=strURL; }, 3000);
-        }
-        else
+            setTimeout(function () {
+                window.location.href = strURL;
+            }, 3000);
+        } else
         {
             Ext.Msg.show({
                 title: p.title,
@@ -1241,19 +1255,20 @@ var LarSyrExt = function () {
         window.open(strURL, '_blank');
     };
     //Jim
-    this.openWindowWithPost = function (url,key, json){
-        
+    this.openWindowWithPost = function (url, key, json) {
+
         var strURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + url;
         var newWindow = window.open(strURL, '');
 
-        if (!newWindow) return false;
+        if (!newWindow)
+            return false;
 
         var html = "";
-        html += "<html><head></head><body><form id='formid' method='post' action='" + strURL +"'>";
+        html += "<html><head></head><body><form id='formid' method='post' action='" + strURL + "'>";
 
-        html += "<input type='hidden' name='"+key+"' value='" + json + "'/>";
+        html += "<input type='hidden' name='" + key + "' value='" + json + "'/>";
 
-        html += "</form><script type='text/javascript'>document.getElementById(\"formid\").submit()</sc"+"ript></body></html>";
+        html += "</form><script type='text/javascript'>document.getElementById(\"formid\").submit()</sc" + "ript></body></html>";
 
         newWindow.document.write(html);
         return newWindow;
@@ -1351,13 +1366,13 @@ var LarSyrExt = function () {
         return estado;
         //return true;
     };
-    this.fillZeros = function (size,value) {
-        value=value.padStart(size, "0");
+    this.fillZeros = function (size, value) {
+        value = value.padStart(size, "0");
         return value;
 
     };
-    
-    
+
+
     this.extraer_separador_fecha = function (date) {
         var dato = '';
         dato = date.replace('/', '').replace('/', '');
@@ -1367,28 +1382,28 @@ var LarSyrExt = function () {
     this.FechaActual = function () {
         var hoy = new Date();
         var dd = hoy.getDate();
-        var mm = hoy.getMonth()+1; //hoy es 0!
+        var mm = hoy.getMonth() + 1; //hoy es 0!
         var yyyy = hoy.getFullYear();
 
-        if(dd<10) {
-            dd='0'+dd;
-        } 
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
 
-        if(mm<10) {
-            mm='0'+mm;
-        } 
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
 
-        hoy = yyyy+'/'+mm+'/'+dd;
+        hoy = yyyy + '/' + mm + '/' + dd;
         return hoy;
     };
-    this.replaceAll = function(value,pattern,replace) {
-        while(value.indexOf(pattern)>-1){
-                value = value.replace(pattern,replace);
+    this.replaceAll = function (value, pattern, replace) {
+        while (value.indexOf(pattern) > -1) {
+            value = value.replace(pattern, replace);
         }
         return value;
     };
-    
-    
+
+
     this.getFileExcelPost = function (method, parms, columns) {
 
         var js_columns = JSON.stringify(columns);
@@ -1410,42 +1425,50 @@ var LarSyrExt = function () {
         mapForm.submit();
     };
 
-    this.AccessControlMaganer = function() {
-        if(userAccess.length>0)
+    this.AccessControlMaganer = function () {
+        if (userAccess.length > 0)
         {
             /*var plusItems = document.querySelectorAll('.prx-icon-add');
-            var createItems = document.querySelectorAll('-btn-save');
-            var updateItems = document.querySelectorAll('.prx-icon-update');
-            var editItems = document.querySelectorAll('.prx-icon-edit');
-            var deleteItems = document.querySelectorAll('-btn-delete');
-            var exportItems = document.querySelectorAll('.prx-icon-excel');
-            console.log("updateItems");
-            if(plusItems === null) plusItems = [];
-            console.log(updateItems);*/
+             var createItems = document.querySelectorAll('-btn-save');
+             var updateItems = document.querySelectorAll('.prx-icon-update');
+             var editItems = document.querySelectorAll('.prx-icon-edit');
+             var deleteItems = document.querySelectorAll('-btn-delete');
+             var exportItems = document.querySelectorAll('.prx-icon-excel');
+             console.log("updateItems");
+             if(plusItems === null) plusItems = [];
+             console.log(updateItems);*/
             // PERML, PERMC, PERMM, PERME, PERMX
             console.log("AccessControlMaganer");
             console.log(prototype.id);
             console.log(accessSelect);
-            if(accessSelect.PERMC==='N'){
-                if(Ext.getCmp(prototype.id+'-btn-save')) Ext.getCmp(prototype.id+'-btn-save').hide();
-                if(Ext.getCmp(prototype.id+'-btnAdd')) Ext.getCmp(prototype.id+'-btnAdd').hide();
-            }else{
-                if(Ext.getCmp(prototype.id+'-btn-save')) Ext.getCmp(prototype.id+'-btn-save').show();
-                if(Ext.getCmp(prototype.id+'-btnAdd')) Ext.getCmp(prototype.id+'-btnAdd').show();
+            if (accessSelect.PERMC === 'N') {
+                if (Ext.getCmp(prototype.id + '-btn-save'))
+                    Ext.getCmp(prototype.id + '-btn-save').hide();
+                if (Ext.getCmp(prototype.id + '-btnAdd'))
+                    Ext.getCmp(prototype.id + '-btnAdd').hide();
+            } else {
+                if (Ext.getCmp(prototype.id + '-btn-save'))
+                    Ext.getCmp(prototype.id + '-btn-save').show();
+                if (Ext.getCmp(prototype.id + '-btnAdd'))
+                    Ext.getCmp(prototype.id + '-btnAdd').show();
             }
-            if(accessSelect.PERMM==='N'){
-                if(Ext.getCmp(prototype.id+'-btn-update')) Ext.getCmp(prototype.id+'-btn-update').hide();
-            }else{
-                if(Ext.getCmp(prototype.id+'-btn-update')) Ext.getCmp(prototype.id+'-btn-update').show();
+            if (accessSelect.PERMM === 'N') {
+                if (Ext.getCmp(prototype.id + '-btn-update'))
+                    Ext.getCmp(prototype.id + '-btn-update').hide();
+            } else {
+                if (Ext.getCmp(prototype.id + '-btn-update'))
+                    Ext.getCmp(prototype.id + '-btn-update').show();
             }
-            if(accessSelect.PERME==='N'){
-                if(Ext.getCmp(prototype.id+'-btn-delete')) Ext.getCmp(prototype.id+'-btn-delete').hide();
-            }else{
-                if(Ext.getCmp(prototype.id+'-btn-delete')) Ext.getCmp(prototype.id+'-btn-delete').show();
+            if (accessSelect.PERME === 'N') {
+                if (Ext.getCmp(prototype.id + '-btn-delete'))
+                    Ext.getCmp(prototype.id + '-btn-delete').hide();
+            } else {
+                if (Ext.getCmp(prototype.id + '-btn-delete'))
+                    Ext.getCmp(prototype.id + '-btn-delete').show();
             }
         }
     };
-    this.countBy = function(array, campo){
+    this.countBy = function (array, campo) {
         return array.reduce((acumulador, objeto) => {
             // Obtener el valor del campo
             const key = objeto[campo];
@@ -1461,18 +1484,18 @@ var LarSyrExt = function () {
             return acumulador;
         }, {});
     };
-    this.sumBy = function(array, campo){
+    this.sumBy = function (array, campo) {
         return array.reduce((acumulador, objeto) => {
             return acumulador + (objeto[campo] || 0); // Evitar valores indefinidos
         }, 0);
     };
-    this.sumByFilter = function(array, campo,campoFiltrado,valor){
+    this.sumByFilter = function (array, campo, campoFiltrado, valor) {
         return array.reduce((acumulador, objeto) => {
-            return (objeto[campoFiltrado] || '') === valor ?  
-                acumulador + (objeto[campo] || 0): acumulador; // Evitar valores indefinidos
+            return (objeto[campoFiltrado] || '') === valor ?
+                    acumulador + (objeto[campo] || 0) : acumulador; // Evitar valores indefinidos
         }, 0);
     };
-    this.getDistict = function(lst, key){
+    this.getDistict = function (lst, key) {
         let valoresVistos = {};
         // Filtra el array para eliminar duplicados según la columna "nombre"
         let resultado = lst.filter(function (item) {
@@ -1486,7 +1509,7 @@ var LarSyrExt = function () {
         });
         return resultado;
     };
-    this.setComboStore = function(cmp, data, valueField, displayField, value){
+    this.setComboStore = function (cmp, data, valueField, displayField, value) {
         //crea record vacio
         let allRecord = {};
         allRecord[displayField] = 'All';
@@ -1501,7 +1524,7 @@ var LarSyrExt = function () {
         });
         //crea Store
         let store = new Ext.data.Store({
-            autoLoad:true,
+            autoLoad: true,
             data: data
         });
         //inserta record vacio
@@ -1514,7 +1537,7 @@ var LarSyrExt = function () {
         cmp.setValue(value);
         cmp.resumeEvents();
     };
-    this.arrayAddUnique = function(newArray, array, keys){
+    this.arrayAddUnique = function (newArray, array, keys) {
         let prev = array.length;
         let added = newArray.length;
         let newObjs = newArray.filter(obj => !array.some(x =>
@@ -1524,12 +1547,12 @@ var LarSyrExt = function () {
 
         let post = array.length;
         return {
-            original : prev,
+            original: prev,
             added: added,
-            inserted : (post - prev),
-            duplicated : added - (post - prev),
-            modified : post,
-            data : array
+            inserted: (post - prev),
+            duplicated: added - (post - prev),
+            modified: post,
+            data: array
         };
     };
     this.arrayRemove = function (removeArray, array, keys) {
@@ -1548,25 +1571,25 @@ var LarSyrExt = function () {
             data: array
         };
     };
-    this.filterArrayByObj = function(array,obj,equals){
-        let lst = array.filter(x =>{
-            return Object.keys(obj).every(key=>{
+    this.filterArrayByObj = function (array, obj, equals) {
+        let lst = array.filter(x => {
+            return Object.keys(obj).every(key => {
                 return obj[key] === '' || (
                         //variable equals
                         equals ? obj[key] === x[key].trim() :
-                            obj[key] !== x[key].trim()
+                        obj[key] !== x[key].trim()
                         );
             });
         });
         return lst;
     };
     this.PX_UTILS_URL = 'js/praxis.ui-1.0/praxis.utils-1.0.js';
-    this.downloadFile = function(objAxios,url,params,typeFile = 'zip'){
+    this.downloadFile = function (objAxios, url, params, typeFile = 'zip') {
         new AWN().async(
-            objAxios.post(url,params? params : null, 
-        {
-            responseType: 'blob'  // Configuración para recibir un Blob
-        }).then(response => {
+                objAxios.post(url, params ? params : null,
+                        {
+                            responseType: 'blob'  // Configuración para recibir un Blob
+                        }).then(response => {
             // Procesar la descarga del archivo
             const contentDisposition = response.headers['content-disposition'];
             let nombreArchivo = `file.${typeFile}`;
@@ -1587,16 +1610,16 @@ var LarSyrExt = function () {
             a.remove();
             window.URL.revokeObjectURL(url);
         }),
-        'Sucessfully Downloaded',
-        'Error on Download');
+                'Sucessfully Downloaded',
+                'Error on Download');
     };
-    this.downloadFile2 = function(objAxios,url,params,typeFile = 'zip'){
+    this.downloadFile2 = function (objAxios, url, params, typeFile = 'zip') {
         new AWN().async(
-            objAxios.get(url,
-        {
-            params: params,
-            responseType: 'blob'  // Configuración para recibir un Blob
-        }).then(response => {
+                objAxios.get(url,
+                        {
+                            params: params,
+                            responseType: 'blob'  // Configuración para recibir un Blob
+                        }).then(response => {
             // Procesar la descarga del archivo
             const contentDisposition = response.headers['content-disposition'];
             let nombreArchivo = `file.${typeFile}`;
@@ -1617,10 +1640,10 @@ var LarSyrExt = function () {
             a.remove();
             window.URL.revokeObjectURL(url);
         }),
-        'Sucessfully Downloaded',
-        'Error on Download');
+                'Sucessfully Downloaded',
+                'Error on Download');
     };
-    this.cleanPXobj = function(obj){
+    this.cleanPXobj = function (obj) {
         for (let key in obj) {
             if (typeof obj[key] === 'string') {
                 obj[key] = obj[key].trimEnd();
@@ -1639,6 +1662,156 @@ var LarSyrExt = function () {
             }
         }
         return resultado;
+    };
+    this.callStoreGet = async function (library, store, params) {
+        let response = {};
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        let parameters = {
+            library: library,
+            procedure: store
+        };
+        if (params) {
+            parameters.params = params;
+        } else {
+            parameters.params = {};
+        }
+        try {
+            const res = await request.post('CallStoreGet', parameters);
+            const {status, data} = res;
+            if (status === 200) {
+                response = data;
+            }
+        } catch (e) {
+            console.error('Error on load Grid', e);
+        }
+        return response;
+    };
+    this.callStorePost = async function (library, store, params) {
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        let parameters = {
+            library: library,
+            procedure: store,
+            params: params
+        };
+        try {
+            const res = await request.post('CallStorePost', parameters);
+            return res;
+        } catch (e) {
+            console.error('Error on load Grid', e);
+            return null;
+        }
+    };
+    this.callStorePostAsync = async function (library, store, params) {
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        let parameters = {
+            library: library,
+            procedure: store,
+            params: params
+        };
+        try {
+            const res = await request.post('CallStorePostAsync', parameters);
+            return res.status;
+        } catch (e) {
+            console.error('Error on load Grid', e);
+            return 500;
+        }
+    };
+    this.callStorePaggin = function (library, procedure, params) {
+        let store = new Ext.data.Store({
+            loadMask: true,
+            pageSize: 20,
+            proxy: {
+                type: 'ajax',
+                enablePaging: true,
+                url: `${CONTEXTPATH}/Generic/CallStorePaggin/${library}/${procedure}`,
+                extraParams: params,
+                timeout: 600000,
+                reader: {
+                    type: 'json',
+                    rootProperty: 'response',
+                    totalProperty: 'total'
+                }
+            },
+            autoLoad: true,
+            listeners: {
+                load: function (store, records, successful, operation) {
+                    if (!successful) {
+                        global.Msg({msg: 'Data not Found'});
+                    } else {
+                        //console.log(records);
+                        if (records.length === 0) {
+                            global.Msg({msg: 'Data not Found'});
+                        }
+                    }
+                }
+            }
+        });
+        return store;
+    };
+    this.callStorePagginExcel = async function (library, procedure, params) {
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        params.excel = true;
+        params.start = 0;
+        params.limit = -1;
+        try {
+            const res = await request.get(`CallStorePaggin/${library}/${procedure}`, {
+                params: params
+            });
+            const {status, data} = res;
+            if (status === 200) {
+                return data.response;
+            }
+        } catch (e) {
+            console.error('Error on load', e);
+            return null;
+        }
+    };
+    this.writeExcelFromJson = async function (data, name) {
+        const ws = XLSX.utils.json_to_sheet(data);
+
+        const headers = Object.keys(data[0]);
+
+        //Define Headers
+        const headerStyle = {
+            font: {bold: true, color: {rgb: "FFFFFF"}}, // Texto blanco y negrita
+            fill: {fgColor: {rgb: "FF0000"}}, // Fondo rojo
+            alignment: {horizontal: "center", vertical: "center"}, // Centrado
+            border: {
+                top: {style: "thin", color: {rgb: "FFFFFF"}},
+                bottom: {style: "thin", color: {rgb: "FFFFFF"}},
+                left: {style: "thin", color: {rgb: "FFFFFF"}},
+                right: {style: "thin", color: {rgb: "FFFFFF"}}
+            }
+        };
+
+        // Aplicar estilos solo a los headers
+        headers.forEach((_, colIndex) => {
+            const cellAddress = XLSX.utils.encode_cell({r: 0, c: colIndex});
+            if (!ws[cellAddress]) {
+                ws[cellAddress] = {v: headers[colIndex]}; // Asegurar que la celda existe
+            }
+            ws[cellAddress].s = headerStyle;
+        });
+
+        // Crear libro de Excel
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "result");
+
+        let uuid = crypto.randomUUID().replace(/-/g, '').substring(0, 6);
+        // Descargar archivo
+        XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
     };
 };
 
