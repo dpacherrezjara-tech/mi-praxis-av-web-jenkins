@@ -1718,7 +1718,7 @@ var LarSyrExt = function () {
             params: params
         };
         try {
-            const res = await request.post('CallStorePost', parameters);
+            const res = await request.post('CallStorePostAsync', parameters);
             return res.status;
         } catch (e) {
             console.error('Error on load Grid', e);
