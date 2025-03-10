@@ -58,7 +58,7 @@
     <script type="text/javascript" src="<c:url value="/resources/js/global.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/AwesomeNotifications/AwesomeNotifications.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/Axios/axios.min.js"/>"></script>
-    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/XLSX/xlsx.bundle.js"/>"></script>
     <script type="text/javascript">       
 
             Ext.Loader.setConfig({

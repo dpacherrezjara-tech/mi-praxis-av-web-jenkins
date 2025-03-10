@@ -1749,16 +1749,51 @@ var LarSyrExt = function () {
         params.limit = -1;
         try {
             const res = await request.get(`CallStorePaggin/${library}/${procedure}`, {
-                params:params
+                params: params
             });
             const {status, data} = res;
             if (status === 200) {
-                return data;
+                return data.response;
             }
         } catch (e) {
             console.error('Error on load', e);
             return null;
         }
+    };
+    this.writeExcelFromJson = async function (data, name) {
+        const ws = XLSX.utils.json_to_sheet(data);
+
+        const headers = Object.keys(data[0]);
+
+        //Define Headers
+        const headerStyle = {
+            font: {bold: true, color: {rgb: "FFFFFF"}}, // Texto blanco y negrita
+            fill: {fgColor: {rgb: "FF0000"}}, // Fondo rojo
+            alignment: {horizontal: "center", vertical: "center"}, // Centrado
+            border: {
+                top: {style: "thin", color: {rgb: "FFFFFF"}},
+                bottom: {style: "thin", color: {rgb: "FFFFFF"}},
+                left: {style: "thin", color: {rgb: "FFFFFF"}},
+                right: {style: "thin", color: {rgb: "FFFFFF"}}
+            }
+        };
+
+        // Aplicar estilos solo a los headers
+        headers.forEach((_, colIndex) => {
+            const cellAddress = XLSX.utils.encode_cell({r: 0, c: colIndex});
+            if (!ws[cellAddress]) {
+                ws[cellAddress] = {v: headers[colIndex]}; // Asegurar que la celda existe
+            }
+            ws[cellAddress].s = headerStyle;
+        });
+
+        // Crear libro de Excel
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "result");
+
+        let uuid = crypto.randomUUID().replace(/-/g, '').substring(0, 6);
+        // Descargar archivo
+        XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
     };
 };
 
