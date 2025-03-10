@@ -55,9 +55,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FiduciaryAlertsController extends BaseController {
     private FiduciaryAlertsLogic logic;
 
-    @RequestMapping(value = "/searchAccountingInterfaces")
+    @RequestMapping(value = "/searchMain")
     public @ResponseBody
-    String searchAccountingInterfaces(ModelMap map, HttpServletRequest request) {
+    String searchMain(ModelMap map, HttpServletRequest request) {
+        List<SQP04091Filter> listaData;
+        Gson gson = new Gson();
+        SQP04091Filter filter;
+        
+        String beanString = "";
+        System.out.println("-------------- FiduciaryAlerts : searchMain-------------");
+        try {
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, SQP04091Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;            
+            logic = new FiduciaryAlertsLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+            listaData = logic.searchMain(filter);
+
+            map.put("success", true);
+            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);            
+            map.put("data", listaData);
+        } catch (NumberFormatException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "/search")
+    public @ResponseBody
+    String search(ModelMap map, HttpServletRequest request) {
         List<SQP04091Filter> listaData;
         Gson gson = new Gson();
         SQP04091Filter filter;
@@ -76,7 +112,7 @@ public class FiduciaryAlertsController extends BaseController {
             filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;            
             logic = new FiduciaryAlertsLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
-            listaData = logic.searchAccountingInterfaces(filter);
+            listaData = logic.search(filter);
 
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);            
@@ -111,7 +147,7 @@ public class FiduciaryAlertsController extends BaseController {
             
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
-            List<SQP04091Filter> listaData = logic.searchAccountingInterfaces(filter);
+            List<SQP04091Filter> listaData = logic.search(filter);
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Report");
