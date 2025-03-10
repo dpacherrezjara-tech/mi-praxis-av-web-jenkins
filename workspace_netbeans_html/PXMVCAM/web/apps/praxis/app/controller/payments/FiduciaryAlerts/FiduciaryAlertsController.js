@@ -16,7 +16,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
     childs: '',
     drillDown: [],
     gridActual: '-boxMainData',
-    boxActual: '-vskMain',
+    boxActual: '-panelGridDataMain',
     pagginActual: '-paggin',
     user: '',
     columnCode: '',
@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         prototype.urlBank = CONTEXTPATH + '/BankReconciliation';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-vskMain';
+        me.panelActual = '-panelGridDataMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         console.log(this.childS, 'HIJOSSSS')
         this.control({
@@ -83,6 +83,10 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         me = this;
     },
     xpanel_afterrender: function (obj, e) {
+
+        Ext.getCmp(prototype.id + '-rbChart_IA').items.items[0].setValue(true);
+        Ext.getCmp(prototype.id + '-rbChart_IA').cheked = true;
+
         this.setStoreData();
         this.btnSearch_click();
     },
@@ -137,14 +141,49 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
             }
         });
     },
+    onChangeRadio: function () {
+
+        var valueRadio = Ext.getCmp(prototype.id + '-rbChart_IA').getValue().rb;
+        console.log(valueRadio);
+        switch (valueRadio) {
+            case 'rbc1_IA':
+                this.setFormatParameterMain();
+                this.searchMain();
+                break;
+            case 'rbc2_IA':
+                this.setFormatParameter();
+                this.search();
+                break;
+        }
+    },
     btnSearch_click: function () {
-        this.setFormatParameter();
-        this.search();
+        this.onChangeRadio();
+    },
+    setFormatParameterMain: function () {
+
+        me.bean = {};
+
+        let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        let getValueDate = Ext.getCmp(prototype.id + '-cmbDateFromYearVa').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateFromMonthVa').getValue() +
+                Ext.getCmp(prototype.id + '-cmbDateFromDayVa').getValue();
+        let getNumberAccount = Ext.getCmp(prototype.id + '-numberAccount').getValue();
+        let getProcessor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue().length == 0 ? '' : this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP'));
+
+        me.bean.IN_CCUST = getCustomer;
+        me.bean.IN_NUMBER_ACCOUNT = getNumberAccount;
+        me.bean.IN_VALUE_DATE = getValueDate;
+        me.bean.IN_PROCESSOR = getProcessor;
+        me.panelActual = '-panelGridDataMain';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.bean);
+        console.log(me.bean, 'me.bean')
+
     },
     setFormatParameter: function () {
 
         me.bean = {};
-        
+
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getSaleDate = Ext.getCmp(prototype.id + '-cmbDateFromYearVa').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateFromMonthVa').getValue() +
@@ -156,20 +195,52 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         me.bean.IN_NUMBER_ACCOUNT = getNumberAccount;
         me.bean.IN_SALES_DATE = getSaleDate;
         me.bean.IN_PROCESSOR = getProcessor;
-        me.panelActual = '-vskMain';
+        me.panelActual = '-panelGridData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.searchParams.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'me.bean')
 
     },
-    search: function () {
+    searchMain: function () {
 
         let lstData = []
-//            this.showGrid('-vskMain');
 
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
-                url: prototype.url + '/searchAccountingInterfaces'
+                url: prototype.url + '/searchMain'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function (obj) {
+                    console.log(obj, 'obj')
+                    var pag = Ext.getCmp(prototype.id + '-paggin');
+                    var pagData = pag.getPageData();
+                    console.log(pagData, 'pagData')
+
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    }
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataMain').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+    },
+    search: function () {
+
+        let lstData = []
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/search'
             }, listeners: {
                 beforeload: function (obj) {
                     obj.proxy.extraParams = me.searchParams;
@@ -240,35 +311,13 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
     getPaggin: function () {
         me.pagginActual = '';
         switch (me.panelActual) {
-            case '-vskMain':
+            case '-panelGridDataMain':
+                me.pagginActual = '-paggin1';
+                break;
+            case '-panelGridData':
                 me.pagginActual = '-paggin2';
                 break;
-            case '-panelGridDataDay':
-                me.pagginActual = '-paggin3';
-                break;
-            case '-panelGridDetCardByS':
-                me.pagginActual = '-paggin5';
-                break;
-            case '-panelGridDetCardNbrByS':
-                me.pagginActual = '-paggin6';
-                break;
-            case '-panelGridDataTicket':
-                me.pagginActual = '-paggin7';
-                break;
-            case '-panelGridDetDayByS':
-                me.pagginActual = '-paggin8';
-                break;
-            case '-boxDebitsData':
-                me.pagginActual = '-pagginDebits';
-                break;
-            case '-panelGridDetCardByS_Debits':
-                me.pagginActual = '-pagginDebits_country';
-                break;
-            case '-panelGridDataDetalle_DEBITS':
-                me.pagginActual = '-pagginDebits_detail';
-                break;
         }
-
     },
     pagFirst: function (obj, e) {
         this.getPaggin();
