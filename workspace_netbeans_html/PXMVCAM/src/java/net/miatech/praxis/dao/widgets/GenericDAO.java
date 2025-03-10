@@ -11,6 +11,7 @@ import net.miatech.praxis.utils.JdbcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -57,6 +58,28 @@ public class GenericDAO implements GenericLogic {
         }
         filter.setPageOut(obj);
         return filter;
+    }
+
+    @Async
+    @Override
+    public Map<String, Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception {
+        Map<String, Object> res = new HashMap<>();
+        Map<String, Object> obj = new HashMap<>();
+        if (filter.getParams().isEmpty()) {
+            obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure());
+        } else {
+            MapSqlParameterSource params = new MapSqlParameterSource(filter.getParams());
+            //SqlParameterSource params = 
+            obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure(), params);
+        }
+        List<List<Map<String, Object>>> listaDeResultados = new ArrayList<>();
+        for (Object value : obj.values()) {
+            if (value instanceof List) {
+                listaDeResultados.add((List<Map<String, Object>>) value);
+            }
+        }
+        res.put("lstRs", listaDeResultados);
+        return res;
     }
 
 }

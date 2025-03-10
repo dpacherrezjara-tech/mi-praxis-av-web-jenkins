@@ -1707,6 +1707,24 @@ var LarSyrExt = function () {
             return null;
         }
     };
+    this.callStorePostAsync = async function (library, store, params) {
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        let parameters = {
+            library: library,
+            procedure: store,
+            params: params
+        };
+        try {
+            const res = await request.post('CallStorePost', parameters);
+            return res.status;
+        } catch (e) {
+            console.error('Error on load Grid', e);
+            return 500;
+        }
+    };
     this.callStorePaggin = function (library, procedure, params) {
         let store = new Ext.data.Store({
             loadMask: true,

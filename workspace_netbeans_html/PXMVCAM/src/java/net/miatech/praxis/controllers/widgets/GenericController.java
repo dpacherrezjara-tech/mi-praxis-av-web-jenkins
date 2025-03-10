@@ -40,6 +40,13 @@ public class GenericController {
         return ResponseUtils.create(logic.callStoreProcedure(params));
     }
     
+    @RequestMapping(value = "CallStorePostAsync",method = RequestMethod.POST)
+    public ResponseEntity<?> CallStorePostAsync(@RequestBody CallStoreFilter params) throws Exception {
+        System.out.println("***** Generic - CallStorePostAsync *****");
+        System.out.println("Parameters: " + params.getLibrary() + "." + params.getProcedure());
+        return ResponseUtils.create();
+    }
+    
     @RequestMapping(value = "CallStorePaggin/{library}/{procedure}")
     public ResponseEntity<?> CallStorePaggin(
             @PathVariable String library,
