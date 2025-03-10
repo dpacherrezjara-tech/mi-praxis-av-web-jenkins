@@ -59,7 +59,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessConciliationData
     processConciliation: async function (params) {
         const me = this;
         try {
-            const res = global.callStorePostAsync('PRAXISMP', 'MPS200W', params);
+            const res = await global.callStorePostAsync('PRAXISMP', 'MPS200W', params);
             if(res === 201){
                 me.notifier.success('Process Loading');
             }else{
