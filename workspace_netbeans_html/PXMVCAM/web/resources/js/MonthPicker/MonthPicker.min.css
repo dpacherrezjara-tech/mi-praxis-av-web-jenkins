@@ -1,7 +1,7 @@
 .month-picker {
     display: inline-block;
     position: absolute;
-    z-index: 11010 !important;
+    z-index: 21010 !important;
 }
 
 .month-picker table {
