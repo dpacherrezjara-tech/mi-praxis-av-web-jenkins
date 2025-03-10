@@ -107,7 +107,6 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }
         });
     },
-    
 
     showGridActual: function () {
         this.hideAllGrid();
@@ -360,7 +359,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                     Ext.getCmp(prototype.id + '-cmbFav').bindStore(storeData);
                     Ext.getCmp(prototype.id + '-cmbFav').setValue(listaFav[0].code);
                 }
-                console.log(listaFav,'listaFav')
+                console.log(listaFav, 'listaFav')
 
                 if (resFiles !== undefined) {
                     var listaFile = [];
@@ -2060,7 +2059,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             console.log('RQUERY seleccionado:', rquery);
             console.log('TQUERY seleccionado:', tquery);
             console.log('Table seleccionada:', ttable);
- 
+
             bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
             bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
             bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();

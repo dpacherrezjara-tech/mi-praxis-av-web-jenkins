@@ -44,8 +44,6 @@ Ext.define('Ext.Praxis.controller.program.ProMasterTicket.ProMasterTicketControl
     },
     afterRender: function() {
         console.log(me);
-        console.log(window.location.href, 'WINDOW.HREF');
-        console.log(window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=",""), 'WINDOW.location');
         this.startDisplay();
     },
     startDisplay: function() {

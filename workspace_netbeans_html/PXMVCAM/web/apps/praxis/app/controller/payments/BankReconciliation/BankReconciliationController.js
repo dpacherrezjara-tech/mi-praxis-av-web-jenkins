@@ -145,13 +145,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         $('#BankReconciliationForm-btnToggleSwitchFTGraf').change(function () {
             me.procesador();
         });
-        
+        if(window.location.href.includes("params")){
+            let paramsSauthoc = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[0]
+            let paramsScardncor = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[1]
+            Ext.getCmp(prototype.id + '-txtCard2').setValue(paramsScardncor)
+            Ext.getCmp(prototype.id + '-txtAUTHOC').setValue(paramsSauthoc)
+        }
         this.setStoreData();
         this.setStoreDataGraf();
-        
-        
-
-        
     },
     procesador: function () {
         let proces = Ext.getCmp(prototype.id + '-TESTGraf');
