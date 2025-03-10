@@ -69,7 +69,15 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         $('#SalesReconciliationForm-btnToggleSwitch').change(function () {
             me.procesador();
         });
-
+        if(window.location.href.includes("params")){
+            let paramsTkt = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[0]
+            let paramsOrig = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[1]
+            Ext.getCmp(prototype.id + '-txtTicket').setValue(paramsTkt)
+            if( paramsOrig === 'EX' ){
+                me.procesador();
+                Ext.getCmp(prototype.id + '-btnToggleSwitch').el.down('input.toggle-input').dom.checked = true; 
+            } 
+        }
         this.setStoreData();
         this.initDate();
         this.obtainData();
