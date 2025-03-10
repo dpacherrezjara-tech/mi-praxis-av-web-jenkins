@@ -58,7 +58,7 @@
     <script type="text/javascript" src="<c:url value="/resources/js/global.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/AwesomeNotifications/AwesomeNotifications.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/Axios/axios.min.js"/>"></script>
-
+    <script type="text/javascript" src="<c:url value="/resources/js/XLSX/xlsx.bundle.js"/>"></script>
     <script type="text/javascript">       
 
             Ext.Loader.setConfig({

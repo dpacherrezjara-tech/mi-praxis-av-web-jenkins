@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConcili
     controller: 'ProcessConciliationDataEntryController',
     title: 'Process Conciliation - Form',
     header: true,
-    width: 800,
+    width: 380,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -19,94 +19,138 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessConcili
     scrollable: true,
     items: [
         {
-            xtype: 'panel',
-            width: '100%',
-            border: false,
-            margin: 3,
-            defaults: {
-                style: 'margin: 3px;',
-                border: false
+            xtype: 'form',
+            id: prototype.idDE2 + '-mainForm',
+            layout: {
+                type: 'vbox',
+                pack: 'center'
             },
-            anchor: '100%',
-            items: [
-                //<editor-fold defaultstate="collapsed" desc="Filtros">
-                {
-                    xtype: 'form',
-                    layout: 'hbox',
-                    id: prototype.idDE2 + '-formFilters',
-                    border: true,
+            border: false,
+            width: '100%',
+            defaults: {
+                xtype: 'fieldset',
+                layout: {
+                    type: 'vbox',
+                    pack: 'center'
+                },
+                border: true,
+                margin: '2 2 2 2',
+                width: '100%',
+                style: {
+                    backgroundColor: '#efe5e5' // Cambiar el color de fondo a gris claro (#f0f0f0)
+                },
+                defaults: {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center'
+                    },
+                    width: '100%',
+                    border: false,
+                    bodyStyle: 'background: transparent',
                     defaults: {
                         xtype: 'textfield',
-                        fieldStyle: 'text-align: center;',
-                        padding: '5 1 5 1',
-                        hiddenLabel: false,
-                        labelAlign: 'right',
-                        hidden: false
-                    },
+                        margin: '2 5 2 5',
+                        labelStyle: 'text-align:left;font-weight: bolder;',
+                        fieldStyle: 'text-align:center;',
+                        editable: true
+                    }
+                }
+            },
+            items: [
+                //<editor-fold defaultstate="collapsed" desc="Parameters">
+                {
+                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Parameters</span>',
                     items: [
                         {
-                            xtype: 'combobox',
-                            fieldLabel: 'Client',
-                            name: 'VP_CCUST',
-                            store: Ext.create('Ext.data.SimpleStore', {
-                                fields: ['code', 'name'],
-                                data: [
-                                    ['134', 'AV - AVIANCA'],
-                                    ['202', 'TA - TACA'],
-                                    ['547', '2K - AEROGAL'],
-                                    ['133', 'LR - LACSA']
-                                ]
-                            }),
-                            labelWidth: 80,
-                            width: 210,
-                            displayField: 'name',
-                            valueField: 'code',
-                            queryMode: 'local',
-                            editable: false,
-                            value: '134'
+                            items: [
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Client',
+                                    name: 'VP_CCUST',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['134', 'AV - AVIANCA'],
+                                            ['202', 'TA - TACA'],
+                                            ['547', '2K - AEROGAL'],
+                                            ['133', 'LR - LACSA']
+                                        ]
+                                    }),
+                                    labelWidth: 90,
+                                    width: 250,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: '134'
+                                }
+
+                            ]
                         },
                         {
-                            xtype: 'combo',
-                            id: prototype.idDE2 + '-cmbCODPRO',
-                            name: 'VP_CODPRO',
-                            labelWidth: 70,
-                            width: 240,
-                            valueField: 'CODE',
-                            displayField: 'NAME',
-                            fieldLabel: 'Processor',
-                            queryMode: 'local',
-                            editable: false,
-                            allowBlank: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            labelAlign: 'right',
-                            typeAhead: true,
-                            enableKeyEvents: true,
-                            triggerAction: 'all'
+                            items: [
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.idDE2 + '-cmbCODPRO',
+                                    name: 'VP_CODPRO',
+                                    labelWidth: 90,
+                                    width: 250,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    fieldLabel: 'Processor',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    allowBlank: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    labelAlign: 'right',
+                                    typeAhead: true,
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all'
+                                }
+                            ]
                         },
                         {
-                            xtype: 'datefield',
-                            name: 'VP_SDATE_INI',
-                            fieldLabel: 'From',
-                            format: 'Ymd',
-                            editable: true, // Deshabilita la edición del campo
-                            labelWidth: 60,
-                            width: 140,
-                            value: ''
+                            items: [
+                                {
+                                    xtype: 'datefield',
+                                    name: 'VP_SDATE_INI',
+                                    fieldLabel: 'Process From',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 90,
+                                    width: 180,
+                                    value: ''
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    name: 'VP_SDATE_FIN',
+                                    fieldLabel: 'To',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 40,
+                                    width: 130,
+                                    value: ''
+                                },
+                            ]
                         },
                         {
-                            xtype: 'datefield',
-                            name: 'VP_SDATE_FIN',
-                            fieldLabel: 'To',
-                            format: 'Ymd',
-                            editable: true, // Deshabilita la edición del campo
-                            labelWidth: 60,
-                            width: 140,
-                            value: ''
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Bank Doc.',
+                                    labelWidth: 90,
+                                    width: 190,
+                                    name: 'VP_BANDOC',
+                                    maxLength: 10,
+                                    enforceMaxLength: true
+                                }
+                            ]
                         }
                     ]
-                }
-                //</editor-fold>
+                },
+                        //</editor-fold>
             ]
         }
     ],
