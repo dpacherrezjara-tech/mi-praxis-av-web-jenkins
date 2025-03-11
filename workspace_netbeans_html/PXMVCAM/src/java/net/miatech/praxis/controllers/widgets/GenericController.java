@@ -44,6 +44,7 @@ public class GenericController {
     public ResponseEntity<?> CallStorePostAsync(@RequestBody CallStoreFilter params) throws Exception {
         System.out.println("***** Generic - CallStorePostAsync *****");
         System.out.println("Parameters: " + params.getLibrary() + "." + params.getProcedure());
+        logic.callStoreProcedureAsync(params);
         return ResponseUtils.create();
     }
     
