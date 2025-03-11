@@ -1076,7 +1076,7 @@ public class ProMail {
             
 //            auth = new SMTPAuthenticator("jsolano@miatech.net", "Gutierrez_02");
             auth = new SMTPAuthenticator(usuario, ss.getPropertySession().get("APP_SERVER_MAIL_PASSWORD").toString());
-            auth = new SMTPAuthenticator(usuario, "uMbDAsNP+42");
+            auth = new SMTPAuthenticator(usuario, "Enero*25-01");
             
             Session session = Session.getInstance(props, auth);            
             //Se obtiene sesi&amp;oacute;n desde el servidor de correos               
