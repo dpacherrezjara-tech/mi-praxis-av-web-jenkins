@@ -660,10 +660,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
-                        let totalTickets = obj.data.items[0].data.TOT_QTYTKT;
                         Ext.getCmp(prototype.id + '-lbl-currentPage_JS').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount_JS').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total_JS').setText(Ext.util.Format.number(pagData.total, '0,000') + ' / ' + Ext.util.Format.number(totalTickets, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total_JS').setText(Ext.util.Format.number(pagData.total, '0,000'));
                         
                         let lstData = []
                         for (let value of obj.data.items) {
@@ -728,7 +727,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                             }
                         });
                         
-                        console.log(totalTickets,'totalTickets')
+                        
                         console.log(dataRoot);
 
                         var storeTree = Ext.create('Ext.data.TreeStore', {

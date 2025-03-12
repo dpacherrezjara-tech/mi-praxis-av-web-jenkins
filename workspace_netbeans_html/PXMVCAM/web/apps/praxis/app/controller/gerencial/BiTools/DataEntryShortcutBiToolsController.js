@@ -84,6 +84,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.DataEntryShortcutBiToolsCont
             let strSauthoc = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1]
             let strScardn = Ext.getCmp(prototype.id + '-command').getValue().split("/")[2]
             window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strSauthoc +'/'+strScardn+ '#payments-bank-reconciliation-form', '_blank', 'width=1200,height=800,scrollbars=yes');
+        } else if ( Ext.getCmp(prototype.id + '-command').getValue().split("/")[0] === 'DMN' ){
+            let strMerchand = Ext.getCmp(prototype.id + '-command').getValue().split("/")[1];
+            window.open('http://aviancapc.miatech.net/AVIANCA/?params=' + strMerchand + '#payments-merchant-number-form', '_blank', 'width=1200,height=800,scrollbars=yes');
         } else{
             global.Msg({msg: 'Enter a valid command'});
         }
