@@ -1242,17 +1242,17 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -1262,19 +1262,19 @@ public class ManualConciliationDAO {
             cstmt.setString(6, filter.RQUERY);
             cstmt.setString(7, filter.TQUERY);
             cstmt.setString(8, filter.TTABLE);
-
-            cstmt.setInt(9, filter.page.PAGNUM);
-            cstmt.setInt(10, filter.page.PAGROW);
-            cstmt.setInt(11, filter.page.TOTPAG);
-            cstmt.setInt(12, filter.page.TOTROW);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
-
-            filter.page.PAGNUM = cstmt.getInt(9);
-            filter.page.PAGROW = cstmt.getInt(10);
-            filter.page.TOTPAG = cstmt.getInt(11);
-            filter.page.TOTROW = cstmt.getInt(12);
+            lngQTYTKT = cstmt.getInt(9);
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
 
             while (rst.next()) {
 
@@ -1334,6 +1334,7 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
                         beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
                         beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+                        beanTkt.TOT_QTYTKT = lngQTYTKT;
 
                         beanTkt.page.PAGNUM = filter.page.PAGNUM;
                         beanTkt.page.PAGROW = filter.page.PAGROW;
