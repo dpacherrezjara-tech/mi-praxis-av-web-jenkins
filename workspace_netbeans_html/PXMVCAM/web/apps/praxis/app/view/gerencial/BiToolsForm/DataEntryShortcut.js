@@ -63,6 +63,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
                     {CM: 'DVT', Description: 'Display View Ticket', Example: 'DVT/1344203080502'},
                     {CM: 'DST', Description: 'Display Sales By Ticket', Example: 'DST/1344203080502/CO'},
                     {CM: 'DBR', Description: 'Display Bank Reconciliation', Example: 'DBR/27US6P/1453'},
+                    {CM: 'DMN', Description: 'Display Merchant Number', Example: 'DMN/CO890910430'},
                 ],
                 pageSize: 10,
                 proxy: {

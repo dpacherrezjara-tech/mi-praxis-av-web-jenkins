@@ -72,6 +72,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     },
     xpanel_afterrender: function () {
 //        this.btnSearch_click();
+        if(window.location.href.includes("params")){
+            let paramsMerchand = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","")
+
+            Ext.getCmp(prototype.id + '-txtCMERCHAN').setValue(paramsMerchand)
+        }
     },
 
     eventKey: function (e, eOpts) {
