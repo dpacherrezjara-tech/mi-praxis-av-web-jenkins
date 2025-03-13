@@ -69,6 +69,17 @@ public String IN_SCURRENCY = "";
 public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
 public String IN_IDFBENEF = "";
+
+public String IN_EQUIVA1 = "";
+public String IN_EQUIVA2 = "";
+public String IN_EQUIVA3 = "";
+public String IN_EQUIVA4 = "";
+public String IN_EQUIVA5 = "";
+public String IN_EQUIVA6 = "";
+public String IN_EQUIVA7 = "";
+public String IN_EQUIVA8 = "";
+public String IN_EQUIVA9 = "";
+
 public String OPTION = "";
 public String NEGOC = "";
 public String CMERCHAN = "";
@@ -87,6 +98,17 @@ public String FRANC1 = "";
 public String FRANC2 = "";
 public String FRANC3 = "";
 public String FRANC4 = "";
+
+
+public String EQUIVA1 = "";
+public String EQUIVA2 = "";
+public String EQUIVA3 = "";
+public String EQUIVA4 = "";
+public String EQUIVA5 = "";
+public String EQUIVA6 = "";
+public String EQUIVA7 = "";
+public String EQUIVA8 = "";
+public String EQUIVA9 = "";
 
 public String BANKNAM = "";
 public String BANKCM = "";

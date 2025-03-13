@@ -174,6 +174,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //        console.log(this.beanResult.CODEREJ);
         this.dataObtain.CARD = 2;
         this.dataObtain.COREP = 2;
+        this.dataObtain.CARDEQUIVALENT = 2;
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -196,6 +197,26 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                         Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-de-txtAPCODE_D').bindStore(
                         Ext.create('Ext.data.Store', { data: res.lstProcessor, autoLoad: true}));
+                
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_1').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_2').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_3').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_4').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_5').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_6').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_7').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_8').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-de-txtEQUIVALENT_9').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                
                 } else
                     global.Msg({msg: res.sesion});
             }
@@ -211,7 +232,19 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('de-txtFRANCH2_D', this.bean.data.FRANC2)
         this.setValue('de-txtFRANCH3_D', this.bean.data.FRANC3)
         this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
-//        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
+        
+        this.setValue('de-txtEQUIVALENT_1', this.bean.data.EQUIVA1)
+        this.setValue('de-txtEQUIVALENT_2', this.bean.data.EQUIVA2)
+        this.setValue('de-txtEQUIVALENT_3', this.bean.data.EQUIVA3)
+        this.setValue('de-txtEQUIVALENT_4', this.bean.data.EQUIVA4)
+        this.setValue('de-txtEQUIVALENT_5', this.bean.data.EQUIVA5)
+        this.setValue('de-txtEQUIVALENT_6', this.bean.data.EQUIVA6)
+        this.setValue('de-txtEQUIVALENT_7', this.bean.data.EQUIVA7)
+        this.setValue('de-txtEQUIVALENT_8', this.bean.data.EQUIVA8)
+        this.setValue('de-txtEQUIVALENT_9', this.bean.data.EQUIVA9)
+        
+        
+        //        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
         this.setValue('CODEBANK_D', this.bean.data.CODEBANK)
         this.setValue('BANKNAM_D', this.bean.data.BANKNAM)
         this.setValue('BANKCM_D', this.bean.data.BANKCM)
@@ -265,6 +298,17 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.IN_FRANC2 = this.getValue("de-txtFRANCH2_D")
         beanTemp.IN_FRANC3 = this.getValue("de-txtFRANCH3_D")
         beanTemp.IN_FRANC4 = this.getValue("de-txtFRANCH4_D")
+        
+        beanTemp.IN_EQUIVA1 = this.getValue("de-txtEQUIVALENT_1")
+        beanTemp.IN_EQUIVA2 = this.getValue("de-txtEQUIVALENT_2")
+        beanTemp.IN_EQUIVA3 = this.getValue("de-txtEQUIVALENT_3")
+        beanTemp.IN_EQUIVA4 = this.getValue("de-txtEQUIVALENT_4")
+        beanTemp.IN_EQUIVA5 = this.getValue("de-txtEQUIVALENT_5")
+        beanTemp.IN_EQUIVA6 = this.getValue("de-txtEQUIVALENT_6")
+        beanTemp.IN_EQUIVA7 = this.getValue("de-txtEQUIVALENT_7")
+        beanTemp.IN_EQUIVA8 = this.getValue("de-txtEQUIVALENT_8")
+        beanTemp.IN_EQUIVA9 = this.getValue("de-txtEQUIVALENT_9")
+        
         beanTemp.IN_BANKCM = this.getValue("BANKCM_D")
         beanTemp.IN_BANKCUR = this.getValue("BANKCUR_D")
         beanTemp.IN_ACCNUMOLD = this.getValue("ACCNUMOLD_D")

@@ -539,6 +539,16 @@ public class MerchantNumberDAO {
                 bean.FRANC2 = rst.getString("FRANC2").trim();
                 bean.FRANC3 = rst.getString("FRANC3").trim();
                 bean.FRANC4 = rst.getString("FRANC4").trim();
+                
+                bean.EQUIVA1 = rst.getString("EQUIVA1").trim();
+                bean.EQUIVA2 = rst.getString("EQUIVA2").trim();
+                bean.EQUIVA3 = rst.getString("EQUIVA3").trim();
+                bean.EQUIVA4 = rst.getString("EQUIVA4").trim();
+                bean.EQUIVA5 = rst.getString("EQUIVA5").trim();
+                bean.EQUIVA6 = rst.getString("EQUIVA6").trim();
+                bean.EQUIVA7 = rst.getString("EQUIVA7").trim();
+                bean.EQUIVA8 = rst.getString("EQUIVA8").trim();
+                bean.EQUIVA9 = rst.getString("EQUIVA9").trim();
 //                bean.CODEBANK  = rst.getString("CODEBANK").trim();
 //                bean.BANKNAM   = rst.getString("BANKNAM").trim();
 //                bean.BANKCM    = rst.getString("BANKCM").trim();
@@ -773,7 +783,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_V3(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -817,9 +827,22 @@ public class MerchantNumberDAO {
             cstmt.setString(34, filter.IN_SBENCEN.trim());
             cstmt.setString(35, filter.IN_COSTCEN.trim());
             cstmt.setString(36, filter.IN_IDFBENEF.trim());
-            cstmt.setString(37, session.getUserView().getUserInfo().USR);
-            cstmt.setString(38, Functions.getFechaActual());
-            cstmt.setString(39, Functions.getHoraActual());
+            
+            cstmt.setString(37, filter.IN_EQUIVA1.trim());
+            cstmt.setString(38, filter.IN_EQUIVA2.trim());
+            cstmt.setString(39, filter.IN_EQUIVA3.trim());
+            cstmt.setString(40, filter.IN_EQUIVA4.trim());
+            cstmt.setString(41, filter.IN_EQUIVA5.trim());
+            cstmt.setString(42, filter.IN_EQUIVA6.trim());
+            cstmt.setString(43, filter.IN_EQUIVA7.trim());
+            cstmt.setString(44, filter.IN_EQUIVA8.trim());
+            cstmt.setString(45, filter.IN_EQUIVA9.trim());
+            
+            
+            
+            cstmt.setString(46, session.getUserView().getUserInfo().USR);
+            cstmt.setString(47, Functions.getFechaActual());
+            cstmt.setString(48, Functions.getHoraActual());
             cstmt.execute();
             cstmt.close();
 //            }
@@ -874,7 +897,7 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -912,9 +935,20 @@ public class MerchantNumberDAO {
             cstmt.setString(29, filter.SBENCEN.trim());
             cstmt.setString(30, filter.COSTCEN.trim());
             cstmt.setString(31, filter.IDFBENEF.trim());
-            cstmt.setString(32, session.getUserView().getUserInfo().USR);
-            cstmt.setString(33, Functions.getFechaActual());
-            cstmt.setString(34, Functions.getHoraActual());
+            
+            cstmt.setString(32, filter.IN_EQUIVA1.trim());
+            cstmt.setString(33, filter.IN_EQUIVA2.trim());
+            cstmt.setString(34, filter.IN_EQUIVA3.trim());
+            cstmt.setString(35, filter.IN_EQUIVA4.trim());
+            cstmt.setString(36, filter.IN_EQUIVA5.trim());
+            cstmt.setString(37, filter.IN_EQUIVA6.trim());
+            cstmt.setString(38, filter.IN_EQUIVA7.trim());
+            cstmt.setString(39, filter.IN_EQUIVA8.trim());
+            cstmt.setString(40, filter.IN_EQUIVA9.trim());
+            
+            cstmt.setString(41, session.getUserView().getUserInfo().USR);
+            cstmt.setString(42, Functions.getFechaActual());
+            cstmt.setString(43, Functions.getHoraActual());
             cstmt.execute();
             cstmt.close();
 
@@ -994,6 +1028,18 @@ public class MerchantNumberDAO {
                 objRtn.FRANC2 = rs01.getString("FRANC2").trim();
                 objRtn.FRANC3 = rs01.getString("FRANC3").trim();
                 objRtn.FRANC4 = rs01.getString("FRANC4").trim();
+                
+                objRtn.EQUIVA1 = rs01.getString("EQUIVA1").trim();
+                objRtn.EQUIVA2 = rs01.getString("EQUIVA2").trim();
+                objRtn.EQUIVA3 = rs01.getString("EQUIVA3").trim();
+                objRtn.EQUIVA4 = rs01.getString("EQUIVA4").trim();
+                objRtn.EQUIVA5 = rs01.getString("EQUIVA5").trim();
+                objRtn.EQUIVA6 = rs01.getString("EQUIVA6").trim();
+                objRtn.EQUIVA7 = rs01.getString("EQUIVA7").trim();
+                objRtn.EQUIVA8 = rs01.getString("EQUIVA8").trim();
+                objRtn.EQUIVA9 = rs01.getString("EQUIVA9").trim();
+                
+                
                 objRtn.CODEBANK = rs01.getString("CODEBANK").trim();
                 objRtn.BANKNAM = rs01.getString("BANKNAM").trim();
                 objRtn.BANKCM = rs01.getString("BANKCM").trim();
@@ -1104,6 +1150,16 @@ public class MerchantNumberDAO {
                 objRtn.SBENCEN = rs01.getString("SBENCEN").trim();
                 objRtn.COSTCEN = rs01.getString("COSTCEN").trim();
                 objRtn.IDFBENEF = rs01.getString("IDFBENEF").trim();
+                
+                objRtn.EQUIVA1 = rs01.getString("EQUIVA1").trim();
+                objRtn.EQUIVA2 = rs01.getString("EQUIVA2").trim();
+                objRtn.EQUIVA3 = rs01.getString("EQUIVA3").trim();
+                objRtn.EQUIVA4 = rs01.getString("EQUIVA4").trim();
+                objRtn.EQUIVA5 = rs01.getString("EQUIVA5").trim();
+                objRtn.EQUIVA6 = rs01.getString("EQUIVA6").trim();
+                objRtn.EQUIVA7 = rs01.getString("EQUIVA7").trim();
+                objRtn.EQUIVA8 = rs01.getString("EQUIVA8").trim();
+                objRtn.EQUIVA9 = rs01.getString("EQUIVA9").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
