@@ -20,45 +20,80 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.lstCountry = this.p.lstCountry;
-        
+
     },
     afterRender: function () {
         switch (this.actionCode) {
             case 'I':
-                
-            this.dataObtain.CARD = 2;
-            this.dataObtain.COREP = 2;
-            Ext.Ajax.request({
-                url: prototype.urlMaster + '/obtainData',
-                method: 'POST',
-                timeout: 60000000,
-                params: {beanString: JSON.stringify(this.dataObtain)},
-                success: function(response, options) {
-                    var res = Ext.JSON.decode(response.responseText); 
-                    console.log(res, 'res')
-                    if (res.success) {
 
-                        me.lstCountry = res.lstCountry;
-                        me.lstBank = res.lstBank;
-                        Ext.getCmp(prototype.id + '-de-txtFRANCH1').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                        Ext.getCmp(prototype.id + '-de-txtFRANCH2').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                        Ext.getCmp(prototype.id + '-de-txtFRANCH3').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                        Ext.getCmp(prototype.id + '-de-txtFRANCH4').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                        Ext.getCmp(prototype.id + '-de-txtAPCODE').bindStore(
-                            Ext.create('Ext.data.Store', { data: res.lstProcessor, autoLoad: true}));
-                    } else
-                        global.Msg({msg: res.sesion});
-                }
-            });
+                this.dataObtain.CARD = 2;
+                this.dataObtain.COREP = 2;
+                this.dataObtain.CARDEQUIVALENT = 2;
+
+                Ext.Ajax.request({
+                    url: prototype.urlMaster + '/obtainData',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: JSON.stringify(this.dataObtain)},
+                    success: function (response, options) {
+                        var res = Ext.JSON.decode(response.responseText);
+                        console.log(res, 'res')
+                        if (res.success) {
+
+                            me.lstCountry = res.lstCountry;
+                            me.lstBank = res.lstBank;
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH1').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH2').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH3').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH4').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtAPCODE').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstProcessor, autoLoad: true}));
+
+
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent1').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent2').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent3').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent4').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent5').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent6').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent7').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent8').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent9').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+
+                        } else
+                            global.Msg({msg: res.sesion});
+                    }
+                });
                 Ext.getCmp(prototype.id + '-de-txtFRANCH1').setValue('')
+                
                 Ext.getCmp(prototype.id + '-de-txtFRANCH2').setValue('')
                 Ext.getCmp(prototype.id + '-de-txtFRANCH3').setValue('')
                 Ext.getCmp(prototype.id + '-de-txtFRANCH4').setValue('')
                 Ext.getCmp(prototype.id + '-de-txtAPCODE').setValue('')
+
+                Ext.getCmp(prototype.id + '-de-txtEquivalent1').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent2').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent3').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent4').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent5').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent6').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent7').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent8').setValue('')
+                Ext.getCmp(prototype.id + '-de-txtEquivalent9').setValue('')
+
                 Ext.getCmp(prototype.id + '-panelTabMain').hide();
                 Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
@@ -97,7 +132,58 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 break;
             case 'U':
                 this.getData();
-                
+
+                this.dataObtain.CARD = 2;
+                this.dataObtain.COREP = 2;
+                this.dataObtain.CARDEQUIVALENT = 2;
+
+                Ext.Ajax.request({
+                    url: prototype.urlMaster + '/obtainData',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: JSON.stringify(this.dataObtain)},
+                    success: function (response, options) {
+                        var res = Ext.JSON.decode(response.responseText);
+                        console.log(res, 'res')
+                        if (res.success) {
+
+                            me.lstCountry = res.lstCountry;
+                            me.lstBank = res.lstBank;
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH1').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH2').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH3').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtFRANCH4').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtAPCODE').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstProcessor, autoLoad: true}));
+
+
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent1').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent2').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent3').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent4').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent5').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent6').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent7').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent8').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-de-txtEquivalent9').bindStore(
+                                    Ext.create('Ext.data.Store', {data: res.lstCardEquivalent, autoLoad: true}));
+
+                        } else
+                            global.Msg({msg: res.sesion});
+                    }
+                });
 //                this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-de-txtMERCHN').setEditable(true);
                 Ext.getCmp(prototype.id + '-de-txtAFBRANCH').setEditable(true);
@@ -133,30 +219,30 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(this.dataObtain)},
-            success: function(response, options) {
-                var res = Ext.JSON.decode(response.responseText); 
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
                 console.log(res, 'res')
                 if (res.success) {
-                    
+
                     me.lstCountry = res.lstCountry;
                     me.lstBank = res.lstBank;
                     Ext.getCmp(prototype.id + '-de-txtFRANCH1').bindStore(
-                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-de-txtFRANCH2').bindStore(
-                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-de-txtFRANCH3').bindStore(
-                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-de-txtFRANCH4').bindStore(
-                        Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
+                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-de-txtAPCODE').bindStore(
-                        Ext.create('Ext.data.Store', { data: res.lstProcessor, autoLoad: true}));
+                            Ext.create('Ext.data.Store', {data: res.lstProcessor, autoLoad: true}));
                 } else
                     global.Msg({msg: res.sesion});
             }
         });
-        console.log('dadsadasdadasdadad',meDE.beanResult )
+        console.log('dadsadasdadasdadad', meDE.beanResult)
         this.setValue('de-txtMERCHN', meDE.beanResult.CMERCHAN)
-      
+
         this.setValue('de-txtAFBRANCH', meDE.beanResult.SUCMERCH)
         this.setValue('de-txtACQPROC', meDE.beanResult.CORE)
         this.setValue('de-txtAPCODE', meDE.beanResult.CODE)
@@ -165,6 +251,17 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('de-txtFRANCH2', meDE.beanResult.FRANC2)
         this.setValue('de-txtFRANCH3', meDE.beanResult.FRANC3)
         this.setValue('de-txtFRANCH4', meDE.beanResult.FRANC4)
+        
+        
+        this.setValue('de-txtEquivalent1', meDE.beanResult.EQUIVA1)
+        this.setValue('de-txtEquivalent2', meDE.beanResult.EQUIVA2)
+        this.setValue('de-txtEquivalent3', meDE.beanResult.EQUIVA3)
+        this.setValue('de-txtEquivalent4', meDE.beanResult.EQUIVA4)
+        this.setValue('de-txtEquivalent5', meDE.beanResult.EQUIVA5)
+        this.setValue('de-txtEquivalent6', meDE.beanResult.EQUIVA6)
+        this.setValue('de-txtEquivalent7', meDE.beanResult.EQUIVA7)
+        this.setValue('de-txtEquivalent8', meDE.beanResult.EQUIVA8)
+        this.setValue('de-txtEquivalent9', meDE.beanResult.EQUIVA9)
 
         this.setValue('txtUSCR', meDE.beanResult.USCR);
         this.setValue('txtFECR', meDE.beanResult.FECR);
@@ -187,6 +284,17 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.FRANC2 = this.getValue("de-txtFRANCH2")
         beanTemp.FRANC3 = this.getValue("de-txtFRANCH3")
         beanTemp.FRANC4 = this.getValue("de-txtFRANCH4")
+        
+        beanTemp.IN_EQUIVA1 = this.getValue("de-txtEquivalent1")
+        beanTemp.IN_EQUIVA2 = this.getValue("de-txtEquivalent2")
+        beanTemp.IN_EQUIVA3 = this.getValue("de-txtEquivalent3")
+        beanTemp.IN_EQUIVA4 = this.getValue("de-txtEquivalent4")
+        beanTemp.IN_EQUIVA5 = this.getValue("de-txtEquivalent5")
+        beanTemp.IN_EQUIVA6 = this.getValue("de-txtEquivalent6")
+        beanTemp.IN_EQUIVA7 = this.getValue("de-txtEquivalent7")
+        beanTemp.IN_EQUIVA8 = this.getValue("de-txtEquivalent8")
+        beanTemp.IN_EQUIVA9 = this.getValue("de-txtEquivalent9")
+        
         beanTemp.CODEBANK = this.getValue("CODEBANK")
         beanTemp.BANKNAM = this.getValue("BANKNAM")
         beanTemp.BANKCM = this.getValue("BANKCM")
@@ -205,9 +313,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.SOCIETY = this.getValue("SOCIETY")
         beanTemp.SCURRENCY = this.getValue("SCURRENCY")
         beanTemp.SBENCEN = this.getValue("SBENCEN")
-        beanTemp.COSTCEN = this.getValue("COSTCEN") 
-        beanTemp.IDFBENEF = this.getValue("IDFBENEF") 
-        
+        beanTemp.COSTCEN = this.getValue("COSTCEN")
+        beanTemp.IDFBENEF = this.getValue("IDFBENEF")
+
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
         beanTemp.HOCR = this.getValue("txtHOCR").trim();
@@ -217,11 +325,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 
     },
     getData: function () {
-        if(meDE.bean.data.CMERCHAN === ''){
+        if (meDE.bean.data.CMERCHAN === '') {
             meDE.bean.data.CMERCHAN = '0';
         }
-        
-        if(meDE.bean.data.SUCMERCH === ''){
+
+        if (meDE.bean.data.SUCMERCH === '') {
             meDE.bean.data.SUCMERCH = '0';
         }
 
@@ -244,7 +352,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 console.log(resDETAIL.result, 'watafaaaaaaaaaaaaaaaaaaaaaa')
                 meDE.beanResult = resDETAIL.result;
                 meDE.mostrarData();
-                 
+
             },
             failure: function (response, options) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
@@ -253,7 +361,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             }
         });
         console.log('después del llamado')
-        
+
         var paramDetailMerchants = {};
         paramDetailMerchants.beanString = JSON.stringify(meDE.bean.data);
         console.log('meDE.bean.data', meDE.bean.data)
@@ -284,7 +392,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
-         
+
         var paramDetailBanks = {};
         paramDetailBanks.beanString = JSON.stringify(meDE.bean.data);
         console.log('meDE.bean.data', meDE.bean.data)
@@ -315,12 +423,12 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
-        
+
         var paramDetailIatas = {};
         paramDetailIatas.beanString = JSON.stringify(meDE.bean.data);
         console.log('meDE.bean.data', meDE.bean.data)
         console.log('MUESTRA EL PARAMS ');
-        console.log(paramDetailIatas, 'paramDetailIatas' );
+        console.log(paramDetailIatas, 'paramDetailIatas');
         Ext.Ajax.request({
             url: prototype.url + '/searchIATAS',
             method: 'POST',
@@ -349,7 +457,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             }
         });
     },
-    onViewMerchClick: function( grid, rowIndex, colIndex, item, e, record ){
+    onViewMerchClick: function (grid, rowIndex, colIndex, item, e, record) {
         var rec = grid.getStore().getAt(rowIndex);
         console.log('llega al view')
         this.winDataEntry('U', rec);
@@ -392,6 +500,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     },
     // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {
+        console.log("CLICK SAVE WADAFA")
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to insert ?',
@@ -404,7 +513,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
-                        
+
                     if (msjResult === '') {
                         beanTemp.option = 'I';
                         this.MaintenanceMPF109(beanTemp);
@@ -429,11 +538,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     fn: function (btn) {
                         if (btn === 'yes') {
                             var beanTemp = {};
-                            
+
                             var msjResult = meDE.validacionUpdate(beanTemp);
                             if (msjResult === '') {
 //                                meDE.llenarData(beanTemp);
-                                
+
                                 beanTemp.option = 'U';
                                 meDE.MaintenanceA2354(beanTemp);
                             } else {

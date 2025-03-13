@@ -123,6 +123,10 @@ public class MasterController extends BaseController {
                 PX041S01INF001Filter userPermis = masterDAO.loadPX0000INF053(data.NPROG);
                 map.put("userPermis", userPermis);
             }
+            if (data.CARDEQUIVALENT != 0) {
+                List<A2280> lstCardEquivalent = masterDAO.loadTarjetasEquivalent();
+                map.put("lstCardEquivalent", lstCardEquivalent);
+            }
             
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
