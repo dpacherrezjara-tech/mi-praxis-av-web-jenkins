@@ -1232,7 +1232,7 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
                 SCARCOD: record.get('SCARCOD'),
                 SCARDN: record.get('SCARDN'),
                 SAUTHOC: record.get('SAUTHOC'),
-                SEQ: record.get('SEQ'),
+                SEQ: record.get('SEQNUM'),
                 SCURRENCY: record.get('SCURRENCY'),
                 VFOP: record.get('SVFOP_101'),
                 RQUERY: rquery,

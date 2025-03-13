@@ -760,7 +760,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     },
     getGrillData: async function (btn) {
         var dato = this.getCheckedCount();
-
+        console.log('entraaa a conciliar por check')
         Ext.Msg.show({
             title: '.:Confirmation:.',
             msg: 'Are you sure to conciliate ' + dato + ' records ?',
@@ -770,6 +770,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             modal: true,
             fn: function (btn) {
                 if (btn === 'yes') {
+                    
                     this.executeOption();
                 }
             }
@@ -846,6 +847,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         }
 
         selectedRecords.forEach(function (record) {
+            console.log(record.get('SEQ'), 'record.get(SEQ)')
             let registro = {
                 TDOC: record.get('TDOC'),
                 SDATE: record.get('SDATE'),
@@ -858,7 +860,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 SCARCOD: record.get('SCARCOD'),
                 SCARDN: record.get('SCARDN'),
                 SAUTHOC: record.get('SAUTHOC'),
-                SEQ: record.get('SEQ'),
+                SEQ: record.get('SEQNUM'),
                 SCURRENCY: record.get('SCURRENCY'),
                 VFOP: record.get('SVFOP_101'),
                 RQUERY: rquery,
@@ -868,7 +870,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
             listaDeDatos.push(registro);
         });
-
+        console.log(listaDeDatos,'listaDeDatos prueba de conci')
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
         return datosEnJSON;
     },
