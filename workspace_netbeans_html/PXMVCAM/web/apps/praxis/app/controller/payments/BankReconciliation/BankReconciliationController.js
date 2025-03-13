@@ -3586,8 +3586,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
                     Ext.getCmp(prototype.id + '-panelTW').unmask();
 
-                    if (obj.data.length > 0) {
-                        var Objtemp = obj.data.items[0].data;
+                    
 
                         var pag = Ext.getCmp(prototype.id + '-pagginMPF101TW');
                         var pagData = pag.getPageData();
@@ -3619,16 +3618,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         Ext.getCmp(prototype.id + '-lblTDOC_TW').setValue(me.beanDetailTW.TDOC);
                         Ext.getCmp(prototype.id + '-lblSCARDNCOR_TW').setValue(me.beanDetailTW.SCARDNCOR);
                         Ext.getCmp(prototype.id + '-txtSAUTHOC_TW').setValue(me.beanDetailTW.SAUTHOC);
+                    
+                    if (obj.data.length > 0) {
+                        var Objtemp = obj.data.items[0].data;
+                        
                     } else {
                         global.Msg({msg: 'Data not found'});
                     }
+                    
                     global.clear();
                 }
             }
         });
+        
         Ext.getCmp(prototype.id + '-gridDetailTeleworking').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pagginMPF101TW').bindStore(storeGridDatas);
-
     },
     onEditClick_ticket_TW: function () {
         let beanTicket = {}
