@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
     controller: 'DataEntryMerchantNumberController',
     title: 'Merchant Number - Data Entry Form',
     header: true,
-    height: 800,
-    width: 1179,
+    height: 900,
+    width: 1400,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                     xtype: 'panel',
                     bodyStyle: 'background:#E5ECEF;',
                     layout: 'vbox',
-                    width: 1129,
+                    width: 1400,
                     margin: '0 0 0 20',
                     defaults: {
                         anchor: '100%'
@@ -180,117 +180,283 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         width: 130
                                     },
                                     {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 1',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH1',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 160,
-                                    },
-                                    
-                                    
-                                    
                                 ]
                             },
+                            { xtype: 'tbspacer', width: 30, height:30 },
+                            
                             {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 2',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH2',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 3',
-                                        style: 'font-weight:bold;',
-                                        width: 110
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH3',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 4',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH4',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 160
-                                    },
-                                    
-                                    
-                                    
-                                ]
+    xtype: 'container',
+    layout: {
+        type: 'hbox',
+        align: 'stretch' // Asegura que los paneles se alineen correctamente
+    },
+    items: [
+        {
+            xtype: 'container',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            flex: 1, // Ocupa la mitad del espacio disponible
+            margin: '0 10 0 0', // Margen derecho para separar los contenedores
+            items: [
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    border: true, // Borde para el marco
+                    bodyStyle: 'background: #E0F7FA; padding: 10px;', // Fondo verde claro y padding interno
+                    margin: '0 0 10 0', // Margen inferior para separar del siguiente panel
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: 'Credit Card', // Título dentro del cuadro
+                            style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
                             },
+                            border: false,
+                            bodyStyle: 'background: transparent;', // Fondo transparente
+                            margin: '0 0 4 0',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+                                { xtype: 'tbspacer', width: 60 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Franchise 1',
+                                    style: 'font-weight: bold;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 5 },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-de-txtFRANCH1',
+                                    fieldStyle: 'text-align: center;',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    maxLength: 45,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                { xtype: 'tbspacer', width: 30 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Franchise 2',
+                                    style: 'font-weight: bold;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 5 },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-de-txtFRANCH2',
+                                    fieldStyle: 'text-align: center;',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    maxLength: 45,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: false,
+                            bodyStyle: 'background: transparent;', // Fondo transparente
+                            margin: '0 0 4 0',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+                                { xtype: 'tbspacer', width: 60 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Franchise 3',
+                                    style: 'font-weight: bold;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 5 },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-de-txtFRANCH3',
+                                    fieldStyle: 'text-align: center;',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    maxLength: 45,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                { xtype: 'tbspacer', width: 30 },
+                                {
+                                    xtype: 'label',
+                                    text: 'Franchise 4',
+                                    style: 'font-weight: bold;',
+                                    width: 80
+                                },
+                                { xtype: 'tbspacer', width: 5 },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-de-txtFRANCH4',
+                                    fieldStyle: 'text-align: center;',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    maxLength: 45,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+    xtype: 'container',
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    flex: 1,
+    margin: '0 0 0 10',
+    items: [
+        {
+            xtype: 'panel',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            border: true,
+            bodyStyle: 'background: #FFF3E0; padding: 10px;',
+            margin: '0 0 10 0',
+            items: [
+                {
+                    xtype: 'label',
+                    text: 'Equivalent',
+                    style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
+                },
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center'
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;',
+                    margin: '0 0 4 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 10 },
+                        { xtype: 'label', text: 'Equivalent 1', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent1', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
+                        { xtype: 'tbspacer', width: 30 },
+                        { xtype: 'label', text: 'Equivalent 2', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent2', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
+                        { xtype: 'tbspacer', width: 30 },
+                        { xtype: 'label', text: 'Equivalent 3', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent3', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 }
+                    ]
+                },
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center'
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;',
+                    margin: '0 0 4 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 10 },
+                        { xtype: 'label', text: 'Equivalent 4', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent4', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
+                        { xtype: 'tbspacer', width: 30 },
+                        { xtype: 'label', text: 'Equivalent 5', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent5', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
+                        { xtype: 'tbspacer', width: 30 },
+                        { xtype: 'label', text: 'Equivalent 6', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent6', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 }
+                    ]
+                },
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center'
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;',
+                    margin: '0 0 4 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 10 },
+                        { xtype: 'label', text: 'Equivalent 7', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent7', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
+                        { xtype: 'tbspacer', width: 30 },
+                        { xtype: 'label', text: 'Equivalent 8', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent8', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
+                        { xtype: 'tbspacer', width: 30 },
+                        { xtype: 'label', text: 'Equivalent 9', style: 'font-weight: bold;', width: 90 },
+                        { xtype: 'tbspacer', width: 5 },
+                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent9', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+    ]
+},
+                            
+                            
+                            
                             {
                                 xtype: 'panel',
                                 layout: 'hbox',
@@ -760,7 +926,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                     }
                                 ]
                             },
-                             {
+                            {
                                 xtype: 'panel',
                                 layout: {
                                     type: 'hbox',
