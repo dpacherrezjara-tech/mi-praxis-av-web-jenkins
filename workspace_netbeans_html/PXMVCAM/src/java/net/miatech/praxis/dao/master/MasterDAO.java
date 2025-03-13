@@ -1260,6 +1260,52 @@ public class MasterDAO {
         return listaTarjetas;
     }
     
+    public List<A2280> loadTarjetasEquivalent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaTarjetas = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".LISTAR_EQUIVALENCIAS_MERCHANT(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaTarjetas.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("CODEQUIV").trim();
+                tarjetas.NAME = tarjetas.CODE + " - " + rst.getString("CODEQUIV").trim();
+
+                listaTarjetas.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaTarjetas;
+
+    }
+    
     public List<CPF031Filter> loadUaudits() {
 
         //Connection con = null;
@@ -1329,7 +1375,9 @@ public class MasterDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
 
-            strSQL = "(SELECT DISTINCT A.CODE,(SELECT MAX(CORE) FROM PRAXISMP.MPF109 WHERE CODE = A.CODE) AS CORE FROM PRAXISMP.MPF109 A) UNION ALL (SELECT 'AT','UATP' FROM (VALUES ('')) AS TBL01)";
+            strSQL = "(SELECT DISTINCT A.CODE,(SELECT MAX(CORE) FROM PRAXISMP.MPF109 WHERE"
+                    + " CODE = A.CODE) AS CORE FROM PRAXISMP.MPF109 A) UNION ALL"
+                    + " (SELECT 'AT','UATP' FROM (VALUES ('')) AS TBL01)";
 
             //con = Proveedor.getConnectionIS(user);
             stmt = cnx.createStatement();

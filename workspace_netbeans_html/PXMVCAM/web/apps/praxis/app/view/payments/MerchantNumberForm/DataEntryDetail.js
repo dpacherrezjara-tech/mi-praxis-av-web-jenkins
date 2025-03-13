@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
     title: 'Merchant Number - Data Entry Detail Form',
     header: true,
     height: 800,
-    width: 1179,
+    width: 1280,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                     xtype: 'panel',
                     bodyStyle: 'background:#E5ECEF;',
                     layout: 'vbox',
-                    width: 1129,
+                    width: 1280,
                     margin: '0 0 0 20',
                     defaults: {
                         anchor: '100%'
@@ -189,117 +189,429 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         width: 130
                                     },
                                     {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 1',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH1_D',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 160,
-                                    },
-                                    
-                                    
                                     
                                 ]
                             },
+                            { xtype: 'tbspacer', width: 20, height: 20 }, // Espaciador
                             {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 2',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH2_D',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 3',
-                                        style: 'font-weight:bold;',
-                                        width: 110
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH3_D',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Franchise 4',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtFRANCH4_D',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        valueField: 'CODE',
-                                        displayField: 'NAME',
-                                        maxLength: 45,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 160
-                                    },
-                                    
-                                    
-                                    
-                                ]
-                            },
+    xtype: 'container',
+    layout: {
+        type: 'hbox', // Diseño horizontal para colocar los bloques uno al lado del otro
+        align: 'stretch' // Asegura que los paneles se alineen correctamente
+    },
+    items: [
+        // Primer bloque: Credit Card (2 filas y 2 columnas)
+        {
+            xtype: 'panel',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            flex: 1, // Ocupa la mitad del espacio disponible
+            border: true,
+            bodyStyle: 'background: #E0F7FA; padding: 10px;', // Fondo verde claro y padding
+            margin: '0 10 0 0', // Margen derecho para separar los bloques
+            items: [
+                {
+                    xtype: 'label',
+                    text: 'Credit Card', // Título de la sección
+                    style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
+                },
+                // Fila 1
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center' // Centra los elementos horizontalmente
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;', // Fondo transparente
+                    margin: '0 0 10 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Franchise 1',
+                            style: 'font-weight:bold;', // Estilo personalizado
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtFRANCH1_D',
+                            fieldStyle: 'text-align:center', // Alineación del texto
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 30 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Franchise 2',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtFRANCH2_D',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        }
+                    ]
+                },
+                // Fila 2
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center' // Centra los elementos horizontalmente
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;', // Fondo transparente
+                    margin: '0 0 10 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Franchise 3',
+                            style: 'font-weight:bold;', // Estilo personalizado
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtFRANCH3_D',
+                            fieldStyle: 'text-align:center', // Alineación del texto
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 30 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Franchise 4',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtFRANCH4_D',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        }
+                    ]
+                }
+            ]
+        },
+        // Segundo bloque: Equivalent (3 filas y 3 columnas)
+        {
+            xtype: 'panel',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            flex: 1, // Ocupa la mitad del espacio disponible
+            border: true,
+            bodyStyle: 'background: #FFF3E0; padding: 10px;', // Fondo naranja claro y padding
+            margin: '0 0 0 10', // Margen izquierdo para separar los bloques
+            items: [
+                {
+                    xtype: 'label',
+                    text: 'Equivalent', // Título de la sección
+                    style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
+                },
+                // Fila 1
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center' // Centra los elementos horizontalmente
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;', // Fondo transparente
+                    margin: '0 0 10 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 1',
+                            style: 'font-weight:bold;', // Estilo personalizado
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_1',
+                            fieldStyle: 'text-align:center', // Alineación del texto
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 2',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_2',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 3',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_3',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        }
+                    ]
+                },
+                // Fila 2
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center' // Centra los elementos horizontalmente
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;', // Fondo transparente
+                    margin: '0 0 10 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 4',
+                            style: 'font-weight:bold;', // Estilo personalizado
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_4',
+                            fieldStyle: 'text-align:center', // Alineación del texto
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 5',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_5',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 6',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_6',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        }
+                    ]
+                },
+                // Fila 3
+                {
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center' // Centra los elementos horizontalmente
+                    },
+                    border: false,
+                    bodyStyle: 'background: transparent;', // Fondo transparente
+                    margin: '0 0 10 0',
+                    defaults: {
+                        anchor: '100%',
+                        width: 1129
+                    },
+                    items: [
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 7',
+                            style: 'font-weight:bold;', // Estilo personalizado
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_7',
+                            fieldStyle: 'text-align:center', // Alineación del texto
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 8',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_8',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        },
+                        { xtype: 'tbspacer', width: 20 }, // Espaciador
+                        {
+                            xtype: 'label',
+                            text: 'Equivalent 9',
+                            style: 'font-weight:bold;',
+                            width: 80
+                        },
+                        { xtype: 'tbspacer', width: 5 }, // Espaciador
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-de-txtEQUIVALENT_9',
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,
+                            editable: false,
+                            enabled: false,
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            maxLength: 45,
+                            maskRe: /[a-zA-Z0-9]/,
+                            readOnly: false,
+                            width: 130
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+},
+                            
                              {
                                 xtype: 'panel',
                                 layout: {
