@@ -1676,31 +1676,33 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(3, Types.INTEGER);
-            cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.CCUST.trim());
             cstmt.setString(2, filter.SDATE.trim());
+            cstmt.setString(3, filter.SCOUNTRY.trim());
+            cstmt.setString(4, filter.SCARCOD.trim());
             
-            cstmt.setInt(3, filter.page.PAGNUM);
-            cstmt.setInt(4, filter.page.PAGROW);
-            cstmt.setInt(5, filter.page.TOTPAG);
-            cstmt.setInt(6, filter.page.TOTROW);
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(3);
-            filter.page.PAGROW = cstmt.getInt(4);
-            filter.page.TOTPAG = cstmt.getInt(5);
-            filter.page.TOTROW = cstmt.getInt(6);
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
 
             rst = cstmt.getResultSet();
 
@@ -1802,31 +1804,33 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP_HEADER(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP_HEADER(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(3, Types.INTEGER);
-            cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.CCUST.trim());
             cstmt.setString(2, filter.SDATE.trim());
+            cstmt.setString(3, filter.SCOUNTRY.trim());
+            cstmt.setString(4, filter.SCARCOD.trim());
             
-            cstmt.setInt(3, filter.page.PAGNUM);
-            cstmt.setInt(4, filter.page.PAGROW);
-            cstmt.setInt(5, filter.page.TOTPAG);
-            cstmt.setInt(6, filter.page.TOTROW);
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(3);
-            filter.page.PAGROW = cstmt.getInt(4);
-            filter.page.TOTPAG = cstmt.getInt(5);
-            filter.page.TOTROW = cstmt.getInt(6);
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
 
             rst = cstmt.getResultSet();
 
