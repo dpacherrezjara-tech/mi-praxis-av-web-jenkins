@@ -2723,6 +2723,12 @@ public class ViewADMController extends BaseController {
         System.out.println("Report : getXLSXDetailByEyes");
         A2295Filter filter = new A2295Filter();
         filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+        String typeMovement = "";
+        if(filter.SCOUNTRY.equals("CO")){
+            typeMovement = "Operaciones Bancarias CO";
+        }else{
+            typeMovement = "Operaciones Bancarias Ext";
+        }
         String fileNameDownload = String.format("Unpaid Tickets Report - " + filter.SDATE.trim() +  " - " + filter.CCUST.trim() + " - " + filter.SCOUNTRY.trim() + " - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             
@@ -2938,7 +2944,7 @@ public class ViewADMController extends BaseController {
                 rcell21.setCellValue("ADM");
                 rcell22.setCellValue(listaData.get(vi2).CCIA);
                 rcell23.setCellValue(listaData.get(vi2).SAGENT);
-                rcell24.setCellValue("Operaciones Bancarias CO");
+                rcell24.setCellValue(typeMovement);
                 rcell25.setCellValue(Integer.parseInt(listaData.get(vi2).IN_DATE_FROM.substring(4,6)));
                 rcell26.setCellValue(listaData.get(vi2).A720FVLO1);
                 
