@@ -929,6 +929,7 @@ public class A2290Filter extends A2290 {
     public String SCARDN_100 = "";
     public String SCARDN_101 = "";
     public String SAUTHOC_100 = "";
+    public String SPNR_100 = "";
     public String SAUTHOC_101 = "";
 
     public String getVariable() {
