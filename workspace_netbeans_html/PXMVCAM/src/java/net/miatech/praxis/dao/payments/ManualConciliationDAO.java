@@ -1315,6 +1315,7 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_100 = rst2.getString("SCARCOD_100");
                         beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
                         beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
+                        beanTkt.SPNR_100 = rst2.getString("SPNR_100");
 
                         beanTkt.UNIKEY = rst.getString("UNIKEY");
                         beanTkt.PAYDATE = rst.getString("PAYDATE");
@@ -1451,6 +1452,7 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_100 = rst2.getString("SCARCOD_100");
                         beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
                         beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
+                        beanTkt.SPNR_100 = rst2.getString("SPNR_100");
 
                         beanTkt.UNIKEY = rst.getString("UNIKEY");
                         beanTkt.PAYDATE = rst.getString("PAYDATE");
@@ -1470,6 +1472,7 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
                         beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
                         beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+                        
 
                         beanTkt.page.PAGNUM = filter.page.PAGNUM;
                         beanTkt.page.PAGROW = filter.page.PAGROW;

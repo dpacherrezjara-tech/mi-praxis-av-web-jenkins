@@ -720,6 +720,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                             SCARCOD: value01.SCARCOD_100,
                                             SCARDN: value01.SCARDN_100,
                                             SAUTHOC: value01.SAUTHOC_100,
+                                            SPNR: value01.SPNR_100,
                                             leaf: true
                                         });
                                     }

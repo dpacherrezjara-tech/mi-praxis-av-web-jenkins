@@ -1374,7 +1374,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Curr.', dataIndex: 'SCURRENCY', width: 60, align: 'center',
+                                                text: 'Curr.', dataIndex: 'SCURRENCY', width: 50, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1382,7 +1382,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Doc<br>Type', dataIndex: 'TDOC', width: 60, align: 'center', menuDisabled: true,
+                                                text: 'Doc<br>Type', dataIndex: 'TDOC', width: 50, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1398,7 +1398,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Sales<br>Date', dataIndex: 'SDATE', width: 90, align: 'center', menuDisabled: true,
+                                                text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1422,9 +1422,17 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Agent', dataIndex: 'SAGENT', width: 90, align: 'center', menuDisabled: true,
+                                                text: 'Agent', dataIndex: 'SAGENT', width: 80, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'PNR', dataIndex: 'SPNR', width: 60, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     return value;
                                                 }
@@ -1438,7 +1446,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 70, align: 'center', menuDisabled: true,
+                                                text: 'Bank<br>Code', dataIndex: 'CODEBANK', width: 60, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
