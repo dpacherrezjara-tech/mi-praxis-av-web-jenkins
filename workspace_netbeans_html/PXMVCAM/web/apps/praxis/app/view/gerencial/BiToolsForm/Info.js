@@ -1265,7 +1265,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                     bodyStyle: 'background-color: #E3EAEF;',
                     border: false,
                     hidden: true,
-                    width: 1840,
+                    width: 1850,
                     layout: {
                         type: 'hbox',
                         align: 'center'
@@ -1285,7 +1285,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridDataMain',
                                     bodyStyle: 'background-color: #E3EAEF;',
-                                    width: 1840,
+                                    width: 1850,
                                     height: 545,
                                     columnLines: true,
                                     viewConfig: {
