@@ -1268,7 +1268,7 @@ public class MasterDAO {
         List<A2280> listaTarjetas = new ArrayList<>();
         A2280 tarjetas;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".LISTAR_EQUIVALENCIAS_MERCHANT(?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.LISTAR_EQUIVALENCIAS_MERCHANT(?)}";
         
         try {
 

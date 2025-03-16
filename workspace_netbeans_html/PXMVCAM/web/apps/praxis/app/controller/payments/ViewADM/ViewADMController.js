@@ -8,10 +8,12 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
     paginActual: '',
     drillDown: [],
     lstCountry: [],
+    lstTarjetas: [],
     gridActual: '',
     panelActual: '',
     reg99: 0,
     me: '',
+    
     dup: '',
     searchParams: {},
     paramsDetail: {},
@@ -173,7 +175,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
 //                    Ext.getCmp(prototype.id + '-cmbCountry').bindStore(
 //                            Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
 //                            );
-//                    me.lstTarjetas = res.lstCard;
+                    me.lstCountry = res.lstCountry;
+                    me.lstTarjetas = res.lstCard;
 ////                    Ext.getCmp(prototype.id + '-cmbCardType').bindStore(
 ////                            Ext.create('Ext.data.Store', {data: me.lstTarjetas, autoLoad: true})
 ////                            );
@@ -980,7 +983,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
 
         var dialog = Ext.create('Ext.window.Window', {
             title: 'Generate Report',
-            width: 600,
+            width: 300,
             layout: 'fit',
             bodyPadding: 10,
             bodyStyle: 'background-color: #BAE8F0;',
@@ -991,6 +994,21 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                     border: false,
                     bodyStyle: 'background-color: #BAE8F0;',
                     items: [
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Av Group',
+                            name: 'cliente',
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['code', 'name'],
+                                data: [
+                                    ["134", "AVIANCA"],["202", "TACA"],["133", "LACSA"],["547", "AEROGAL"]
+                                ]
+                            }),
+                            queryMode: 'local',
+                            displayField: 'name',
+                            valueField: 'code',
+                            value: "134"
+                        },
                         {
                             xtype: 'combobox',
                             fieldLabel: 'Year',
@@ -1024,6 +1042,36 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                             displayField: 'display',
                             valueField: 'month'
                         },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Country',
+                            name: 'country',
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['A006PAIS', 'A006NOMBRE'],
+                                data: me.lstCountry
+                            }),
+                            value: 'CO',
+                            queryMode: 'local',
+                            valueField: 'A006PAIS',
+                            displayField: 'A006NOMBRE',
+                            listeners:{
+                            }
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Card Code',
+                            name: 'card',
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['CODE', 'NAME'],
+                                data: me.lstTarjetas
+                            }),
+                            value: '',
+                            queryMode: 'local',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            listeners:{
+                            }
+                        }
                         
                     ]
                 }
@@ -1041,9 +1089,21 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                             });
                             return false
                         }
+                        if( values.country == '' ){
+                            global.Msg({
+                                msg: 'Enter the country'
+                            });
+                            return false
+                        }
+                        
                         let periodo = values.year + values.month; 
                         beanReportADM.SDATE = periodo
+                        beanReportADM.SCOUNTRY = values.country
+                        beanReportADM.SCARCOD = values.card
+                        beanReportADM.CCUST = values.cliente
                         console.log('beanReportADM', beanReportADM)
+                        console.log(me.lstCountry, 'me.lstCountry')
+                        console.log(me.lstTarjetas, 'me.lstTarjetas')
                         
                         me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
                         global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));

@@ -2721,15 +2721,22 @@ public class ViewADMController extends BaseController {
     public @ResponseBody
     void getXLSXReportADM(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getXLSXDetailByEyes");
-        
-        String fileNameDownload = String.format("Unpaid Tickets Report - Year month - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        A2295Filter filter = new A2295Filter();
+        filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+        String typeMovement = "";
+        if(filter.SCOUNTRY.equals("CO")){
+            typeMovement = "Operaciones Bancarias CO";
+        }else{
+            typeMovement = "Operaciones Bancarias Ext";
+        }
+        String fileNameDownload = String.format("Unpaid Tickets Report - " + filter.SDATE.trim() +  " - " + filter.CCUST.trim() + " - " + filter.SCOUNTRY.trim() + " - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
-            A2295Filter filter = new A2295Filter();
+            
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
             ViewADMLogic logic = new ViewADMLogic();
             logic.setSession(this.serverSession.getServerSession());
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             filter.page.PAGROW = -1;
             filter.page.PAGNUM = 1;
@@ -2937,7 +2944,7 @@ public class ViewADMController extends BaseController {
                 rcell21.setCellValue("ADM");
                 rcell22.setCellValue(listaData.get(vi2).CCIA);
                 rcell23.setCellValue(listaData.get(vi2).SAGENT);
-                rcell24.setCellValue("Operaciones Bancarias CO");
+                rcell24.setCellValue(typeMovement);
                 rcell25.setCellValue(Integer.parseInt(listaData.get(vi2).IN_DATE_FROM.substring(4,6)));
                 rcell26.setCellValue(listaData.get(vi2).A720FVLO1);
                 

@@ -1278,7 +1278,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1290,12 +1290,13 @@ public class ManualConciliationDAO {
                     cstmt2.setString(3, rst.getString("SDATE_101"));
                     cstmt2.setString(4, rst.getString("SCOUNTRY_101"));
                     cstmt2.setString(5, rst.getString("SCURRENCY_101"));
-                    cstmt2.setString(6, rst.getString("SCARDN_101"));
-                    cstmt2.setString(7, rst.getString("SAUTHOC_101"));
-                    cstmt2.setString(8, rst.getString("SAGENT_101"));
-                    cstmt2.setString(9, filter.RQUERY.trim());
-                    cstmt2.setString(10, filter.TQUERY.trim());
-                    cstmt2.setString(11, filter.TTABLE.trim());
+                    cstmt2.setString(6, rst.getString("SCARCOD_101"));
+                    cstmt2.setString(7, rst.getString("SCARDN_101"));
+                    cstmt2.setString(8, rst.getString("SAUTHOC_101"));
+                    cstmt2.setString(9, rst.getString("SAGENT_101"));
+                    cstmt2.setString(10, filter.RQUERY.trim());
+                    cstmt2.setString(11, filter.TQUERY.trim());
+                    cstmt2.setString(12, filter.TTABLE.trim());
 
                     cstmt2.execute();
 
@@ -1415,7 +1416,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1427,12 +1428,13 @@ public class ManualConciliationDAO {
                     cstmt2.setString(3, rst.getString("SDATE_101"));
                     cstmt2.setString(4, rst.getString("SCOUNTRY_101"));
                     cstmt2.setString(5, rst.getString("SCURRENCY_101"));
-                    cstmt2.setString(6, rst.getString("SCARDN_101"));
-                    cstmt2.setString(7, rst.getString("SAUTHOC_101"));
-                    cstmt2.setString(8, rst.getString("SAGENT_101"));
-                    cstmt2.setString(9, filter.RQUERY.trim());
-                    cstmt2.setString(10, filter.TQUERY.trim());
-                    cstmt2.setString(11, filter.TTABLE.trim());
+                    cstmt2.setString(6, rst.getString("SCARCOD_101"));
+                    cstmt2.setString(7, rst.getString("SCARDN_101"));
+                    cstmt2.setString(8, rst.getString("SAUTHOC_101"));
+                    cstmt2.setString(9, rst.getString("SAGENT_101"));
+                    cstmt2.setString(10, filter.RQUERY.trim());
+                    cstmt2.setString(11, filter.TQUERY.trim());
+                    cstmt2.setString(12, filter.TTABLE.trim());
 
                     cstmt2.execute();
 
