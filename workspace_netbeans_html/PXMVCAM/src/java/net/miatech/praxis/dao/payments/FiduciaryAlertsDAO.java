@@ -125,12 +125,31 @@ public class FiduciaryAlertsDAO {
                     objRtn.PWQ = rs01.getDouble("PWQ");
                     objRtn.PWP = rs01.getDouble("PWP");
                     
-                    objRtn.PORAXAV = ((rs02.getDouble("AXAV") - rs01.getDouble("PAXAV")) / rs01.getDouble("PAXAV")) * 100;
+                    objRtn.PORAXAV = ((rs02.getDouble("AXAV") - rs01.getDouble("PAXAV")) / rs01.getDouble("PAXAV")) * 100; 
+                    if (Double.isInfinite(objRtn.PORAXAV) || Double.isNaN(objRtn.PORAXAV)) {
+                        objRtn.PORAXAV = 0.0;  
+                    }
+                    
                     objRtn.PORAXTA = ((rs02.getDouble("AXTA") - rs01.getDouble("PAXTA")) / rs01.getDouble("PAXTA")) * 100;
+                    if (Double.isInfinite(objRtn.PORAXTA) || Double.isNaN(objRtn.PORAXTA)) {
+                        objRtn.PORAXTA = 0.0;  
+                    }
+                    
                     objRtn.PORDS = ((rs02.getDouble("DS") - rs01.getDouble("PDS")) / rs01.getDouble("PDS")) * 100;
+                    if (Double.isInfinite(objRtn.PORDS) || Double.isNaN(objRtn.PORDS)) {
+                        objRtn.PORDS = 0.0;  
+                    }
+                    
                     objRtn.PORWQ = ((rs02.getDouble("WQ") - rs01.getDouble("PWQ")) / rs01.getDouble("PWQ")) * 100;
+                    if (Double.isInfinite(objRtn.PORWQ) || Double.isNaN(objRtn.PORWQ)) {
+                        objRtn.PORWQ = 0.0;  
+                    }
+                    
                     objRtn.PORWP = ((rs02.getDouble("WP") - rs01.getDouble("PWP")) / rs01.getDouble("PWP")) * 100;
-
+                    if (Double.isInfinite(objRtn.PORWP) || Double.isNaN(objRtn.PORWP)) {
+                        objRtn.PORWP = 0.0;  
+                    }
+                   
                     objRtn.page.PAGNUM = filter.page.PAGNUM;
                     objRtn.page.PAGROW = filter.page.PAGROW;
                     objRtn.page.TOTPAG = filter.page.TOTPAG;
