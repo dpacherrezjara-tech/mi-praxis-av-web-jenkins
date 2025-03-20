@@ -217,6 +217,7 @@ public class A2290 {
     //a2340
     public int QTYTKT = 0;
     public int QTYSETT = 0;
+    public int DIFFDAYS = 0;
     public double TOTALCOM = 0;
     public double TCOMISCA = 0;
     public double diffTCOMIS = 0;

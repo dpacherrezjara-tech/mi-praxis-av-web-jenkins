@@ -585,6 +585,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }
         });
     },
+    onRefreshToDays: function () {
+        this.onRefreshClick();
+    },
     onRefreshClick: function () {
         console.log('btnRefresh_click');
         win.lblUser_toolTip("Estructura: IMF101");
@@ -609,6 +612,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 //            me.beanDetailTW.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
 //            me.beanDetailTW.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
             me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+            me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
             me.beanDetailTW.TTABLE = ttable;
@@ -864,6 +868,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 SEQ: record.get('SEQNUM'),
                 SCURRENCY: record.get('SCURRENCY'),
                 VFOP: record.get('SVFOP_101'),
+                DIFFDAYS: parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10),
                 RQUERY: rquery,
                 TQUERY: tquery,
                 RULE: codrule
@@ -921,8 +926,13 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         });
         store.resumeEvents();
         grid.getView().refresh();
+        
+        
 
         me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
+        me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
+        me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+        me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
         me.beanDetailTW.strSQL = this.armandoQuery();
         me.beanDetailTW.CODRULE = codrule;
         me.beanDetailTW.RQUERY = rquery;
@@ -2069,6 +2079,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
             bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
             bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+            bean.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             bean.RQUERY = rquery;
             bean.TQUERY = tquery;
             bean.TTABLE = ttable;
