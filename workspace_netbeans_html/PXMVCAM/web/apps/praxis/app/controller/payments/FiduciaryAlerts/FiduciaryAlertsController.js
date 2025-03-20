@@ -287,7 +287,7 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
         }
     },
     btnExcel_click: function () {
-        this.setFormatParameter();
+
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Download Excel ?',
@@ -305,8 +305,18 @@ Ext.define('Ext.Praxis.controller.payments.FiduciaryAlerts.FiduciaryAlertsContro
     exportExcel: function () {
         console.log(this.boxActual, 'this.boxActual')
         console.log(me.boxActual, 'this.boxActual')
-
-        global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(me.searchParams.beanString));
+        console.log(me.panelActual, 'this.panelActual')
+//        me.pagginActual = '';
+        switch (me.panelActual) {
+            case '-panelGridDataMain':
+                this.setFormatParameterMain();
+                global.getFile(prototype.url + '/getXLSXMain?beanString=' + encodeURI(me.searchParams.beanString));
+                break;
+            case '-panelGridData':
+                this.setFormatParameter();
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(me.searchParams.beanString));
+                break;
+        }
     },
     getPaggin: function () {
         me.pagginActual = '';

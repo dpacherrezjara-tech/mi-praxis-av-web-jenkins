@@ -190,7 +190,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Amex(AT)',
+                                                        text: 'Amex(TA)',
                                                         width: 100,
                                                         dataIndex: 'PAXTA',
                                                         align: 'center',
@@ -266,7 +266,7 @@ Ext.define('Ext.Praxis.view.payments.FiduciaryAlertsForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Amex(AT)',
+                                                        text: 'Amex(TA)',
                                                         width: 100,
                                                         dataIndex: 'PORAXTA',
                                                         align: 'center',
