@@ -1843,7 +1843,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                                 ]
                                             }
                                         },
-                                        { xtype: 'tbspacer', width: 15 },
+                                        {xtype: 'tbspacer', width: 15},
                                         {
                                             xtype: 'label',
                                             text: 'Country:',
@@ -1869,6 +1869,39 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                             listConfig: {maxHeight: 111},
                                             enableKeyEvents: true,
                                             triggerAction: 'all',
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDiffDays',
+                                            fieldLabel: 'Day diff',
+                                            margin: '10 0 0 0',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'value',
+                                            displayField: 'description',
+                                            emptyText: 'All',
+                                            labelWidth: 50,
+                                            width: 120,
+                                            anchor: '100%',
+                                            value: '0',
+                                            store: {
+                                                fields: ['value', 'description'],
+                                                data: [
+                                                    {value: '0', description: '0 days'},
+                                                    {value: '1', description: '1 day'},
+                                                    {value: '2', description: '2 days'},
+                                                    {value: '3', description: '3 days'}
+                                                ]
+                                            },
+                                            listeners: {
+                                                change: 'onRefreshToDays'
+                                            },
                                         },
                                     ]
                                 },
