@@ -1400,7 +1400,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX_V1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1423,7 +1423,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2(?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1439,9 +1439,10 @@ public class ManualConciliationDAO {
                     cstmt2.setString(7, rst.getString("SCARDN_101"));
                     cstmt2.setString(8, rst.getString("SAUTHOC_101"));
                     cstmt2.setString(9, rst.getString("SAGENT_101"));
-                    cstmt2.setString(10, filter.RQUERY.trim());
-                    cstmt2.setString(11, filter.TQUERY.trim());
-                    cstmt2.setString(12, filter.TTABLE.trim());
+                    cstmt2.setInt(10, filter.DIFFDAYS);
+                    cstmt2.setString(11, filter.RQUERY.trim());
+                    cstmt2.setString(12, filter.TQUERY.trim());
+                    cstmt2.setString(13, filter.TTABLE.trim());
 
                     cstmt2.execute();
 
