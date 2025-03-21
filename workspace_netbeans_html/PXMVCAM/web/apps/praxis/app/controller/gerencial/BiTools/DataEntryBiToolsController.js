@@ -22,6 +22,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.DataEntryBiToolsController',
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.beanCons;
+        this.bean.DIFFDAYS = this.p.diffdays;
         this.lstCard = this.p.lstCard;
         this.lstBank = this.p.lstBank;
         this.lstCountry = this.p.lstCountry;

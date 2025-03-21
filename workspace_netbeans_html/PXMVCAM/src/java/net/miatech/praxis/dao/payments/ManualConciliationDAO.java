@@ -1089,7 +1089,7 @@ public class ManualConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP_SCAN_PENDING_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1108,9 +1108,10 @@ public class ManualConciliationDAO {
             cstmt.setString(10, filter.SAGENT.trim());//
             cstmt.setString(11, filter.TRANC.trim());
             cstmt.setString(12, filter.PRDA.trim());
-            cstmt.setString(13, filter.RQUERY.trim());
-            cstmt.setString(14, filter.TQUERY.trim());
-            cstmt.setString(15, filter.TTABLE.trim());
+            cstmt.setInt(13, filter.DIFFDAYS);
+            cstmt.setString(14, filter.RQUERY.trim());
+            cstmt.setString(15, filter.TQUERY.trim());
+            cstmt.setString(16, filter.TTABLE.trim());
 
             cstmt.execute();
 
