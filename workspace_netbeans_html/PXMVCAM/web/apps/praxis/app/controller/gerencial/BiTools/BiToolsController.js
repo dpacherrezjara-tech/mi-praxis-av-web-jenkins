@@ -1030,7 +1030,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 lstCountry: me.lstCountry,
                 lstCard: me.lstCard,
                 lstBank: me.lstBank,
-                beanCons: beanCons
+                beanCons: beanCons,
+                diffdays: parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             }
         }).show();
 
