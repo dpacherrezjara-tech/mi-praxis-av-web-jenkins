@@ -786,6 +786,78 @@ public class ViewADMController extends BaseController {
         return new Gson().toJson(map);
     }
     
+    @RequestMapping(value = "cleanTktOption")
+    public @ResponseBody
+    String cleanTktOption(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- ViewADM : cleanTktOption-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new ViewADMLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX644SQPMPF100CLEAN_TKT(filter, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "generateSecondADM")
+    public @ResponseBody
+    String generateSecondADM(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- ViewADM : generateSecondADM-------------");
+        String option;
+        A2290Filter filter = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new ViewADMLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.loadPX644SQPMPF100GENERATE_SECOND_ADM(filter, user);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
 // EXEL DEL DETALLE 1  Año,MES    
     
     @RequestMapping(value = "getXLSXDetailByEyes")
