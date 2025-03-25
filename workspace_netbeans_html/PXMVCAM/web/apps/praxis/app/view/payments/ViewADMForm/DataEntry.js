@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
     controller: 'DataEntryViewADMController',
     title: 'ViewADM - Data Entry Form',
     header: true,
-    height: 350,
-    width: 1100,
+    height: 450,
+    width: 1200,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -19,8 +19,8 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
     items: [
         {
             xtype: 'form',
-            height: 350,
-            width: 1100,
+            height: 450,
+            width: 1200,
             scrollable: true,
             defaults: {
                 style: 'margin: 3px;',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                             border: false,
                             bodyStyle: 'background:white;',
                             margin: '0 20 3 10',
-                            width: 1100,
+                            width: 1200,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -70,60 +70,89 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
 //                                                click: 'mostrarComment'
 //                                            }
 //                                        },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'vbox',
+                                    border: false,
+                                    margin: '0 0 0 0',
+                                    items: [
                                         {
                                             xtype: 'panel',
-                                            layout: 'vbox',
+                                            layout: 'hbox',
                                             border: false,
-                                            margin: '0 0 0 0',
+                                            margin: '10 0 10 0',
+                                            id: prototype.id + '-PanelComments',
+//                                                    hidden: true,
+                                            height: 30,
+                                            width: 1044,
+                                            bodyStyle: 'background:#efe5e5;',
                                             items: [
                                                 {
-                                                    xtype: 'panel',
-                                                    layout: 'hbox',
-                                                    border: false,
-                                                    margin: '10 0 10 0',
-                                                    id: prototype.id + '-PanelComments',
-//                                                    hidden: true,
-                                                    height: 30,
-                                                    width: 1044,
-                                                    bodyStyle: 'background:#efe5e5;',
-                                                    items: [
-                                                        {
-                                                            xtype: 'label',
+                                                    xtype: 'label',
 //                                                            style: 'font-weight:bold;color:#0B333C;',
-                                                            margin: '5 0 0 10',
-                                                            text: 'BPO Comment:',
-                                                            width: 90
-                                                        },
-                                                        {xtype: 'tbspacer', width: 5},
-                                                        {
-                                                            xtype: 'label',
-                                                            text: '(*)',
-                                                            margin: '5 2 0 0',
-                                                            id: prototype.id + '-COMENT_Forced',
-                                                            hidden: true,
-                                                            style: 'font-weight:bold;color:red;',
-                                                            width: 20
-                                                        },
-                                                        {
-                                                            xtype: 'combo',
-                                                            id: prototype.id + '-cmbCOMENT',
-                                                            margin: '5 0 0 0',
-                                                            style: 'font-weight:bold;color:#0B333C;',
-                                                            fieldStyle: 'text-align:left;',
-                                                            queryMode: 'local',
-                                                            triggerAction: 'all',
-                                                            valueField: 'CODE',
-                                                            displayField: 'NAME',
-                                                            width: 460,
-                                                            labelWidth: 10,
-                                                            hidden: false,
-                                                            hiddenLabel: false
-                                                        },
-                                                        {xtype: 'tbspacer', width: 800},
-                                                    ]
-                                                }
+                                                    margin: '5 0 0 0',
+                                                    text: 'DISPUTE:',
+                                                    width: 50
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'label',
+                                                    text: '(*)',
+                                                    margin: '5 2 0 0',
+                                                    id: prototype.id + '-COMENT_Forced',
+                                                    hidden: true,
+                                                    style: 'font-weight:bold;color:red;',
+                                                    width: 20
+                                                },
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbCOMENT',
+                                                    margin: '5 0 0 0',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    valueField: 'CODE',
+                                                    displayField: 'NAME',
+                                                    width: 460,
+                                                    labelWidth: 10,
+                                                    hidden: true,
+                                                    hiddenLabel: false,
+
+//                                                    emptyText: 'Se',
+                                                },
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbDispute',
+                                                    margin: '3 0 0 0',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    valueField: 'value',
+                                                    displayField: 'description',
+                                                    width: 80,
+                                                    labelWidth: 10,
+                                                    hidden: false,
+                                                    value: '',
+                                                    emptyText: 'SELECT',
+                                                    hiddenLabel: false,
+                                                    store: {
+                                                        fields: ['value', 'description'],
+                                                        data: [
+                                                            {value: 'P', description: 'PARTIAL'},
+                                                            {value: 'T', description: 'TOTAL'}
+                                                        ]
+                                                    },
+                                                    listeners: {
+                                                        change: 'onChangeDispute'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 800},
                                             ]
-                                        },
+                                        }
+                                    ]
+                                },
                                 {
                                     xtype: 'label',
                                     text: 'Scan',
@@ -674,7 +703,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                             xtype: 'tabpanel',
                                             id: prototype.id + '-tabMain',
                                             deferredRender: true,
-                                            width: 1109,
+                                            width: 1149,
                                             border: false,
 //                                            height: 182, //820
 //                                            anchor: '100%',
@@ -697,7 +726,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                             id: prototype.id + '-panelDataInfoScan',
                                                             layout: 'vbox',
                                                             border: false,
-                                                            width: 1109,
+                                                            width: 1149,
 //                                                            height: 180,
                                                             hidden: false,
                                                             autoScroll: true,
@@ -705,8 +734,8 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                                 {
                                                                     xtype: 'grid',
                                                                     id: prototype.id + '-gridDataInfoScan',
-                                                                    width: 1107,
-                                                                    height: 110,
+                                                                    width: 1147,
+//                                                                    height: 110,
                                                                     columnLines: true,
                                                                     plugins: [
                                                                         {
@@ -832,7 +861,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                                                     return value;
                                                                                 }
                                                                             },
-                                                                            {text: 'Error', dataIndex: 'ERROR', width: 90,
+                                                                            {text: 'Error', dataIndex: 'ERROR', width: 166,
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     var data = record.data;
                                                                                     metaData.style = "text-align:center;";
@@ -845,7 +874,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                                                 xtype: 'actioncolumn',
                                                                                 width: 40,
                                                                                 text: 'Del.',
-                                                                                hidden:true,
+                                                                                hidden: true,
                                                                                 id: prototype.id + '-gridColumnDelete',
                                                                                 align: 'center',
                                                                                 items: [
@@ -859,14 +888,49 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                                             {
                                                                                 sortable: false,
                                                                                 xtype: 'actioncolumn',
-                                                                                width: 40,
-                                                                                hidden:true,
-                                                                                text: 'Adj.',
+                                                                                width: 50,
+                                                                                text: 'Clean',
+                                                                                hidden: true,
+                                                                                id: prototype.id + '-gridColumnClean',
+                                                                                align: 'center',
+                                                                                items: [
+                                                                                    {
+                                                                                        getClass: function (value, metaData, record) {
+                                                                                            metaData.style = "text-align:center;"; // Alinea el contenido
+
+                                                                                            // Cambia el icono según el valor de un campo en el registro
+                                                                                            if (record.get('TDOC') === 'A' || record.get('TDOC') === 'D' || record.get('TDOC') === 'R' ) {
+                                                                                                return 'prx-icon-locked'; // Icono diferente si es un error
+                                                                                            }
+                                                                                            return 'prx-icon-refresh'; // Icono por defecto
+                                                                                        },
+//                                                                                        iconCls: 'prx-icon-clear',
+                                                                                        tooltip: 'Clean Detail',
+                                                                                        handler: 'onCleanTkt'
+                                                                                    }
+                                                                                ],
+
+                                                                            },
+                                                                            {
+                                                                                sortable: false,
+                                                                                xtype: 'actioncolumn',
+                                                                                width: 50,
+                                                                                hidden: true,
+                                                                                text: 'Adjt.',
                                                                                 id: prototype.id + '-gridColumnAdj',
                                                                                 align: 'center',
                                                                                 items: [
                                                                                     {
-                                                                                        iconCls: 'prx-icon-add',
+                                                                                        
+                                                                                        getClass: function (value, metaData, record) {
+                                                                                            metaData.style = "text-align:center;"; // Alinea el contenido
+
+                                                                                            // Cambia el icono según el valor de un campo en el registro
+                                                                                            if (record.get('TDOC') === 'A' || record.get('TDOC') === 'D' || record.get('TDOC') === 'R' ) {
+                                                                                                return 'prx-icon-locked'; // Icono diferente si es un error
+                                                                                            }
+                                                                                            return 'prx-icon-add'; // Icono por defecto
+                                                                                        },
                                                                                         tooltip: 'Create adjustment',
                                                                                         handler: 'onAdjust'
                                                                                     }
@@ -1089,7 +1153,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                 },
                                                 {
                                                     xtype: 'panel',
-                                                    hidden: true, 
+                                                    hidden: true,
 //                                                    id: prototype.id + '-FlownAnalysis_tab',
                                                     title: 'Blocked',
                                                     listeners: {
@@ -1272,7 +1336,6 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                 },
                             ]
                         },
-
                     ]
                 }
             ],
@@ -1296,6 +1359,15 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                             iconCls: 'prx-icon-save',
                             listeners: {
                                 click: 'onSaveClick'
+                            }
+                        },
+                        {
+                            text: 'Partial Dispute',
+                            id: prototype.id + '-btn-partialDispute',
+                            iconCls: 'prx-icon-update',
+                            hidden: true,
+                            listeners: {
+                                click: 'onPartialDisputeClick'
                             }
                         },
                         {

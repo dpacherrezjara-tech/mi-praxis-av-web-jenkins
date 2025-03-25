@@ -31,28 +31,31 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 //        this.lstBank = this.p.lstBank;
 //        this.lstCountry = this.p.lstCountry;
         console.log(this.bean, 'this.bean');
+        
         this.lstAdjustment = [];
     },
     afterRender: function () {
-        
+
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
-           Ext.getCmp(prototype.id + '-btn-update').hide();
-           Ext.getCmp(prototype.id + '-PanelComments').hide();
-           Ext.getCmp(prototype.id + '-btn-reverse').show();
-        }else{
-           Ext.getCmp(prototype.id + '-btn-update').show();
-           Ext.getCmp(prototype.id + '-PanelComments').show();
-           Ext.getCmp(prototype.id + '-btn-reverse').hide();
+//            Ext.getCmp(prototype.id + '-btn-update').hide();
+//            Ext.getCmp(prototype.id + '-PanelComments').hide();
+//            Ext.getCmp(prototype.id + '-btn-reverse').show();
+        } else {
+//            Ext.getCmp(prototype.id + '-btn-update').show();
+//            Ext.getCmp(prototype.id + '-PanelComments').show();
+//            Ext.getCmp(prototype.id + '-btn-reverse').hide();
         }
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-delete').hide();
+        Ext.getCmp(prototype.id + '-btn-update').hide();
+        Ext.getCmp(prototype.id + '-btn-reverse').hide();
         Ext.getCmp(prototype.id + '-btn-cancel').show();
-        
+
         this.onSearchPendingDetail();
-        
-        
-            
+
+
+
 
 //        meDe.agregaTicket(meDe.bean);
     },
@@ -68,7 +71,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         this.bean_scan.SCURRENCY = this.bean.SCURRENCY;
         this.bean_scan.CCUSTCC = this.bean.CCUSTCC;
         console.log(this.bean.SCURRENCY, 'bean scan de addcreditcard');
-        
+
         // Validación: Verificar si todos los campos son vacíos
         if (
                 !this.bean_scan.TICKET &&
@@ -115,7 +118,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         console.log(arrayNormal, 'arrayNormal')
         console.log(arrayBlocked, 'arrayBlocked')
         for (let value of arrayNormal) {
-            
+
             listAux[`${value.STVAL}#${value.descTDOC}#${value.A720AGENTE}#${value.A720FECVTA}#${value.A720PNR}#${value.A1531TKT}#${value.A1531TTARJ}#${value.A1531NREF}#${value.A1531CAPL}#${value.A1531MFOP}#${value.A1531VFOP}`] = "repetido"
 
         }
@@ -176,7 +179,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 
 
                         } else {
-                            
+
                             console.log(listAux, 'primer listAux')
                             console.log(`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}#${item.tot_VFOP}` in listAux, 'josue no sale')
                             if (`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}` in listAux) {
@@ -277,8 +280,32 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         }
     },
     obtainData: function () {
-
         
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainDataAdjs',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+//                    meDe.bean_detail = res.result;
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.lstData,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbADJTYPE').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+            }
+        });
+
         Ext.Ajax.request({
             url: prototype.url + '/obtainMessages',
             method: 'POST',
@@ -368,8 +395,12 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
-                    meDe.calcularSumAmount();
-                    meDe.calcularMontos();
+//                    meDe.calcularSumAmount();
+//                    meDe.calcularMontos();
+                    console.log(res.data, 'res.data')
+                    meDe.validateExistDispute(res.data);
+                    
+                    
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
@@ -380,6 +411,25 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
             }
         });
     },
+    validateExistDispute: function ( lst ) {
+        console.log(lst,'lst')
+        let validBooleanD = false
+        let validBooleanP = false
+        for(let value of lst){
+            if(value.TDOC === 'D'){
+                validBooleanD = true;
+            }
+            if(value.TDOC === 'S' && value.STVAL === '2' ){
+                validBooleanP = true;
+            }
+        }
+
+        if(validBooleanD || validBooleanP){
+            Ext.getCmp(prototype.id + '-PanelComments').hide()
+        }else{
+            Ext.getCmp(prototype.id + '-PanelComments').show()
+        }
+    },
     mostrarData: function () {
 //        this.setValue('de-txtSDATE', meDe.bean.SDATE);
 
@@ -389,8 +439,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         Ext.getCmp(prototype.id + '-panelScanCard_2').hide();
 //        Ext.getCmp(prototype.id + '-gridColumnDelete').show();
 //        Ext.getCmp(prototype.id + '-gridColumnAdj').show();
-        Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
-        Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
+//        Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1022);
+//        Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1024);
 //        Ext.getCmp(prototype.id + '-vacioComment').hide();
 
         this.obtainData();
@@ -588,30 +638,30 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     onUpdateClick: function (btn) {
         let cerror = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue()
         console.log(cerror, 'cerror')
-        if( !cerror || cerror == ''){
+        if (!cerror || cerror == '') {
             global.Msg({msg: 'Select comment'})
-            return false 
+            return false
         }
 //        var deci = this.preexecuteOption();
 //        if (deci) {
-            Ext.Msg.show({
-                title: '.:Confirmation:.',
-                msg: 'Are you sure to Update?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to Update?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
 //            animateTarget: btn,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        beanTemp = this.llenarData();
-                        beanTemp.option = 'U';
-                        beanTemp.beanString = JSON.stringify(meDe.bean);
-                        this.executeOption(beanTemp);
-                    }
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    beanTemp = this.llenarData();
+                    beanTemp.option = 'U';
+                    beanTemp.beanString = JSON.stringify(meDe.bean);
+                    this.executeOption(beanTemp);
                 }
-            });
+            }
+        });
 //        }
     },
     onDeleteClick: function (btn) {
@@ -634,35 +684,52 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     },
     onReverseClick: function (btn) {
 //        if(this.bean.FCONT == ''){
-            Ext.Msg.show({
-                title: '.:Confirmation:.',
-                msg: 'Are you sure to Reverse?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-    //            animateTarget: btn,
-                    icon: Ext.MessageBox.QUESTION,
-                    modal: true,
-                    fn: function (btn) {
-                        if (btn === 'yes') {
-                            var beanTemp = {};
-                            beanTemp = this.llenarData();
-                            beanTemp.option = 'R';
-                            beanTemp.beanString = JSON.stringify(meDe.bean);
-                            this.reverseOption(beanTemp);
-                        }
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure to Reverse?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            //            animateTarget: btn,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    beanTemp = this.llenarData();
+                    beanTemp.option = 'R';
+                    beanTemp.beanString = JSON.stringify(meDe.bean);
+                    this.reverseOption(beanTemp);
                 }
-            }); 
+            }
+        });
 //        } else {
 //            global.Msg({msg: 'Reversal not allowed'});
 //            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
 //        }
+
+    },
+    onPartialDisputeClick: function (btn){
         
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure you want to generate ADM?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            //            animateTarget: btn,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.generateADM();
+                }
+            }
+        });
     },
     onCancelClick: function (btn) {
         this.view.close();
         console.log(meDe.panelGrid, 'panelGridddddddddd')
-        
-     
+
+
     },
     // </editor-fold>
 
@@ -700,6 +767,61 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         }
         return decide;
     },
+    generateADM: function () {
+        let miGrilla = Ext.getCmp(prototype.id + '-gridDataAdjustment');
+        if(miGrilla.getStore().data.items.length === 0 ){
+            global.Msg({msg: 'Need to generate adj.'});
+            return false;
+        }
+        if( Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue() === '' ){
+            global.Msg({msg: 'Complete the type adjustment.'})
+            return false;
+        }
+        let storeGrilla = miGrilla.getStore().data.items[0].data
+        let beanADM = {}
+        beanADM.SCARDNCOR = storeGrilla.SCARDNCOR
+        beanADM.SAUTHOC = storeGrilla.SAUTHOC
+        beanADM.TDOC = storeGrilla.TDOC
+        beanADM.CCIA = storeGrilla.CCIA
+        beanADM.FORMA = storeGrilla.FORMA
+        beanADM.SERIE = storeGrilla.SERIE
+        beanADM.CREJEC = Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue()
+        console.log(beanADM, 'beanADM')
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/generateSecondADM',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(beanADM)},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            //exito
+                            Ext.getCmp(prototype.id + '-dataEntry').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+
+        
+
+
+    },
     executeOption: function (beanTemp, option) {
 
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
@@ -708,9 +830,9 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         if (miGrilla) {
             // Llamada a la función procesarRegistros con la grilla como parámetro
             console.error('Entró al procesar Registros');
-            
-           datos = this.procesarRegistros(miGrilla);
-            
+
+            datos = this.procesarRegistros(miGrilla);
+
             console.log(datos);
 //            datos = this.procesarRegistros(miGrilla);
             if (Array.isArray(datos) && datos.length === 0) {
@@ -733,20 +855,20 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                                 icon: 1,
                                 fn: function () {
                                     //exito
-                                    if(meDe.panelGrid == '-panelGridDataDetDetailByF'){
+                                    if (meDe.panelGrid == '-panelGridDataDetDetailByF') {
                                         console.log('entra al primer if')
                                         meC.setGridDataDetDetailByF()
-                                    }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyes'){
+                                    } else if (meDe.panelGrid == '-panelGridDataDetDetailByEyes') {
                                         console.log('entra al segundo if')
                                         meC.setGridDataDetailByEyes()
-                                    }else if(meDe.panelGrid == '-panelGridDataDetDetailByEyesCountry'){
+                                    } else if (meDe.panelGrid == '-panelGridDataDetDetailByEyesCountry') {
                                         console.log('entra al tercer if')
-                                        meC.setGridDataDetailByEyesCountry()  
-                                    }else if(meDe.panelGrid == '-panelGridDataDet'){
+                                        meC.setGridDataDetailByEyesCountry()
+                                    } else if (meDe.panelGrid == '-panelGridDataDet') {
                                         meC.setGridDataDetail()
                                     }
                                     Ext.getCmp(prototype.id + '-dataEntry').close()
-                                    
+
                                 }
                             });
                         } else
@@ -809,13 +931,13 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         } else {
             console.error('No se pudo encontrar la grilla con el ID especificado.');
         }
-    },        
+    },
     //</editor-fold>
 
     procesarRegistros: function (grilla, miGrillaAdj) {
         // Crear una lista para almacenar los datos
         let listaDeDatos = [];
-        
+
         var cont = 0;
         // Recorrer la grilla y agregar los datos a la lista
         grilla.getStore().each(function (record) {
@@ -826,20 +948,20 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo // Reemplaza 'nombre' con el campo correcto de tu modelo
 
-                        // Agrega más campos según sea necesario
+                // Agrega más campos según sea necesario
             };
 
             listaDeDatos.push(registro);
         });
-        if(listaDeDatos.length == 0){
+        if (listaDeDatos.length == 0) {
             global.Msg({msg: 'No records to update'});
             return false
         }
         // Convertir la lista a JSON
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
-        
+
         return datosEnJSON;
-       
+
     },
     desprocesarRegistros: function (grilla) {
         // Crear una lista para almacenar los datos
@@ -847,8 +969,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         // Recorrer la grilla y agregar los datos a la lista
         grilla.getStore().each(function (record) {
             let registro = {
-                
-                
+
                 SAUTHOC: record.get('A1531CAPL'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 SCARDN: record.get('A1531NREF'), // Reemplaza 'id' con el campo correcto de tu modelo
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
@@ -1062,6 +1183,83 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         win.displayProMasterTicket(this, 'BankConciliation', beanProMasterTicket);
     },
 
+    onChangeDispute: function () {
+        let disputeValue = Ext.getCmp(prototype.id + '-cmbDispute').getValue()
+        if(disputeValue === 'T'){
+            Ext.getCmp(prototype.id + '-gridColumnClean').show();
+            Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
+            Ext.getCmp(prototype.id + '-btn-partialDispute').hide();
+        }else{
+            
+            Ext.getCmp(prototype.id + '-btn-partialDispute').show();
+            Ext.getCmp(prototype.id + '-gridColumnAdj').show();
+            Ext.getCmp(prototype.id + '-gridColumnClean').hide();
+        }
+        
+    },
+    onCleanTkt: function (column, e, row, column, x, rowData) {
+        if ( ['A','D','R'].includes(x.record.data.TDOC) ) { 
+            return false;
+        }
+        if (x.record.data.STVAL === '2') {
+            global.Msg({msg: 'Not allowed'})
+            return false;
+        }
+        let beanCleanTkt = {}
+        beanCleanTkt.TDOC = x.record.data.TDOC
+        beanCleanTkt.CCIA = x.record.data.CCIA
+        beanCleanTkt.FORMA = x.record.data.FORMA
+        beanCleanTkt.SERIE = x.record.data.SERIE
+        beanCleanTkt.SCARDNCOR = x.record.data.SCARDNCOR
+        beanCleanTkt.SAUTHOC = x.record.data.SAUTHOC
+        
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to release ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.liberarTKT(beanCleanTkt)
+                } 
+            }            
+        });
+        
+  
+    },
+    liberarTKT: function ( datos ){
+        Ext.Ajax.request({
+            url: prototype.url + '/cleanTktOption',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(datos)},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            //exito
+                            Ext.getCmp(prototype.id + '-dataEntry').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+    },
     removeTKT: function (grid, rowIndex, colIndex) {
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         //var rowIndex = store_gridInfoScan.indexOf(record);
@@ -1071,36 +1269,30 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         this.calcularMontos();
     },
     onAdjust: function (grid, rowIndex, colIndex) {
-
+        
         var data = grid.getStore().getAt(rowIndex).data;
-        console.log(data);
-        console.log(this.sumAmount);
-        console.log(this.bean.SVFOP);
-        if (data.STMANUAL !== 'Blocked') {
-            if (this.sumAmount === this.bean.SVFOP) {
-                global.Msg({msg: 'The sum amount is equal to transaction amount.'});
-            } else {
+        if ( ['A','D','R'].includes(data.TDOC) ) { 
+            return false;
+        }
+        
+        
                 //this.lstAdjustment = [];
-                Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
-                Ext.getCmp(prototype.id + '-panelADJ').show();
-                var rec = Object.create(grid.getStore().getAt(rowIndex).data);
+        Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
+        Ext.getCmp(prototype.id + '-panelADJ').show();
+        var rec = Object.create(grid.getStore().getAt(rowIndex).data);
 //                var monto_ajustado = parseFloat(parseFloat(this.bean.SVFOP - this.sumAmount).toFixed(2))
 
 //                rec.A1531VFOP = monto_ajustado;
 //                rec.tot_VFOP = monto_ajustado;
-                //rec.SADJUST = 0;
+        //rec.SADJUST = 0;
 //                rec.A720AGENTE = $('#menuUser').text();
 //                rec.CERROR = '01';
-                this.lstAdjustment.push(rec);
-                Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
-                        Ext.create('Ext.data.Store', {data: this.lstAdjustment, autoLoad: true})
-                        );
-                this.calcularSumAmount();
-                this.calcularMontos();
-            }
-        } else {
-            global.Msg({msg: 'Can\'t adjust a blocked ticket.'});
-        }
+        this.lstAdjustment.push(rec);
+        Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
+                Ext.create('Ext.data.Store', {data: this.lstAdjustment, autoLoad: true})
+                );
+            
+
 
     },
     addAdjTicket_keyDownHandler: function () {
@@ -1149,7 +1341,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 
     },
     allRefreshDataEntryTktTw: function () {
-       
+
     },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
@@ -1172,9 +1364,9 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 // </editor-fold>
     agregaTicket: function (obj) {
         console.log('agregaTicket');
-        if(obj.IN_TKT_ASIG!==''){
+        if (obj.IN_TKT_ASIG !== '') {
             Ext.getCmp(prototype.id + '-input-txtTKTScan1').setValue(obj.IN_TKT_ASIG);
 //            meDe.addCreditCard_keyDownHandler();
-    }
+        }
     }
 });     
