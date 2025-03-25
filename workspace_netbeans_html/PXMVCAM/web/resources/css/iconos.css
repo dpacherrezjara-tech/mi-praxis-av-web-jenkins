@@ -31,6 +31,9 @@
 .prx-icon-eye {
   background-image: url("../img/botones/16x16/eye_icon_16x16.png");
 }
+.prx-icon-locked {
+  background-image: url("../img/botones/16x16/locked_bash.png");
+}
 .prx-icon-update-bash {
   background-image: url("../img/icon/16x16/icon_update_bash.png");
 }
