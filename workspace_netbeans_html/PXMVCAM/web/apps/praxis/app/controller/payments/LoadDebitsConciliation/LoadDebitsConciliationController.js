@@ -30,9 +30,9 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.control({
 //            //   -------------------Eventos Genericos --------------------
-//            '#LoadDebitsConciliationForm-xpanel': {
-//                afterrender: this.xpanel_afterrender            
-//            },
+            '#LoadDebitsConciliationForm-xpanel': {
+                afterrender: this.xpanel_afterrender
+            },
             '#LoadDebitsConciliationForm-btnSearch': {
                 click: this.btnSearch_click
             },
@@ -72,6 +72,35 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         });
     },
 
+    xpanel_afterrender: function (obj, e) {
+
+        this.obtainData();
+    },
+    obtainData: function () {
+
+        this.dataObtain.BANK = 2;
+        this.dataObtain.COUNTRY = 2;
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {
+                beanString: JSON.stringify(this.dataObtain)},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+
+                var lstBank = res.lstBank;
+                console.log(lstBank,'lstBank')
+                var storeData = Ext.create('Ext.data.Store', {
+                    data: lstBank,
+                    autoLoad: true
+                });
+                Ext.getCmp(prototype.id + '-cmbBank').bindStore(storeData);
+                Ext.getCmp(prototype.id + '-cmbBank').setValue('');
+                
+            }
+        });
+    },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -80,11 +109,11 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
     onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    
+
     onFileLoad: function () {
         var me = this;
         let beanValidation = {}
-        
+
         beanValidation.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMB').getValue()
         var fileField = Ext.getCmp(prototype.id + '-file');
         var file = fileField.fileInputEl.dom.files[0];
@@ -100,7 +129,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         // Crear una instancia de FormData para enviar el archivo
         var formData = new FormData();
         formData.append('excelfile', file);
-        
+
         // Realizar una solicitud AJAX para cargar el archivo
         Ext.Ajax.request({
             url: prototype.url + '/updateA4527',
@@ -115,14 +144,14 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                 var res = Ext.decode(response.responseText);
                 console.log(res);
                 if (res.success) {
-                    
+
                     let objResult = res.objResult;
-                    if(objResult.isInvalid){
+                    if (objResult.isInvalid) {
                         global.Msg({msg: "The account number is different"});
                         return false;
                     }
                     console.log(objResult.netoAcum, 'objResult.netoAcum')
-                    console.log( 'objResult.isInvalid')
+                    console.log('objResult.isInvalid')
                     let numberWithCommas = me.formatNumberWithCommas_string(objResult.netoAcum);
                     Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(numberWithCommas);
                     me.validationAmount();
@@ -173,25 +202,25 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
 //            }
 //        });
 //    },
-    validationAmount: function(){
+    validationAmount: function () {
         let amountStatement = Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue()
         let amountSettlement = Ext.getCmp(prototype.id + '-de-txtAMOUNT').getValue()
-        if(amountStatement != amountSettlement){
+        if (amountStatement != amountSettlement) {
             global.Msg({msg: "The amounts do not MATCH"});
             Ext.getCmp(prototype.id + '-de-txtSumAmount').setFieldStyle('background-color: #F7F199;');
             Ext.getCmp(prototype.id + '-de-txtAMOUNT').setFieldStyle('background-color: #F7F199;');
-        }else{
+        } else {
             global.Msg({msg: "The amounts MATCH!"});
             Ext.getCmp(prototype.id + '-btn-update').show();
         }
     },
-    formatNumberWithCommas_string: function(number) {
+    formatNumberWithCommas_string: function (number) {
         var numberStr = String(number).replace(/,/g, '');
         var parts = numberStr.split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return parts.join('.');
     },
-    formatNumberWithCommas_double: function(number) {
+    formatNumberWithCommas_double: function (number) {
         var numberStr = String(number).replace(/,/g, '');
         var parts = numberStr.split('.');
         var integerPart = parts[0];
@@ -199,12 +228,12 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return integerPart + decimalPart;
     },
-    onUpdateClick: function(){
+    onUpdateClick: function () {
         var me = this;
         let beanConciliation = {}
         beanConciliation.IN_BANDOC = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue()
-        beanConciliation.IN_TDOC = 'D'
-        beanConciliation.IN_CODEBANK = Ext.getCmp(prototype.id + '-de-txtCODEBANK').getValue()
+        beanConciliation.IN_TDOC = Ext.getCmp(prototype.id + '-de-txtTDOC').getValue()
+        beanConciliation.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue()
         beanConciliation.IN_SCURRENCY = Ext.getCmp(prototype.id + '-de-txtSCURRENCY').getValue()
         beanConciliation.IN_MERCHNC = Ext.getCmp(prototype.id + '-de-txtMERCHANT').getValue()
         beanConciliation.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-de-txtSCOUNTRY').getValue()
@@ -253,8 +282,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
         Ext.getCmp(prototype.id + '-file').setDisabled(false)
         Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
         Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue('')
-        Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue('')
-        Ext.getCmp(prototype.id + '-de-txtADATE').setValue('')
+        Ext.getCmp(prototype.id + '-cmbBank').setValue('')
+        Ext.getCmp(prototype.id + '-txtFromADATE').setValue('')
         Ext.getCmp(prototype.id + '-de-txtSCURRENCY').setValue('')
         Ext.getCmp(prototype.id + '-de-txtAMOUNT').setValue('')
         Ext.getCmp(prototype.id + '-btn-update').hide();
@@ -277,35 +306,60 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
 
     },
     btnSearch_click: function (obj, e) {
-        
+
         Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(true)
-        if( Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == '' || Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == undefined  ){
-             Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
+        Ext.getCmp(prototype.id + '-txtFromADATE').setDisabled(true)
+        Ext.getCmp(prototype.id + '-cmbBank').setDisabled(true)
+        console.log(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ext.getCmp(prototype.id +')
+        if (Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() == '' || Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue() === undefined) {
+            Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
+            Ext.getCmp(prototype.id + '-txtFromADATE').setDisabled(false)
+            Ext.getCmp(prototype.id + '-cmbBank').setDisabled(false)
             global.Msg({msg: "Enter the SAP document"});
             return false
         }
+        if( Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === '' ||  Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null ){
+            Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
+            Ext.getCmp(prototype.id + '-txtFromADATE').setDisabled(false)
+            Ext.getCmp(prototype.id + '-cmbBank').setDisabled(false)
+            global.Msg({msg: "Enter the abono date"});
+            return false
+        }
+        if( Ext.getCmp(prototype.id + '-cmbBank').getValue() === '' ||  Ext.getCmp(prototype.id + '-cmbBank').getValue() === undefined ){
+            Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
+            Ext.getCmp(prototype.id + '-txtFromADATE').setDisabled(false)
+            Ext.getCmp(prototype.id + '-cmbBank').setDisabled(false)
+            global.Msg({msg: "Enter the bank "});
+            return false
+        }
+        
         let beanSearch = {}
         beanSearch.IN_BANDOC = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue()
+        beanSearch.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue()
+        beanSearch.IN_ADATE = Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
         beanSearch.IN_TDOC = 'D'
         beanSearch.IN_SOCIETY = 'AV01'
+        console.log(beanSearch,'beanSearch')
         let beanString = JSON.stringify(beanSearch);
         Ext.Ajax.request({
             url: prototype.url + '/searchBandoc',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: beanString},
-            success: function(response, options) {
-                
+            success: function (response, options) {
+
                 var res = Ext.JSON.decode(response.responseText);
-                
-                if( res.result.BANDOC == ''){
+
+                if (res.result.BANDOC == '') {
                     global.Msg({msg: "SAP Document not fund "});
                     Ext.getCmp(prototype.id + '-de-txtBANDOC').setDisabled(false)
-                }else {
+                    Ext.getCmp(prototype.id + '-txtFromADATE').setDisabled(false)
+                    Ext.getCmp(prototype.id + '-cmbBank').setDisabled(false)
+                } else {
                     let formateadoNeto = me.formatNumberWithCommas_double(res.result.NETO)
                     console.log(formateadoNeto, 'formateadoNeto')
-                    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(res.result.CODEBANK)
-                    Ext.getCmp(prototype.id + '-de-txtADATE').setValue(res.result.ADATE)
+//                    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(res.result.CODEBANK)
+//                    Ext.getCmp(prototype.id + '-de-txtADATE').setValue(res.result.ADATE)
                     Ext.getCmp(prototype.id + '-de-txtSCURRENCY').setValue(res.result.SCURRENCY)
                     Ext.getCmp(prototype.id + '-de-txtAMOUNT').setValue(formateadoNeto)
                     Ext.getCmp(prototype.id + '-de-txtMERCHANT').setValue(res.result.MERCHNC)
@@ -314,20 +368,20 @@ Ext.define('Ext.Praxis.controller.payments.LoadDebitsConciliation.LoadDebitsConc
                     Ext.getCmp(prototype.id + '-de-txtSOCIETY').setValue(res.result.SOCIETY)
                     Ext.getCmp(prototype.id + '-de-txtDATECI').setValue(res.result.DATECI)
                     Ext.getCmp(prototype.id + '-de-txtTRANCI').setValue(res.result.TRANCI)
-                    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(res.result.descTDOC)
+                    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(res.result.TDOC)
                     Ext.getCmp(prototype.id + '-de-txtSTVAL').setValue(res.result.strDescStatus)
                     Ext.getCmp(prototype.id + '-de-txtQTYTRAN1').setValue(res.result.QTYTRAN1)
                     Ext.getCmp(prototype.id + '-de-txtACCNUMB').setValue(res.result.ACCNUMBER)
                     Ext.getCmp(prototype.id + '-de-txtVALDATE').setValue(res.result.VALDATE)
                     Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(res.result.PRDA)
-                    if( res.result.STVAL == '1' || res.result.STVAL == '5' ){
+                    if (res.result.STVAL == '1' || res.result.STVAL == '5') {
                         global.Msg({msg: "REGISTRATION IN MATCH STATUS"});
                         Ext.getCmp(prototype.id + '-file').setDisabled(true)
-                        
+
                     }
                 }
-               
-                
+
+
 //                meDE.beanResult = res.result;
 //                meDE.mostrarData();
 
