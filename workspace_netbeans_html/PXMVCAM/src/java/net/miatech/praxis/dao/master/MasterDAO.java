@@ -1202,6 +1202,65 @@ public class MasterDAO {
 
         return lstRtn;
     }
+    
+    public List<A2280Filter> loadBank_N() throws SQLException, Exception {
+
+        List<A2280Filter> lstRtn = new ArrayList<>();
+        A2280Filter objRtn;
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01908_N(?)}";
+
+        Connection cnx = null;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cstmt01.execute();
+            objRtn = new A2280Filter();
+            objRtn.CODEBANK = "";
+            objRtn.NAMEBANK = "All";
+            objRtn.IN_CODE_IN_NAME = "All";
+            lstRtn.add(objRtn);
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn = new A2280Filter();
+                objRtn.CODEBANK = rs01.getString("CODBANKN");
+                objRtn.NAMEBANK = rs01.getString("NAMEBANK");
+                objRtn.IN_CODE_IN_NAME = objRtn.CODEBANK + " - " + objRtn.NAMEBANK;
+                lstRtn.add(objRtn);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
 
     public List<A2280> loadTarjetas() {
 
