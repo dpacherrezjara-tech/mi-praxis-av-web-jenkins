@@ -90,7 +90,7 @@ public class ForecastPaymentDAO {
             cstmt.setInt(13, filter.page.PAGNUM);
             cstmt.setInt(14, filter.page.PAGROW);
             cstmt.setInt(15, filter.page.TOTPAG);
-            cstmt.setInt(16, filter.page.TOTROW);
+            cstmt.setInt(16, filter.page.TOTROW);          
             cstmt.execute();
 
             filter.page.PAGNUM = cstmt.getInt(13);
@@ -142,6 +142,7 @@ public class ForecastPaymentDAO {
                     objRtn.INVOICE0 = rs01.getString("INVOICE0").trim();
                     objRtn.INVOICE1 = rs01.getString("INVOICE1").trim();
                     objRtn.SVFOPNETR = rs01.getDouble("SVFOPNETR");
+                    objRtn.FPROC = rs01.getString("FPROC").trim();
 
                     objRtn.TOT_SVFOPOT = SVFOPOT;
                     objRtn.TOT_SVFOPNETR = SVFOPNETR;
