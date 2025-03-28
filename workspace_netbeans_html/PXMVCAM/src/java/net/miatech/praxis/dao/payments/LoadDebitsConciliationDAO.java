@@ -151,7 +151,7 @@ public class LoadDebitsConciliationDAO {
 
         }
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF102_CONCI_DEBITS(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF102_CONCI_DEBITS(?,?,?,?,?,?,?,?,?,?,?)}";
         
 
         try {
@@ -166,11 +166,13 @@ public class LoadDebitsConciliationDAO {
             cstmt.setString(2, filter102.IN_BANDOC.trim());
             cstmt.setString(3, filter102.IN_TDOC.trim());
             cstmt.setString(4, filter102.IN_SOCIETY.trim());
-            cstmt.setInt(5, QTYTRAN1);
-            cstmt.setDouble(6, NETOC);
-            cstmt.setString(7, user.getUserInfo().USR);
-            cstmt.setString(8, Functions.getFechaActual());
-            cstmt.setString(9, Functions.getHoraActual());
+            cstmt.setString(5, filter102.IN_DATECI.trim());
+            cstmt.setString(6, filter102.IN_TRANCI.trim());
+            cstmt.setInt(7, QTYTRAN1);
+            cstmt.setDouble(8, NETOC);
+            cstmt.setString(9, user.getUserInfo().USR);
+            cstmt.setString(10, Functions.getFechaActual());
+            cstmt.setString(11, Functions.getHoraActual());
             
 
             cstmt.execute();
@@ -373,7 +375,7 @@ public class LoadDebitsConciliationDAO {
         hmDescEstadosSTVAL.put("3", "Bank w/o Settlement");
         hmDescEstadosSTVAL.put("4", "Match with Difference");
         hmDescEstadosSTVAL.put("5", "Match Manual");
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF102_DEBITS_BANDOC(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF102_DEBITS_BANDOC(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -384,6 +386,8 @@ public class LoadDebitsConciliationDAO {
             cstmt01.setString(2, filter.IN_BANDOC.trim());
             cstmt01.setString(3, filter.IN_TDOC.trim());
             cstmt01.setString(4, filter.IN_SOCIETY.trim());
+            cstmt01.setString(5, filter.IN_ADATE.trim());
+            cstmt01.setString(6, filter.IN_CODEBANK.trim());
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();

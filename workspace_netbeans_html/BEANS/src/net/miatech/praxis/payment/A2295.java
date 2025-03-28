@@ -134,6 +134,7 @@ public class A2295 {
     public String SCARCOD1 = "";
     public String SCARDN2 = "";
     public double SPAYMENT = 0;
+    public String FPROC = "";
 
 
 

@@ -94,6 +94,10 @@ public class MasterController extends BaseController {
                 List<A2280Filter> lstBank = masterDAO.loadBank();
                 map.put("lstBank", lstBank);
             }
+            if (data.BANKN != 0) {
+                List<A2280Filter> lstBankN = masterDAO.loadBank_N();
+                map.put("lstBankN", lstBankN);
+            }
             if (data.CARD != 0) {
                 List<A2280> lstCard = masterDAO.loadTarjetas();
                 map.put("lstCard", lstCard);

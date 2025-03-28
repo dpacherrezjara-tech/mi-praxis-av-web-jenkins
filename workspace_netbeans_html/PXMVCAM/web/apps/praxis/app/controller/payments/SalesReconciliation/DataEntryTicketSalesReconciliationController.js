@@ -107,7 +107,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         console.log(this.bean, 'this.bean')
         let objTDOCSALES = {
             S: "Sales",
-            A: "Adjust."
+            A: "Adjust.",
+            D: "Dispute"
         }
         let objTDOCDEBITS = {
             R: "Refund",
@@ -304,10 +305,12 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
         win.setValue("2-txtSVFOPADJ",win.formatDblNumber(this.bean.SVFOPADJ));
         win.setValue("2-txtSCURRENCYADJ", this.bean.SCURRENCYADJ.trim());
         win.setValue("2-txtDTYPEADJ", this.bean.TDOCADJ.trim());
-        if(this.bean.TDOC === 'A'){
+        if(this.bean.TDOC === 'A' && this.bean.DATABASE == 'MPF100'){
              win.setValue("2-txtDTYPEADJ",'Adjustment');
-        }else if(this.bean.TDOC === 'S'){
+        }else if(this.bean.TDOC === 'S' &&  this.bean.DATABASE == 'MPF100'){
             win.setValue("2-txtDTYPEADJ",'Sales');
+        }else if(this.bean.TDOC === 'D' &&  this.bean.DATABASE == 'MPF100'){
+            win.setValue("2-txtDTYPEADJ",'Dispute');
         }
 //        }else if(this.bean.STCON == '3'){
 //            win.setValue("2-txtSTCON",this.bean.STCON + ' - ' + 'Regularization');
@@ -399,6 +402,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
              win.setValue('2-txtERRORADJ', '');
              win.setValue('2-txtDescError2', '');
         }       
+        
+        
     
 	if(this.bean.FADYEN == 'Y'){
             win.setValue('2-chkFADYEN', true);

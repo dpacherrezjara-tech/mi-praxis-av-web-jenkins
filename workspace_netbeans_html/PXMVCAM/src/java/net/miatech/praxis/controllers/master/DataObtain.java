@@ -15,6 +15,7 @@ public class DataObtain {
     public byte CAMPO = 0;
     public byte BANK = 0;
     public byte BANKS = 0;
+    public byte BANKN = 0;
     public byte CARD = 0;
     public byte CARDEQUIVALENT = 0;
     public byte SOURCEA1691 = 0;
