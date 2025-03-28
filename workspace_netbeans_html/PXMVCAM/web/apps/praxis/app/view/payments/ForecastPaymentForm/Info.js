@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1662,
+                            width: 1732,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1662,
+                                    width: 1732,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -126,7 +126,16 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     metaData.unselectableAttr = "unselectable='off'";
                                                     return value;
                                                 }
-                                            },                                            
+                                            },    
+                                            {text: 'Process<br>Date', dataIndex: 'FPROC', width: 70,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            }, 
                                             {text: 'Agent', dataIndex: 'SAGENT', width: 70,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;color:#244066;background-color:#b2e1ff;";

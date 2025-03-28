@@ -77,7 +77,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                     margin: '5 0 0 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -101,54 +101,84 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                         }
                                         ,
                                         {xtype: 'tbspacer', width: 20},
+//                                        {
+//                                            xtype: 'label',
+//                                            text: 'Bank',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            width: 80
+//                                        },
+//                                        {xtype: 'tbspacer', width: 5},
                                         {
-                                            xtype: 'label',
-                                            text: 'Bank',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 80
+                                            xtype: 'combo',
+                                            fieldLabel: 'Bank',
+                                            id: prototype.id + '-cmbBank',
+                                            queryMode: 'local',
+                                            valueField: 'CODEBANK',
+                                            displayField: 'IN_CODE_IN_NAME',
+                                            emptyText: 'All',
+                                            fieldStyle: 'text-align: left;',
+                                            labelAlign: 'left',
+                                            width: 185,
+                                            labelWidth: 80,
                                         },
-                                        {xtype: 'tbspacer', width: 5},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCODEBANK',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            maxLength: '8',
-                                            width: 100,
-                                            maskRe: /[0-9]/,
-                                            editable: false,
-                                            enabled: false,
-                                            readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
-                                        },
+//                                        {
+//                                            xtype: 'textfield',
+//                                            id: prototype.id + '-de-txtCODEBANK',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            fieldStyle: 'text-align:center',
+//                                            enforceMaxLength: true,
+//                                            maxLength: '8',
+//                                            width: 100,
+//                                            maskRe: /[0-9]/,
+//                                            editable: false,
+//                                            enabled: false,
+//                                            readOnly: false,
+//        //                                    maskRe: /[a-zA-Z]/
+//                                        },
                                         {xtype: 'tbspacer', width: 20},
                                         {
-                                            xtype: 'label',
-                                            text: 'Abono Date',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 80
-                                        },
-                                        {xtype: 'tbspacer', width: 5},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtADATE',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            xtype: 'datefield',
+                                            id: prototype.id + '-txtFromADATE',
                                             fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            maxLength: '8',
-                                            width: 100,
-                                            maskRe: /[0-9]/,
+                                            fieldLabel: 'Abono Date',
+                                            format: 'Y/m/d',
+                                            formatText: '',
+                                            invalidText: 'Format valid YYYY/MM/DD',
+                                            minValue: new Date(1990, 00, 01),
+                                            maskRe: /[0-9/]/,
                                             editable: false,
-                                            enabled: false,
-                                            readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            enforceMaxLength: true,
+                                            maxLength: 10,
+                                            inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                            width: 185,
+                                            labelWidth: 80,
                                         },
+//                                        {
+//                                            xtype: 'label',
+//                                            text: 'Abono Date',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            width: 80
+//                                        },
+//                                        {xtype: 'tbspacer', width: 5},
+//                                        {
+//                                            xtype: 'textfield',
+//                                            id: prototype.id + '-de-txtADATE',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            fieldStyle: 'text-align:center',
+//                                            enforceMaxLength: true,
+//                                            maxLength: '8',
+//                                            width: 100,
+//                                            maskRe: /[0-9]/,
+//                                            editable: false,
+//                                            enabled: false,
+//                                            readOnly: false,
+//                                            //                                    maskRe: /[a-zA-Z]/
+//                                        },
 
                                         {xtype: 'tbspacer', width: 409}
                                     ]
                                 },
-                                
+
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -157,7 +187,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                     margin: '5 0 0 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -237,7 +267,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                     margin: '5 0 0 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -317,7 +347,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                     margin: '5 0 0 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -360,7 +390,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {xtype: 'tbspacer', width: 20},
                                         {
@@ -382,12 +412,12 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {xtype: 'tbspacer', width: 409}
                                     ]
                                 },
-                                
+
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -396,7 +426,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                     margin: '5 0 0 0',
                                     defaults: {
                                         anchor: '100%',
-        //                                        width: 1080
+                                        //                                        width: 1080
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 27},
@@ -439,7 +469,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {xtype: 'tbspacer', width: 20},
                                         {
@@ -455,7 +485,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             editable: false,
                                             enabled: false,
                                             readOnly: false,
-        //                                    maskRe: /[a-zA-Z]/
+                                            //                                    maskRe: /[a-zA-Z]/
                                         },
                                         {
                                             xtype: 'textfield',
@@ -483,9 +513,9 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             readOnly: false,
                                             width: 100
                                         }
-                                        
+
                                         ,
-                                        
+
                                         {xtype: 'tbspacer', width: 409}
                                     ]
                                 },
@@ -516,10 +546,10 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                     layout: 'vbox',
                                     border: false,
                                     bodyStyle: 'background:#E5ECEF;',
-        //                            margin: '5 2 5 30',
+                                    //                            margin: '5 2 5 30',
                                     defaults: {
                                         anchor: '100%',
-        //                                width: 650
+                                        //                                width: 650
                                     },
                                     items: [
 
@@ -528,10 +558,10 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             layout: 'hbox',
                                             border: false,
                                             bodyStyle: 'background:#E5ECEF;',
-        //                                    margin: '0 2 4 30',
+                                            //                                    margin: '0 2 4 30',
                                             defaults: {
                                                 anchor: '100%',
-        //                                        width: 1050
+                                                //                                        width: 1050
                                             },
                                             items: [
                                                 {xtype: 'tbspacer', width: 27},
@@ -540,17 +570,17 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                                     id: prototype.id + '-form-01',
                                                     border: false,
                                                     bodyStyle: 'background-color: #E3EAF9;',
-        //                                            padding: '0 0 5 7',
+                                                    //                                            padding: '0 0 5 7',
                                                     items: [{
                                                             xtype: 'filefield',
                                                             id: prototype.id + '-file',
                                                             name: 'excelfile',
-                        //                                fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
+                                                            //                                fieldLabel: '<strong style="font-weight:bold;color:#0B333C;">Update Excel</strong>',
                                                             allowBlank: true,
                                                             accept: '.xlsx, .xls',
                                                             labelWidth: 85,
                                                             width: 400,
-                                                            buttonAlign: 'left', 
+                                                            buttonAlign: 'left',
                                                             buttonText: 'Select excel...',
                                                             regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
                                                             regexText: 'Only XLS and XLSX formats are accepted',
@@ -584,7 +614,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                                     editable: false,
                                                     enabled: false,
                                                     readOnly: false,
-                //                                    maskRe: /[a-zA-Z]/
+                                                    //                                    maskRe: /[a-zA-Z]/
                                                 },
                                                 {xtype: 'tbspacer', width: 500}
 
@@ -595,10 +625,10 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                                             layout: 'hbox',
                                             border: false,
                                             bodyStyle: 'background:#E5ECEF;',
-                //                                    margin: '0 2 2 30',
+                                            //                                    margin: '0 2 2 30',
                                             defaults: {
                                                 anchor: '100%',
-                //                                        width: 1080
+                                                //                                        width: 1080
                                             },
                                             items: [
                                                 {xtype: 'tbspacer', width: 27},
@@ -623,7 +653,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
                         }
                     ],
                     dockedItems: [
-                        {   
+                        {
 //                            bodyStyle: 'background-color: #70E3EC;',
                             xtype: 'toolbar',
                             dock: 'bottom',
@@ -663,7 +693,7 @@ Ext.define('Ext.Praxis.view.payments.LoadDebitsConciliationForm.Info', {
             ]
         }
     ],
-    
+
 }
 );
 
