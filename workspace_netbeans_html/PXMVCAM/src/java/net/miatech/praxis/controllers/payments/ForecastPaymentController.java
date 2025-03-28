@@ -180,6 +180,7 @@ public class ForecastPaymentController extends BaseController {
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Report");
+            
             XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
@@ -206,6 +207,7 @@ public class ForecastPaymentController extends BaseController {
             bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            
             Integer vi = 0;
             Integer vj = 0; //Almacena el numero de fila
             Iterator iter = listaData.iterator();
@@ -232,6 +234,7 @@ public class ForecastPaymentController extends BaseController {
             Cell CH1_16 = row1.createCell(16);
             Cell CH1_17 = row1.createCell(17);
             Cell CH1_18 = row1.createCell(18);
+            Cell CH1_19 = row1.createCell(19);
 
 
             CH1_0.setCellValue("Country");
@@ -242,17 +245,18 @@ public class ForecastPaymentController extends BaseController {
             CH1_5.setCellValue("Fuente");
             CH1_6.setCellValue("Sub Fte");
             CH1_7.setCellValue("Sale Date");
-            CH1_8.setCellValue("Agent");
-            CH1_9.setCellValue("Agent Cons.");
-            CH1_10.setCellValue("Currency Cash");
-            CH1_11.setCellValue("Cash");
-            CH1_12.setCellValue("Credit");
-            CH1_13.setCellValue("Credit Card");
-            CH1_14.setCellValue("Card Code");
-            CH1_15.setCellValue("Others Sales");
-            CH1_16.setCellValue("Invoice Cash");
-            CH1_17.setCellValue("Invoice Card"); 
-            CH1_18.setCellValue("Net Remit");
+            CH1_8.setCellValue("Process. Date");
+            CH1_9.setCellValue("Agent");
+            CH1_10.setCellValue("Agent Cons.");
+            CH1_11.setCellValue("Currency Cash");
+            CH1_12.setCellValue("Cash");
+            CH1_13.setCellValue("Credit");
+            CH1_14.setCellValue("Credit Card");
+            CH1_15.setCellValue("Card Code");
+            CH1_16.setCellValue("Others Sales");
+            CH1_17.setCellValue("Invoice Cash");
+            CH1_18.setCellValue("Invoice Card"); 
+            CH1_19.setCellValue("Net Remit");
 
 
             CH1_0.setCellStyle(headerStyle);
@@ -274,6 +278,7 @@ public class ForecastPaymentController extends BaseController {
             CH1_16.setCellStyle(headerStyle);
             CH1_17.setCellStyle(headerStyle);
             CH1_18.setCellStyle(headerStyle);
+            CH1_19.setCellStyle(headerStyle);
 
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
@@ -296,6 +301,7 @@ public class ForecastPaymentController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
 
 
             ++vj;
@@ -369,6 +375,7 @@ public class ForecastPaymentController extends BaseController {
                 Cell rcell16 = row1.createCell(16);
                 Cell rcell17 = row1.createCell(17);
                 Cell rcell18 = row1.createCell(18);
+                Cell rcell19 = row1.createCell(19);
 
 
                 rcell0.setCellValue(listaData.get(vi).SCOUNTRY);
@@ -379,17 +386,18 @@ public class ForecastPaymentController extends BaseController {
                 rcell5.setCellValue(listaData.get(vi).CFUENTE);
                 rcell6.setCellValue(listaData.get(vi).SUBFTE);
                 rcell7.setCellValue(listaData.get(vi).SDATE);
-                rcell8.setCellValue(listaData.get(vi).SAGENT);
-                rcell9.setCellValue(listaData.get(vi).SCONSOL);
-                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell11.setCellValue(listaData.get(vi).SVFOPCA);
-                rcell12.setCellValue(listaData.get(vi).SVFOPCC);
-                rcell13.setCellValue(listaData.get(vi).SCARDN1);
-                rcell14.setCellValue(listaData.get(vi).SCARCOD1);
-                rcell15.setCellValue(listaData.get(vi).SVFOPOT);
-                rcell16.setCellValue(listaData.get(vi).INVOICE0);
-                rcell17.setCellValue(listaData.get(vi).INVOICE1);
-                rcell18.setCellValue(listaData.get(vi).SVFOPNETR);
+                rcell8.setCellValue(listaData.get(vi).FPROC);
+                rcell9.setCellValue(listaData.get(vi).SAGENT);
+                rcell10.setCellValue(listaData.get(vi).SCONSOL);
+                rcell11.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell12.setCellValue(listaData.get(vi).SVFOPCA);
+                rcell13.setCellValue(listaData.get(vi).SVFOPCC);
+                rcell14.setCellValue(listaData.get(vi).SCARDN1);
+                rcell15.setCellValue(listaData.get(vi).SCARCOD1);
+                rcell16.setCellValue(listaData.get(vi).SVFOPOT);
+                rcell17.setCellValue(listaData.get(vi).INVOICE0);
+                rcell18.setCellValue(listaData.get(vi).INVOICE1);
+                rcell19.setCellValue(listaData.get(vi).SVFOPNETR);
 
                 iter.next();
                 ++vi;
@@ -415,6 +423,7 @@ public class ForecastPaymentController extends BaseController {
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
             sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
 
 
 
