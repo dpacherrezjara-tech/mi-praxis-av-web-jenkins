@@ -14,7 +14,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
         'Ext.Praxis.view.payments.AccountingReportForm.FiltersSummary',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryMonthGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.SummaryDetailGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.DetailGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',
@@ -86,7 +86,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
                                                     store: Ext.create('Ext.data.SimpleStore', {
                                                         fields: ['code', 'name'],
                                                         data: [
-                                                            ['S', 'Summary'],
+                                                            //['S', 'Summary'],
                                                             ['D', 'Detail']
                                                         ]
                                                     }),
@@ -99,19 +99,20 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
                                                     valueField: 'code',
                                                     queryMode: 'local',
                                                     editable: false,
-                                                    value: 'S',
+                                                    value: 'D',
                                                     listeners:{
                                                         change:'onChangeReport'
                                                     }
                                                 },
                                                 {
                                                     xtype: prototype.id + '-filtersDetail',
-                                                    id: prototype.id + '-fdetail',
-                                                    hidden:true
+                                                    id: prototype.id + '-fdetail'
+                                                    
                                                 },
                                                 {
                                                     xtype: prototype.id + '-filtersSummary',
-                                                    id: prototype.id + '-fsummary'
+                                                    id: prototype.id + '-fsummary',
+                                                    hidden:true
                                                 }
                                             ]
                                         },

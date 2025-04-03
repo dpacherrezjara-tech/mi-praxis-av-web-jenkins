@@ -83,8 +83,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersDetail', {
                                         data: [
                                             ['', 'All'],
                                             ['REG', 'Regular'],
-                                            ['DEB', 'Debits'],
-                                            ['ADJ', 'Adjustment']
+                                            ['DEB', 'Debits']
                                         ]
                                     }),
                                     labelWidth: 90,
@@ -163,16 +162,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersDetail', {
                                 {
                                     xtype: 'combobox',
                                     fieldLabel: 'Status',
-                                    name: 'IN_STATUS',
+                                    name: 'IN_STVAL',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
                                             ['', 'All'],
-                                            ['S', 'Sended'],
-                                            ['C', 'Accounted'],
-                                            ['N', 'No Accounted'],
-                                            ['M', 'Match'],
-                                            ['P', 'Pending BPO']
+                                            ['1', 'Match'],
+                                            ['3', 'Pending'],
+                                            ['4', 'Match Diff'],
+                                            ['5', 'Match Manual']
                                         ]
                                     }),
                                     labelWidth: 60,

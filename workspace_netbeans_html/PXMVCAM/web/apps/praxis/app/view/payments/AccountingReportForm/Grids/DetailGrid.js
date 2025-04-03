@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
+Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.DetailGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-BandocsGrid',
+    alias: 'widget.' + prototype.id + '-DetailGrid',
     requires: [
-        'Ext.Praxis.controller.payments.AccountingReport.BandocsGridController'
+        'Ext.Praxis.controller.payments.AccountingReport.DetailGridController'
     ],
-    controller: 'BandocsGridController',
+    controller: 'DetailGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
@@ -29,12 +29,25 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                 xtype: 'rownumberer', // Columna de número de fila
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
+            {
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 40,
+                text: 'Info',
+                locked: true,
+                align: 'center',
+                items: [
+                    {
+                        iconCls: 'prx-icon-detail',
+                        tooltip: 'Open Detail',
+                        handler: 'openBandocDetail'
+                    }
+                ]
+            },
             {text: 'Client<br>Code', dataIndex: 'CCUST', width: 50},
             {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 90},
             {text: 'Doc.<br>Type', dataIndex: 'TDOC', width: 60},
             {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120},
-            {text: 'Country', dataIndex: 'SCOUNTRY', width: 60},
-            {text: 'Core', dataIndex: 'COREP', width: 60},
             {text: 'Status<br>Phase 1', dataIndex: 'STVAL', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "background-color:#bbe3ac;font-weight:bold;";
@@ -53,26 +66,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                     return value;
                 }
             },
-            {text: 'Processing<br>Date', dataIndex: 'PRDA', width: 90},
             {text: 'Payment<br>Date', dataIndex: 'ADATE', width: 90},
             {text: 'Account', dataIndex: 'ACCOUNT', width: 100},
             {text: 'Profit<br>Center', dataIndex: 'BENCENC', width: 100},
-            {text: 'Company', dataIndex: 'ACCCOMP', width: 120},
             {text: 'Society', dataIndex: 'SOCIETY', width: 80},
-            {text: 'Commercial', dataIndex: 'CIACOME', width: 100},
             {text: 'Reference', dataIndex: 'REFER', width: 130},
             {text: 'Key 1', dataIndex: 'CLAVE1', width: 130},
             {text: 'Key 3', dataIndex: 'CLAVE3', width: 200},
             {text: 'Text', dataIndex: 'TEXTO', width: 230},
             {text: 'Currency', dataIndex: 'SCURRENCY', width: 70},
             {text: 'Bank<br>Amount', dataIndex: 'NETO', width: 120,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
-                    value = Ext.util.Format.number(value, '0,000.00');
-                    return value;
-                }
-            },
-            {text: 'Reconciled<br>Amount', dataIndex: 'NETOC', width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "text-align:right;";
                     value = Ext.util.Format.number(value, '0,000.00');
@@ -107,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                 }
             },
             {
-                text: 'Accounting Information',
+                text: 'Regular Accounting Information',
                 defaults: {
                     menuDisabled: true,
                     sortable: true,
@@ -118,7 +121,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                     }
                 },
                 columns: [
-                    {text: 'Date', dataIndex: 'FECACC', width: 90},
+                    {text: 'Period', dataIndex: 'PERIOD_REG', width: 90},
                     {text: 'Type', dataIndex: 'TIPOCON', width: 80,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#B2DAFA";
@@ -130,7 +133,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                             return opts[value];
                         }
                     },
-                    {text: 'Sub-type', dataIndex: 'STACC', width: 100,
+                    {text: 'Sub-type', dataIndex: 'TIPOREG', width: 100,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#B2DAFA;font-weight:bold;";
                             const opts = {
@@ -168,34 +171,24 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                             return opts[value] ? opts[value]() : '';
                         }
                     },
-                    {text: 'ID', dataIndex: 'IDACC', width: 210,
+                    {text: 'ID', dataIndex: 'IDCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = 'background-color:#B2DAFA;';
-                            if (value.trim() !== '') {
-                                metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                            if(value){
+                                if (value.trim() !== '') {
+                                    metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                                }
                             }
                             return value;
                         },
                         listeners: {
-                            click: 'onLoadAccounting'
+                            click: 'onLoadAccountingReg'
                         }
-                    }
-                ]
-            },
-            {
-                text: 'SAP Information',
-                defaults: {
-                    menuDisabled: true,
-                    sortable: true,
-                    align: 'center',
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        metaData.style = "background-color:#a5d7d6;font-weight:bold;";
-                        return value;
-                    }
-                },
-                columns: [
-                    {text: 'Date', dataIndex: 'FECSAP', width: 100},
-                    {text: 'Status', dataIndex: 'STSAP', width: 150,
+                    },
+                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
+                    {text: 'File Name', dataIndex: 'FILENAM', width: 250},
+                    {text: 'SAP Date', dataIndex: 'FECSAP', width: 100},
+                    {text: 'SAP<br>Status', dataIndex: 'STSAP', width: 150,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = "background-color:#7ec7d5;font-weight:bold;";
                             const opts = {
@@ -216,20 +209,124 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
                                     return 'Sended to AV';
                                 }
                             };
-                            return opts[value]() || '';
-                        }
-                    },
-                    {text: 'Corrl AV', dataIndex: 'HEADER', width: 200},
-                    {text: 'Qty<br>Rejections', dataIndex: 'QTYREJ', width: 80,
-                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                            metaData.style = "background-color:#a5d7d6;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
-                            return value;
-                        },
-                        listeners: {
-                            click: 'onLoadRejections'
+                            return opts[value]? opts[value]() : '';
                         }
                     }
                 ]
+            },
+            {
+                text: 'Debit Accounting Information',
+                defaults: {
+                    menuDisabled: true,
+                    sortable: true,
+                    align: 'center',
+                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                        metaData.style = "background-color:#dcc279";
+                        return value;
+                    }
+                },
+                columns: [
+                    {text: 'Period', dataIndex: 'PERIOD_DEB', width: 90},
+                    {text: 'Type', dataIndex: 'TIPOCON2', width: 80,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#dcc279";
+                            const opts = {
+                                'DEB': 'Debits',
+                                'REG': 'Regular',
+                                'ADJ': 'Adjustment'
+                            };
+                            return opts[value];
+                        }
+                    },
+                    {text: 'Sub-type', dataIndex: 'TIPOREG2', width: 100,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#dcc279;font-weight:bold;";
+                            const opts = {
+                                'P': () => {
+                                    return 'PAX CO';
+                                },
+                                'A': () => {
+                                    return 'CGO CO';
+                                },
+                                'C': () => {
+                                    return 'COR CO';
+                                },
+                                'E': () => {
+                                    return 'PAX EXT';
+                                },
+                                'G': () => {
+                                    return 'CGO EXT';
+                                },
+                                'T': () => {
+                                    return 'TAX EXT';
+                                },
+                                'D': () => {
+                                    return 'DEB CO';
+                                },
+                                'B': () => {
+                                    return 'DEB EXT';
+                                },
+                                'J': () => {
+                                    return 'ADJ CO';
+                                },
+                                'K': () => {
+                                    return 'ADJ EXT';
+                                }
+                            };
+                            return opts[value] ? opts[value]() : '';
+                        }
+                    },
+                    {text: 'ID', dataIndex: 'IDCDEB', width: 210,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = 'background-color:#dcc279;';
+                            if(value){
+                                if (value.trim() !== '') {
+                                    metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                                }
+                            }
+                            return value;
+                        },
+                        listeners: {
+                            click: 'onLoadAccountingDeb'
+                        }
+                    },
+                    {text: 'Corrl AV', dataIndex: 'HEADER2', width: 200},
+                    {text: 'File Name', dataIndex: 'FILENAM2', width: 250},
+                    {text: 'SAP Date', dataIndex: 'FECSAP2', width: 100},
+                    {text: 'SAP<br>Status', dataIndex: 'STSAP2', width: 150,
+                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                            metaData.style = "background-color:#7ec7d5;font-weight:bold;";
+                            const opts = {
+                                'N': () => {
+                                    metaData.style = "background-color:#ef6f59;font-weight:bold";
+                                    return 'Pending Accounting';
+                                },
+                                'P': () => {
+                                    metaData.style = "background-color:#fffc33;font-weight:bold";
+                                    return 'Pending to Send';
+                                },
+                                'L': () => {
+                                    metaData.style = "background-color:#deace3;font-weight:bold";
+                                    return 'Loaded to SAP';
+                                },
+                                'S': () => {
+                                    metaData.style = "background-color:#7cf925;font-weight:bold";
+                                    return 'Sended to AV';
+                                }
+                            };
+                            return opts[value]? opts[value]() : '';
+                        }
+                    }
+                ]
+            },
+            {text: 'Qty<br>Rejections', dataIndex: 'QTYREJ', width: 80,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#a5d7d6;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;";
+                    return value;
+                },
+                listeners: {
+                    click: 'onLoadRejections'
+                }
             }
             //</editor-fold>
         ]

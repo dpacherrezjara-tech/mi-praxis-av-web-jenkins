@@ -33,7 +33,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
             me.notifier.alert('Filters not loaded');
         } finally {
             me.view.unmask();
-            me.loadSummary();
+            me.loadBandocs();
         }
     },
     onChangeReport:function(cmb){
@@ -65,8 +65,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         let params = me.formatParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.BandocsGrid', {
-            id: prototype.id + '-BandocsGrid-1',
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.DetailGrid', {
+            id: prototype.id + '-DetailGrid-1',
             searchParams: params
         });
         mainPanel.add(panelDetail);
