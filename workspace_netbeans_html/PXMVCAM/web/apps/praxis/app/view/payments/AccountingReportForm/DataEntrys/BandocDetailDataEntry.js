@@ -1,4 +1,4 @@
-prototype.idDE = prototype.id + '-BandocDetailDataEntry';
+prototype.idBandoc = prototype.id + '-BandocDetailDataEntry';
 
 Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetailDataEntry', {
     extend: 'Ext.window.Window',
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
     items: [
         {
             xtype: 'form',
-            id: prototype.idDE + '-sapForm',
+            id: prototype.idBandoc + '-sapForm',
             layout: {
                 type: 'vbox',
                 pack: 'center'
@@ -241,7 +241,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
         },
         {
             xtype: 'form',
-            id: prototype.idDE + '-tacaflowForm',
+            id: prototype.idBandoc + '-tacaflowForm',
             hidden: true,
             layout: {
                 type: 'vbox',
@@ -384,7 +384,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
             items: [
                 {
                     xtype: 'tabpanel',
-                    id: prototype.idDE + '-tabMain',
+                    id: prototype.idBandoc + '-tabMain',
                     width: '100%',
                     height: 'auto',
                     border: false,
@@ -416,12 +416,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                         {
                             title: 'PHASE 1',
                             itemId: '1',
-                            id: prototype.idDE + '-tabF1',
+                            id: prototype.idBandoc + '-tabF1',
                             items: [
                                 {
                                     xtype: 'grid',
                                     border: false,
-                                    id: prototype.idDE + '-gridFase1',
+                                    id: prototype.idBandoc + '-gridFase1',
                                     columns: {
                                         defaults: {
                                             align: 'center',
@@ -485,12 +485,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                         {
                             title: 'PHASE 2',
                             itemId: '2',
-                            id: prototype.idDE + '-tabF2',
+                            id: prototype.idBandoc + '-tabF2',
                             items: [
                                 {
                                     xtype: 'grid',
                                     border: false,
-                                    id: prototype.idDE + '-gridFase2',
+                                    id: prototype.idBandoc + '-gridFase2',
                                     columns: {
                                         defaults: {
                                             align: 'center',
@@ -632,12 +632,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                         {
                             title: 'BILLS',
                             itemId: 'G',
-                            id: prototype.idDE + '-tabGT',
+                            id: prototype.idBandoc + '-tabGT',
                             items: [
                                 {
                                     xtype: 'grid',
                                     border: false,
-                                    id: prototype.idDE + '-gridGT',
+                                    id: prototype.idBandoc + '-gridGT',
                                     columns: {
                                         defaults: {
                                             align: 'center',
@@ -681,12 +681,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                         {
                             title: 'INTERFACES',
                             itemId: 'I',
-                            id: prototype.idDE + '-tabIdcont',
+                            id: prototype.idBandoc + '-tabIdcont',
                             items: [
                                 {
                                     xtype: 'grid',
                                     border: false,
-                                    id: prototype.idDE + '-gridIdcont',
+                                    id: prototype.idBandoc + '-gridIdcont',
                                     columns: {
                                         defaults: {
                                             align: 'center',
@@ -739,12 +739,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                         {
                             title: 'TOTALS',
                             itemId: 'T',
-                            id: prototype.idDE + '-tabTotals',
+                            id: prototype.idBandoc + '-tabTotals',
                             defaults: {},
                             items: [
                                 {
                                     xtype: 'treepanel',
-                                    id: prototype.idDE + '-treeTotals',
+                                    id: prototype.idBandoc + '-treeTotals',
                                     minHeight: 250,
                                     maxHeight: 500,
                                     rootVisible: false,
@@ -876,7 +876,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                 },
                 {
                     text: 'Cancel',
-                    id: prototype.idDE4 + '-btn-cancel',
+                    id: prototype.idBandoc4 + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
                     listeners: {
                         click: 'onCancelClick'

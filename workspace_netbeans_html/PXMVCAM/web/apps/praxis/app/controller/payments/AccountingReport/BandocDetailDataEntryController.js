@@ -14,6 +14,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
             const res = await global.callStoreGet('PRAXISMP', 'SPACR025', me.view.searchParams);
             me.bindInfo(res.lstRs);
         } catch (e) {
+            console.error(e);
             global.Msg({msg:'Error on Load'});
             me.view.close();
         } finally {
@@ -34,8 +35,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
         let totals = data.at(7);
         
         //formularios
-        const sapForm = Ext.getCmp(prototype.idDE + '-sapForm');
-        const tacaflowForm = Ext.getCmp(prototype.idDE + '-tacaflowForm');
+        const sapForm = Ext.getCmp(prototype.idBandoc + '-sapForm');
+        const tacaflowForm = Ext.getCmp(prototype.idBandoc + '-tacaflowForm');
         
         //tacaflow information
         if (me.view.searchParams.IN_BANDOC.slice(0,2) === 'CM'){
@@ -49,9 +50,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
         }
         
         if (mpf060.length > 0) {
-            Ext.getCmp(prototype.idDE + '-tabF1').setTitle(`PHASE 1 (${mpf060.length})`);
-            Ext.getCmp(prototype.idDE + '-tabF1').setDisabled(false);
-            const grid060 = Ext.getCmp(prototype.idDE + '-gridFase1');
+            Ext.getCmp(prototype.idBandoc + '-tabF1').setTitle(`PHASE 1 (${mpf060.length})`);
+            Ext.getCmp(prototype.idBandoc + '-tabF1').setDisabled(false);
+            const grid060 = Ext.getCmp(prototype.idBandoc + '-gridFase1');
             grid060.setStore(new Ext.data.Store({
                 pageSize: 50,
                 data: mpf060,
@@ -61,13 +62,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
                 }
             }));
         }else{
-            Ext.getCmp(prototype.idDE + '-tabF1').setDisabled(true);
+            Ext.getCmp(prototype.idBandoc + '-tabF1').setDisabled(true);
         }
 
         if (mpf101.length > 0) {
-            Ext.getCmp(prototype.idDE + '-tabF2').setDisabled(false);
-            Ext.getCmp(prototype.idDE + '-tabF2').setTitle(`PHASE 2 (${mpf101.length})`);
-            const grid060 = Ext.getCmp(prototype.idDE + '-gridFase2');
+            Ext.getCmp(prototype.idBandoc + '-tabF2').setDisabled(false);
+            Ext.getCmp(prototype.idBandoc + '-tabF2').setTitle(`PHASE 2 (${mpf101.length})`);
+            const grid060 = Ext.getCmp(prototype.idBandoc + '-gridFase2');
             grid060.setStore(new Ext.data.Store({
                 pageSize: 50,
                 data: mpf101,
@@ -78,13 +79,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
             }));
 
         }else{
-            Ext.getCmp(prototype.idDE + '-tabF2').setDisabled(true);
+            Ext.getCmp(prototype.idBandoc + '-tabF2').setDisabled(true);
         }
 
         if (mpf091.length > 0) {
-            Ext.getCmp(prototype.idDE + '-tabGT').setDisabled(false);
-            Ext.getCmp(prototype.idDE + '-tabGT').setTitle(`BILLS (${mpf091.length})`);
-            const grid060 = Ext.getCmp(prototype.idDE + '-gridGT');
+            Ext.getCmp(prototype.idBandoc + '-tabGT').setDisabled(false);
+            Ext.getCmp(prototype.idBandoc + '-tabGT').setTitle(`BILLS (${mpf091.length})`);
+            const grid060 = Ext.getCmp(prototype.idBandoc + '-gridGT');
             grid060.setStore(new Ext.data.Store({
                 pageSize: 50,
                 data: mpf091,
@@ -94,18 +95,18 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
                 }
             }));
         }else{
-            Ext.getCmp(prototype.idDE + '-tabGT').setDisabled(true);
+            Ext.getCmp(prototype.idBandoc + '-tabGT').setDisabled(true);
         }
 
         if (mpf140.length > 0) {
-            Ext.getCmp(prototype.idDE + '-tabIdcont').setDisabled(false);
-            Ext.getCmp(prototype.idDE + '-tabIdcont').setTitle(`ACCOUNTING (${mpf140.length})`);
-            const grid060 = Ext.getCmp(prototype.idDE + '-gridIdcont');
+            Ext.getCmp(prototype.idBandoc + '-tabIdcont').setDisabled(false);
+            Ext.getCmp(prototype.idBandoc + '-tabIdcont').setTitle(`ACCOUNTING (${mpf140.length})`);
+            const grid060 = Ext.getCmp(prototype.idBandoc + '-gridIdcont');
             grid060.setStore(new Ext.data.Store({
                 data: mpf140
             }));
         }else{
-            Ext.getCmp(prototype.idDE + '-tabIdcont').setDisabled(true);
+            Ext.getCmp(prototype.idBandoc + '-tabIdcont').setDisabled(true);
         }
 
         let treeData = {};
@@ -164,7 +165,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
             }
         });
 
-        Ext.getCmp(prototype.idDE + '-treeTotals').setStore(store);
+        Ext.getCmp(prototype.idBandoc + '-treeTotals').setStore(store);
     },
     onChangeTabMain: function(tabPanel, newCard, oldCard){
         this.view.center();
