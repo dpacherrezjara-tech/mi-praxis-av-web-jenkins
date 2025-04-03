@@ -7,6 +7,7 @@ import net.miatech.praxis.payment.dto.CallStorePaggin;
 import net.miatech.praxis.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,6 @@ public class GenericController {
         filter.setParams(params);
         
         System.out.println("Parameters: " + library + "." + procedure);
-        return ResponseUtils.ok(logic.callStoreProcedurePaggin(filter));
+        return new ResponseEntity(logic.callStoreProcedurePaggin(filter),HttpStatus.OK) ;
     }
 }
