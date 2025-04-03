@@ -124,7 +124,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
           'REGUL':'Master Sale',
           'ACCR':'Regular Accounting',
           'DEBIT':'Debits Database',
-          'ACCD':'Debit Accounting'
+          'ACCD':'Debit Accounting',
+          'ACCA':'Adjustment Accounting'
         };
 
         // Agrupar datos por TIPO
