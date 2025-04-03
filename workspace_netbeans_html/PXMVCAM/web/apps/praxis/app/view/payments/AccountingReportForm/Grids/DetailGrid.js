@@ -174,8 +174,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.DetailGrid', {
                     {text: 'ID', dataIndex: 'IDCONT', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = 'background-color:#B2DAFA;';
-                            if (value.trim() !== '') {
-                                metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                            if(value){
+                                if (value.trim() !== '') {
+                                    metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                                }
                             }
                             return value;
                         },
@@ -277,8 +279,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.DetailGrid', {
                     {text: 'ID', dataIndex: 'IDCDEB', width: 210,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                             metaData.style = 'background-color:#dcc279;';
-                            if (value.trim() !== '') {
-                                metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                            if(value){
+                                if (value.trim() !== '') {
+                                    metaData.style += "text-decoration:underline;cursor:pointer;font-weight:bolder;color:#639cbe;";
+                                }
                             }
                             return value;
                         },

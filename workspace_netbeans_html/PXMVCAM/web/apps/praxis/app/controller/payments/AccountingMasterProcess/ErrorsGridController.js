@@ -113,16 +113,16 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ErrorsGridCon
         
     },
     onEvaluateBandoc: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {BANDOC} = record.data;
-        let params = {
-            IN_BANDOC:BANDOC,
-            IN_REFER:''
-        };
-        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.BandocInfoDataEntry',{
-            id: prototype.id + '-BandocInfoDataEntry-1',
-            searchParams: params
+        const {BANDOC,DATECI,TRANCI} = record.data;
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetailDataEntry',{
+            id:prototype.id + '-BandocDetailDataEntry-1',
+            searchParams: {
+                IN_BANDOC: BANDOC,
+                IN_DATECI: DATECI,
+                IN_TRANCI: TRANCI
+            }
         });
-        newWin.show(newWin);
+        dataEntry.show();
     },
     reverseMassiveBandoc: function (){
         let selectionModel = this.view.getSelectionModel();
