@@ -703,12 +703,15 @@ public class ViewADMController extends BaseController {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
 
-            lst = logic.loadPX644SQPMPF100ADM_BEANTKT(filter);
+            lst = logic.loadPX644SQPMPF100ADM_BEANTKT_V1(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
+        System.out.println("lst");
         return lst;
     }
+    
+    
     
     @RequestMapping(value = "executeOptionTkt")
     public @ResponseBody
@@ -802,13 +805,16 @@ public class ViewADMController extends BaseController {
 
             beanString = request.getParameter("beanString");
             System.out.println("JSON recibido en el servidor: " + beanString);
-            filter = gson.fromJson(beanString, A2290Filter.class);
+            
+            
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
 
 
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new ViewADMLogic();
             logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX644SQPMPF100CLEAN_TKT(filter, user);
+            msj = logic.loadPX644SQPMPF100CLEAN_TKT(filterList, user);
 
             map.put("success", true);
             map.put("Mensaje", msj);
@@ -828,7 +834,6 @@ public class ViewADMController extends BaseController {
 
         System.out.println("-------------- ViewADM : generateSecondADM-------------");
         String option;
-        A2290Filter filter = new A2290Filter();
         String msj = "";
         Gson gson = new Gson();
         String beanString = "";
@@ -838,13 +843,14 @@ public class ViewADMController extends BaseController {
 
             beanString = request.getParameter("beanString");
             System.out.println("JSON recibido en el servidor: " + beanString);
-            filter = gson.fromJson(beanString, A2290Filter.class);
+            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
 
 
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new ViewADMLogic();
             logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX644SQPMPF100GENERATE_SECOND_ADM(filter, user);
+            msj = logic.loadPX644SQPMPF100GENERATE_SECOND_ADM_V1(filterList, user);
 
             map.put("success", true);
             map.put("Mensaje", msj);

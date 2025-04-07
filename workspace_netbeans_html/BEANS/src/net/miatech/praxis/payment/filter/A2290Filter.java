@@ -217,6 +217,7 @@ public class A2290Filter extends A2290 {
     public double COMISIOC = 0;
     public double totCOMISION = 0;
     public int QTYDOC = 0;
+    public String DESCCREJEC = "";
 
     public double IVA = 0;
     public double IVAC = 0;
@@ -931,6 +932,7 @@ public class A2290Filter extends A2290 {
     public String SAUTHOC_100 = "";
     public String SPNR_100 = "";
     public String SAUTHOC_101 = "";
+    public Boolean checkActive = false;
 
     public String getVariable() {
         return BANDOC;
